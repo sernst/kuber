@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: scott
+  labels:
+    app: scott
+spec:
+  template:
+    spec:
+      containers:
+      - image: swernst/cauldron:current-standard
+        imagePullPolicy: Always

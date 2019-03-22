@@ -1,0 +1,36 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: genesis
+  labels:
+    app: genesis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: genesis
+  template:
+    metadata:
+      labels:
+        app: genesis
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry
+      containers:
+        - name: genesis
+          image: genesis:1.0.0
+          imagePullPolicy: Always
+          args: ["--queue", "genesis"]
+          tty: true
+          env:
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-reader-pass
+                  key: password
+          resources:
+            requests:
+              memory: "1G"
+              cpu: "1"

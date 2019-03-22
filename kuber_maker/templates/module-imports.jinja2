@@ -1,0 +1,12 @@
+import typing
+{% if 'Time' in data_types -%}
+import datetime as _datetime
+{% endif %}
+{% if has_resource -%}
+from kuber import kube_api as _kube_api
+{% endif %}
+from kuber import definitions as _kuber_definitions
+{% for imp in imports -%}
+from {{ imp.package }} import {{ imp.target }}
+{% endfor %}
+
