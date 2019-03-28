@@ -1,5 +1,6 @@
 import typing
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
@@ -160,41 +161,98 @@ class ClusterRole(_kuber_definitions.Resource):
             cleaned.append(item)
         self._properties['rules'] = cleaned
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the ClusterRole in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRole was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_cluster_role',
+            'create_cluster_role'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the ClusterRole in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRole was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_cluster_role',
+            'replace_cluster_role'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the ClusterRole from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the ClusterRole in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_cluster_role',
+            'patch_cluster_role'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the ClusterRole from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_cluster_role',
+            'delete_cluster_role'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRole':
         return self
@@ -296,41 +354,98 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
             cleaned.append(item)
         self._properties['subjects'] = cleaned
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the ClusterRoleBinding in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRoleBinding was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_cluster_role_binding',
+            'create_cluster_role_binding'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the ClusterRoleBinding in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRoleBinding was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_cluster_role_binding',
+            'replace_cluster_role_binding'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the ClusterRoleBinding from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the ClusterRoleBinding in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_cluster_role_binding',
+            'patch_cluster_role_binding'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the ClusterRoleBinding from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_cluster_role_binding',
+            'delete_cluster_role_binding'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRoleBinding':
         return self
@@ -339,7 +454,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
         return False
 
 
-class ClusterRoleBindingList(_kuber_definitions.Resource):
+class ClusterRoleBindingList(_kuber_definitions.Collection):
     """
     ClusterRoleBindingList is a collection of
     ClusterRoleBindings
@@ -406,41 +521,18 @@ class ClusterRoleBindingList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
         """
-        Creates the ClusterRoleBindingList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRoleBindingList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the ClusterRoleBindingList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRoleBindingList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the ClusterRoleBindingList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRoleBindingList':
         return self
@@ -449,7 +541,7 @@ class ClusterRoleBindingList(_kuber_definitions.Resource):
         return False
 
 
-class ClusterRoleList(_kuber_definitions.Resource):
+class ClusterRoleList(_kuber_definitions.Collection):
     """
     ClusterRoleList is a collection of ClusterRoles
     """
@@ -515,41 +607,18 @@ class ClusterRoleList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
         """
-        Creates the ClusterRoleList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRoleList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the ClusterRoleList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ClusterRoleList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the ClusterRoleList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRoleList':
         return self
@@ -773,41 +842,98 @@ class Role(_kuber_definitions.Resource):
             cleaned.append(item)
         self._properties['rules'] = cleaned
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the Role in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Role was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_role',
+            'create_role'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the Role in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Role was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_role',
+            'replace_role'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the Role from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the Role in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_role',
+            'patch_role'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the Role from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_role',
+            'delete_role'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'Role':
         return self
@@ -912,41 +1038,98 @@ class RoleBinding(_kuber_definitions.Resource):
             cleaned.append(item)
         self._properties['subjects'] = cleaned
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the RoleBinding in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the RoleBinding was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_role_binding',
+            'create_role_binding'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the RoleBinding in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the RoleBinding was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_role_binding',
+            'replace_role_binding'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the RoleBinding from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the RoleBinding in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_role_binding',
+            'patch_role_binding'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the RoleBinding from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_role_binding',
+            'delete_role_binding'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'RoleBinding':
         return self
@@ -955,7 +1138,7 @@ class RoleBinding(_kuber_definitions.Resource):
         return False
 
 
-class RoleBindingList(_kuber_definitions.Resource):
+class RoleBindingList(_kuber_definitions.Collection):
     """
     RoleBindingList is a collection of RoleBindings
     """
@@ -1021,41 +1204,18 @@ class RoleBindingList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
         """
-        Creates the RoleBindingList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the RoleBindingList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the RoleBindingList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the RoleBindingList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the RoleBindingList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'RoleBindingList':
         return self
@@ -1064,7 +1224,7 @@ class RoleBindingList(_kuber_definitions.Resource):
         return False
 
 
-class RoleList(_kuber_definitions.Resource):
+class RoleList(_kuber_definitions.Collection):
     """
     RoleList is a collection of Roles
     """
@@ -1130,41 +1290,18 @@ class RoleList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
         """
-        Creates the RoleList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the RoleList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the RoleList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the RoleList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the RoleList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'RoleList':
         return self
@@ -1299,41 +1436,98 @@ class Subject(_kuber_definitions.Resource):
         """
         self._properties['namespace'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the Subject in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Subject was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_subject',
+            'create_subject'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the Subject in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Subject was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_subject',
+            'replace_subject'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the Subject from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the Subject in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_subject',
+            'patch_subject'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the Subject from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_subject',
+            'delete_subject'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.RbacV1alpha1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.RbacV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'Subject':
         return self

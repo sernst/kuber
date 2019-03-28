@@ -1,6 +1,7 @@
 import typing
 import datetime as _datetime
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
@@ -16,6 +17,8 @@ from kuber.v1_11.core.v1 import PodTemplateSpec
 from kuber.v1_11.core.v1 import Probe
 from kuber.v1_11.core.v1 import ResourceRequirements
 from kuber.v1_11.core.v1 import SecurityContext
+from kuber.v1_11.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_11.apimachinery.pkg.apis.meta.v1 import StatusDetails
 from kuber.v1_11.core.v1 import VolumeDevice
 from kuber.v1_11.core.v1 import VolumeMount
 
@@ -155,32 +158,83 @@ class Job(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['JobStatus']:
+    ) -> 'JobStatus':
         """
         Creates the Job in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_job',
+            'create_job'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            JobStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['JobStatus']:
+    ) -> 'JobStatus':
         """
         Replaces the Job in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_job',
+            'replace_job'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            JobStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'JobStatus':
+        """
+        Patches the Job in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_job',
+            'patch_job'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            JobStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -189,21 +243,55 @@ class Job(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return JobStatus().from_dict(status)
+        names = [
+            'read_namespaced_job',
+            'read_job'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            JobStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the Job from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the Job from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_job',
+            'delete_job'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.BatchV1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.BatchV1Api(**kwargs)
 
     def __enter__(self) -> 'Job':
         return self
@@ -357,7 +445,7 @@ class JobCondition(_kuber_definitions.Definition):
         return False
 
 
-class JobList(_kuber_definitions.Resource):
+class JobList(_kuber_definitions.Collection):
     """
     JobList is a collection of jobs.
     """
@@ -427,41 +515,18 @@ class JobList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.BatchV1Api:
         """
-        Creates the JobList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the JobList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the JobList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the JobList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the JobList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.BatchV1Api(**kwargs)
 
     def __enter__(self) -> 'JobList':
         return self

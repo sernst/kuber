@@ -1,12 +1,14 @@
 import typing
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.v1_13.apimachinery.pkg.util.intstr import IntOrString
 from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import ListMeta
 from kuber.v1_13.core.v1 import LoadBalancerStatus
 from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import ObjectMeta
+from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import StatusDetails
 
 
 class HTTPIngressPath(_kuber_definitions.Definition):
@@ -220,32 +222,83 @@ class Ingress(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['IngressStatus']:
+    ) -> 'IngressStatus':
         """
         Creates the Ingress in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_ingress',
+            'create_ingress'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            IngressStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['IngressStatus']:
+    ) -> 'IngressStatus':
         """
         Replaces the Ingress in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_ingress',
+            'replace_ingress'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            IngressStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'IngressStatus':
+        """
+        Patches the Ingress in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_ingress',
+            'patch_ingress'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            IngressStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -254,21 +307,55 @@ class Ingress(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return IngressStatus().from_dict(status)
+        names = [
+            'read_namespaced_ingress',
+            'read_ingress'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            IngressStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the Ingress from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the Ingress from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_ingress',
+            'delete_ingress'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.NetworkingV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.NetworkingV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'Ingress':
         return self
@@ -286,7 +373,7 @@ class IngressBackend(_kuber_definitions.Definition):
     def __init__(
             self,
             service_name: str = None,
-            service_port: 'IntOrString' = None,
+            service_port: typing.Union[str, int] = None,
     ):
         """Create IngressBackend instance."""
         super(IngressBackend, self).__init__(
@@ -295,12 +382,12 @@ class IngressBackend(_kuber_definitions.Definition):
         )
         self._properties = {
             'serviceName': service_name or '',
-            'servicePort': service_port or IntOrString(),
+            'servicePort': service_port or None,
 
         }
         self._types = {
             'serviceName': (str, None),
-            'servicePort': (IntOrString, None),
+            'servicePort': (str, None),
 
         }
 
@@ -319,20 +406,22 @@ class IngressBackend(_kuber_definitions.Definition):
         self._properties['serviceName'] = value
 
     @property
-    def service_port(self) -> 'IntOrString':
+    def service_port(self) -> typing.Optional[str]:
         """
         Specifies the port of the referenced service.
         """
-        return self._properties.get('servicePort')
+        value = self._properties.get('servicePort')
+        return f'{value}' if value else None
 
     @service_port.setter
-    def service_port(self, value: typing.Union['IntOrString', dict]):
+    def service_port(
+            self,
+            value: typing.Union[str, int]
+    ):
         """
         Specifies the port of the referenced service.
         """
-        if isinstance(value, dict):
-            value = IntOrString().from_dict(value)
-        self._properties['servicePort'] = value
+        self._properties['servicePort'] = f'{value}'
 
     def __enter__(self) -> 'IngressBackend':
         return self
@@ -341,7 +430,7 @@ class IngressBackend(_kuber_definitions.Definition):
         return False
 
 
-class IngressList(_kuber_definitions.Resource):
+class IngressList(_kuber_definitions.Collection):
     """
     IngressList is a collection of Ingress.
     """
@@ -411,41 +500,18 @@ class IngressList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.NetworkingV1beta1Api:
         """
-        Creates the IngressList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the IngressList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the IngressList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the IngressList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the IngressList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.NetworkingV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'IngressList':
         return self

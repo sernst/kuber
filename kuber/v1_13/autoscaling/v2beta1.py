@@ -1,6 +1,7 @@
 import typing
 import datetime as _datetime
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
@@ -8,6 +9,8 @@ from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import LabelSelector
 from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import ListMeta
 from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import ObjectMeta
 from kuber.v1_13.apimachinery.pkg.api.resource import Quantity
+from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import StatusDetails
 
 
 class CrossVersionObjectReference(_kuber_definitions.Resource):
@@ -52,41 +55,98 @@ class CrossVersionObjectReference(_kuber_definitions.Resource):
         """
         self._properties['name'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the CrossVersionObjectReference was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_cross_version_object_reference',
+            'create_cross_version_object_reference'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the CrossVersionObjectReference was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_cross_version_object_reference',
+            'replace_cross_version_object_reference'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the CrossVersionObjectReference from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the CrossVersionObjectReference in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_cross_version_object_reference',
+            'patch_cross_version_object_reference'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the CrossVersionObjectReference from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_cross_version_object_reference',
+            'delete_cross_version_object_reference'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AutoscalingV2beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AutoscalingV2beta1Api(**kwargs)
 
     def __enter__(self) -> 'CrossVersionObjectReference':
         return self
@@ -393,32 +453,83 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['HorizontalPodAutoscalerStatus']:
+    ) -> 'HorizontalPodAutoscalerStatus':
         """
         Creates the HorizontalPodAutoscaler in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_horizontal_pod_autoscaler',
+            'create_horizontal_pod_autoscaler'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            HorizontalPodAutoscalerStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['HorizontalPodAutoscalerStatus']:
+    ) -> 'HorizontalPodAutoscalerStatus':
         """
         Replaces the HorizontalPodAutoscaler in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_horizontal_pod_autoscaler',
+            'replace_horizontal_pod_autoscaler'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            HorizontalPodAutoscalerStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'HorizontalPodAutoscalerStatus':
+        """
+        Patches the HorizontalPodAutoscaler in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_horizontal_pod_autoscaler',
+            'patch_horizontal_pod_autoscaler'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            HorizontalPodAutoscalerStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -427,21 +538,55 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return HorizontalPodAutoscalerStatus().from_dict(status)
+        names = [
+            'read_namespaced_horizontal_pod_autoscaler',
+            'read_horizontal_pod_autoscaler'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            HorizontalPodAutoscalerStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the HorizontalPodAutoscaler from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the HorizontalPodAutoscaler from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_horizontal_pod_autoscaler',
+            'delete_horizontal_pod_autoscaler'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AutoscalingV2beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AutoscalingV2beta1Api(**kwargs)
 
     def __enter__(self) -> 'HorizontalPodAutoscaler':
         return self
@@ -574,7 +719,7 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
         return False
 
 
-class HorizontalPodAutoscalerList(_kuber_definitions.Resource):
+class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
     """
     HorizontalPodAutoscaler is a list of horizontal pod
     autoscaler objects.
@@ -641,41 +786,18 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AutoscalingV2beta1Api:
         """
-        Creates the HorizontalPodAutoscalerList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the HorizontalPodAutoscalerList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the HorizontalPodAutoscalerList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the HorizontalPodAutoscalerList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the HorizontalPodAutoscalerList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AutoscalingV2beta1Api(**kwargs)
 
     def __enter__(self) -> 'HorizontalPodAutoscalerList':
         return self

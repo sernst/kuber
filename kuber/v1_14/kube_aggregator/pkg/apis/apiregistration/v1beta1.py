@@ -1,10 +1,13 @@
 import typing
 import datetime as _datetime
 
+from kubernetes import client
 
 from kuber import definitions as _kuber_definitions
 from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import ListMeta
 from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import ObjectMeta
+from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import StatusDetails
 
 
 class APIService(_kuber_definitions.Definition):
@@ -224,7 +227,7 @@ class APIServiceCondition(_kuber_definitions.Definition):
         return False
 
 
-class APIServiceList(_kuber_definitions.Definition):
+class APIServiceList(_kuber_definitions.Collection):
     """
     APIServiceList is a list of APIService objects.
     """
@@ -289,6 +292,19 @@ class APIServiceList(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.ApiregistrationV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.ApiregistrationV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'APIServiceList':
         return self

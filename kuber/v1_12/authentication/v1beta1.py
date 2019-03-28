@@ -1,9 +1,13 @@
 import typing
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
+from kuber.v1_12.apimachinery.pkg.apis.meta.v1 import ListMeta
 from kuber.v1_12.apimachinery.pkg.apis.meta.v1 import ObjectMeta
+from kuber.v1_12.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_12.apimachinery.pkg.apis.meta.v1 import StatusDetails
 
 
 class TokenReview(_kuber_definitions.Resource):
@@ -72,32 +76,83 @@ class TokenReview(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['TokenReviewStatus']:
+    ) -> 'TokenReviewStatus':
         """
         Creates the TokenReview in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_token_review',
+            'create_token_review'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            TokenReviewStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['TokenReviewStatus']:
+    ) -> 'TokenReviewStatus':
         """
         Replaces the TokenReview in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_token_review',
+            'replace_token_review'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            TokenReviewStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'TokenReviewStatus':
+        """
+        Patches the TokenReview in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_token_review',
+            'patch_token_review'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            TokenReviewStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -106,21 +161,55 @@ class TokenReview(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return TokenReviewStatus().from_dict(status)
+        names = [
+            'read_namespaced_token_review',
+            'read_token_review'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            TokenReviewStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the TokenReview from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the TokenReview from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_token_review',
+            'delete_token_review'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AuthenticationV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AuthenticationV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'TokenReview':
         return self

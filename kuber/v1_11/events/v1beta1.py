@@ -1,6 +1,7 @@
 import typing
 import datetime as _datetime
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
@@ -345,41 +346,98 @@ class Event(_kuber_definitions.Resource):
         """
         self._properties['type'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the Event in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Event was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_event',
+            'create_event'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the Event in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Event was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_event',
+            'replace_event'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the Event from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the Event in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_event',
+            'patch_event'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the Event from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_event',
+            'delete_event'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.EventsV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.EventsV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'Event':
         return self
@@ -388,7 +446,7 @@ class Event(_kuber_definitions.Resource):
         return False
 
 
-class EventList(_kuber_definitions.Resource):
+class EventList(_kuber_definitions.Collection):
     """
     EventList is a list of Event objects.
     """
@@ -458,41 +516,18 @@ class EventList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.EventsV1beta1Api:
         """
-        Creates the EventList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the EventList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the EventList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the EventList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the EventList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.EventsV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'EventList':
         return self

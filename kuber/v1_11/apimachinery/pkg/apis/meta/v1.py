@@ -1,6 +1,7 @@
 import typing
 import datetime as _datetime
 
+from kubernetes import client
 
 from kuber import definitions as _kuber_definitions
 from kuber.v1_11.apimachinery.pkg.runtime import RawExtension

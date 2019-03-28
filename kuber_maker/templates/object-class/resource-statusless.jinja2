@@ -1,0 +1,60 @@
+    def create_resource(self, namespace: 'str' = None):
+        """
+        Creates the {{ entity.class_name }} in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'create_namespaced_{{ entity.class_name | snake_case }}',
+            'create_{{ entity.class_name | snake_case }}'
+        ]
+
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
+        """
+        Replaces the {{ entity.class_name }} in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'replace_namespaced_{{ entity.class_name | snake_case }}',
+            'replace_{{ entity.class_name | snake_case }}'
+        ]
+
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
+        """
+        Patches the {{ entity.class_name }} in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'patch_namespaced_{{ entity.class_name | snake_case }}',
+            'patch_{{ entity.class_name | snake_case }}'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass

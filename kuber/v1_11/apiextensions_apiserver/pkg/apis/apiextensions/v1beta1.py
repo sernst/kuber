@@ -1,10 +1,13 @@
 import typing
 import datetime as _datetime
 
+from kubernetes import client
 
 from kuber import definitions as _kuber_definitions
 from kuber.v1_11.apimachinery.pkg.apis.meta.v1 import ListMeta
 from kuber.v1_11.apimachinery.pkg.apis.meta.v1 import ObjectMeta
+from kuber.v1_11.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_11.apimachinery.pkg.apis.meta.v1 import StatusDetails
 
 
 class CustomResourceColumnDefinition(_kuber_definitions.Definition):
@@ -377,7 +380,7 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
         return False
 
 
-class CustomResourceDefinitionList(_kuber_definitions.Definition):
+class CustomResourceDefinitionList(_kuber_definitions.Collection):
     """
     CustomResourceDefinitionList is a list of
     CustomResourceDefinition objects.
@@ -443,6 +446,19 @@ class CustomResourceDefinitionList(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.ApiextensionsV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.ApiextensionsV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'CustomResourceDefinitionList':
         return self

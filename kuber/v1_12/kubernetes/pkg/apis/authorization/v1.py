@@ -1,5 +1,6 @@
 import typing
 
+from kubernetes import client
 
 from kuber import definitions as _kuber_definitions
 

@@ -1,14 +1,16 @@
 import typing
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
 from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import DeleteOptions
-from kuber.v1_14.apimachinery.pkg.util.intstr import IntOrString
 from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import LabelSelector
 from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import ListMeta
 from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import ObjectMeta
 from kuber.v1_14.core.v1 import SELinuxOptions
+from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_14.apimachinery.pkg.apis.meta.v1 import StatusDetails
 
 
 class AllowedCSIDriver(_kuber_definitions.Definition):
@@ -241,41 +243,98 @@ class Eviction(_kuber_definitions.Resource):
             value = ObjectMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the Eviction in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Eviction was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_eviction',
+            'create_eviction'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the Eviction in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the Eviction was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_eviction',
+            'replace_eviction'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the Eviction from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the Eviction in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_eviction',
+            'patch_eviction'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the Eviction from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_eviction',
+            'delete_eviction'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.PolicyV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.PolicyV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'Eviction':
         return self
@@ -551,32 +610,83 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['PodDisruptionBudgetStatus']:
+    ) -> 'PodDisruptionBudgetStatus':
         """
         Creates the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_pod_disruption_budget',
+            'create_pod_disruption_budget'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            PodDisruptionBudgetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['PodDisruptionBudgetStatus']:
+    ) -> 'PodDisruptionBudgetStatus':
         """
         Replaces the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_pod_disruption_budget',
+            'replace_pod_disruption_budget'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            PodDisruptionBudgetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'PodDisruptionBudgetStatus':
+        """
+        Patches the PodDisruptionBudget in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_pod_disruption_budget',
+            'patch_pod_disruption_budget'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            PodDisruptionBudgetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -585,21 +695,55 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return PodDisruptionBudgetStatus().from_dict(status)
+        names = [
+            'read_namespaced_pod_disruption_budget',
+            'read_pod_disruption_budget'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            PodDisruptionBudgetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the PodDisruptionBudget from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the PodDisruptionBudget from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_pod_disruption_budget',
+            'delete_pod_disruption_budget'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.PolicyV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.PolicyV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'PodDisruptionBudget':
         return self
@@ -608,7 +752,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
         return False
 
 
-class PodDisruptionBudgetList(_kuber_definitions.Resource):
+class PodDisruptionBudgetList(_kuber_definitions.Collection):
     """
     PodDisruptionBudgetList is a collection of
     PodDisruptionBudgets.
@@ -675,41 +819,18 @@ class PodDisruptionBudgetList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.PolicyV1beta1Api:
         """
-        Creates the PodDisruptionBudgetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the PodDisruptionBudgetList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the PodDisruptionBudgetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the PodDisruptionBudgetList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the PodDisruptionBudgetList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.PolicyV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'PodDisruptionBudgetList':
         return self
@@ -726,8 +847,8 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_unavailable: 'IntOrString' = None,
-            min_available: 'IntOrString' = None,
+            max_unavailable: typing.Union[str, int] = None,
+            min_available: typing.Union[str, int] = None,
             selector: 'LabelSelector' = None,
     ):
         """Create PodDisruptionBudgetSpec instance."""
@@ -736,20 +857,20 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
             kind='PodDisruptionBudgetSpec'
         )
         self._properties = {
-            'maxUnavailable': max_unavailable or IntOrString(),
-            'minAvailable': min_available or IntOrString(),
+            'maxUnavailable': max_unavailable or None,
+            'minAvailable': min_available or None,
             'selector': selector or LabelSelector(),
 
         }
         self._types = {
-            'maxUnavailable': (IntOrString, None),
-            'minAvailable': (IntOrString, None),
+            'maxUnavailable': (str, None),
+            'minAvailable': (str, None),
             'selector': (LabelSelector, None),
 
         }
 
     @property
-    def max_unavailable(self) -> 'IntOrString':
+    def max_unavailable(self) -> typing.Optional[str]:
         """
         An eviction is allowed if at most "maxUnavailable" pods
         selected by "selector" are unavailable after the eviction,
@@ -757,10 +878,14 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         can prevent all voluntary evictions by specifying 0. This is
         a mutually exclusive setting with "minAvailable".
         """
-        return self._properties.get('maxUnavailable')
+        value = self._properties.get('maxUnavailable')
+        return f'{value}' if value else None
 
     @max_unavailable.setter
-    def max_unavailable(self, value: typing.Union['IntOrString', dict]):
+    def max_unavailable(
+            self,
+            value: typing.Union[str, int]
+    ):
         """
         An eviction is allowed if at most "maxUnavailable" pods
         selected by "selector" are unavailable after the eviction,
@@ -768,12 +893,10 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         can prevent all voluntary evictions by specifying 0. This is
         a mutually exclusive setting with "minAvailable".
         """
-        if isinstance(value, dict):
-            value = IntOrString().from_dict(value)
-        self._properties['maxUnavailable'] = value
+        self._properties['maxUnavailable'] = f'{value}'
 
     @property
-    def min_available(self) -> 'IntOrString':
+    def min_available(self) -> typing.Optional[str]:
         """
         An eviction is allowed if at least "minAvailable" pods
         selected by "selector" will still be available after the
@@ -781,10 +904,14 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         for example you can prevent all voluntary evictions by
         specifying "100%".
         """
-        return self._properties.get('minAvailable')
+        value = self._properties.get('minAvailable')
+        return f'{value}' if value else None
 
     @min_available.setter
-    def min_available(self, value: typing.Union['IntOrString', dict]):
+    def min_available(
+            self,
+            value: typing.Union[str, int]
+    ):
         """
         An eviction is allowed if at least "minAvailable" pods
         selected by "selector" will still be available after the
@@ -792,9 +919,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         for example you can prevent all voluntary evictions by
         specifying "100%".
         """
-        if isinstance(value, dict):
-            value = IntOrString().from_dict(value)
-        self._properties['minAvailable'] = value
+        self._properties['minAvailable'] = f'{value}'
 
     @property
     def selector(self) -> 'LabelSelector':
@@ -1052,41 +1177,98 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             value = PodSecurityPolicySpec().from_dict(value)
         self._properties['spec'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the PodSecurityPolicy in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the PodSecurityPolicy was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_pod_security_policy',
+            'create_pod_security_policy'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the PodSecurityPolicy in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the PodSecurityPolicy was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_pod_security_policy',
+            'replace_pod_security_policy'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the PodSecurityPolicy from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the PodSecurityPolicy in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_pod_security_policy',
+            'patch_pod_security_policy'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the PodSecurityPolicy from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_pod_security_policy',
+            'delete_pod_security_policy'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.PolicyV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.PolicyV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'PodSecurityPolicy':
         return self
@@ -1095,7 +1277,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
         return False
 
 
-class PodSecurityPolicyList(_kuber_definitions.Resource):
+class PodSecurityPolicyList(_kuber_definitions.Collection):
     """
     PodSecurityPolicyList is a list of PodSecurityPolicy
     objects.
@@ -1166,41 +1348,18 @@ class PodSecurityPolicyList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.PolicyV1beta1Api:
         """
-        Creates the PodSecurityPolicyList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the PodSecurityPolicyList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the PodSecurityPolicyList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the PodSecurityPolicyList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the PodSecurityPolicyList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.PolicyV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'PodSecurityPolicyList':
         return self

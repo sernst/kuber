@@ -4,6 +4,7 @@ import typing
 import uuid
 
 import yaml
+from kubernetes import client
 
 
 class InternalValue(typing.NamedTuple):
@@ -58,11 +59,82 @@ class Definition:
     def from_dict(self, source: dict) -> 'Definition':
         """Populates the resource from the source dictionary definition."""
         for key, value in source.items():
+            if key not in self._types:
+                continue
             self._properties[key] = deserialize_property(
                 value=value,
                 data_type=self._types[key]
             )
         return self
+
+
+class Collection(Definition):
+    """
+    Base class for all kubernetes collection resources, which are synthetic
+    resources that bundle together multiple standard resources.
+    """
+
+    def __init__(self, api_version: str, kind: str):
+        """Initialize basic common properties."""
+        super(Collection, self).__init__(api_version, kind)
+
+    @property
+    @abc.abstractmethod
+    def metadata(self):
+        """Must be implemented by subclasses"""
+        return None
+
+    @metadata.setter
+    @abc.abstractmethod
+    def metadata(self, value):
+        """Must be implemented by subclasses"""
+        pass
+
+    @property
+    def api_version(self) -> str:
+        """The Kubernetes API version in which the resource resides."""
+        return self._api_version
+
+    @property
+    def kind(self) -> str:
+        """Resource type identifier."""
+        return self._kind
+
+    def to_dict(self) -> dict:
+        """
+        Serializes the `Resource` object to a dictionary that can be
+        rendered into json or yaml configuration file formats.
+        """
+        results = super(Collection, self).to_dict() or {}
+        return {'apiVersion': self.api_version, 'kind': self.kind, **results}
+
+    def to_json(self) -> str:
+        """
+        Serializes the `Resource` object to a json string that can be
+        saved as a configuration file or used with other packages that
+        interact with the Kubernetes API.
+        """
+        return json.dumps(self.to_dict(), indent=2)
+
+    def to_yaml(self) -> str:
+        """
+        Serializes the `Resource` object to a yaml string that can be
+        saved as a configuration file or used with other packages that
+        interact with the Kubernetes API.
+        """
+        return yaml.dump(self.to_dict())
+
+    @staticmethod
+    @abc.abstractmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> typing.Any:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        pass
 
 
 class Resource(Definition):
@@ -87,7 +159,7 @@ class Resource(Definition):
     @abc.abstractmethod
     def metadata(self, value):
         """Must be implemented by subclasses"""
-        return None
+        pass
 
     @property
     def api_version(self) -> str:
@@ -134,6 +206,11 @@ class Resource(Definition):
         pass
 
     @abc.abstractmethod
+    def patch_resource(self, namespace: 'str' = None):
+        """Must be implemented by subclasses."""
+        pass
+
+    @abc.abstractmethod
     def get_resource_status(self, namespace: str = None):
         """Must be implemented by subclasses."""
         pass
@@ -141,6 +218,18 @@ class Resource(Definition):
     @abc.abstractmethod
     def delete_resource(self, namespace: str = None):
         """Must be implemented by subclasses."""
+        pass
+
+    @staticmethod
+    @abc.abstractmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> typing.Any:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
         pass
 
 
@@ -186,6 +275,9 @@ def deserialize_property(value: typing.Any, data_type: tuple) -> typing.Any:
     :return:
         Deserialized form of the specified value.
     """
+    if value is None:
+        return None
+
     if issubclass(data_type[0], Definition):
         return data_type[0]().from_dict(value)
 

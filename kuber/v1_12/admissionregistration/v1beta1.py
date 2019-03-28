@@ -1,5 +1,6 @@
 import typing
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
@@ -82,41 +83,98 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
             cleaned.append(item)
         self._properties['webhooks'] = cleaned
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the MutatingWebhookConfiguration in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the MutatingWebhookConfiguration was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_mutating_webhook_configuration',
+            'create_mutating_webhook_configuration'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the MutatingWebhookConfiguration in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the MutatingWebhookConfiguration was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_mutating_webhook_configuration',
+            'replace_mutating_webhook_configuration'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the MutatingWebhookConfiguration from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the MutatingWebhookConfiguration in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_mutating_webhook_configuration',
+            'patch_mutating_webhook_configuration'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the MutatingWebhookConfiguration from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_mutating_webhook_configuration',
+            'delete_mutating_webhook_configuration'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AdmissionregistrationV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AdmissionregistrationV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'MutatingWebhookConfiguration':
         return self
@@ -125,7 +183,7 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
         return False
 
 
-class MutatingWebhookConfigurationList(_kuber_definitions.Resource):
+class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
     """
     MutatingWebhookConfigurationList is a list of
     MutatingWebhookConfiguration.
@@ -196,41 +254,18 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AdmissionregistrationV1beta1Api:
         """
-        Creates the MutatingWebhookConfigurationList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the MutatingWebhookConfigurationList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the MutatingWebhookConfigurationList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the MutatingWebhookConfigurationList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the MutatingWebhookConfigurationList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AdmissionregistrationV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'MutatingWebhookConfigurationList':
         return self
@@ -530,41 +565,98 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
             cleaned.append(item)
         self._properties['webhooks'] = cleaned
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the ValidatingWebhookConfiguration in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ValidatingWebhookConfiguration was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_validating_webhook_configuration',
+            'create_validating_webhook_configuration'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the ValidatingWebhookConfiguration in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ValidatingWebhookConfiguration was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_validating_webhook_configuration',
+            'replace_validating_webhook_configuration'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the ValidatingWebhookConfiguration from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the ValidatingWebhookConfiguration in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_validating_webhook_configuration',
+            'patch_validating_webhook_configuration'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the ValidatingWebhookConfiguration from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_validating_webhook_configuration',
+            'delete_validating_webhook_configuration'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AdmissionregistrationV1beta1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AdmissionregistrationV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'ValidatingWebhookConfiguration':
         return self
@@ -573,7 +665,7 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
         return False
 
 
-class ValidatingWebhookConfigurationList(_kuber_definitions.Resource):
+class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
     """
     ValidatingWebhookConfigurationList is a list of
     ValidatingWebhookConfiguration.
@@ -644,41 +736,18 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AdmissionregistrationV1beta1Api:
         """
-        Creates the ValidatingWebhookConfigurationList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ValidatingWebhookConfigurationList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the ValidatingWebhookConfigurationList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ValidatingWebhookConfigurationList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the ValidatingWebhookConfigurationList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AdmissionregistrationV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'ValidatingWebhookConfigurationList':
         return self

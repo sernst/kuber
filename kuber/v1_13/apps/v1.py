@@ -1,6 +1,7 @@
 import typing
 import datetime as _datetime
 
+from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
@@ -8,7 +9,6 @@ from kuber.v1_13.core.v1 import Container
 from kuber.v1_13.core.v1 import ContainerPort
 from kuber.v1_13.core.v1 import EnvFromSource
 from kuber.v1_13.core.v1 import EnvVar
-from kuber.v1_13.apimachinery.pkg.util.intstr import IntOrString
 from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import LabelSelector
 from kuber.v1_13.core.v1 import Lifecycle
 from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import ListMeta
@@ -19,6 +19,8 @@ from kuber.v1_13.core.v1 import Probe
 from kuber.v1_13.apimachinery.pkg.runtime import RawExtension
 from kuber.v1_13.core.v1 import ResourceRequirements
 from kuber.v1_13.core.v1 import SecurityContext
+from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import Status
+from kuber.v1_13.apimachinery.pkg.apis.meta.v1 import StatusDetails
 from kuber.v1_13.core.v1 import VolumeDevice
 from kuber.v1_13.core.v1 import VolumeMount
 
@@ -117,41 +119,98 @@ class ControllerRevision(_kuber_definitions.Resource):
         """
         self._properties['revision'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    def create_resource(self, namespace: 'str' = None):
         """
         Creates the ControllerRevision in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ControllerRevision was actually created.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'create_namespaced_controller_revision',
+            'create_controller_revision'
+        ]
 
-    def replace_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
         """
         Replaces the ControllerRevision in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ControllerRevision was actually replaced.
+        configured Kubernetes cluster.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'replace_namespaced_controller_revision',
+            'replace_controller_revision'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
         """
-        Deletes the ControllerRevision from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Patches the ControllerRevision in the currently
+        configured Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'patch_namespaced_controller_revision',
+            'patch_controller_revision'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def delete_resource(self, namespace: 'str' = None):
+        """
+        Deletes the ControllerRevision from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_controller_revision',
+            'delete_controller_revision'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'ControllerRevision':
         return self
@@ -160,7 +219,7 @@ class ControllerRevision(_kuber_definitions.Resource):
         return False
 
 
-class ControllerRevisionList(_kuber_definitions.Resource):
+class ControllerRevisionList(_kuber_definitions.Collection):
     """
     ControllerRevisionList is a resource containing a list of
     ControllerRevision objects.
@@ -231,41 +290,18 @@ class ControllerRevisionList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
         """
-        Creates the ControllerRevisionList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ControllerRevisionList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the ControllerRevisionList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ControllerRevisionList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the ControllerRevisionList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'ControllerRevisionList':
         return self
@@ -409,32 +445,83 @@ class DaemonSet(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['DaemonSetStatus']:
+    ) -> 'DaemonSetStatus':
         """
         Creates the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_daemon_set',
+            'create_daemon_set'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            DaemonSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['DaemonSetStatus']:
+    ) -> 'DaemonSetStatus':
         """
         Replaces the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_daemon_set',
+            'replace_daemon_set'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            DaemonSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'DaemonSetStatus':
+        """
+        Patches the DaemonSet in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_daemon_set',
+            'patch_daemon_set'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            DaemonSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -443,21 +530,55 @@ class DaemonSet(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return DaemonSetStatus().from_dict(status)
+        names = [
+            'read_namespaced_daemon_set',
+            'read_daemon_set'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            DaemonSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the DaemonSet from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the DaemonSet from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_daemon_set',
+            'delete_daemon_set'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'DaemonSet':
         return self
@@ -590,7 +711,7 @@ class DaemonSetCondition(_kuber_definitions.Definition):
         return False
 
 
-class DaemonSetList(_kuber_definitions.Resource):
+class DaemonSetList(_kuber_definitions.Collection):
     """
     DaemonSetList is a collection of daemon sets.
     """
@@ -660,41 +781,18 @@ class DaemonSetList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
         """
-        Creates the DaemonSetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the DaemonSetList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the DaemonSetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the DaemonSetList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the DaemonSetList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'DaemonSetList':
         return self
@@ -1352,32 +1450,83 @@ class Deployment(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['DeploymentStatus']:
+    ) -> 'DeploymentStatus':
         """
         Creates the Deployment in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_deployment',
+            'create_deployment'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            DeploymentStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['DeploymentStatus']:
+    ) -> 'DeploymentStatus':
         """
         Replaces the Deployment in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_deployment',
+            'replace_deployment'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            DeploymentStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'DeploymentStatus':
+        """
+        Patches the Deployment in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_deployment',
+            'patch_deployment'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            DeploymentStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -1386,21 +1535,55 @@ class Deployment(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return DeploymentStatus().from_dict(status)
+        names = [
+            'read_namespaced_deployment',
+            'read_deployment'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            DeploymentStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the Deployment from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the Deployment from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_deployment',
+            'delete_deployment'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'Deployment':
         return self
@@ -1557,7 +1740,7 @@ class DeploymentCondition(_kuber_definitions.Definition):
         return False
 
 
-class DeploymentList(_kuber_definitions.Resource):
+class DeploymentList(_kuber_definitions.Collection):
     """
     DeploymentList is a list of Deployments.
     """
@@ -1623,41 +1806,18 @@ class DeploymentList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
         """
-        Creates the DeploymentList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the DeploymentList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the DeploymentList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the DeploymentList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the DeploymentList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'DeploymentList':
         return self
@@ -2333,32 +2493,83 @@ class ReplicaSet(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['ReplicaSetStatus']:
+    ) -> 'ReplicaSetStatus':
         """
         Creates the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_replica_set',
+            'create_replica_set'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            ReplicaSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['ReplicaSetStatus']:
+    ) -> 'ReplicaSetStatus':
         """
         Replaces the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_replica_set',
+            'replace_replica_set'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            ReplicaSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'ReplicaSetStatus':
+        """
+        Patches the ReplicaSet in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_replica_set',
+            'patch_replica_set'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            ReplicaSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -2367,21 +2578,55 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return ReplicaSetStatus().from_dict(status)
+        names = [
+            'read_namespaced_replica_set',
+            'read_replica_set'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            ReplicaSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the ReplicaSet from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the ReplicaSet from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_replica_set',
+            'delete_replica_set'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'ReplicaSet':
         return self
@@ -2514,7 +2759,7 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
         return False
 
 
-class ReplicaSetList(_kuber_definitions.Resource):
+class ReplicaSetList(_kuber_definitions.Collection):
     """
     ReplicaSetList is a collection of ReplicaSets.
     """
@@ -2586,41 +2831,18 @@ class ReplicaSetList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
         """
-        Creates the ReplicaSetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ReplicaSetList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the ReplicaSetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the ReplicaSetList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the ReplicaSetList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'ReplicaSetList':
         return self
@@ -2981,7 +3203,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_unavailable: 'IntOrString' = None,
+            max_unavailable: typing.Union[str, int] = None,
     ):
         """Create RollingUpdateDaemonSet instance."""
         super(RollingUpdateDaemonSet, self).__init__(
@@ -2989,16 +3211,16 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
             kind='RollingUpdateDaemonSet'
         )
         self._properties = {
-            'maxUnavailable': max_unavailable or IntOrString(),
+            'maxUnavailable': max_unavailable or None,
 
         }
         self._types = {
-            'maxUnavailable': (IntOrString, None),
+            'maxUnavailable': (str, None),
 
         }
 
     @property
-    def max_unavailable(self) -> 'IntOrString':
+    def max_unavailable(self) -> typing.Optional[str]:
         """
         The maximum number of DaemonSet pods that can be unavailable
         during the update. Value can be an absolute number (ex: 5)
@@ -3015,10 +3237,14 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        return self._properties.get('maxUnavailable')
+        value = self._properties.get('maxUnavailable')
+        return f'{value}' if value else None
 
     @max_unavailable.setter
-    def max_unavailable(self, value: typing.Union['IntOrString', dict]):
+    def max_unavailable(
+            self,
+            value: typing.Union[str, int]
+    ):
         """
         The maximum number of DaemonSet pods that can be unavailable
         during the update. Value can be an absolute number (ex: 5)
@@ -3035,9 +3261,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        if isinstance(value, dict):
-            value = IntOrString().from_dict(value)
-        self._properties['maxUnavailable'] = value
+        self._properties['maxUnavailable'] = f'{value}'
 
     def __enter__(self) -> 'RollingUpdateDaemonSet':
         return self
@@ -3053,8 +3277,8 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_surge: 'IntOrString' = None,
-            max_unavailable: 'IntOrString' = None,
+            max_surge: typing.Union[str, int] = None,
+            max_unavailable: typing.Union[str, int] = None,
     ):
         """Create RollingUpdateDeployment instance."""
         super(RollingUpdateDeployment, self).__init__(
@@ -3062,18 +3286,18 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
             kind='RollingUpdateDeployment'
         )
         self._properties = {
-            'maxSurge': max_surge or IntOrString(),
-            'maxUnavailable': max_unavailable or IntOrString(),
+            'maxSurge': max_surge or None,
+            'maxUnavailable': max_unavailable or None,
 
         }
         self._types = {
-            'maxSurge': (IntOrString, None),
-            'maxUnavailable': (IntOrString, None),
+            'maxSurge': (str, None),
+            'maxUnavailable': (str, None),
 
         }
 
     @property
-    def max_surge(self) -> 'IntOrString':
+    def max_surge(self) -> typing.Optional[str]:
         """
         The maximum number of pods that can be scheduled above the
         desired number of pods. Value can be an absolute number (ex:
@@ -3088,10 +3312,14 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is at most 130% of
         desired pods.
         """
-        return self._properties.get('maxSurge')
+        value = self._properties.get('maxSurge')
+        return f'{value}' if value else None
 
     @max_surge.setter
-    def max_surge(self, value: typing.Union['IntOrString', dict]):
+    def max_surge(
+            self,
+            value: typing.Union[str, int]
+    ):
         """
         The maximum number of pods that can be scheduled above the
         desired number of pods. Value can be an absolute number (ex:
@@ -3106,12 +3334,10 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is at most 130% of
         desired pods.
         """
-        if isinstance(value, dict):
-            value = IntOrString().from_dict(value)
-        self._properties['maxSurge'] = value
+        self._properties['maxSurge'] = f'{value}'
 
     @property
-    def max_unavailable(self) -> 'IntOrString':
+    def max_unavailable(self) -> typing.Optional[str]:
         """
         The maximum number of pods that can be unavailable during
         the update. Value can be an absolute number (ex: 5) or a
@@ -3125,10 +3351,14 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        return self._properties.get('maxUnavailable')
+        value = self._properties.get('maxUnavailable')
+        return f'{value}' if value else None
 
     @max_unavailable.setter
-    def max_unavailable(self, value: typing.Union['IntOrString', dict]):
+    def max_unavailable(
+            self,
+            value: typing.Union[str, int]
+    ):
         """
         The maximum number of pods that can be unavailable during
         the update. Value can be an absolute number (ex: 5) or a
@@ -3142,9 +3372,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        if isinstance(value, dict):
-            value = IntOrString().from_dict(value)
-        self._properties['maxUnavailable'] = value
+        self._properties['maxUnavailable'] = f'{value}'
 
     def __enter__(self) -> 'RollingUpdateDeployment':
         return self
@@ -3334,32 +3562,83 @@ class StatefulSet(_kuber_definitions.Resource):
     def create_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['StatefulSetStatus']:
+    ) -> 'StatefulSetStatus':
         """
         Creates the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'create_namespaced_stateful_set',
+            'create_stateful_set'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            StatefulSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def replace_resource(
             self,
             namespace: 'str' = None
-    ) -> typing.Optional['StatefulSetStatus']:
+    ) -> 'StatefulSetStatus':
         """
         Replaces the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
+        names = [
+            'replace_namespaced_stateful_set',
+            'replace_stateful_set'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            StatefulSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'StatefulSetStatus':
+        """
+        Patches the StatefulSet in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_stateful_set',
+            'patch_stateful_set'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            StatefulSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
 
     def get_resource_status(
             self,
@@ -3368,21 +3647,55 @@ class StatefulSet(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return StatefulSetStatus().from_dict(status)
+        names = [
+            'read_namespaced_stateful_set',
+            'read_stateful_set'
+        ]
 
-    def delete_resource(self, namespace: 'str' = None) -> bool:
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            StatefulSetStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def delete_resource(self, namespace: 'str' = None):
         """
-        Deletes the StatefulSet from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
+        Deletes the StatefulSet from the currently configured
+        Kubernetes cluster.
         """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        names = [
+            'delete_namespaced_stateful_set',
+            'delete_stateful_set'
+        ]
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'StatefulSet':
         return self
@@ -3515,7 +3828,7 @@ class StatefulSetCondition(_kuber_definitions.Definition):
         return False
 
 
-class StatefulSetList(_kuber_definitions.Resource):
+class StatefulSetList(_kuber_definitions.Collection):
     """
     StatefulSetList is a collection of StatefulSets.
     """
@@ -3581,41 +3894,18 @@ class StatefulSetList(_kuber_definitions.Resource):
             value = ListMeta().from_dict(value)
         self._properties['metadata'] = value
 
-    def create_resource(self, namespace: 'str' = None) -> bool:
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> client.AppsV1Api:
         """
-        Creates the StatefulSetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the StatefulSetList was actually created.
+        Returns an instance of the kubernetes API client associated with
+        this object.
         """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the StatefulSetList in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the StatefulSetList was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the StatefulSetList from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AppsV1Api(**kwargs)
 
     def __enter__(self) -> 'StatefulSetList':
         return self

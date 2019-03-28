@@ -1,5 +1,5 @@
 
-class {{ entity.class_name }}(_kuber_definitions.{{ 'Resource' if entity.is_resource else 'Definition' }}):
+class {{ entity.class_name }}(_kuber_definitions.{{ base_class }}):
     """
     {{ entity.description | printable | wordwrap(width=60) | indent(width=4) }}
     """
@@ -25,168 +25,16 @@ class {{ entity.class_name }}(_kuber_definitions.{{ 'Resource' if entity.is_reso
             '{{ p }}': ({{ v.data_type.python_type }}, {{ v.data_type.item_type }}),
             {% endfor %}
         }
-    {% for p, v in entity.properties.items() if p not in property_ignores %}
-    @property
-    def {{ p | snake_case }}(self) -> {{ v.data_type.type_hint }}:
-        """
-        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
-        """
-        return self._properties.get('{{ p }}')
-
-    {% if v.data_type.api_type == 'Time' %}
-    @{{ p | snake_case }}.setter
-    def {{ p | snake_case }}(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
-    ):
-        """
-        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
-        """
-        if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
-        elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['{{ p }}'] = value
-    {% elif v.data_type.code_import and v.data_type.python_type == 'list' %}
-    @{{ p | snake_case }}.setter
-    def {{ p | snake_case }}(
-            self,
-            value: typing.Union[{{ v.data_type.type_hint }}, typing.List[dict]]
-    ):
-        """
-        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
-        """
-        cleaned = []
-        for item in value:
-            if isinstance(item, dict):
-                item = {{ v.data_type.item_type }}().from_dict(item)
-            cleaned.append(item)
-        self._properties['{{ p }}'] = cleaned
-    {% elif v.data_type.code_import %}
-    @{{ p | snake_case }}.setter
-    def {{ p | snake_case }}(self, value: typing.Union[{{ v.data_type.type_hint }}, dict]):
-        """
-        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
-        """
-        if isinstance(value, dict):
-            value = {{ v.data_type.python_type }}().from_dict(value)
-        self._properties['{{ p }}'] = value
-    {% else %}
-    @{{ p | snake_case }}.setter
-    def {{ p | snake_case }}(self, value: {{ v.data_type.type_hint }}):
-        """
-        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
-        """
-        self._properties['{{ p }}'] = value
-    {% endif %}
-    {%  endfor %}
-    {% if containers %}
-    def append_container(
-        self,
-        {%-  for p, v in container_entity.properties.items() if p not in property_ignores %}
-        {{ p | snake_case }}: {{ v.data_type.type_hint }} = _kuber_definitions.UNCHANGED_VALUE,
-        {%-  endfor %}
-    ) -> '{{ entity.class_name }}':
-        """Adds a container object within the specified resource."""
-        values = {
-            {%-  for p, v in container_entity.properties.items() if p not in property_ignores %}
-            '{{ p | snake_case }}': {{ p | snake_case }},
-            {%-  endfor %}
-        }
-        self.{{ containers }}.append({{ container_entity.class_name }}(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
-        return self
-
-    def get_container(self, name: str) -> typing.Optional['{{ container_entity.class_name }}']:
-        """
-        Fetch a container definition within this resource by name if such a
-        container definition exists. Return None if no container definition
-        by that name exists.
-        """
-        return next((c for c in self.{{ containers }} if c.name == name), None)
-    {% endif %}
-    {% if entity.is_resource %}
-    {% if 'status' in entity.properties %}
-    def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> typing.Optional['{{ entity.class_name }}Status']:
-        """
-        Creates the {{ entity.class_name }} in the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API after the create is complete.
-        """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
-
-    def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> typing.Optional['{{ entity.class_name }}Status']:
-        """
-        Replaces the {{ entity.class_name }} in the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API after the replace is complete.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return self.get_resource_status(namespace=namespace)
-        except _kube_api.KubectlError:
-            return None
-
-    def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> '{{ entity.class_name }}Status':
-        """
-        Returns status information about the given resource within the cluster.
-        """
-        response = _kube_api.get_resource(self, namespace=namespace)
-        status = response.data['items'][0]['status']
-        return {{ entity.class_name }}Status().from_dict(status)
-    {% else %}
-    def create_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Creates the {{ entity.class_name }} in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the {{ entity.class_name }} was actually created.
-        """
-        try:
-            _kube_api.create_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-
-    def replace_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Replaces the {{ entity.class_name }} in the currently
-        configured Kubernetes cluster and returns a boolean indicating whether
-        or not the {{ entity.class_name }} was actually replaced.
-        """
-        try:
-            _kube_api.replace_resource(self, namespace=namespace)
-            return True
-        except _kube_api.KubectlError:
-            return False
-    {% endif %}
-    def delete_resource(self, namespace: 'str' = None) -> bool:
-        """
-        Deletes the {{ entity.class_name }} from the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API in response to the delete action.
-        """
-        try:
-            response = _kube_api.delete_resource(self, namespace=namespace)
-            return response.success
-        except _kube_api.KubectlError:
-            return False
-    {%  endif %}
+{% include 'object-class/properties.jinja2' %}
+{% if containers %}
+{% include 'object-class/containers.jinja2' %}
+{% endif %}
+{% if entity.is_resource and not collection.is_collection %}
+{% include 'object-class/resource.jinja2' %}
+{%  endif %}
+{% if collection.is_collection %}
+{% include 'object-class/collection.jinja2' %}
+{% endif %}
     def __enter__(self) -> '{{ entity.class_name }}':
         return self
 

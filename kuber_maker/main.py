@@ -1,5 +1,6 @@
 import os
 import argparse
+import typing
 
 import kuber_maker
 from kuber_maker import initializer
@@ -35,12 +36,12 @@ def generate_all():
         generate(version)
 
 
-def main():
+def main(args: typing.List[str] = None):
     """..."""
     parser = argparse.ArgumentParser(prog='kuber_maker')
     parser.add_argument('version', nargs='?')
     parser.add_argument('--all', action='store_true')
-    arguments = parser.parse_args()
+    arguments = parser.parse_args(args=args)
     if arguments.version:
         return generate(arguments.version)
     elif arguments.all:

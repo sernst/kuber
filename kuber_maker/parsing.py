@@ -11,7 +11,12 @@ TYPES = {
     'boolean': 'bool',
     'number': 'float',
     'Time': 'str',
+    'IntOrString': 'str',
     None: None
+}
+
+TYPE_HINTS = {
+    'IntOrString': 'typing.Union[str, int]'
 }
 
 TYPE_CONSTRUCTORS = {
@@ -21,7 +26,8 @@ TYPE_CONSTRUCTORS = {
     'integer': 'None',
     'boolean': 'None',
     'number': 'None',
-    'Time': 'None'
+    'Time': 'None',
+    'IntOrString': 'None'
 }
 
 
@@ -121,7 +127,10 @@ def _get_data_type(
         type_hint = f'typing.List[{sub_type_hint}]'
     else:
         item_type = None
-        type_hint = basic_type or f'\'{reference_type}\''
+        type_hint = TYPE_HINTS.get(
+            api_type,
+            basic_type or f'\'{reference_type}\''
+        )
 
     code_import = (
         kuber_maker.import_from_reference(version, reference)

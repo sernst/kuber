@@ -2,6 +2,7 @@ import typing
 {% if 'Time' in data_types -%}
 import datetime as _datetime
 {% endif %}
+from kubernetes import client
 {% if has_resource -%}
 from kuber import kube_api as _kube_api
 {% endif %}

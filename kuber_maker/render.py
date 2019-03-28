@@ -40,6 +40,29 @@ _PYTHON_BUILTINS = [
 ]
 
 
+def _has_status(
+        package_entities: typing.Dict[str, kuber_maker.Entity]
+) -> bool:
+    """..."""
+    return any([
+        'status' in e.properties
+        for e in package_entities.values()
+    ])
+
+
+def _collection_status(entity: kuber_maker.Entity) -> dict:
+    """..."""
+    is_collection = (
+        entity.class_name.lower().endswith('list')
+        and 'items' in entity.properties
+    )
+
+    return {
+        'is_collection': is_collection,
+        'items': entity.properties.get('items')
+    }
+
+
 def _to_snake_case(value: str) -> str:
     """..."""
     if not value:
@@ -85,6 +108,15 @@ def _get_container_entity(
     return all_entities.packages[container_package].entities['Container']
 
 
+def _get_status_entity(
+        all_entities: kuber_maker.AllEntities
+) -> kuber_maker.Entity:
+    """..."""
+    version = all_entities.version.replace('.', '_')
+    container_package = f'kuber.v{version}.apimachinery.pkg.apis.meta.v1'
+    return all_entities.packages[container_package].entities['Status']
+
+
 def _containers_location(
         entity: kuber_maker.Entity,
         all_entities: kuber_maker.AllEntities,
@@ -117,8 +149,10 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
     blocks = []
     entities = all_entities.packages[package].entities
     container_entity = _get_container_entity(all_entities)
+    status_entity = _get_status_entity(all_entities)
     include_container = False
     has_resource = False
+
     for e in entities.values():
         containers_location = '.'.join(_containers_location(e, all_entities))
         include_container = include_container or bool(containers_location)
@@ -131,13 +165,22 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
         if e.is_resource:
             property_ignores += ['status']
 
+        collection = _collection_status(e)
+        if collection['is_collection']:
+            base_class = 'Collection'
+        elif e.is_resource:
+            base_class = 'Resource'
+        else:
+            base_class = 'Definition'
         blocks.append(render(
             'object-class.jinja2',
             entity=e,
             containers=containers_location,
             container_entity=container_entity,
             kubernetes_api_class_name=kubernetes_api_class_name,
-            property_ignores=property_ignores
+            property_ignores=property_ignores,
+            collection=collection,
+            base_class=base_class
         ))
 
     data_types = set([
@@ -147,10 +190,17 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
     ])
 
     extra_imports = []
+
+    if _has_status(entities):
+        extra_imports.append(status_entity)
     if include_container:
         extra_imports.append(container_entity)
 
-    import_skips = ['Time']
+    # Remove extra imports that are part of the current package to avoid
+    # circular import.
+    extra_imports = [e for e in extra_imports if package != e.package]
+
+    import_skips = ['Time', 'IntOrString']
     imports = list(set([
         imp
         for e in (list(entities.values()) + extra_imports)
@@ -158,12 +208,12 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
         if imp.package != package and imp.target not in import_skips
     ]))
 
-    if include_container and package != container_entity.package:
+    for extra_entity in extra_imports:
         imports.append(kuber_maker.Import(
-            target=container_entity.class_name,
-            package=container_entity.package,
-            api_path=container_entity.api_path,
-            reference=container_entity.api_path
+            target=extra_entity.class_name,
+            package=extra_entity.package,
+            api_path=extra_entity.api_path,
+            reference=extra_entity.api_path
         ))
 
     import_block = render(

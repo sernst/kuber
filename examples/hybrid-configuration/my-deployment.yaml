@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: application
+  name: my-deployment
+  namespace: my-app
+spec:
+  template:
+    spec:
+      containers:
+      - image: my-app:1.0
+        imagePullPolicy: Always
+        name: app
+        tty: true

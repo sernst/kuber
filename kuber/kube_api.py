@@ -2,6 +2,8 @@ import json
 import subprocess
 import typing
 
+from kubernetes import client
+
 from kuber import definitions
 
 
@@ -30,87 +32,47 @@ class KubectlResponse(typing.NamedTuple):
     input: str = None
 
 
-def kube_exec(action: str, args: typing.List[str], stdin: str = None):
-    """..."""
-    cmd = ['kubectl', action, *(args or [])]
-    result = subprocess.run(
-        cmd,
-        input=stdin,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        universal_newlines=True
-    )
-    try:
-        data = json.loads(result.stdout or '')
-    except json.JSONDecodeError as error:
-        data = {}
-
-    return KubectlResponse(
-        success=result.returncode == 0,
-        action=action,
-        args=args,
-        input=stdin,
-        output=result.stdout,
-        error=result.stderr,
-        data=data
-    )
-
-
-def create_resource(
+def execute(
+        action: str,
         resource: 'definitions.Resource',
-        namespace: 'str' = None
-) -> KubectlResponse:
+        names: typing.List[str],
+        namespace: str = None,
+        api_client: client.ApiClient = None,
+        api_args: typing.Dict[str, typing.Any] = None
+) -> typing.Optional[dict]:
     """..."""
-    args = ['-f', '-', '--output=json']
-    if namespace:
-        args += ['--namespace', namespace]
-    result = kube_exec('create', args=args, stdin=resource.to_json())
-    if not result.success:
-        print(result.error)
-        raise KubectlError(result, f'Failed to create {resource.kind}')
-    return result
+    api = resource.get_resource_api(api_client=api_client)
+    name = next((n for n in names if hasattr(api, n)), None)
+    if name is None:
+        raise ValueError(
+            f'{action.capitalize()} function not found for resource '
+            f'{resource.__class__.__name__}'
+        )
+
+    args = {**api_args}
+    ns = namespace or getattr(resource.metadata, 'namespace', None)
+    if ns and 'namespace' in name:
+        args['namespace'] = ns
+
+    return getattr(api, name)(**args)
 
 
-def get_resource(
-        resource: 'definitions.Resource',
-        namespace: 'str' = None
-) -> KubectlResponse:
+def to_camel_case(source: str) -> str:
     """..."""
-    args = ['-f', '-', '--output=json']
-    if namespace:
-        args += ['--namespace', namespace]
-    result = kube_exec('get', args=args, stdin=resource.to_json())
-    if not result.success:
-        print(result.error)
-        raise KubectlError(result, f'Failed to get {resource.kind}')
-    return result
+    parts = source.split('_')
+    prefix = parts.pop(0)
+    suffix = ''.join([p.capitalize() for p in parts])
+    return f'{prefix}{suffix}'
 
 
-def replace_resource(
-        resource: 'definitions.Resource',
-        namespace: 'str' = None
-) -> KubectlResponse:
+def to_kuber_dict(kube_api_entity) -> dict:
     """..."""
-    args = ['-f', '-', '--output=json']
-    if namespace:
-        args += ['--namespace', namespace]
-    result = kube_exec('replace', args=args, stdin=resource.to_json())
-    if not result.success:
-        print(result.error)
-        raise KubectlError(result, f'Failed to replace {resource.kind}')
-    return result
+    entity = kube_api_entity
+    if hasattr(entity, 'to_dict'):
+        entity = entity.to_dict()
 
-
-def delete_resource(
-        resource: 'definitions.Resource',
-        namespace: 'str' = None
-) -> KubectlResponse:
-    """..."""
-    args = ['-f', '-']
-    if namespace:
-        args += ['--namespace', namespace]
-    result = kube_exec('delete', args=args, stdin=resource.to_json())
-    if not result.success:
-        print(result.error)
-        raise KubectlError(result, f'Failed to delete {resource.kind}')
-    return result
+    return {
+        to_camel_case(k): v
+        for k, v in entity.items()
+        if v is not None
+    }
