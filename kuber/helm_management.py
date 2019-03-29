@@ -1,11 +1,12 @@
-import typing
 import os
-import yaml
-import uuid
 import subprocess
+import typing
+import uuid
 
-from kuber import management
+import yaml
+
 from kuber import definitions
+from kuber import management
 
 
 class Maintainer:
@@ -272,7 +273,7 @@ def render_helm_chart(
         values_file_path: str = None,
         is_upgrade: bool = False,
         kubernetes_version: str = None
-) -> typing.List['Resource']:
+) -> typing.List['definitions.Resource']:
     """..."""
     flags = {
         '--name': name,

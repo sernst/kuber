@@ -73,6 +73,29 @@ class ResourceBundle:
                 return r
         return None
 
+    def pop(
+            self,
+            name: str = None,
+            kind: str = None,
+            **kwargs
+    ) -> typing.Optional['Resource']:
+        """
+        Removes the resource matching the specified arguments from the bundle
+        if it exists and returns it.
+
+        :param name:
+            Name of the resource to remove from the bundle.
+        :param kind:
+            Kubernetes kind of the resource to remove, e.g. 'Deployment'.
+        :param kwargs:
+            Optionally specify metadata labels to use when selecting the
+            resource to remove from the bundle.
+        """
+        resource = self.get(name, kind, **kwargs)
+        if resource:
+            self._resources.remove(resource)
+        return resource
+
     def push(self, resource: 'Resource') -> 'ResourceBundle':
         """
         Adds the specified resource to the end of the bundle's
