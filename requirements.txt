@@ -1,5 +1,4 @@
 pyyaml
 kubernetes
 sphinx
-m2r
 recommonmark
