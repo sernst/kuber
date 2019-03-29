@@ -5,3 +5,11 @@ source_suffix = {
     '.txt': 'restructuredtext',
     '.md': 'markdown',
 }
+
+exclude_patterns = [
+    'samples/*',
+    'sandbox/*',
+    'examples/*',
+    'specs/*',
+    'kuber_maker/*'
+]
