@@ -46,10 +46,6 @@ exclude_patterns = [
     'kuber_maker/*',
 ]
 
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
-}
 
 # -- Options for HTML output -------------------------------------------------
 

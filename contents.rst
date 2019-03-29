@@ -22,4 +22,4 @@ Indices and tables
 
 Introduction
 ============
-.. mdinclude:: ./README.md
+.. include:: ./README.md
