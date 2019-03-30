@@ -995,8 +995,8 @@ class VolumeError(_kuber_definitions.Definition):
     def message(self) -> str:
         """
         String detailing the error encountered during Attach or
-        Detach operation. This string may be logged, so it should
-        not contain sensitive information.
+        Detach operation. This string maybe logged, so it should not
+        contain sensitive information.
         """
         return self._properties.get('message')
 
@@ -1004,8 +1004,8 @@ class VolumeError(_kuber_definitions.Definition):
     def message(self, value: str):
         """
         String detailing the error encountered during Attach or
-        Detach operation. This string may be logged, so it should
-        not contain sensitive information.
+        Detach operation. This string maybe logged, so it should not
+        contain sensitive information.
         """
         self._properties['message'] = value
 

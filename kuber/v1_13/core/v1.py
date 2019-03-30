@@ -983,147 +983,6 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
         return False
 
 
-class CSIVolumeSource(_kuber_definitions.Definition):
-    """
-    Represents a source location of a volume to mount, managed
-    by an external CSI driver
-    """
-
-    def __init__(
-            self,
-            driver: str = None,
-            fs_type: str = None,
-            node_publish_secret_ref: 'LocalObjectReference' = None,
-            read_only: bool = None,
-            volume_attributes: dict = None,
-    ):
-        """Create CSIVolumeSource instance."""
-        super(CSIVolumeSource, self).__init__(
-            api_version='core/v1',
-            kind='CSIVolumeSource'
-        )
-        self._properties = {
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'nodePublishSecretRef': node_publish_secret_ref or LocalObjectReference(),
-            'readOnly': read_only or None,
-            'volumeAttributes': volume_attributes or {},
-
-        }
-        self._types = {
-            'driver': (str, None),
-            'fsType': (str, None),
-            'nodePublishSecretRef': (LocalObjectReference, None),
-            'readOnly': (bool, None),
-            'volumeAttributes': (dict, None),
-
-        }
-
-    @property
-    def driver(self) -> str:
-        """
-        Driver is the name of the CSI driver that handles this
-        volume. Consult with your admin for the correct name as
-        registered in the cluster.
-        """
-        return self._properties.get('driver')
-
-    @driver.setter
-    def driver(self, value: str):
-        """
-        Driver is the name of the CSI driver that handles this
-        volume. Consult with your admin for the correct name as
-        registered in the cluster.
-        """
-        self._properties['driver'] = value
-
-    @property
-    def fs_type(self) -> str:
-        """
-        Filesystem type to mount. Ex. "ext4", "xfs", "ntfs". If not
-        provided, the empty value is passed to the associated CSI
-        driver which will determine the default filesystem to apply.
-        """
-        return self._properties.get('fsType')
-
-    @fs_type.setter
-    def fs_type(self, value: str):
-        """
-        Filesystem type to mount. Ex. "ext4", "xfs", "ntfs". If not
-        provided, the empty value is passed to the associated CSI
-        driver which will determine the default filesystem to apply.
-        """
-        self._properties['fsType'] = value
-
-    @property
-    def node_publish_secret_ref(self) -> 'LocalObjectReference':
-        """
-        NodePublishSecretRef is a reference to the secret object
-        containing sensitive information to pass to the CSI driver
-        to complete the CSI NodePublishVolume and
-        NodeUnpublishVolume calls. This field is optional, and  may
-        be empty if no secret is required. If the secret object
-        contains more than one secret, all secret references are
-        passed.
-        """
-        return self._properties.get('nodePublishSecretRef')
-
-    @node_publish_secret_ref.setter
-    def node_publish_secret_ref(self, value: typing.Union['LocalObjectReference', dict]):
-        """
-        NodePublishSecretRef is a reference to the secret object
-        containing sensitive information to pass to the CSI driver
-        to complete the CSI NodePublishVolume and
-        NodeUnpublishVolume calls. This field is optional, and  may
-        be empty if no secret is required. If the secret object
-        contains more than one secret, all secret references are
-        passed.
-        """
-        if isinstance(value, dict):
-            value = LocalObjectReference().from_dict(value)
-        self._properties['nodePublishSecretRef'] = value
-
-    @property
-    def read_only(self) -> bool:
-        """
-        Specifies a read-only configuration for the volume. Defaults
-        to false (read/write).
-        """
-        return self._properties.get('readOnly')
-
-    @read_only.setter
-    def read_only(self, value: bool):
-        """
-        Specifies a read-only configuration for the volume. Defaults
-        to false (read/write).
-        """
-        self._properties['readOnly'] = value
-
-    @property
-    def volume_attributes(self) -> dict:
-        """
-        VolumeAttributes stores driver-specific properties that are
-        passed to the CSI driver. Consult your driver's
-        documentation for supported values.
-        """
-        return self._properties.get('volumeAttributes')
-
-    @volume_attributes.setter
-    def volume_attributes(self, value: dict):
-        """
-        VolumeAttributes stores driver-specific properties that are
-        passed to the CSI driver. Consult your driver's
-        documentation for supported values.
-        """
-        self._properties['volumeAttributes'] = value
-
-    def __enter__(self) -> 'CSIVolumeSource':
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
 class Capabilities(_kuber_definitions.Definition):
     """
     Adds and removes POSIX capabilities from running containers.
@@ -8264,16 +8123,11 @@ class Lifecycle(_kuber_definitions.Definition):
     def pre_stop(self) -> 'Handler':
         """
         PreStop is called immediately before a container is
-        terminated due to an API request or management event such as
-        liveness probe failure, preemption, resource contention,
-        etc. The handler is not called if the container crashes or
-        exits. The reason for termination is passed to the handler.
-        The Pod's termination grace period countdown begins before
-        the PreStop hooked is executed. Regardless of the outcome of
-        the handler, the container will eventually terminate within
-        the Pod's termination grace period. Other management of the
-        container blocks until the hook completes or until the
-        termination grace period is reached. More info:
+        terminated. The container is terminated after the handler
+        completes. The reason for termination is passed to the
+        handler. Regardless of the outcome of the handler, the
+        container is eventually terminated. Other management of the
+        container blocks until the hook completes. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
@@ -8283,16 +8137,11 @@ class Lifecycle(_kuber_definitions.Definition):
     def pre_stop(self, value: typing.Union['Handler', dict]):
         """
         PreStop is called immediately before a container is
-        terminated due to an API request or management event such as
-        liveness probe failure, preemption, resource contention,
-        etc. The handler is not called if the container crashes or
-        exits. The reason for termination is passed to the handler.
-        The Pod's termination grace period countdown begins before
-        the PreStop hooked is executed. Regardless of the outcome of
-        the handler, the container will eventually terminate within
-        the Pod's termination grace period. Other management of the
-        container blocks until the hook completes or until the
-        termination grace period is reached. More info:
+        terminated. The container is terminated after the handler
+        completes. The reason for termination is passed to the
+        handler. Regardless of the outcome of the handler, the
+        container is eventually terminated. Other management of the
+        container blocks until the hook completes. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
@@ -13016,7 +12865,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     @property
     def csi(self) -> 'CSIPersistentVolumeSource':
         """
-        CSI represents storage that is handled by an external CSI
+        CSI represents storage that handled by an external CSI
         driver (Beta feature).
         """
         return self._properties.get('csi')
@@ -13024,7 +12873,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     @csi.setter
     def csi(self, value: typing.Union['CSIPersistentVolumeSource', dict]):
         """
-        CSI represents storage that is handled by an external CSI
+        CSI represents storage that handled by an external CSI
         driver (Beta feature).
         """
         if isinstance(value, dict):
@@ -15443,8 +15292,8 @@ class PodSpec(_kuber_definitions.Definition):
         If specified, all readiness gates will be evaluated for pod
         readiness. A pod is ready when all its containers are ready
         AND all conditions specified in the readiness gates have
-        status equal to "True" More info:
-        https://git.k8s.io/enhancements/keps/sig-network/0007-pod-
+        status equal to "True" More info: https://github.com/kuberne
+        tes/community/blob/master/keps/sig-network/0007-pod-
         ready%2B%2B.md
         """
         return self._properties.get('readinessGates')
@@ -15458,8 +15307,8 @@ class PodSpec(_kuber_definitions.Definition):
         If specified, all readiness gates will be evaluated for pod
         readiness. A pod is ready when all its containers are ready
         AND all conditions specified in the readiness gates have
-        status equal to "True" More info:
-        https://git.k8s.io/enhancements/keps/sig-network/0007-pod-
+        status equal to "True" More info: https://github.com/kuberne
+        tes/community/blob/master/keps/sig-network/0007-pod-
         ready%2B%2B.md
         """
         cleaned = []
@@ -15498,9 +15347,9 @@ class PodSpec(_kuber_definitions.Definition):
         will not be run. If unset or empty, the "legacy"
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
-        More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is an alpha feature and may
-        change in the future.
+        More info: https://github.com/kubernetes/community/blob/mast
+        er/keps/sig-node/0014-runtime-class.md This is an alpha
+        feature and may change in the future.
         """
         return self._properties.get('runtimeClassName')
 
@@ -15513,9 +15362,9 @@ class PodSpec(_kuber_definitions.Definition):
         will not be run. If unset or empty, the "legacy"
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
-        More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is an alpha feature and may
-        change in the future.
+        More info: https://github.com/kubernetes/community/blob/mast
+        er/keps/sig-node/0014-runtime-class.md This is an alpha
+        feature and may change in the future.
         """
         self._properties['runtimeClassName'] = value
 
@@ -17053,7 +16902,6 @@ class QuobyteVolumeSource(_kuber_definitions.Definition):
             group: str = None,
             read_only: bool = None,
             registry: str = None,
-            tenant: str = None,
             user: str = None,
             volume: str = None,
     ):
@@ -17066,7 +16914,6 @@ class QuobyteVolumeSource(_kuber_definitions.Definition):
             'group': group or '',
             'readOnly': read_only or None,
             'registry': registry or '',
-            'tenant': tenant or '',
             'user': user or '',
             'volume': volume or '',
 
@@ -17075,7 +16922,6 @@ class QuobyteVolumeSource(_kuber_definitions.Definition):
             'group': (str, None),
             'readOnly': (bool, None),
             'registry': (str, None),
-            'tenant': (str, None),
             'user': (str, None),
             'volume': (str, None),
 
@@ -17130,24 +16976,6 @@ class QuobyteVolumeSource(_kuber_definitions.Definition):
         registry for volumes
         """
         self._properties['registry'] = value
-
-    @property
-    def tenant(self) -> str:
-        """
-        Tenant owning the given Quobyte volume in the Backend Used
-        with dynamically provisioned Quobyte volumes, value is set
-        by the plugin
-        """
-        return self._properties.get('tenant')
-
-    @tenant.setter
-    def tenant(self, value: str):
-        """
-        Tenant owning the given Quobyte volume in the Backend Used
-        with dynamically provisioned Quobyte volumes, value is set
-        by the plugin
-        """
-        self._properties['tenant'] = value
 
     @property
     def user(self) -> str:
@@ -22060,7 +21888,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         load-balancer (if supported in the current cloud) which
         routes to the clusterIP. More info:
         https://kubernetes.io/docs/concepts/services-
-        networking/service/#publishing-services-service-types
+        networking/service/#publishing-services---service-types
         """
         return self._properties.get('type')
 
@@ -22082,7 +21910,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         load-balancer (if supported in the current cloud) which
         routes to the clusterIP. More info:
         https://kubernetes.io/docs/concepts/services-
-        networking/service/#publishing-services-service-types
+        networking/service/#publishing-services---service-types
         """
         self._properties['type'] = value
 
@@ -23059,7 +22887,6 @@ class Volume(_kuber_definitions.Definition):
             cephfs: 'CephFSVolumeSource' = None,
             cinder: 'CinderVolumeSource' = None,
             config_map: 'ConfigMapVolumeSource' = None,
-            csi: 'CSIVolumeSource' = None,
             downward_api: 'DownwardAPIVolumeSource' = None,
             empty_dir: 'EmptyDirVolumeSource' = None,
             fc: 'FCVolumeSource' = None,
@@ -23095,7 +22922,6 @@ class Volume(_kuber_definitions.Definition):
             'cephfs': cephfs or CephFSVolumeSource(),
             'cinder': cinder or CinderVolumeSource(),
             'configMap': config_map or ConfigMapVolumeSource(),
-            'csi': csi or CSIVolumeSource(),
             'downwardAPI': downward_api or DownwardAPIVolumeSource(),
             'emptyDir': empty_dir or EmptyDirVolumeSource(),
             'fc': fc or FCVolumeSource(),
@@ -23127,7 +22953,6 @@ class Volume(_kuber_definitions.Definition):
             'cephfs': (CephFSVolumeSource, None),
             'cinder': (CinderVolumeSource, None),
             'configMap': (ConfigMapVolumeSource, None),
-            'csi': (CSIVolumeSource, None),
             'downwardAPI': (DownwardAPIVolumeSource, None),
             'emptyDir': (EmptyDirVolumeSource, None),
             'fc': (FCVolumeSource, None),
@@ -23268,24 +23093,6 @@ class Volume(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = ConfigMapVolumeSource().from_dict(value)
         self._properties['configMap'] = value
-
-    @property
-    def csi(self) -> 'CSIVolumeSource':
-        """
-        CSI (Container Storage Interface) represents storage that is
-        handled by an external CSI driver (Alpha feature).
-        """
-        return self._properties.get('csi')
-
-    @csi.setter
-    def csi(self, value: typing.Union['CSIVolumeSource', dict]):
-        """
-        CSI (Container Storage Interface) represents storage that is
-        handled by an external CSI driver (Alpha feature).
-        """
-        if isinstance(value, dict):
-            value = CSIVolumeSource().from_dict(value)
-        self._properties['csi'] = value
 
     @property
     def downward_api(self) -> 'DownwardAPIVolumeSource':
@@ -23811,7 +23618,6 @@ class VolumeMount(_kuber_definitions.Definition):
             name: str = None,
             read_only: bool = None,
             sub_path: str = None,
-            sub_path_expr: str = None,
     ):
         """Create VolumeMount instance."""
         super(VolumeMount, self).__init__(
@@ -23824,7 +23630,6 @@ class VolumeMount(_kuber_definitions.Definition):
             'name': name or '',
             'readOnly': read_only or None,
             'subPath': sub_path or '',
-            'subPathExpr': sub_path_expr or '',
 
         }
         self._types = {
@@ -23833,7 +23638,6 @@ class VolumeMount(_kuber_definitions.Definition):
             'name': (str, None),
             'readOnly': (bool, None),
             'subPath': (str, None),
-            'subPathExpr': (str, None),
 
         }
 
@@ -23918,30 +23722,6 @@ class VolumeMount(_kuber_definitions.Definition):
         should be mounted. Defaults to "" (volume's root).
         """
         self._properties['subPath'] = value
-
-    @property
-    def sub_path_expr(self) -> str:
-        """
-        Expanded path within the volume from which the container's
-        volume should be mounted. Behaves similarly to SubPath but
-        environment variable references $(VAR_NAME) are expanded
-        using the container's environment. Defaults to "" (volume's
-        root). SubPathExpr and SubPath are mutually exclusive. This
-        field is alpha in 1.14.
-        """
-        return self._properties.get('subPathExpr')
-
-    @sub_path_expr.setter
-    def sub_path_expr(self, value: str):
-        """
-        Expanded path within the volume from which the container's
-        volume should be mounted. Behaves similarly to SubPath but
-        environment variable references $(VAR_NAME) are expanded
-        using the container's environment. Defaults to "" (volume's
-        root). SubPathExpr and SubPath are mutually exclusive. This
-        field is alpha in 1.14.
-        """
-        self._properties['subPathExpr'] = value
 
     def __enter__(self) -> 'VolumeMount':
         return self

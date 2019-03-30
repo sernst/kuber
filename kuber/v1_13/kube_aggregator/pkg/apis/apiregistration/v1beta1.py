@@ -101,8 +101,7 @@ class APIService(_kuber_definitions.Definition):
 
 class APIServiceCondition(_kuber_definitions.Definition):
     """
-    APIServiceCondition describes the state of an APIService at
-    a particular point
+
     """
 
     def __init__(

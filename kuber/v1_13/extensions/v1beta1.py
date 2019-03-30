@@ -25,51 +25,6 @@ from kuber.v1_13.core.v1 import VolumeDevice
 from kuber.v1_13.core.v1 import VolumeMount
 
 
-class AllowedCSIDriver(_kuber_definitions.Definition):
-    """
-    AllowedCSIDriver represents a single inline CSI Driver that
-    is allowed to be used.
-    """
-
-    def __init__(
-            self,
-            name: str = None,
-    ):
-        """Create AllowedCSIDriver instance."""
-        super(AllowedCSIDriver, self).__init__(
-            api_version='extensions/v1beta1',
-            kind='AllowedCSIDriver'
-        )
-        self._properties = {
-            'name': name or '',
-
-        }
-        self._types = {
-            'name': (str, None),
-
-        }
-
-    @property
-    def name(self) -> str:
-        """
-        Name is the registered name of the CSI driver
-        """
-        return self._properties.get('name')
-
-    @name.setter
-    def name(self, value: str):
-        """
-        Name is the registered name of the CSI driver
-        """
-        self._properties['name'] = value
-
-    def __enter__(self) -> 'AllowedCSIDriver':
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
 class AllowedFlexVolume(_kuber_definitions.Definition):
     """
     AllowedFlexVolume represents a single Flexvolume that is
@@ -230,8 +185,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -239,8 +194,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -250,8 +205,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def spec(self) -> 'DaemonSetSpec':
         """
         The desired behavior of this daemon set. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -259,8 +214,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['DaemonSetSpec', dict]):
         """
         The desired behavior of this daemon set. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = DaemonSetSpec().from_dict(value)
@@ -652,8 +607,8 @@ class DaemonSetList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -661,8 +616,8 @@ class DaemonSetList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -2883,10 +2838,7 @@ class Ingress(_kuber_definitions.Resource):
     connections to reach the endpoints defined by a backend. An
     Ingress can be configured to give services externally-
     reachable urls, load balance traffic, terminate SSL, offer
-    name based virtual hosting etc. DEPRECATED - This group
-    version of Ingress is deprecated by
-    networking.k8s.io/v1beta1 Ingress. See the release notes for
-    more information.
+    name based virtual hosting etc.
     """
 
     def __init__(
@@ -2917,8 +2869,8 @@ class Ingress(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2926,8 +2878,8 @@ class Ingress(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -2937,8 +2889,8 @@ class Ingress(_kuber_definitions.Resource):
     def spec(self) -> 'IngressSpec':
         """
         Spec is the desired state of the Ingress. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -2946,8 +2898,8 @@ class Ingress(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['IngressSpec', dict]):
         """
         Spec is the desired state of the Ingress. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = IngressSpec().from_dict(value)
@@ -3218,8 +3170,8 @@ class IngressList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -3227,8 +3179,8 @@ class IngressList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -3627,8 +3579,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -3636,8 +3588,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -4027,8 +3979,8 @@ class NetworkPolicyList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -4036,8 +3988,8 @@ class NetworkPolicyList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -4399,8 +4351,8 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     def policy_types(self) -> typing.List[str]:
         """
         List of rule types that the NetworkPolicy relates to. Valid
-        options are "Ingress", "Egress", or "Ingress,Egress". If
-        this field is not specified, it will default based on the
+        options are Ingress, Egress, or Ingress,Egress. If this
+        field is not specified, it will default based on the
         existence of Ingress or Egress rules; policies that contain
         an Egress section are assumed to affect Egress, and all
         policies (whether or not they contain an Ingress section)
@@ -4419,8 +4371,8 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     def policy_types(self, value: typing.List[str]):
         """
         List of rule types that the NetworkPolicy relates to. Valid
-        options are "Ingress", "Egress", or "Ingress,Egress". If
-        this field is not specified, it will default based on the
+        options are Ingress, Egress, or Ingress,Egress. If this
+        field is not specified, it will default based on the
         existence of Ingress or Egress rules; policies that contain
         an Egress section are assumed to affect Egress, and all
         policies (whether or not they contain an Ingress section)
@@ -4477,8 +4429,8 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -4486,8 +4438,8 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -4665,8 +4617,8 @@ class PodSecurityPolicyList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -4674,8 +4626,8 @@ class PodSecurityPolicyList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -4711,7 +4663,6 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     def __init__(
             self,
             allow_privilege_escalation: bool = None,
-            allowed_csidrivers: typing.List['AllowedCSIDriver'] = None,
             allowed_capabilities: typing.List[str] = None,
             allowed_flex_volumes: typing.List['AllowedFlexVolume'] = None,
             allowed_host_paths: typing.List['AllowedHostPath'] = None,
@@ -4741,7 +4692,6 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         )
         self._properties = {
             'allowPrivilegeEscalation': allow_privilege_escalation or None,
-            'allowedCSIDrivers': allowed_csidrivers or [],
             'allowedCapabilities': allowed_capabilities or [],
             'allowedFlexVolumes': allowed_flex_volumes or [],
             'allowedHostPaths': allowed_host_paths or [],
@@ -4767,7 +4717,6 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         }
         self._types = {
             'allowPrivilegeEscalation': (bool, None),
-            'allowedCSIDrivers': (list, AllowedCSIDriver),
             'allowedCapabilities': (list, str),
             'allowedFlexVolumes': (list, AllowedFlexVolume),
             'allowedHostPaths': (list, AllowedHostPath),
@@ -4809,34 +4758,6 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         true.
         """
         self._properties['allowPrivilegeEscalation'] = value
-
-    @property
-    def allowed_csidrivers(self) -> typing.List['AllowedCSIDriver']:
-        """
-        AllowedCSIDrivers is a whitelist of inline CSI drivers that
-        must be explicitly set to be embedded within a pod spec. An
-        empty value means no CSI drivers can run inline within a pod
-        spec.
-        """
-        return self._properties.get('allowedCSIDrivers')
-
-    @allowed_csidrivers.setter
-    def allowed_csidrivers(
-            self,
-            value: typing.Union[typing.List['AllowedCSIDriver'], typing.List[dict]]
-    ):
-        """
-        AllowedCSIDrivers is a whitelist of inline CSI drivers that
-        must be explicitly set to be embedded within a pod spec. An
-        empty value means no CSI drivers can run inline within a pod
-        spec.
-        """
-        cleaned = []
-        for item in value:
-            if isinstance(item, dict):
-                item = AllowedCSIDriver().from_dict(item)
-            cleaned.append(item)
-        self._properties['allowedCSIDrivers'] = cleaned
 
     @property
     def allowed_capabilities(self) -> typing.List[str]:
@@ -5319,8 +5240,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         If the Labels of a ReplicaSet are empty, they are defaulted
         to be the same as the Pod(s) that the ReplicaSet manages.
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -5330,8 +5251,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         If the Labels of a ReplicaSet are empty, they are defaulted
         to be the same as the Pod(s) that the ReplicaSet manages.
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -5342,8 +5263,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the ReplicaSet. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -5352,8 +5273,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the ReplicaSet. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ReplicaSetSpec().from_dict(value)
@@ -5747,8 +5668,8 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -5756,8 +5677,8 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -6289,7 +6210,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of old and new pods do not exceed 130%
         of desired pods. Once old pods have been killed, new RC can
         be scaled up further, ensuring that total number of pods
-        running at any time during the update is at most 130% of
+        running at any time during the update is atmost 130% of
         desired pods.
         """
         value = self._properties.get('maxSurge')
@@ -6311,7 +6232,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of old and new pods do not exceed 130%
         of desired pods. Once old pods have been killed, new RC can
         be scaled up further, ensuring that total number of pods
-        running at any time during the update is at most 130% of
+        running at any time during the update is atmost 130% of
         desired pods.
         """
         self._properties['maxSurge'] = f'{value}'
@@ -6619,8 +6540,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -6628,8 +6549,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -6639,8 +6560,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self) -> 'ScaleSpec':
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status.
         """
         return self._properties.get('spec')
 
@@ -6648,8 +6569,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ScaleSpec', dict]):
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
             value = ScaleSpec().from_dict(value)

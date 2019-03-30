@@ -114,8 +114,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -123,8 +123,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -508,8 +508,8 @@ class NetworkPolicyList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -517,8 +517,8 @@ class NetworkPolicyList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -875,8 +875,8 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     def policy_types(self) -> typing.List[str]:
         """
         List of rule types that the NetworkPolicy relates to. Valid
-        options are "Ingress", "Egress", or "Ingress,Egress". If
-        this field is not specified, it will default based on the
+        options are Ingress, Egress, or Ingress,Egress. If this
+        field is not specified, it will default based on the
         existence of Ingress or Egress rules; policies that contain
         an Egress section are assumed to affect Egress, and all
         policies (whether or not they contain an Ingress section)
@@ -895,8 +895,8 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     def policy_types(self, value: typing.List[str]):
         """
         List of rule types that the NetworkPolicy relates to. Valid
-        options are "Ingress", "Egress", or "Ingress,Egress". If
-        this field is not specified, it will default based on the
+        options are Ingress, Egress, or Ingress,Egress. If this
+        field is not specified, it will default based on the
         existence of Ingress or Egress rules; policies that contain
         an Egress section are assumed to affect Egress, and all
         policies (whether or not they contain an Ingress section)

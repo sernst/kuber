@@ -287,7 +287,6 @@ class RuleWithOperations(_kuber_definitions.Definition):
             api_versions: typing.List[str] = None,
             operations: typing.List[str] = None,
             resources: typing.List[str] = None,
-            scope: str = None,
     ):
         """Create RuleWithOperations instance."""
         super(RuleWithOperations, self).__init__(
@@ -299,7 +298,6 @@ class RuleWithOperations(_kuber_definitions.Definition):
             'apiVersions': api_versions or [],
             'operations': operations or [],
             'resources': resources or [],
-            'scope': scope or '',
 
         }
         self._types = {
@@ -307,7 +305,6 @@ class RuleWithOperations(_kuber_definitions.Definition):
             'apiVersions': (list, str),
             'operations': (list, str),
             'resources': (list, str),
-            'scope': (str, None),
 
         }
 
@@ -406,32 +403,6 @@ class RuleWithOperations(_kuber_definitions.Definition):
         subresources might not be allowed. Required.
         """
         self._properties['resources'] = value
-
-    @property
-    def scope(self) -> str:
-        """
-        scope specifies the scope of this rule. Valid values are
-        "Cluster", "Namespaced", and "*" "Cluster" means that only
-        cluster-scoped resources will match this rule. Namespace API
-        objects are cluster-scoped. "Namespaced" means that only
-        namespaced resources will match this rule. "*" means that
-        there are no scope restrictions. Subresources match the
-        scope of their parent resource. Default is "*".
-        """
-        return self._properties.get('scope')
-
-    @scope.setter
-    def scope(self, value: str):
-        """
-        scope specifies the scope of this rule. Valid values are
-        "Cluster", "Namespaced", and "*" "Cluster" means that only
-        cluster-scoped resources will match this rule. Namespace API
-        objects are cluster-scoped. "Namespaced" means that only
-        namespaced resources will match this rule. "*" means that
-        there are no scope restrictions. Subresources match the
-        scope of their parent resource. Default is "*".
-        """
-        self._properties['scope'] = value
 
     def __enter__(self) -> 'RuleWithOperations':
         return self
@@ -793,14 +764,12 @@ class Webhook(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            admission_review_versions: typing.List[str] = None,
             client_config: 'WebhookClientConfig' = None,
             failure_policy: str = None,
             name: str = None,
             namespace_selector: 'LabelSelector' = None,
             rules: typing.List['RuleWithOperations'] = None,
             side_effects: str = None,
-            timeout_seconds: int = None,
     ):
         """Create Webhook instance."""
         super(Webhook, self).__init__(
@@ -808,57 +777,23 @@ class Webhook(_kuber_definitions.Definition):
             kind='Webhook'
         )
         self._properties = {
-            'admissionReviewVersions': admission_review_versions or [],
             'clientConfig': client_config or WebhookClientConfig(),
             'failurePolicy': failure_policy or '',
             'name': name or '',
             'namespaceSelector': namespace_selector or LabelSelector(),
             'rules': rules or [],
             'sideEffects': side_effects or '',
-            'timeoutSeconds': timeout_seconds or None,
 
         }
         self._types = {
-            'admissionReviewVersions': (list, str),
             'clientConfig': (WebhookClientConfig, None),
             'failurePolicy': (str, None),
             'name': (str, None),
             'namespaceSelector': (LabelSelector, None),
             'rules': (list, RuleWithOperations),
             'sideEffects': (str, None),
-            'timeoutSeconds': (int, None),
 
         }
-
-    @property
-    def admission_review_versions(self) -> typing.List[str]:
-        """
-        AdmissionReviewVersions is an ordered list of preferred
-        `AdmissionReview` versions the Webhook expects. API server
-        will try to use first version in the list which it supports.
-        If none of the versions specified in this list supported by
-        API server, validation will fail for this object. If a
-        persisted webhook configuration specifies allowed versions
-        and does not include any versions known to the API Server,
-        calls to the webhook will fail and be subject to the failure
-        policy. Default to `['v1beta1']`.
-        """
-        return self._properties.get('admissionReviewVersions')
-
-    @admission_review_versions.setter
-    def admission_review_versions(self, value: typing.List[str]):
-        """
-        AdmissionReviewVersions is an ordered list of preferred
-        `AdmissionReview` versions the Webhook expects. API server
-        will try to use first version in the list which it supports.
-        If none of the versions specified in this list supported by
-        API server, validation will fail for this object. If a
-        persisted webhook configuration specifies allowed versions
-        and does not include any versions known to the API Server,
-        calls to the webhook will fail and be subject to the failure
-        policy. Default to `['v1beta1']`.
-        """
-        self._properties['admissionReviewVersions'] = value
 
     @property
     def client_config(self) -> 'WebhookClientConfig':
@@ -1087,28 +1022,6 @@ class Webhook(_kuber_definitions.Definition):
         or Some. Defaults to Unknown.
         """
         self._properties['sideEffects'] = value
-
-    @property
-    def timeout_seconds(self) -> int:
-        """
-        TimeoutSeconds specifies the timeout for this webhook. After
-        the timeout passes, the webhook call will be ignored or the
-        API call will fail based on the failure policy. The timeout
-        value must be between 1 and 30 seconds. Default to 30
-        seconds.
-        """
-        return self._properties.get('timeoutSeconds')
-
-    @timeout_seconds.setter
-    def timeout_seconds(self, value: int):
-        """
-        TimeoutSeconds specifies the timeout for this webhook. After
-        the timeout passes, the webhook call will be ignored or the
-        API call will fail based on the failure policy. The timeout
-        value must be between 1 and 30 seconds. Default to 30
-        seconds.
-        """
-        self._properties['timeoutSeconds'] = value
 
     def __enter__(self) -> 'Webhook':
         return self

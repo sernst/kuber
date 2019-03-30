@@ -214,7 +214,6 @@ class APIResource(_kuber_definitions.Definition):
             namespaced: bool = None,
             short_names: typing.List[str] = None,
             singular_name: str = None,
-            storage_version_hash: str = None,
             verbs: typing.List[str] = None,
             version: str = None,
     ):
@@ -230,7 +229,6 @@ class APIResource(_kuber_definitions.Definition):
             'namespaced': namespaced or None,
             'shortNames': short_names or [],
             'singularName': singular_name or '',
-            'storageVersionHash': storage_version_hash or '',
             'verbs': verbs or [],
             'version': version or '',
 
@@ -243,7 +241,6 @@ class APIResource(_kuber_definitions.Definition):
             'namespaced': (bool, None),
             'shortNames': (list, str),
             'singularName': (str, None),
-            'storageVersionHash': (str, None),
             'verbs': (list, str),
             'version': (str, None),
 
@@ -348,34 +345,6 @@ class APIResource(_kuber_definitions.Definition):
         the kubectl CLI interface.
         """
         self._properties['singularName'] = value
-
-    @property
-    def storage_version_hash(self) -> str:
-        """
-        The hash value of the storage version, the version this
-        resource is converted to when written to the data store.
-        Value must be treated as opaque by clients. Only equality
-        comparison on the value is valid. This is an alpha feature
-        and may change or be removed in the future. The field is
-        populated by the apiserver only if the StorageVersionHash
-        feature gate is enabled. This field will remain optional
-        even if it graduates.
-        """
-        return self._properties.get('storageVersionHash')
-
-    @storage_version_hash.setter
-    def storage_version_hash(self, value: str):
-        """
-        The hash value of the storage version, the version this
-        resource is converted to when written to the data store.
-        Value must be treated as opaque by clients. Only equality
-        comparison on the value is valid. This is an alpha feature
-        and may change or be removed in the future. The field is
-        populated by the apiserver only if the StorageVersionHash
-        feature gate is enabled. This field will remain optional
-        even if it graduates.
-        """
-        self._properties['storageVersionHash'] = value
 
     @property
     def verbs(self) -> typing.List[str]:
@@ -748,35 +717,6 @@ class DeleteOptions(_kuber_definitions.Definition):
         self._properties['propagationPolicy'] = value
 
     def __enter__(self) -> 'DeleteOptions':
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
-class Fields(_kuber_definitions.Definition):
-    """
-    Fields stores a set of fields in a data structure like a
-    Trie. To understand how this is used, see:
-    https://github.com/kubernetes-sigs/structured-merge-diff
-    """
-
-    def __init__(
-            self,
-    ):
-        """Create Fields instance."""
-        super(Fields, self).__init__(
-            api_version='meta/v1',
-            kind='Fields'
-        )
-        self._properties = {
-
-        }
-        self._types = {
-
-        }
-
-    def __enter__(self) -> 'Fields':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1268,120 +1208,6 @@ class ListMeta(_kuber_definitions.Definition):
         return False
 
 
-class ManagedFieldsEntry(_kuber_definitions.Definition):
-    """
-    ManagedFieldsEntry is a workflow-id, a FieldSet and the
-    group version of the resource that the fieldset applies to.
-    """
-
-    def __init__(
-            self,
-            fields: 'Fields' = None,
-            manager: str = None,
-            operation: str = None,
-            time: str = None,
-    ):
-        """Create ManagedFieldsEntry instance."""
-        super(ManagedFieldsEntry, self).__init__(
-            api_version='meta/v1',
-            kind='ManagedFieldsEntry'
-        )
-        self._properties = {
-            'fields': fields or Fields(),
-            'manager': manager or '',
-            'operation': operation or '',
-            'time': time or None,
-
-        }
-        self._types = {
-            'apiVersion': (str, None),
-            'fields': (Fields, None),
-            'manager': (str, None),
-            'operation': (str, None),
-            'time': (str, None),
-
-        }
-
-    @property
-    def fields(self) -> 'Fields':
-        """
-        Fields identifies a set of fields.
-        """
-        return self._properties.get('fields')
-
-    @fields.setter
-    def fields(self, value: typing.Union['Fields', dict]):
-        """
-        Fields identifies a set of fields.
-        """
-        if isinstance(value, dict):
-            value = Fields().from_dict(value)
-        self._properties['fields'] = value
-
-    @property
-    def manager(self) -> str:
-        """
-        Manager is an identifier of the workflow managing these
-        fields.
-        """
-        return self._properties.get('manager')
-
-    @manager.setter
-    def manager(self, value: str):
-        """
-        Manager is an identifier of the workflow managing these
-        fields.
-        """
-        self._properties['manager'] = value
-
-    @property
-    def operation(self) -> str:
-        """
-        Operation is the type of operation which lead to this
-        ManagedFieldsEntry being created. The only valid values for
-        this field are 'Apply' and 'Update'.
-        """
-        return self._properties.get('operation')
-
-    @operation.setter
-    def operation(self, value: str):
-        """
-        Operation is the type of operation which lead to this
-        ManagedFieldsEntry being created. The only valid values for
-        this field are 'Apply' and 'Update'.
-        """
-        self._properties['operation'] = value
-
-    @property
-    def time(self) -> str:
-        """
-        Time is timestamp of when these fields were set. It should
-        always be empty if Operation is 'Apply'
-        """
-        return self._properties.get('time')
-
-    @time.setter
-    def time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
-    ):
-        """
-        Time is timestamp of when these fields were set. It should
-        always be empty if Operation is 'Apply'
-        """
-        if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
-        elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['time'] = value
-
-    def __enter__(self) -> 'ManagedFieldsEntry':
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
 class MicroTime(_kuber_definitions.Definition):
     """
     MicroTime is version of Time with microsecond level
@@ -1428,7 +1254,6 @@ class ObjectMeta(_kuber_definitions.Definition):
             generation: int = None,
             initializers: 'Initializers' = None,
             labels: dict = None,
-            managed_fields: typing.List['ManagedFieldsEntry'] = None,
             name: str = None,
             namespace: str = None,
             owner_references: typing.List['OwnerReference'] = None,
@@ -1452,7 +1277,6 @@ class ObjectMeta(_kuber_definitions.Definition):
             'generation': generation or None,
             'initializers': initializers or Initializers(),
             'labels': labels or {},
-            'managedFields': managed_fields or [],
             'name': name or '',
             'namespace': namespace or '',
             'ownerReferences': owner_references or [],
@@ -1472,7 +1296,6 @@ class ObjectMeta(_kuber_definitions.Definition):
             'generation': (int, None),
             'initializers': (Initializers, None),
             'labels': (dict, None),
-            'managedFields': (list, ManagedFieldsEntry),
             'name': (str, None),
             'namespace': (str, None),
             'ownerReferences': (list, OwnerReference),
@@ -1760,10 +1583,6 @@ class ObjectMeta(_kuber_definitions.Definition):
         list with the current set of initializers. Only privileged
         users may set or modify this list. Once it is empty, it may
         not be modified further by any user.
-
-        DEPRECATED -
-        initializers are an alpha field and will be removed in
-        v1.15.
         """
         return self._properties.get('initializers')
 
@@ -1781,10 +1600,6 @@ class ObjectMeta(_kuber_definitions.Definition):
         list with the current set of initializers. Only privileged
         users may set or modify this list. Once it is empty, it may
         not be modified further by any user.
-
-        DEPRECATED -
-        initializers are an alpha field and will be removed in
-        v1.15.
         """
         if isinstance(value, dict):
             value = Initializers().from_dict(value)
@@ -1809,44 +1624,6 @@ class ObjectMeta(_kuber_definitions.Definition):
         info: http://kubernetes.io/docs/user-guide/labels
         """
         self._properties['labels'] = value
-
-    @property
-    def managed_fields(self) -> typing.List['ManagedFieldsEntry']:
-        """
-        ManagedFields maps workflow-id and version to the set of
-        fields that are managed by that workflow. This is mostly for
-        internal housekeeping, and users typically shouldn't need to
-        set or understand this field. A workflow can be the user's
-        name, a controller's name, or the name of a specific apply
-        path like "ci-cd". The set of fields is always in the
-        version that the workflow used when modifying the object.
-        This field is alpha and can be changed or removed without
-        notice.
-        """
-        return self._properties.get('managedFields')
-
-    @managed_fields.setter
-    def managed_fields(
-            self,
-            value: typing.Union[typing.List['ManagedFieldsEntry'], typing.List[dict]]
-    ):
-        """
-        ManagedFields maps workflow-id and version to the set of
-        fields that are managed by that workflow. This is mostly for
-        internal housekeeping, and users typically shouldn't need to
-        set or understand this field. A workflow can be the user's
-        name, a controller's name, or the name of a specific apply
-        path like "ci-cd". The set of fields is always in the
-        version that the workflow used when modifying the object.
-        This field is alpha and can be changed or removed without
-        notice.
-        """
-        cleaned = []
-        for item in value:
-            if isinstance(item, dict):
-                item = ManagedFieldsEntry().from_dict(item)
-            cleaned.append(item)
-        self._properties['managedFields'] = cleaned
 
     @property
     def name(self) -> str:

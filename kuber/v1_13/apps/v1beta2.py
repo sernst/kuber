@@ -90,8 +90,8 @@ class ControllerRevision(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -99,8 +99,8 @@ class ControllerRevision(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -277,8 +277,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -286,8 +286,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -349,8 +349,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -358,8 +358,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -369,8 +369,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def spec(self) -> 'DaemonSetSpec':
         """
         The desired behavior of this daemon set. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -378,8 +378,8 @@ class DaemonSet(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['DaemonSetSpec', dict]):
         """
         The desired behavior of this daemon set. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = DaemonSetSpec().from_dict(value)
@@ -771,8 +771,8 @@ class DaemonSetList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -780,8 +780,8 @@ class DaemonSetList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -2397,8 +2397,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         If the Labels of a ReplicaSet are empty, they are defaulted
         to be the same as the Pod(s) that the ReplicaSet manages.
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2408,8 +2408,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         If the Labels of a ReplicaSet are empty, they are defaulted
         to be the same as the Pod(s) that the ReplicaSet manages.
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -2420,8 +2420,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the ReplicaSet. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -2430,8 +2430,8 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the ReplicaSet. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ReplicaSetSpec().from_dict(value)
@@ -2825,8 +2825,8 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -2834,8 +2834,8 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -3319,7 +3319,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         total number of old and new pods do not exceed 130% of
         desired pods. Once old pods have been killed, new ReplicaSet
         can be scaled up further, ensuring that total number of pods
-        running at any time during the update is at most 130% of
+        running at any time during the update is atmost 130% of
         desired pods.
         """
         value = self._properties.get('maxSurge')
@@ -3341,7 +3341,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         total number of old and new pods do not exceed 130% of
         desired pods. Once old pods have been killed, new ReplicaSet
         can be scaled up further, ensuring that total number of pods
-        running at any time during the update is at most 130% of
+        running at any time during the update is atmost 130% of
         desired pods.
         """
         self._properties['maxSurge'] = f'{value}'
@@ -3471,8 +3471,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -3480,8 +3480,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -3491,8 +3491,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self) -> 'ScaleSpec':
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status.
         """
         return self._properties.get('spec')
 
@@ -3500,8 +3500,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ScaleSpec', dict]):
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
             value = ScaleSpec().from_dict(value)

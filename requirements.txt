@@ -2,3 +2,5 @@ pyyaml
 kubernetes
 sphinx
 recommonmark
+requests
+semver

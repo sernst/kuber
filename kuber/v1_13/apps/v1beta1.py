@@ -1626,7 +1626,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         total number of old and new pods do not exceed 130% of
         desired pods. Once old pods have been killed, new ReplicaSet
         can be scaled up further, ensuring that total number of pods
-        running at any time during the update is at most 130% of
+        running at any time during the update is atmost 130% of
         desired pods.
         """
         value = self._properties.get('maxSurge')
@@ -1648,7 +1648,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         total number of old and new pods do not exceed 130% of
         desired pods. Once old pods have been killed, new ReplicaSet
         can be scaled up further, ensuring that total number of pods
-        running at any time during the update is at most 130% of
+        running at any time during the update is atmost 130% of
         desired pods.
         """
         self._properties['maxSurge'] = f'{value}'

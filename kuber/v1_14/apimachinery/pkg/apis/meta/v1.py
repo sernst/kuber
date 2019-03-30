@@ -2173,6 +2173,7 @@ class Preconditions(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            resource_version: str = None,
             uid: str = None,
     ):
         """Create Preconditions instance."""
@@ -2181,13 +2182,29 @@ class Preconditions(_kuber_definitions.Definition):
             kind='Preconditions'
         )
         self._properties = {
+            'resourceVersion': resource_version or '',
             'uid': uid or '',
 
         }
         self._types = {
+            'resourceVersion': (str, None),
             'uid': (str, None),
 
         }
+
+    @property
+    def resource_version(self) -> str:
+        """
+        Specifies the target ResourceVersion
+        """
+        return self._properties.get('resourceVersion')
+
+    @resource_version.setter
+    def resource_version(self, value: str):
+        """
+        Specifies the target ResourceVersion
+        """
+        self._properties['resourceVersion'] = value
 
     @property
     def uid(self) -> str:

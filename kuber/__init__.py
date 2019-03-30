@@ -8,7 +8,7 @@ from kuber.management import from_yaml_file  # noqa
 from kuber.management import get_latest_version as _get_latest_version
 
 #: kuber library version.
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 #: The most recent kubernetes version available within the library, which
 #: can be used to avoid hard-coded versions when creating resource bundles.

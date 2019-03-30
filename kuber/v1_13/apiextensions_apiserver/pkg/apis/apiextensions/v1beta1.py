@@ -170,7 +170,6 @@ class CustomResourceConversion(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            conversion_review_versions: typing.List[str] = None,
             strategy: str = None,
             webhook_client_config: 'WebhookClientConfig' = None,
     ):
@@ -180,45 +179,15 @@ class CustomResourceConversion(_kuber_definitions.Definition):
             kind='CustomResourceConversion'
         )
         self._properties = {
-            'conversionReviewVersions': conversion_review_versions or [],
             'strategy': strategy or '',
             'webhookClientConfig': webhook_client_config or WebhookClientConfig(),
 
         }
         self._types = {
-            'conversionReviewVersions': (list, str),
             'strategy': (str, None),
             'webhookClientConfig': (WebhookClientConfig, None),
 
         }
-
-    @property
-    def conversion_review_versions(self) -> typing.List[str]:
-        """
-        ConversionReviewVersions is an ordered list of preferred
-        `ConversionReview` versions the Webhook expects. API server
-        will try to use first version in the list which it supports.
-        If none of the versions specified in this list supported by
-        API server, conversion will fail for this object. If a
-        persisted Webhook configuration specifies allowed versions
-        and does not include any versions known to the API Server,
-        calls to the webhook will fail. Default to `['v1beta1']`.
-        """
-        return self._properties.get('conversionReviewVersions')
-
-    @conversion_review_versions.setter
-    def conversion_review_versions(self, value: typing.List[str]):
-        """
-        ConversionReviewVersions is an ordered list of preferred
-        `ConversionReview` versions the Webhook expects. API server
-        will try to use first version in the list which it supports.
-        If none of the versions specified in this list supported by
-        API server, conversion will fail for this object. If a
-        persisted Webhook configuration specifies allowed versions
-        and does not include any versions known to the API Server,
-        calls to the webhook will fail. Default to `['v1beta1']`.
-        """
-        self._properties['conversionReviewVersions'] = value
 
     @property
     def strategy(self) -> str:
@@ -1649,7 +1618,6 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             minimum: float = None,
             multiple_of: float = None,
             not_: 'JSONSchemaProps' = None,
-            nullable: bool = None,
             one_of: typing.List['JSONSchemaProps'] = None,
             pattern: str = None,
             pattern_properties: dict = None,
@@ -1691,7 +1659,6 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'minimum': minimum or None,
             'multipleOf': multiple_of or None,
             'not': not_ or JSONSchemaProps(),
-            'nullable': nullable or None,
             'oneOf': one_of or [],
             'pattern': pattern or '',
             'patternProperties': pattern_properties or {},
@@ -1729,7 +1696,6 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'minimum': (float, None),
             'multipleOf': (float, None),
             'not': (JSONSchemaProps, None),
-            'nullable': (bool, None),
             'oneOf': (list, JSONSchemaProps),
             'pattern': (str, None),
             'patternProperties': (dict, None),
@@ -2142,20 +2108,6 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = JSONSchemaProps().from_dict(value)
         self._properties['not'] = value
-
-    @property
-    def nullable(self) -> bool:
-        """
-
-        """
-        return self._properties.get('nullable')
-
-    @nullable.setter
-    def nullable(self, value: bool):
-        """
-
-        """
-        self._properties['nullable'] = value
 
     @property
     def one_of(self) -> typing.List['JSONSchemaProps']:
