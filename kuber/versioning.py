@@ -25,7 +25,15 @@ def get_version_data(version_label: str) -> KubernetesVersion:
     Returns the KubernetesVersion object specified in the root subpackage
     of the specified Kubernetes library version.
     """
-    package = '.'.join(['kuber', f'{version_label}'])
+    version = f'{version_label}'.replace('.', '_')
+    needs_prefix = (
+        version not in ['pre', 'latest']
+        and not version.startswith('v')
+    )
+    if needs_prefix:
+        version = f'v{version}'
+
+    package = '.'.join(['kuber', version])
     loaded_module = importlib.import_module(package)
     return getattr(loaded_module, 'KUBERNETES_VERSION')
 
@@ -36,12 +44,18 @@ def get_all_versions(stable: bool = False) -> typing.List[KubernetesVersion]:
     if not stable:
         alternatives.append('pre')
 
-    return [
+    versions: typing.List[KubernetesVersion] = [
         get_version_data(f)
         for f in os.listdir(directory)
         if os.path.isdir(os.path.join(directory, f))
         and (f.startswith('v') or f in alternatives)
     ]
+    versions.sort(key=lambda v: '{}.{}.{}'.format(
+        v.major.zfill(3),
+        v.minor.zfill(3),
+        v.patch.zfill(3)
+    ))
+    return versions
 
 
 def get_latest_version(stable: bool = False) -> KubernetesVersion:

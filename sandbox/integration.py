@@ -1,12 +1,11 @@
 import time
 from pprint import pprint
 
-from kubernetes import config
-
+import kuber
 from kuber.v1_13 import apps_v1
 from kuber.v1_13 import batch_v1
 
-config.load_kube_config()
+kuber.load_access_config()
 
 # Configure a deployment
 d = apps_v1.Deployment()

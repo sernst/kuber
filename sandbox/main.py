@@ -26,6 +26,6 @@ def configure_deployment():
 
 
 if __name__ == '__main__':
-    bundle = kuber.create_bundle('1.13')
+    bundle = kuber.create_bundle(kubernetes_version='1.13')
     bundle.push(configure_deployment())
     bundle.cli()

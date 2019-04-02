@@ -16,9 +16,9 @@ that serializes down to a Python dictionary that is compatible with the
 
   import kuber
   from kuber.latest import apps_v1
-  from kubernetes import config
 
-  config.load_kube_config()
+  # Initializes kuber with local kubeconfig for access.
+  kuber.load_access_config()
 
   d = apps_v1.Deployment()
 
@@ -51,6 +51,14 @@ that serializes down to a Python dictionary that is compatible with the
 
   # Delete the Deployment resource from the cluster.
   d.delete_resource()
+
+Initialization
+--------------
+
+Before operating on the cluster, kuber needs to be configured with access to
+the cluster. This is done with the `load_access_config` function:
+
+.. autofunction:: kuber.load_access_config
 
 Beyond CRUD
 -----------

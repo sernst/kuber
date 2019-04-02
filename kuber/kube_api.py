@@ -1,10 +1,10 @@
-import json
-import subprocess
 import typing
 
 from kubernetes import client
+from kubernetes import config
 
 from kuber import definitions
+from kuber import versioning
 
 
 class KubectlError(Exception):
@@ -30,6 +30,41 @@ class KubectlResponse(typing.NamedTuple):
     error: str = None
     args: typing.List[str] = None
     input: str = None
+
+
+def load_access_config(in_cluster: bool = False, **kwargs) -> typing.NoReturn:
+    """
+    Initializes the kubernetes library from either a kube configuration
+    file for external access or using mounted configuration data for
+    access from within a pod in the cluster.
+
+    :param in_cluster:
+        Whether or not to initialize access within the cluster or not. By
+        default the access will be loaded from a kube config file for
+        external access to a cluster.
+    :param kwargs:
+        Optional arguments to pass ot the external kube-config-based
+        initialization process.
+    """
+    if in_cluster:
+        config.load_incluster_config()
+    config.load_kube_config(**kwargs)
+
+
+def get_version_from_cluster():
+    """
+    Returns the KubernetesVersion object associated with the configured
+    cluster. If the cluster version cannot be determined, the lowest available
+    version will be returned instead.
+    """
+    response: client.VersionInfo = client.VersionApi().get_code()
+    versions = versioning.get_all_versions()
+    major = response.major
+    minor = response.minor.rstrip('+')
+    return next(
+        (v for v in versions if v.major == major and v.minor == minor),
+        versions[0]
+    )
 
 
 def execute(

@@ -22,7 +22,7 @@ class ResourceBundle:
     def __init__(
             self,
             bundle_name: str = None,
-            kubernetes_version: str = 'latest'
+            kubernetes_version: 'kuber.VersionLabel' = 'latest'
     ):
         """
         Initializes the bundle.
@@ -41,12 +41,14 @@ class ResourceBundle:
         self._cli = cli.ResourceBundleCli(self)
 
     @property
-    def kubernetes_version(self) -> str:
+    def kubernetes_version(self) -> '_versioning.KubernetesVersion':
         """
         Version of the kubernetes library to use when creating resources
         inside this bundle.
         """
-        return self._version or 'latest'
+        if isinstance(self._version, _versioning.KubernetesVersion):
+            return self._version
+        return _versioning.get_version_data(self._version or 'latest')
 
     @property
     def cli(self) -> 'cli.ResourceBundleCli':
@@ -57,13 +59,6 @@ class ResourceBundle:
     def resources(self) -> typing.Tuple[ResourceSubclass]:
         """Resources stored within the bundle."""
         return tuple(self._resources)
-
-    def get_version_info(self) -> '_versioning.KubernetesVersion':
-        """
-        Returns the KubernetesVersion object associated with the
-        kubernetes version of this bundle.
-        """
-        return _versioning.get_version_data(self.kubernetes_version)
 
     def get(
             self,
@@ -260,9 +255,11 @@ class ResourceBundle:
             Resource object to conform to the specifications and constraints
             of the bundle.
         """
+        version = self.kubernetes_version
         resource.metadata.labels.update(
             kuber_library_version=kuber.__version__,
-            kuber_api_version=self.kubernetes_version,
+            kuber_api_version=version.label,
+            kuber_kube_version=version.version,
             kuber_bundle_name=self.name,
             kuber_timestamp=f'{datetime.datetime.utcnow().isoformat()}Z'
         )
@@ -313,7 +310,7 @@ class ResourceBundle:
 
 def from_yaml_file(
         file_path: str,
-        kubernetes_version: str = 'latest'
+        kubernetes_version: 'kuber.VersionLabel' = 'latest'
 ) -> ResourceSubclass:
     """
     Creates a Resource object from a YAML configuration file.
@@ -323,7 +320,8 @@ def from_yaml_file(
         loaded.
     :param kubernetes_version:
         Version of the kubernetes API to use when creating the Resource. If
-        omitted, the `latest` version will be used by default.
+        omitted, the `latest` version will be used by default. Accepts either
+        a string version label of a KubernetesVersion object.
     """
     with open(file_path) as f:
         return from_yaml(f.read(), kubernetes_version)
@@ -331,7 +329,7 @@ def from_yaml_file(
 
 def from_yaml(
         resource_definition: str,
-        kubernetes_version: str = 'latest'
+        kubernetes_version: 'kuber.VersionLabel' = 'latest'
 ) -> ResourceSubclass:
     """
     Creates a Resource object from a YAML string.
@@ -340,7 +338,8 @@ def from_yaml(
         String containing the contents of a yaml resource definition.
     :param kubernetes_version:
         Version of the kubernetes API to use when creating the Resource. If
-        omitted, the `latest` version will be used by default.
+        omitted, the `latest` version will be used by default. Accepts either
+        a string version label of a KubernetesVersion object.
     """
     data = yaml.load(resource_definition, Loader=yaml.CLoader)
     return from_dict(data, kubernetes_version)
@@ -350,7 +349,7 @@ def new_resource(
     api_version: str,
     kind: str,
     name: str = None,
-    kubernetes_version: str = None
+    kubernetes_version: 'kuber.VersionLabel' = None
 ) -> ResourceSubclass:
     """
     Creates an empty Kubernetes resource object of the specified type for
@@ -366,7 +365,8 @@ def new_resource(
         Name to give to the resource in its metadata.
     :param kubernetes_version:
         Version of the kubernetes API to use when creating the Resource. If
-        omitted, the `latest` version will be used by default.
+        omitted, the `latest` version will be used by default. Accepts either
+        a string version label of a KubernetesVersion object.
     """
     definition = {
         'apiVersion': api_version,
@@ -378,7 +378,7 @@ def new_resource(
 
 def from_dict(
         resource_definition: dict,
-        kubernetes_version: str = 'latest'
+        kubernetes_version: 'kuber.VersionLabel' = 'latest'
 ) -> ResourceSubclass:
     """
     Converts a dictionary into a Resource object.
@@ -387,9 +387,11 @@ def from_dict(
         Definition dictionary object to deserialize.
     :param kubernetes_version:
         Version of the kubernetes API to use when creating the Resource. If
-        omitted, the `latest` version will be used by default.
+        omitted, the `latest` version will be used by default. Accepts either
+        a string version label of a KubernetesVersion object.
     """
     version = kubernetes_version or 'latest'
+    version: str = getattr(version, 'label', version)
     if version.find('.') > 0:
         version = f'v{version}'.replace('.', '_')
 
@@ -404,7 +406,10 @@ def from_dict(
     return resource.from_dict(resource_definition)
 
 
-def from_json_file(file_path: str, kubernetes_version: str) -> ResourceSubclass:
+def from_json_file(
+        file_path: str,
+        kubernetes_version: 'kuber.VersionLabel' = 'latest'
+) -> ResourceSubclass:
     """
     Creates a Resource object from a configuration file.
 
@@ -412,7 +417,8 @@ def from_json_file(file_path: str, kubernetes_version: str) -> ResourceSubclass:
         Path to a JSON or YAML file that specifies the resource to create.
     :param kubernetes_version:
         Version of the kubernetes API to use when creating the Resource. If
-        omitted, the `latest` version will be used by default.
+        omitted, the `latest` version will be used by default. Accepts either
+        a string version label of a KubernetesVersion object.
     """
     with open(file_path) as f:
         return from_dict(json.load(f), kubernetes_version)
