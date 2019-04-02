@@ -1,3 +1,4 @@
+import datetime
 import glob
 import importlib
 import json
@@ -7,28 +8,45 @@ import uuid
 
 import yaml
 
+import kuber
 from kuber import cli
+from kuber import versioning as _versioning
 from kuber.definitions import Resource
+
+ResourceSubclass = typing.Union[Resource, typing.Any]
 
 
 class ResourceBundle:
     """Contains one or more related Kubernetes `Resource` objects."""
 
-    def __init__(self, bundle_name: str = None, version: str = None):
+    def __init__(
+            self,
+            bundle_name: str = None,
+            kubernetes_version: str = 'latest'
+    ):
         """
         Initializes the bundle.
 
         :param bundle_name:
             Name of the bundle. If not specified, a randomized name will be
             created instead.
-        :param version:
+        :param kubernetes_version:
             Kubernetes version to use when loading and interacting with
-            objects inside the bundle.
+            resource objects inside the bundle. By default this will use the
+            latest stable Kubernetes version available within the library.
         """
         self.name = bundle_name or str(uuid.uuid4())
-        self.version = version or get_latest_version()
-        self._resources: typing.List['Resource'] = []
+        self._version = kubernetes_version
+        self._resources: typing.List[ResourceSubclass] = []
         self._cli = cli.ResourceBundleCli(self)
+
+    @property
+    def kubernetes_version(self) -> str:
+        """
+        Version of the kubernetes library to use when creating resources
+        inside this bundle.
+        """
+        return self._version or 'latest'
 
     @property
     def cli(self) -> 'cli.ResourceBundleCli':
@@ -36,16 +54,23 @@ class ResourceBundle:
         return self._cli
 
     @property
-    def resources(self) -> typing.Tuple['Resource']:
+    def resources(self) -> typing.Tuple[ResourceSubclass]:
         """Resources stored within the bundle."""
         return tuple(self._resources)
+
+    def get_version_info(self) -> '_versioning.KubernetesVersion':
+        """
+        Returns the KubernetesVersion object associated with the
+        kubernetes version of this bundle.
+        """
+        return _versioning.get_version_data(self.kubernetes_version)
 
     def get(
             self,
             name: str = None,
             kind: str = None,
             **kwargs
-    ) -> typing.Optional['Resource']:
+    ) -> typing.Optional[ResourceSubclass]:
         """
         Fetches the resource in the bundle that best and first matches the
         given properties using name, kind and optional labels to select the
@@ -78,7 +103,7 @@ class ResourceBundle:
             name: str = None,
             kind: str = None,
             **kwargs
-    ) -> typing.Optional['Resource']:
+    ) -> typing.Optional[ResourceSubclass]:
         """
         Removes the resource matching the specified arguments from the bundle
         if it exists and returns it.
@@ -122,6 +147,32 @@ class ResourceBundle:
             self._resources.insert(0, self._conform_resource(resource))
         return self
 
+    def add(
+            self,
+            api_version: str,
+            kind: str,
+            name: str,
+            **kwargs
+    ) -> 'ResourceBundle':
+        """
+        Adds an empty resource of the specified type.
+
+        :param api_version:
+            A standard Kubernetes configuration api version, e.g. "apps/v1".
+        :param kind:
+            The type of resource, e.g. "Deployment".
+        :param name:
+            Name to give the resource.
+        :param kwargs:
+            Labels to assign to the metadata of the new resource.
+        """
+        definition = {
+            'apiVersion': api_version,
+            'kind': kind,
+            'metadata': {'name': name, 'labels': kwargs}
+        }
+        return self.push(from_dict(definition, self.kubernetes_version))
+
     def add_from_yaml(self, resource_definition: str) -> 'ResourceBundle':
         """
         Adds a Resource object to the bundle from the YAML definition
@@ -130,7 +181,7 @@ class ResourceBundle:
         :param resource_definition:
             A string containing a valid Kubernetes resource configuration.
         """
-        self.push(from_yaml(self.version, resource_definition))
+        self.push(from_yaml(resource_definition, self.kubernetes_version))
         return self
 
     def add_file(self, path: str) -> 'ResourceBundle':
@@ -142,10 +193,11 @@ class ResourceBundle:
             Path to the configuration file to load as a Resource into the
             bundle.
         """
+        version = self.kubernetes_version
         if path.endswith(('.yml', '.yaml')):
-            self.push(from_yaml_file(self.version, os.path.realpath(path)))
+            self.push(from_yaml_file(os.path.realpath(path), version))
         elif path.endswith('.json'):
-            self.push(from_json_file(self.version, os.path.realpath(path)))
+            self.push(from_json_file(os.path.realpath(path), version))
         else:
             raise IOError(
                 f'Unrecognized file format for path "{path}". '
@@ -198,7 +250,7 @@ class ResourceBundle:
         """Serializes the bundle to a list of JSON configurations."""
         return [self._conform_resource(r).to_json() for r in self.resources]
 
-    def _conform_resource(self, resource: 'Resource') -> 'Resource':
+    def _conform_resource(self, resource: 'Resource') -> ResourceSubclass:
         """
         A method that allows for modifying resources when they are added to
         the bundle or serialized to confirm that they adhere to the
@@ -208,9 +260,15 @@ class ResourceBundle:
             Resource object to conform to the specifications and constraints
             of the bundle.
         """
+        resource.metadata.labels.update(
+            kuber_library_version=kuber.__version__,
+            kuber_api_version=self.kubernetes_version,
+            kuber_bundle_name=self.name,
+            kuber_timestamp=f'{datetime.datetime.utcnow().isoformat()}Z'
+        )
         return resource
 
-    def create(self, namespace: str = None) -> dict:
+    def create(self, namespace: str = None) -> list:
         """
         Create all resources in the bundle.
 
@@ -218,12 +276,9 @@ class ResourceBundle:
             Optionally specify the namespace in which to create resources
             that do not have an explicit namespace specified.
         """
-        return {
-            r.metadata.name: r.create_resource(namespace)
-            for r in self.resources
-        }
+        return [r.create_resource(namespace) for r in self.resources]
 
-    def replace(self, namespace: str = None) -> dict:
+    def replace(self, namespace: str = None) -> list:
         """
         Replace all resources in the bundle.
 
@@ -231,86 +286,117 @@ class ResourceBundle:
             Optionally specify the namespace in which to replace resources
             that do not have an explicit namespace specified.
         """
-        return {
-            r.metadata.name: r.replace_resource(namespace)
-            for r in self.resources
-        }
+        return [r.replace_resource(namespace) for r in self.resources]
 
     def statuses(
             self,
             namespace: str = None
-    ) -> typing.Dict['Resource', typing.Any]:
+    ) -> list:
         """
-        Returns a dictionary of statuses for all resources in the bundle,
-        where the keys are the resources and the values are their associated
-        status objects.
+        Returns a list of statuses for all resources in the bundle.
 
         :param namespace:
             Optionally specify the namespace where the resources reside.
         """
-        return {
-            r: r.replace_resource(namespace)
-            for r in self.resources
-        }
+        return [r.get_resource_status(namespace) for r in self.resources]
 
-    def delete(self, namespace: str = None) -> bool:
+    def delete(self, namespace: str = None):
         """
         Delete all resources in the bundle.
 
         :param namespace:
             Optionally specify the namespace in which to delete the resource.
         """
-        return all([r.delete_resource(namespace) for r in self.resources])
+        for r in self.resources:
+            r.delete_resource(namespace)
 
 
 def from_yaml_file(
-        kubernetes_version: str,
-        file_path: str
-) -> typing.Optional[Resource]:
+        file_path: str,
+        kubernetes_version: str = 'latest'
+) -> ResourceSubclass:
     """
     Creates a Resource object from a YAML configuration file.
 
-    :param kubernetes_version:
-        Version of the kubernetes API to use when creating the Resource.
     :param file_path:
         Path to the kubernetes resource configuration YAML file to be
         loaded.
+    :param kubernetes_version:
+        Version of the kubernetes API to use when creating the Resource. If
+        omitted, the `latest` version will be used by default.
     """
     with open(file_path) as f:
-        return from_yaml(kubernetes_version, f.read())
+        return from_yaml(f.read(), kubernetes_version)
 
 
 def from_yaml(
-        kubernetes_version: str,
-        resource_definition: str
-) -> typing.Optional[Resource]:
+        resource_definition: str,
+        kubernetes_version: str = 'latest'
+) -> ResourceSubclass:
     """
     Creates a Resource object from a YAML string.
 
-    :param kubernetes_version:
-        Version of the kubernetes API to use when creating the Resource.
     :param resource_definition:
         String containing the contents of a yaml resource definition.
+    :param kubernetes_version:
+        Version of the kubernetes API to use when creating the Resource. If
+        omitted, the `latest` version will be used by default.
     """
     data = yaml.load(resource_definition, Loader=yaml.CLoader)
-    return from_dict(kubernetes_version, data)
+    return from_dict(data, kubernetes_version)
+
+
+def new_resource(
+    api_version: str,
+    kind: str,
+    name: str = None,
+    kubernetes_version: str = None
+) -> ResourceSubclass:
+    """
+    Creates an empty Kubernetes resource object of the specified type for
+    the specified Kubernetes version.
+
+    :param api_version:
+        A standard Kubernetes configuration api version, e.g. "apps/v1", as
+        to where to locate this resource within the Kubernetes API.
+    :param kind:
+        The type of resource, e.g. "Deployment". Case matches and should
+        reflect the `kind` as specified in a Kubernetes configuration file.
+    :param name:
+        Name to give to the resource in its metadata.
+    :param kubernetes_version:
+        Version of the kubernetes API to use when creating the Resource. If
+        omitted, the `latest` version will be used by default.
+    """
+    definition = {
+        'apiVersion': api_version,
+        'kind': kind,
+        'metadata': {'name': name}
+    }
+    return from_dict(definition, kubernetes_version)
 
 
 def from_dict(
-        kubernetes_version: str,
-        resource_definition: dict
-) -> typing.Optional[Resource]:
+        resource_definition: dict,
+        kubernetes_version: str = 'latest'
+) -> ResourceSubclass:
     """
     Converts a dictionary into a Resource object.
 
-    :param kubernetes_version:
-        Version of the kubernetes API to use when creating the Resource.
     :param resource_definition:
         Definition dictionary object to deserialize.
+    :param kubernetes_version:
+        Version of the kubernetes API to use when creating the Resource. If
+        omitted, the `latest` version will be used by default.
     """
-    version = kubernetes_version.replace('.', '_')
-    group, area = resource_definition['apiVersion'].split('/')[:2]
-    package = '.'.join(['kuber', f'v{version}', group, area])
+    version = kubernetes_version or 'latest'
+    if version.find('.') > 0:
+        version = f'v{version}'.replace('.', '_')
+
+    parts = resource_definition['apiVersion'].split('/')[:2]
+    area = parts[-1]
+    group = parts[0] if len(parts) > 1 else 'core'
+    package = '.'.join(['kuber', f'{version}', f'{group}_{area}'])
 
     loaded_module = importlib.import_module(package)
     resource_class = getattr(loaded_module, resource_definition['kind'])
@@ -318,27 +404,15 @@ def from_dict(
     return resource.from_dict(resource_definition)
 
 
-def from_json_file(kubernetes_version: str, file_path: str) -> Resource:
+def from_json_file(file_path: str, kubernetes_version: str) -> ResourceSubclass:
     """
     Creates a Resource object from a configuration file.
 
-    :param kubernetes_version:
-        Version of the kubernetes API to use when creating the Resource.
     :param file_path:
         Path to a JSON or YAML file that specifies the resource to create.
+    :param kubernetes_version:
+        Version of the kubernetes API to use when creating the Resource. If
+        omitted, the `latest` version will be used by default.
     """
     with open(file_path) as f:
-        return from_dict(kubernetes_version, json.load(f))
-
-
-def get_latest_version() -> str:
-    """Determines the latest available kubernetes version within the library."""
-    directory = os.path.realpath(os.path.dirname(__file__))
-    entries = [
-        f[1:].split('_')
-        for f in os.listdir(directory)
-        if os.path.isdir(os.path.join(directory, f)) and f.startswith('v')
-    ]
-
-    entries.sort(key=lambda x: 10000 * int(x[0]) + int(x[1]))
-    return '.'.join(entries[-1])
+        return from_dict(json.load(f), kubernetes_version)

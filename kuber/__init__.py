@@ -1,18 +1,19 @@
-from kuber.helm_management import Chart
-from kuber.helm_management import Maintainer
 from kuber.management import ResourceBundle
 from kuber.management import from_dict  # noqa
 from kuber.management import from_json_file  # noqa
 from kuber.management import from_yaml  # noqa
 from kuber.management import from_yaml_file  # noqa
-from kuber.management import get_latest_version as _get_latest_version
+from kuber import versioning as _versioning
+from kuber.management import new_resource  # noqa
 
 #: kuber library version.
-__version__ = '1.1.1'
+__version__ = '1.2.0'
 
 #: The most recent kubernetes version available within the library, which
 #: can be used to avoid hard-coded versions when creating resource bundles.
-latest_kube_version = _get_latest_version()
+latest_kube_version: _versioning.KubernetesVersion = (
+    _versioning.get_latest_version(stable=True)
+)
 
 
 def create_bundle(

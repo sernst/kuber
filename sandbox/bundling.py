@@ -1,15 +1,9 @@
 import kuber
-from kuber.v1_13.apps import v1 as apps_v1
 
-# bundle = (
-#     kuber.create_bundle()
-#     .add_file('../samples/job.yaml')
-#     .add_file('../samples/deployment.yaml')
-# )
+bundle = kuber.from_directory('../samples', kubernetes_version='pre')
 
-bundle = kuber.from_directory('../samples')
-
-print(bundle.version)
+print(bundle.kubernetes_version)
+print(bundle.get_version_info().version)
 print(bundle.get('foo'))
 print(bundle.get('scott'))
 print(bundle.get(app='genesis', foo='1'))

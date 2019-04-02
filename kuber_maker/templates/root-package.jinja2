@@ -1,0 +1,19 @@
+import datetime as _datetime
+
+from kuber import versioning
+
+# Information about the kubernetes API library version associated with this
+# package and kuber metadata around its creation and labeling within the
+# kuber library.
+KUBERNETES_VERSION = versioning.KubernetesVersion(
+    label='{{ version }}',
+    version='{{ spec.version }}',
+    major='{{ spec.version_info.major }}',
+    minor='{{ spec.version_info.minor }}',
+    patch='{{ spec.version_info.patch }}',
+    pre_release='{{ spec.version_info.prerelease or '' }}',
+    build='{{ spec.version_info.build or '' }}',
+    created_at=_datetime.datetime({{ dt.year }}, {{ dt.month }}, {{ dt.day }}),
+    commit_sha='{{ spec.commit_sha }}'
+)
+

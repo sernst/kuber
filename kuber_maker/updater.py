@@ -29,8 +29,8 @@ class ApiGroup(typing.NamedTuple):
 
     name: str
     version: semver.VersionInfo
-    stable: Release
     latest: Release
+    pre: Release
 
 
 def to_release_version(release_data: dict) -> typing.Optional[Release]:
@@ -72,8 +72,8 @@ def get_release_groups() -> typing.List[ApiGroup]:
         combined.append(ApiGroup(
             name=version,
             version=semver.parse_version_info(f'{version}.0'),
-            latest=ordered[0],
-            stable=next((e for e in ordered if not e.version.prerelease), None)
+            pre=ordered[0],
+            latest=next((e for e in ordered if not e.version.prerelease), None)
         ))
 
     return sorted(combined, reverse=True, key=lambda x: x.version)
@@ -82,28 +82,43 @@ def get_release_groups() -> typing.List[ApiGroup]:
 def update_specs():
     """..."""
     groups = get_release_groups()
-    limit = 4 if groups[0].stable else 5
+    limit = 4 if groups[0].latest else 5
     for group in groups[:limit]:
-        path = download_version(group)
-        print(f'Updated {group.name}: {path}')
+        release = group.latest or group.pre
+        path = download_version(release, f'v{group.name}')
+        print(f'Updated v{group.name}: {path}')
+
+    pre = next((g.pre for g in groups if g.pre), None)
+    path = download_version(pre, 'pre')
+    print(f'Updated pre ({pre.name}): {path}')
+
+    latest = next((g.latest for g in groups if g.latest), None)
+    path = download_version(latest, 'latest')
+    print(f'Updated latest ({latest.name}): {path}')
 
 
-def download_version(group: ApiGroup) -> str:
+def download_version(release: Release, name: str = None) -> str:
     """
-    Downloads the stable or latest version of the specified ApiGroup
+    Downloads the pre or latest version of the specified ApiGroup
     to the specs directory, overwriting anything that might already be
     stored there.
     """
-    release = group.stable or group.latest
     url = DOWNLOAD_URL.format(commit=release.commit_sha)
     response = requests.get(url)
+    data = response.json()
+    data['kuber'] = {
+        'name': release.name,
+        'api_version': release.api_version,
+        'commit_sha': release.commit_sha,
+        'version': str(release.version)
+    }
 
     path = os.path.realpath(os.path.join(
         os.path.dirname(__file__),
-        '..', 'specs', f'v{group.name}.json'
+        '..', 'specs', f'{name}.json'
     ))
     with open(path, 'wb') as f:
-        f.write(response.text.encode())
+        f.write(json.dumps(data, indent=2).encode())
 
     return path
 

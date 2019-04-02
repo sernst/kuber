@@ -3,6 +3,7 @@ import os
 import re
 import string
 import typing
+import datetime
 
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
@@ -104,7 +105,7 @@ def _get_container_entity(
 ) -> kuber_maker.Entity:
     """..."""
     version = all_entities.version.replace('.', '_')
-    container_package = f'kuber.v{version}.core.v1'
+    container_package = f'kuber.{version}.core_v1'
     return all_entities.packages[container_package].entities['Container']
 
 
@@ -113,7 +114,7 @@ def _get_status_entity(
 ) -> kuber_maker.Entity:
     """..."""
     version = all_entities.version.replace('.', '_')
-    container_package = f'kuber.v{version}.apimachinery.pkg.apis.meta.v1'
+    container_package = f'kuber.{version}.apimachinery.pkg.apis.meta_v1'
     return all_entities.packages[container_package].entities['Status']
 
 
@@ -229,3 +230,13 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
     contents = re.sub(LINE_REGEX, '\n\n\n', contents)
     contents = f'{contents.rstrip()}\n'
     return re.sub(SINGLE_LINE_REGEX, '\n\n', contents)
+
+
+def render_root_package(version: str, spec: kuber_maker.ApiSpec):
+    """Renders the root version package data."""
+    return render(
+        'root-package.jinja2',
+        spec=spec,
+        version=version,
+        dt=datetime.datetime.utcnow()
+    )

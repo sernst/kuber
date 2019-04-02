@@ -3,8 +3,8 @@ from pprint import pprint
 
 from kubernetes import config
 
-from kuber.v1_13.apps import v1 as apps_v1
-from kuber.v1_13.batch import v1 as batch_v1
+from kuber.v1_13 import apps_v1
+from kuber.v1_13 import batch_v1
 
 config.load_kube_config()
 

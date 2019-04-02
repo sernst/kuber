@@ -13,8 +13,8 @@ def generate(version: str):
     """..."""
     spec = kuber_maker.load_spec(version)
     initializer.empty(version)
-    initializer.create_subpackages(version, spec['definitions'])
-    entities = parsing.parse_definitions(version, spec['definitions'])
+    initializer.create_subpackages(version, spec.definitions)
+    entities = parsing.parse_definitions(version, spec.definitions)
 
     for package in entities.packages.keys():
         contents = render.render_package(package, entities)
@@ -23,6 +23,12 @@ def generate(version: str):
         with open(f'{path}.py', 'w') as f:
             f.write(contents)
         print(f'[CREATED]: {path}.py')
+
+    contents = render.render_root_package(version, spec)
+    path = kuber_maker.get_path(version, '__init__.py')
+    with open(path, 'w') as f:
+        f.write(contents)
+    print(f'[RENDERED]: {path}')
 
 
 def generate_all():
@@ -33,7 +39,7 @@ def generate_all():
     ))
     spec_files = [f for f in os.listdir(directory) if f.endswith('.json')]
     for filename in spec_files:
-        version = filename[1:-5]
+        version = filename[:-5]
         print(f'\n\n=== {version} ===')
         generate(version)
 

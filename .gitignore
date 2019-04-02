@@ -169,3 +169,6 @@ fabric.properties
 .idea/*
 
 github-api-auth.json
+_build
+_static
+_templates

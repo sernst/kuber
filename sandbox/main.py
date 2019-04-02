@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 
 import kuber
-from kuber.v1_13.apps import v1 as apps_v1
+from kuber.v1_13 import apps_v1
 
 
 def configure_deployment():

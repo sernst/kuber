@@ -48,7 +48,7 @@ def populate_extra_files():
 setup(
     name='kuber',
     version=get_version(),
-    description='High-level Kubernetes resource configuration API.',
+    description='High-level Kubernetes resource configuration library.',
     long_description=readme(),
     long_description_content_type='text/markdown',
     keywords=['Kubernetes', 'kubectl'],
@@ -75,7 +75,7 @@ setup(
         'Topic :: Software Development :: Libraries',
         'Topic :: System :: Systems Administration'
     ],
-    install_requires=['pyyaml'],
+    install_requires=['pyyaml', 'kubernetes'],
     extras_require={},
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'pytest-cov']
