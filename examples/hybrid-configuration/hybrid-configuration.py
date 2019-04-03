@@ -1,9 +1,8 @@
 import kuber
-from kuber.v1_13.apps import v1 as apps_v1
+from kuber.latest import apps_v1
 
 # Load YAML configuration file into a Deployment object
 d: apps_v1.Deployment = kuber.from_yaml_file(
-    kubernetes_version='1.13',
     file_path='./my-deployment.yaml'
 )
 

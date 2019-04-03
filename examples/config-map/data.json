@@ -1,0 +1,16 @@
+{
+  "glossary": [
+    {
+      "title": "Cluster",
+      "description": "A set of machines, called nodes, that run containerized applications managed by Kubernetes.",
+      "info": "A cluster has several worker nodes and at least one master node.",
+      "url": "https://kubernetes.io/docs/concepts/"
+    },
+    {
+      "title": "Container runtime interface (CRI)",
+      "description": "The container runtime interface (CRI) is an an API for container runtimes to integrate with kubelet on a node.",
+      "info": "For more information, see the CRI API and specifications.",
+      "url": "https://github.com/kubernetes/community/blob/master/contributors/devel/sig-node/container-runtime-interface.md"
+    }
+  ]
+}
