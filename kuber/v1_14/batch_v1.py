@@ -284,7 +284,7 @@ class Job(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.BatchV1Api:
+    ) -> 'client.BatchV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

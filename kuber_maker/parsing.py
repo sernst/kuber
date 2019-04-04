@@ -64,6 +64,17 @@ def parse_property(
     )
 
 
+def _get_qualified_api_version(package: str) -> str:
+    """..."""
+    # Get the api version parts like (app, v1) from the package.
+    api_version_parts = package.rsplit('.', 1)[-1].split('_')
+
+    if api_version_parts[0] == 'rbac':
+        api_version_parts[0] = 'rbac.authorization.k8s.io'
+
+    return '/'.join(api_version_parts)
+
+
 def _create_entity(
         version: str,
         api_path: str,
@@ -89,13 +100,10 @@ def _create_entity(
         and (api_path.startswith('io.k8s.api.'))
     )
 
-    # Get the api version parts like (app, v1) from the package.
-    api_version_parts = package.rsplit('.', 1)[-1].split('_')
-
     return kuber_maker.Entity(
         api_path=api_path,
         class_name=api_path.rsplit('.', 1)[-1],
-        api_version='/'.join(api_version_parts),
+        api_version=_get_qualified_api_version(package),
         package=package,
         code_path=f'{path}.py',
         description=definition.get('description', ''),

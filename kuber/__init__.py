@@ -12,7 +12,7 @@ from kuber.kube_api import get_version_from_cluster  # noqa
 
 
 #: kuber library version.
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 
 #: The most recent kubernetes version available within the library, which
 #: can be used to avoid hard-coded versions when creating resource bundles.

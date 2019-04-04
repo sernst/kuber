@@ -207,7 +207,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AuthorizationV1beta1Api:
+    ) -> 'client.AuthorizationV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -837,7 +837,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AuthorizationV1beta1Api:
+    ) -> 'client.AuthorizationV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1125,7 +1125,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AuthorizationV1beta1Api:
+    ) -> 'client.AuthorizationV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1376,7 +1376,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AuthorizationV1beta1Api:
+    ) -> 'client.AuthorizationV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

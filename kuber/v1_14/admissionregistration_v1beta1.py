@@ -167,7 +167,7 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AdmissionregistrationV1beta1Api:
+    ) -> 'client.AdmissionregistrationV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -678,7 +678,7 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AdmissionregistrationV1beta1Api:
+    ) -> 'client.AdmissionregistrationV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

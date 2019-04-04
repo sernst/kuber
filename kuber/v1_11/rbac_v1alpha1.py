@@ -21,7 +21,7 @@ class AggregationRule(_kuber_definitions.Definition):
     ):
         """Create AggregationRule instance."""
         super(AggregationRule, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='AggregationRule'
         )
         self._properties = {
@@ -83,7 +83,7 @@ class ClusterRole(_kuber_definitions.Resource):
     ):
         """Create ClusterRole instance."""
         super(ClusterRole, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRole'
         )
         self._properties = {
@@ -245,14 +245,14 @@ class ClusterRole(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRole':
         return self
@@ -276,7 +276,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
     ):
         """Create ClusterRoleBinding instance."""
         super(ClusterRoleBinding, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRoleBinding'
         )
         self._properties = {
@@ -438,14 +438,14 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRoleBinding':
         return self
@@ -467,7 +467,7 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
     ):
         """Create ClusterRoleBindingList instance."""
         super(ClusterRoleBindingList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRoleBindingList'
         )
         self._properties = {
@@ -525,14 +525,14 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> client.RbacAuthorizationV1alpha1Api:
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRoleBindingList':
         return self
@@ -553,7 +553,7 @@ class ClusterRoleList(_kuber_definitions.Collection):
     ):
         """Create ClusterRoleList instance."""
         super(ClusterRoleList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRoleList'
         )
         self._properties = {
@@ -611,14 +611,14 @@ class ClusterRoleList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> client.RbacAuthorizationV1alpha1Api:
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'ClusterRoleList':
         return self
@@ -644,7 +644,7 @@ class PolicyRule(_kuber_definitions.Definition):
     ):
         """Create PolicyRule instance."""
         super(PolicyRule, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='PolicyRule'
         )
         self._properties = {
@@ -788,7 +788,7 @@ class Role(_kuber_definitions.Resource):
     ):
         """Create Role instance."""
         super(Role, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='Role'
         )
         self._properties = {
@@ -926,14 +926,14 @@ class Role(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'Role':
         return self
@@ -960,7 +960,7 @@ class RoleBinding(_kuber_definitions.Resource):
     ):
         """Create RoleBinding instance."""
         super(RoleBinding, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleBinding'
         )
         self._properties = {
@@ -1122,14 +1122,14 @@ class RoleBinding(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'RoleBinding':
         return self
@@ -1150,7 +1150,7 @@ class RoleBindingList(_kuber_definitions.Collection):
     ):
         """Create RoleBindingList instance."""
         super(RoleBindingList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleBindingList'
         )
         self._properties = {
@@ -1208,14 +1208,14 @@ class RoleBindingList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> client.RbacAuthorizationV1alpha1Api:
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'RoleBindingList':
         return self
@@ -1236,7 +1236,7 @@ class RoleList(_kuber_definitions.Collection):
     ):
         """Create RoleList instance."""
         super(RoleList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleList'
         )
         self._properties = {
@@ -1294,14 +1294,14 @@ class RoleList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> client.RbacAuthorizationV1alpha1Api:
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'RoleList':
         return self
@@ -1323,7 +1323,7 @@ class RoleRef(_kuber_definitions.Definition):
     ):
         """Create RoleRef instance."""
         super(RoleRef, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleRef'
         )
         self._properties = {
@@ -1388,7 +1388,7 @@ class Subject(_kuber_definitions.Resource):
     ):
         """Create Subject instance."""
         super(Subject, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='Subject'
         )
         self._properties = {
@@ -1520,14 +1520,14 @@ class Subject(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.RbacV1alpha1Api(**kwargs)
+        return client.RbacAuthorizationV1alpha1Api(**kwargs)
 
     def __enter__(self) -> 'Subject':
         return self

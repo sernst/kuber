@@ -145,6 +145,14 @@ def _containers_location(
     return []
 
 
+def _get_kubernetes_api_class_name(entity: kuber_maker.Entity):
+    """.."""
+    parts = entity.api_version.split('/')
+    if entity.api_path.find('rbac') != -1:
+        return f'RbacAuthorization{parts[-1].capitalize()}Api'
+    return ''.join([p.capitalize() for p in parts] + ['Api'])
+
+
 def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
     """..."""
     blocks = []
@@ -158,10 +166,7 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
         containers_location = '.'.join(_containers_location(e, all_entities))
         include_container = include_container or bool(containers_location)
         has_resource = has_resource or e.is_resource
-        kubernetes_api_class_name = ''.join(
-            [p.capitalize() for p in e.api_version.split('/')]
-            + ['Api']
-        )
+        kubernetes_api_class_name = _get_kubernetes_api_class_name(e)
         property_ignores = ['apiVersion', 'kind']
         if e.is_resource:
             property_ignores += ['status']

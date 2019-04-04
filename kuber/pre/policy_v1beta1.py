@@ -282,7 +282,7 @@ class Eviction(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.PolicyV1beta1Api:
+    ) -> 'client.PolicyV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -691,7 +691,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.PolicyV1beta1Api:
+    ) -> 'client.PolicyV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1216,7 +1216,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.PolicyV1beta1Api:
+    ) -> 'client.PolicyV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

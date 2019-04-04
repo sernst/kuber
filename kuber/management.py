@@ -392,10 +392,15 @@ def from_dict(
     """
     version = kubernetes_version or 'latest'
     version: str = getattr(version, 'label', version)
-    if version.find('.') > 0:
-        version = f'v{version}'.replace('.', '_')
+    if version.find('.') > 0 and not version.startswith('v'):
+        version = f'v{version}'
+    version = version.replace('.', '_')
 
-    parts = resource_definition['apiVersion'].split('/')[:2]
+    parts = (
+        resource_definition['apiVersion']
+        .replace('rbac.authorization.k8s.io/', 'rbac/')
+        .split('/')[:2]
+    )
     area = parts[-1]
     group = parts[0] if len(parts) > 1 else 'core'
     package = '.'.join(['kuber', f'{version}', f'{group}_{area}'])

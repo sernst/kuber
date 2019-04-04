@@ -206,7 +206,7 @@ class ControllerRevision(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta1Api:
+    ) -> 'client.AppsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -569,7 +569,7 @@ class Deployment(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta1Api:
+    ) -> 'client.AppsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -979,7 +979,7 @@ class DeploymentRollback(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta1Api:
+    ) -> 'client.AppsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1943,7 +1943,7 @@ class Scale(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta1Api:
+    ) -> 'client.AppsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -2365,7 +2365,7 @@ class StatefulSet(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta1Api:
+    ) -> 'client.AppsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

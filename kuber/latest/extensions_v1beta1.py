@@ -458,7 +458,7 @@ class DaemonSet(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1485,7 +1485,7 @@ class Deployment(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1895,7 +1895,7 @@ class DeploymentRollback(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -3082,7 +3082,7 @@ class Ingress(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -3745,7 +3745,7 @@ class NetworkPolicy(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -4593,7 +4593,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -5551,7 +5551,7 @@ class ReplicaSet(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -6784,7 +6784,7 @@ class Scale(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

@@ -16,7 +16,7 @@ class ClusterRole(_kuber_definitions.Definition):
     ):
         """Create ClusterRole instance."""
         super(ClusterRole, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRole'
         )
         self._properties = {
@@ -44,7 +44,7 @@ class ClusterRoleBinding(_kuber_definitions.Definition):
     ):
         """Create ClusterRoleBinding instance."""
         super(ClusterRoleBinding, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRoleBinding'
         )
         self._properties = {
@@ -72,7 +72,7 @@ class ClusterRoleBindingList(_kuber_definitions.Definition):
     ):
         """Create ClusterRoleBindingList instance."""
         super(ClusterRoleBindingList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRoleBindingList'
         )
         self._properties = {
@@ -100,7 +100,7 @@ class ClusterRoleList(_kuber_definitions.Definition):
     ):
         """Create ClusterRoleList instance."""
         super(ClusterRoleList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='ClusterRoleList'
         )
         self._properties = {
@@ -128,7 +128,7 @@ class PolicyRule(_kuber_definitions.Definition):
     ):
         """Create PolicyRule instance."""
         super(PolicyRule, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='PolicyRule'
         )
         self._properties = {
@@ -156,7 +156,7 @@ class Role(_kuber_definitions.Definition):
     ):
         """Create Role instance."""
         super(Role, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='Role'
         )
         self._properties = {
@@ -184,7 +184,7 @@ class RoleBinding(_kuber_definitions.Definition):
     ):
         """Create RoleBinding instance."""
         super(RoleBinding, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleBinding'
         )
         self._properties = {
@@ -212,7 +212,7 @@ class RoleBindingList(_kuber_definitions.Definition):
     ):
         """Create RoleBindingList instance."""
         super(RoleBindingList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleBindingList'
         )
         self._properties = {
@@ -240,7 +240,7 @@ class RoleList(_kuber_definitions.Definition):
     ):
         """Create RoleList instance."""
         super(RoleList, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleList'
         )
         self._properties = {
@@ -268,7 +268,7 @@ class RoleRef(_kuber_definitions.Definition):
     ):
         """Create RoleRef instance."""
         super(RoleRef, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='RoleRef'
         )
         self._properties = {
@@ -296,7 +296,7 @@ class Subject(_kuber_definitions.Definition):
     ):
         """Create Subject instance."""
         super(Subject, self).__init__(
-            api_version='rbac/v1alpha1',
+            api_version='rbac.authorization.k8s.io/v1alpha1',
             kind='Subject'
         )
         self._properties = {

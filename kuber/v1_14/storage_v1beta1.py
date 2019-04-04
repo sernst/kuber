@@ -181,7 +181,7 @@ class CSIDriver(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.StorageV1beta1Api:
+    ) -> 'client.StorageV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -549,7 +549,7 @@ class CSINode(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.StorageV1beta1Api:
+    ) -> 'client.StorageV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1124,7 +1124,7 @@ class StorageClass(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.StorageV1beta1Api:
+    ) -> 'client.StorageV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1428,7 +1428,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.StorageV1beta1Api:
+    ) -> 'client.StorageV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

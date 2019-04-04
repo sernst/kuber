@@ -137,7 +137,7 @@ class CrossVersionObjectReference(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AutoscalingV1Api:
+    ) -> 'client.AutoscalingV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -351,7 +351,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AutoscalingV1Api:
+    ) -> 'client.AutoscalingV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -891,7 +891,7 @@ class Scale(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AutoscalingV1Api:
+    ) -> 'client.AutoscalingV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
