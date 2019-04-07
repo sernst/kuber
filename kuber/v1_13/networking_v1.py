@@ -528,7 +528,7 @@ class NetworkPolicyList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.NetworkingV1Api:
+    ) -> 'client.NetworkingV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

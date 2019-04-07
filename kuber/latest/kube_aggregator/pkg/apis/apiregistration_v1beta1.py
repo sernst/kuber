@@ -297,7 +297,7 @@ class APIServiceList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ApiregistrationV1beta1Api:
+    ) -> 'client.ApiregistrationV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

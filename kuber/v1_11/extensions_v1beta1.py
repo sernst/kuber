@@ -627,7 +627,7 @@ class DaemonSetList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1674,7 +1674,7 @@ class DeploymentList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -3186,7 +3186,7 @@ class IngressList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -3995,7 +3995,7 @@ class NetworkPolicyList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -4633,7 +4633,7 @@ class PodSecurityPolicyList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -5636,7 +5636,7 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.ExtensionsV1beta1Api:
+    ) -> 'client.ExtensionsV1beta1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

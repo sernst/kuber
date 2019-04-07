@@ -161,14 +161,14 @@ class Lease(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> 'client.CoordinationV1Api':
+    ) -> 'client.CoordinationApi':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.CoordinationV1Api(**kwargs)
+        return client.CoordinationApi(**kwargs)
 
     def __enter__(self) -> 'Lease':
         return self
@@ -251,14 +251,14 @@ class LeaseList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoordinationV1Api:
+    ) -> 'client.CoordinationApi':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.CoordinationV1Api(**kwargs)
+        return client.CoordinationApi(**kwargs)
 
     def __enter__(self) -> 'LeaseList':
         return self

@@ -2145,7 +2145,7 @@ class ComponentStatusList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -2587,7 +2587,7 @@ class ConfigMapList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -5295,7 +5295,7 @@ class EndpointsList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -6108,7 +6108,7 @@ class EventList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -8694,7 +8694,7 @@ class LimitRangeList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -9390,7 +9390,7 @@ class NamespaceList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -10390,7 +10390,7 @@ class NodeList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -12246,7 +12246,7 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -12722,7 +12722,7 @@ class PersistentVolumeList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -14625,7 +14625,7 @@ class PodList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -16459,7 +16459,7 @@ class PodTemplateList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -18075,7 +18075,7 @@ class ReplicationControllerList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -18816,7 +18816,7 @@ class ResourceQuotaList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -20200,7 +20200,7 @@ class SecretList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -21313,7 +21313,7 @@ class ServiceAccountList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -21506,7 +21506,7 @@ class ServiceList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.CoreV1Api:
+    ) -> 'client.CoreV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

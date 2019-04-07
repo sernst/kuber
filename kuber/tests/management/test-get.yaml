@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: foo
+  labels:
+    app: foo
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bar
+  labels:
+    app: bar
+
+---
+# This is not a resource. It is empty.
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: foo
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo

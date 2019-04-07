@@ -376,7 +376,7 @@ class CronJobList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.BatchV2alpha1Api:
+    ) -> 'client.BatchV2alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

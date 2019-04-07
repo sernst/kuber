@@ -258,7 +258,7 @@ class RuntimeClassList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.NodeV1alpha1Api:
+    ) -> 'client.NodeV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

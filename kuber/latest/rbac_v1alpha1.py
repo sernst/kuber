@@ -525,7 +525,7 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacAuthorizationV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -611,7 +611,7 @@ class ClusterRoleList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacAuthorizationV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1208,7 +1208,7 @@ class RoleBindingList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacAuthorizationV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1294,7 +1294,7 @@ class RoleList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.RbacAuthorizationV1alpha1Api:
+    ) -> 'client.RbacAuthorizationV1alpha1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

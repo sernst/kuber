@@ -81,7 +81,7 @@ class ResourceBundle:
         """
         for r in self.resources:
             match = (
-                (kind is None or r.kind != kind)
+                (kind is None or r.kind == kind)
                 and (name is None or getattr(r, 'metadata').name == name)
             )
             labels = {
@@ -112,9 +112,22 @@ class ResourceBundle:
             resource to remove from the bundle.
         """
         resource = self.get(name, kind, **kwargs)
-        if resource:
-            self._resources.remove(resource)
+        self.remove(resource)
         return resource
+
+    def remove(self, resource: 'Resource') -> 'ResourceBundle':
+        """
+        Removes the specified resource object from the bundle if it is
+        currently in the bundle.
+
+        :param resource:
+            Resource object to remove from the bundle.
+        :return:
+            The ResourceBundle object.
+        """
+        if resource and resource in self._resources:
+            self._resources.remove(resource)
+        return self
 
     def push(self, resource: 'Resource', *args: 'Resource') -> 'ResourceBundle':
         """
@@ -241,7 +254,7 @@ class ResourceBundle:
         return self
 
     def render_yaml(self) -> typing.List[str]:
-        """Serialies the bundle resources to a list of YAML strings."""
+        """Serializes the bundle resources to a list of YAML strings."""
         return [self._conform_resource(r).to_yaml() for r in self.resources]
 
     def render_yaml_bundle(self) -> str:

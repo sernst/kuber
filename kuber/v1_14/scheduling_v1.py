@@ -298,7 +298,7 @@ class PriorityClassList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.SchedulingV1Api:
+    ) -> 'client.SchedulingV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

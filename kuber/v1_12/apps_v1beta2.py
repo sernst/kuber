@@ -297,7 +297,7 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta2Api:
+    ) -> 'client.AppsV1beta2Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -791,7 +791,7 @@ class DaemonSetList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta2Api:
+    ) -> 'client.AppsV1beta2Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -1818,7 +1818,7 @@ class DeploymentList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta2Api:
+    ) -> 'client.AppsV1beta2Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -2845,7 +2845,7 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta2Api:
+    ) -> 'client.AppsV1beta2Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -4268,7 +4268,7 @@ class StatefulSetList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> client.AppsV1beta2Api:
+    ) -> 'client.AppsV1beta2Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.

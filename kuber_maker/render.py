@@ -150,7 +150,10 @@ def _get_kubernetes_api_class_name(entity: kuber_maker.Entity):
     parts = entity.api_version.split('/')
     if entity.api_path.find('rbac') != -1:
         return f'RbacAuthorization{parts[-1].capitalize()}Api'
-    return ''.join([p.capitalize() for p in parts] + ['Api'])
+    result = ''.join([p.capitalize() for p in parts] + ['Api'])
+    if result == 'CoordinationV1Api':
+        return 'CoordinationApi'
+    return result
 
 
 def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
