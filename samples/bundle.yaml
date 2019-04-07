@@ -1,0 +1,44 @@
+# This is a bundle of 3 jobs and one empty one
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-one
+  labels:
+    app: test
+spec:
+  template:
+    spec:
+      containers:
+      - image: foo:bar
+        imagePullPolicy: Always
+
+---
+# This is the empty one.
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-two
+  labels:
+    app: test
+spec:
+  template:
+    spec:
+      containers:
+      - image: foo:bar
+        imagePullPolicy: Always
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-three
+  labels:
+    app: test
+spec:
+  template:
+    spec:
+      containers:
+      - image: foo:bar
+        imagePullPolicy: Always

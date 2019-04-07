@@ -1,18 +1,19 @@
 import typing
 
 from kuber import versioning as _versioning
+from kuber.kube_api import get_version_from_cluster  # noqa
+from kuber.kube_api import load_access_config  # noqa
 from kuber.management import ResourceBundle
 from kuber.management import from_dict  # noqa
 from kuber.management import from_json_file  # noqa
 from kuber.management import from_yaml  # noqa
 from kuber.management import from_yaml_file  # noqa
+from kuber.management import from_yaml_file_multiple  # noqa
+from kuber.management import from_yaml_multiple  # noqa
 from kuber.management import new_resource  # noqa
-from kuber.kube_api import load_access_config  # noqa
-from kuber.kube_api import get_version_from_cluster  # noqa
-
 
 #: kuber library version.
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 #: The most recent kubernetes version available within the library, which
 #: can be used to avoid hard-coded versions when creating resource bundles.
