@@ -93,6 +93,39 @@ class ResourceBundle:
                 return r
         return None
 
+    def get_many(
+            self,
+            name: str = None,
+            kind: str = None,
+            **kwargs
+    ) -> typing.List[ResourceSubclass]:
+        """
+        Fetches the resources in the bundle that matches the given properties
+        using name, kind and optional labels to select the desired resources.
+
+        :param name:
+            Name of the resources to return.
+        :param kind:
+            Kubernetes kind of the resources to return, e.g. 'Deployment'.
+        :param kwargs:
+            Optionally specify metadata labels to use when selecting the
+            resource to return.
+        """
+        results = []
+        for r in self.resources:
+            match = (
+                (kind is None or r.kind == kind)
+                and (name is None or getattr(r, 'metadata').name == name)
+            )
+            labels = {
+                key: value
+                for key, value in getattr(r, 'metadata').labels.items()
+                if key in kwargs and kwargs[key] == value
+            }
+            if match and len(kwargs) == len(labels):
+                results.append(r)
+        return results
+
     def pop(
             self,
             name: str = None,
@@ -115,18 +148,26 @@ class ResourceBundle:
         self.remove(resource)
         return resource
 
-    def remove(self, resource: 'Resource') -> 'ResourceBundle':
+    def remove(
+            self,
+            resource: 'Resource',
+            *args: 'Resource'
+    ) -> 'ResourceBundle':
         """
-        Removes the specified resource object from the bundle if it is
-        currently in the bundle.
+        Removes the specified resource object (or resource objects) from
+        the bundle if they are currently in the bundle.
 
         :param resource:
             Resource object to remove from the bundle.
+        :param args:
+            Optionally specify additional resource objects to remove.
         :return:
             The ResourceBundle object.
         """
-        if resource and resource in self._resources:
-            self._resources.remove(resource)
+        resources = [resource] + list(args)
+        for r in resources:
+            if r and r in self._resources:
+                self._resources.remove(r)
         return self
 
     def push(self, resource: 'Resource', *args: 'Resource') -> 'ResourceBundle':

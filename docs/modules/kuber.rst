@@ -57,6 +57,14 @@ kuber.management module
     :undoc-members:
     :show-inheritance:
 
+kuber.versioning module
+-----------------------
+
+.. automodule:: kuber.versioning
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

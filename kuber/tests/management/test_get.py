@@ -38,3 +38,11 @@ def test_get_none():
     bundle = kuber.from_file(os.path.join(MY_DIRECTORY, 'test-get.yaml'))
     resource = bundle.get(app='baz')
     assert resource is None
+
+
+def test_get_many():
+    """Should return all matching resources"""
+    bundle = kuber.from_file(os.path.join(MY_DIRECTORY, 'test-get.yaml'))
+    resources = bundle.get_many(kind='Job')
+    assert len(resources) == 2
+    assert set([r.kind for r in resources]) == {'Job'}
