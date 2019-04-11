@@ -114,7 +114,33 @@ class CrossVersionObjectReference(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the CrossVersionObjectReference from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_cross_version_object_reference',
+            'read_cross_version_object_reference'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the CrossVersionObjectReference from the currently configured
         Kubernetes cluster.
@@ -124,13 +150,18 @@ class CrossVersionObjectReference(_kuber_definitions.Resource):
             'delete_cross_version_object_reference'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -328,7 +359,33 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the HorizontalPodAutoscaler from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_horizontal_pod_autoscaler',
+            'read_horizontal_pod_autoscaler'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the HorizontalPodAutoscaler from the currently configured
         Kubernetes cluster.
@@ -338,13 +395,18 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             'delete_horizontal_pod_autoscaler'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -868,7 +930,33 @@ class Scale(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the Scale from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_scale',
+            'read_scale'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the Scale from the currently configured
         Kubernetes cluster.
@@ -878,13 +966,18 @@ class Scale(_kuber_definitions.Resource):
             'delete_scale'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod

@@ -1,5 +1,4 @@
 from collections import defaultdict
-import os
 
 import kuber_maker
 
@@ -11,7 +10,10 @@ TYPES = {
     'boolean': 'bool',
     'number': 'float',
     'Time': 'str',
-    'IntOrString': 'str',
+    # IntOrStrings must be integer values because of OpenApi v2
+    # validation limitations. See issue for details:
+    # https://github.com/kubernetes-client/python/issues/322
+    'IntOrString': 'int',
     None: None
 }
 
@@ -58,7 +60,7 @@ def parse_property(
     definition = definition.copy()
     return kuber_maker.Property(
         name=name,
-        data_type=_get_data_type(version, definition),
+        data_type=_get_data_type(version, name, definition),
         description=definition.get('description', ''),
         source=definition
     )
@@ -117,6 +119,7 @@ def _create_entity(
 
 def _get_data_type(
         version: str,
+        name: str,
         property_definition: dict
 ) -> kuber_maker.DataType:
     """..."""

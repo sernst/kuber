@@ -12,6 +12,7 @@ import kuber
 from kuber import cli
 from kuber import versioning as _versioning
 from kuber.definitions import Resource
+from kuber import execution
 
 ResourceSubclass = typing.Union[Resource, typing.Any]
 
@@ -22,7 +23,8 @@ class ResourceBundle:
     def __init__(
             self,
             bundle_name: str = None,
-            kubernetes_version: 'kuber.VersionLabel' = 'latest'
+            kubernetes_version: 'kuber.VersionLabel' = 'latest',
+            namespace: str = None
     ):
         """
         Initializes the bundle.
@@ -34,8 +36,11 @@ class ResourceBundle:
             Kubernetes version to use when loading and interacting with
             resource objects inside the bundle. By default this will use the
             latest stable Kubernetes version available within the library.
+        :param namespace:
+            Kubernetes namespace in which the resources will/do reside.
         """
         self.name = bundle_name or str(uuid.uuid4())
+        self.namespace = namespace
         self._version = kubernetes_version
         self._resources: typing.List[ResourceSubclass] = []
         self._cli = cli.ResourceBundleCli(self)
@@ -322,51 +327,98 @@ class ResourceBundle:
             kuber_api_version=version.label,
             kuber_kube_version=version.version,
             kuber_bundle_name=self.name,
-            kuber_timestamp=f'{datetime.datetime.utcnow().isoformat()}Z'
+            kuber_timestamp=(
+                f'{datetime.datetime.utcnow().isoformat()}Z'
+                .replace(':', '-')
+            )
         )
         return resource
 
-    def create(self, namespace: str = None) -> list:
+    def create(
+            self,
+            namespace: str = None,
+            echo: bool = False
+    ) -> typing.List['execution.ResponseInfo']:
         """
         Create all resources in the bundle.
 
         :param namespace:
             Optionally specify the namespace in which to create resources
-            that do not have an explicit namespace specified.
+            that do not have an explicit namespace specified. Will default
+            to the namespace specified in this bundle.
+        :param echo:
+            Whether or not to pretty-print the response objects to stdout
+            while creating resources.
         """
-        return [r.create_resource(namespace) for r in self.resources]
+        ns = namespace or self.namespace
+        return [
+            execution.create_resource(r, ns, echo=echo)
+            for r in self.resources
+        ]
 
-    def replace(self, namespace: str = None) -> list:
+    def replace(
+            self,
+            namespace: str = None,
+            echo: bool = False
+    ) -> typing.List['execution.ResponseInfo']:
         """
         Replace all resources in the bundle.
 
         :param namespace:
             Optionally specify the namespace in which to replace resources
-            that do not have an explicit namespace specified.
+            that do not have an explicit namespace specified. Will default
+            to the namespace specified in this bundle.
+        :param echo:
+            Whether or not to pretty-print the response objects to stdout
+            while creating resources.
         """
-        return [r.replace_resource(namespace) for r in self.resources]
+        ns = namespace or self.namespace
+        return [
+            execution.replace_resource(r, ns, echo=echo)
+            for r in self.resources
+        ]
 
     def statuses(
             self,
-            namespace: str = None
-    ) -> list:
+            namespace: str = None,
+            echo: bool = False
+    ) -> typing.List['execution.ResponseInfo']:
         """
         Returns a list of statuses for all resources in the bundle.
 
         :param namespace:
             Optionally specify the namespace where the resources reside.
+            Will default to the namespace specified in this bundle.
+        :param echo:
+            Whether or not to pretty-print the response objects to stdout
+            while creating resources.
         """
-        return [r.get_resource_status(namespace) for r in self.resources]
+        ns = namespace or self.namespace
+        return [
+            execution.get_resource_status(r, ns, echo=echo)
+            for r in self.resources
+        ]
 
-    def delete(self, namespace: str = None):
+    def delete(
+            self,
+            namespace: str = None,
+            echo: bool = False
+    ) -> typing.List['execution.ResponseInfo']:
         """
         Delete all resources in the bundle.
 
         :param namespace:
             Optionally specify the namespace in which to delete the resource.
+            Will default to the namespace specified in this bundle.
+        :param echo:
+            Whether or not to pretty-print the response objects to stdout
+            while creating resources.
         """
-        for r in self.resources:
-            r.delete_resource(namespace)
+        ns = namespace or self.namespace
+        return [
+            execution.delete_resource(r, ns, echo=echo)
+            for r in self.resources
+        ]
 
 
 def from_yaml_file(

@@ -304,7 +304,33 @@ class Eviction(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the Eviction from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_eviction',
+            'read_eviction'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the Eviction from the currently configured
         Kubernetes cluster.
@@ -314,13 +340,18 @@ class Eviction(_kuber_definitions.Resource):
             'delete_eviction'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -713,7 +744,33 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the PodDisruptionBudget from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_pod_disruption_budget',
+            'read_pod_disruption_budget'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the PodDisruptionBudget from the currently configured
         Kubernetes cluster.
@@ -723,13 +780,18 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             'delete_pod_disruption_budget'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -863,14 +925,14 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
 
         }
         self._types = {
-            'maxUnavailable': (str, None),
-            'minAvailable': (str, None),
+            'maxUnavailable': (int, None),
+            'minAvailable': (int, None),
             'selector': (LabelSelector, None),
 
         }
 
     @property
-    def max_unavailable(self) -> typing.Optional[str]:
+    def max_unavailable(self) -> typing.Optional[int]:
         """
         An eviction is allowed if at most "maxUnavailable" pods
         selected by "selector" are unavailable after the eviction,
@@ -879,7 +941,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         a mutually exclusive setting with "minAvailable".
         """
         value = self._properties.get('maxUnavailable')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @max_unavailable.setter
     def max_unavailable(
@@ -896,7 +958,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         self._properties['maxUnavailable'] = f'{value}'
 
     @property
-    def min_available(self) -> typing.Optional[str]:
+    def min_available(self) -> typing.Optional[int]:
         """
         An eviction is allowed if at least "minAvailable" pods
         selected by "selector" will still be available after the
@@ -905,7 +967,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         specifying "100%".
         """
         value = self._properties.get('minAvailable')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @min_available.setter
     def min_available(
@@ -1238,7 +1300,33 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the PodSecurityPolicy from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_pod_security_policy',
+            'read_pod_security_policy'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the PodSecurityPolicy from the currently configured
         Kubernetes cluster.
@@ -1248,13 +1336,18 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             'delete_pod_security_policy'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod

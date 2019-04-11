@@ -275,7 +275,33 @@ class StorageClass(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the StorageClass from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_storage_class',
+            'read_storage_class'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the StorageClass from the currently configured
         Kubernetes cluster.
@@ -285,13 +311,18 @@ class StorageClass(_kuber_definitions.Resource):
             'delete_storage_class'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod

@@ -179,7 +179,33 @@ class TokenReview(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the TokenReview from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_token_review',
+            'read_token_review'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the TokenReview from the currently configured
         Kubernetes cluster.
@@ -189,13 +215,18 @@ class TokenReview(_kuber_definitions.Resource):
             'delete_token_review'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod

@@ -220,6 +220,11 @@ class Resource(Definition):
         """Must be implemented by subclasses."""
         pass
 
+    @abc.abstractmethod
+    def read_resource(self, namespace: str = None):
+        """Must be implemented by subclasses."""
+        pass
+
     @staticmethod
     @abc.abstractmethod
     def get_resource_api(
@@ -246,18 +251,21 @@ def serialize_property(value: typing.Any) -> typing.Any:
     :return:
         Serialized version of the supplied value.
     """
+    # Some falsy cases are meaningful and should be preserved.
+    nulls = (None, {}, [])
+
     if hasattr(value, 'to_dict'):
         return value.to_dict() or None
 
     if isinstance(value, (list, tuple)):
         results = [serialize_property(v) for v in value]
-        return [r for r in results if r] or None
+        return [r for r in results if r not in nulls] or None
 
     if isinstance(value, dict):
         results = {k: serialize_property(v) for k, v in value.items()}
-        return {k: v for k, v in results.items() if v} or None
+        return {k: v for k, v in results.items() if v not in nulls} or None
 
-    return value if value else None
+    return None if value in nulls else value
 
 
 def deserialize_property(value: typing.Any, data_type: tuple) -> typing.Any:

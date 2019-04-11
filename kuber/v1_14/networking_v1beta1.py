@@ -325,7 +325,33 @@ class Ingress(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the Ingress from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_ingress',
+            'read_ingress'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the Ingress from the currently configured
         Kubernetes cluster.
@@ -335,13 +361,18 @@ class Ingress(_kuber_definitions.Resource):
             'delete_ingress'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -387,7 +418,7 @@ class IngressBackend(_kuber_definitions.Definition):
         }
         self._types = {
             'serviceName': (str, None),
-            'servicePort': (str, None),
+            'servicePort': (int, None),
 
         }
 
@@ -406,12 +437,12 @@ class IngressBackend(_kuber_definitions.Definition):
         self._properties['serviceName'] = value
 
     @property
-    def service_port(self) -> typing.Optional[str]:
+    def service_port(self) -> typing.Optional[int]:
         """
         Specifies the port of the referenced service.
         """
         value = self._properties.get('servicePort')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @service_port.setter
     def service_port(

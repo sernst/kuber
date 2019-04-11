@@ -1,5 +1,5 @@
     {% for p, v in entity.properties.items() if p not in property_ignores %}
-    {% if v.data_type.api_type == 'IntOrString' %}
+    {% if v.data_type.api_type == 'IntOrString' and v.data_type.python_type == 'str' %}
     @property
     def {{ p | snake_case }}(self) -> typing.Optional[str]:
         """
@@ -7,6 +7,14 @@
         """
         value = self._properties.get('{{ p }}')
         return f'{value}' if value else None
+    {% elif v.data_type.api_type == 'IntOrString' and v.data_type.python_type == 'int' %}
+    @property
+    def {{ p | snake_case }}(self) -> typing.Optional[int]:
+        """
+        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
+        """
+        value = self._properties.get('{{ p }}')
+        return int(value) if value is not None else None
     {% else %}
     @property
     def {{ p | snake_case }}(self) -> {{ v.data_type.type_hint }}:

@@ -209,7 +209,33 @@ class NetworkPolicy(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the NetworkPolicy from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_network_policy',
+            'read_network_policy'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the NetworkPolicy from the currently configured
         Kubernetes cluster.
@@ -219,13 +245,18 @@ class NetworkPolicy(_kuber_definitions.Resource):
             'delete_network_policy'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -684,20 +715,20 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
 
         }
         self._types = {
-            'port': (str, None),
+            'port': (int, None),
             'protocol': (str, None),
 
         }
 
     @property
-    def port(self) -> typing.Optional[str]:
+    def port(self) -> typing.Optional[int]:
         """
         The port on the given protocol. This can either be a
         numerical or named port on a pod. If this field is not
         provided, this matches all port names and numbers.
         """
         value = self._properties.get('port')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @port.setter
     def port(

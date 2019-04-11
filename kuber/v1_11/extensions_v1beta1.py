@@ -390,7 +390,33 @@ class DaemonSet(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the DaemonSet from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_daemon_set',
+            'read_daemon_set'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the DaemonSet from the currently configured
         Kubernetes cluster.
@@ -400,13 +426,18 @@ class DaemonSet(_kuber_definitions.Resource):
             'delete_daemon_set'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -1417,7 +1448,33 @@ class Deployment(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the Deployment from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_deployment',
+            'read_deployment'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the Deployment from the currently configured
         Kubernetes cluster.
@@ -1427,13 +1484,18 @@ class Deployment(_kuber_definitions.Resource):
             'delete_deployment'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -1827,7 +1889,33 @@ class DeploymentRollback(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the DeploymentRollback from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_deployment_rollback',
+            'read_deployment_rollback'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the DeploymentRollback from the currently configured
         Kubernetes cluster.
@@ -1837,13 +1925,18 @@ class DeploymentRollback(_kuber_definitions.Resource):
             'delete_deployment_rollback'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -3007,7 +3100,33 @@ class Ingress(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the Ingress from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_ingress',
+            'read_ingress'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the Ingress from the currently configured
         Kubernetes cluster.
@@ -3017,13 +3136,18 @@ class Ingress(_kuber_definitions.Resource):
             'delete_ingress'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -3069,7 +3193,7 @@ class IngressBackend(_kuber_definitions.Definition):
         }
         self._types = {
             'serviceName': (str, None),
-            'servicePort': (str, None),
+            'servicePort': (int, None),
 
         }
 
@@ -3088,12 +3212,12 @@ class IngressBackend(_kuber_definitions.Definition):
         self._properties['serviceName'] = value
 
     @property
-    def service_port(self) -> typing.Optional[str]:
+    def service_port(self) -> typing.Optional[int]:
         """
         Specifies the port of the referenced service.
         """
         value = self._properties.get('servicePort')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @service_port.setter
     def service_port(
@@ -3670,7 +3794,33 @@ class NetworkPolicy(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the NetworkPolicy from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_network_policy',
+            'read_network_policy'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the NetworkPolicy from the currently configured
         Kubernetes cluster.
@@ -3680,13 +3830,18 @@ class NetworkPolicy(_kuber_definitions.Resource):
             'delete_network_policy'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -4152,13 +4307,13 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
 
         }
         self._types = {
-            'port': (str, None),
+            'port': (int, None),
             'protocol': (str, None),
 
         }
 
     @property
-    def port(self) -> typing.Optional[str]:
+    def port(self) -> typing.Optional[int]:
         """
         If specified, the port on the given protocol.  This can
         either be a numerical or named port on a pod.  If this field
@@ -4167,7 +4322,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         will be matched.
         """
         value = self._properties.get('port')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @port.setter
     def port(
@@ -4518,7 +4673,33 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
         """This resource does not have a status."""
         pass
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the PodSecurityPolicy from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_pod_security_policy',
+            'read_pod_security_policy'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the PodSecurityPolicy from the currently configured
         Kubernetes cluster.
@@ -4528,13 +4709,18 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             'delete_pod_security_policy'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -5397,7 +5583,33 @@ class ReplicaSet(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the ReplicaSet from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_replica_set',
+            'read_replica_set'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the ReplicaSet from the currently configured
         Kubernetes cluster.
@@ -5407,13 +5619,18 @@ class ReplicaSet(_kuber_definitions.Resource):
             'delete_replica_set'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
@@ -6064,12 +6281,12 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
 
         }
         self._types = {
-            'maxUnavailable': (str, None),
+            'maxUnavailable': (int, None),
 
         }
 
     @property
-    def max_unavailable(self) -> typing.Optional[str]:
+    def max_unavailable(self) -> typing.Optional[int]:
         """
         The maximum number of DaemonSet pods that can be unavailable
         during the update. Value can be an absolute number (ex: 5)
@@ -6087,7 +6304,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         DaemonSet pods are available at all times during the update.
         """
         value = self._properties.get('maxUnavailable')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @max_unavailable.setter
     def max_unavailable(
@@ -6140,13 +6357,13 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
 
         }
         self._types = {
-            'maxSurge': (str, None),
-            'maxUnavailable': (str, None),
+            'maxSurge': (int, None),
+            'maxUnavailable': (int, None),
 
         }
 
     @property
-    def max_surge(self) -> typing.Optional[str]:
+    def max_surge(self) -> typing.Optional[int]:
         """
         The maximum number of pods that can be scheduled above the
         desired number of pods. Value can be an absolute number (ex:
@@ -6162,7 +6379,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         desired pods.
         """
         value = self._properties.get('maxSurge')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @max_surge.setter
     def max_surge(
@@ -6186,7 +6403,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         self._properties['maxSurge'] = f'{value}'
 
     @property
-    def max_unavailable(self) -> typing.Optional[str]:
+    def max_unavailable(self) -> typing.Optional[int]:
         """
         The maximum number of pods that can be unavailable during
         the update. Value can be an absolute number (ex: 5) or a
@@ -6201,7 +6418,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         the update is at least 70% of desired pods.
         """
         value = self._properties.get('maxUnavailable')
-        return f'{value}' if value else None
+        return int(value) if value is not None else None
 
     @max_unavailable.setter
     def max_unavailable(
@@ -6553,7 +6770,33 @@ class Scale(_kuber_definitions.Resource):
             .from_dict(_kube_api.to_kuber_dict(response.status))
         )
 
-    def delete_resource(self, namespace: 'str' = None):
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the Scale from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_scale',
+            'read_scale'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
         """
         Deletes the Scale from the currently configured
         Kubernetes cluster.
@@ -6563,13 +6806,18 @@ class Scale(_kuber_definitions.Resource):
             'delete_scale'
         ]
 
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
         _kube_api.execute(
             action='delete',
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={'name': self.metadata.name, 'body': body}
         )
 
     @staticmethod
