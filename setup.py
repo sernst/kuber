@@ -6,14 +6,17 @@ from setuptools import setup
 
 # python3 setup.py register -r pypitest
 
-# UNIX:
-# rm -rf ./dist
-# python3 setup.py sdist bdist_wheel
-# twine upload dist/kuber*
+# sphinx-apidoc kuber -o docs/modules
 
-# WINDOWS:
-# rmdir dist /s /q
-# python setup.py sdist bdist_wheel
+### PACKAGE DEPLOYMENT  ###
+
+# 1. Remove existing:
+# rm -rf ./dist
+# OR
+# rm dist
+
+# 2. Build and upload:
+# python3 setup.py sdist bdist_wheel
 # twine upload dist/kuber*
 
 MY_DIRECTORY = os.path.dirname(__file__)

@@ -17,7 +17,7 @@ from kuber.management import from_yaml_multiple  # noqa
 from kuber.management import new_resource  # noqa
 
 #: kuber library version.
-__version__ = '1.3.1'
+__version__ = '1.3.2'
 
 #: The most recent kubernetes version available within the library, which
 #: can be used to avoid hard-coded versions when creating resource bundles.

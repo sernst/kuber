@@ -52,6 +52,7 @@ class Definition:
         results = {
             p: serialize_property(v)
             for p, v in self._properties.items()
+            if p in self._types
         }
         results = {p: v for p, v in results.items() if v}
         return results if results else None
@@ -82,13 +83,13 @@ class Collection(Definition):
     @abc.abstractmethod
     def metadata(self):
         """Must be implemented by subclasses"""
-        return None
+        return None  # pragma: no cover
 
     @metadata.setter
     @abc.abstractmethod
     def metadata(self, value):
         """Must be implemented by subclasses"""
-        pass
+        pass  # pragma: no cover
 
     @property
     def api_version(self) -> str:
@@ -134,7 +135,7 @@ class Collection(Definition):
         Returns an instance of the kubernetes API client associated with
         this object.
         """
-        pass
+        pass  # pragma: no cover
 
 
 class Resource(Definition):
@@ -153,13 +154,13 @@ class Resource(Definition):
     @abc.abstractmethod
     def metadata(self):
         """Must be implemented by subclasses"""
-        return None
+        return None  # pragma: no cover
 
     @metadata.setter
     @abc.abstractmethod
     def metadata(self, value):
         """Must be implemented by subclasses"""
-        pass
+        pass  # pragma: no cover
 
     @property
     def api_version(self) -> str:
@@ -198,32 +199,32 @@ class Resource(Definition):
     @abc.abstractmethod
     def create_resource(self, namespace: str = None):
         """Must be implemented by subclasses."""
-        pass
+        pass  # pragma: no cover
 
     @abc.abstractmethod
     def replace_resource(self, namespace: 'str' = None):
         """Must be implemented by subclasses."""
-        pass
+        pass  # pragma: no cover
 
     @abc.abstractmethod
     def patch_resource(self, namespace: 'str' = None):
         """Must be implemented by subclasses."""
-        pass
+        pass  # pragma: no cover
 
     @abc.abstractmethod
     def get_resource_status(self, namespace: str = None):
         """Must be implemented by subclasses."""
-        pass
+        pass  # pragma: no cover
 
     @abc.abstractmethod
     def delete_resource(self, namespace: str = None):
         """Must be implemented by subclasses."""
-        pass
+        pass  # pragma: no cover
 
     @abc.abstractmethod
     def read_resource(self, namespace: str = None):
         """Must be implemented by subclasses."""
-        pass
+        pass  # pragma: no cover
 
     @staticmethod
     @abc.abstractmethod
@@ -235,7 +236,7 @@ class Resource(Definition):
         Returns an instance of the kubernetes API client associated with
         this object.
         """
-        pass
+        pass  # pragma: no cover
 
 
 def serialize_property(value: typing.Any) -> typing.Any:

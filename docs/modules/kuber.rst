@@ -6,8 +6,10 @@ Subpackages
 
 .. toctree::
 
+    kuber.cli
     kuber.latest
     kuber.pre
+    kuber.tests
     kuber.v1_11
     kuber.v1_12
     kuber.v1_13
@@ -17,14 +19,6 @@ Subpackages
 Submodules
 ----------
 
-kuber.cli module
-----------------
-
-.. automodule:: kuber.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 kuber.definitions module
 ------------------------
 
@@ -33,10 +27,10 @@ kuber.definitions module
     :undoc-members:
     :show-inheritance:
 
-kuber.helm\_management module
------------------------------
+kuber.execution module
+----------------------
 
-.. automodule:: kuber.helm_management
+.. automodule:: kuber.execution
     :members:
     :undoc-members:
     :show-inheritance:

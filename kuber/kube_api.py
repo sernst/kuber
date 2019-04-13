@@ -7,31 +7,6 @@ from kuber import definitions
 from kuber import versioning
 
 
-class KubectlError(Exception):
-    """Errors from Kubectl command execution."""
-
-    def __init__(self, result: 'KubectlResponse', message: str):
-        super(KubectlError, self).__init__(message)
-        self._result = result
-
-    @property
-    def result(self) -> 'KubectlResponse':
-        """The Kubectl command execution results."""
-        return self._result
-
-
-class KubectlResponse(typing.NamedTuple):
-    """Data structure for Kubectl command results."""
-
-    success: bool
-    action: str
-    output: str
-    data: dict = None
-    error: str = None
-    args: typing.List[str] = None
-    input: str = None
-
-
 def load_access_config(in_cluster: bool = False, **kwargs) -> typing.NoReturn:
     """
     Initializes the kubernetes library from either a kube configuration
@@ -47,8 +22,8 @@ def load_access_config(in_cluster: bool = False, **kwargs) -> typing.NoReturn:
         initialization process.
     """
     if in_cluster:
-        config.load_incluster_config()
-    config.load_kube_config(**kwargs)
+        return config.load_incluster_config()
+    return config.load_kube_config(**kwargs)
 
 
 def get_version_from_cluster():
@@ -75,7 +50,26 @@ def execute(
         api_client: client.ApiClient = None,
         api_args: typing.Dict[str, typing.Any] = None
 ) -> typing.Optional[dict]:
-    """..."""
+    """
+    Executes the specified action on the given resource object using
+    the kubernetes API client.
+
+    :param action:
+        The CRUD operation to carry out for the given resource.
+    :param resource:
+        Kuber resource on which to carry out the operation.
+    :param names:
+        Names of potential kubernetes python client functions that can be
+        called to carry out this operation.
+    :param namespace:
+        Kubernetes namespace in which this execution will take place.
+    :param api_client:
+        Kubernetes python client API connection to use when carrying out
+        the execution.
+    :param api_args:
+        Keyword arguments to pass through to the kubernetes python client
+        execution call.
+    """
     api = resource.get_resource_api(api_client=api_client)
     name = next((n for n in names if hasattr(api, n)), None)
     if name is None:
@@ -93,7 +87,7 @@ def execute(
 
 
 def to_camel_case(source: str) -> str:
-    """..."""
+    """Converts the specified source string from snake_case to camelCase."""
     parts = source.split('_')
     prefix = parts.pop(0)
     suffix = ''.join([p.capitalize() for p in parts])
@@ -101,7 +95,15 @@ def to_camel_case(source: str) -> str:
 
 
 def to_kuber_dict(kube_api_entity) -> dict:
-    """..."""
+    """
+    Converts a Kubernetes client object, or serialized dictionary of
+    configuration values to the kuber representation, which enforces
+    camelCase and omits any keys with `None` values.
+
+    :param kube_api_entity:
+        Either a kubernetes Python client object or a dictionary that
+        contains keys and value for a kubernetes resource configuration.
+    """
     entity = kube_api_entity
     if hasattr(entity, 'to_dict'):
         entity = entity.to_dict()

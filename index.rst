@@ -1,10 +1,19 @@
 Kuber
 =====
 
+.. image:: https://img.shields.io/pypi/v/kuber.svg
+   :target: https://pypi.python.org/pypi/kuber
+
+.. image:: https://gitlab.com/swernst/kuber/badges/master/build.svg
+   :target: https://gitlab.com/swernst/kuber/commits/master
+
+.. image:: https://gitlab.com/swernst/kuber/badges/master/coverage.svg
+   :target: https://gitlab.com/swernst/kuber/commits/master
+
 kuber is Python library for the management of Kubernetes resources. It's
 ideal for for collectively managing groups of resources throughout their
 lifecycle. Resource definitions can be created and managed entirely in Python
-code (the pure-Python apprach), but kuber is most effective when used in a
+code (the pure-Python approach), but kuber is most effective when used in a
 hybrid fashion that combines configuration files and Python code.
 kuber also integrates and maintains compatibility with the lower-level official
 `Kubernetes Python client <https://github.com/kubernetes-client/python>`_,

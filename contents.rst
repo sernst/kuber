@@ -8,7 +8,7 @@ Documentation Contents
   docs/creating_definitions
   docs/crud
   docs/cli
-
+  docs/examples
 
 Indices and tables
 ------------------
