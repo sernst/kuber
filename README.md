@@ -1,48 +1,52 @@
 [![Documentation Status](https://readthedocs.org/projects/kuber/badge/?version=latest)](https://kuber.readthedocs.io/en/latest/?badge=latest)
 
-## What is kuber?
+# Kuber
 
-_kuber_ is higher-level Python client for Kubernetes resource management that
-integrates and maintains compatibility with the lower-level official 
-[Kubernetes Python client](https://github.com/kubernetes-client/python). 
-Additionally, _kuber_ supports managing groups of resources collectively as
-a single entity directly in code.
+kuber is Python library for the management of Kubernetes resources. It's
+ideal for for collectively managing groups of resources throughout their
+lifecycle. Resource definitions can be created and managed entirely in Python
+code (the pure-Python apprach), but kuber is most effective when used in a
+hybrid fashion that combines configuration files and Python code.
+kuber also integrates and maintains compatibility with the lower-level official
+[Kubernetes Python client](https://github.com/kubernetes-client/python),
+while abstracting basic CRUD operations into higher level constructs
+more inline with the behaviors of tools like *kubectl* and *helm*.
 
-## Main Features
+## Key Functionality
 
-Here are some key things that _kuber_ does well:
+Here are some key things that kuber does well:
 
-- A flexible workflow for managing Kubernetes resource configuration in Python 
+- A flexible workflow for managing Kubernetes resource configuration in Python
   code.
 - The ability to load resources directly from YAML or JSON configuration files,
   modify them in code and then use them or save them back to YAML/JSON files.
 - Resource bundling for managing groups of resource configurations collectively.
-- CRUD operations exposed directly on the resource objects to reduce the 
+- CRUD operations exposed directly on the resource objects to reduce the
   overhead in managing low-level clients.
-- Convenience functions that simplify common operations, e.g. managing 
+- Convenience functions that simplify common operations, e.g. managing
   containers within pods from the root resource.
-- Very thorough type-hinting and object structure to support creating accurate 
+- Very thorough type-hinting and object structure to support creating accurate
   resource configurations and catch errors before runtime.
 - All resources and sub-resources support used in `with` blocks as context
   managers to simplify making multiple changes to a sub-resource.
 - Simultaneous support for multiple Kubernetes API versions. Manage multiple
-  Kubernetes API versions (e.g. while promoting new versions from development 
+  Kubernetes API versions (e.g. while promoting new versions from development
   to production) without having to pin and switch Python environments.
 
 ## Installation
 
-_kuber_ available for installation with _pip_:
+kuber available for installation with [pip](https://pypi.org/project/pip/):
 
 ```bash
 $ pip install kuber
 ```
-
+ 
 ## Quickstart
 
-_kuber_ can be used to manage individual resources or a group of resources
-collectively. _kuber_ is also very flexible about how resources are created
-- either directly from Python or by loading and parsing YAML/JSON configuration
-files. 
+kuber can be used to manage individual resources or a group of resources
+collectively. kuber is also very flexible about how resources are created - 
+either directly from Python or by loading and parsing YAML/JSON configuration
+files. The first example shows the multi-resource management path:
 
 ```python
 import typing
@@ -50,44 +54,57 @@ import typing
 import kuber
 from kuber.latest import apps_v1
 
-# Create a bundle object to load and manage resource configurations
+# Create a bundle and load all resource definitions from the
+# `app_configs` directory as well as the `app-secret.yaml`
+# configuration file from the local `secrets` directory.
 resource_bundle = (
     kuber.create_bundle()
     .add_directory('app_configs')
     .add_file('secrets/app-secret.yaml')
 )
 
-# Modify the metadata labels on all resources in the bundle
+# Modify the metadata labels on all resources in the bundle.
 for resource in resource_bundle.resources:
     resource.metadata.labels.update(environment='production')
 
-# Update the replica count of the loaded deployment for production. Use
-# type casting here to make type-hinting and checking more explicit when
-# making changes to the deployment resource.
-d = typing.cast(
-    apps_v1.Deployment, 
-    resource_bundle.get(name='my-app', kind='Deployment')
+# Update the replica count of the loaded deployment named
+# "my-app" to the desired initial count.
+d: apps_v1.Deployment = resource_bundle.get(
+    name='my-app',
+    kind='Deployment'
 )
 d.spec.replicas = 20
 
-# Print the combined YAML configuration for the bundle of resources
-print(resource_bundle.render_yaml_bundle())
+# Load the current `kubeconfig` cluster configuration into
+# kuber for interaction with the cluster.
+kuber.load_access_config()
+
+# Turn this bundle script into a file that can be called from
+# the command line to carry out CRUD operations on all the
+# resources contained within it collectively. For example,
+# to create the resources in this bundle, call this script
+# file with a create argument.
+resource_bundle.cli()
 ```
 
 Or managing resources individually:
 
 ```python
+import kuber
 from kuber.latest import batch_v1
 
 job = batch_v1.Job()
 
-# Populate metadata using context manager syntax for brevity
+# Populate metadata using context manager syntax for brevity.
 with job.metadata as md:
     md.name = 'my-job'
     md.namespace = 'jobs'
-    md.labels.update(component='backend-tasks', environment='production')
+    md.labels.update(
+        component='backend-tasks',
+        environment='production'
+    )
 
-# Add a container to the job spec
+# Add a container to the job spec.
 job.spec.append_container(
     name='main',
     image='my-registry.com/projects/my-job:1.0.1',
@@ -95,9 +112,12 @@ job.spec.append_container(
     env=[batch_v1.EnvVar('ENVIRONMENT', 'production')]
 )
 
-# Print the resulting YAML configuration for display
+# Print the resulting YAML configuration for display. This
+# could also be saved somewhere to use later as the
+# configuration file to deploy to the cluster in cases
+# like a multi-stage CI pipeline.
 print(job.to_yaml())
 ```
 
 Check out the [kuber documentation](https://kuber.readthedocs.io/en/latest/)
-for more detailed documentation.
+for more details and examples.
