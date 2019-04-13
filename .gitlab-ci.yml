@@ -1,8 +1,10 @@
 stages:
-  - test
+  - check
   
 pytest:
   image: python:3.7
+  stage: check
+  coverage: '/^TOTAL.*\s+\d+\s+\d+\s+(\d+)%/'
   script:
     - pip install -r requirements.txt
     - py.test --cov-report=term --cov=$(pwd) $(pwd)

@@ -4,3 +4,5 @@ sphinx
 recommonmark
 requests
 semver
+pytest
+pytest-cover
