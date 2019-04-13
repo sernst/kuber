@@ -49,8 +49,6 @@ either directly from Python or by loading and parsing YAML/JSON configuration
 files. The first example shows the multi-resource management path:
 
 ```python
-import typing
-
 import kuber
 from kuber.latest import apps_v1
 
@@ -90,7 +88,6 @@ resource_bundle.cli()
 Or managing resources individually:
 
 ```python
-import kuber
 from kuber.latest import batch_v1
 
 job = batch_v1.Job()

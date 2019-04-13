@@ -52,8 +52,6 @@ files. The first example shows the multi-resource management path:
 
 .. code-block:: python
 
-  import typing
-
   import kuber
   from kuber.latest import apps_v1
 
@@ -93,7 +91,6 @@ Or managing resources individually:
 
 .. code-block:: python
 
-  import kuber
   from kuber.latest import batch_v1
 
   job = batch_v1.Job()
