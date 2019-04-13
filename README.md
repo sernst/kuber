@@ -1,4 +1,7 @@
 [![Documentation Status](https://readthedocs.org/projects/kuber/badge/?version=latest)](https://kuber.readthedocs.io/en/latest/?badge=latest)
+[![build status](https://gitlab.com/swernst/kuber/badges/master/build.svg)](https://gitlab.com/swernst/kuber/commits/master)
+[![coverage report](https://gitlab.com/swernst/kuber/badges/master/coverage.svg)](https://gitlab.com/swernst/kuber/commits/master)
+
 
 # Kuber
 

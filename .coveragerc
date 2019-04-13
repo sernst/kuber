@@ -1,6 +1,13 @@
 [report]
 show_missing = True
 omit =
+    setup.py
+    maker.py
+    conf.py
+    casting.py
+    kuber_maker/*
+    examples/*
+    sandbox/*
     */latest/*
     */pre/*
     */v1*/*
