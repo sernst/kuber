@@ -1,11 +1,15 @@
 Kuber
 =====
 
-kuber is higher-level Python client for Kubernetes resource management that
-integrates and maintains compatibility with the lower-level official
-`Kubernetes Python client <https://github.com/kubernetes-client/python>`_.
-Additionally, kuber supports managing groups of resources collectively as
-a single entity directly in code.
+kuber is Python library for the management of Kubernetes resources. It's
+ideal for for collectively managing groups of resources throughout their
+lifecycle. Resource definitions can be created and managed entirely in Python
+code (the pure-Python apprach), but kuber is most effective when used in a
+hybrid fashion that combines configuration files and Python code.
+kuber also integrates and maintains compatibility with the lower-level official
+`Kubernetes Python client <https://github.com/kubernetes-client/python>`_,
+while abstracting basic CRUD operations into higher level constructs
+more inline with the behaviors of tools like *kubectl* and *helm*.
 
 Main Features
 -------------
@@ -23,7 +27,7 @@ Here are some key things that kuber does well:
   containers within pods from the root resource.
 - Very thorough type-hinting and object structure to support creating accurate
   resource configurations and catch errors before runtime.
-- All resources and sub-resources support used in `with` blocks as context
+- All resources and sub-resources support used in ``with`` blocks as context
   managers to simplify making multiple changes to a sub-resource.
 - Simultaneous support for multiple Kubernetes API versions. Manage multiple
   Kubernetes API versions (e.g. while promoting new versions from development
@@ -47,7 +51,6 @@ collectively. kuber is also very flexible about how resources are created
 files. The first example shows the multi-resource management path:
 
 .. code-block:: python
-  :linenos:
 
   import typing
 
@@ -75,13 +78,20 @@ files. The first example shows the multi-resource management path:
   )
   d.spec.replicas = 20
 
-  # Print the combined YAML configuration of all bundled resources.
-  print(resource_bundle.render_yaml_bundle())
+  # Load the current `kubeconfig` cluster configuration into
+  # kuber for interaction with the cluster.
+  kuber.load_access_config()
+
+  # Turn this bundle script into a file that can be called from
+  # the command line to carry out CRUD operations on all the
+  # resources contained within it collectively. For example,
+  # to create the resources in this bundle, call this script
+  # file with a create argument.
+  resource_bundle.cli()
 
 Or managing resources individually:
 
 .. code-block:: python
-  :linenos:
 
   import kuber
   from kuber.latest import batch_v1
@@ -105,7 +115,10 @@ Or managing resources individually:
       env=[batch_v1.EnvVar('ENVIRONMENT', 'production')]
   )
 
-  # Print the resulting YAML configuration for display.
+  # Print the resulting YAML configuration for display. This
+  # could also be saved somewhere to use later as the
+  # configuration file to deploy to the cluster in cases
+  # like a multi-stage CI pipeline.
   print(job.to_yaml())
 
 .. include:: contents.rst

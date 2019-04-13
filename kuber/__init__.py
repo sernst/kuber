@@ -1,6 +1,7 @@
 import typing
 
 from kuber import versioning as _versioning
+from kuber.cli import CommandAction  # noqa
 from kuber.definitions import Collection  # noqa
 from kuber.definitions import Definition  # noqa
 from kuber.definitions import Resource  # noqa
@@ -16,7 +17,7 @@ from kuber.management import from_yaml_multiple  # noqa
 from kuber.management import new_resource  # noqa
 
 #: kuber library version.
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 
 #: The most recent kubernetes version available within the library, which
 #: can be used to avoid hard-coded versions when creating resource bundles.
@@ -107,3 +108,45 @@ def from_file(
     """
     bundle = ResourceBundle(bundle_name, kubernetes_version)
     return bundle.add_file(path)
+
+
+def invoke(
+        callback: typing.Callable[['CommandAction'], typing.Any],
+        kubernetes_version: VersionLabel = None,
+        bundle_name: str = None,
+        arguments: typing.List[str] = None
+) -> 'management.ResourceBundle':
+    """
+    Creates an empty bundle configured with the optionally specified
+    Kubernetes version and bundle name and immediately invokes the command
+    line interface for the bundle, but invoking the specified callback before
+    executing the command. The callback is the opportunity to configure the
+    bundle.
+
+    :param callback:
+        Callback that will be executed prior to the command line action
+        execution. Use this callback to configure the bundle using input
+        from the command line (including custom command arguments) before
+        the cli command action is invoked.
+    :param kubernetes_version:
+        Kubernetes version in the form MAJOR.MINOR (no patch) that should be
+        used by the bundle when creating and operating on Kubernetes Resource
+        objects (e.g. `Deployment`, `Pod`, etc.). If not specified the most
+        recent version will be used.
+    :param bundle_name:
+        A name to associated with the resource bundle. If not specified, a
+        randomized name will be generated instead.
+    :param arguments:
+        Optional command line arguments to parse and use in the callback
+        and then in the cli action execution. If omitted the arguments
+        will be parsed from the sys.argv values provided on the command line.
+    """
+    bundle = create_bundle(
+        kubernetes_version=kubernetes_version,
+        bundle_name=bundle_name
+    )
+    bundle.cli.invoke(
+        callback=callback,
+        arguments=arguments
+    )
+    return bundle

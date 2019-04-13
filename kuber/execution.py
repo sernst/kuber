@@ -7,8 +7,16 @@ from kubernetes.client.rest import ApiException
 
 from kuber import definitions
 
-SYMBOLS = {
+CREATE_SYMBOLS = {
     'AlreadyExists': '=',
+    'NotFound': '!!'
+}
+
+STATUS_SYMBOLS = {
+    'NotFound': ' '
+}
+
+DELETE_SYMBOLS = {
     'NotFound': ' '
 }
 
@@ -26,7 +34,8 @@ class ResponseInfo(typing.NamedTuple):
 
 def _parse_api_exception(
         resource: 'definitions.Resource',
-        error: ApiException
+        error: ApiException,
+        symbols: dict = None
 ) -> ResponseInfo:
     """Returns the parsed body of the given error"""
     try:
@@ -37,7 +46,7 @@ def _parse_api_exception(
     reason = body.get('reason', 'UnknownError')
     return ResponseInfo(
         resource=resource,
-        symbol=SYMBOLS.get(reason, '!!'),
+        symbol=(symbols or {}).get(reason, '!!'),
         reason=reason,
         message='{}'.format(body.get('message', error)),
         exception=error

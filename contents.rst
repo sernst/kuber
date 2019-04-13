@@ -1,5 +1,5 @@
-Additional Documentation
-------------------------
+Documentation Contents
+----------------------
 
 .. toctree::
   :maxdepth: 2
@@ -7,6 +7,7 @@ Additional Documentation
   docs/overview
   docs/creating_definitions
   docs/crud
+  docs/cli
 
 
 Indices and tables
