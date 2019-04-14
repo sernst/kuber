@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    kuber.tests.interface
     kuber.tests.kube_api
     kuber.tests.scenarios
 

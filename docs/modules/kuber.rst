@@ -6,7 +6,7 @@ Subpackages
 
 .. toctree::
 
-    kuber.cli
+    kuber.interface
     kuber.latest
     kuber.pre
     kuber.tests

@@ -47,7 +47,10 @@ exclude_patterns = [
     'examples/*',
     'specs/*',
     'kuber_maker/*',
-    'README.md'
+    'README.md',
+    '.pytest_cache',
+    '.mypy_cache',
+    'dist'
 ]
 
 

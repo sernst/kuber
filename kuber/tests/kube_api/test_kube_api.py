@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import kuber
 from kuber import kube_api
+from kuber.tests import utils as test_utils
 
 
 @patch('kubernetes.config.load_incluster_config')
@@ -19,7 +20,7 @@ def test_load_access_config(
 
 @patch('kubernetes.config.load_incluster_config')
 @patch('kubernetes.config.load_kube_config')
-def test_load_access_config_in_clust(
+def test_load_access_config_in_cluster(
         load_kube_config: MagicMock,
         load_incluster_config: MagicMock
 ):
@@ -39,3 +40,29 @@ def test_get_version_from_cluster(get_code: MagicMock):
     get_code.return_value = cluster_version
     result = kube_api.get_version_from_cluster()
     assert result.version == latest.version
+
+
+@patch('kubernetes.client.VersionApi.get_code')
+def test_get_version_from_cluster_error(get_code: MagicMock):
+    """Should return the expected "latest" version as the fallback on error."""
+    latest = kuber.latest_kube_version
+    get_code.side_effect = test_utils.MockApiException(False)
+    result = kube_api.get_version_from_cluster(latest)
+    assert result.version == latest.version
+
+
+@patch('kubernetes.client.VersionApi.get_code')
+def test_get_version_from_cluster_error_label(get_code: MagicMock):
+    """Should return the expected "latest" version as the fallback on error."""
+    latest = kuber.latest_kube_version
+    get_code.side_effect = test_utils.MockApiException(False)
+    result = kube_api.get_version_from_cluster(latest.label)
+    assert result.version == latest.version
+
+
+@patch('kubernetes.client.VersionApi.get_code')
+def test_get_version_from_cluster_error_no_fallback(get_code: MagicMock):
+    """Should return the expected "latest" version as the fallback on error."""
+    get_code.side_effect = test_utils.MockApiException(False)
+    result = kube_api.get_version_from_cluster()
+    assert isinstance(result, kuber.KubernetesVersion)

@@ -1,10 +1,10 @@
-kuber.cli package
-=================
+kuber.interface package
+=======================
 
 Module contents
 ---------------
 
-.. automodule:: kuber.cli
+.. automodule:: kuber.interface
     :members:
     :undoc-members:
     :show-inheritance:

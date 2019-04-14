@@ -2,6 +2,7 @@ import typing
 
 from kubernetes import client
 from kubernetes import config
+from kubernetes.client.rest import ApiException
 
 from kuber import definitions
 from kuber import versioning
@@ -26,19 +27,31 @@ def load_access_config(in_cluster: bool = False, **kwargs) -> typing.NoReturn:
     return config.load_kube_config(**kwargs)
 
 
-def get_version_from_cluster():
+def get_version_from_cluster(
+        fallback: typing.Union['versioning.KubernetesVersion', str] = None
+) -> versioning.KubernetesVersion:
     """
     Returns the KubernetesVersion object associated with the configured
-    cluster. If the cluster version cannot be determined, the lowest available
-    version will be returned instead.
+    cluster. If the cluster version cannot be determined, the specified
+    fallback version will be returned instead. If no fallback is specified
+    the earliest (oldest) version available in the kuber library installation
+    will be used instead.
     """
-    response: client.VersionInfo = client.VersionApi().get_code()
     versions = versioning.get_all_versions()
-    major = response.major
-    minor = response.minor.rstrip('+')
+    default = fallback or versions[0]
+    if not isinstance(default, versioning.KubernetesVersion):
+        default = versioning.get_version_data(fallback)
+
+    try:
+        response: client.VersionInfo = client.VersionApi().get_code()
+        major = response.major
+        minor = response.minor.rstrip('+')
+    except ApiException:
+        return default
+
     return next(
         (v for v in versions if v.major == major and v.minor == minor),
-        versions[0]
+        default
     )
 
 

@@ -6,18 +6,28 @@ from setuptools import setup
 
 # python3 setup.py register -r pypitest
 
-# sphinx-apidoc kuber -o docs/modules
-
-### PACKAGE DEPLOYMENT  ###
+# DOCUMENTATION UPDATE
+# --------------------
 
 # 1. Remove existing:
-# rm -rf ./dist
-# OR
-# rm dist
+#   rm -rf ./docs/modules
+#       OR
+#   rm .\docs\modules
+
+# 2. Generate new documents
+#   sphinx-apidoc kuber -o docs/modules
+
+# PACKAGE DEPLOYMENT
+# ------------------
+
+# 1. Remove existing:
+#   rm -rf ./dist
+#       OR
+#   rm dist
 
 # 2. Build and upload:
-# python3 setup.py sdist bdist_wheel
-# twine upload dist/kuber*
+#   python3 setup.py sdist bdist_wheel
+#   twine upload dist/kuber*
 
 MY_DIRECTORY = os.path.dirname(__file__)
 
@@ -51,10 +61,13 @@ def populate_extra_files():
 setup(
     name='kuber',
     version=get_version(),
-    description='High-level Kubernetes resource configuration library.',
+    description=(
+        'High-level Kubernetes resource '
+        'configuration and management library.'
+    ),
     long_description=readme(),
     long_description_content_type='text/markdown',
-    keywords=['Kubernetes', 'kubectl'],
+    keywords=['kubernetes', 'containers', 'kubectl', 'k8s'],
     url='https://github.com/sernst/kuber',
     author='Scott Ernst',
     author_email='swernst@gmail.com',
@@ -65,7 +78,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
 
         'Programming Language :: Python',

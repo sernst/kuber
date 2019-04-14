@@ -9,10 +9,10 @@ import uuid
 import yaml
 
 import kuber
-from kuber import cli
+from kuber import execution
+from kuber import interface
 from kuber import versioning as _versioning
 from kuber.definitions import Resource
-from kuber import execution
 
 ResourceSubclass = typing.Union[Resource, typing.Any]
 
@@ -43,7 +43,7 @@ class ResourceBundle:
         self.namespace = namespace
         self._version = kubernetes_version
         self._resources: typing.List[ResourceSubclass] = []
-        self._cli = cli.ResourceBundleCli(self)
+        self._cli = interface.ResourceBundleCli(self)
 
     @property
     def kubernetes_version(self) -> '_versioning.KubernetesVersion':
@@ -56,7 +56,7 @@ class ResourceBundle:
         return _versioning.get_version_data(self._version or 'latest')
 
     @property
-    def cli(self) -> 'cli.ResourceBundleCli':
+    def cli(self) -> 'interface.ResourceBundleCli':
         """Command line interface for the bundle."""
         return self._cli
 
@@ -211,10 +211,11 @@ class ResourceBundle:
             api_version: str,
             kind: str,
             name: str,
-            **kwargs
+            **kwargs: str
     ) -> 'ResourceBundle':
         """
-        Adds an empty resource of the specified type.
+        Adds an empty resource of the specified type as the last entry
+        to the bundle's resources list.
 
         :param api_version:
             A standard Kubernetes configuration api version, e.g. "apps/v1".
@@ -225,12 +226,13 @@ class ResourceBundle:
         :param kwargs:
             Labels to assign to the metadata of the new resource.
         """
-        definition = {
-            'apiVersion': api_version,
-            'kind': kind,
-            'metadata': {'name': name, 'labels': kwargs}
-        }
-        return self.push(from_dict(definition, self.kubernetes_version))
+        return self.push(new_resource(
+            api_version=api_version,
+            kind=kind,
+            name=name,
+            kubernetes_version=self.kubernetes_version,
+            **kwargs
+        ))
 
     def add_from_yaml(self, resource_definition: str) -> 'ResourceBundle':
         """
@@ -470,11 +472,11 @@ def from_yaml_multiple(
 
     :param resources_definitions:
         String containing the contents of one or more yaml resource
-        definitions separated by `\n---`.
+        definitions separated by ``\n---``.
     :param kubernetes_version:
         Version of the kubernetes API to use when creating the Resources. If
-        omitted, the `latest` version will be used by default. Accepts either
-        a string version label of a KubernetesVersion object.
+        omitted, the ``latest`` version will be used by default. Accepts
+        either a string version label of a KubernetesVersion object.
     """
     resources = [
         from_yaml(d, kubernetes_version)
@@ -505,7 +507,8 @@ def new_resource(
     api_version: str,
     kind: str,
     name: str = None,
-    kubernetes_version: 'kuber.VersionLabel' = None
+    kubernetes_version: 'kuber.VersionLabel' = None,
+    **kwargs: str
 ) -> typing.Optional[ResourceSubclass]:
     """
     Creates an empty Kubernetes resource object of the specified type for
@@ -523,11 +526,13 @@ def new_resource(
         Version of the kubernetes API to use when creating the Resource. If
         omitted, the `latest` version will be used by default. Accepts either
         a string version label of a KubernetesVersion object.
+    :param kwargs:
+        Labels to assign to the metadata of the new resource.
     """
     definition = {
         'apiVersion': api_version,
         'kind': kind,
-        'metadata': {'name': name}
+        'metadata': {'name': name, 'labels': kwargs}
     }
     return from_dict(definition, kubernetes_version)
 

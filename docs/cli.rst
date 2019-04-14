@@ -133,7 +133,7 @@ Invocation-Only Command Line Interface
 
 The advanced example from above can be refactored yet again such that
 all of the configuration is carried out within the callback. In this
-case there is a convenience function ``kuber.invoke()` that simplifies
+case there is a convenience function ``kuber.cli()` that simplifies
 bundle creation and CLI execution with the pre-execution callback.
 Refactoring the example from above would look like this:
 
@@ -179,9 +179,6 @@ Refactoring the example from above would look like this:
       # specified callback before executing the action
       # to allow for additional configuration based on
       # the custom command line arguments supplied.
-      kuber.invoke(configure)
+      kuber.cli(configure)
 
-The complete functionality available for the ``kuber.invoke()`` function
-is:
-
-.. autofunction:: kuber.invoke
+.. autofunction:: kuber.cli

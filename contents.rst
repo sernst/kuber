@@ -6,9 +6,11 @@ Documentation Contents
 
   docs/overview
   docs/creating_definitions
+  docs/versions
   docs/crud
   docs/cli
   docs/examples
+  docs/package
 
 Indices and tables
 ------------------
@@ -16,3 +18,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+

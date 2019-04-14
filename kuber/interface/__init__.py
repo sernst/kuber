@@ -3,7 +3,7 @@ import typing
 
 from kuber import execution
 from kuber import management
-from kuber.cli import _parsing
+from kuber.interface import _parsing
 
 
 class CommandAction(typing.NamedTuple):
@@ -65,9 +65,6 @@ class ResourceBundleCli:
             'status': do_status
         }
         command = args.command or 'render'
-        if command not in command_actions:
-            raise ValueError(f'Unknown command "{command}"')
-
         action = CommandAction(
             args=args,
             custom_args=remains,

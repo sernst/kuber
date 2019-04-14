@@ -34,4 +34,3 @@ c.resources = {
 }
 
 print(j.to_yaml())
-

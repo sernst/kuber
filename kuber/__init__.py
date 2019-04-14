@@ -1,7 +1,7 @@
-import typing
+import typing as _typing
 
 from kuber import versioning as _versioning
-from kuber.cli import CommandAction  # noqa
+from kuber.interface import CommandAction  # noqa
 from kuber.definitions import Collection  # noqa
 from kuber.definitions import Definition  # noqa
 from kuber.definitions import Resource  # noqa
@@ -15,17 +15,26 @@ from kuber.management import from_yaml_file  # noqa
 from kuber.management import from_yaml_file_multiple  # noqa
 from kuber.management import from_yaml_multiple  # noqa
 from kuber.management import new_resource  # noqa
+from kuber.versioning import KubernetesVersion  # noqa
 
 #: kuber library version.
-__version__ = '1.3.2'
+__version__ = '1.4.0'
+
+#: All currently supported versions that exist within this installation
+#: of the kuber library.
+available_versions: _typing.List[KubernetesVersion] = (
+    _versioning.get_all_versions()
+)
 
 #: The most recent kubernetes version available within the library, which
 #: can be used to avoid hard-coded versions when creating resource bundles.
-latest_kube_version: '_versioning.KubernetesVersion' = (
+latest_kube_version: KubernetesVersion = (
     _versioning.get_latest_version(stable=True)
 )
 
-VersionLabel = typing.Union['_versioning.KubernetesVersion', str]
+#: Type that accepts either a `KubernetesVersion` object or a string
+#: representation of that version, e.g. 'v1.14' or 'latest'.
+VersionLabel = _typing.Union[KubernetesVersion, str]
 
 
 def create_bundle(
@@ -110,11 +119,11 @@ def from_file(
     return bundle.add_file(path)
 
 
-def invoke(
-        callback: typing.Callable[['CommandAction'], typing.Any],
+def cli(
+        callback: _typing.Callable[['CommandAction'], _typing.Any],
         kubernetes_version: VersionLabel = None,
         bundle_name: str = None,
-        arguments: typing.List[str] = None
+        arguments: _typing.List[str] = None
 ) -> 'management.ResourceBundle':
     """
     Creates an empty bundle configured with the optionally specified

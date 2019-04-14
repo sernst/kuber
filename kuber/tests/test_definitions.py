@@ -1,4 +1,5 @@
 from kuber import definitions
+from kuber.latest import core_v1
 
 
 def test_definition_serialization():
@@ -20,3 +21,16 @@ def test_definition_deserialization():
     d.from_dict({'foo': 1, 'bar': None, 'baz': 'hello'})
     assert {'baz': 'hello', 'bar': None} == d._properties
 
+
+def test_collection_yaml_serialization():
+    """Should serialize the Collection to a YAML string."""
+    pod_list = core_v1.PodList()
+    pod_list.metadata.resource_version = 'foo'
+    assert 'foo' in pod_list.to_yaml()
+
+
+def test_collection_json_serialization():
+    """Should serialize the Collection to a JSON string."""
+    namespace_list = core_v1.NamespaceList()
+    namespace_list.metadata.resource_version = 'foo'
+    assert 'foo' in namespace_list.to_json()
