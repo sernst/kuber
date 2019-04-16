@@ -1,4 +1,5 @@
 import argparse
+import os
 import typing
 
 from kuber import execution
@@ -70,6 +71,7 @@ class ResourceBundleCli:
             custom_args=remains,
             bundle=self._bundle
         )
+        _populate_settings(action)
         if callback is not None:
             callback(action)
         return command_actions[command](action)
@@ -133,3 +135,25 @@ def do_status(action: CommandAction) -> CommandAction:
     if has_error:
         print('\nWARNING: Unable to get status of all resources.\n\n')
     return action
+
+
+def _populate_settings(action: CommandAction):
+    """
+    Loads any number of specified settings files/directories into the
+    :param action:
+    """
+    try:
+        settings_paths = action.args.settings or []
+    except AttributeError:  # pragma: no cover
+        return
+
+    for path in settings_paths:
+        if os.path.isdir(path):
+            action.bundle.settings.add_from_directory(path)
+        elif os.path.isfile(path):
+            action.bundle.settings.add_from_file(path)
+        else:
+            raise ValueError(
+                f'The settings "{path}" path is invalid or could not '
+                'be found.'
+            )

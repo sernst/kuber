@@ -8,17 +8,17 @@ from kuber.definitions import Resource  # noqa
 from kuber.kube_api import get_version_from_cluster  # noqa
 from kuber.kube_api import load_access_config  # noqa
 from kuber.management import ResourceBundle
-from kuber.management import from_dict  # noqa
-from kuber.management import from_json_file  # noqa
-from kuber.management import from_yaml  # noqa
-from kuber.management import from_yaml_file  # noqa
-from kuber.management import from_yaml_file_multiple  # noqa
-from kuber.management import from_yaml_multiple  # noqa
-from kuber.management import new_resource  # noqa
+from kuber.management.creation import from_dict  # noqa
+from kuber.management.creation import from_json_file  # noqa
+from kuber.management.creation import from_yaml  # noqa
+from kuber.management.creation import from_yaml_file  # noqa
+from kuber.management.creation import from_yaml_file_multiple  # noqa
+from kuber.management.creation import from_yaml_multiple  # noqa
+from kuber.management.creation import new_resource  # noqa
 from kuber.versioning import KubernetesVersion  # noqa
 
 #: kuber library version.
-__version__ = '1.4.0'
+__version__ = '1.5.0'
 
 #: All currently supported versions that exist within this installation
 #: of the kuber library.

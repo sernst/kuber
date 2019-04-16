@@ -1,10 +1,15 @@
+import os
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
+import pytest
 from pytest import mark
 
+import kuber
 from kuber import execution
 from kuber import interface
+
+MY_DIRECTORY = os.path.realpath(os.path.dirname(__file__))
 
 RESPONSE_SCENARIOS = [
     execution.ResponseInfo(
@@ -79,3 +84,46 @@ def test_do_render():
 def test_cli():
     """Should execute a render operation without error."""
     interface.ResourceBundleCli(MagicMock())(['render'])
+
+
+def test_settings_directory():
+    """Should load settings from this test directory."""
+    def _callback(action: kuber.CommandAction):
+        s = action.bundle.settings
+        assert s.foo and s.foo == s.spam
+        assert s.bar and s.bar == s.ham
+        assert s.baz and s.baz == s.eggs
+
+    cb = MagicMock()
+    cb.side_effect = _callback
+    kuber.cli(cb, arguments=['render', f'--settings={MY_DIRECTORY}'])
+    cb.assert_called_once()
+
+
+def test_settings_files():
+    """Should load settings from this test files."""
+    def _callback(action: kuber.CommandAction):
+        s = action.bundle.settings
+        assert s.foo and s.foo == s.spam
+        assert s.bar and s.bar == s.ham
+        assert s.baz and s.baz == s.eggs
+
+    cb = MagicMock()
+    cb.side_effect = _callback
+
+    kuber.cli(cb, arguments=[
+        'render',
+        f'--settings={os.path.join(MY_DIRECTORY, "settings.yaml")}',
+        f'--settings={os.path.join(MY_DIRECTORY, "settings.json")}',
+    ])
+    cb.assert_called_once()
+
+
+def test_settings_error():
+    """Should load settings from this test files."""
+    cb = MagicMock()
+
+    with pytest.raises(ValueError):
+        kuber.cli(cb, arguments=['render', '--settings=foo'])
+
+    cb.assert_not_called()

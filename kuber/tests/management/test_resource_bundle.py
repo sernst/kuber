@@ -6,7 +6,7 @@ import pytest
 
 import kuber
 from kuber import latest
-from kuber import management
+from kuber.management import creation
 
 MY_DIRECTORY = os.path.realpath(os.path.dirname(__file__))
 
@@ -46,7 +46,7 @@ def test_new_resource():
 def test_from_dict():
     """Should create a resource from a configuration dictionary."""
     version = kuber.latest_kube_version
-    config_map = management.from_dict(
+    config_map = creation.from_dict(
         resource_definition={
             'apiVersion': 'core/v1',
             'kind': 'ConfigMap',

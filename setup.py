@@ -4,31 +4,6 @@ import re
 from setuptools import find_packages
 from setuptools import setup
 
-# python3 setup.py register -r pypitest
-
-# DOCUMENTATION UPDATE
-# --------------------
-
-# 1. Remove existing:
-#   rm -rf ./docs/modules
-#       OR
-#   rm .\docs\modules
-
-# 2. Generate new documents
-#   sphinx-apidoc kuber -o docs/modules
-
-# PACKAGE DEPLOYMENT
-# ------------------
-
-# 1. Remove existing:
-#   rm -rf ./dist
-#       OR
-#   rm dist
-
-# 2. Build and upload:
-#   python3 setup.py sdist bdist_wheel
-#   twine upload dist/kuber*
-
 MY_DIRECTORY = os.path.dirname(__file__)
 
 

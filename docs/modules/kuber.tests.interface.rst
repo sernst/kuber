@@ -12,6 +12,14 @@ kuber.tests.interface.test\_cli module
     :undoc-members:
     :show-inheritance:
 
+kuber.tests.interface.test\_configuration module
+------------------------------------------------
+
+.. automodule:: kuber.tests.interface.test_configuration
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

@@ -1,0 +1,5 @@
+{
+  "spam": 42,
+  "ham": true,
+  "eggs": "hello"
+}

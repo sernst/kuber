@@ -8,6 +8,7 @@ Subpackages
 
     kuber.interface
     kuber.latest
+    kuber.management
     kuber.pre
     kuber.tests
     kuber.v1_11
@@ -39,14 +40,6 @@ kuber.kube\_api module
 ----------------------
 
 .. automodule:: kuber.kube_api
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-kuber.management module
------------------------
-
-.. automodule:: kuber.management
     :members:
     :undoc-members:
     :show-inheritance:

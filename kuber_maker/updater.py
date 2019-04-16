@@ -79,6 +79,26 @@ def get_release_groups() -> typing.List[ApiGroup]:
     return sorted(combined, reverse=True, key=lambda x: x.version)
 
 
+def get_latest_versions() -> typing.Dict[str, Release]:
+    """..."""
+    groups = get_release_groups()
+    limit = 4 if groups[0].latest else 5
+    releases = {}
+
+    for group in groups[:limit]:
+        release = group.latest or group.pre
+        label = 'v{}'.format(release.api_version)
+        releases[label] = release
+
+    pre = next((g.pre for g in groups if g.pre), None)
+    releases['pre'] = pre
+
+    latest = next((g.latest for g in groups if g.latest), None)
+    releases['latest'] = latest
+
+    return releases
+
+
 def update_specs():
     """..."""
     groups = get_release_groups()
@@ -137,3 +157,50 @@ def _get_authentication_header():
 
     credentials = f'{data["user"]}:{data["password"]}'
     return 'Basic {}'.format(base64.b64encode(credentials.encode()).decode())
+
+
+def get_local_versions():
+    """..."""
+    directory = os.path.realpath(os.path.join(
+        os.path.dirname(__file__),
+        '..', 'specs'
+    ))
+    results = {}
+    for filename in os.listdir(directory):
+        if not filename.endswith('.json'):
+            continue
+
+        path = os.path.join(directory, filename)
+        label = filename[:-5]
+        with open(path) as f:
+            results[label] = json.load(f)['kuber']
+
+    return results
+
+
+def check_for_updates() -> typing.Dict[str, Release]:
+    """
+    Determines if any updates are needed compared to the locally
+    stored versions.
+    """
+    local_versions = get_local_versions()
+    updates = {}
+    for label, release in get_latest_versions().items():
+        local = local_versions.get(label) or {'version': '0.0.0'}
+        version = semver.parse_version_info(local['version'])
+        if version != release.version:
+            updates[label] = (local, release)
+
+    if not updates:
+        print('\nNo updates found. Local versions are up-to-date.\n\n')
+        return {}
+
+    print('\n=== Release Updates ===')
+    for label, update in updates.items():
+        current = update[0]['version']
+        latest = update[1].version
+        print(f'  - {label}: {current} -> {latest}')
+
+    print(f'\n{len(updates)} updates found.\n\n')
+
+    return {k: v[1] for k, v in updates.items()}

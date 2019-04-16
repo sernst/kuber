@@ -11,6 +11,15 @@ def _populate_create(subparsers):
         help='Create the resource bundle.'
     )
     parser.add_argument('--namespace')
+    parser.add_argument(
+        '--settings',
+        action='append',
+        help=(
+            'Specify a file path or directory to load settings from. '
+            'These settings will be available in the ResourceBundle '
+            'to use in dynamically configuring the bundle.'
+        )
+    )
 
 
 def _populate_status(subparsers):
@@ -30,7 +39,17 @@ def _populate_delete(subparsers):
 
 def _populate_render(subparsers):
     """..."""
-    subparsers.add_parser('render', help='Render the bundle')
+    parser = subparsers.add_parser('render', help='Render the bundle')
+    parser.add_argument('--namespace')
+    parser.add_argument(
+        '--settings',
+        action='append',
+        help=(
+            'Specify a file path or directory to load settings from. '
+            'These settings will be available in the ResourceBundle '
+            'to use in dynamically configuring the bundle.'
+        )
+    )
 
 
 def parse_args(
