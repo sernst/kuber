@@ -2,7 +2,7 @@
 show_missing = True
 omit =
     setup.py
-    maker.py
+    manager.py
     conf.py
     casting.py
     kuber_maker/*

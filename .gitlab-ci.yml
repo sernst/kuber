@@ -1,10 +1,24 @@
 stages:
   - check
   
-pytest:
+pytest-py36:
+  image: python:3.6
+  stage: check
+  script:
+    - pip install -r requirements.txt
+    - py.test --cov-report=term --cov=$(pwd) $(pwd)
+
+pytest-py37:
   image: python:3.7
   stage: check
   coverage: '/^TOTAL.*\s+\d+\s+\d+\s+(\d+)%/'
   script:
     - pip install -r requirements.txt
     - py.test --cov-report=term --cov=$(pwd) $(pwd)
+
+sphinx-build:
+  image: python:3.7
+  stage: check
+  script:
+    - pip install -r requirements.txt
+    - python manager.py docs
