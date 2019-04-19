@@ -18,7 +18,7 @@ from kuber.management.creation import new_resource  # noqa
 from kuber.versioning import KubernetesVersion  # noqa
 
 #: kuber library version.
-__version__ = '1.5.0'
+__version__ = '1.5.1'
 
 #: All currently supported versions that exist within this installation
 #: of the kuber library.

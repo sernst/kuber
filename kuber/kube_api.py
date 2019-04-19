@@ -91,9 +91,12 @@ def execute(
             f'{resource.__class__.__name__}'
         )
 
+    func = getattr(api, name)
+    func_variables = func.__code__.co_varnames
+
     args = {**api_args}
     ns = namespace or getattr(resource.metadata, 'namespace', None)
-    if ns and 'namespace' in name:
+    if ns and 'namespace' in func_variables:
         args['namespace'] = ns
 
     return getattr(api, name)(**args)

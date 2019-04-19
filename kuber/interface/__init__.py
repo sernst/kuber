@@ -2,6 +2,7 @@ import argparse
 import os
 import typing
 
+import kuber
 from kuber import execution
 from kuber import management
 from kuber.interface import _parsing
@@ -77,11 +78,29 @@ class ResourceBundleCli:
         return command_actions[command](action)
 
 
+def _is_target(action: CommandAction, resource: 'kuber.Resource') -> bool:
+    """
+    Determines whether or not the specified resource should be included
+    in the command line action.
+    """
+    targets = [t.lower() for t in (vars(action.args).get('target') or [])]
+    if not targets:
+        return True
+
+    identifier = f'{resource.kind}/{resource.metadata.name}'.lower()
+    return identifier in targets
+
+
 def do_render(action: CommandAction) -> CommandAction:
     """
     Carries out a render to display action for command line interaction.
     """
-    print(action.bundle.render_yaml_bundle())
+    renders = [
+        resource.to_yaml()
+        for resource in action.bundle.resources
+        if _is_target(action, resource)
+    ]
+    print('\n---\n\n'.join(renders))
     return action
 
 
@@ -94,6 +113,7 @@ def do_create(action: CommandAction) -> CommandAction:
     responses = [
         execution.create_resource(resource, namespace, echo=True)
         for resource in action.bundle.resources
+        if _is_target(action, resource)
     ]
     has_error = any([r.symbol == '!!' for r in responses])
     if has_error:
@@ -112,6 +132,7 @@ def do_delete(action: CommandAction) -> CommandAction:
     responses = [
         execution.delete_resource(resource, namespace, echo=True)
         for resource in action.bundle.resources
+        if _is_target(action, resource)
     ]
     has_error = any([r.symbol == '!!' for r in responses])
     if has_error:
@@ -128,8 +149,9 @@ def do_status(action: CommandAction) -> CommandAction:
     namespace = action.args.namespace or action.bundle.namespace
     print(f'\n=== BUNDLE STATUS {action.bundle.name} ===')
     responses = [
-        execution.get_resource_status(r, namespace, echo=True)
-        for r in action.bundle.resources
+        execution.get_resource_status(resource, namespace, echo=True)
+        for resource in action.bundle.resources
+        if _is_target(action, resource)
     ]
     has_error = any([r.symbol == '!!' for r in responses])
     if has_error:

@@ -2,6 +2,7 @@ import glob
 import json
 import os
 import typing
+import copy
 
 import yaml
 
@@ -126,6 +127,14 @@ class ResourceBundleSettings:
             default_Value if it does not.
         """
         return self._data.get(key, default_value)
+
+    def to_dict(self) -> dict:
+        """Returns the settings data serialized to dictionary format."""
+        return copy.deepcopy(self._data)
+
+    def to_yaml(self) -> str:
+        """Renders the settings object as a YAML string."""
+        return yaml.dump(self._data)
 
     def __getitem__(self, item):
         return self._data.get(item)

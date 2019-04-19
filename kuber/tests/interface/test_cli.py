@@ -76,7 +76,9 @@ def test_do_create(
 def test_do_render():
     """Should render all resources in the bundle to the display."""
     bundle = MagicMock()
-    bundle.resources = [MagicMock(), MagicMock()]
+    resource = MagicMock()
+    resource.to_yaml.return_value = ''
+    bundle.resources = [resource, resource]
     action = interface.CommandAction(MagicMock(), [], bundle)
     interface.do_render(action)
 
@@ -127,3 +129,29 @@ def test_settings_error():
         kuber.cli(cb, arguments=['render', '--settings=foo'])
 
     cb.assert_not_called()
+
+
+@patch('kuber.execution.get_resource_status')
+def test_targeting_all(get_resource_status: MagicMock):
+    """Should target all resources if no target is set on the command line."""
+    get_resource_status.return_value = RESPONSE_SCENARIOS[-1]
+    bundle = kuber.create_bundle()
+    bundle.add('v1', 'Namespace', 'foo')
+    bundle.add('v1', 'Namespace', 'bar')
+    bundle.add('v1', 'Namespace', 'baz')
+
+    bundle.cli(arguments=['status'])
+    assert get_resource_status.call_count == 3
+
+
+@patch('kuber.execution.get_resource_status')
+def test_targeting(get_resource_status: MagicMock):
+    """Should target the one matching resource specified in the command."""
+    get_resource_status.return_value = RESPONSE_SCENARIOS[-1]
+    bundle = kuber.create_bundle()
+    bundle.add('v1', 'Namespace', 'foo')
+    bundle.add('v1', 'Namespace', 'bar')
+    bundle.add('v1', 'Namespace', 'baz')
+
+    bundle.cli(arguments=['status', '--target=namespace/foo'])
+    assert get_resource_status.call_count == 1

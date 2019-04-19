@@ -150,13 +150,22 @@ def from_dict(
     parts = (
         resource_definition['apiVersion']
         .replace('rbac.authorization.k8s.io/', 'rbac/')
+        .replace('storage.k8s.io/', 'storage/')
         .split('/')[:2]
     )
     area = parts[-1]
     group = parts[0] if len(parts) > 1 else 'core'
     package = '.'.join(['kuber', f'{version}', f'{group}_{area}'])
 
-    loaded_module = importlib.import_module(package)
+    try:
+        loaded_module = importlib.import_module(package)
+    except ModuleNotFoundError as error:  # pragma: no cover
+        print(
+            f'Error: Unable to import module "{package}" '
+            f'for resource apiVersion: "{resource_definition["apiVersion"]}".'
+        )
+        raise error
+
     resource_class = getattr(loaded_module, resource_definition['kind'])
     resource: Resource = resource_class()
     return resource.from_dict(resource_definition)

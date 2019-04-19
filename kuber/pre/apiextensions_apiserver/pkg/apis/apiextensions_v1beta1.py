@@ -170,6 +170,7 @@ class CustomResourceConversion(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            conversion_review_versions: typing.List[str] = None,
             strategy: str = None,
             webhook_client_config: 'WebhookClientConfig' = None,
     ):
@@ -179,15 +180,45 @@ class CustomResourceConversion(_kuber_definitions.Definition):
             kind='CustomResourceConversion'
         )
         self._properties = {
+            'conversionReviewVersions': conversion_review_versions or [],
             'strategy': strategy or '',
             'webhookClientConfig': webhook_client_config or WebhookClientConfig(),
 
         }
         self._types = {
+            'conversionReviewVersions': (list, str),
             'strategy': (str, None),
             'webhookClientConfig': (WebhookClientConfig, None),
 
         }
+
+    @property
+    def conversion_review_versions(self) -> typing.List[str]:
+        """
+        ConversionReviewVersions is an ordered list of preferred
+        `ConversionReview` versions the Webhook expects. API server
+        will try to use first version in the list which it supports.
+        If none of the versions specified in this list supported by
+        API server, conversion will fail for this object. If a
+        persisted Webhook configuration specifies allowed versions
+        and does not include any versions known to the API Server,
+        calls to the webhook will fail. Default to `['v1beta1']`.
+        """
+        return self._properties.get('conversionReviewVersions')
+
+    @conversion_review_versions.setter
+    def conversion_review_versions(self, value: typing.List[str]):
+        """
+        ConversionReviewVersions is an ordered list of preferred
+        `ConversionReview` versions the Webhook expects. API server
+        will try to use first version in the list which it supports.
+        If none of the versions specified in this list supported by
+        API server, conversion will fail for this object. If a
+        persisted Webhook configuration specifies allowed versions
+        and does not include any versions known to the API Server,
+        calls to the webhook will fail. Default to `['v1beta1']`.
+        """
+        self._properties['conversionReviewVersions'] = value
 
     @property
     def strategy(self) -> str:
@@ -442,14 +473,16 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
     @property
     def type_(self) -> str:
         """
-        Type is the type of the condition.
+        Type is the type of the condition. Types include
+        Established, NamesAccepted and Terminating.
         """
         return self._properties.get('type')
 
     @type_.setter
     def type_(self, value: str):
         """
-        Type is the type of the condition.
+        Type is the type of the condition. Types include
+        Established, NamesAccepted and Terminating.
         """
         self._properties['type'] = value
 
@@ -1618,6 +1651,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             minimum: float = None,
             multiple_of: float = None,
             not_: 'JSONSchemaProps' = None,
+            nullable: bool = None,
             one_of: typing.List['JSONSchemaProps'] = None,
             pattern: str = None,
             pattern_properties: dict = None,
@@ -1659,6 +1693,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'minimum': minimum or None,
             'multipleOf': multiple_of or None,
             'not': not_ or JSONSchemaProps(),
+            'nullable': nullable or None,
             'oneOf': one_of or [],
             'pattern': pattern or '',
             'patternProperties': pattern_properties or {},
@@ -1696,6 +1731,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'minimum': (float, None),
             'multipleOf': (float, None),
             'not': (JSONSchemaProps, None),
+            'nullable': (bool, None),
             'oneOf': (list, JSONSchemaProps),
             'pattern': (str, None),
             'patternProperties': (dict, None),
@@ -2110,6 +2146,20 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         self._properties['not'] = value
 
     @property
+    def nullable(self) -> bool:
+        """
+
+        """
+        return self._properties.get('nullable')
+
+    @nullable.setter
+    def nullable(self, value: bool):
+        """
+
+        """
+        self._properties['nullable'] = value
+
+    @property
     def one_of(self) -> typing.List['JSONSchemaProps']:
         """
 
@@ -2331,6 +2381,7 @@ class ServiceReference(_kuber_definitions.Definition):
             name: str = None,
             namespace: str = None,
             path: str = None,
+            port: int = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(
@@ -2341,12 +2392,14 @@ class ServiceReference(_kuber_definitions.Definition):
             'name': name or '',
             'namespace': namespace or '',
             'path': path or '',
+            'port': port or None,
 
         }
         self._types = {
             'name': (str, None),
             'namespace': (str, None),
             'path': (str, None),
+            'port': (int, None),
 
         }
 
@@ -2393,6 +2446,24 @@ class ServiceReference(_kuber_definitions.Definition):
         request to this service.
         """
         self._properties['path'] = value
+
+    @property
+    def port(self) -> int:
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        return self._properties.get('port')
+
+    @port.setter
+    def port(self, value: int):
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        self._properties['port'] = value
 
     def __enter__(self) -> 'ServiceReference':
         return self
@@ -2459,9 +2530,6 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         If the webhook
         is running within the cluster, then you should use
         `service`.
-
-        Port 443 will be used if it is open, otherwise
-        it is an error.
         """
         return self._properties.get('service')
 
@@ -2474,9 +2542,6 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         If the webhook
         is running within the cluster, then you should use
         `service`.
-
-        Port 443 will be used if it is open, otherwise
-        it is an error.
         """
         if isinstance(value, dict):
             value = ServiceReference().from_dict(value)

@@ -9,7 +9,6 @@ Subpackages
     kuber.v1_15.apiextensions_apiserver
     kuber.v1_15.apimachinery
     kuber.v1_15.kube_aggregator
-    kuber.v1_15.kubernetes
 
 Submodules
 ----------
@@ -190,6 +189,30 @@ kuber.v1\_15.networking\_v1 module
     :undoc-members:
     :show-inheritance:
 
+kuber.v1\_15.networking\_v1beta1 module
+---------------------------------------
+
+.. automodule:: kuber.v1_15.networking_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_15.node\_v1alpha1 module
+----------------------------------
+
+.. automodule:: kuber.v1_15.node_v1alpha1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_15.node\_v1beta1 module
+---------------------------------
+
+.. automodule:: kuber.v1_15.node_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 kuber.v1\_15.policy\_v1beta1 module
 -----------------------------------
 
@@ -218,6 +241,14 @@ kuber.v1\_15.rbac\_v1beta1 module
 ---------------------------------
 
 .. automodule:: kuber.v1_15.rbac_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_15.scheduling\_v1 module
+----------------------------------
+
+.. automodule:: kuber.v1_15.scheduling_v1
     :members:
     :undoc-members:
     :show-inheritance:

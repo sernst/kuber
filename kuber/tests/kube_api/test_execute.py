@@ -13,6 +13,9 @@ def test_execute():
     service.metadata.name = 'foo'
 
     api = MagicMock()
+    code = MagicMock()
+    code.co_varnames = ('bob', 'foo', 'namespace')
+    api.create_namespaced_service.__code__ = code
     with patch.object(service, 'get_resource_api') as get_api:
         get_api.return_value = api
         service.create_resource(namespace='foo')

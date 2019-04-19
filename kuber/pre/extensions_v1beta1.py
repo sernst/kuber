@@ -25,6 +25,51 @@ from kuber.pre.core_v1 import VolumeDevice
 from kuber.pre.core_v1 import VolumeMount
 
 
+class AllowedCSIDriver(_kuber_definitions.Definition):
+    """
+    AllowedCSIDriver represents a single inline CSI Driver that
+    is allowed to be used.
+    """
+
+    def __init__(
+            self,
+            name: str = None,
+    ):
+        """Create AllowedCSIDriver instance."""
+        super(AllowedCSIDriver, self).__init__(
+            api_version='extensions/v1beta1',
+            kind='AllowedCSIDriver'
+        )
+        self._properties = {
+            'name': name or '',
+
+        }
+        self._types = {
+            'name': (str, None),
+
+        }
+
+    @property
+    def name(self) -> str:
+        """
+        Name is the registered name of the CSI driver
+        """
+        return self._properties.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is the registered name of the CSI driver
+        """
+        self._properties['name'] = value
+
+    def __enter__(self) -> 'AllowedCSIDriver':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class AllowedFlexVolume(_kuber_definitions.Definition):
     """
     AllowedFlexVolume represents a single Flexvolume that is
@@ -2931,7 +2976,10 @@ class Ingress(_kuber_definitions.Resource):
     connections to reach the endpoints defined by a backend. An
     Ingress can be configured to give services externally-
     reachable urls, load balance traffic, terminate SSL, offer
-    name based virtual hosting etc.
+    name based virtual hosting etc. DEPRECATED - This group
+    version of Ingress is deprecated by
+    networking.k8s.io/v1beta1 Ingress. See the release notes for
+    more information.
     """
 
     def __init__(
@@ -4849,6 +4897,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     def __init__(
             self,
             allow_privilege_escalation: bool = None,
+            allowed_csidrivers: typing.List['AllowedCSIDriver'] = None,
             allowed_capabilities: typing.List[str] = None,
             allowed_flex_volumes: typing.List['AllowedFlexVolume'] = None,
             allowed_host_paths: typing.List['AllowedHostPath'] = None,
@@ -4878,6 +4927,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         )
         self._properties = {
             'allowPrivilegeEscalation': allow_privilege_escalation or None,
+            'allowedCSIDrivers': allowed_csidrivers or [],
             'allowedCapabilities': allowed_capabilities or [],
             'allowedFlexVolumes': allowed_flex_volumes or [],
             'allowedHostPaths': allowed_host_paths or [],
@@ -4903,6 +4953,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         }
         self._types = {
             'allowPrivilegeEscalation': (bool, None),
+            'allowedCSIDrivers': (list, AllowedCSIDriver),
             'allowedCapabilities': (list, str),
             'allowedFlexVolumes': (list, AllowedFlexVolume),
             'allowedHostPaths': (list, AllowedHostPath),
@@ -4944,6 +4995,34 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         true.
         """
         self._properties['allowPrivilegeEscalation'] = value
+
+    @property
+    def allowed_csidrivers(self) -> typing.List['AllowedCSIDriver']:
+        """
+        AllowedCSIDrivers is a whitelist of inline CSI drivers that
+        must be explicitly set to be embedded within a pod spec. An
+        empty value means no CSI drivers can run inline within a pod
+        spec.
+        """
+        return self._properties.get('allowedCSIDrivers')
+
+    @allowed_csidrivers.setter
+    def allowed_csidrivers(
+            self,
+            value: typing.Union[typing.List['AllowedCSIDriver'], typing.List[dict]]
+    ):
+        """
+        AllowedCSIDrivers is a whitelist of inline CSI drivers that
+        must be explicitly set to be embedded within a pod spec. An
+        empty value means no CSI drivers can run inline within a pod
+        spec.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = AllowedCSIDriver().from_dict(item)
+            cleaned.append(item)
+        self._properties['allowedCSIDrivers'] = cleaned
 
     @property
     def allowed_capabilities(self) -> typing.List[str]:
@@ -6427,7 +6506,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of old and new pods do not exceed 130%
         of desired pods. Once old pods have been killed, new RC can
         be scaled up further, ensuring that total number of pods
-        running at any time during the update is atmost 130% of
+        running at any time during the update is at most 130% of
         desired pods.
         """
         value = self._properties.get('maxSurge')
@@ -6449,7 +6528,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of old and new pods do not exceed 130%
         of desired pods. Once old pods have been killed, new RC can
         be scaled up further, ensuring that total number of pods
-        running at any time during the update is atmost 130% of
+        running at any time during the update is at most 130% of
         desired pods.
         """
         self._properties['maxSurge'] = f'{value}'
