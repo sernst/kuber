@@ -9,16 +9,16 @@ from kuber.v1_15.core_v1 import Container
 from kuber.v1_15.core_v1 import ContainerPort
 from kuber.v1_15.core_v1 import EnvFromSource
 from kuber.v1_15.core_v1 import EnvVar
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import LabelSelector
+from kuber.v1_15.meta_v1 import LabelSelector
 from kuber.v1_15.core_v1 import Lifecycle
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ObjectMeta
+from kuber.v1_15.meta_v1 import ListMeta
+from kuber.v1_15.meta_v1 import ObjectMeta
 from kuber.v1_15.core_v1 import PodTemplateSpec
 from kuber.v1_15.core_v1 import Probe
 from kuber.v1_15.core_v1 import ResourceRequirements
 from kuber.v1_15.core_v1 import SecurityContext
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.v1_15.meta_v1 import Status
+from kuber.v1_15.meta_v1 import StatusDetails
 from kuber.v1_15.core_v1 import VolumeDevice
 from kuber.v1_15.core_v1 import VolumeMount
 

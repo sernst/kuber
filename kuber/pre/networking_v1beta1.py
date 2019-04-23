@@ -4,11 +4,11 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import ListMeta
+from kuber.pre.meta_v1 import ListMeta
 from kuber.pre.core_v1 import LoadBalancerStatus
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import ObjectMeta
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.pre.meta_v1 import ObjectMeta
+from kuber.pre.meta_v1 import Status
+from kuber.pre.meta_v1 import StatusDetails
 
 
 class HTTPIngressPath(_kuber_definitions.Definition):
@@ -404,7 +404,7 @@ class IngressBackend(_kuber_definitions.Definition):
     def __init__(
             self,
             service_name: str = None,
-            service_port: typing.Union[str, int] = None,
+            service_port: typing.Union[str, int, None] = None,
     ):
         """Create IngressBackend instance."""
         super(IngressBackend, self).__init__(
@@ -447,12 +447,12 @@ class IngressBackend(_kuber_definitions.Definition):
     @service_port.setter
     def service_port(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         Specifies the port of the referenced service.
         """
-        self._properties['servicePort'] = f'{value}'
+        self._properties['servicePort'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'IngressBackend':
         return self

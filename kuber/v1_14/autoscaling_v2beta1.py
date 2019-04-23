@@ -5,15 +5,14 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.v1_14.apimachinery.pkg.apis.meta_v1 import LabelSelector
-from kuber.v1_14.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.v1_14.apimachinery.pkg.apis.meta_v1 import ObjectMeta
-from kuber.v1_14.apimachinery.pkg.api_resource import Quantity
-from kuber.v1_14.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.v1_14.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.v1_14.meta_v1 import LabelSelector
+from kuber.v1_14.meta_v1 import ListMeta
+from kuber.v1_14.meta_v1 import ObjectMeta
+from kuber.v1_14.meta_v1 import Status
+from kuber.v1_14.meta_v1 import StatusDetails
 
 
-class CrossVersionObjectReference(_kuber_definitions.Resource):
+class CrossVersionObjectReference(_kuber_definitions.Definition):
     """
     CrossVersionObjectReference contains enough information to
     let you identify the referred resource.
@@ -55,130 +54,6 @@ class CrossVersionObjectReference(_kuber_definitions.Resource):
         """
         self._properties['name'] = value
 
-    def create_resource(self, namespace: 'str' = None):
-        """
-        Creates the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'create_namespaced_cross_version_object_reference',
-            'create_cross_version_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='create',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-
-    def replace_resource(self, namespace: 'str' = None):
-        """
-        Replaces the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'replace_namespaced_cross_version_object_reference',
-            'replace_cross_version_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='replace',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def patch_resource(self, namespace: 'str' = None):
-        """
-        Patches the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'patch_namespaced_cross_version_object_reference',
-            'patch_cross_version_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='patch',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def get_resource_status(self, namespace: 'str' = None):
-        """This resource does not have a status."""
-        pass
-
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
-        """
-        Reads the CrossVersionObjectReference from the currently configured
-        Kubernetes cluster and returns the low-level definition object.
-        """
-        names = [
-            'read_namespaced_cross_version_object_reference',
-            'read_cross_version_object_reference'
-        ]
-        return _kube_api.execute(
-            action='read',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-
-    def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
-    ):
-        """
-        Deletes the CrossVersionObjectReference from the currently configured
-        Kubernetes cluster.
-        """
-        names = [
-            'delete_namespaced_cross_version_object_reference',
-            'delete_cross_version_object_reference'
-        ]
-
-        body = client.V1DeleteOptions(
-            propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
-        )
-
-        _kube_api.execute(
-            action='delete',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
-        )
-
-    @staticmethod
-    def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AutoscalingV2beta1Api':
-        """
-        Returns an instance of the kubernetes API client associated with
-        this object.
-        """
-        if api_client:
-            kwargs['apl_client'] = api_client
-        return client.AutoscalingV2beta1Api(**kwargs)
-
     def __enter__(self) -> 'CrossVersionObjectReference':
         return self
 
@@ -199,8 +74,8 @@ class ExternalMetricSource(_kuber_definitions.Definition):
             self,
             metric_name: str = None,
             metric_selector: 'LabelSelector' = None,
-            target_average_value: 'Quantity' = None,
-            target_value: 'Quantity' = None,
+            target_average_value: typing.Union[str, int, None] = None,
+            target_value: typing.Union[str, int, None] = None,
     ):
         """Create ExternalMetricSource instance."""
         super(ExternalMetricSource, self).__init__(
@@ -210,15 +85,15 @@ class ExternalMetricSource(_kuber_definitions.Definition):
         self._properties = {
             'metricName': metric_name or '',
             'metricSelector': metric_selector or LabelSelector(),
-            'targetAverageValue': target_average_value or Quantity(),
-            'targetValue': target_value or Quantity(),
+            'targetAverageValue': target_average_value or None,
+            'targetValue': target_value or None,
 
         }
         self._types = {
             'metricName': (str, None),
             'metricSelector': (LabelSelector, None),
-            'targetAverageValue': (Quantity, None),
-            'targetValue': (Quantity, None),
+            'targetAverageValue': (str, None),
+            'targetValue': (str, None),
 
         }
 
@@ -255,40 +130,44 @@ class ExternalMetricSource(_kuber_definitions.Definition):
         self._properties['metricSelector'] = value
 
     @property
-    def target_average_value(self) -> 'Quantity':
+    def target_average_value(self) -> typing.Optional[str]:
         """
         targetAverageValue is the target per-pod value of global
         metric (as a quantity). Mutually exclusive with TargetValue.
         """
-        return self._properties.get('targetAverageValue')
+        value = self._properties.get('targetAverageValue')
+        return f'{value}' if value is not None else None
 
     @target_average_value.setter
-    def target_average_value(self, value: typing.Union['Quantity', dict]):
+    def target_average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         targetAverageValue is the target per-pod value of global
         metric (as a quantity). Mutually exclusive with TargetValue.
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['targetAverageValue'] = value
+        self._properties['targetAverageValue'] = None if value is None else f'{value}'
 
     @property
-    def target_value(self) -> 'Quantity':
+    def target_value(self) -> typing.Optional[str]:
         """
         targetValue is the target value of the metric (as a
         quantity). Mutually exclusive with TargetAverageValue.
         """
-        return self._properties.get('targetValue')
+        value = self._properties.get('targetValue')
+        return f'{value}' if value is not None else None
 
     @target_value.setter
-    def target_value(self, value: typing.Union['Quantity', dict]):
+    def target_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         targetValue is the target value of the metric (as a
         quantity). Mutually exclusive with TargetAverageValue.
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['targetValue'] = value
+        self._properties['targetValue'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'ExternalMetricSource':
         return self
@@ -305,8 +184,8 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            current_average_value: 'Quantity' = None,
-            current_value: 'Quantity' = None,
+            current_average_value: typing.Union[str, int, None] = None,
+            current_value: typing.Union[str, int, None] = None,
             metric_name: str = None,
             metric_selector: 'LabelSelector' = None,
     ):
@@ -316,55 +195,59 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
             kind='ExternalMetricStatus'
         )
         self._properties = {
-            'currentAverageValue': current_average_value or Quantity(),
-            'currentValue': current_value or Quantity(),
+            'currentAverageValue': current_average_value or None,
+            'currentValue': current_value or None,
             'metricName': metric_name or '',
             'metricSelector': metric_selector or LabelSelector(),
 
         }
         self._types = {
-            'currentAverageValue': (Quantity, None),
-            'currentValue': (Quantity, None),
+            'currentAverageValue': (str, None),
+            'currentValue': (str, None),
             'metricName': (str, None),
             'metricSelector': (LabelSelector, None),
 
         }
 
     @property
-    def current_average_value(self) -> 'Quantity':
+    def current_average_value(self) -> typing.Optional[str]:
         """
         currentAverageValue is the current value of metric averaged
         over autoscaled pods.
         """
-        return self._properties.get('currentAverageValue')
+        value = self._properties.get('currentAverageValue')
+        return f'{value}' if value is not None else None
 
     @current_average_value.setter
-    def current_average_value(self, value: typing.Union['Quantity', dict]):
+    def current_average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         currentAverageValue is the current value of metric averaged
         over autoscaled pods.
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['currentAverageValue'] = value
+        self._properties['currentAverageValue'] = None if value is None else f'{value}'
 
     @property
-    def current_value(self) -> 'Quantity':
+    def current_value(self) -> typing.Optional[str]:
         """
         currentValue is the current value of the metric (as a
         quantity)
         """
-        return self._properties.get('currentValue')
+        value = self._properties.get('currentValue')
+        return f'{value}' if value is not None else None
 
     @current_value.setter
-    def current_value(self, value: typing.Union['Quantity', dict]):
+    def current_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         currentValue is the current value of the metric (as a
         quantity)
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['currentValue'] = value
+        self._properties['currentValue'] = None if value is None else f'{value}'
 
     @property
     def metric_name(self) -> str:
@@ -1487,11 +1370,11 @@ class ObjectMetricSource(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            average_value: 'Quantity' = None,
+            average_value: typing.Union[str, int, None] = None,
             metric_name: str = None,
             selector: 'LabelSelector' = None,
             target: 'CrossVersionObjectReference' = None,
-            target_value: 'Quantity' = None,
+            target_value: typing.Union[str, int, None] = None,
     ):
         """Create ObjectMetricSource instance."""
         super(ObjectMetricSource, self).__init__(
@@ -1499,39 +1382,41 @@ class ObjectMetricSource(_kuber_definitions.Definition):
             kind='ObjectMetricSource'
         )
         self._properties = {
-            'averageValue': average_value or Quantity(),
+            'averageValue': average_value or None,
             'metricName': metric_name or '',
             'selector': selector or LabelSelector(),
             'target': target or CrossVersionObjectReference(),
-            'targetValue': target_value or Quantity(),
+            'targetValue': target_value or None,
 
         }
         self._types = {
-            'averageValue': (Quantity, None),
+            'averageValue': (str, None),
             'metricName': (str, None),
             'selector': (LabelSelector, None),
             'target': (CrossVersionObjectReference, None),
-            'targetValue': (Quantity, None),
+            'targetValue': (str, None),
 
         }
 
     @property
-    def average_value(self) -> 'Quantity':
+    def average_value(self) -> typing.Optional[str]:
         """
         averageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        return self._properties.get('averageValue')
+        value = self._properties.get('averageValue')
+        return f'{value}' if value is not None else None
 
     @average_value.setter
-    def average_value(self, value: typing.Union['Quantity', dict]):
+    def average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         averageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['averageValue'] = value
+        self._properties['averageValue'] = None if value is None else f'{value}'
 
     @property
     def metric_name(self) -> str:
@@ -1588,22 +1473,24 @@ class ObjectMetricSource(_kuber_definitions.Definition):
         self._properties['target'] = value
 
     @property
-    def target_value(self) -> 'Quantity':
+    def target_value(self) -> typing.Optional[str]:
         """
         targetValue is the target value of the metric (as a
         quantity).
         """
-        return self._properties.get('targetValue')
+        value = self._properties.get('targetValue')
+        return f'{value}' if value is not None else None
 
     @target_value.setter
-    def target_value(self, value: typing.Union['Quantity', dict]):
+    def target_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         targetValue is the target value of the metric (as a
         quantity).
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['targetValue'] = value
+        self._properties['targetValue'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'ObjectMetricSource':
         return self
@@ -1621,8 +1508,8 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            average_value: 'Quantity' = None,
-            current_value: 'Quantity' = None,
+            average_value: typing.Union[str, int, None] = None,
+            current_value: typing.Union[str, int, None] = None,
             metric_name: str = None,
             selector: 'LabelSelector' = None,
             target: 'CrossVersionObjectReference' = None,
@@ -1633,16 +1520,16 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
             kind='ObjectMetricStatus'
         )
         self._properties = {
-            'averageValue': average_value or Quantity(),
-            'currentValue': current_value or Quantity(),
+            'averageValue': average_value or None,
+            'currentValue': current_value or None,
             'metricName': metric_name or '',
             'selector': selector or LabelSelector(),
             'target': target or CrossVersionObjectReference(),
 
         }
         self._types = {
-            'averageValue': (Quantity, None),
-            'currentValue': (Quantity, None),
+            'averageValue': (str, None),
+            'currentValue': (str, None),
             'metricName': (str, None),
             'selector': (LabelSelector, None),
             'target': (CrossVersionObjectReference, None),
@@ -1650,40 +1537,44 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
         }
 
     @property
-    def average_value(self) -> 'Quantity':
+    def average_value(self) -> typing.Optional[str]:
         """
         averageValue is the current value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        return self._properties.get('averageValue')
+        value = self._properties.get('averageValue')
+        return f'{value}' if value is not None else None
 
     @average_value.setter
-    def average_value(self, value: typing.Union['Quantity', dict]):
+    def average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         averageValue is the current value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['averageValue'] = value
+        self._properties['averageValue'] = None if value is None else f'{value}'
 
     @property
-    def current_value(self) -> 'Quantity':
+    def current_value(self) -> typing.Optional[str]:
         """
         currentValue is the current value of the metric (as a
         quantity).
         """
-        return self._properties.get('currentValue')
+        value = self._properties.get('currentValue')
+        return f'{value}' if value is not None else None
 
     @current_value.setter
-    def current_value(self, value: typing.Union['Quantity', dict]):
+    def current_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         currentValue is the current value of the metric (as a
         quantity).
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['currentValue'] = value
+        self._properties['currentValue'] = None if value is None else f'{value}'
 
     @property
     def metric_name(self) -> str:
@@ -1761,7 +1652,7 @@ class PodsMetricSource(_kuber_definitions.Definition):
             self,
             metric_name: str = None,
             selector: 'LabelSelector' = None,
-            target_average_value: 'Quantity' = None,
+            target_average_value: typing.Union[str, int, None] = None,
     ):
         """Create PodsMetricSource instance."""
         super(PodsMetricSource, self).__init__(
@@ -1771,13 +1662,13 @@ class PodsMetricSource(_kuber_definitions.Definition):
         self._properties = {
             'metricName': metric_name or '',
             'selector': selector or LabelSelector(),
-            'targetAverageValue': target_average_value or Quantity(),
+            'targetAverageValue': target_average_value or None,
 
         }
         self._types = {
             'metricName': (str, None),
             'selector': (LabelSelector, None),
-            'targetAverageValue': (Quantity, None),
+            'targetAverageValue': (str, None),
 
         }
 
@@ -1820,22 +1711,24 @@ class PodsMetricSource(_kuber_definitions.Definition):
         self._properties['selector'] = value
 
     @property
-    def target_average_value(self) -> 'Quantity':
+    def target_average_value(self) -> typing.Optional[str]:
         """
         targetAverageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        return self._properties.get('targetAverageValue')
+        value = self._properties.get('targetAverageValue')
+        return f'{value}' if value is not None else None
 
     @target_average_value.setter
-    def target_average_value(self, value: typing.Union['Quantity', dict]):
+    def target_average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         targetAverageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['targetAverageValue'] = value
+        self._properties['targetAverageValue'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'PodsMetricSource':
         return self
@@ -1853,7 +1746,7 @@ class PodsMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            current_average_value: 'Quantity' = None,
+            current_average_value: typing.Union[str, int, None] = None,
             metric_name: str = None,
             selector: 'LabelSelector' = None,
     ):
@@ -1863,35 +1756,37 @@ class PodsMetricStatus(_kuber_definitions.Definition):
             kind='PodsMetricStatus'
         )
         self._properties = {
-            'currentAverageValue': current_average_value or Quantity(),
+            'currentAverageValue': current_average_value or None,
             'metricName': metric_name or '',
             'selector': selector or LabelSelector(),
 
         }
         self._types = {
-            'currentAverageValue': (Quantity, None),
+            'currentAverageValue': (str, None),
             'metricName': (str, None),
             'selector': (LabelSelector, None),
 
         }
 
     @property
-    def current_average_value(self) -> 'Quantity':
+    def current_average_value(self) -> typing.Optional[str]:
         """
         currentAverageValue is the current value of the average of
         the metric across all relevant pods (as a quantity)
         """
-        return self._properties.get('currentAverageValue')
+        value = self._properties.get('currentAverageValue')
+        return f'{value}' if value is not None else None
 
     @current_average_value.setter
-    def current_average_value(self, value: typing.Union['Quantity', dict]):
+    def current_average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         currentAverageValue is the current value of the average of
         the metric across all relevant pods (as a quantity)
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['currentAverageValue'] = value
+        self._properties['currentAverageValue'] = None if value is None else f'{value}'
 
     @property
     def metric_name(self) -> str:
@@ -1954,7 +1849,7 @@ class ResourceMetricSource(_kuber_definitions.Definition):
             self,
             name: str = None,
             target_average_utilization: int = None,
-            target_average_value: 'Quantity' = None,
+            target_average_value: typing.Union[str, int, None] = None,
     ):
         """Create ResourceMetricSource instance."""
         super(ResourceMetricSource, self).__init__(
@@ -1964,13 +1859,13 @@ class ResourceMetricSource(_kuber_definitions.Definition):
         self._properties = {
             'name': name or '',
             'targetAverageUtilization': target_average_utilization or None,
-            'targetAverageValue': target_average_value or Quantity(),
+            'targetAverageValue': target_average_value or None,
 
         }
         self._types = {
             'name': (str, None),
             'targetAverageUtilization': (int, None),
-            'targetAverageValue': (Quantity, None),
+            'targetAverageValue': (str, None),
 
         }
 
@@ -2009,26 +1904,28 @@ class ResourceMetricSource(_kuber_definitions.Definition):
         self._properties['targetAverageUtilization'] = value
 
     @property
-    def target_average_value(self) -> 'Quantity':
+    def target_average_value(self) -> typing.Optional[str]:
         """
         targetAverageValue is the target value of the average of the
         resource metric across all relevant pods, as a raw value
         (instead of as a percentage of the request), similar to the
         "pods" metric source type.
         """
-        return self._properties.get('targetAverageValue')
+        value = self._properties.get('targetAverageValue')
+        return f'{value}' if value is not None else None
 
     @target_average_value.setter
-    def target_average_value(self, value: typing.Union['Quantity', dict]):
+    def target_average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         targetAverageValue is the target value of the average of the
         resource metric across all relevant pods, as a raw value
         (instead of as a percentage of the request), similar to the
         "pods" metric source type.
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['targetAverageValue'] = value
+        self._properties['targetAverageValue'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'ResourceMetricSource':
         return self
@@ -2051,7 +1948,7 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
     def __init__(
             self,
             current_average_utilization: int = None,
-            current_average_value: 'Quantity' = None,
+            current_average_value: typing.Union[str, int, None] = None,
             name: str = None,
     ):
         """Create ResourceMetricStatus instance."""
@@ -2061,13 +1958,13 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             'currentAverageUtilization': current_average_utilization or None,
-            'currentAverageValue': current_average_value or Quantity(),
+            'currentAverageValue': current_average_value or None,
             'name': name or '',
 
         }
         self._types = {
             'currentAverageUtilization': (int, None),
-            'currentAverageValue': (Quantity, None),
+            'currentAverageValue': (str, None),
             'name': (str, None),
 
         }
@@ -2097,7 +1994,7 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
         self._properties['currentAverageUtilization'] = value
 
     @property
-    def current_average_value(self) -> 'Quantity':
+    def current_average_value(self) -> typing.Optional[str]:
         """
         currentAverageValue is the current value of the average of
         the resource metric across all relevant pods, as a raw value
@@ -2105,10 +2002,14 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
         "pods" metric source type. It will always be set, regardless
         of the corresponding metric specification.
         """
-        return self._properties.get('currentAverageValue')
+        value = self._properties.get('currentAverageValue')
+        return f'{value}' if value is not None else None
 
     @current_average_value.setter
-    def current_average_value(self, value: typing.Union['Quantity', dict]):
+    def current_average_value(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         currentAverageValue is the current value of the average of
         the resource metric across all relevant pods, as a raw value
@@ -2116,9 +2017,7 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
         "pods" metric source type. It will always be set, regardless
         of the corresponding metric specification.
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['currentAverageValue'] = value
+        self._properties['currentAverageValue'] = None if value is None else f'{value}'
 
     @property
     def name(self) -> str:

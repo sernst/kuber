@@ -40,6 +40,8 @@ _PYTHON_BUILTINS = [
     'complex', 'hasattr', 'max', 'round'
 ]
 
+IGNORED_ENTITIES = ['Time', 'IntOrString', 'Quantity']
+
 
 def _has_status(
         package_entities: typing.Dict[str, kuber_maker.Entity]
@@ -114,7 +116,7 @@ def _get_status_entity(
 ) -> kuber_maker.Entity:
     """..."""
     version = all_entities.version.replace('.', '_')
-    container_package = f'kuber.{version}.apimachinery.pkg.apis.meta_v1'
+    container_package = f'kuber.{version}.meta_v1'
     return all_entities.packages[container_package].entities['Status']
 
 
@@ -137,6 +139,10 @@ def _containers_location(
 
         child_package = data_type.code_import.package
         child_target = data_type.code_import.target
+
+        if child_target in IGNORED_ENTITIES:
+            continue
+
         child = all_entities.packages[child_package].entities[child_target]
         result = _containers_location(child, all_entities, max_depth - 1)
         if result:
@@ -209,12 +215,11 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
     # circular import.
     extra_imports = [e for e in extra_imports if package != e.package]
 
-    import_skips = ['Time', 'IntOrString']
     imports = list(set([
         imp
         for e in (list(entities.values()) + extra_imports)
         for imp in e.imports
-        if imp.package != package and imp.target not in import_skips
+        if imp.package != package and imp.target not in IGNORED_ENTITIES
     ]))
 
     for extra_entity in extra_imports:

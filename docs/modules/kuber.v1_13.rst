@@ -1,16 +1,6 @@
 kuber.v1\_13 package
 ====================
 
-Subpackages
------------
-
-.. toctree::
-
-    kuber.v1_13.apiextensions_apiserver
-    kuber.v1_13.apimachinery
-    kuber.v1_13.kube_aggregator
-    kuber.v1_13.kubernetes
-
 Submodules
 ----------
 
@@ -26,6 +16,46 @@ kuber.v1\_13.admissionregistration\_v1beta1 module
 --------------------------------------------------
 
 .. automodule:: kuber.v1_13.admissionregistration_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_13.apiextensions\_v1beta1 module
+------------------------------------------
+
+.. automodule:: kuber.v1_13.apiextensions_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_13.apimachinery\_runtime module
+-----------------------------------------
+
+.. automodule:: kuber.v1_13.apimachinery_runtime
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_13.apimachinery\_version module
+-----------------------------------------
+
+.. automodule:: kuber.v1_13.apimachinery_version
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_13.apiregistration\_v1 module
+---------------------------------------
+
+.. automodule:: kuber.v1_13.apiregistration_v1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_13.apiregistration\_v1beta1 module
+--------------------------------------------
+
+.. automodule:: kuber.v1_13.apiregistration_v1beta1
     :members:
     :undoc-members:
     :show-inheritance:
@@ -178,6 +208,14 @@ kuber.v1\_13.extensions\_v1beta1 module
 ---------------------------------------
 
 .. automodule:: kuber.v1_13.extensions_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_13.meta\_v1 module
+----------------------------
+
+.. automodule:: kuber.v1_13.meta_v1
     :members:
     :undoc-members:
     :show-inheritance:

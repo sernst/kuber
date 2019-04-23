@@ -4,13 +4,13 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import DeleteOptions
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import LabelSelector
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ObjectMeta
+from kuber.v1_15.meta_v1 import DeleteOptions
+from kuber.v1_15.meta_v1 import LabelSelector
+from kuber.v1_15.meta_v1 import ListMeta
+from kuber.v1_15.meta_v1 import ObjectMeta
 from kuber.v1_15.core_v1 import SELinuxOptions
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.v1_15.meta_v1 import Status
+from kuber.v1_15.meta_v1 import StatusDetails
 
 
 class AllowedCSIDriver(_kuber_definitions.Definition):
@@ -909,8 +909,8 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_unavailable: typing.Union[str, int] = None,
-            min_available: typing.Union[str, int] = None,
+            max_unavailable: typing.Union[str, int, None] = None,
+            min_available: typing.Union[str, int, None] = None,
             selector: 'LabelSelector' = None,
     ):
         """Create PodDisruptionBudgetSpec instance."""
@@ -946,7 +946,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
     @max_unavailable.setter
     def max_unavailable(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         An eviction is allowed if at most "maxUnavailable" pods
@@ -955,7 +955,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         can prevent all voluntary evictions by specifying 0. This is
         a mutually exclusive setting with "minAvailable".
         """
-        self._properties['maxUnavailable'] = f'{value}'
+        self._properties['maxUnavailable'] = None if value is None else f'{value}'
 
     @property
     def min_available(self) -> typing.Optional[int]:
@@ -972,7 +972,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
     @min_available.setter
     def min_available(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         An eviction is allowed if at least "minAvailable" pods
@@ -981,7 +981,7 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         for example you can prevent all voluntary evictions by
         specifying "100%".
         """
-        self._properties['minAvailable'] = f'{value}'
+        self._properties['minAvailable'] = None if value is None else f'{value}'
 
     @property
     def selector(self) -> 'LabelSelector':

@@ -5,13 +5,12 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import LabelSelector
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import MicroTime
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import ObjectMeta
-from kuber.latest.apimachinery.pkg.api_resource import Quantity
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.latest.meta_v1 import LabelSelector
+from kuber.latest.meta_v1 import ListMeta
+from kuber.latest.meta_v1 import MicroTime
+from kuber.latest.meta_v1 import ObjectMeta
+from kuber.latest.meta_v1 import Status
+from kuber.latest.meta_v1 import StatusDetails
 
 
 class AWSElasticBlockStoreVolumeSource(_kuber_definitions.Definition):
@@ -4728,7 +4727,7 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
     def __init__(
             self,
             medium: str = None,
-            size_limit: 'Quantity' = None,
+            size_limit: typing.Union[str, int, None] = None,
     ):
         """Create EmptyDirVolumeSource instance."""
         super(EmptyDirVolumeSource, self).__init__(
@@ -4737,12 +4736,12 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
         )
         self._properties = {
             'medium': medium or '',
-            'sizeLimit': size_limit or Quantity(),
+            'sizeLimit': size_limit or None,
 
         }
         self._types = {
             'medium': (str, None),
-            'sizeLimit': (Quantity, None),
+            'sizeLimit': (str, None),
 
         }
 
@@ -4767,7 +4766,7 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
         self._properties['medium'] = value
 
     @property
-    def size_limit(self) -> 'Quantity':
+    def size_limit(self) -> typing.Optional[str]:
         """
         Total amount of local storage required for this EmptyDir
         volume. The size limit is also applicable for memory medium.
@@ -4777,10 +4776,14 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
         is nil which means that the limit is undefined. More info:
         http://kubernetes.io/docs/user-guide/volumes#emptydir
         """
-        return self._properties.get('sizeLimit')
+        value = self._properties.get('sizeLimit')
+        return f'{value}' if value is not None else None
 
     @size_limit.setter
-    def size_limit(self, value: typing.Union['Quantity', dict]):
+    def size_limit(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         Total amount of local storage required for this EmptyDir
         volume. The size limit is also applicable for memory medium.
@@ -4790,9 +4793,7 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
         is nil which means that the limit is undefined. More info:
         http://kubernetes.io/docs/user-guide/volumes#emptydir
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['sizeLimit'] = value
+        self._properties['sizeLimit'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'EmptyDirVolumeSource':
         return self
@@ -7376,7 +7377,7 @@ class HTTPGetAction(_kuber_definitions.Definition):
             host: str = None,
             http_headers: typing.List['HTTPHeader'] = None,
             path: str = None,
-            port: typing.Union[str, int] = None,
+            port: typing.Union[str, int, None] = None,
             scheme: str = None,
     ):
         """Create HTTPGetAction instance."""
@@ -7468,14 +7469,14 @@ class HTTPGetAction(_kuber_definitions.Definition):
     @port.setter
     def port(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         Name or number of the port to access on the container.
         Number must be in the range 1 to 65535. Name must be an
         IANA_SVC_NAME.
         """
-        self._properties['port'] = f'{value}'
+        self._properties['port'] = None if value is None else f'{value}'
 
     @property
     def scheme(self) -> str:
@@ -11579,7 +11580,7 @@ class ObjectFieldSelector(_kuber_definitions.Definition):
         return False
 
 
-class ObjectReference(_kuber_definitions.Resource):
+class ObjectReference(_kuber_definitions.Definition):
     """
     ObjectReference contains enough information to let you
     inspect or modify the referred object.
@@ -11724,130 +11725,6 @@ class ObjectReference(_kuber_definitions.Resource):
         objects/names/#uids
         """
         self._properties['uid'] = value
-
-    def create_resource(self, namespace: 'str' = None):
-        """
-        Creates the ObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'create_namespaced_object_reference',
-            'create_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='create',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-
-    def replace_resource(self, namespace: 'str' = None):
-        """
-        Replaces the ObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'replace_namespaced_object_reference',
-            'replace_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='replace',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def patch_resource(self, namespace: 'str' = None):
-        """
-        Patches the ObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'patch_namespaced_object_reference',
-            'patch_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='patch',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def get_resource_status(self, namespace: 'str' = None):
-        """This resource does not have a status."""
-        pass
-
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
-        """
-        Reads the ObjectReference from the currently configured
-        Kubernetes cluster and returns the low-level definition object.
-        """
-        names = [
-            'read_namespaced_object_reference',
-            'read_object_reference'
-        ]
-        return _kube_api.execute(
-            action='read',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-
-    def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
-    ):
-        """
-        Deletes the ObjectReference from the currently configured
-        Kubernetes cluster.
-        """
-        names = [
-            'delete_namespaced_object_reference',
-            'delete_object_reference'
-        ]
-
-        body = client.V1DeleteOptions(
-            propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
-        )
-
-        _kube_api.execute(
-            action='delete',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
-        )
-
-    @staticmethod
-    def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.CoreV1Api':
-        """
-        Returns an instance of the kubernetes API client associated with
-        this object.
-        """
-        if api_client:
-            kwargs['apl_client'] = api_client
-        return client.CoreV1Api(**kwargs)
 
     def __enter__(self) -> 'ObjectReference':
         return self
@@ -18885,7 +18762,7 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
     def __init__(
             self,
             container_name: str = None,
-            divisor: 'Quantity' = None,
+            divisor: typing.Union[str, int, None] = None,
             resource: str = None,
     ):
         """Create ResourceFieldSelector instance."""
@@ -18895,13 +18772,13 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
         )
         self._properties = {
             'containerName': container_name or '',
-            'divisor': divisor or Quantity(),
+            'divisor': divisor or None,
             'resource': resource or '',
 
         }
         self._types = {
             'containerName': (str, None),
-            'divisor': (Quantity, None),
+            'divisor': (str, None),
             'resource': (str, None),
 
         }
@@ -18921,22 +18798,24 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
         self._properties['containerName'] = value
 
     @property
-    def divisor(self) -> 'Quantity':
+    def divisor(self) -> typing.Optional[str]:
         """
         Specifies the output format of the exposed resources,
         defaults to "1"
         """
-        return self._properties.get('divisor')
+        value = self._properties.get('divisor')
+        return f'{value}' if value is not None else None
 
     @divisor.setter
-    def divisor(self, value: typing.Union['Quantity', dict]):
+    def divisor(
+            self,
+            value: typing.Union[str, int, None]
+    ):
         """
         Specifies the output format of the exposed resources,
         defaults to "1"
         """
-        if isinstance(value, dict):
-            value = Quantity().from_dict(value)
-        self._properties['divisor'] = value
+        self._properties['divisor'] = None if value is None else f'{value}'
 
     @property
     def resource(self) -> str:
@@ -22091,7 +21970,7 @@ class ServicePort(_kuber_definitions.Definition):
             node_port: int = None,
             port: int = None,
             protocol: str = None,
-            target_port: typing.Union[str, int] = None,
+            target_port: typing.Union[str, int, None] = None,
     ):
         """Create ServicePort instance."""
         super(ServicePort, self).__init__(
@@ -22215,7 +22094,7 @@ class ServicePort(_kuber_definitions.Definition):
     @target_port.setter
     def target_port(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         Number or name of the port to access on the pods targeted by
@@ -22229,7 +22108,7 @@ class ServicePort(_kuber_definitions.Definition):
         https://kubernetes.io/docs/concepts/services-
         networking/service/#defining-a-service
         """
-        self._properties['targetPort'] = f'{value}'
+        self._properties['targetPort'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'ServicePort':
         return self
@@ -23098,7 +22977,7 @@ class TCPSocketAction(_kuber_definitions.Definition):
     def __init__(
             self,
             host: str = None,
-            port: typing.Union[str, int] = None,
+            port: typing.Union[str, int, None] = None,
     ):
         """Create TCPSocketAction instance."""
         super(TCPSocketAction, self).__init__(
@@ -23143,14 +23022,14 @@ class TCPSocketAction(_kuber_definitions.Definition):
     @port.setter
     def port(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         Number or name of the port to access on the container.
         Number must be in the range 1 to 65535. Name must be an
         IANA_SVC_NAME.
         """
-        self._properties['port'] = f'{value}'
+        self._properties['port'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'TCPSocketAction':
         return self

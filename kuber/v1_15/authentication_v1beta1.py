@@ -4,10 +4,10 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ObjectMeta
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.v1_15.meta_v1 import ListMeta
+from kuber.v1_15.meta_v1 import ObjectMeta
+from kuber.v1_15.meta_v1 import Status
+from kuber.v1_15.meta_v1 import StatusDetails
 
 
 class TokenReview(_kuber_definitions.Resource):

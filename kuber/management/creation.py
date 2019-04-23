@@ -150,6 +150,7 @@ def from_dict(
     parts = (
         resource_definition['apiVersion']
         .replace('rbac.authorization.k8s.io/', 'rbac/')
+        .replace('apiregistration.k8s.io/', 'apiregistration/')
         .replace('storage.k8s.io/', 'storage/')
         .split('/')[:2]
     )

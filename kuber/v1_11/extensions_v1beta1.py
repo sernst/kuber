@@ -9,18 +9,18 @@ from kuber.v1_11.core_v1 import Container
 from kuber.v1_11.core_v1 import ContainerPort
 from kuber.v1_11.core_v1 import EnvFromSource
 from kuber.v1_11.core_v1 import EnvVar
-from kuber.v1_11.apimachinery.pkg.apis.meta_v1 import LabelSelector
+from kuber.v1_11.meta_v1 import LabelSelector
 from kuber.v1_11.core_v1 import Lifecycle
-from kuber.v1_11.apimachinery.pkg.apis.meta_v1 import ListMeta
+from kuber.v1_11.meta_v1 import ListMeta
 from kuber.v1_11.core_v1 import LoadBalancerStatus
-from kuber.v1_11.apimachinery.pkg.apis.meta_v1 import ObjectMeta
+from kuber.v1_11.meta_v1 import ObjectMeta
 from kuber.v1_11.core_v1 import PodTemplateSpec
 from kuber.v1_11.core_v1 import Probe
 from kuber.v1_11.core_v1 import ResourceRequirements
 from kuber.v1_11.core_v1 import SELinuxOptions
 from kuber.v1_11.core_v1 import SecurityContext
-from kuber.v1_11.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.v1_11.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.v1_11.meta_v1 import Status
+from kuber.v1_11.meta_v1 import StatusDetails
 from kuber.v1_11.core_v1 import VolumeDevice
 from kuber.v1_11.core_v1 import VolumeMount
 
@@ -1752,7 +1752,7 @@ class DeploymentList(_kuber_definitions.Collection):
         return False
 
 
-class DeploymentRollback(_kuber_definitions.Resource):
+class DeploymentRollback(_kuber_definitions.Definition):
     """
     DEPRECATED. DeploymentRollback stores the information
     required to rollback a deployment.
@@ -1827,130 +1827,6 @@ class DeploymentRollback(_kuber_definitions.Resource):
         The annotations to be updated to a deployment
         """
         self._properties['updatedAnnotations'] = value
-
-    def create_resource(self, namespace: 'str' = None):
-        """
-        Creates the DeploymentRollback in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'create_namespaced_deployment_rollback',
-            'create_deployment_rollback'
-        ]
-
-        _kube_api.execute(
-            action='create',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-
-    def replace_resource(self, namespace: 'str' = None):
-        """
-        Replaces the DeploymentRollback in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'replace_namespaced_deployment_rollback',
-            'replace_deployment_rollback'
-        ]
-
-        _kube_api.execute(
-            action='replace',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def patch_resource(self, namespace: 'str' = None):
-        """
-        Patches the DeploymentRollback in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'patch_namespaced_deployment_rollback',
-            'patch_deployment_rollback'
-        ]
-
-        _kube_api.execute(
-            action='patch',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def get_resource_status(self, namespace: 'str' = None):
-        """This resource does not have a status."""
-        pass
-
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
-        """
-        Reads the DeploymentRollback from the currently configured
-        Kubernetes cluster and returns the low-level definition object.
-        """
-        names = [
-            'read_namespaced_deployment_rollback',
-            'read_deployment_rollback'
-        ]
-        return _kube_api.execute(
-            action='read',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-
-    def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
-    ):
-        """
-        Deletes the DeploymentRollback from the currently configured
-        Kubernetes cluster.
-        """
-        names = [
-            'delete_namespaced_deployment_rollback',
-            'delete_deployment_rollback'
-        ]
-
-        body = client.V1DeleteOptions(
-            propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
-        )
-
-        _kube_api.execute(
-            action='delete',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
-        )
-
-    @staticmethod
-    def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.ExtensionsV1beta1Api':
-        """
-        Returns an instance of the kubernetes API client associated with
-        this object.
-        """
-        if api_client:
-            kwargs['apl_client'] = api_client
-        return client.ExtensionsV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'DeploymentRollback':
         return self
@@ -3179,7 +3055,7 @@ class IngressBackend(_kuber_definitions.Definition):
     def __init__(
             self,
             service_name: str = None,
-            service_port: typing.Union[str, int] = None,
+            service_port: typing.Union[str, int, None] = None,
     ):
         """Create IngressBackend instance."""
         super(IngressBackend, self).__init__(
@@ -3222,12 +3098,12 @@ class IngressBackend(_kuber_definitions.Definition):
     @service_port.setter
     def service_port(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         Specifies the port of the referenced service.
         """
-        self._properties['servicePort'] = f'{value}'
+        self._properties['servicePort'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'IngressBackend':
         return self
@@ -4293,7 +4169,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            port: typing.Union[str, int] = None,
+            port: typing.Union[str, int, None] = None,
             protocol: str = None,
     ):
         """Create NetworkPolicyPort instance."""
@@ -4327,7 +4203,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
     @port.setter
     def port(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         If specified, the port on the given protocol.  This can
@@ -4336,7 +4212,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         present, only traffic on the specified protocol AND port
         will be matched.
         """
-        self._properties['port'] = f'{value}'
+        self._properties['port'] = None if value is None else f'{value}'
 
     @property
     def protocol(self) -> str:
@@ -6269,7 +6145,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_unavailable: typing.Union[str, int] = None,
+            max_unavailable: typing.Union[str, int, None] = None,
     ):
         """Create RollingUpdateDaemonSet instance."""
         super(RollingUpdateDaemonSet, self).__init__(
@@ -6309,7 +6185,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
     @max_unavailable.setter
     def max_unavailable(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         The maximum number of DaemonSet pods that can be unavailable
@@ -6327,7 +6203,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        self._properties['maxUnavailable'] = f'{value}'
+        self._properties['maxUnavailable'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'RollingUpdateDaemonSet':
         return self
@@ -6343,8 +6219,8 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_surge: typing.Union[str, int] = None,
-            max_unavailable: typing.Union[str, int] = None,
+            max_surge: typing.Union[str, int, None] = None,
+            max_unavailable: typing.Union[str, int, None] = None,
     ):
         """Create RollingUpdateDeployment instance."""
         super(RollingUpdateDeployment, self).__init__(
@@ -6384,7 +6260,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
     @max_surge.setter
     def max_surge(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         The maximum number of pods that can be scheduled above the
@@ -6400,7 +6276,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is atmost 130% of
         desired pods.
         """
-        self._properties['maxSurge'] = f'{value}'
+        self._properties['maxSurge'] = None if value is None else f'{value}'
 
     @property
     def max_unavailable(self) -> typing.Optional[int]:
@@ -6423,7 +6299,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
     @max_unavailable.setter
     def max_unavailable(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         The maximum number of pods that can be unavailable during
@@ -6438,7 +6314,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        self._properties['maxUnavailable'] = f'{value}'
+        self._properties['maxUnavailable'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'RollingUpdateDeployment':
         return self

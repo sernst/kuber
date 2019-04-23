@@ -1,3 +1,4 @@
+import typing
 from collections import defaultdict
 
 import kuber_maker
@@ -14,11 +15,13 @@ TYPES = {
     # validation limitations. See issue for details:
     # https://github.com/kubernetes-client/python/issues/322
     'IntOrString': 'int',
+    'Quantity': 'str',
     None: None
 }
 
 TYPE_HINTS = {
-    'IntOrString': 'typing.Union[str, int]'
+    'IntOrString': 'typing.Union[str, int, None]',
+    'Quantity': 'typing.Union[str, int, None]'
 }
 
 TYPE_CONSTRUCTORS = {
@@ -29,8 +32,20 @@ TYPE_CONSTRUCTORS = {
     'boolean': 'None',
     'number': 'None',
     'Time': 'None',
-    'IntOrString': 'None'
+    'IntOrString': 'None',
+    'Quantity': 'None'
 }
+
+QUALIFIED_MAPPINGS = {
+    'rbac': 'rbac.authorization.k8s.io',
+    'apiregistration': 'apiregistration.k8s.io'
+}
+
+PATHS_TO_SKIP = (
+    'io.k8s.kubernetes.',
+    'io.k8s.apimachinery.pkg.api.resource.',
+    'io.k8s.apimachinery.pkg.util.',
+)
 
 
 def parse_definitions(
@@ -40,6 +55,8 @@ def parse_definitions(
     """..."""
     entities = defaultdict(dict)
     for api_path, definition in definitions.items():
+        if api_path.startswith(PATHS_TO_SKIP):
+            continue
         entity = _create_entity(version, api_path, definition)
         entities[entity.package][entity.class_name] = entity
     return kuber_maker.AllEntities(
@@ -70,10 +87,10 @@ def _get_qualified_api_version(package: str) -> str:
     """..."""
     # Get the api version parts like (app, v1) from the package.
     api_version_parts = package.rsplit('.', 1)[-1].split('_')
-
-    if api_version_parts[0] == 'rbac':
-        api_version_parts[0] = 'rbac.authorization.k8s.io'
-
+    api_version_parts[0] = QUALIFIED_MAPPINGS.get(
+        api_version_parts[0],
+        api_version_parts[0]
+    )
     return '/'.join(api_version_parts)
 
 
@@ -86,7 +103,7 @@ def _create_entity(
     package = kuber_maker.to_kuber_package(version, api_path)
     path = kuber_maker.to_kuber_path(version, api_path)
 
-    properties = {
+    properties: typing.Dict[str, kuber_maker.Property] = {
         name: parse_property(version, name, value)
         for name, value in definition.get('properties', {}).items()
         if not name.startswith('$')
@@ -99,7 +116,8 @@ def _create_entity(
     is_resource = (
         ('apiVersion' in properties)
         and ('kind' in properties)
-        and (api_path.startswith('io.k8s.api.'))
+        and ('metadata' in properties)
+        and (properties['metadata'].data_type.api_type == 'ObjectMeta')
     )
 
     return kuber_maker.Entity(

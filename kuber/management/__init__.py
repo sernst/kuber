@@ -298,13 +298,13 @@ class ResourceBundle:
         extensions = ('.yml', '.yaml', '.json')
         parts = [directory, '**' if recursive else None, '*']
         glob_path = os.path.realpath(os.path.join(*[p for p in parts if p]))
-        paths = [
+        paths = sorted([
             path
             for path in glob.iglob(glob_path, recursive=recursive)
             if path.endswith(extensions)
             and os.path.isfile(path)
             and os.path.basename(path) not in (ignores or [])
-        ]
+        ])
 
         for path in paths:
             self.add_file(path)
@@ -357,18 +357,22 @@ class ResourceBundle:
         Create all resources in the bundle.
 
         :param namespace:
-            Optionally specify the namespace in which to create resources
-            that do not have an explicit namespace specified. Will default
-            to the namespace specified in this bundle.
+            Optionally specify the namespace in which to create resources.
+            Resources that have a namespace explicitly set in their
+            metadata value will ignore this value and use that value instead.
+            Will default to the namespace specified in this bundle if this is
+            not specified and the namespace is not specified on the resource
+            metadata directly.
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
         """
-        ns = namespace or self.namespace
-        return [
-            execution.create_resource(r, ns, echo=echo)
-            for r in self.resources
-        ]
+        default_namespace = namespace or self.namespace
+        results = []
+        for r in self.resources:
+            ns = r.metadata.namespace or default_namespace
+            results.append(execution.create_resource(r, ns, echo=echo))
+        return results
 
     def replace(
             self,
@@ -379,18 +383,22 @@ class ResourceBundle:
         Replace all resources in the bundle.
 
         :param namespace:
-            Optionally specify the namespace in which to replace resources
-            that do not have an explicit namespace specified. Will default
-            to the namespace specified in this bundle.
+            Optionally specify the namespace in which to replace resources.
+            Resources that have a namespace explicitly set in their
+            metadata value will ignore this value and use that value instead.
+            Will default to the namespace specified in this bundle if this is
+            not specified and the namespace is not specified on the resource
+            metadata directly.
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
         """
-        ns = namespace or self.namespace
-        return [
-            execution.replace_resource(r, ns, echo=echo)
-            for r in self.resources
-        ]
+        default_namespace = namespace or self.namespace
+        results = []
+        for r in self.resources:
+            ns = r.metadata.namespace or default_namespace
+            results.append(execution.replace_resource(r, ns, echo=echo))
+        return results
 
     def statuses(
             self,
@@ -402,16 +410,21 @@ class ResourceBundle:
 
         :param namespace:
             Optionally specify the namespace where the resources reside.
-            Will default to the namespace specified in this bundle.
+            Resources that have a namespace explicitly set in their
+            metadata value will ignore this value and use that value instead.
+            Will default to the namespace specified in this bundle if this is
+            not specified and the namespace is not specified on the resource
+            metadata directly.
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
         """
-        ns = namespace or self.namespace
-        return [
-            execution.get_resource_status(r, ns, echo=echo)
-            for r in self.resources
-        ]
+        default_namespace = namespace or self.namespace
+        results = []
+        for r in self.resources:
+            ns = r.metadata.namespace or default_namespace
+            results.append(execution.get_resource_status(r, ns, echo=echo))
+        return results
 
     def delete(
             self,
@@ -422,14 +435,18 @@ class ResourceBundle:
         Delete all resources in the bundle.
 
         :param namespace:
-            Optionally specify the namespace in which to delete the resource.
-            Will default to the namespace specified in this bundle.
+            Optionally specify the namespace in which to delete the
+            resources that have not had a namespace explicitly set in their
+            metadata value. Will default to the namespace specified in this
+            bundle if this is not specified and the namespace is not specified
+            on the resource metadata directly.
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
         """
-        ns = namespace or self.namespace
-        return [
-            execution.delete_resource(r, ns, echo=echo)
-            for r in self.resources
-        ]
+        default_namespace = namespace or self.namespace
+        results = []
+        for r in self.resources:
+            ns = r.metadata.namespace or default_namespace
+            results.append(execution.delete_resource(r, ns, echo=echo))
+        return results

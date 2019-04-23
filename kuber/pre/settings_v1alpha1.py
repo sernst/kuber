@@ -6,9 +6,9 @@ from kuber import kube_api as _kube_api
 from kuber import definitions as _kuber_definitions
 from kuber.pre.core_v1 import EnvFromSource
 from kuber.pre.core_v1 import EnvVar
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import LabelSelector
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import ObjectMeta
+from kuber.pre.meta_v1 import LabelSelector
+from kuber.pre.meta_v1 import ListMeta
+from kuber.pre.meta_v1 import ObjectMeta
 from kuber.pre.core_v1 import Volume
 from kuber.pre.core_v1 import VolumeMount
 

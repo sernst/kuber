@@ -158,6 +158,11 @@ def _to_kuber_hierarchy(kubernetes_api_path: str) -> typing.List[str]:
         .replace('-', '_')
         .replace('io.k8s.api.', '')
         .replace('io.k8s.', '')
+        .replace('kube_aggregator.pkg.apis.', '')
+        .replace('apimachinery.pkg.apis.', '')
+        .replace('apiextensions_apiserver.pkg.apis.', '')
+        .replace('pkg.apis.', '')
+        .replace('pkg.', '')
     )
 
     # Remove file extension and split into hierarchy list.

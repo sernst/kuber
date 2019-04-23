@@ -5,10 +5,10 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import ObjectMeta
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.latest.meta_v1 import ListMeta
+from kuber.latest.meta_v1 import ObjectMeta
+from kuber.latest.meta_v1 import Status
+from kuber.latest.meta_v1 import StatusDetails
 
 
 class CertificateSigningRequest(_kuber_definitions.Resource):

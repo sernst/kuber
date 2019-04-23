@@ -1,12 +1,20 @@
     {% for p, v in entity.properties.items() if p not in property_ignores %}
-    {% if v.data_type.api_type == 'IntOrString' and v.data_type.python_type == 'str' %}
+    {% if v.data_type.api_type == 'Quantity' %}
     @property
     def {{ p | snake_case }}(self) -> typing.Optional[str]:
         """
         {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
         """
         value = self._properties.get('{{ p }}')
-        return f'{value}' if value else None
+        return f'{value}' if value is not None else None
+    {% elif v.data_type.api_type == 'IntOrString' and v.data_type.python_type == 'str' %}
+    @property
+    def {{ p | snake_case }}(self) -> typing.Optional[str]:
+        """
+        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
+        """
+        value = self._properties.get('{{ p }}')
+        return f'{value}' if value is not None else None
     {% elif v.data_type.api_type == 'IntOrString' and v.data_type.python_type == 'int' %}
     @property
     def {{ p | snake_case }}(self) -> typing.Optional[int]:
@@ -37,6 +45,16 @@
         elif isinstance(value, _datetime.date):
             value = value.strftime('%Y-%m-%dT00:00:00Z')
         self._properties['{{ p }}'] = value
+    {% elif v.data_type.api_type == 'Quantity' %}
+    @{{ p | snake_case }}.setter
+    def {{ p | snake_case }}(
+            self,
+            value: {{ v.data_type.type_hint }}
+    ):
+        """
+        {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
+        """
+        self._properties['{{ p }}'] = None if value is None else f'{value}'
     {% elif v.data_type.api_type == 'IntOrString' %}
     @{{ p | snake_case }}.setter
     def {{ p | snake_case }}(
@@ -46,7 +64,7 @@
         """
         {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
         """
-        self._properties['{{ p }}'] = f'{value}'
+        self._properties['{{ p }}'] = None if value is None else f'{value}'
     {% elif v.data_type.code_import and v.data_type.python_type == 'list' %}
     @{{ p | snake_case }}.setter
     def {{ p | snake_case }}(

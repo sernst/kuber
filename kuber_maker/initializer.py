@@ -15,6 +15,14 @@ def create_subpackages(version: str, definitions: dict):
     for api_path in definitions.keys():
         module_path = kuber_maker.to_kuber_path(version, api_path)
         path = os.path.dirname(module_path)
+
+        if os.path.basename(path) in ('kubernetes', 'apimachinery'):
+            # These sub-packages are empty because the resources
+            # here have been moved and the only items remaining are
+            # the type definitions that will be skipped Time, Quantity,
+            # and IntOrString.
+            continue
+
         paths.append(path)
 
         if not os.path.exists(path):

@@ -11,14 +11,14 @@ from kuber.latest.core_v1 import EnvFromSource
 from kuber.latest.core_v1 import EnvVar
 from kuber.latest.batch_v1 import JobSpec
 from kuber.latest.core_v1 import Lifecycle
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import ObjectMeta
+from kuber.latest.meta_v1 import ListMeta
+from kuber.latest.meta_v1 import ObjectMeta
 from kuber.latest.core_v1 import ObjectReference
 from kuber.latest.core_v1 import Probe
 from kuber.latest.core_v1 import ResourceRequirements
 from kuber.latest.core_v1 import SecurityContext
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.latest.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.latest.meta_v1 import Status
+from kuber.latest.meta_v1 import StatusDetails
 from kuber.latest.core_v1 import VolumeDevice
 from kuber.latest.core_v1 import VolumeMount
 

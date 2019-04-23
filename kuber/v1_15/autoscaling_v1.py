@@ -5,13 +5,13 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import ObjectMeta
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.v1_15.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.v1_15.meta_v1 import ListMeta
+from kuber.v1_15.meta_v1 import ObjectMeta
+from kuber.v1_15.meta_v1 import Status
+from kuber.v1_15.meta_v1 import StatusDetails
 
 
-class CrossVersionObjectReference(_kuber_definitions.Resource):
+class CrossVersionObjectReference(_kuber_definitions.Definition):
     """
     CrossVersionObjectReference contains enough information to
     let you identify the referred resource.
@@ -52,130 +52,6 @@ class CrossVersionObjectReference(_kuber_definitions.Resource):
         http://kubernetes.io/docs/user-guide/identifiers#names
         """
         self._properties['name'] = value
-
-    def create_resource(self, namespace: 'str' = None):
-        """
-        Creates the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'create_namespaced_cross_version_object_reference',
-            'create_cross_version_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='create',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-
-    def replace_resource(self, namespace: 'str' = None):
-        """
-        Replaces the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'replace_namespaced_cross_version_object_reference',
-            'replace_cross_version_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='replace',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def patch_resource(self, namespace: 'str' = None):
-        """
-        Patches the CrossVersionObjectReference in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            'patch_namespaced_cross_version_object_reference',
-            'patch_cross_version_object_reference'
-        ]
-
-        _kube_api.execute(
-            action='patch',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-
-    def get_resource_status(self, namespace: 'str' = None):
-        """This resource does not have a status."""
-        pass
-
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
-        """
-        Reads the CrossVersionObjectReference from the currently configured
-        Kubernetes cluster and returns the low-level definition object.
-        """
-        names = [
-            'read_namespaced_cross_version_object_reference',
-            'read_cross_version_object_reference'
-        ]
-        return _kube_api.execute(
-            action='read',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-
-    def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
-    ):
-        """
-        Deletes the CrossVersionObjectReference from the currently configured
-        Kubernetes cluster.
-        """
-        names = [
-            'delete_namespaced_cross_version_object_reference',
-            'delete_cross_version_object_reference'
-        ]
-
-        body = client.V1DeleteOptions(
-            propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
-        )
-
-        _kube_api.execute(
-            action='delete',
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
-        )
-
-    @staticmethod
-    def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AutoscalingV1Api':
-        """
-        Returns an instance of the kubernetes API client associated with
-        this object.
-        """
-        if api_client:
-            kwargs['apl_client'] = api_client
-        return client.AutoscalingV1Api(**kwargs)
 
     def __enter__(self) -> 'CrossVersionObjectReference':
         return self

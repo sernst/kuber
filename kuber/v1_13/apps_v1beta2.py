@@ -9,18 +9,18 @@ from kuber.v1_13.core_v1 import Container
 from kuber.v1_13.core_v1 import ContainerPort
 from kuber.v1_13.core_v1 import EnvFromSource
 from kuber.v1_13.core_v1 import EnvVar
-from kuber.v1_13.apimachinery.pkg.apis.meta_v1 import LabelSelector
+from kuber.v1_13.meta_v1 import LabelSelector
 from kuber.v1_13.core_v1 import Lifecycle
-from kuber.v1_13.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.v1_13.apimachinery.pkg.apis.meta_v1 import ObjectMeta
+from kuber.v1_13.meta_v1 import ListMeta
+from kuber.v1_13.meta_v1 import ObjectMeta
 from kuber.v1_13.core_v1 import PersistentVolumeClaim
 from kuber.v1_13.core_v1 import PodTemplateSpec
 from kuber.v1_13.core_v1 import Probe
-from kuber.v1_13.apimachinery.pkg_runtime import RawExtension
+from kuber.v1_13.apimachinery_runtime import RawExtension
 from kuber.v1_13.core_v1 import ResourceRequirements
 from kuber.v1_13.core_v1 import SecurityContext
-from kuber.v1_13.apimachinery.pkg.apis.meta_v1 import Status
-from kuber.v1_13.apimachinery.pkg.apis.meta_v1 import StatusDetails
+from kuber.v1_13.meta_v1 import Status
+from kuber.v1_13.meta_v1 import StatusDetails
 from kuber.v1_13.core_v1 import VolumeDevice
 from kuber.v1_13.core_v1 import VolumeMount
 
@@ -3337,7 +3337,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_unavailable: typing.Union[str, int] = None,
+            max_unavailable: typing.Union[str, int, None] = None,
     ):
         """Create RollingUpdateDaemonSet instance."""
         super(RollingUpdateDaemonSet, self).__init__(
@@ -3377,7 +3377,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
     @max_unavailable.setter
     def max_unavailable(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         The maximum number of DaemonSet pods that can be unavailable
@@ -3395,7 +3395,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        self._properties['maxUnavailable'] = f'{value}'
+        self._properties['maxUnavailable'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'RollingUpdateDaemonSet':
         return self
@@ -3411,8 +3411,8 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            max_surge: typing.Union[str, int] = None,
-            max_unavailable: typing.Union[str, int] = None,
+            max_surge: typing.Union[str, int, None] = None,
+            max_unavailable: typing.Union[str, int, None] = None,
     ):
         """Create RollingUpdateDeployment instance."""
         super(RollingUpdateDeployment, self).__init__(
@@ -3452,7 +3452,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
     @max_surge.setter
     def max_surge(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         The maximum number of pods that can be scheduled above the
@@ -3468,7 +3468,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is atmost 130% of
         desired pods.
         """
-        self._properties['maxSurge'] = f'{value}'
+        self._properties['maxSurge'] = None if value is None else f'{value}'
 
     @property
     def max_unavailable(self) -> typing.Optional[int]:
@@ -3491,7 +3491,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
     @max_unavailable.setter
     def max_unavailable(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         The maximum number of pods that can be unavailable during
@@ -3506,7 +3506,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        self._properties['maxUnavailable'] = f'{value}'
+        self._properties['maxUnavailable'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'RollingUpdateDeployment':
         return self

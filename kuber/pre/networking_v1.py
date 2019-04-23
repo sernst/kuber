@@ -4,9 +4,9 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import LabelSelector
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import ListMeta
-from kuber.pre.apimachinery.pkg.apis.meta_v1 import ObjectMeta
+from kuber.pre.meta_v1 import LabelSelector
+from kuber.pre.meta_v1 import ListMeta
+from kuber.pre.meta_v1 import ObjectMeta
 
 
 class IPBlock(_kuber_definitions.Definition):
@@ -701,7 +701,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            port: typing.Union[str, int] = None,
+            port: typing.Union[str, int, None] = None,
             protocol: str = None,
     ):
         """Create NetworkPolicyPort instance."""
@@ -733,14 +733,14 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
     @port.setter
     def port(
             self,
-            value: typing.Union[str, int]
+            value: typing.Union[str, int, None]
     ):
         """
         The port on the given protocol. This can either be a
         numerical or named port on a pod. If this field is not
         provided, this matches all port names and numbers.
         """
-        self._properties['port'] = f'{value}'
+        self._properties['port'] = None if value is None else f'{value}'
 
     @property
     def protocol(self) -> str:
