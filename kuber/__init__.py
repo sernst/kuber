@@ -18,7 +18,7 @@ from kuber.management.creation import new_resource  # noqa
 from kuber.versioning import KubernetesVersion  # noqa
 
 #: kuber library version.
-__version__ = '1.6.0'
+__version__ = '1.6.1'
 
 #: All currently supported versions that exist within this installation
 #: of the kuber library.
@@ -57,6 +57,39 @@ def create_bundle(
         Initialized `ResourceBundle`.
     """
     return ResourceBundle(bundle_name, kubernetes_version)
+
+
+def from_directory_files(
+        directory: str,
+        filenames: _typing.Iterable = None,
+        kubernetes_version: VersionLabel = None,
+        bundle_name: str = None
+) -> ResourceBundle:
+    """
+    Creates a `ResourceBundle` object from all of the resource
+    configuration files specified by the ``filenames`` argument from
+    within the specified directory.
+
+    :param directory:
+        Path of the directory where the Kubernetes Resource configuration files
+        to be loaded are stored.
+    :param filenames:
+        A list of filenames in the given directory and the order in
+        which they should be added.
+    :param kubernetes_version:
+        Kubernetes version in the form MAJOR.MINOR (no patch) that should be
+        used by the bundle when creating and operating on Kubernetes Resource
+        objects (e.g. `Deployment`, `Pod`, etc.). If not specified the most
+        recent version will be used.
+    :param bundle_name:
+        A name to associated with the resource bundle. If not specified, a
+        randomized name will be generated instead.
+    :return:
+        Initialized `ResourceBundle` populated with all of the Kubernetes
+        Resource objects loaded from the specified directory.
+    """
+    bundle = ResourceBundle(bundle_name, kubernetes_version)
+    return bundle.add_directory_files(directory, filenames=filenames)
 
 
 def from_directory(

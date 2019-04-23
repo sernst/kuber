@@ -310,6 +310,27 @@ class ResourceBundle:
             self.add_file(path)
         return self
 
+    def add_directory_files(
+            self,
+            directory: str,
+            filenames: typing.Iterable = None
+    ) -> 'ResourceBundle':
+        """
+        Adds all of the resource configuration filenames listed in the
+        ``filenames`` argument from within the specified directory in the
+        order specified by the ``filenames`` argument. This is useful when
+        the order of resources is important.
+
+        :param directory:
+            Directory where the filenames reside.
+        :param filenames:
+            A list of filenames in the given directory and the order in
+            which they should be added.
+        """
+        for name in (filenames or []):
+            self.add_file(os.path.realpath(os.path.join(directory, name)))
+        return self
+
     def render_yaml(self) -> typing.List[str]:
         """Serializes the bundle resources to a list of YAML strings."""
         return [self._conform_resource(r).to_yaml() for r in self.resources]

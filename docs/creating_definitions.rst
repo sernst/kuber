@@ -13,7 +13,7 @@ further below.
 Individual Resources
 --------------------
 
-A high-level `new_resource` function exists to conveniently load resources
+A high-level ``new_resource`` function exists to conveniently load resources
 from the top-level package.
 
 .. autofunction:: kuber.new_resource
@@ -109,7 +109,7 @@ Multiple Resources
 ------------------
 
 Creating and managing multiple resources collectively in kuber is done through
-`ResourceBundle` objects that contain a list of resource objects and have
+``ResourceBundle`` objects that contain a list of resource objects and have
 convenience functions for managing that list of resources collectively. There
 are a few top-level convenience functions available for initializing
 bundles from existing configuration files:
@@ -118,7 +118,10 @@ bundles from existing configuration files:
 
 .. autofunction:: kuber.from_directory
 
-Empty `ResourceBundles` can also be created and then populated after creation
-using the same functionality available as methods on the bundle object.
+.. autofunction:: kuber.from_directory_files
+
+Empty ``ResourceBundles`` can also be created and then populated after
+creation using the same functionality available as methods on the bundle
+object.
 
 .. autofunction:: kuber.create_bundle
