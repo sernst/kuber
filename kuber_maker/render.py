@@ -71,6 +71,9 @@ def _to_snake_case(value: str) -> str:
     if not value:
         return value
 
+    if value.startswith('API'):
+        value = f'Api{value[3:]}'
+
     value = value.replace('-', '_')
     if keyword.iskeyword(value) or value in _PYTHON_BUILTINS:
         value = f'{value}_'
@@ -153,7 +156,7 @@ def _containers_location(
 
 def _get_kubernetes_api_class_name(entity: kuber_maker.Entity):
     """.."""
-    parts = entity.api_version.split('/')
+    parts = entity.api_version.replace('.k8s.io', '').split('/')
     if entity.api_path.find('rbac') != -1:
         return f'RbacAuthorization{parts[-1].capitalize()}Api'
     result = ''.join([p.capitalize() for p in parts] + ['Api'])

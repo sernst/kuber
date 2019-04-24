@@ -6,6 +6,10 @@ import uuid
 import yaml
 from kubernetes import client
 
+API_VERSION_REMAPS = {
+    'core/v1': 'v1'
+}
+
 
 class InternalValue(typing.NamedTuple):
     """
@@ -107,7 +111,8 @@ class Collection(Definition):
         rendered into json or yaml configuration file formats.
         """
         results = super(Collection, self).to_dict() or {}
-        return {'apiVersion': self.api_version, 'kind': self.kind, **results}
+        version = API_VERSION_REMAPS.get(self.api_version, self.api_version)
+        return {'apiVersion': version, 'kind': self.kind, **results}
 
     def to_json(self) -> str:
         """
@@ -178,7 +183,8 @@ class Resource(Definition):
         rendered into json or yaml configuration file formats.
         """
         results = super(Resource, self).to_dict() or {}
-        return {'apiVersion': self.api_version, 'kind': self.kind, **results}
+        version = API_VERSION_REMAPS.get(self.api_version, self.api_version)
+        return {'apiVersion': version, 'kind': self.kind, **results}
 
     def to_json(self) -> str:
         """

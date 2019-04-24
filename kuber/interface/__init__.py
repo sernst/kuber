@@ -108,10 +108,14 @@ def do_create(action: CommandAction) -> CommandAction:
     """
     Carries out a create action for the command line interaction.
     """
-    namespace = action.args.namespace or action.bundle.namespace
+    default_namespace = action.args.namespace or action.bundle.namespace
     print(f'\n=== CREATING BUNDLE {action.bundle.name} ===')
     responses = [
-        execution.create_resource(resource, namespace, echo=True)
+        execution.create_resource(
+            resource=resource,
+            namespace=resource.metadata.namespace or default_namespace,
+            echo=True
+        )
         for resource in action.bundle.resources
         if _is_target(action, resource)
     ]
@@ -127,10 +131,14 @@ def do_delete(action: CommandAction) -> CommandAction:
     """
     Carries out a delete action for the command line interaction.
     """
-    namespace = action.args.namespace or action.bundle.namespace
+    default_namespace = action.args.namespace or action.bundle.namespace
     print(f'\n=== DELETING BUNDLE {action.bundle.name} ===')
     responses = [
-        execution.delete_resource(resource, namespace, echo=True)
+        execution.delete_resource(
+            resource=resource,
+            namespace=resource.metadata.namespace or default_namespace,
+            echo=True
+        )
         for resource in action.bundle.resources
         if _is_target(action, resource)
     ]
@@ -146,10 +154,14 @@ def do_status(action: CommandAction) -> CommandAction:
     """
     Carries out a status display action for the command line interaction.
     """
-    namespace = action.args.namespace or action.bundle.namespace
+    default_namespace = action.args.namespace or action.bundle.namespace
     print(f'\n=== BUNDLE STATUS {action.bundle.name} ===')
     responses = [
-        execution.get_resource_status(resource, namespace, echo=True)
+        execution.get_resource_status(
+            resource=resource,
+            namespace=resource.metadata.namespace or default_namespace,
+            echo=True
+        )
         for resource in action.bundle.resources
         if _is_target(action, resource)
     ]

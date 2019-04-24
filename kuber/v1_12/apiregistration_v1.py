@@ -85,8 +85,8 @@ class APIService(_kuber_definitions.Resource):
         returned by the Kubernetes API after the create is complete.
         """
         names = [
-            'create_namespaced_apiservice',
-            'create_apiservice'
+            'create_namespaced_api_service',
+            'create_api_service'
         ]
 
         response = _kube_api.execute(
@@ -112,8 +112,8 @@ class APIService(_kuber_definitions.Resource):
         returned by the Kubernetes API after the replace is complete.
         """
         names = [
-            'replace_namespaced_apiservice',
-            'replace_apiservice'
+            'replace_namespaced_api_service',
+            'replace_api_service'
         ]
 
         response = _kube_api.execute(
@@ -139,8 +139,8 @@ class APIService(_kuber_definitions.Resource):
         returned by the Kubernetes API after the replace is complete.
         """
         names = [
-            'patch_namespaced_apiservice',
-            'patch_apiservice'
+            'patch_namespaced_api_service',
+            'patch_api_service'
         ]
 
         response = _kube_api.execute(
@@ -164,8 +164,8 @@ class APIService(_kuber_definitions.Resource):
         Returns status information about the given resource within the cluster.
         """
         names = [
-            'read_namespaced_apiservice',
-            'read_apiservice'
+            'read_namespaced_api_service',
+            'read_api_service'
         ]
 
         response = _kube_api.execute(
@@ -190,8 +190,8 @@ class APIService(_kuber_definitions.Resource):
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_apiservice',
-            'read_apiservice'
+            'read_namespaced_api_service',
+            'read_api_service'
         ]
         return _kube_api.execute(
             action='read',
@@ -213,8 +213,8 @@ class APIService(_kuber_definitions.Resource):
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_apiservice',
-            'delete_apiservice'
+            'delete_namespaced_api_service',
+            'delete_api_service'
         ]
 
         body = client.V1DeleteOptions(
@@ -235,14 +235,14 @@ class APIService(_kuber_definitions.Resource):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> 'client.Apiregistration.k8s.ioV1Api':
+    ) -> 'client.ApiregistrationV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.Apiregistration.k8s.ioV1Api(**kwargs)
+        return client.ApiregistrationV1Api(**kwargs)
 
     def __enter__(self) -> 'APIService':
         return self
@@ -448,14 +448,14 @@ class APIServiceList(_kuber_definitions.Collection):
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> 'client.Apiregistration.k8s.ioV1Api':
+    ) -> 'client.ApiregistrationV1Api':
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs['apl_client'] = api_client
-        return client.Apiregistration.k8s.ioV1Api(**kwargs)
+        return client.ApiregistrationV1Api(**kwargs)
 
     def __enter__(self) -> 'APIServiceList':
         return self

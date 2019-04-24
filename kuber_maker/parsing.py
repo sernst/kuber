@@ -91,6 +91,7 @@ def _get_qualified_api_version(package: str) -> str:
         api_version_parts[0],
         api_version_parts[0]
     )
+
     return '/'.join(api_version_parts)
 
 
