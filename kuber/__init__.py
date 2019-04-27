@@ -1,4 +1,5 @@
 import typing as _typing
+import yaml as _yaml
 
 from kuber import versioning as _versioning
 from kuber.interface import CommandAction  # noqa
@@ -18,7 +19,11 @@ from kuber.management.creation import new_resource  # noqa
 from kuber.versioning import KubernetesVersion  # noqa
 
 #: kuber library version.
-__version__ = '1.6.2'
+__version__ = '1.6.3'
+
+#: The loader used when loading yaml via pyyaml. This can be overridden
+#: in cases where a different Loader is preferred.
+yaml_loader = _yaml.Loader
 
 #: All currently supported versions that exist within this installation
 #: of the kuber library.

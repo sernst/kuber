@@ -86,7 +86,7 @@ def from_yaml(
         omitted, the `latest` version will be used by default. Accepts either
         a string version label of a KubernetesVersion object.
     """
-    data = yaml.load(resource_definition, Loader=yaml.CLoader)
+    data = yaml.load(resource_definition, Loader=kuber.yaml_loader)
     return from_dict(data, kubernetes_version)
 
 

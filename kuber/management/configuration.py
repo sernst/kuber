@@ -6,6 +6,7 @@ import copy
 
 import yaml
 
+import kuber
 from kuber import management
 
 
@@ -53,7 +54,7 @@ class ResourceBundleSettings:
             contents = f.read()
 
         if path.endswith(('.yml', '.yaml')):
-            return self.add(**yaml.load(contents, Loader=yaml.CLoader))
+            return self.add(**yaml.load(contents, Loader=kuber.yaml_loader))
 
         if path.endswith('.json'):
             return self.add(**json.loads(contents))
