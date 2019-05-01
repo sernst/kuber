@@ -4,6 +4,14 @@ kuber.management package
 Submodules
 ----------
 
+kuber.management.arrays module
+------------------------------
+
+.. automodule:: kuber.management.arrays
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 kuber.management.configuration module
 -------------------------------------
 

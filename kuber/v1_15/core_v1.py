@@ -15748,8 +15748,8 @@ class PodSpec(_kuber_definitions.Definition):
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
         More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is an alpha feature and may
-        change in the future.
+        node/runtime-class.md This is a beta feature as of
+        Kubernetes v1.14.
         """
         return self._properties.get('runtimeClassName')
 
@@ -15763,8 +15763,8 @@ class PodSpec(_kuber_definitions.Definition):
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
         More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is an alpha feature and may
-        change in the future.
+        node/runtime-class.md This is a beta feature as of
+        Kubernetes v1.14.
         """
         self._properties['runtimeClassName'] = value
 
@@ -24364,7 +24364,7 @@ class VolumeMount(_kuber_definitions.Definition):
         environment variable references $(VAR_NAME) are expanded
         using the container's environment. Defaults to "" (volume's
         root). SubPathExpr and SubPath are mutually exclusive. This
-        field is alpha in 1.14.
+        field is beta in 1.15.
         """
         return self._properties.get('subPathExpr')
 
@@ -24376,7 +24376,7 @@ class VolumeMount(_kuber_definitions.Definition):
         environment variable references $(VAR_NAME) are expanded
         using the container's environment. Defaults to "" (volume's
         root). SubPathExpr and SubPath are mutually exclusive. This
-        field is alpha in 1.14.
+        field is beta in 1.15.
         """
         self._properties['subPathExpr'] = value
 

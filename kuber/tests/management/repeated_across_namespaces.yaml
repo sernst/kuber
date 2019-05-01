@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo-pod
+  namespace: first
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo-pod
+  namespace: second
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo-pod
+  namespace: third

@@ -6,6 +6,7 @@ Documentation Contents
 
   docs/overview
   docs/creating_definitions
+  docs/resource_access
   docs/versions
   docs/crud
   docs/cli

@@ -9,6 +9,7 @@ from kuber import execution
 from kuber import interface
 from kuber import versioning as _versioning
 from kuber.definitions import Resource
+from kuber.management import arrays
 from kuber.management import configuration
 from kuber.management import creation
 
@@ -41,6 +42,7 @@ class ResourceBundle:
         self._resources: typing.List['creation.ResourceSubclass'] = []
         self._cli = interface.ResourceBundleCli(self)
         self._settings = configuration.ResourceBundleSettings(self)
+        self._array = arrays.ResourceArray(self)
 
     @property
     def kubernetes_version(self) -> '_versioning.KubernetesVersion':
@@ -67,14 +69,15 @@ class ResourceBundle:
         return self._cli
 
     @property
-    def resources(self) -> typing.Tuple['creation.ResourceSubclass']:
+    def resources(self) -> 'arrays.ResourceArray':
         """Resources stored within the bundle."""
-        return tuple(self._resources)
+        return self._array
 
     def get(
             self,
             name: str = None,
             kind: str = None,
+            namespace: str = None,
             **kwargs
     ) -> typing.Optional['creation.ResourceSubclass']:
         """
@@ -86,6 +89,8 @@ class ResourceBundle:
             Name of the resource to return.
         :param kind:
             Kubernetes kind of the resource to return, e.g. 'Deployment'.
+        :param namespace:
+            Namespace in which the resource is explicitly assigned.
         :param kwargs:
             Optionally specify metadata labels to use when selecting the
             resource to return.
@@ -93,7 +98,8 @@ class ResourceBundle:
         for r in self.resources:
             match = (
                 (kind is None or r.kind == kind)
-                and (name is None or getattr(r, 'metadata').name == name)
+                and (name is None or r.metadata.name == name)
+                and (namespace is None or r.metadata.namespace == namespace)
             )
             labels = {
                 key: value
@@ -108,6 +114,7 @@ class ResourceBundle:
             self,
             name: str = None,
             kind: str = None,
+            namespace: str = None,
             **kwargs
     ) -> typing.List['creation.ResourceSubclass']:
         """
@@ -118,6 +125,8 @@ class ResourceBundle:
             Name of the resources to return.
         :param kind:
             Kubernetes kind of the resources to return, e.g. 'Deployment'.
+        :param namespace:
+            Namespace in which the resource is explicitly assigned.
         :param kwargs:
             Optionally specify metadata labels to use when selecting the
             resource to return.
@@ -126,7 +135,8 @@ class ResourceBundle:
         for r in self.resources:
             match = (
                 (kind is None or r.kind == kind)
-                and (name is None or getattr(r, 'metadata').name == name)
+                and (name is None or r.metadata.name == name)
+                and (namespace is None or r.metadata.namespace == namespace)
             )
             labels = {
                 key: value

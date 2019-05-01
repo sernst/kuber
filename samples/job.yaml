@@ -2,6 +2,22 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: scott
+  namespace: foo
+  labels:
+    app: scott
+spec:
+  template:
+    spec:
+      containers:
+      - image: swernst/cauldron:current-standard
+        imagePullPolicy: Always
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: scott
+  namespace: bar
   labels:
     app: scott
 spec:

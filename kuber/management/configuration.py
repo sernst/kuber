@@ -135,7 +135,7 @@ class ResourceBundleSettings:
 
     def to_yaml(self) -> str:
         """Renders the settings object as a YAML string."""
-        return yaml.dump(self._data)
+        return yaml.dump(self._data, default_flow_style=False)
 
     def __getitem__(self, item):
         return self._data.get(item)

@@ -140,7 +140,7 @@ def get_resource_status(
             namespace=namespace
         )
         if status is not None and status.to_dict():
-            message = yaml.dump(status.to_dict())
+            message = yaml.dump(status.to_dict(), default_flow_style=False)
             response = ResponseInfo(
                 resource=resource,
                 symbol='*',

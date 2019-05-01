@@ -22,8 +22,8 @@ def generate(version: str):
         contents = render.render_package(package, entities)
         path = kuber_maker.directory_of_package(package)
 
-        with open(f'{path}.py', 'w') as f:
-            f.write(contents)
+        with open(f'{path}.py', 'wb') as f:
+            f.write(contents.encode())
         print(f'[CREATED]: {path}.py')
 
     contents = render.render_root_package(version, spec)

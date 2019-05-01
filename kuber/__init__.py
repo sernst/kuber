@@ -19,7 +19,7 @@ from kuber.management.creation import new_resource  # noqa
 from kuber.versioning import KubernetesVersion  # noqa
 
 #: kuber library version.
-__version__ = '1.6.3'
+__version__ = '1.7.0'
 
 #: The loader used when loading yaml via pyyaml. This can be overridden
 #: in cases where a different Loader is preferred.

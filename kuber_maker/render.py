@@ -240,7 +240,7 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
         has_resource=has_resource
     )
     blocks.insert(0, import_block)
-    lines = '\n'.join(blocks).split('\n')
+    lines = '\n'.join(blocks).replace('\r', '').split('\n')
     lines = [l.rstrip() for l in lines]
     contents = '\n'.join(lines)
     contents = re.sub(LINE_REGEX, '\n\n\n', contents)

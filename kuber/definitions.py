@@ -128,7 +128,7 @@ class Collection(Definition):
         saved as a configuration file or used with other packages that
         interact with the Kubernetes API.
         """
-        return yaml.dump(self.to_dict())
+        return yaml.dump(self.to_dict(), default_flow_style=False)
 
     @staticmethod
     @abc.abstractmethod
@@ -200,7 +200,7 @@ class Resource(Definition):
         saved as a configuration file or used with other packages that
         interact with the Kubernetes API.
         """
-        return yaml.dump(self.to_dict())
+        return yaml.dump(self.to_dict(), default_flow_style=False)
 
     @abc.abstractmethod
     def create_resource(self, namespace: str = None):
