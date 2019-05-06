@@ -82,7 +82,7 @@
         self._properties['{{ p }}'] = cleaned
     {% elif v.data_type.code_import %}
     @{{ p | snake_case }}.setter
-    def {{ p | snake_case }}(self, value: typing.Union[{{ v.data_type.type_hint }}, dict]):
+    def {{ p | snake_case }}(self, value: {{ v.data_type.setter_type_hint }}):
         """
         {{ v.description | printable | wordwrap(width=60) | indent(width=8) }}
         """

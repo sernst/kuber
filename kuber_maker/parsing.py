@@ -71,13 +71,14 @@ def parse_definitions(
 def parse_property(
         version: str,
         name: str,
-        definition: dict
+        definition: dict,
+        entity_class_name: str
 ) -> kuber_maker.Property:
     """..."""
     definition = definition.copy()
     return kuber_maker.Property(
         name=name,
-        data_type=_get_data_type(version, name, definition),
+        data_type=_get_data_type(version, name, definition, entity_class_name),
         description=definition.get('description', ''),
         source=definition
     )
@@ -101,11 +102,12 @@ def _create_entity(
         definition: dict
 ) -> kuber_maker.Entity:
     """..."""
+    class_name = api_path.rsplit('.', 1)[-1]
     package = kuber_maker.to_kuber_package(version, api_path)
     path = kuber_maker.to_kuber_path(version, api_path)
 
     properties: typing.Dict[str, kuber_maker.Property] = {
-        name: parse_property(version, name, value)
+        name: parse_property(version, name, value, class_name)
         for name, value in definition.get('properties', {}).items()
         if not name.startswith('$')
     }
@@ -123,7 +125,7 @@ def _create_entity(
 
     return kuber_maker.Entity(
         api_path=api_path,
-        class_name=api_path.rsplit('.', 1)[-1],
+        class_name=class_name,
         api_version=_get_qualified_api_version(package),
         package=package,
         code_path=f'{path}.py',
@@ -139,9 +141,11 @@ def _create_entity(
 def _get_data_type(
         version: str,
         name: str,
-        property_definition: dict
+        property_definition: dict,
+        entity_class_name: str
 ) -> kuber_maker.DataType:
     """..."""
+    setter_type_hint = None
     reference = property_definition.get('$ref')
     reference_type = (reference or '').rsplit('.', 1)[-1]
     api_type = property_definition.get('type') or reference_type
@@ -170,6 +174,19 @@ def _get_data_type(
         if reference else
         None
     )
+    if code_import:
+        # When the type is a kuber definition, allow for a dict type as well
+        # that can be deserialized into the strict object type instead.
+        setter_type_hint = f'typing.Union[{type_hint}, dict]'
+
+    if reference_type == entity_class_name:
+        # There are places in the API where recursive relationships exist
+        # as properties have the same type as the object in which they are
+        # defined. To prevent that, we set the values of those properties to
+        # None by default and they have to be added manually instead.
+        type_hint = f'typing.Optional[\'{reference_type}\']'
+        setter_type_hint = f'typing.Union[\'{reference_type}\', dict, None]'
+        constructor = 'None'
 
     return kuber_maker.DataType(
         api_type=api_type,
@@ -177,5 +194,6 @@ def _get_data_type(
         constructor=constructor,
         type_hint=type_hint,
         code_import=code_import,
-        item_type=item_type
+        item_type=item_type,
+        setter_type_hint=setter_type_hint
     )

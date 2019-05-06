@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Kubernetes",
-    "version": "v1.11.9"
+    "version": "v1.11.10"
   },
   "paths": {
     "/api/": {
@@ -88356,9 +88356,9 @@
     }
   ],
   "kuber": {
-    "name": "v1.11.9",
+    "name": "v1.11.10",
     "api_version": "1.11",
-    "commit_sha": "16236ce91790d4c75b79f6ce96841db1c843e7d2",
-    "version": "1.11.9"
+    "commit_sha": "7a578febe155a7366767abce40d8a16795a96371",
+    "version": "1.11.10"
   }
 }

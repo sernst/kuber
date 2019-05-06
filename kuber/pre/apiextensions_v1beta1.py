@@ -1800,7 +1800,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             min_properties: int = None,
             minimum: float = None,
             multiple_of: float = None,
-            not_: 'JSONSchemaProps' = None,
+            not_: typing.Optional['JSONSchemaProps'] = None,
             nullable: bool = None,
             one_of: typing.List['JSONSchemaProps'] = None,
             pattern: str = None,
@@ -1842,7 +1842,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'minProperties': min_properties or None,
             'minimum': minimum or None,
             'multipleOf': multiple_of or None,
-            'not': not_ or JSONSchemaProps(),
+            'not': not_ or None,
             'nullable': nullable or None,
             'oneOf': one_of or [],
             'pattern': pattern or '',
@@ -2280,14 +2280,14 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         self._properties['multipleOf'] = value
 
     @property
-    def not_(self) -> 'JSONSchemaProps':
+    def not_(self) -> typing.Optional['JSONSchemaProps']:
         """
 
         """
         return self._properties.get('not')
 
     @not_.setter
-    def not_(self, value: typing.Union['JSONSchemaProps', dict]):
+    def not_(self, value: typing.Union['JSONSchemaProps', dict, None]):
         """
 
         """

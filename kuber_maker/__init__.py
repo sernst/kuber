@@ -44,6 +44,9 @@ class DataType(typing.NamedTuple):
     type_hint: str
     code_import: typing.Optional[Import] = None
     item_type: typing.Optional[str] = None
+    # A special case type-hint specifically for use when specifying a
+    # setter function argument type.
+    setter_type_hint: str = None
 
 
 class Property(typing.NamedTuple):

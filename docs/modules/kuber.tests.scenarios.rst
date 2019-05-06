@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    kuber.tests.scenarios.custom_resource_definition
     kuber.tests.scenarios.empty_values
     kuber.tests.scenarios.odd_api_versions
     kuber.tests.scenarios.value_casting
