@@ -15,6 +15,8 @@ class APIGroup(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
+            kind: str = None,
             name: str = None,
             preferred_version: 'GroupVersionForDiscovery' = None,
             server_address_by_client_cidrs: typing.List['ServerAddressByClientCIDR'] = None,
@@ -26,6 +28,8 @@ class APIGroup(_kuber_definitions.Definition):
             kind='APIGroup'
         )
         self._properties = {
+            'apiVersion': api_version or '',
+            'kind': kind or '',
             'name': name or '',
             'preferredVersion': preferred_version or GroupVersionForDiscovery(),
             'serverAddressByClientCIDRs': server_address_by_client_cidrs or [],
@@ -41,6 +45,54 @@ class APIGroup(_kuber_definitions.Definition):
             'versions': (list, GroupVersionForDiscovery),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        self._properties['apiVersion'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:
@@ -153,7 +205,9 @@ class APIGroupList(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
             groups: typing.List['APIGroup'] = None,
+            kind: str = None,
     ):
         """Create APIGroupList instance."""
         super(APIGroupList, self).__init__(
@@ -161,7 +215,9 @@ class APIGroupList(_kuber_definitions.Definition):
             kind='APIGroupList'
         )
         self._properties = {
+            'apiVersion': api_version or '',
             'groups': groups or [],
+            'kind': kind or '',
 
         }
         self._types = {
@@ -170,6 +226,30 @@ class APIGroupList(_kuber_definitions.Definition):
             'kind': (str, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        self._properties['apiVersion'] = value
 
     @property
     def groups(self) -> typing.List['APIGroup']:
@@ -193,6 +273,30 @@ class APIGroupList(_kuber_definitions.Definition):
             cleaned.append(item)
         self._properties['groups'] = cleaned
 
+    @property
+    def kind(self) -> str:
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
+
     def __enter__(self) -> 'APIGroupList':
         return self
 
@@ -210,6 +314,7 @@ class APIResource(_kuber_definitions.Definition):
             self,
             categories: typing.List[str] = None,
             group: str = None,
+            kind: str = None,
             name: str = None,
             namespaced: bool = None,
             short_names: typing.List[str] = None,
@@ -225,6 +330,7 @@ class APIResource(_kuber_definitions.Definition):
         self._properties = {
             'categories': categories or [],
             'group': group or '',
+            'kind': kind or '',
             'name': name or '',
             'namespaced': namespaced or None,
             'shortNames': short_names or [],
@@ -279,6 +385,22 @@ class APIResource(_kuber_definitions.Definition):
         this may have a different value, for example: Scale".
         """
         self._properties['group'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        kind is the kind for the resource (e.g. 'Foo' is the kind
+        for a resource 'foo')
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        kind is the kind for the resource (e.g. 'Foo' is the kind
+        for a resource 'foo')
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:
@@ -402,7 +524,9 @@ class APIResourceList(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
             group_version: str = None,
+            kind: str = None,
             resources: typing.List['APIResource'] = None,
     ):
         """Create APIResourceList instance."""
@@ -411,7 +535,9 @@ class APIResourceList(_kuber_definitions.Definition):
             kind='APIResourceList'
         )
         self._properties = {
+            'apiVersion': api_version or '',
             'groupVersion': group_version or '',
+            'kind': kind or '',
             'resources': resources or [],
 
         }
@@ -422,6 +548,30 @@ class APIResourceList(_kuber_definitions.Definition):
             'resources': (list, APIResource),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        self._properties['apiVersion'] = value
 
     @property
     def group_version(self) -> str:
@@ -438,6 +588,30 @@ class APIResourceList(_kuber_definitions.Definition):
         is for.
         """
         self._properties['groupVersion'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def resources(self) -> typing.List['APIResource']:
@@ -479,6 +653,8 @@ class APIVersions(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
+            kind: str = None,
             server_address_by_client_cidrs: typing.List['ServerAddressByClientCIDR'] = None,
             versions: typing.List[str] = None,
     ):
@@ -488,6 +664,8 @@ class APIVersions(_kuber_definitions.Definition):
             kind='APIVersions'
         )
         self._properties = {
+            'apiVersion': api_version or '',
+            'kind': kind or '',
             'serverAddressByClientCIDRs': server_address_by_client_cidrs or [],
             'versions': versions or [],
 
@@ -499,6 +677,54 @@ class APIVersions(_kuber_definitions.Definition):
             'versions': (list, str),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        self._properties['apiVersion'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def server_address_by_client_cidrs(self) -> typing.List['ServerAddressByClientCIDR']:
@@ -570,8 +796,10 @@ class DeleteOptions(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
             dry_run: typing.List[str] = None,
             grace_period_seconds: int = None,
+            kind: str = None,
             orphan_dependents: bool = None,
             preconditions: 'Preconditions' = None,
             propagation_policy: str = None,
@@ -582,8 +810,10 @@ class DeleteOptions(_kuber_definitions.Definition):
             kind='DeleteOptions'
         )
         self._properties = {
+            'apiVersion': api_version or '',
             'dryRun': dry_run or [],
             'gracePeriodSeconds': grace_period_seconds or None,
+            'kind': kind or '',
             'orphanDependents': orphan_dependents or None,
             'preconditions': preconditions or Preconditions(),
             'propagationPolicy': propagation_policy or '',
@@ -599,6 +829,30 @@ class DeleteOptions(_kuber_definitions.Definition):
             'propagationPolicy': (str, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        self._properties['apiVersion'] = value
 
     @property
     def dry_run(self) -> typing.List[str]:
@@ -645,6 +899,30 @@ class DeleteOptions(_kuber_definitions.Definition):
         immediately.
         """
         self._properties['gracePeriodSeconds'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def orphan_dependents(self) -> bool:
@@ -1810,8 +2088,10 @@ class OwnerReference(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
             block_owner_deletion: bool = None,
             controller: bool = None,
+            kind: str = None,
             name: str = None,
             uid: str = None,
     ):
@@ -1821,8 +2101,10 @@ class OwnerReference(_kuber_definitions.Definition):
             kind='OwnerReference'
         )
         self._properties = {
+            'apiVersion': api_version or '',
             'blockOwnerDeletion': block_owner_deletion or None,
             'controller': controller or None,
+            'kind': kind or '',
             'name': name or '',
             'uid': uid or '',
 
@@ -1836,6 +2118,20 @@ class OwnerReference(_kuber_definitions.Definition):
             'uid': (str, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        API version of the referent.
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        API version of the referent.
+        """
+        self._properties['apiVersion'] = value
 
     @property
     def block_owner_deletion(self) -> bool:
@@ -1874,6 +2170,24 @@ class OwnerReference(_kuber_definitions.Definition):
         If true, this reference points to the managing controller.
         """
         self._properties['controller'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind of the referent. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind of the referent. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:
@@ -2064,8 +2378,10 @@ class Status(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
             code: int = None,
             details: 'StatusDetails' = None,
+            kind: str = None,
             message: str = None,
             metadata: 'ListMeta' = None,
             reason: str = None,
@@ -2077,8 +2393,10 @@ class Status(_kuber_definitions.Definition):
             kind='Status'
         )
         self._properties = {
+            'apiVersion': api_version or '',
             'code': code or None,
             'details': details or StatusDetails(),
+            'kind': kind or '',
             'message': message or '',
             'metadata': metadata or ListMeta(),
             'reason': reason or '',
@@ -2096,6 +2414,30 @@ class Status(_kuber_definitions.Definition):
             'status': (str, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        self._properties['apiVersion'] = value
 
     @property
     def code(self) -> int:
@@ -2132,6 +2474,30 @@ class Status(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = StatusDetails().from_dict(value)
         self._properties['details'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def message(self) -> str:
@@ -2333,6 +2699,7 @@ class StatusDetails(_kuber_definitions.Definition):
             self,
             causes: typing.List['StatusCause'] = None,
             group: str = None,
+            kind: str = None,
             name: str = None,
             retry_after_seconds: int = None,
             uid: str = None,
@@ -2345,6 +2712,7 @@ class StatusDetails(_kuber_definitions.Definition):
         self._properties = {
             'causes': causes or [],
             'group': group or '',
+            'kind': kind or '',
             'name': name or '',
             'retryAfterSeconds': retry_after_seconds or None,
             'uid': uid or '',
@@ -2401,6 +2769,28 @@ class StatusDetails(_kuber_definitions.Definition):
         status StatusReason.
         """
         self._properties['group'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        The kind attribute of the resource associated with the
+        status StatusReason. On some operations may differ from the
+        requested resource Kind. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        The kind attribute of the resource associated with the
+        status StatusReason. On some operations may differ from the
+        requested resource Kind. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:

@@ -626,6 +626,7 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
     def __init__(
             self,
             categories: typing.List[str] = None,
+            kind: str = None,
             list_kind: str = None,
             plural: str = None,
             short_names: typing.List[str] = None,
@@ -638,6 +639,7 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
         )
         self._properties = {
             'categories': categories or [],
+            'kind': kind or '',
             'listKind': list_kind or '',
             'plural': plural or '',
             'shortNames': short_names or [],
@@ -669,6 +671,22 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
         belong to (e.g. 'all')
         """
         self._properties['categories'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is the serialized kind of the resource.  It is normally
+        CamelCase and singular.
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is the serialized kind of the resource.  It is normally
+        CamelCase and singular.
+        """
+        self._properties['kind'] = value
 
     @property
     def list_kind(self) -> str:

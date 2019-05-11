@@ -1805,6 +1805,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
+            kind: str = None,
             name: str = None,
             rollback_to: 'RollbackConfig' = None,
             updated_annotations: dict = None,
@@ -1815,6 +1817,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
             kind='DeploymentRollback'
         )
         self._properties = {
+            'apiVersion': api_version or '',
+            'kind': kind or '',
             'name': name or '',
             'rollbackTo': rollback_to or RollbackConfig(),
             'updatedAnnotations': updated_annotations or {},
@@ -1828,6 +1832,54 @@ class DeploymentRollback(_kuber_definitions.Definition):
             'updatedAnnotations': (dict, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        APIVersion defines the versioned schema of this
+        representation of an object. Servers should convert
+        recognized schemas to the latest internal value, and may
+        reject unrecognized values. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#resources
+        """
+        self._properties['apiVersion'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is a string value representing the REST resource this
+        object represents. Servers may infer this from the endpoint
+        the client submits requests to. Cannot be updated. In
+        CamelCase. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:
@@ -4792,6 +4844,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             required_drop_capabilities: typing.List[str] = None,
             run_as_group: 'RunAsGroupStrategyOptions' = None,
             run_as_user: 'RunAsUserStrategyOptions' = None,
+            runtime_class: 'RuntimeClassStrategyOptions' = None,
             se_linux: 'SELinuxStrategyOptions' = None,
             supplemental_groups: 'SupplementalGroupsStrategyOptions' = None,
             volumes: typing.List[str] = None,
@@ -4822,6 +4875,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             'requiredDropCapabilities': required_drop_capabilities or [],
             'runAsGroup': run_as_group or RunAsGroupStrategyOptions(),
             'runAsUser': run_as_user or RunAsUserStrategyOptions(),
+            'runtimeClass': runtime_class or RuntimeClassStrategyOptions(),
             'seLinux': se_linux or SELinuxStrategyOptions(),
             'supplementalGroups': supplemental_groups or SupplementalGroupsStrategyOptions(),
             'volumes': volumes or [],
@@ -4848,6 +4902,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             'requiredDropCapabilities': (list, str),
             'runAsGroup': (RunAsGroupStrategyOptions, None),
             'runAsUser': (RunAsUserStrategyOptions, None),
+            'runtimeClass': (RuntimeClassStrategyOptions, None),
             'seLinux': (SELinuxStrategyOptions, None),
             'supplementalGroups': (SupplementalGroupsStrategyOptions, None),
             'volumes': (list, str),
@@ -5281,6 +5336,30 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = RunAsUserStrategyOptions().from_dict(value)
         self._properties['runAsUser'] = value
+
+    @property
+    def runtime_class(self) -> 'RuntimeClassStrategyOptions':
+        """
+        runtimeClass is the strategy that will dictate the allowable
+        RuntimeClasses for a pod. If this field is omitted, the
+        pod's runtimeClassName field is unrestricted. Enforcement of
+        this field depends on the RuntimeClass feature gate being
+        enabled.
+        """
+        return self._properties.get('runtimeClass')
+
+    @runtime_class.setter
+    def runtime_class(self, value: typing.Union['RuntimeClassStrategyOptions', dict]):
+        """
+        runtimeClass is the strategy that will dictate the allowable
+        RuntimeClasses for a pod. If this field is omitted, the
+        pod's runtimeClassName field is unrestricted. Enforcement of
+        this field depends on the RuntimeClass feature gate being
+        enabled.
+        """
+        if isinstance(value, dict):
+            value = RuntimeClassStrategyOptions().from_dict(value)
+        self._properties['runtimeClass'] = value
 
     @property
     def se_linux(self) -> 'SELinuxStrategyOptions':
@@ -6602,6 +6681,82 @@ class RunAsUserStrategyOptions(_kuber_definitions.Definition):
         self._properties['rule'] = value
 
     def __enter__(self) -> 'RunAsUserStrategyOptions':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class RuntimeClassStrategyOptions(_kuber_definitions.Definition):
+    """
+    RuntimeClassStrategyOptions define the strategy that will
+    dictate the allowable RuntimeClasses for a pod.
+    """
+
+    def __init__(
+            self,
+            allowed_runtime_class_names: typing.List[str] = None,
+            default_runtime_class_name: str = None,
+    ):
+        """Create RuntimeClassStrategyOptions instance."""
+        super(RuntimeClassStrategyOptions, self).__init__(
+            api_version='extensions/v1beta1',
+            kind='RuntimeClassStrategyOptions'
+        )
+        self._properties = {
+            'allowedRuntimeClassNames': allowed_runtime_class_names or [],
+            'defaultRuntimeClassName': default_runtime_class_name or '',
+
+        }
+        self._types = {
+            'allowedRuntimeClassNames': (list, str),
+            'defaultRuntimeClassName': (str, None),
+
+        }
+
+    @property
+    def allowed_runtime_class_names(self) -> typing.List[str]:
+        """
+        allowedRuntimeClassNames is a whitelist of RuntimeClass
+        names that may be specified on a pod. A value of "*" means
+        that any RuntimeClass name is allowed, and must be the only
+        item in the list. An empty list requires the
+        RuntimeClassName field to be unset.
+        """
+        return self._properties.get('allowedRuntimeClassNames')
+
+    @allowed_runtime_class_names.setter
+    def allowed_runtime_class_names(self, value: typing.List[str]):
+        """
+        allowedRuntimeClassNames is a whitelist of RuntimeClass
+        names that may be specified on a pod. A value of "*" means
+        that any RuntimeClass name is allowed, and must be the only
+        item in the list. An empty list requires the
+        RuntimeClassName field to be unset.
+        """
+        self._properties['allowedRuntimeClassNames'] = value
+
+    @property
+    def default_runtime_class_name(self) -> str:
+        """
+        defaultRuntimeClassName is the default RuntimeClassName to
+        set on the pod. The default MUST be allowed by the
+        allowedRuntimeClassNames list. A value of nil does not
+        mutate the Pod.
+        """
+        return self._properties.get('defaultRuntimeClassName')
+
+    @default_runtime_class_name.setter
+    def default_runtime_class_name(self, value: str):
+        """
+        defaultRuntimeClassName is the default RuntimeClassName to
+        set on the pod. The default MUST be allowed by the
+        allowedRuntimeClassNames list. A value of nil does not
+        mutate the Pod.
+        """
+        self._properties['defaultRuntimeClassName'] = value
+
+    def __enter__(self) -> 'RuntimeClassStrategyOptions':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

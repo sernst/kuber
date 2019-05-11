@@ -20,6 +20,8 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
+            kind: str = None,
             name: str = None,
     ):
         """Create CrossVersionObjectReference instance."""
@@ -28,6 +30,8 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
             kind='CrossVersionObjectReference'
         )
         self._properties = {
+            'apiVersion': api_version or '',
+            'kind': kind or '',
             'name': name or '',
 
         }
@@ -37,6 +41,38 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
             'name': (str, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        API version of the referent
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        API version of the referent
+        """
+        self._properties['apiVersion'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind of the referent; More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds"
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind of the referent; More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds"
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:

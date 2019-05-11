@@ -1,4 +1,4 @@
-    {% for p, v in entity.properties.items() if p not in property_ignores %}
+    {% for p, v in entity.properties.items() if base_class == 'Definition' or p not in property_ignores %}
     {% if v.data_type.api_type == 'Quantity' %}
     @property
     def {{ p | snake_case }}(self) -> typing.Optional[str]:

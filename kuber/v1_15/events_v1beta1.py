@@ -635,6 +635,7 @@ class EventSeries(_kuber_definitions.Definition):
     def state(self) -> str:
         """
         Information whether this series is ongoing or finished.
+        Deprecated. Planned removal for 1.18
         """
         return self._properties.get('state')
 
@@ -642,6 +643,7 @@ class EventSeries(_kuber_definitions.Definition):
     def state(self, value: str):
         """
         Information whether this series is ongoing or finished.
+        Deprecated. Planned removal for 1.18
         """
         self._properties['state'] = value
 

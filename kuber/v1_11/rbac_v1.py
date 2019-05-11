@@ -1437,6 +1437,7 @@ class RoleRef(_kuber_definitions.Definition):
     def __init__(
             self,
             api_group: str = None,
+            kind: str = None,
             name: str = None,
     ):
         """Create RoleRef instance."""
@@ -1446,6 +1447,7 @@ class RoleRef(_kuber_definitions.Definition):
         )
         self._properties = {
             'apiGroup': api_group or '',
+            'kind': kind or '',
             'name': name or '',
 
         }
@@ -1469,6 +1471,20 @@ class RoleRef(_kuber_definitions.Definition):
         APIGroup is the group for the resource being referenced
         """
         self._properties['apiGroup'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is the type of resource being referenced
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is the type of resource being referenced
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:
@@ -1502,6 +1518,7 @@ class Subject(_kuber_definitions.Definition):
     def __init__(
             self,
             api_group: str = None,
+            kind: str = None,
             name: str = None,
             namespace: str = None,
     ):
@@ -1512,6 +1529,7 @@ class Subject(_kuber_definitions.Definition):
         )
         self._properties = {
             'apiGroup': api_group or '',
+            'kind': kind or '',
             'name': name or '',
             'namespace': namespace or '',
 
@@ -1541,6 +1559,26 @@ class Subject(_kuber_definitions.Definition):
         "rbac.authorization.k8s.io" for User and Group subjects.
         """
         self._properties['apiGroup'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind of object being referenced. Values defined by this API
+        group are "User", "Group", and "ServiceAccount". If the
+        Authorizer does not recognized the kind value, the
+        Authorizer should report an error.
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind of object being referenced. Values defined by this API
+        group are "User", "Group", and "ServiceAccount". If the
+        Authorizer does not recognized the kind value, the
+        Authorizer should report an error.
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:

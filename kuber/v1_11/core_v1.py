@@ -307,6 +307,7 @@ class AzureDiskVolumeSource(_kuber_definitions.Definition):
             disk_name: str = None,
             disk_uri: str = None,
             fs_type: str = None,
+            kind: str = None,
             read_only: bool = None,
     ):
         """Create AzureDiskVolumeSource instance."""
@@ -319,6 +320,7 @@ class AzureDiskVolumeSource(_kuber_definitions.Definition):
             'diskName': disk_name or '',
             'diskURI': disk_uri or '',
             'fsType': fs_type or '',
+            'kind': kind or '',
             'readOnly': read_only or None,
 
         }
@@ -391,6 +393,26 @@ class AzureDiskVolumeSource(_kuber_definitions.Definition):
         "ntfs". Implicitly inferred to be "ext4" if unspecified.
         """
         self._properties['fsType'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Expected values Shared: multiple blob disks per storage
+        account  Dedicated: single blob disk per storage account
+        Managed: azure managed data disk (only in managed
+        availability set). defaults to shared
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Expected values Shared: multiple blob disks per storage
+        account  Dedicated: single blob disk per storage account
+        Managed: azure managed data disk (only in managed
+        availability set). defaults to shared
+        """
+        self._properties['kind'] = value
 
     @property
     def read_only(self) -> bool:
@@ -11257,6 +11279,7 @@ class ObjectFieldSelector(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
             field_path: str = None,
     ):
         """Create ObjectFieldSelector instance."""
@@ -11265,6 +11288,7 @@ class ObjectFieldSelector(_kuber_definitions.Definition):
             kind='ObjectFieldSelector'
         )
         self._properties = {
+            'apiVersion': api_version or '',
             'fieldPath': field_path or '',
 
         }
@@ -11273,6 +11297,22 @@ class ObjectFieldSelector(_kuber_definitions.Definition):
             'fieldPath': (str, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        Version of the schema the FieldPath is written in terms of,
+        defaults to "v1".
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        Version of the schema the FieldPath is written in terms of,
+        defaults to "v1".
+        """
+        self._properties['apiVersion'] = value
 
     @property
     def field_path(self) -> str:
@@ -11303,7 +11343,9 @@ class ObjectReference(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            api_version: str = None,
             field_path: str = None,
+            kind: str = None,
             name: str = None,
             namespace: str = None,
             resource_version: str = None,
@@ -11315,7 +11357,9 @@ class ObjectReference(_kuber_definitions.Definition):
             kind='ObjectReference'
         )
         self._properties = {
+            'apiVersion': api_version or '',
             'fieldPath': field_path or '',
+            'kind': kind or '',
             'name': name or '',
             'namespace': namespace or '',
             'resourceVersion': resource_version or '',
@@ -11332,6 +11376,20 @@ class ObjectReference(_kuber_definitions.Definition):
             'uid': (str, None),
 
         }
+
+    @property
+    def api_version(self) -> str:
+        """
+        API version of the referent.
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        API version of the referent.
+        """
+        self._properties['apiVersion'] = value
 
     @property
     def field_path(self) -> str:
@@ -11366,6 +11424,24 @@ class ObjectReference(_kuber_definitions.Definition):
         referencing a part of an object.
         """
         self._properties['fieldPath'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind of the referent. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind of the referent. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#types-kinds
+        """
+        self._properties['kind'] = value
 
     @property
     def name(self) -> str:
