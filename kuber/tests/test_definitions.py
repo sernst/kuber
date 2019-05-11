@@ -1,3 +1,5 @@
+from pytest import mark
+
 from kuber import definitions
 from kuber.latest import core_v1
 
@@ -34,3 +36,16 @@ def test_collection_json_serialization():
     namespace_list = core_v1.NamespaceList()
     namespace_list.metadata.resource_version = 'foo'
     assert 'foo' in namespace_list.to_json()
+
+
+SCENARIOS = [
+    ('foo_bar_baz', 'fooBarBaz'),
+    ('foo-bar-baz', 'fooBarBaz'),
+    ('fooBarBaz', 'fooBarBaz')
+]
+
+
+@mark.parametrize('source, expected', SCENARIOS)
+def test_to_camel_case(source: str, expected: str):
+    """Should convert the source string to the expected camelCase result."""
+    assert expected == definitions.to_camel_case(source)

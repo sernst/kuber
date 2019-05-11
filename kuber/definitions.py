@@ -64,12 +64,17 @@ class Definition:
     def from_dict(self, source: dict) -> 'Definition':
         """Populates the resource from the source dictionary definition."""
         for key, value in source.items():
-            if key not in self._types:
-                continue
-            self._properties[key] = deserialize_property(
-                value=value,
-                data_type=self._types[key]
-            )
+            camel_key = to_camel_case(key)
+            if key in self._types:
+                self._properties[key] = deserialize_property(
+                    value=value,
+                    data_type=self._types[key]
+                )
+            elif camel_key in self._types:
+                self._properties[camel_key] = deserialize_property(
+                    value=value,
+                    data_type=self._types[camel_key]
+                )
         return self
 
 
@@ -300,3 +305,9 @@ def deserialize_property(value: typing.Any, data_type: tuple) -> typing.Any:
         return [deserialize_property(v, (data_type[1], None)) for v in value]
 
     return data_type[0](value)
+
+
+def to_camel_case(source: str) -> str:
+    """Converts kebab-case or snake_case to camelCase."""
+    parts = source.replace('-', '_').split('_')
+    return ''.join([parts[0], *[p.capitalize() for p in parts[1:]]])
