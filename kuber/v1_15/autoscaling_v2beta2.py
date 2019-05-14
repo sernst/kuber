@@ -243,6 +243,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'HorizontalPodAutoscalerSpec' = None,
+            status: 'HorizontalPodAutoscalerStatus' = None,
     ):
         """Create HorizontalPodAutoscaler instance."""
         super(HorizontalPodAutoscaler, self).__init__(
@@ -252,6 +253,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or HorizontalPodAutoscalerSpec(),
+            'status': status or HorizontalPodAutoscalerStatus(),
 
         }
         self._types = {
@@ -304,6 +306,22 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = HorizontalPodAutoscalerSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'HorizontalPodAutoscalerStatus':
+        """
+        status is the current information about the autoscaler.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['HorizontalPodAutoscalerStatus', dict]):
+        """
+        status is the current information about the autoscaler.
+        """
+        if isinstance(value, dict):
+            value = HorizontalPodAutoscalerStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

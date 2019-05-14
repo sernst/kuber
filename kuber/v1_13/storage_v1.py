@@ -449,6 +449,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'VolumeAttachmentSpec' = None,
+            status: 'VolumeAttachmentStatus' = None,
     ):
         """Create VolumeAttachment instance."""
         super(VolumeAttachment, self).__init__(
@@ -458,6 +459,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or VolumeAttachmentSpec(),
+            'status': status or VolumeAttachmentStatus(),
 
         }
         self._types = {
@@ -506,6 +508,26 @@ class VolumeAttachment(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = VolumeAttachmentSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'VolumeAttachmentStatus':
+        """
+        Status of the VolumeAttachment request. Populated by the
+        entity completing the attach or detach operation, i.e. the
+        external-attacher.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['VolumeAttachmentStatus', dict]):
+        """
+        Status of the VolumeAttachment request. Populated by the
+        entity completing the attach or detach operation, i.e. the
+        external-attacher.
+        """
+        if isinstance(value, dict):
+            value = VolumeAttachmentStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

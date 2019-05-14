@@ -539,6 +539,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'PodDisruptionBudgetSpec' = None,
+            status: 'PodDisruptionBudgetStatus' = None,
     ):
         """Create PodDisruptionBudget instance."""
         super(PodDisruptionBudget, self).__init__(
@@ -548,6 +549,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or PodDisruptionBudgetSpec(),
+            'status': status or PodDisruptionBudgetStatus(),
 
         }
         self._types = {
@@ -592,6 +594,22 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = PodDisruptionBudgetSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'PodDisruptionBudgetStatus':
+        """
+        Most recently observed status of the PodDisruptionBudget.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['PodDisruptionBudgetStatus', dict]):
+        """
+        Most recently observed status of the PodDisruptionBudget.
+        """
+        if isinstance(value, dict):
+            value = PodDisruptionBudgetStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

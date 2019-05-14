@@ -20,6 +20,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'CertificateSigningRequestSpec' = None,
+            status: 'CertificateSigningRequestStatus' = None,
     ):
         """Create CertificateSigningRequest instance."""
         super(CertificateSigningRequest, self).__init__(
@@ -29,6 +30,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or CertificateSigningRequestSpec(),
+            'status': status or CertificateSigningRequestStatus(),
 
         }
         self._types = {
@@ -73,6 +75,22 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = CertificateSigningRequestSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'CertificateSigningRequestStatus':
+        """
+        Derived information about the request.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['CertificateSigningRequestStatus', dict]):
+        """
+        Derived information about the request.
+        """
+        if isinstance(value, dict):
+            value = CertificateSigningRequestStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

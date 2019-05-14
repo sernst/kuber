@@ -159,6 +159,7 @@ class Ingress(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'IngressSpec' = None,
+            status: 'IngressStatus' = None,
     ):
         """Create Ingress instance."""
         super(Ingress, self).__init__(
@@ -168,6 +169,7 @@ class Ingress(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or IngressSpec(),
+            'status': status or IngressStatus(),
 
         }
         self._types = {
@@ -218,6 +220,26 @@ class Ingress(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = IngressSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'IngressStatus':
+        """
+        Status is the current state of the Ingress. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['IngressStatus', dict]):
+        """
+        Status is the current state of the Ingress. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = IngressStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

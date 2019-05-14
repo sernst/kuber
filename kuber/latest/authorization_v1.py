@@ -22,6 +22,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'SubjectAccessReviewSpec' = None,
+            status: 'SubjectAccessReviewStatus' = None,
     ):
         """Create LocalSubjectAccessReview instance."""
         super(LocalSubjectAccessReview, self).__init__(
@@ -31,6 +32,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or SubjectAccessReviewSpec(),
+            'status': status or SubjectAccessReviewStatus(),
 
         }
         self._types = {
@@ -77,6 +79,24 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = SubjectAccessReviewSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'SubjectAccessReviewStatus':
+        """
+        Status is filled in by the server and indicates whether the
+        request is allowed or not
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['SubjectAccessReviewStatus', dict]):
+        """
+        Status is filled in by the server and indicates whether the
+        request is allowed or not
+        """
+        if isinstance(value, dict):
+            value = SubjectAccessReviewStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -685,6 +705,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'SelfSubjectAccessReviewSpec' = None,
+            status: 'SubjectAccessReviewStatus' = None,
     ):
         """Create SelfSubjectAccessReview instance."""
         super(SelfSubjectAccessReview, self).__init__(
@@ -694,6 +715,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or SelfSubjectAccessReviewSpec(),
+            'status': status or SubjectAccessReviewStatus(),
 
         }
         self._types = {
@@ -738,6 +760,24 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = SelfSubjectAccessReviewSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'SubjectAccessReviewStatus':
+        """
+        Status is filled in by the server and indicates whether the
+        request is allowed or not
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['SubjectAccessReviewStatus', dict]):
+        """
+        Status is filled in by the server and indicates whether the
+        request is allowed or not
+        """
+        if isinstance(value, dict):
+            value = SubjectAccessReviewStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -1006,6 +1046,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'SelfSubjectRulesReviewSpec' = None,
+            status: 'SubjectRulesReviewStatus' = None,
     ):
         """Create SelfSubjectRulesReview instance."""
         super(SelfSubjectRulesReview, self).__init__(
@@ -1015,6 +1056,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or SelfSubjectRulesReviewSpec(),
+            'status': status or SubjectRulesReviewStatus(),
 
         }
         self._types = {
@@ -1057,6 +1099,24 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = SelfSubjectRulesReviewSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'SubjectRulesReviewStatus':
+        """
+        Status is filled in by the server and indicates the set of
+        actions a user can perform.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['SubjectRulesReviewStatus', dict]):
+        """
+        Status is filled in by the server and indicates the set of
+        actions a user can perform.
+        """
+        if isinstance(value, dict):
+            value = SubjectRulesReviewStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -1288,6 +1348,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'SubjectAccessReviewSpec' = None,
+            status: 'SubjectAccessReviewStatus' = None,
     ):
         """Create SubjectAccessReview instance."""
         super(SubjectAccessReview, self).__init__(
@@ -1297,6 +1358,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or SubjectAccessReviewSpec(),
+            'status': status or SubjectAccessReviewStatus(),
 
         }
         self._types = {
@@ -1339,6 +1401,24 @@ class SubjectAccessReview(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = SubjectAccessReviewSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'SubjectAccessReviewStatus':
+        """
+        Status is filled in by the server and indicates whether the
+        request is allowed or not
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['SubjectAccessReviewStatus', dict]):
+        """
+        Status is filled in by the server and indicates whether the
+        request is allowed or not
+        """
+        if isinstance(value, dict):
+            value = SubjectAccessReviewStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

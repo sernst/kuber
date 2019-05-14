@@ -9048,6 +9048,7 @@ class Namespace(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'NamespaceSpec' = None,
+            status: 'NamespaceStatus' = None,
     ):
         """Create Namespace instance."""
         super(Namespace, self).__init__(
@@ -9057,6 +9058,7 @@ class Namespace(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or NamespaceSpec(),
+            'status': status or NamespaceStatus(),
 
         }
         self._types = {
@@ -9107,6 +9109,26 @@ class Namespace(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = NamespaceSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'NamespaceStatus':
+        """
+        Status describes the current status of a Namespace. More
+        info: https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['NamespaceStatus', dict]):
+        """
+        Status describes the current status of a Namespace. More
+        info: https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = NamespaceStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -9487,6 +9509,7 @@ class Node(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'NodeSpec' = None,
+            status: 'NodeStatus' = None,
     ):
         """Create Node instance."""
         super(Node, self).__init__(
@@ -9496,6 +9519,7 @@ class Node(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or NodeSpec(),
+            'status': status or NodeStatus(),
 
         }
         self._types = {
@@ -9546,6 +9570,28 @@ class Node(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = NodeSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'NodeStatus':
+        """
+        Most recently observed status of the node. Populated by the
+        system. Read-only. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['NodeStatus', dict]):
+        """
+        Most recently observed status of the node. Populated by the
+        system. Read-only. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = NodeStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -11553,6 +11599,7 @@ class PersistentVolume(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'PersistentVolumeSpec' = None,
+            status: 'PersistentVolumeStatus' = None,
     ):
         """Create PersistentVolume instance."""
         super(PersistentVolume, self).__init__(
@@ -11562,6 +11609,7 @@ class PersistentVolume(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or PersistentVolumeSpec(),
+            'status': status or PersistentVolumeStatus(),
 
         }
         self._types = {
@@ -11614,6 +11662,30 @@ class PersistentVolume(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = PersistentVolumeSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'PersistentVolumeStatus':
+        """
+        Status represents the current information/status for the
+        persistent volume. Populated by the system. Read-only. More
+        info:
+        https://kubernetes.io/docs/concepts/storage/persistent-
+        volumes#persistent-volumes
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['PersistentVolumeStatus', dict]):
+        """
+        Status represents the current information/status for the
+        persistent volume. Populated by the system. Read-only. More
+        info:
+        https://kubernetes.io/docs/concepts/storage/persistent-
+        volumes#persistent-volumes
+        """
+        if isinstance(value, dict):
+            value = PersistentVolumeStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -11801,6 +11873,7 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'PersistentVolumeClaimSpec' = None,
+            status: 'PersistentVolumeClaimStatus' = None,
     ):
         """Create PersistentVolumeClaim instance."""
         super(PersistentVolumeClaim, self).__init__(
@@ -11810,6 +11883,7 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or PersistentVolumeClaimSpec(),
+            'status': status or PersistentVolumeClaimStatus(),
 
         }
         self._types = {
@@ -11862,6 +11936,28 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = PersistentVolumeClaimSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'PersistentVolumeClaimStatus':
+        """
+        Status represents the current information/status of a
+        persistent volume claim. Read-only. More info:
+        https://kubernetes.io/docs/concepts/storage/persistent-
+        volumes#persistentvolumeclaims
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['PersistentVolumeClaimStatus', dict]):
+        """
+        Status represents the current information/status of a
+        persistent volume claim. Read-only. More info:
+        https://kubernetes.io/docs/concepts/storage/persistent-
+        volumes#persistentvolumeclaims
+        """
+        if isinstance(value, dict):
+            value = PersistentVolumeClaimStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -13657,6 +13753,7 @@ class Pod(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'PodSpec' = None,
+            status: 'PodStatus' = None,
     ):
         """Create Pod instance."""
         super(Pod, self).__init__(
@@ -13666,6 +13763,7 @@ class Pod(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or PodSpec(),
+            'status': status or PodStatus(),
 
         }
         self._types = {
@@ -13716,6 +13814,28 @@ class Pod(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = PodSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'PodStatus':
+        """
+        Most recently observed status of the pod. This data may not
+        be up to date. Populated by the system. Read-only. More
+        info: https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['PodStatus', dict]):
+        """
+        Most recently observed status of the pod. This data may not
+        be up to date. Populated by the system. Read-only. More
+        info: https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = PodStatus().from_dict(value)
+        self._properties['status'] = value
 
     def append_container(
         self,
@@ -17644,6 +17764,7 @@ class ReplicationController(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'ReplicationControllerSpec' = None,
+            status: 'ReplicationControllerStatus' = None,
     ):
         """Create ReplicationController instance."""
         super(ReplicationController, self).__init__(
@@ -17653,6 +17774,7 @@ class ReplicationController(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or ReplicationControllerSpec(),
+            'status': status or ReplicationControllerStatus(),
 
         }
         self._types = {
@@ -17709,6 +17831,30 @@ class ReplicationController(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = ReplicationControllerSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'ReplicationControllerStatus':
+        """
+        Status is the most recently observed status of the
+        replication controller. This data may be out of date by some
+        window of time. Populated by the system. Read-only. More
+        info: https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['ReplicationControllerStatus', dict]):
+        """
+        Status is the most recently observed status of the
+        replication controller. This data may be out of date by some
+        window of time. Populated by the system. Read-only. More
+        info: https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = ReplicationControllerStatus().from_dict(value)
+        self._properties['status'] = value
 
     def append_container(
         self,
@@ -18614,6 +18760,7 @@ class ResourceQuota(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'ResourceQuotaSpec' = None,
+            status: 'ResourceQuotaStatus' = None,
     ):
         """Create ResourceQuota instance."""
         super(ResourceQuota, self).__init__(
@@ -18623,6 +18770,7 @@ class ResourceQuota(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or ResourceQuotaSpec(),
+            'status': status or ResourceQuotaStatus(),
 
         }
         self._types = {
@@ -18673,6 +18821,26 @@ class ResourceQuota(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = ResourceQuotaSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'ResourceQuotaStatus':
+        """
+        Status defines the actual enforced quota and its current
+        usage. https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['ResourceQuotaStatus', dict]):
+        """
+        Status defines the actual enforced quota and its current
+        usage. https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = ResourceQuotaStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -20936,6 +21104,7 @@ class Service(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'ServiceSpec' = None,
+            status: 'ServiceStatus' = None,
     ):
         """Create Service instance."""
         super(Service, self).__init__(
@@ -20945,6 +21114,7 @@ class Service(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or ServiceSpec(),
+            'status': status or ServiceStatus(),
 
         }
         self._types = {
@@ -20995,6 +21165,28 @@ class Service(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = ServiceSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'ServiceStatus':
+        """
+        Most recently observed status of the service. Populated by
+        the system. Read-only. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['ServiceStatus', dict]):
+        """
+        Most recently observed status of the service. Populated by
+        the system. Read-only. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = ServiceStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

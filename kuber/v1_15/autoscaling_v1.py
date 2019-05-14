@@ -105,6 +105,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'HorizontalPodAutoscalerSpec' = None,
+            status: 'HorizontalPodAutoscalerStatus' = None,
     ):
         """Create HorizontalPodAutoscaler instance."""
         super(HorizontalPodAutoscaler, self).__init__(
@@ -114,6 +115,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or HorizontalPodAutoscalerSpec(),
+            'status': status or HorizontalPodAutoscalerStatus(),
 
         }
         self._types = {
@@ -164,6 +166,22 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = HorizontalPodAutoscalerSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'HorizontalPodAutoscalerStatus':
+        """
+        current information about the autoscaler.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['HorizontalPodAutoscalerStatus', dict]):
+        """
+        current information about the autoscaler.
+        """
+        if isinstance(value, dict):
+            value = HorizontalPodAutoscalerStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -676,6 +694,7 @@ class Scale(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'ScaleSpec' = None,
+            status: 'ScaleStatus' = None,
     ):
         """Create Scale instance."""
         super(Scale, self).__init__(
@@ -685,6 +704,7 @@ class Scale(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or ScaleSpec(),
+            'status': status or ScaleStatus(),
 
         }
         self._types = {
@@ -735,6 +755,26 @@ class Scale(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = ScaleSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'ScaleStatus':
+        """
+        current status of the scale. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status. Read-only.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['ScaleStatus', dict]):
+        """
+        current status of the scale. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status. Read-only.
+        """
+        if isinstance(value, dict):
+            value = ScaleStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

@@ -63,18 +63,23 @@ class Definition:
 
     def from_dict(self, source: dict) -> 'Definition':
         """Populates the resource from the source dictionary definition."""
+        lower_keys = {k.lower(): k for k in self._types.keys()}
         for key, value in source.items():
             camel_key = to_camel_case(key)
             if key in self._types:
-                self._properties[key] = deserialize_property(
-                    value=value,
-                    data_type=self._types[key]
-                )
+                prop_key = key
             elif camel_key in self._types:
-                self._properties[camel_key] = deserialize_property(
-                    value=value,
-                    data_type=self._types[camel_key]
-                )
+                prop_key = camel_key
+            elif camel_key.lower() in lower_keys:
+                prop_key = lower_keys[camel_key.lower()]
+            else:
+                continue
+
+            self._properties[prop_key] = deserialize_property(
+                value=value,
+                data_type=self._types[prop_key]
+            )
+
         return self
 
 

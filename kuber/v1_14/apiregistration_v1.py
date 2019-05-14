@@ -21,6 +21,7 @@ class APIService(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'APIServiceSpec' = None,
+            status: 'APIServiceStatus' = None,
     ):
         """Create APIService instance."""
         super(APIService, self).__init__(
@@ -30,6 +31,7 @@ class APIService(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or APIServiceSpec(),
+            'status': status or APIServiceStatus(),
 
         }
         self._types = {
@@ -74,6 +76,22 @@ class APIService(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = APIServiceSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'APIServiceStatus':
+        """
+        Status contains derived information about an API server
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['APIServiceStatus', dict]):
+        """
+        Status contains derived information about an API server
+        """
+        if isinstance(value, dict):
+            value = APIServiceStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

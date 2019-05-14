@@ -285,6 +285,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'CustomResourceDefinitionSpec' = None,
+            status: 'CustomResourceDefinitionStatus' = None,
     ):
         """Create CustomResourceDefinition instance."""
         super(CustomResourceDefinition, self).__init__(
@@ -294,6 +295,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or CustomResourceDefinitionSpec(),
+            'status': status or CustomResourceDefinitionStatus(),
 
         }
         self._types = {
@@ -336,6 +338,24 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = CustomResourceDefinitionSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'CustomResourceDefinitionStatus':
+        """
+        Status indicates the actual state of the
+        CustomResourceDefinition
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['CustomResourceDefinitionStatus', dict]):
+        """
+        Status indicates the actual state of the
+        CustomResourceDefinition
+        """
+        if isinstance(value, dict):
+            value = CustomResourceDefinitionStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

@@ -21,6 +21,7 @@ class TokenReview(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'TokenReviewSpec' = None,
+            status: 'TokenReviewStatus' = None,
     ):
         """Create TokenReview instance."""
         super(TokenReview, self).__init__(
@@ -30,6 +31,7 @@ class TokenReview(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or TokenReviewSpec(),
+            'status': status or TokenReviewStatus(),
 
         }
         self._types = {
@@ -72,6 +74,24 @@ class TokenReview(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = TokenReviewSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'TokenReviewStatus':
+        """
+        Status is filled in by the server and indicates whether the
+        request can be authenticated.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['TokenReviewStatus', dict]):
+        """
+        Status is filled in by the server and indicates whether the
+        request can be authenticated.
+        """
+        if isinstance(value, dict):
+            value = TokenReviewStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,

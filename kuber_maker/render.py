@@ -180,8 +180,6 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
         has_resource = has_resource or e.is_resource
         kubernetes_api_class_name = _get_kubernetes_api_class_name(e)
         property_ignores = ['apiVersion', 'kind']
-        if e.is_resource:
-            property_ignores += ['status']
 
         collection = _collection_status(e)
         if collection['is_collection']:

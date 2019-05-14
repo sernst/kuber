@@ -356,6 +356,7 @@ class Deployment(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'DeploymentSpec' = None,
+            status: 'DeploymentStatus' = None,
     ):
         """Create Deployment instance."""
         super(Deployment, self).__init__(
@@ -365,6 +366,7 @@ class Deployment(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or DeploymentSpec(),
+            'status': status or DeploymentStatus(),
 
         }
         self._types = {
@@ -407,6 +409,22 @@ class Deployment(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = DeploymentSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'DeploymentStatus':
+        """
+        Most recently observed status of the Deployment.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['DeploymentStatus', dict]):
+        """
+        Most recently observed status of the Deployment.
+        """
+        if isinstance(value, dict):
+            value = DeploymentStatus().from_dict(value)
+        self._properties['status'] = value
 
     def append_container(
         self,
@@ -1775,6 +1793,7 @@ class Scale(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'ScaleSpec' = None,
+            status: 'ScaleStatus' = None,
     ):
         """Create Scale instance."""
         super(Scale, self).__init__(
@@ -1784,6 +1803,7 @@ class Scale(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or ScaleSpec(),
+            'status': status or ScaleStatus(),
 
         }
         self._types = {
@@ -1834,6 +1854,26 @@ class Scale(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = ScaleSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'ScaleStatus':
+        """
+        current status of the scale. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status. Read-only.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['ScaleStatus', dict]):
+        """
+        current status of the scale. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status. Read-only.
+        """
+        if isinstance(value, dict):
+            value = ScaleStatus().from_dict(value)
+        self._properties['status'] = value
 
     def create_resource(
             self,
@@ -2173,6 +2213,7 @@ class StatefulSet(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'StatefulSetSpec' = None,
+            status: 'StatefulSetStatus' = None,
     ):
         """Create StatefulSet instance."""
         super(StatefulSet, self).__init__(
@@ -2182,6 +2223,7 @@ class StatefulSet(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or StatefulSetSpec(),
+            'status': status or StatefulSetStatus(),
 
         }
         self._types = {
@@ -2224,6 +2266,24 @@ class StatefulSet(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = StatefulSetSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'StatefulSetStatus':
+        """
+        Status is the current status of Pods in this StatefulSet.
+        This data may be out of date by some window of time.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['StatefulSetStatus', dict]):
+        """
+        Status is the current status of Pods in this StatefulSet.
+        This data may be out of date by some window of time.
+        """
+        if isinstance(value, dict):
+            value = StatefulSetStatus().from_dict(value)
+        self._properties['status'] = value
 
     def append_container(
         self,

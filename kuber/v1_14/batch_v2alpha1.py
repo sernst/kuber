@@ -32,6 +32,7 @@ class CronJob(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'CronJobSpec' = None,
+            status: 'CronJobStatus' = None,
     ):
         """Create CronJob instance."""
         super(CronJob, self).__init__(
@@ -41,6 +42,7 @@ class CronJob(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or CronJobSpec(),
+            'status': status or CronJobStatus(),
 
         }
         self._types = {
@@ -93,6 +95,26 @@ class CronJob(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = CronJobSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'CronJobStatus':
+        """
+        Current status of a cron job. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['CronJobStatus', dict]):
+        """
+        Current status of a cron job. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = CronJobStatus().from_dict(value)
+        self._properties['status'] = value
 
     def append_container(
         self,

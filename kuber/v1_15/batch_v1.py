@@ -32,6 +32,7 @@ class Job(_kuber_definitions.Resource):
             self,
             metadata: 'ObjectMeta' = None,
             spec: 'JobSpec' = None,
+            status: 'JobStatus' = None,
     ):
         """Create Job instance."""
         super(Job, self).__init__(
@@ -41,6 +42,7 @@ class Job(_kuber_definitions.Resource):
         self._properties = {
             'metadata': metadata or ObjectMeta(),
             'spec': spec or JobSpec(),
+            'status': status or JobStatus(),
 
         }
         self._types = {
@@ -91,6 +93,26 @@ class Job(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = JobSpec().from_dict(value)
         self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'JobStatus':
+        """
+        Current status of a job. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['JobStatus', dict]):
+        """
+        Current status of a job. More info:
+        https://git.k8s.io/community/contributors/devel/api-
+        conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = JobStatus().from_dict(value)
+        self._properties['status'] = value
 
     def append_container(
         self,

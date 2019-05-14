@@ -19,7 +19,7 @@ from kuber.management.creation import new_resource  # noqa
 from kuber.versioning import KubernetesVersion  # noqa
 
 #: kuber library version.
-__version__ = '1.7.3'
+__version__ = '1.7.4'
 
 #: The loader used when loading yaml via pyyaml. This can be overridden
 #: in cases where a different Loader is preferred.
@@ -43,8 +43,8 @@ VersionLabel = _typing.Union[KubernetesVersion, str]
 
 
 def create_bundle(
-        kubernetes_version: str = None,
-        bundle_name: VersionLabel = None
+        kubernetes_version: VersionLabel = None,
+        bundle_name: str = None
 ) -> ResourceBundle:
     """
     Creates a `ResourceBundle` instance initialized to define resources from
