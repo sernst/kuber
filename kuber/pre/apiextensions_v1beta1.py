@@ -1848,6 +1848,9 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             title: str = None,
             type_: str = None,
             unique_items: bool = None,
+            x_kubernetes_embedded_resource: bool = None,
+            x_kubernetes_int_or_string: bool = None,
+            x_kubernetes_preserve_unknown_fields: bool = None,
     ):
         """Create JSONSchemaProps instance."""
         super(JSONSchemaProps, self).__init__(
@@ -1890,6 +1893,9 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'title': title or '',
             'type': type_ or '',
             'uniqueItems': unique_items or None,
+            'x-kubernetes-embedded-resource': x_kubernetes_embedded_resource or None,
+            'x-kubernetes-int-or-string': x_kubernetes_int_or_string or None,
+            'x-kubernetes-preserve-unknown-fields': x_kubernetes_preserve_unknown_fields or None,
 
         }
         self._types = {
@@ -1928,6 +1934,9 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'title': (str, None),
             'type': (str, None),
             'uniqueItems': (bool, None),
+            'x-kubernetes-embedded-resource': (bool, None),
+            'x-kubernetes-int-or-string': (bool, None),
+            'x-kubernetes-preserve-unknown-fields': (bool, None),
 
         }
 
@@ -2466,6 +2475,102 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
         """
         self._properties['uniqueItems'] = value
+
+    @property
+    def x_kubernetes_embedded_resource(self) -> bool:
+        """
+        x-kubernetes-embedded-resource defines that the value is an
+        embedded Kubernetes runtime.Object, with TypeMeta and
+        ObjectMeta. The type must be object. It is allowed to
+        further restrict the embedded object. kind, apiVersion and
+        metadata are validated automatically. x-kubernetes-preserve-
+        unknown-fields is allowed to be true, but does not have to
+        be if the object is fully specified (up to kind, apiVersion,
+        metadata).
+        """
+        return self._properties.get('x-kubernetes-embedded-resource')
+
+    @x_kubernetes_embedded_resource.setter
+    def x_kubernetes_embedded_resource(self, value: bool):
+        """
+        x-kubernetes-embedded-resource defines that the value is an
+        embedded Kubernetes runtime.Object, with TypeMeta and
+        ObjectMeta. The type must be object. It is allowed to
+        further restrict the embedded object. kind, apiVersion and
+        metadata are validated automatically. x-kubernetes-preserve-
+        unknown-fields is allowed to be true, but does not have to
+        be if the object is fully specified (up to kind, apiVersion,
+        metadata).
+        """
+        self._properties['x-kubernetes-embedded-resource'] = value
+
+    @property
+    def x_kubernetes_int_or_string(self) -> bool:
+        """
+        x-kubernetes-int-or-string specifies that this value is
+        either an integer or a string. If this is true, an empty
+        type is allowed and type as child of anyOf is permitted if
+        following one of the following patterns:
+
+        1) anyOf:
+           -
+        type: integer
+           - type: string
+        2) allOf:
+           - anyOf:
+             -
+        type: integer
+             - type: string
+           - ... zero or more
+        """
+        return self._properties.get('x-kubernetes-int-or-string')
+
+    @x_kubernetes_int_or_string.setter
+    def x_kubernetes_int_or_string(self, value: bool):
+        """
+        x-kubernetes-int-or-string specifies that this value is
+        either an integer or a string. If this is true, an empty
+        type is allowed and type as child of anyOf is permitted if
+        following one of the following patterns:
+
+        1) anyOf:
+           -
+        type: integer
+           - type: string
+        2) allOf:
+           - anyOf:
+             -
+        type: integer
+             - type: string
+           - ... zero or more
+        """
+        self._properties['x-kubernetes-int-or-string'] = value
+
+    @property
+    def x_kubernetes_preserve_unknown_fields(self) -> bool:
+        """
+        x-kubernetes-preserve-unknown-fields stops the API server
+        decoding step from pruning fields which are not specified in
+        the validation schema. This affects fields recursively, but
+        switches back to normal pruning behaviour if nested
+        properties or additionalProperties are specified in the
+        schema. This can either be true or undefined. False is
+        forbidden.
+        """
+        return self._properties.get('x-kubernetes-preserve-unknown-fields')
+
+    @x_kubernetes_preserve_unknown_fields.setter
+    def x_kubernetes_preserve_unknown_fields(self, value: bool):
+        """
+        x-kubernetes-preserve-unknown-fields stops the API server
+        decoding step from pruning fields which are not specified in
+        the validation schema. This affects fields recursively, but
+        switches back to normal pruning behaviour if nested
+        properties or additionalProperties are specified in the
+        schema. This can either be true or undefined. False is
+        forbidden.
+        """
+        self._properties['x-kubernetes-preserve-unknown-fields'] = value
 
     def __enter__(self) -> 'JSONSchemaProps':
         return self

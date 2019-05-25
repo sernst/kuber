@@ -250,6 +250,37 @@ class ResourceBundle:
             **kwargs
         ))
 
+    def new(
+            self,
+            api_version: str,
+            kind: str,
+            name: str,
+            **kwargs: str
+    ) -> 'Resource':
+        """
+        Adds an empty resource of the specified type as the last entry
+        to the bundle's resources list and returns that new Resource
+        for immediate configuration.
+
+        :param api_version:
+            A standard Kubernetes configuration api version, e.g. "apps/v1".
+        :param kind:
+            The type of resource, e.g. "Deployment".
+        :param name:
+            Name to give the resource.
+        :param kwargs:
+            Labels to assign to the metadata of the new resource.
+        """
+        resource = creation.new_resource(
+            api_version=api_version,
+            kind=kind,
+            name=name,
+            kubernetes_version=self.kubernetes_version,
+            **kwargs
+        )
+        self.push(resource)
+        return resource
+
     def add_from_yaml(self, resource_definition: str) -> 'ResourceBundle':
         """
         Adds one or more Resources objects to the bundle from the YAML

@@ -15,13 +15,24 @@ def test_definition_serialization():
     assert d.kuber_uid is not None
 
 
-def test_definition_deserialization():
+DESERIALIZATION_SCENARIOS = [
+    {'fooBar': 1, 'barFoo': None, 'barBaz': 'hello', 'BAZQux': True},
+    {'foo_bar': 1, 'bar_foo': None, 'bar_baz': 'hello', 'baz_qux': True},
+    {'FOOBAR': 1, 'bar_foo': None, 'BARBAZ': 'hello', 'BAZQUX': True},
+]
+
+
+@mark.parametrize('scenario', DESERIALIZATION_SCENARIOS)
+def test_definition_deserialization(scenario: dict):
     """Should create a Definition object populated from the serialized data."""
     d = definitions.Definition('1.11', 'Deployment')
-    d._types = {'bar': (float, None), 'baz': (str, None)}
-
-    d.from_dict({'foo': 1, 'bar': None, 'baz': 'hello'})
-    assert {'baz': 'hello', 'bar': None} == d._properties
+    d._types = {
+        'fooBar': (float, None),
+        'barBaz': (str, None),
+        'BAZQux': (bool, None)
+    }
+    expected = {'barBaz': 'hello', 'fooBar': 1, 'BAZQux': True}
+    assert expected == d.from_dict({'a': 1, 'b': 2, **scenario})._properties
 
 
 def test_collection_yaml_serialization():

@@ -829,6 +829,7 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            controller_expand_secret_ref: 'SecretReference' = None,
             controller_publish_secret_ref: 'SecretReference' = None,
             driver: str = None,
             fs_type: str = None,
@@ -844,6 +845,7 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CSIPersistentVolumeSource'
         )
         self._properties = {
+            'controllerExpandSecretRef': controller_expand_secret_ref or SecretReference(),
             'controllerPublishSecretRef': controller_publish_secret_ref or SecretReference(),
             'driver': driver or '',
             'fsType': fs_type or '',
@@ -855,6 +857,7 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'controllerExpandSecretRef': (SecretReference, None),
             'controllerPublishSecretRef': (SecretReference, None),
             'driver': (str, None),
             'fsType': (str, None),
@@ -865,6 +868,34 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
             'volumeHandle': (str, None),
 
         }
+
+    @property
+    def controller_expand_secret_ref(self) -> 'SecretReference':
+        """
+        ControllerExpandSecretRef is a reference to the secret
+        object containing sensitive information to pass to the CSI
+        driver to complete the CSI ControllerExpandVolume call. This
+        is an alpha field and requires enabling ExpandCSIVolumes
+        feature gate. This field is optional, and may be empty if no
+        secret is required. If the secret object contains more than
+        one secret, all secrets are passed.
+        """
+        return self._properties.get('controllerExpandSecretRef')
+
+    @controller_expand_secret_ref.setter
+    def controller_expand_secret_ref(self, value: typing.Union['SecretReference', dict]):
+        """
+        ControllerExpandSecretRef is a reference to the secret
+        object containing sensitive information to pass to the CSI
+        driver to complete the CSI ControllerExpandVolume call. This
+        is an alpha field and requires enabling ExpandCSIVolumes
+        feature gate. This field is optional, and may be empty if no
+        secret is required. If the secret object contains more than
+        one secret, all secrets are passed.
+        """
+        if isinstance(value, dict):
+            value = SecretReference().from_dict(value)
+        self._properties['controllerExpandSecretRef'] = value
 
     @property
     def controller_publish_secret_ref(self) -> 'SecretReference':
@@ -2608,14 +2639,14 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the ConfigMap or it's key must be defined
+        Specify whether the ConfigMap or its key must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the ConfigMap or it's key must be defined
+        Specify whether the ConfigMap or its key must be defined
         """
         self._properties['optional'] = value
 
@@ -2942,14 +2973,14 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         self._properties['optional'] = value
 
@@ -3080,14 +3111,14 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         self._properties['optional'] = value
 
@@ -20746,14 +20777,14 @@ class SecretKeySelector(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the Secret or it's key must be defined
+        Specify whether the Secret or its key must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the Secret or it's key must be defined
+        Specify whether the Secret or its key must be defined
         """
         self._properties['optional'] = value
 
@@ -21134,14 +21165,14 @@ class SecretVolumeSource(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the Secret or it's keys must be defined
+        Specify whether the Secret or its keys must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the Secret or it's keys must be defined
+        Specify whether the Secret or its keys must be defined
         """
         self._properties['optional'] = value
 

@@ -129,9 +129,24 @@ class ResourceBundleSettings:
         """
         return self._data.get(key, default_value)
 
+    def keys(self) -> typing.Iterable:
+        """An iterable for all keys store in the settings object."""
+        return self._data.keys()
+
+    def values(self) -> typing.Iterable:
+        """An iterable for all values stored in the settings object."""
+        return self._data.values()
+
+    def items(self) -> typing.Iterable:
+        """An iterable for all key/value pairs found in the settings object."""
+        return self._data.items()
+
     def to_dict(self) -> dict:
         """Returns the settings data serialized to dictionary format."""
-        return copy.deepcopy(self._data)
+        try:
+            return copy.deepcopy(self._data)
+        except Exception:
+            return copy.copy(self._data)
 
     def to_yaml(self) -> str:
         """Renders the settings object as a YAML string."""

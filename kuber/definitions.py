@@ -72,7 +72,7 @@ class Definition:
                 prop_key = camel_key
             elif camel_key.lower() in lower_keys:
                 prop_key = lower_keys[camel_key.lower()]
-            else:
+            else:  # pragma: no cover
                 continue
 
             self._properties[prop_key] = deserialize_property(
