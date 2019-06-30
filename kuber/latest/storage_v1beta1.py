@@ -7,6 +7,7 @@ from kuber import kube_api as _kube_api
 from kuber import definitions as _kuber_definitions
 from kuber.latest.meta_v1 import ListMeta
 from kuber.latest.meta_v1 import ObjectMeta
+from kuber.latest.core_v1 import PersistentVolumeSpec
 from kuber.latest.meta_v1 import Status
 from kuber.latest.meta_v1 import StatusDetails
 from kuber.latest.core_v1 import TopologySelectorTerm
@@ -1691,6 +1692,7 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            inline_volume_spec: 'PersistentVolumeSpec' = None,
             persistent_volume_name: str = None,
     ):
         """Create VolumeAttachmentSource instance."""
@@ -1699,13 +1701,43 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
             kind='VolumeAttachmentSource'
         )
         self._properties = {
+            'inlineVolumeSpec': inline_volume_spec or PersistentVolumeSpec(),
             'persistentVolumeName': persistent_volume_name or '',
 
         }
         self._types = {
+            'inlineVolumeSpec': (PersistentVolumeSpec, None),
             'persistentVolumeName': (str, None),
 
         }
+
+    @property
+    def inline_volume_spec(self) -> 'PersistentVolumeSpec':
+        """
+        inlineVolumeSpec contains all the information necessary to
+        attach a persistent volume defined by a pod's inline
+        VolumeSource. This field is populated only for the
+        CSIMigration feature. It contains translated fields from a
+        pod's inline VolumeSource to a PersistentVolumeSpec. This
+        field is alpha-level and is only honored by servers that
+        enabled the CSIMigration feature.
+        """
+        return self._properties.get('inlineVolumeSpec')
+
+    @inline_volume_spec.setter
+    def inline_volume_spec(self, value: typing.Union['PersistentVolumeSpec', dict]):
+        """
+        inlineVolumeSpec contains all the information necessary to
+        attach a persistent volume defined by a pod's inline
+        VolumeSource. This field is populated only for the
+        CSIMigration feature. It contains translated fields from a
+        pod's inline VolumeSource to a PersistentVolumeSpec. This
+        field is alpha-level and is only honored by servers that
+        enabled the CSIMigration feature.
+        """
+        if isinstance(value, dict):
+            value = PersistentVolumeSpec().from_dict(value)
+        self._properties['inlineVolumeSpec'] = value
 
     @property
     def persistent_volume_name(self) -> str:

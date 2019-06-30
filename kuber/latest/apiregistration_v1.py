@@ -767,6 +767,7 @@ class ServiceReference(_kuber_definitions.Definition):
             self,
             name: str = None,
             namespace: str = None,
+            port: int = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(
@@ -776,11 +777,13 @@ class ServiceReference(_kuber_definitions.Definition):
         self._properties = {
             'name': name or '',
             'namespace': namespace or '',
+            'port': port or None,
 
         }
         self._types = {
             'name': (str, None),
             'namespace': (str, None),
+            'port': (int, None),
 
         }
 
@@ -811,6 +814,24 @@ class ServiceReference(_kuber_definitions.Definition):
         Namespace is the namespace of the service
         """
         self._properties['namespace'] = value
+
+    @property
+    def port(self) -> int:
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        return self._properties.get('port')
+
+    @port.setter
+    def port(self, value: int):
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        self._properties['port'] = value
 
     def __enter__(self) -> 'ServiceReference':
         return self

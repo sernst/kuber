@@ -228,8 +228,10 @@ class CustomResourceConversion(_kuber_definitions.Definition):
         are: - `None`: The converter only change the apiVersion and
         would not touch any other field in the CR. - `Webhook`: API
         Server will call to an external webhook to do the
-        conversion. Additional information is needed for this
-        option.
+        conversion. Additional information
+          is needed for this
+        option. This requires spec.preserveUnknownFields to be
+        false.
         """
         return self._properties.get('strategy')
 
@@ -240,8 +242,10 @@ class CustomResourceConversion(_kuber_definitions.Definition):
         are: - `None`: The converter only change the apiVersion and
         would not touch any other field in the CR. - `Webhook`: API
         Server will call to an external webhook to do the
-        conversion. Additional information is needed for this
-        option.
+        conversion. Additional information
+          is needed for this
+        option. This requires spec.preserveUnknownFields to be
+        false.
         """
         self._properties['strategy'] = value
 
@@ -643,14 +647,16 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
     @property
     def type_(self) -> str:
         """
-        Type is the type of the condition.
+        Type is the type of the condition. Types include
+        Established, NamesAccepted and Terminating.
         """
         return self._properties.get('type')
 
     @type_.setter
     def type_(self, value: str):
         """
-        Type is the type of the condition.
+        Type is the type of the condition. Types include
+        Established, NamesAccepted and Terminating.
         """
         self._properties['type'] = value
 
@@ -904,6 +910,7 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             conversion: 'CustomResourceConversion' = None,
             group: str = None,
             names: 'CustomResourceDefinitionNames' = None,
+            preserve_unknown_fields: bool = None,
             scope: str = None,
             subresources: 'CustomResourceSubresources' = None,
             validation: 'CustomResourceValidation' = None,
@@ -920,6 +927,7 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             'conversion': conversion or CustomResourceConversion(),
             'group': group or '',
             'names': names or CustomResourceDefinitionNames(),
+            'preserveUnknownFields': preserve_unknown_fields or None,
             'scope': scope or '',
             'subresources': subresources or CustomResourceSubresources(),
             'validation': validation or CustomResourceValidation(),
@@ -932,6 +940,7 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             'conversion': (CustomResourceConversion, None),
             'group': (str, None),
             'names': (CustomResourceDefinitionNames, None),
+            'preserveUnknownFields': (bool, None),
             'scope': (str, None),
             'subresources': (CustomResourceSubresources, None),
             'validation': (CustomResourceValidation, None),
@@ -1013,6 +1022,28 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = CustomResourceDefinitionNames().from_dict(value)
         self._properties['names'] = value
+
+    @property
+    def preserve_unknown_fields(self) -> bool:
+        """
+        preserveUnknownFields disables pruning of object fields
+        which are not specified in the OpenAPI schema. apiVersion,
+        kind, metadata and known fields inside metadata are always
+        preserved. Defaults to true in v1beta and will default to
+        false in v1.
+        """
+        return self._properties.get('preserveUnknownFields')
+
+    @preserve_unknown_fields.setter
+    def preserve_unknown_fields(self, value: bool):
+        """
+        preserveUnknownFields disables pruning of object fields
+        which are not specified in the OpenAPI schema. apiVersion,
+        kind, metadata and known fields inside metadata are always
+        preserved. Defaults to true in v1beta and will default to
+        false in v1.
+        """
+        self._properties['preserveUnknownFields'] = value
 
     @property
     def scope(self) -> str:
@@ -1487,8 +1518,13 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
         LabelSelectorPath defines the JSON path inside of a
         CustomResource that corresponds to Scale.Status.Selector.
         Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status. Must be set to work with HPA.
-        If there is no value under the given path in the
+        be a JSON Path under .status or .spec. Must be set to work
+        with HPA. The field pointed by this JSON path must be a
+        string field (not a complex selector struct) which contains
+        a serialized label selector in string form. More info:
+        https://kubernetes.io/docs/tasks/access-kubernetes-
+        api/custom-resources/custom-resource-definitions#scale-
+        subresource If there is no value under the given path in the
         CustomResource, the status label selector value in the
         /scale subresource will default to the empty string.
         """
@@ -1500,8 +1536,13 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
         LabelSelectorPath defines the JSON path inside of a
         CustomResource that corresponds to Scale.Status.Selector.
         Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status. Must be set to work with HPA.
-        If there is no value under the given path in the
+        be a JSON Path under .status or .spec. Must be set to work
+        with HPA. The field pointed by this JSON path must be a
+        string field (not a complex selector struct) which contains
+        a serialized label selector in string form. More info:
+        https://kubernetes.io/docs/tasks/access-kubernetes-
+        api/custom-resources/custom-resource-definitions#scale-
+        subresource If there is no value under the given path in the
         CustomResource, the status label selector value in the
         /scale subresource will default to the empty string.
         """
@@ -1846,6 +1887,9 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             title: str = None,
             type_: str = None,
             unique_items: bool = None,
+            x_kubernetes_embedded_resource: bool = None,
+            x_kubernetes_int_or_string: bool = None,
+            x_kubernetes_preserve_unknown_fields: bool = None,
     ):
         """Create JSONSchemaProps instance."""
         super(JSONSchemaProps, self).__init__(
@@ -1888,6 +1932,9 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'title': title or '',
             'type': type_ or '',
             'uniqueItems': unique_items or None,
+            'x-kubernetes-embedded-resource': x_kubernetes_embedded_resource or None,
+            'x-kubernetes-int-or-string': x_kubernetes_int_or_string or None,
+            'x-kubernetes-preserve-unknown-fields': x_kubernetes_preserve_unknown_fields or None,
 
         }
         self._types = {
@@ -1926,6 +1973,9 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'title': (str, None),
             'type': (str, None),
             'uniqueItems': (bool, None),
+            'x-kubernetes-embedded-resource': (bool, None),
+            'x-kubernetes-int-or-string': (bool, None),
+            'x-kubernetes-preserve-unknown-fields': (bool, None),
 
         }
 
@@ -2008,14 +2058,20 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     @property
     def default(self) -> 'JSON':
         """
-
+        default is a default value for undefined object fields.
+        Defaulting is an alpha feature under the
+        CustomResourceDefaulting feature gate. Defaulting requires
+        spec.preserveUnknownFields to be false.
         """
         return self._properties.get('default')
 
     @default.setter
     def default(self, value: typing.Union['JSON', dict]):
         """
-
+        default is a default value for undefined object fields.
+        Defaulting is an alpha feature under the
+        CustomResourceDefaulting feature gate. Defaulting requires
+        spec.preserveUnknownFields to be false.
         """
         if isinstance(value, dict):
             value = JSON().from_dict(value)
@@ -2465,6 +2521,102 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         """
         self._properties['uniqueItems'] = value
 
+    @property
+    def x_kubernetes_embedded_resource(self) -> bool:
+        """
+        x-kubernetes-embedded-resource defines that the value is an
+        embedded Kubernetes runtime.Object, with TypeMeta and
+        ObjectMeta. The type must be object. It is allowed to
+        further restrict the embedded object. kind, apiVersion and
+        metadata are validated automatically. x-kubernetes-preserve-
+        unknown-fields is allowed to be true, but does not have to
+        be if the object is fully specified (up to kind, apiVersion,
+        metadata).
+        """
+        return self._properties.get('x-kubernetes-embedded-resource')
+
+    @x_kubernetes_embedded_resource.setter
+    def x_kubernetes_embedded_resource(self, value: bool):
+        """
+        x-kubernetes-embedded-resource defines that the value is an
+        embedded Kubernetes runtime.Object, with TypeMeta and
+        ObjectMeta. The type must be object. It is allowed to
+        further restrict the embedded object. kind, apiVersion and
+        metadata are validated automatically. x-kubernetes-preserve-
+        unknown-fields is allowed to be true, but does not have to
+        be if the object is fully specified (up to kind, apiVersion,
+        metadata).
+        """
+        self._properties['x-kubernetes-embedded-resource'] = value
+
+    @property
+    def x_kubernetes_int_or_string(self) -> bool:
+        """
+        x-kubernetes-int-or-string specifies that this value is
+        either an integer or a string. If this is true, an empty
+        type is allowed and type as child of anyOf is permitted if
+        following one of the following patterns:
+
+        1) anyOf:
+           -
+        type: integer
+           - type: string
+        2) allOf:
+           - anyOf:
+             -
+        type: integer
+             - type: string
+           - ... zero or more
+        """
+        return self._properties.get('x-kubernetes-int-or-string')
+
+    @x_kubernetes_int_or_string.setter
+    def x_kubernetes_int_or_string(self, value: bool):
+        """
+        x-kubernetes-int-or-string specifies that this value is
+        either an integer or a string. If this is true, an empty
+        type is allowed and type as child of anyOf is permitted if
+        following one of the following patterns:
+
+        1) anyOf:
+           -
+        type: integer
+           - type: string
+        2) allOf:
+           - anyOf:
+             -
+        type: integer
+             - type: string
+           - ... zero or more
+        """
+        self._properties['x-kubernetes-int-or-string'] = value
+
+    @property
+    def x_kubernetes_preserve_unknown_fields(self) -> bool:
+        """
+        x-kubernetes-preserve-unknown-fields stops the API server
+        decoding step from pruning fields which are not specified in
+        the validation schema. This affects fields recursively, but
+        switches back to normal pruning behaviour if nested
+        properties or additionalProperties are specified in the
+        schema. This can either be true or undefined. False is
+        forbidden.
+        """
+        return self._properties.get('x-kubernetes-preserve-unknown-fields')
+
+    @x_kubernetes_preserve_unknown_fields.setter
+    def x_kubernetes_preserve_unknown_fields(self, value: bool):
+        """
+        x-kubernetes-preserve-unknown-fields stops the API server
+        decoding step from pruning fields which are not specified in
+        the validation schema. This affects fields recursively, but
+        switches back to normal pruning behaviour if nested
+        properties or additionalProperties are specified in the
+        schema. This can either be true or undefined. False is
+        forbidden.
+        """
+        self._properties['x-kubernetes-preserve-unknown-fields'] = value
+
     def __enter__(self) -> 'JSONSchemaProps':
         return self
 
@@ -2567,6 +2719,7 @@ class ServiceReference(_kuber_definitions.Definition):
             name: str = None,
             namespace: str = None,
             path: str = None,
+            port: int = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(
@@ -2577,12 +2730,14 @@ class ServiceReference(_kuber_definitions.Definition):
             'name': name or '',
             'namespace': namespace or '',
             'path': path or '',
+            'port': port or None,
 
         }
         self._types = {
             'name': (str, None),
             'namespace': (str, None),
             'path': (str, None),
+            'port': (int, None),
 
         }
 
@@ -2629,6 +2784,24 @@ class ServiceReference(_kuber_definitions.Definition):
         request to this service.
         """
         self._properties['path'] = value
+
+    @property
+    def port(self) -> int:
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        return self._properties.get('port')
+
+    @port.setter
+    def port(self, value: int):
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        self._properties['port'] = value
 
     def __enter__(self) -> 'ServiceReference':
         return self
@@ -2695,9 +2868,6 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         If the webhook
         is running within the cluster, then you should use
         `service`.
-
-        Port 443 will be used if it is open, otherwise
-        it is an error.
         """
         return self._properties.get('service')
 
@@ -2710,9 +2880,6 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         If the webhook
         is running within the cluster, then you should use
         `service`.
-
-        Port 443 will be used if it is open, otherwise
-        it is an error.
         """
         if isinstance(value, dict):
             value = ServiceReference().from_dict(value)

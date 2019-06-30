@@ -829,6 +829,7 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            controller_expand_secret_ref: 'SecretReference' = None,
             controller_publish_secret_ref: 'SecretReference' = None,
             driver: str = None,
             fs_type: str = None,
@@ -844,6 +845,7 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CSIPersistentVolumeSource'
         )
         self._properties = {
+            'controllerExpandSecretRef': controller_expand_secret_ref or SecretReference(),
             'controllerPublishSecretRef': controller_publish_secret_ref or SecretReference(),
             'driver': driver or '',
             'fsType': fs_type or '',
@@ -855,6 +857,7 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'controllerExpandSecretRef': (SecretReference, None),
             'controllerPublishSecretRef': (SecretReference, None),
             'driver': (str, None),
             'fsType': (str, None),
@@ -865,6 +868,34 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
             'volumeHandle': (str, None),
 
         }
+
+    @property
+    def controller_expand_secret_ref(self) -> 'SecretReference':
+        """
+        ControllerExpandSecretRef is a reference to the secret
+        object containing sensitive information to pass to the CSI
+        driver to complete the CSI ControllerExpandVolume call. This
+        is an alpha field and requires enabling ExpandCSIVolumes
+        feature gate. This field is optional, and may be empty if no
+        secret is required. If the secret object contains more than
+        one secret, all secrets are passed.
+        """
+        return self._properties.get('controllerExpandSecretRef')
+
+    @controller_expand_secret_ref.setter
+    def controller_expand_secret_ref(self, value: typing.Union['SecretReference', dict]):
+        """
+        ControllerExpandSecretRef is a reference to the secret
+        object containing sensitive information to pass to the CSI
+        driver to complete the CSI ControllerExpandVolume call. This
+        is an alpha field and requires enabling ExpandCSIVolumes
+        feature gate. This field is optional, and may be empty if no
+        secret is required. If the secret object contains more than
+        one secret, all secrets are passed.
+        """
+        if isinstance(value, dict):
+            value = SecretReference().from_dict(value)
+        self._properties['controllerExpandSecretRef'] = value
 
     @property
     def controller_publish_secret_ref(self) -> 'SecretReference':
@@ -2608,14 +2639,14 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the ConfigMap or it's key must be defined
+        Specify whether the ConfigMap or its key must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the ConfigMap or it's key must be defined
+        Specify whether the ConfigMap or its key must be defined
         """
         self._properties['optional'] = value
 
@@ -2942,14 +2973,14 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         self._properties['optional'] = value
 
@@ -3080,14 +3111,14 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the ConfigMap or it's keys must be defined
+        Specify whether the ConfigMap or its keys must be defined
         """
         self._properties['optional'] = value
 
@@ -6367,14 +6398,16 @@ class EventSeries(_kuber_definitions.Definition):
     @property
     def state(self) -> str:
         """
-        State of this Series: Ongoing or Finished
+        State of this Series: Ongoing or Finished Deprecated.
+        Planned removal for 1.18
         """
         return self._properties.get('state')
 
     @state.setter
     def state(self, value: str):
         """
-        State of this Series: Ongoing or Finished
+        State of this Series: Ongoing or Finished Deprecated.
+        Planned removal for 1.18
         """
         self._properties['state'] = value
 
@@ -15150,6 +15183,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
             se_linux_options: 'SELinuxOptions' = None,
             supplemental_groups: typing.List[int] = None,
             sysctls: typing.List['Sysctl'] = None,
+            windows_options: 'WindowsSecurityContextOptions' = None,
     ):
         """Create PodSecurityContext instance."""
         super(PodSecurityContext, self).__init__(
@@ -15164,6 +15198,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
             'seLinuxOptions': se_linux_options or SELinuxOptions(),
             'supplementalGroups': supplemental_groups or [],
             'sysctls': sysctls or [],
+            'windowsOptions': windows_options or WindowsSecurityContextOptions(),
 
         }
         self._types = {
@@ -15174,6 +15209,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
             'seLinuxOptions': (SELinuxOptions, None),
             'supplementalGroups': (list, int),
             'sysctls': (list, Sysctl),
+            'windowsOptions': (WindowsSecurityContextOptions, None),
 
         }
 
@@ -15355,6 +15391,22 @@ class PodSecurityContext(_kuber_definitions.Definition):
             cleaned.append(item)
         self._properties['sysctls'] = cleaned
 
+    @property
+    def windows_options(self) -> 'WindowsSecurityContextOptions':
+        """
+        Windows security options.
+        """
+        return self._properties.get('windowsOptions')
+
+    @windows_options.setter
+    def windows_options(self, value: typing.Union['WindowsSecurityContextOptions', dict]):
+        """
+        Windows security options.
+        """
+        if isinstance(value, dict):
+            value = WindowsSecurityContextOptions().from_dict(value)
+        self._properties['windowsOptions'] = value
+
     def __enter__(self) -> 'PodSecurityContext':
         return self
 
@@ -15385,6 +15437,7 @@ class PodSpec(_kuber_definitions.Definition):
             init_containers: typing.List['Container'] = None,
             node_name: str = None,
             node_selector: dict = None,
+            preemption_policy: str = None,
             priority: int = None,
             priority_class_name: str = None,
             readiness_gates: typing.List['PodReadinessGate'] = None,
@@ -15422,6 +15475,7 @@ class PodSpec(_kuber_definitions.Definition):
             'initContainers': init_containers or [],
             'nodeName': node_name or '',
             'nodeSelector': node_selector or {},
+            'preemptionPolicy': preemption_policy or '',
             'priority': priority or None,
             'priorityClassName': priority_class_name or '',
             'readinessGates': readiness_gates or [],
@@ -15455,6 +15509,7 @@ class PodSpec(_kuber_definitions.Definition):
             'initContainers': (list, Container),
             'nodeName': (str, None),
             'nodeSelector': (dict, None),
+            'preemptionPolicy': (str, None),
             'priority': (int, None),
             'priorityClassName': (str, None),
             'readinessGates': (list, PodReadinessGate),
@@ -15833,6 +15888,28 @@ class PodSpec(_kuber_definitions.Definition):
         self._properties['nodeSelector'] = value
 
     @property
+    def preemption_policy(self) -> str:
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        return self._properties.get('preemptionPolicy')
+
+    @preemption_policy.setter
+    def preemption_policy(self, value: str):
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        self._properties['preemptionPolicy'] = value
+
+    @property
     def priority(self) -> int:
         """
         The priority value. Various system components use this field
@@ -15944,8 +16021,8 @@ class PodSpec(_kuber_definitions.Definition):
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
         More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is an alpha feature and may
-        change in the future.
+        node/runtime-class.md This is a beta feature as of
+        Kubernetes v1.14.
         """
         return self._properties.get('runtimeClassName')
 
@@ -15959,8 +16036,8 @@ class PodSpec(_kuber_definitions.Definition):
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
         More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is an alpha feature and may
-        change in the future.
+        node/runtime-class.md This is a beta feature as of
+        Kubernetes v1.14.
         """
         self._properties['runtimeClassName'] = value
 
@@ -20725,14 +20802,14 @@ class SecretKeySelector(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the Secret or it's key must be defined
+        Specify whether the Secret or its key must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the Secret or it's key must be defined
+        Specify whether the Secret or its key must be defined
         """
         self._properties['optional'] = value
 
@@ -21113,14 +21190,14 @@ class SecretVolumeSource(_kuber_definitions.Definition):
     @property
     def optional(self) -> bool:
         """
-        Specify whether the Secret or it's keys must be defined
+        Specify whether the Secret or its keys must be defined
         """
         return self._properties.get('optional')
 
     @optional.setter
     def optional(self, value: bool):
         """
-        Specify whether the Secret or it's keys must be defined
+        Specify whether the Secret or its keys must be defined
         """
         self._properties['optional'] = value
 
@@ -21166,6 +21243,7 @@ class SecurityContext(_kuber_definitions.Definition):
             run_as_non_root: bool = None,
             run_as_user: int = None,
             se_linux_options: 'SELinuxOptions' = None,
+            windows_options: 'WindowsSecurityContextOptions' = None,
     ):
         """Create SecurityContext instance."""
         super(SecurityContext, self).__init__(
@@ -21182,6 +21260,7 @@ class SecurityContext(_kuber_definitions.Definition):
             'runAsNonRoot': run_as_non_root or None,
             'runAsUser': run_as_user or None,
             'seLinuxOptions': se_linux_options or SELinuxOptions(),
+            'windowsOptions': windows_options or WindowsSecurityContextOptions(),
 
         }
         self._types = {
@@ -21194,6 +21273,7 @@ class SecurityContext(_kuber_definitions.Definition):
             'runAsNonRoot': (bool, None),
             'runAsUser': (int, None),
             'seLinuxOptions': (SELinuxOptions, None),
+            'windowsOptions': (WindowsSecurityContextOptions, None),
 
         }
 
@@ -21394,6 +21474,22 @@ class SecurityContext(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = SELinuxOptions().from_dict(value)
         self._properties['seLinuxOptions'] = value
+
+    @property
+    def windows_options(self) -> 'WindowsSecurityContextOptions':
+        """
+        Windows security options.
+        """
+        return self._properties.get('windowsOptions')
+
+    @windows_options.setter
+    def windows_options(self, value: typing.Union['WindowsSecurityContextOptions', dict]):
+        """
+        Windows security options.
+        """
+        if isinstance(value, dict):
+            value = WindowsSecurityContextOptions().from_dict(value)
+        self._properties['windowsOptions'] = value
 
     def __enter__(self) -> 'SecurityContext':
         return self
@@ -24648,7 +24744,7 @@ class VolumeMount(_kuber_definitions.Definition):
         environment variable references $(VAR_NAME) are expanded
         using the container's environment. Defaults to "" (volume's
         root). SubPathExpr and SubPath are mutually exclusive. This
-        field is alpha in 1.14.
+        field is beta in 1.15.
         """
         return self._properties.get('subPathExpr')
 
@@ -24660,7 +24756,7 @@ class VolumeMount(_kuber_definitions.Definition):
         environment variable references $(VAR_NAME) are expanded
         using the container's environment. Defaults to "" (volume's
         root). SubPathExpr and SubPath are mutually exclusive. This
-        field is alpha in 1.14.
+        field is beta in 1.15.
         """
         self._properties['subPathExpr'] = value
 
@@ -24985,6 +25081,82 @@ class WeightedPodAffinityTerm(_kuber_definitions.Definition):
         self._properties['weight'] = value
 
     def __enter__(self) -> 'WeightedPodAffinityTerm':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class WindowsSecurityContextOptions(_kuber_definitions.Definition):
+    """
+    WindowsSecurityContextOptions contain Windows-specific
+    options and credentials.
+    """
+
+    def __init__(
+            self,
+            gmsa_credential_spec: str = None,
+            gmsa_credential_spec_name: str = None,
+    ):
+        """Create WindowsSecurityContextOptions instance."""
+        super(WindowsSecurityContextOptions, self).__init__(
+            api_version='core/v1',
+            kind='WindowsSecurityContextOptions'
+        )
+        self._properties = {
+            'gmsaCredentialSpec': gmsa_credential_spec or '',
+            'gmsaCredentialSpecName': gmsa_credential_spec_name or '',
+
+        }
+        self._types = {
+            'gmsaCredentialSpec': (str, None),
+            'gmsaCredentialSpecName': (str, None),
+
+        }
+
+    @property
+    def gmsa_credential_spec(self) -> str:
+        """
+        GMSACredentialSpec is where the GMSA admission webhook
+        (https://github.com/kubernetes-sigs/windows-gmsa) inlines
+        the contents of the GMSA credential spec named by the
+        GMSACredentialSpecName field. This field is alpha-level and
+        is only honored by servers that enable the WindowsGMSA
+        feature flag.
+        """
+        return self._properties.get('gmsaCredentialSpec')
+
+    @gmsa_credential_spec.setter
+    def gmsa_credential_spec(self, value: str):
+        """
+        GMSACredentialSpec is where the GMSA admission webhook
+        (https://github.com/kubernetes-sigs/windows-gmsa) inlines
+        the contents of the GMSA credential spec named by the
+        GMSACredentialSpecName field. This field is alpha-level and
+        is only honored by servers that enable the WindowsGMSA
+        feature flag.
+        """
+        self._properties['gmsaCredentialSpec'] = value
+
+    @property
+    def gmsa_credential_spec_name(self) -> str:
+        """
+        GMSACredentialSpecName is the name of the GMSA credential
+        spec to use. This field is alpha-level and is only honored
+        by servers that enable the WindowsGMSA feature flag.
+        """
+        return self._properties.get('gmsaCredentialSpecName')
+
+    @gmsa_credential_spec_name.setter
+    def gmsa_credential_spec_name(self, value: str):
+        """
+        GMSACredentialSpecName is the name of the GMSA credential
+        spec to use. This field is alpha-level and is only honored
+        by servers that enable the WindowsGMSA feature flag.
+        """
+        self._properties['gmsaCredentialSpecName'] = value
+
+    def __enter__(self) -> 'WindowsSecurityContextOptions':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

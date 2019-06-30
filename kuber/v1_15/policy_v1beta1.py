@@ -1594,8 +1594,10 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         """
         AllowedCSIDrivers is a whitelist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
-        empty value means no CSI drivers can run inline within a pod
-        spec.
+        empty value indicates that any CSI driver can be used for
+        inline ephemeral volumes. This is an alpha field, and is
+        only honored if the API server enables the CSIInlineVolume
+        feature gate.
         """
         return self._properties.get('allowedCSIDrivers')
 
@@ -1607,8 +1609,10 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         """
         AllowedCSIDrivers is a whitelist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
-        empty value means no CSI drivers can run inline within a pod
-        spec.
+        empty value indicates that any CSI driver can be used for
+        inline ephemeral volumes. This is an alpha field, and is
+        only honored if the API server enables the CSIInlineVolume
+        feature gate.
         """
         cleaned = []
         for item in value:

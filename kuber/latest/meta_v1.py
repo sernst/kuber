@@ -1442,6 +1442,7 @@ class ListMeta(_kuber_definitions.Definition):
     def __init__(
             self,
             continue_: str = None,
+            remaining_item_count: int = None,
             resource_version: str = None,
             self_link: str = None,
     ):
@@ -1452,12 +1453,14 @@ class ListMeta(_kuber_definitions.Definition):
         )
         self._properties = {
             'continue': continue_ or '',
+            'remainingItemCount': remaining_item_count or None,
             'resourceVersion': resource_version or '',
             'selfLink': self_link or '',
 
         }
         self._types = {
             'continue': (str, None),
+            'remainingItemCount': (int, None),
             'resourceVersion': (str, None),
             'selfLink': (str, None),
 
@@ -1496,6 +1499,46 @@ class ListMeta(_kuber_definitions.Definition):
         message.
         """
         self._properties['continue'] = value
+
+    @property
+    def remaining_item_count(self) -> int:
+        """
+        remainingItemCount is the number of subsequent items in the
+        list which are not included in this list response. If the
+        list request contained label or field selectors, then the
+        number of remaining items is unknown and the field will be
+        left unset and omitted during serialization. If the list is
+        complete (either because it is not chunking or because this
+        is the last chunk), then there are no more remaining items
+        and this field will be left unset and omitted during
+        serialization. Servers older than v1.15 do not set this
+        field. The intended use of the remainingItemCount is
+        *estimating* the size of a collection. Clients should not
+        rely on the remainingItemCount to be set or to be exact.
+        This field is alpha and can be changed or removed without
+        notice.
+        """
+        return self._properties.get('remainingItemCount')
+
+    @remaining_item_count.setter
+    def remaining_item_count(self, value: int):
+        """
+        remainingItemCount is the number of subsequent items in the
+        list which are not included in this list response. If the
+        list request contained label or field selectors, then the
+        number of remaining items is unknown and the field will be
+        left unset and omitted during serialization. If the list is
+        complete (either because it is not chunking or because this
+        is the last chunk), then there are no more remaining items
+        and this field will be left unset and omitted during
+        serialization. Servers older than v1.15 do not set this
+        field. The intended use of the remainingItemCount is
+        *estimating* the size of a collection. Clients should not
+        rely on the remainingItemCount to be set or to be exact.
+        This field is alpha and can be changed or removed without
+        notice.
+        """
+        self._properties['remainingItemCount'] = value
 
     @property
     def resource_version(self) -> str:

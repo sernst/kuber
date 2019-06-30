@@ -15437,6 +15437,7 @@ class PodSpec(_kuber_definitions.Definition):
             init_containers: typing.List['Container'] = None,
             node_name: str = None,
             node_selector: dict = None,
+            preemption_policy: str = None,
             priority: int = None,
             priority_class_name: str = None,
             readiness_gates: typing.List['PodReadinessGate'] = None,
@@ -15474,6 +15475,7 @@ class PodSpec(_kuber_definitions.Definition):
             'initContainers': init_containers or [],
             'nodeName': node_name or '',
             'nodeSelector': node_selector or {},
+            'preemptionPolicy': preemption_policy or '',
             'priority': priority or None,
             'priorityClassName': priority_class_name or '',
             'readinessGates': readiness_gates or [],
@@ -15507,6 +15509,7 @@ class PodSpec(_kuber_definitions.Definition):
             'initContainers': (list, Container),
             'nodeName': (str, None),
             'nodeSelector': (dict, None),
+            'preemptionPolicy': (str, None),
             'priority': (int, None),
             'priorityClassName': (str, None),
             'readinessGates': (list, PodReadinessGate),
@@ -15883,6 +15886,28 @@ class PodSpec(_kuber_definitions.Definition):
         pod-node/
         """
         self._properties['nodeSelector'] = value
+
+    @property
+    def preemption_policy(self) -> str:
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        return self._properties.get('preemptionPolicy')
+
+    @preemption_policy.setter
+    def preemption_policy(self, value: str):
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        self._properties['preemptionPolicy'] = value
 
     @property
     def priority(self) -> int:
@@ -25070,6 +25095,8 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            gmsa_credential_spec: str = None,
+            gmsa_credential_spec_name: str = None,
     ):
         """Create WindowsSecurityContextOptions instance."""
         super(WindowsSecurityContextOptions, self).__init__(
@@ -25077,11 +25104,57 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
             kind='WindowsSecurityContextOptions'
         )
         self._properties = {
+            'gmsaCredentialSpec': gmsa_credential_spec or '',
+            'gmsaCredentialSpecName': gmsa_credential_spec_name or '',
 
         }
         self._types = {
+            'gmsaCredentialSpec': (str, None),
+            'gmsaCredentialSpecName': (str, None),
 
         }
+
+    @property
+    def gmsa_credential_spec(self) -> str:
+        """
+        GMSACredentialSpec is where the GMSA admission webhook
+        (https://github.com/kubernetes-sigs/windows-gmsa) inlines
+        the contents of the GMSA credential spec named by the
+        GMSACredentialSpecName field. This field is alpha-level and
+        is only honored by servers that enable the WindowsGMSA
+        feature flag.
+        """
+        return self._properties.get('gmsaCredentialSpec')
+
+    @gmsa_credential_spec.setter
+    def gmsa_credential_spec(self, value: str):
+        """
+        GMSACredentialSpec is where the GMSA admission webhook
+        (https://github.com/kubernetes-sigs/windows-gmsa) inlines
+        the contents of the GMSA credential spec named by the
+        GMSACredentialSpecName field. This field is alpha-level and
+        is only honored by servers that enable the WindowsGMSA
+        feature flag.
+        """
+        self._properties['gmsaCredentialSpec'] = value
+
+    @property
+    def gmsa_credential_spec_name(self) -> str:
+        """
+        GMSACredentialSpecName is the name of the GMSA credential
+        spec to use. This field is alpha-level and is only honored
+        by servers that enable the WindowsGMSA feature flag.
+        """
+        return self._properties.get('gmsaCredentialSpecName')
+
+    @gmsa_credential_spec_name.setter
+    def gmsa_credential_spec_name(self, value: str):
+        """
+        GMSACredentialSpecName is the name of the GMSA credential
+        spec to use. This field is alpha-level and is only honored
+        by servers that enable the WindowsGMSA feature flag.
+        """
+        self._properties['gmsaCredentialSpecName'] = value
 
     def __enter__(self) -> 'WindowsSecurityContextOptions':
         return self

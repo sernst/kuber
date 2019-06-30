@@ -22,6 +22,7 @@ class PriorityClass(_kuber_definitions.Resource):
             description: str = None,
             global_default: bool = None,
             metadata: 'ObjectMeta' = None,
+            preemption_policy: str = None,
             value: int = None,
     ):
         """Create PriorityClass instance."""
@@ -33,6 +34,7 @@ class PriorityClass(_kuber_definitions.Resource):
             'description': description or '',
             'globalDefault': global_default or None,
             'metadata': metadata or ObjectMeta(),
+            'preemptionPolicy': preemption_policy or '',
             'value': value or None,
 
         }
@@ -42,6 +44,7 @@ class PriorityClass(_kuber_definitions.Resource):
             'globalDefault': (bool, None),
             'kind': (str, None),
             'metadata': (ObjectMeta, None),
+            'preemptionPolicy': (str, None),
             'value': (int, None),
 
         }
@@ -107,6 +110,28 @@ class PriorityClass(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
         self._properties['metadata'] = value
+
+    @property
+    def preemption_policy(self) -> str:
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        return self._properties.get('preemptionPolicy')
+
+    @preemption_policy.setter
+    def preemption_policy(self, value: str):
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        self._properties['preemptionPolicy'] = value
 
     @property
     def value(self) -> int:

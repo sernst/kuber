@@ -1506,6 +1506,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             required_drop_capabilities: typing.List[str] = None,
             run_as_group: 'RunAsGroupStrategyOptions' = None,
             run_as_user: 'RunAsUserStrategyOptions' = None,
+            runtime_class: 'RuntimeClassStrategyOptions' = None,
             se_linux: 'SELinuxStrategyOptions' = None,
             supplemental_groups: 'SupplementalGroupsStrategyOptions' = None,
             volumes: typing.List[str] = None,
@@ -1536,6 +1537,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             'requiredDropCapabilities': required_drop_capabilities or [],
             'runAsGroup': run_as_group or RunAsGroupStrategyOptions(),
             'runAsUser': run_as_user or RunAsUserStrategyOptions(),
+            'runtimeClass': runtime_class or RuntimeClassStrategyOptions(),
             'seLinux': se_linux or SELinuxStrategyOptions(),
             'supplementalGroups': supplemental_groups or SupplementalGroupsStrategyOptions(),
             'volumes': volumes or [],
@@ -1562,6 +1564,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             'requiredDropCapabilities': (list, str),
             'runAsGroup': (RunAsGroupStrategyOptions, None),
             'runAsUser': (RunAsUserStrategyOptions, None),
+            'runtimeClass': (RuntimeClassStrategyOptions, None),
             'seLinux': (SELinuxStrategyOptions, None),
             'supplementalGroups': (SupplementalGroupsStrategyOptions, None),
             'volumes': (list, str),
@@ -1591,8 +1594,10 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         """
         AllowedCSIDrivers is a whitelist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
-        empty value means no CSI drivers can run inline within a pod
-        spec.
+        empty value indicates that any CSI driver can be used for
+        inline ephemeral volumes. This is an alpha field, and is
+        only honored if the API server enables the CSIInlineVolume
+        feature gate.
         """
         return self._properties.get('allowedCSIDrivers')
 
@@ -1604,8 +1609,10 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         """
         AllowedCSIDrivers is a whitelist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
-        empty value means no CSI drivers can run inline within a pod
-        spec.
+        empty value indicates that any CSI driver can be used for
+        inline ephemeral volumes. This is an alpha field, and is
+        only honored if the API server enables the CSIInlineVolume
+        feature gate.
         """
         cleaned = []
         for item in value:
@@ -1997,6 +2004,30 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         self._properties['runAsUser'] = value
 
     @property
+    def runtime_class(self) -> 'RuntimeClassStrategyOptions':
+        """
+        runtimeClass is the strategy that will dictate the allowable
+        RuntimeClasses for a pod. If this field is omitted, the
+        pod's runtimeClassName field is unrestricted. Enforcement of
+        this field depends on the RuntimeClass feature gate being
+        enabled.
+        """
+        return self._properties.get('runtimeClass')
+
+    @runtime_class.setter
+    def runtime_class(self, value: typing.Union['RuntimeClassStrategyOptions', dict]):
+        """
+        runtimeClass is the strategy that will dictate the allowable
+        RuntimeClasses for a pod. If this field is omitted, the
+        pod's runtimeClassName field is unrestricted. Enforcement of
+        this field depends on the RuntimeClass feature gate being
+        enabled.
+        """
+        if isinstance(value, dict):
+            value = RuntimeClassStrategyOptions().from_dict(value)
+        self._properties['runtimeClass'] = value
+
+    @property
     def se_linux(self) -> 'SELinuxStrategyOptions':
         """
         seLinux is the strategy that will dictate the allowable
@@ -2203,6 +2234,82 @@ class RunAsUserStrategyOptions(_kuber_definitions.Definition):
         self._properties['rule'] = value
 
     def __enter__(self) -> 'RunAsUserStrategyOptions':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class RuntimeClassStrategyOptions(_kuber_definitions.Definition):
+    """
+    RuntimeClassStrategyOptions define the strategy that will
+    dictate the allowable RuntimeClasses for a pod.
+    """
+
+    def __init__(
+            self,
+            allowed_runtime_class_names: typing.List[str] = None,
+            default_runtime_class_name: str = None,
+    ):
+        """Create RuntimeClassStrategyOptions instance."""
+        super(RuntimeClassStrategyOptions, self).__init__(
+            api_version='policy/v1beta1',
+            kind='RuntimeClassStrategyOptions'
+        )
+        self._properties = {
+            'allowedRuntimeClassNames': allowed_runtime_class_names or [],
+            'defaultRuntimeClassName': default_runtime_class_name or '',
+
+        }
+        self._types = {
+            'allowedRuntimeClassNames': (list, str),
+            'defaultRuntimeClassName': (str, None),
+
+        }
+
+    @property
+    def allowed_runtime_class_names(self) -> typing.List[str]:
+        """
+        allowedRuntimeClassNames is a whitelist of RuntimeClass
+        names that may be specified on a pod. A value of "*" means
+        that any RuntimeClass name is allowed, and must be the only
+        item in the list. An empty list requires the
+        RuntimeClassName field to be unset.
+        """
+        return self._properties.get('allowedRuntimeClassNames')
+
+    @allowed_runtime_class_names.setter
+    def allowed_runtime_class_names(self, value: typing.List[str]):
+        """
+        allowedRuntimeClassNames is a whitelist of RuntimeClass
+        names that may be specified on a pod. A value of "*" means
+        that any RuntimeClass name is allowed, and must be the only
+        item in the list. An empty list requires the
+        RuntimeClassName field to be unset.
+        """
+        self._properties['allowedRuntimeClassNames'] = value
+
+    @property
+    def default_runtime_class_name(self) -> str:
+        """
+        defaultRuntimeClassName is the default RuntimeClassName to
+        set on the pod. The default MUST be allowed by the
+        allowedRuntimeClassNames list. A value of nil does not
+        mutate the Pod.
+        """
+        return self._properties.get('defaultRuntimeClassName')
+
+    @default_runtime_class_name.setter
+    def default_runtime_class_name(self, value: str):
+        """
+        defaultRuntimeClassName is the default RuntimeClassName to
+        set on the pod. The default MUST be allowed by the
+        allowedRuntimeClassNames list. A value of nil does not
+        mutate the Pod.
+        """
+        self._properties['defaultRuntimeClassName'] = value
+
+    def __enter__(self) -> 'RuntimeClassStrategyOptions':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

@@ -426,6 +426,7 @@ class ServiceReference(_kuber_definitions.Definition):
             name: str = None,
             namespace: str = None,
             path: str = None,
+            port: int = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(
@@ -436,12 +437,14 @@ class ServiceReference(_kuber_definitions.Definition):
             'name': name or '',
             'namespace': namespace or '',
             'path': path or '',
+            'port': port or None,
 
         }
         self._types = {
             'name': (str, None),
             'namespace': (str, None),
             'path': (str, None),
+            'port': (int, None),
 
         }
 
@@ -488,6 +491,24 @@ class ServiceReference(_kuber_definitions.Definition):
         request to this service.
         """
         self._properties['path'] = value
+
+    @property
+    def port(self) -> int:
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        return self._properties.get('port')
+
+    @port.setter
+    def port(self, value: int):
+        """
+        If specified, the port on the service that hosting webhook.
+        Default to 443 for backward compatibility. `port` should be
+        a valid port number (1-65535, inclusive).
+        """
+        self._properties['port'] = value
 
     def __enter__(self) -> 'ServiceReference':
         return self
@@ -620,9 +641,6 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         If the webhook
         is running within the cluster, then you should use
         `service`.
-
-        Port 443 will be used if it is open, otherwise
-        it is an error.
         """
         return self._properties.get('service')
 
@@ -635,9 +653,6 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         If the webhook
         is running within the cluster, then you should use
         `service`.
-
-        Port 443 will be used if it is open, otherwise
-        it is an error.
         """
         if isinstance(value, dict):
             value = ServiceReference().from_dict(value)
