@@ -4,6 +4,14 @@ kuber.pre package
 Submodules
 ----------
 
+kuber.pre.admissionregistration\_v1 module
+------------------------------------------
+
+.. automodule:: kuber.pre.admissionregistration_v1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 kuber.pre.admissionregistration\_v1beta1 module
 -----------------------------------------------
 

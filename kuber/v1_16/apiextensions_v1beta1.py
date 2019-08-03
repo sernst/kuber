@@ -228,8 +228,10 @@ class CustomResourceConversion(_kuber_definitions.Definition):
         are: - `None`: The converter only change the apiVersion and
         would not touch any other field in the CR. - `Webhook`: API
         Server will call to an external webhook to do the
-        conversion. Additional information is needed for this
-        option.
+        conversion. Additional information
+          is needed for this
+        option. This requires spec.preserveUnknownFields to be
+        false.
         """
         return self._properties.get('strategy')
 
@@ -240,8 +242,10 @@ class CustomResourceConversion(_kuber_definitions.Definition):
         are: - `None`: The converter only change the apiVersion and
         would not touch any other field in the CR. - `Webhook`: API
         Server will call to an external webhook to do the
-        conversion. Additional information is needed for this
-        option.
+        conversion. Additional information
+          is needed for this
+        option. This requires spec.preserveUnknownFields to be
+        false.
         """
         self._properties['strategy'] = value
 
@@ -906,6 +910,7 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             conversion: 'CustomResourceConversion' = None,
             group: str = None,
             names: 'CustomResourceDefinitionNames' = None,
+            preserve_unknown_fields: bool = None,
             scope: str = None,
             subresources: 'CustomResourceSubresources' = None,
             validation: 'CustomResourceValidation' = None,
@@ -922,6 +927,7 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             'conversion': conversion or CustomResourceConversion(),
             'group': group or '',
             'names': names or CustomResourceDefinitionNames(),
+            'preserveUnknownFields': preserve_unknown_fields or None,
             'scope': scope or '',
             'subresources': subresources or CustomResourceSubresources(),
             'validation': validation or CustomResourceValidation(),
@@ -934,6 +940,7 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             'conversion': (CustomResourceConversion, None),
             'group': (str, None),
             'names': (CustomResourceDefinitionNames, None),
+            'preserveUnknownFields': (bool, None),
             'scope': (str, None),
             'subresources': (CustomResourceSubresources, None),
             'validation': (CustomResourceValidation, None),
@@ -1015,6 +1022,28 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = CustomResourceDefinitionNames().from_dict(value)
         self._properties['names'] = value
+
+    @property
+    def preserve_unknown_fields(self) -> bool:
+        """
+        preserveUnknownFields disables pruning of object fields
+        which are not specified in the OpenAPI schema. apiVersion,
+        kind, metadata and known fields inside metadata are always
+        preserved. Defaults to true in v1beta and will default to
+        false in v1.
+        """
+        return self._properties.get('preserveUnknownFields')
+
+    @preserve_unknown_fields.setter
+    def preserve_unknown_fields(self, value: bool):
+        """
+        preserveUnknownFields disables pruning of object fields
+        which are not specified in the OpenAPI schema. apiVersion,
+        kind, metadata and known fields inside metadata are always
+        preserved. Defaults to true in v1beta and will default to
+        false in v1.
+        """
+        self._properties['preserveUnknownFields'] = value
 
     @property
     def scope(self) -> str:
@@ -1489,8 +1518,13 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
         LabelSelectorPath defines the JSON path inside of a
         CustomResource that corresponds to Scale.Status.Selector.
         Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status. Must be set to work with HPA.
-        If there is no value under the given path in the
+        be a JSON Path under .status or .spec. Must be set to work
+        with HPA. The field pointed by this JSON path must be a
+        string field (not a complex selector struct) which contains
+        a serialized label selector in string form. More info:
+        https://kubernetes.io/docs/tasks/access-kubernetes-
+        api/custom-resources/custom-resource-definitions#scale-
+        subresource If there is no value under the given path in the
         CustomResource, the status label selector value in the
         /scale subresource will default to the empty string.
         """
@@ -1502,8 +1536,13 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
         LabelSelectorPath defines the JSON path inside of a
         CustomResource that corresponds to Scale.Status.Selector.
         Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status. Must be set to work with HPA.
-        If there is no value under the given path in the
+        be a JSON Path under .status or .spec. Must be set to work
+        with HPA. The field pointed by this JSON path must be a
+        string field (not a complex selector struct) which contains
+        a serialized label selector in string form. More info:
+        https://kubernetes.io/docs/tasks/access-kubernetes-
+        api/custom-resources/custom-resource-definitions#scale-
+        subresource If there is no value under the given path in the
         CustomResource, the status label selector value in the
         /scale subresource will default to the empty string.
         """
@@ -2019,14 +2058,20 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     @property
     def default(self) -> 'JSON':
         """
-
+        default is a default value for undefined object fields.
+        Defaulting is an alpha feature under the
+        CustomResourceDefaulting feature gate. Defaulting requires
+        spec.preserveUnknownFields to be false.
         """
         return self._properties.get('default')
 
     @default.setter
     def default(self, value: typing.Union['JSON', dict]):
         """
-
+        default is a default value for undefined object fields.
+        Defaulting is an alpha feature under the
+        CustomResourceDefaulting feature gate. Defaulting requires
+        spec.preserveUnknownFields to be false.
         """
         if isinstance(value, dict):
             value = JSON().from_dict(value)

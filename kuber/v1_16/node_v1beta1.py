@@ -8,6 +8,53 @@ from kuber.v1_16.meta_v1 import ListMeta
 from kuber.v1_16.meta_v1 import ObjectMeta
 
 
+class Overhead(_kuber_definitions.Definition):
+    """
+    Overhead structure represents the resource overhead
+    associated with running a pod.
+    """
+
+    def __init__(
+            self,
+            pod_fixed: dict = None,
+    ):
+        """Create Overhead instance."""
+        super(Overhead, self).__init__(
+            api_version='node/v1beta1',
+            kind='Overhead'
+        )
+        self._properties = {
+            'podFixed': pod_fixed or {},
+
+        }
+        self._types = {
+            'podFixed': (dict, None),
+
+        }
+
+    @property
+    def pod_fixed(self) -> dict:
+        """
+        PodFixed represents the fixed resource overhead associated
+        with running a pod.
+        """
+        return self._properties.get('podFixed')
+
+    @pod_fixed.setter
+    def pod_fixed(self, value: dict):
+        """
+        PodFixed represents the fixed resource overhead associated
+        with running a pod.
+        """
+        self._properties['podFixed'] = value
+
+    def __enter__(self) -> 'Overhead':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class RuntimeClass(_kuber_definitions.Resource):
     """
     RuntimeClass defines a class of container runtime supported
@@ -25,6 +72,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             self,
             handler: str = None,
             metadata: 'ObjectMeta' = None,
+            overhead: 'Overhead' = None,
     ):
         """Create RuntimeClass instance."""
         super(RuntimeClass, self).__init__(
@@ -34,6 +82,7 @@ class RuntimeClass(_kuber_definitions.Resource):
         self._properties = {
             'handler': handler or '',
             'metadata': metadata or ObjectMeta(),
+            'overhead': overhead or Overhead(),
 
         }
         self._types = {
@@ -41,6 +90,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             'handler': (str, None),
             'kind': (str, None),
             'metadata': (ObjectMeta, None),
+            'overhead': (Overhead, None),
 
         }
 
@@ -95,6 +145,32 @@ class RuntimeClass(_kuber_definitions.Resource):
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
         self._properties['metadata'] = value
+
+    @property
+    def overhead(self) -> 'Overhead':
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. For more details,
+        see https://git.k8s.io/enhancements/keps/sig-
+        node/20190226-pod-overhead.md This field is alpha-level as
+        of Kubernetes v1.15, and is only honored by servers that
+        enable the PodOverhead feature.
+        """
+        return self._properties.get('overhead')
+
+    @overhead.setter
+    def overhead(self, value: typing.Union['Overhead', dict]):
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. For more details,
+        see https://git.k8s.io/enhancements/keps/sig-
+        node/20190226-pod-overhead.md This field is alpha-level as
+        of Kubernetes v1.15, and is only honored by servers that
+        enable the PodOverhead feature.
+        """
+        if isinstance(value, dict):
+            value = Overhead().from_dict(value)
+        self._properties['overhead'] = value
 
     def create_resource(self, namespace: 'str' = None):
         """

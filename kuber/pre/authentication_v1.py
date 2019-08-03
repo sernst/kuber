@@ -1,4 +1,5 @@
 import typing
+import datetime as _datetime
 
 from kubernetes import client
 from kuber import kube_api as _kube_api
@@ -8,6 +9,536 @@ from kuber.pre.meta_v1 import ListMeta
 from kuber.pre.meta_v1 import ObjectMeta
 from kuber.pre.meta_v1 import Status
 from kuber.pre.meta_v1 import StatusDetails
+
+
+class BoundObjectReference(_kuber_definitions.Definition):
+    """
+    BoundObjectReference is a reference to an object that a
+    token is bound to.
+    """
+
+    def __init__(
+            self,
+            api_version: str = None,
+            kind: str = None,
+            name: str = None,
+            uid: str = None,
+    ):
+        """Create BoundObjectReference instance."""
+        super(BoundObjectReference, self).__init__(
+            api_version='authentication/v1',
+            kind='BoundObjectReference'
+        )
+        self._properties = {
+            'apiVersion': api_version or '',
+            'kind': kind or '',
+            'name': name or '',
+            'uid': uid or '',
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'kind': (str, None),
+            'name': (str, None),
+            'uid': (str, None),
+
+        }
+
+    @property
+    def api_version(self) -> str:
+        """
+        API version of the referent.
+        """
+        return self._properties.get('apiVersion')
+
+    @api_version.setter
+    def api_version(self, value: str):
+        """
+        API version of the referent.
+        """
+        self._properties['apiVersion'] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+        """
+        return self._properties.get('kind')
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+        """
+        self._properties['kind'] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name of the referent.
+        """
+        return self._properties.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name of the referent.
+        """
+        self._properties['name'] = value
+
+    @property
+    def uid(self) -> str:
+        """
+        UID of the referent.
+        """
+        return self._properties.get('uid')
+
+    @uid.setter
+    def uid(self, value: str):
+        """
+        UID of the referent.
+        """
+        self._properties['uid'] = value
+
+    def __enter__(self) -> 'BoundObjectReference':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class TokenRequest(_kuber_definitions.Resource):
+    """
+    TokenRequest requests a token for a given service account.
+    """
+
+    def __init__(
+            self,
+            metadata: 'ObjectMeta' = None,
+            spec: 'TokenRequestSpec' = None,
+            status: 'TokenRequestStatus' = None,
+    ):
+        """Create TokenRequest instance."""
+        super(TokenRequest, self).__init__(
+            api_version='authentication/v1',
+            kind='TokenRequest'
+        )
+        self._properties = {
+            'metadata': metadata or ObjectMeta(),
+            'spec': spec or TokenRequestSpec(),
+            'status': status or TokenRequestStatus(),
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'kind': (str, None),
+            'metadata': (ObjectMeta, None),
+            'spec': (TokenRequestSpec, None),
+            'status': (TokenRequestStatus, None),
+
+        }
+
+    @property
+    def metadata(self) -> 'ObjectMeta':
+        """
+
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+        """
+
+        """
+        if isinstance(value, dict):
+            value = ObjectMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @property
+    def spec(self) -> 'TokenRequestSpec':
+        """
+
+        """
+        return self._properties.get('spec')
+
+    @spec.setter
+    def spec(self, value: typing.Union['TokenRequestSpec', dict]):
+        """
+
+        """
+        if isinstance(value, dict):
+            value = TokenRequestSpec().from_dict(value)
+        self._properties['spec'] = value
+
+    @property
+    def status(self) -> 'TokenRequestStatus':
+        """
+
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: typing.Union['TokenRequestStatus', dict]):
+        """
+
+        """
+        if isinstance(value, dict):
+            value = TokenRequestStatus().from_dict(value)
+        self._properties['status'] = value
+
+    def create_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'TokenRequestStatus':
+        """
+        Creates the TokenRequest in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the create is complete.
+        """
+        names = [
+            'create_namespaced_token_request',
+            'create_token_request'
+        ]
+
+        response = _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+        return (
+            TokenRequestStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def replace_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'TokenRequestStatus':
+        """
+        Replaces the TokenRequest in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'replace_namespaced_token_request',
+            'replace_token_request'
+        ]
+
+        response = _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            TokenRequestStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def patch_resource(
+            self,
+            namespace: 'str' = None
+    ) -> 'TokenRequestStatus':
+        """
+        Patches the TokenRequest in the currently
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
+        """
+        names = [
+            'patch_namespaced_token_request',
+            'patch_token_request'
+        ]
+
+        response = _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+        return (
+            TokenRequestStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def get_resource_status(
+            self,
+            namespace: 'str' = None
+    ) -> 'TokenRequestStatus':
+        """
+        Returns status information about the given resource within the cluster.
+        """
+        names = [
+            'read_namespaced_token_request',
+            'read_token_request'
+        ]
+
+        response = _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+        return (
+            TokenRequestStatus()
+            .from_dict(_kube_api.to_kuber_dict(response.status))
+        )
+
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the TokenRequest from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_token_request',
+            'read_token_request'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
+        """
+        Deletes the TokenRequest from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_token_request',
+            'delete_token_request'
+        ]
+
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name, 'body': body}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> 'client.AuthenticationV1Api':
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.AuthenticationV1Api(**kwargs)
+
+    def __enter__(self) -> 'TokenRequest':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class TokenRequestSpec(_kuber_definitions.Definition):
+    """
+    TokenRequestSpec contains client provided parameters of a
+    token request.
+    """
+
+    def __init__(
+            self,
+            audiences: typing.List[str] = None,
+            bound_object_ref: 'BoundObjectReference' = None,
+            expiration_seconds: int = None,
+    ):
+        """Create TokenRequestSpec instance."""
+        super(TokenRequestSpec, self).__init__(
+            api_version='authentication/v1',
+            kind='TokenRequestSpec'
+        )
+        self._properties = {
+            'audiences': audiences or [],
+            'boundObjectRef': bound_object_ref or BoundObjectReference(),
+            'expirationSeconds': expiration_seconds or None,
+
+        }
+        self._types = {
+            'audiences': (list, str),
+            'boundObjectRef': (BoundObjectReference, None),
+            'expirationSeconds': (int, None),
+
+        }
+
+    @property
+    def audiences(self) -> typing.List[str]:
+        """
+        Audiences are the intendend audiences of the token. A
+        recipient of a token must identitfy themself with an
+        identifier in the list of audiences of the token, and
+        otherwise should reject the token. A token issued for
+        multiple audiences may be used to authenticate against any
+        of the audiences listed but implies a high degree of trust
+        between the target audiences.
+        """
+        return self._properties.get('audiences')
+
+    @audiences.setter
+    def audiences(self, value: typing.List[str]):
+        """
+        Audiences are the intendend audiences of the token. A
+        recipient of a token must identitfy themself with an
+        identifier in the list of audiences of the token, and
+        otherwise should reject the token. A token issued for
+        multiple audiences may be used to authenticate against any
+        of the audiences listed but implies a high degree of trust
+        between the target audiences.
+        """
+        self._properties['audiences'] = value
+
+    @property
+    def bound_object_ref(self) -> 'BoundObjectReference':
+        """
+        BoundObjectRef is a reference to an object that the token
+        will be bound to. The token will only be valid for as long
+        as the bound object exists. NOTE: The API server's
+        TokenReview endpoint will validate the BoundObjectRef, but
+        other audiences may not. Keep ExpirationSeconds small if you
+        want prompt revocation.
+        """
+        return self._properties.get('boundObjectRef')
+
+    @bound_object_ref.setter
+    def bound_object_ref(self, value: typing.Union['BoundObjectReference', dict]):
+        """
+        BoundObjectRef is a reference to an object that the token
+        will be bound to. The token will only be valid for as long
+        as the bound object exists. NOTE: The API server's
+        TokenReview endpoint will validate the BoundObjectRef, but
+        other audiences may not. Keep ExpirationSeconds small if you
+        want prompt revocation.
+        """
+        if isinstance(value, dict):
+            value = BoundObjectReference().from_dict(value)
+        self._properties['boundObjectRef'] = value
+
+    @property
+    def expiration_seconds(self) -> int:
+        """
+        ExpirationSeconds is the requested duration of validity of
+        the request. The token issuer may return a token with a
+        different validity duration so a client needs to check the
+        'expiration' field in a response.
+        """
+        return self._properties.get('expirationSeconds')
+
+    @expiration_seconds.setter
+    def expiration_seconds(self, value: int):
+        """
+        ExpirationSeconds is the requested duration of validity of
+        the request. The token issuer may return a token with a
+        different validity duration so a client needs to check the
+        'expiration' field in a response.
+        """
+        self._properties['expirationSeconds'] = value
+
+    def __enter__(self) -> 'TokenRequestSpec':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class TokenRequestStatus(_kuber_definitions.Definition):
+    """
+    TokenRequestStatus is the result of a token request.
+    """
+
+    def __init__(
+            self,
+            expiration_timestamp: str = None,
+            token: str = None,
+    ):
+        """Create TokenRequestStatus instance."""
+        super(TokenRequestStatus, self).__init__(
+            api_version='authentication/v1',
+            kind='TokenRequestStatus'
+        )
+        self._properties = {
+            'expirationTimestamp': expiration_timestamp or None,
+            'token': token or '',
+
+        }
+        self._types = {
+            'expirationTimestamp': (str, None),
+            'token': (str, None),
+
+        }
+
+    @property
+    def expiration_timestamp(self) -> str:
+        """
+        ExpirationTimestamp is the time of expiration of the
+        returned token.
+        """
+        return self._properties.get('expirationTimestamp')
+
+    @expiration_timestamp.setter
+    def expiration_timestamp(
+            self,
+            value: typing.Union[str, _datetime.datetime, _datetime.date]
+    ):
+        """
+        ExpirationTimestamp is the time of expiration of the
+        returned token.
+        """
+        if isinstance(value, _datetime.datetime):
+            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+        elif isinstance(value, _datetime.date):
+            value = value.strftime('%Y-%m-%dT00:00:00Z')
+        self._properties['expirationTimestamp'] = value
+
+    @property
+    def token(self) -> str:
+        """
+        Token is the opaque bearer token.
+        """
+        return self._properties.get('token')
+
+    @token.setter
+    def token(self, value: str):
+        """
+        Token is the opaque bearer token.
+        """
+        self._properties['token'] = value
+
+    def __enter__(self) -> 'TokenRequestStatus':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
 
 
 class TokenReview(_kuber_definitions.Resource):

@@ -898,7 +898,11 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     def min_replicas(self) -> int:
         """
         minReplicas is the lower limit for the number of replicas to
-        which the autoscaler can scale down. It defaults to 1 pod.
+        which the autoscaler can scale down.  It defaults to 1 pod.
+        minReplicas is allowed to be 0 if the alpha feature gate
+        HPAScaleToZero is enabled and at least one Object or
+        External metric is configured.  Scaling is active as long as
+        at least one metric value is available.
         """
         return self._properties.get('minReplicas')
 
@@ -906,7 +910,11 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     def min_replicas(self, value: int):
         """
         minReplicas is the lower limit for the number of replicas to
-        which the autoscaler can scale down. It defaults to 1 pod.
+        which the autoscaler can scale down.  It defaults to 1 pod.
+        minReplicas is allowed to be 0 if the alpha feature gate
+        HPAScaleToZero is enabled and at least one Object or
+        External metric is configured.  Scaling is active as long as
+        at least one metric value is available.
         """
         self._properties['minReplicas'] = value
 

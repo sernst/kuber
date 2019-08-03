@@ -1130,136 +1130,6 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
         return False
 
 
-class Initializer(_kuber_definitions.Definition):
-    """
-    Initializer is information about an initializer that has not
-    yet completed.
-    """
-
-    def __init__(
-            self,
-            name: str = None,
-    ):
-        """Create Initializer instance."""
-        super(Initializer, self).__init__(
-            api_version='meta/v1',
-            kind='Initializer'
-        )
-        self._properties = {
-            'name': name or '',
-
-        }
-        self._types = {
-            'name': (str, None),
-
-        }
-
-    @property
-    def name(self) -> str:
-        """
-        name of the process that is responsible for initializing
-        this object.
-        """
-        return self._properties.get('name')
-
-    @name.setter
-    def name(self, value: str):
-        """
-        name of the process that is responsible for initializing
-        this object.
-        """
-        self._properties['name'] = value
-
-    def __enter__(self) -> 'Initializer':
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
-class Initializers(_kuber_definitions.Definition):
-    """
-    Initializers tracks the progress of initialization.
-    """
-
-    def __init__(
-            self,
-            pending: typing.List['Initializer'] = None,
-            result: 'Status' = None,
-    ):
-        """Create Initializers instance."""
-        super(Initializers, self).__init__(
-            api_version='meta/v1',
-            kind='Initializers'
-        )
-        self._properties = {
-            'pending': pending or [],
-            'result': result or Status(),
-
-        }
-        self._types = {
-            'pending': (list, Initializer),
-            'result': (Status, None),
-
-        }
-
-    @property
-    def pending(self) -> typing.List['Initializer']:
-        """
-        Pending is a list of initializers that must execute in order
-        before this object is visible. When the last pending
-        initializer is removed, and no failing result is set, the
-        initializers struct will be set to nil and the object is
-        considered as initialized and visible to all clients.
-        """
-        return self._properties.get('pending')
-
-    @pending.setter
-    def pending(
-            self,
-            value: typing.Union[typing.List['Initializer'], typing.List[dict]]
-    ):
-        """
-        Pending is a list of initializers that must execute in order
-        before this object is visible. When the last pending
-        initializer is removed, and no failing result is set, the
-        initializers struct will be set to nil and the object is
-        considered as initialized and visible to all clients.
-        """
-        cleaned = []
-        for item in value:
-            if isinstance(item, dict):
-                item = Initializer().from_dict(item)
-            cleaned.append(item)
-        self._properties['pending'] = cleaned
-
-    @property
-    def result(self) -> 'Status':
-        """
-        If result is set with the Failure field, the object will be
-        persisted to storage and then deleted, ensuring that other
-        clients can observe the deletion.
-        """
-        return self._properties.get('result')
-
-    @result.setter
-    def result(self, value: typing.Union['Status', dict]):
-        """
-        If result is set with the Failure field, the object will be
-        persisted to storage and then deleted, ensuring that other
-        clients can observe the deletion.
-        """
-        if isinstance(value, dict):
-            value = Status().from_dict(value)
-        self._properties['result'] = value
-
-    def __enter__(self) -> 'Initializers':
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
 class LabelSelector(_kuber_definitions.Definition):
     """
     A label selector is a label query over a set of resources.
@@ -1503,28 +1373,40 @@ class ListMeta(_kuber_definitions.Definition):
     @property
     def remaining_item_count(self) -> int:
         """
-        RemainingItemCount is the number of subsequent items in the
+        remainingItemCount is the number of subsequent items in the
         list which are not included in this list response. If the
         list request contained label or field selectors, then the
-        number of remaining items is unknown and this field will be
-        unset. If the list is complete (either because it is
-        unpaginated or because this is the last page), then there
-        are no more remaining items and this field will also be
-        unset.  Servers older than v1.15 do not set this field.
+        number of remaining items is unknown and the field will be
+        left unset and omitted during serialization. If the list is
+        complete (either because it is not chunking or because this
+        is the last chunk), then there are no more remaining items
+        and this field will be left unset and omitted during
+        serialization. Servers older than v1.15 do not set this
+        field. The intended use of the remainingItemCount is
+        *estimating* the size of a collection. Clients should not
+        rely on the remainingItemCount to be set or to be exact.
+        This field is alpha and can be changed or removed without
+        notice.
         """
         return self._properties.get('remainingItemCount')
 
     @remaining_item_count.setter
     def remaining_item_count(self, value: int):
         """
-        RemainingItemCount is the number of subsequent items in the
+        remainingItemCount is the number of subsequent items in the
         list which are not included in this list response. If the
         list request contained label or field selectors, then the
-        number of remaining items is unknown and this field will be
-        unset. If the list is complete (either because it is
-        unpaginated or because this is the last page), then there
-        are no more remaining items and this field will also be
-        unset.  Servers older than v1.15 do not set this field.
+        number of remaining items is unknown and the field will be
+        left unset and omitted during serialization. If the list is
+        complete (either because it is not chunking or because this
+        is the last chunk), then there are no more remaining items
+        and this field will be left unset and omitted during
+        serialization. Servers older than v1.15 do not set this
+        field. The intended use of the remainingItemCount is
+        *estimating* the size of a collection. Clients should not
+        rely on the remainingItemCount to be set or to be exact.
+        This field is alpha and can be changed or removed without
+        notice.
         """
         self._properties['remainingItemCount'] = value
 
@@ -1759,7 +1641,6 @@ class ObjectMeta(_kuber_definitions.Definition):
             finalizers: typing.List[str] = None,
             generate_name: str = None,
             generation: int = None,
-            initializers: 'Initializers' = None,
             labels: dict = None,
             managed_fields: typing.List['ManagedFieldsEntry'] = None,
             name: str = None,
@@ -1783,7 +1664,6 @@ class ObjectMeta(_kuber_definitions.Definition):
             'finalizers': finalizers or [],
             'generateName': generate_name or '',
             'generation': generation or None,
-            'initializers': initializers or Initializers(),
             'labels': labels or {},
             'managedFields': managed_fields or [],
             'name': name or '',
@@ -1803,7 +1683,6 @@ class ObjectMeta(_kuber_definitions.Definition):
             'finalizers': (list, str),
             'generateName': (str, None),
             'generation': (int, None),
-            'initializers': (Initializers, None),
             'labels': (dict, None),
             'managedFields': (list, ManagedFieldsEntry),
             'name': (str, None),
@@ -2078,50 +1957,6 @@ class ObjectMeta(_kuber_definitions.Definition):
         desired state. Populated by the system. Read-only.
         """
         self._properties['generation'] = value
-
-    @property
-    def initializers(self) -> 'Initializers':
-        """
-        An initializer is a controller which enforces some system
-        invariant at object creation time. This field is a list of
-        initializers that have not yet acted on this object. If nil
-        or empty, this object has been completely initialized.
-        Otherwise, the object is considered uninitialized and is
-        hidden (in list/watch and get calls) from clients that
-        haven't explicitly asked to observe uninitialized objects.
-        When an object is created, the system will populate this
-        list with the current set of initializers. Only privileged
-        users may set or modify this list. Once it is empty, it may
-        not be modified further by any user.
-
-        DEPRECATED -
-        initializers are an alpha field and will be removed in
-        v1.15.
-        """
-        return self._properties.get('initializers')
-
-    @initializers.setter
-    def initializers(self, value: typing.Union['Initializers', dict]):
-        """
-        An initializer is a controller which enforces some system
-        invariant at object creation time. This field is a list of
-        initializers that have not yet acted on this object. If nil
-        or empty, this object has been completely initialized.
-        Otherwise, the object is considered uninitialized and is
-        hidden (in list/watch and get calls) from clients that
-        haven't explicitly asked to observe uninitialized objects.
-        When an object is created, the system will populate this
-        list with the current set of initializers. Only privileged
-        users may set or modify this list. Once it is empty, it may
-        not be modified further by any user.
-
-        DEPRECATED -
-        initializers are an alpha field and will be removed in
-        v1.15.
-        """
-        if isinstance(value, dict):
-            value = Initializers().from_dict(value)
-        self._properties['initializers'] = value
 
     @property
     def labels(self) -> dict:

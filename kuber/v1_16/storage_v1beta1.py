@@ -7,6 +7,7 @@ from kuber import kube_api as _kube_api
 from kuber import definitions as _kuber_definitions
 from kuber.v1_16.meta_v1 import ListMeta
 from kuber.v1_16.meta_v1 import ObjectMeta
+from kuber.v1_16.core_v1 import PersistentVolumeSpec
 from kuber.v1_16.meta_v1 import Status
 from kuber.v1_16.meta_v1 import StatusDetails
 from kuber.v1_16.core_v1 import TopologySelectorTerm
@@ -635,6 +636,7 @@ class CSINodeDriver(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            allocatable: 'VolumeNodeResources' = None,
             name: str = None,
             node_id: str = None,
             topology_keys: typing.List[str] = None,
@@ -645,17 +647,37 @@ class CSINodeDriver(_kuber_definitions.Definition):
             kind='CSINodeDriver'
         )
         self._properties = {
+            'allocatable': allocatable or VolumeNodeResources(),
             'name': name or '',
             'nodeID': node_id or '',
             'topologyKeys': topology_keys or [],
 
         }
         self._types = {
+            'allocatable': (VolumeNodeResources, None),
             'name': (str, None),
             'nodeID': (str, None),
             'topologyKeys': (list, str),
 
         }
+
+    @property
+    def allocatable(self) -> 'VolumeNodeResources':
+        """
+        allocatable represents the volume resources of a node that
+        are available for scheduling.
+        """
+        return self._properties.get('allocatable')
+
+    @allocatable.setter
+    def allocatable(self, value: typing.Union['VolumeNodeResources', dict]):
+        """
+        allocatable represents the volume resources of a node that
+        are available for scheduling.
+        """
+        if isinstance(value, dict):
+            value = VolumeNodeResources().from_dict(value)
+        self._properties['allocatable'] = value
 
     @property
     def name(self) -> str:
@@ -1691,6 +1713,7 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            inline_volume_spec: 'PersistentVolumeSpec' = None,
             persistent_volume_name: str = None,
     ):
         """Create VolumeAttachmentSource instance."""
@@ -1699,13 +1722,43 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
             kind='VolumeAttachmentSource'
         )
         self._properties = {
+            'inlineVolumeSpec': inline_volume_spec or PersistentVolumeSpec(),
             'persistentVolumeName': persistent_volume_name or '',
 
         }
         self._types = {
+            'inlineVolumeSpec': (PersistentVolumeSpec, None),
             'persistentVolumeName': (str, None),
 
         }
+
+    @property
+    def inline_volume_spec(self) -> 'PersistentVolumeSpec':
+        """
+        inlineVolumeSpec contains all the information necessary to
+        attach a persistent volume defined by a pod's inline
+        VolumeSource. This field is populated only for the
+        CSIMigration feature. It contains translated fields from a
+        pod's inline VolumeSource to a PersistentVolumeSpec. This
+        field is alpha-level and is only honored by servers that
+        enabled the CSIMigration feature.
+        """
+        return self._properties.get('inlineVolumeSpec')
+
+    @inline_volume_spec.setter
+    def inline_volume_spec(self, value: typing.Union['PersistentVolumeSpec', dict]):
+        """
+        inlineVolumeSpec contains all the information necessary to
+        attach a persistent volume defined by a pod's inline
+        VolumeSource. This field is populated only for the
+        CSIMigration feature. It contains translated fields from a
+        pod's inline VolumeSource to a PersistentVolumeSpec. This
+        field is alpha-level and is only honored by servers that
+        enabled the CSIMigration feature.
+        """
+        if isinstance(value, dict):
+            value = PersistentVolumeSpec().from_dict(value)
+        self._properties['inlineVolumeSpec'] = value
 
     @property
     def persistent_volume_name(self) -> str:
@@ -2000,6 +2053,63 @@ class VolumeError(_kuber_definitions.Definition):
         self._properties['time'] = value
 
     def __enter__(self) -> 'VolumeError':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class VolumeNodeResources(_kuber_definitions.Definition):
+    """
+    VolumeNodeResources is a set of resource limits for
+    scheduling of volumes.
+    """
+
+    def __init__(
+            self,
+            count: int = None,
+    ):
+        """Create VolumeNodeResources instance."""
+        super(VolumeNodeResources, self).__init__(
+            api_version='storage/v1beta1',
+            kind='VolumeNodeResources'
+        )
+        self._properties = {
+            'count': count or None,
+
+        }
+        self._types = {
+            'count': (int, None),
+
+        }
+
+    @property
+    def count(self) -> int:
+        """
+        Maximum number of unique volumes managed by the CSI driver
+        that can be used on a node. A volume that is both attached
+        and mounted on a node is considered to be used once, not
+        twice. The same rule applies for a unique volume that is
+        shared among multiple pods on the same node. If this field
+        is nil, then the supported number of volumes on this node is
+        unbounded.
+        """
+        return self._properties.get('count')
+
+    @count.setter
+    def count(self, value: int):
+        """
+        Maximum number of unique volumes managed by the CSI driver
+        that can be used on a node. A volume that is both attached
+        and mounted on a node is considered to be used once, not
+        twice. The same rule applies for a unique volume that is
+        shared among multiple pods on the same node. If this field
+        is nil, then the supported number of volumes on this node is
+        unbounded.
+        """
+        self._properties['count'] = value
+
+    def __enter__(self) -> 'VolumeNodeResources':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

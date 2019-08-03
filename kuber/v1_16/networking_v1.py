@@ -418,7 +418,7 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
         using a logical OR operation. If this field is empty or
         missing, this rule matches all sources (traffic not
         restricted by source). If this field is present and contains
-        at least on item, this rule allows traffic only if the
+        at least one item, this rule allows traffic only if the
         traffic matches at least one item in the from list.
         """
         return self._properties.get('from')
@@ -434,7 +434,7 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
         using a logical OR operation. If this field is empty or
         missing, this rule matches all sources (traffic not
         restricted by source). If this field is present and contains
-        at least on item, this rule allows traffic only if the
+        at least one item, this rule allows traffic only if the
         traffic matches at least one item in the from list.
         """
         cleaned = []

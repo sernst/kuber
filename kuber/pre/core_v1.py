@@ -5785,6 +5785,613 @@ class EnvVarSource(_kuber_definitions.Definition):
         return False
 
 
+class EphemeralContainer(_kuber_definitions.Definition):
+    """
+    An EphemeralContainer is a special type of container which
+    doesn't come with any resource or scheduling guarantees but
+    can be added to a pod that has already been created. They
+    are intended for user-initiated activities such as
+    troubleshooting a running pod. Ephemeral containers will not
+    be restarted when they exit, and they will be killed if the
+    pod is removed or restarted. If an ephemeral container
+    causes a pod to exceed its resource allocation, the pod may
+    be evicted. Ephemeral containers are added via a pod's
+    ephemeralcontainers subresource and will appear in the pod
+    spec once added. No fields in EphemeralContainer may be
+    changed once added. This is an alpha feature enabled by the
+    EphemeralContainers feature flag.
+    """
+
+    def __init__(
+            self,
+            args: typing.List[str] = None,
+            command: typing.List[str] = None,
+            env: typing.List['EnvVar'] = None,
+            env_from: typing.List['EnvFromSource'] = None,
+            image: str = None,
+            image_pull_policy: str = None,
+            lifecycle: 'Lifecycle' = None,
+            liveness_probe: 'Probe' = None,
+            name: str = None,
+            ports: typing.List['ContainerPort'] = None,
+            readiness_probe: 'Probe' = None,
+            resources: 'ResourceRequirements' = None,
+            security_context: 'SecurityContext' = None,
+            stdin: bool = None,
+            stdin_once: bool = None,
+            target_container_name: str = None,
+            termination_message_path: str = None,
+            termination_message_policy: str = None,
+            tty: bool = None,
+            volume_devices: typing.List['VolumeDevice'] = None,
+            volume_mounts: typing.List['VolumeMount'] = None,
+            working_dir: str = None,
+    ):
+        """Create EphemeralContainer instance."""
+        super(EphemeralContainer, self).__init__(
+            api_version='core/v1',
+            kind='EphemeralContainer'
+        )
+        self._properties = {
+            'args': args or [],
+            'command': command or [],
+            'env': env or [],
+            'envFrom': env_from or [],
+            'image': image or '',
+            'imagePullPolicy': image_pull_policy or '',
+            'lifecycle': lifecycle or Lifecycle(),
+            'livenessProbe': liveness_probe or Probe(),
+            'name': name or '',
+            'ports': ports or [],
+            'readinessProbe': readiness_probe or Probe(),
+            'resources': resources or ResourceRequirements(),
+            'securityContext': security_context or SecurityContext(),
+            'stdin': stdin or None,
+            'stdinOnce': stdin_once or None,
+            'targetContainerName': target_container_name or '',
+            'terminationMessagePath': termination_message_path or '',
+            'terminationMessagePolicy': termination_message_policy or '',
+            'tty': tty or None,
+            'volumeDevices': volume_devices or [],
+            'volumeMounts': volume_mounts or [],
+            'workingDir': working_dir or '',
+
+        }
+        self._types = {
+            'args': (list, str),
+            'command': (list, str),
+            'env': (list, EnvVar),
+            'envFrom': (list, EnvFromSource),
+            'image': (str, None),
+            'imagePullPolicy': (str, None),
+            'lifecycle': (Lifecycle, None),
+            'livenessProbe': (Probe, None),
+            'name': (str, None),
+            'ports': (list, ContainerPort),
+            'readinessProbe': (Probe, None),
+            'resources': (ResourceRequirements, None),
+            'securityContext': (SecurityContext, None),
+            'stdin': (bool, None),
+            'stdinOnce': (bool, None),
+            'targetContainerName': (str, None),
+            'terminationMessagePath': (str, None),
+            'terminationMessagePolicy': (str, None),
+            'tty': (bool, None),
+            'volumeDevices': (list, VolumeDevice),
+            'volumeMounts': (list, VolumeMount),
+            'workingDir': (str, None),
+
+        }
+
+    @property
+    def args(self) -> typing.List[str]:
+        """
+        Arguments to the entrypoint. The docker image's CMD is used
+        if this is not provided. Variable references $(VAR_NAME) are
+        expanded using the container's environment. If a variable
+        cannot be resolved, the reference in the input string will
+        be unchanged. The $(VAR_NAME) syntax can be escaped with a
+        double $$, ie: $$(VAR_NAME). Escaped references will never
+        be expanded, regardless of whether the variable exists or
+        not. Cannot be updated. More info:
+        https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        return self._properties.get('args')
+
+    @args.setter
+    def args(self, value: typing.List[str]):
+        """
+        Arguments to the entrypoint. The docker image's CMD is used
+        if this is not provided. Variable references $(VAR_NAME) are
+        expanded using the container's environment. If a variable
+        cannot be resolved, the reference in the input string will
+        be unchanged. The $(VAR_NAME) syntax can be escaped with a
+        double $$, ie: $$(VAR_NAME). Escaped references will never
+        be expanded, regardless of whether the variable exists or
+        not. Cannot be updated. More info:
+        https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        self._properties['args'] = value
+
+    @property
+    def command(self) -> typing.List[str]:
+        """
+        Entrypoint array. Not executed within a shell. The docker
+        image's ENTRYPOINT is used if this is not provided. Variable
+        references $(VAR_NAME) are expanded using the container's
+        environment. If a variable cannot be resolved, the reference
+        in the input string will be unchanged. The $(VAR_NAME)
+        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
+        Escaped references will never be expanded, regardless of
+        whether the variable exists or not. Cannot be updated. More
+        info: https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        return self._properties.get('command')
+
+    @command.setter
+    def command(self, value: typing.List[str]):
+        """
+        Entrypoint array. Not executed within a shell. The docker
+        image's ENTRYPOINT is used if this is not provided. Variable
+        references $(VAR_NAME) are expanded using the container's
+        environment. If a variable cannot be resolved, the reference
+        in the input string will be unchanged. The $(VAR_NAME)
+        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
+        Escaped references will never be expanded, regardless of
+        whether the variable exists or not. Cannot be updated. More
+        info: https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        self._properties['command'] = value
+
+    @property
+    def env(self) -> typing.List['EnvVar']:
+        """
+        List of environment variables to set in the container.
+        Cannot be updated.
+        """
+        return self._properties.get('env')
+
+    @env.setter
+    def env(
+            self,
+            value: typing.Union[typing.List['EnvVar'], typing.List[dict]]
+    ):
+        """
+        List of environment variables to set in the container.
+        Cannot be updated.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = EnvVar().from_dict(item)
+            cleaned.append(item)
+        self._properties['env'] = cleaned
+
+    @property
+    def env_from(self) -> typing.List['EnvFromSource']:
+        """
+        List of sources to populate environment variables in the
+        container. The keys defined within a source must be a
+        C_IDENTIFIER. All invalid keys will be reported as an event
+        when the container is starting. When a key exists in
+        multiple sources, the value associated with the last source
+        will take precedence. Values defined by an Env with a
+        duplicate key will take precedence. Cannot be updated.
+        """
+        return self._properties.get('envFrom')
+
+    @env_from.setter
+    def env_from(
+            self,
+            value: typing.Union[typing.List['EnvFromSource'], typing.List[dict]]
+    ):
+        """
+        List of sources to populate environment variables in the
+        container. The keys defined within a source must be a
+        C_IDENTIFIER. All invalid keys will be reported as an event
+        when the container is starting. When a key exists in
+        multiple sources, the value associated with the last source
+        will take precedence. Values defined by an Env with a
+        duplicate key will take precedence. Cannot be updated.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = EnvFromSource().from_dict(item)
+            cleaned.append(item)
+        self._properties['envFrom'] = cleaned
+
+    @property
+    def image(self) -> str:
+        """
+        Docker image name. More info:
+        https://kubernetes.io/docs/concepts/containers/images
+        """
+        return self._properties.get('image')
+
+    @image.setter
+    def image(self, value: str):
+        """
+        Docker image name. More info:
+        https://kubernetes.io/docs/concepts/containers/images
+        """
+        self._properties['image'] = value
+
+    @property
+    def image_pull_policy(self) -> str:
+        """
+        Image pull policy. One of Always, Never, IfNotPresent.
+        Defaults to Always if :latest tag is specified, or
+        IfNotPresent otherwise. Cannot be updated. More info: https:
+        //kubernetes.io/docs/concepts/containers/images#updating-
+        images
+        """
+        return self._properties.get('imagePullPolicy')
+
+    @image_pull_policy.setter
+    def image_pull_policy(self, value: str):
+        """
+        Image pull policy. One of Always, Never, IfNotPresent.
+        Defaults to Always if :latest tag is specified, or
+        IfNotPresent otherwise. Cannot be updated. More info: https:
+        //kubernetes.io/docs/concepts/containers/images#updating-
+        images
+        """
+        self._properties['imagePullPolicy'] = value
+
+    @property
+    def lifecycle(self) -> 'Lifecycle':
+        """
+        Lifecycle is not allowed for ephemeral containers.
+        """
+        return self._properties.get('lifecycle')
+
+    @lifecycle.setter
+    def lifecycle(self, value: typing.Union['Lifecycle', dict]):
+        """
+        Lifecycle is not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Lifecycle().from_dict(value)
+        self._properties['lifecycle'] = value
+
+    @property
+    def liveness_probe(self) -> 'Probe':
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        return self._properties.get('livenessProbe')
+
+    @liveness_probe.setter
+    def liveness_probe(self, value: typing.Union['Probe', dict]):
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['livenessProbe'] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name of the ephemeral container specified as a DNS_LABEL.
+        This name must be unique among all containers, init
+        containers and ephemeral containers.
+        """
+        return self._properties.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name of the ephemeral container specified as a DNS_LABEL.
+        This name must be unique among all containers, init
+        containers and ephemeral containers.
+        """
+        self._properties['name'] = value
+
+    @property
+    def ports(self) -> typing.List['ContainerPort']:
+        """
+        Ports are not allowed for ephemeral containers.
+        """
+        return self._properties.get('ports')
+
+    @ports.setter
+    def ports(
+            self,
+            value: typing.Union[typing.List['ContainerPort'], typing.List[dict]]
+    ):
+        """
+        Ports are not allowed for ephemeral containers.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = ContainerPort().from_dict(item)
+            cleaned.append(item)
+        self._properties['ports'] = cleaned
+
+    @property
+    def readiness_probe(self) -> 'Probe':
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        return self._properties.get('readinessProbe')
+
+    @readiness_probe.setter
+    def readiness_probe(self, value: typing.Union['Probe', dict]):
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['readinessProbe'] = value
+
+    @property
+    def resources(self) -> 'ResourceRequirements':
+        """
+        Resources are not allowed for ephemeral containers.
+        Ephemeral containers use spare resources already allocated
+        to the pod.
+        """
+        return self._properties.get('resources')
+
+    @resources.setter
+    def resources(self, value: typing.Union['ResourceRequirements', dict]):
+        """
+        Resources are not allowed for ephemeral containers.
+        Ephemeral containers use spare resources already allocated
+        to the pod.
+        """
+        if isinstance(value, dict):
+            value = ResourceRequirements().from_dict(value)
+        self._properties['resources'] = value
+
+    @property
+    def security_context(self) -> 'SecurityContext':
+        """
+        SecurityContext is not allowed for ephemeral containers.
+        """
+        return self._properties.get('securityContext')
+
+    @security_context.setter
+    def security_context(self, value: typing.Union['SecurityContext', dict]):
+        """
+        SecurityContext is not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = SecurityContext().from_dict(value)
+        self._properties['securityContext'] = value
+
+    @property
+    def stdin(self) -> bool:
+        """
+        Whether this container should allocate a buffer for stdin in
+        the container runtime. If this is not set, reads from stdin
+        in the container will always result in EOF. Default is
+        false.
+        """
+        return self._properties.get('stdin')
+
+    @stdin.setter
+    def stdin(self, value: bool):
+        """
+        Whether this container should allocate a buffer for stdin in
+        the container runtime. If this is not set, reads from stdin
+        in the container will always result in EOF. Default is
+        false.
+        """
+        self._properties['stdin'] = value
+
+    @property
+    def stdin_once(self) -> bool:
+        """
+        Whether the container runtime should close the stdin channel
+        after it has been opened by a single attach. When stdin is
+        true the stdin stream will remain open across multiple
+        attach sessions. If stdinOnce is set to true, stdin is
+        opened on container start, is empty until the first client
+        attaches to stdin, and then remains open and accepts data
+        until the client disconnects, at which time stdin is closed
+        and remains closed until the container is restarted. If this
+        flag is false, a container processes that reads from stdin
+        will never receive an EOF. Default is false
+        """
+        return self._properties.get('stdinOnce')
+
+    @stdin_once.setter
+    def stdin_once(self, value: bool):
+        """
+        Whether the container runtime should close the stdin channel
+        after it has been opened by a single attach. When stdin is
+        true the stdin stream will remain open across multiple
+        attach sessions. If stdinOnce is set to true, stdin is
+        opened on container start, is empty until the first client
+        attaches to stdin, and then remains open and accepts data
+        until the client disconnects, at which time stdin is closed
+        and remains closed until the container is restarted. If this
+        flag is false, a container processes that reads from stdin
+        will never receive an EOF. Default is false
+        """
+        self._properties['stdinOnce'] = value
+
+    @property
+    def target_container_name(self) -> str:
+        """
+        If set, the name of the container from PodSpec that this
+        ephemeral container targets. The ephemeral container will be
+        run in the namespaces (IPC, PID, etc) of this container. If
+        not set then the ephemeral container is run in whatever
+        namespaces are shared for the pod. Note that the container
+        runtime must support this feature.
+        """
+        return self._properties.get('targetContainerName')
+
+    @target_container_name.setter
+    def target_container_name(self, value: str):
+        """
+        If set, the name of the container from PodSpec that this
+        ephemeral container targets. The ephemeral container will be
+        run in the namespaces (IPC, PID, etc) of this container. If
+        not set then the ephemeral container is run in whatever
+        namespaces are shared for the pod. Note that the container
+        runtime must support this feature.
+        """
+        self._properties['targetContainerName'] = value
+
+    @property
+    def termination_message_path(self) -> str:
+        """
+        Optional: Path at which the file to which the container's
+        termination message will be written is mounted into the
+        container's filesystem. Message written is intended to be
+        brief final status, such as an assertion failure message.
+        Will be truncated by the node if greater than 4096 bytes.
+        The total message length across all containers will be
+        limited to 12kb. Defaults to /dev/termination-log. Cannot be
+        updated.
+        """
+        return self._properties.get('terminationMessagePath')
+
+    @termination_message_path.setter
+    def termination_message_path(self, value: str):
+        """
+        Optional: Path at which the file to which the container's
+        termination message will be written is mounted into the
+        container's filesystem. Message written is intended to be
+        brief final status, such as an assertion failure message.
+        Will be truncated by the node if greater than 4096 bytes.
+        The total message length across all containers will be
+        limited to 12kb. Defaults to /dev/termination-log. Cannot be
+        updated.
+        """
+        self._properties['terminationMessagePath'] = value
+
+    @property
+    def termination_message_policy(self) -> str:
+        """
+        Indicate how the termination message should be populated.
+        File will use the contents of terminationMessagePath to
+        populate the container status message on both success and
+        failure. FallbackToLogsOnError will use the last chunk of
+        container log output if the termination message file is
+        empty and the container exited with an error. The log output
+        is limited to 2048 bytes or 80 lines, whichever is smaller.
+        Defaults to File. Cannot be updated.
+        """
+        return self._properties.get('terminationMessagePolicy')
+
+    @termination_message_policy.setter
+    def termination_message_policy(self, value: str):
+        """
+        Indicate how the termination message should be populated.
+        File will use the contents of terminationMessagePath to
+        populate the container status message on both success and
+        failure. FallbackToLogsOnError will use the last chunk of
+        container log output if the termination message file is
+        empty and the container exited with an error. The log output
+        is limited to 2048 bytes or 80 lines, whichever is smaller.
+        Defaults to File. Cannot be updated.
+        """
+        self._properties['terminationMessagePolicy'] = value
+
+    @property
+    def tty(self) -> bool:
+        """
+        Whether this container should allocate a TTY for itself,
+        also requires 'stdin' to be true. Default is false.
+        """
+        return self._properties.get('tty')
+
+    @tty.setter
+    def tty(self, value: bool):
+        """
+        Whether this container should allocate a TTY for itself,
+        also requires 'stdin' to be true. Default is false.
+        """
+        self._properties['tty'] = value
+
+    @property
+    def volume_devices(self) -> typing.List['VolumeDevice']:
+        """
+        volumeDevices is the list of block devices to be used by the
+        container. This is a beta feature.
+        """
+        return self._properties.get('volumeDevices')
+
+    @volume_devices.setter
+    def volume_devices(
+            self,
+            value: typing.Union[typing.List['VolumeDevice'], typing.List[dict]]
+    ):
+        """
+        volumeDevices is the list of block devices to be used by the
+        container. This is a beta feature.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = VolumeDevice().from_dict(item)
+            cleaned.append(item)
+        self._properties['volumeDevices'] = cleaned
+
+    @property
+    def volume_mounts(self) -> typing.List['VolumeMount']:
+        """
+        Pod volumes to mount into the container's filesystem. Cannot
+        be updated.
+        """
+        return self._properties.get('volumeMounts')
+
+    @volume_mounts.setter
+    def volume_mounts(
+            self,
+            value: typing.Union[typing.List['VolumeMount'], typing.List[dict]]
+    ):
+        """
+        Pod volumes to mount into the container's filesystem. Cannot
+        be updated.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = VolumeMount().from_dict(item)
+            cleaned.append(item)
+        self._properties['volumeMounts'] = cleaned
+
+    @property
+    def working_dir(self) -> str:
+        """
+        Container's working directory. If not specified, the
+        container runtime's default will be used, which might be
+        configured in the container image. Cannot be updated.
+        """
+        return self._properties.get('workingDir')
+
+    @working_dir.setter
+    def working_dir(self, value: str):
+        """
+        Container's working directory. If not specified, the
+        container runtime's default will be used, which might be
+        configured in the container image. Cannot be updated.
+        """
+        self._properties['workingDir'] = value
+
+    def __enter__(self) -> 'EphemeralContainer':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class Event(_kuber_definitions.Resource):
     """
     Event is a report of an event somewhere in the cluster.
@@ -10993,6 +11600,7 @@ class NodeSpec(_kuber_definitions.Definition):
             config_source: 'NodeConfigSource' = None,
             external_id: str = None,
             pod_cidr: str = None,
+            pod_cidrs: typing.List[str] = None,
             provider_id: str = None,
             taints: typing.List['Taint'] = None,
             unschedulable: bool = None,
@@ -11006,6 +11614,7 @@ class NodeSpec(_kuber_definitions.Definition):
             'configSource': config_source or NodeConfigSource(),
             'externalID': external_id or '',
             'podCIDR': pod_cidr or '',
+            'podCIDRs': pod_cidrs or [],
             'providerID': provider_id or '',
             'taints': taints or [],
             'unschedulable': unschedulable or None,
@@ -11015,6 +11624,7 @@ class NodeSpec(_kuber_definitions.Definition):
             'configSource': (NodeConfigSource, None),
             'externalID': (str, None),
             'podCIDR': (str, None),
+            'podCIDRs': (list, str),
             'providerID': (str, None),
             'taints': (list, Taint),
             'unschedulable': (bool, None),
@@ -11070,6 +11680,26 @@ class NodeSpec(_kuber_definitions.Definition):
         PodCIDR represents the pod IP range assigned to the node.
         """
         self._properties['podCIDR'] = value
+
+    @property
+    def pod_cidrs(self) -> typing.List[str]:
+        """
+        podCIDRs represents the IP ranges assigned to the node for
+        usage by Pods on that node. If this field is specified, the
+        0th entry must match the podCIDR field. It may contain at
+        most 1 value for each of IPv4 and IPv6.
+        """
+        return self._properties.get('podCIDRs')
+
+    @pod_cidrs.setter
+    def pod_cidrs(self, value: typing.List[str]):
+        """
+        podCIDRs represents the IP ranges assigned to the node for
+        usage by Pods on that node. If this field is specified, the
+        0th entry must match the podCIDR field. It may contain at
+        most 1 value for each of IPv4 and IPv6.
+        """
+        self._properties['podCIDRs'] = value
 
     @property
     def provider_id(self) -> str:
@@ -11196,6 +11826,11 @@ class NodeStatus(_kuber_definitions.Definition):
         List of addresses reachable to the node. Queried from cloud
         provider, if available. More info:
         https://kubernetes.io/docs/concepts/nodes/node/#addresses
+        Note: This field is declared as mergeable, but the merge key
+        is not sufficiently unique, which can cause data corruption
+        when it is merged. Callers should instead use a full-
+        replacement patch. See http://pr.k8s.io/79391 for an
+        example.
         """
         return self._properties.get('addresses')
 
@@ -11208,6 +11843,11 @@ class NodeStatus(_kuber_definitions.Definition):
         List of addresses reachable to the node. Queried from cloud
         provider, if available. More info:
         https://kubernetes.io/docs/concepts/nodes/node/#addresses
+        Note: This field is declared as mergeable, but the merge key
+        is not sufficiently unique, which can cause data corruption
+        when it is merged. Callers should instead use a full-
+        replacement patch. See http://pr.k8s.io/79391 for an
+        example.
         """
         cleaned = []
         for item in value:
@@ -15025,6 +15665,53 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
         return False
 
 
+class PodIP(_kuber_definitions.Definition):
+    """
+    IP address information for entries in the (plural) PodIPs
+    field. Each entry includes:
+       IP: An IP address allocated
+    to the pod. Routable at least within the cluster.
+    """
+
+    def __init__(
+            self,
+            ip: str = None,
+    ):
+        """Create PodIP instance."""
+        super(PodIP, self).__init__(
+            api_version='core/v1',
+            kind='PodIP'
+        )
+        self._properties = {
+            'ip': ip or '',
+
+        }
+        self._types = {
+            'ip': (str, None),
+
+        }
+
+    @property
+    def ip(self) -> str:
+        """
+        ip is an IP address (IPv4 or IPv6) assigned to the pod
+        """
+        return self._properties.get('ip')
+
+    @ip.setter
+    def ip(self, value: str):
+        """
+        ip is an IP address (IPv4 or IPv6) assigned to the pod
+        """
+        self._properties['ip'] = value
+
+    def __enter__(self) -> 'PodIP':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class PodList(_kuber_definitions.Collection):
     """
     PodList is a list of Pods.
@@ -15394,14 +16081,22 @@ class PodSecurityContext(_kuber_definitions.Definition):
     @property
     def windows_options(self) -> 'WindowsSecurityContextOptions':
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options within a container's
+        SecurityContext will be used. If set in both SecurityContext
+        and PodSecurityContext, the value specified in
+        SecurityContext takes precedence.
         """
         return self._properties.get('windowsOptions')
 
     @windows_options.setter
     def windows_options(self, value: typing.Union['WindowsSecurityContextOptions', dict]):
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options within a container's
+        SecurityContext will be used. If set in both SecurityContext
+        and PodSecurityContext, the value specified in
+        SecurityContext takes precedence.
         """
         if isinstance(value, dict):
             value = WindowsSecurityContextOptions().from_dict(value)
@@ -15428,6 +16123,7 @@ class PodSpec(_kuber_definitions.Definition):
             dns_config: 'PodDNSConfig' = None,
             dns_policy: str = None,
             enable_service_links: bool = None,
+            ephemeral_containers: typing.List['EphemeralContainer'] = None,
             host_aliases: typing.List['HostAlias'] = None,
             host_ipc: bool = None,
             host_network: bool = None,
@@ -15437,6 +16133,8 @@ class PodSpec(_kuber_definitions.Definition):
             init_containers: typing.List['Container'] = None,
             node_name: str = None,
             node_selector: dict = None,
+            overhead: dict = None,
+            preemption_policy: str = None,
             priority: int = None,
             priority_class_name: str = None,
             readiness_gates: typing.List['PodReadinessGate'] = None,
@@ -15450,6 +16148,7 @@ class PodSpec(_kuber_definitions.Definition):
             subdomain: str = None,
             termination_grace_period_seconds: int = None,
             tolerations: typing.List['Toleration'] = None,
+            topology_spread_constraints: typing.List['TopologySpreadConstraint'] = None,
             volumes: typing.List['Volume'] = None,
     ):
         """Create PodSpec instance."""
@@ -15465,6 +16164,7 @@ class PodSpec(_kuber_definitions.Definition):
             'dnsConfig': dns_config or PodDNSConfig(),
             'dnsPolicy': dns_policy or '',
             'enableServiceLinks': enable_service_links or None,
+            'ephemeralContainers': ephemeral_containers or [],
             'hostAliases': host_aliases or [],
             'hostIPC': host_ipc or None,
             'hostNetwork': host_network or None,
@@ -15474,6 +16174,8 @@ class PodSpec(_kuber_definitions.Definition):
             'initContainers': init_containers or [],
             'nodeName': node_name or '',
             'nodeSelector': node_selector or {},
+            'overhead': overhead or {},
+            'preemptionPolicy': preemption_policy or '',
             'priority': priority or None,
             'priorityClassName': priority_class_name or '',
             'readinessGates': readiness_gates or [],
@@ -15487,6 +16189,7 @@ class PodSpec(_kuber_definitions.Definition):
             'subdomain': subdomain or '',
             'terminationGracePeriodSeconds': termination_grace_period_seconds or None,
             'tolerations': tolerations or [],
+            'topologySpreadConstraints': topology_spread_constraints or [],
             'volumes': volumes or [],
 
         }
@@ -15498,6 +16201,7 @@ class PodSpec(_kuber_definitions.Definition):
             'dnsConfig': (PodDNSConfig, None),
             'dnsPolicy': (str, None),
             'enableServiceLinks': (bool, None),
+            'ephemeralContainers': (list, EphemeralContainer),
             'hostAliases': (list, HostAlias),
             'hostIPC': (bool, None),
             'hostNetwork': (bool, None),
@@ -15507,6 +16211,8 @@ class PodSpec(_kuber_definitions.Definition):
             'initContainers': (list, Container),
             'nodeName': (str, None),
             'nodeSelector': (dict, None),
+            'overhead': (dict, None),
+            'preemptionPolicy': (str, None),
             'priority': (int, None),
             'priorityClassName': (str, None),
             'readinessGates': (list, PodReadinessGate),
@@ -15520,6 +16226,7 @@ class PodSpec(_kuber_definitions.Definition):
             'subdomain': (str, None),
             'terminationGracePeriodSeconds': (int, None),
             'tolerations': (list, Toleration),
+            'topologySpreadConstraints': (list, TopologySpreadConstraint),
             'volumes': (list, Volume),
 
         }
@@ -15665,6 +16372,46 @@ class PodSpec(_kuber_definitions.Definition):
         Defaults to true.
         """
         self._properties['enableServiceLinks'] = value
+
+    @property
+    def ephemeral_containers(self) -> typing.List['EphemeralContainer']:
+        """
+        EphemeralContainers is the list of ephemeral containers that
+        run in this pod. Ephemeral containers are added to an
+        existing pod as a result of a user-initiated action such as
+        troubleshooting. This list is read-only in the pod spec. It
+        may not be specified in a create or modified in an update of
+        a pod or pod template. To add an ephemeral container use the
+        pod's ephemeralcontainers subresource, which allows update
+        using the EphemeralContainers kind. This field is alpha-
+        level and is only honored by servers that enable the
+        EphemeralContainers feature.
+        """
+        return self._properties.get('ephemeralContainers')
+
+    @ephemeral_containers.setter
+    def ephemeral_containers(
+            self,
+            value: typing.Union[typing.List['EphemeralContainer'], typing.List[dict]]
+    ):
+        """
+        EphemeralContainers is the list of ephemeral containers that
+        run in this pod. Ephemeral containers are added to an
+        existing pod as a result of a user-initiated action such as
+        troubleshooting. This list is read-only in the pod spec. It
+        may not be specified in a create or modified in an update of
+        a pod or pod template. To add an ephemeral container use the
+        pod's ephemeralcontainers subresource, which allows update
+        using the EphemeralContainers kind. This field is alpha-
+        level and is only honored by servers that enable the
+        EphemeralContainers feature.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = EphemeralContainer().from_dict(item)
+            cleaned.append(item)
+        self._properties['ephemeralContainers'] = cleaned
 
     @property
     def host_aliases(self) -> typing.List['HostAlias']:
@@ -15883,6 +16630,70 @@ class PodSpec(_kuber_definitions.Definition):
         pod-node/
         """
         self._properties['nodeSelector'] = value
+
+    @property
+    def overhead(self) -> dict:
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. This field will be
+        autopopulated at admission time by the RuntimeClass
+        admission controller. If the RuntimeClass admission
+        controller is enabled, overhead must not be set in Pod
+        create requests. The RuntimeClass admission controller will
+        reject Pod create requests which have the overhead already
+        set. If RuntimeClass is configured and selected in the
+        PodSpec, Overhead will be set to the value defined in the
+        corresponding RuntimeClass, otherwise it will remain unset
+        and treated as zero. More info:
+        https://git.k8s.io/enhancements/keps/sig-node/20190226-pod-
+        overhead.md This field is alpha-level as of Kubernetes
+        v1.16, and is only honored by servers that enable the
+        PodOverhead feature.
+        """
+        return self._properties.get('overhead')
+
+    @overhead.setter
+    def overhead(self, value: dict):
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. This field will be
+        autopopulated at admission time by the RuntimeClass
+        admission controller. If the RuntimeClass admission
+        controller is enabled, overhead must not be set in Pod
+        create requests. The RuntimeClass admission controller will
+        reject Pod create requests which have the overhead already
+        set. If RuntimeClass is configured and selected in the
+        PodSpec, Overhead will be set to the value defined in the
+        corresponding RuntimeClass, otherwise it will remain unset
+        and treated as zero. More info:
+        https://git.k8s.io/enhancements/keps/sig-node/20190226-pod-
+        overhead.md This field is alpha-level as of Kubernetes
+        v1.16, and is only honored by servers that enable the
+        PodOverhead feature.
+        """
+        self._properties['overhead'] = value
+
+    @property
+    def preemption_policy(self) -> str:
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        return self._properties.get('preemptionPolicy')
+
+    @preemption_policy.setter
+    def preemption_policy(self, value: str):
+        """
+        PreemptionPolicy is the Policy for preempting pods with
+        lower priority. One of Never, PreemptLowerPriority. Defaults
+        to PreemptLowerPriority if unset. This field is alpha-level
+        and is only honored by servers that enable the
+        NonPreemptingPriority feature.
+        """
+        self._properties['preemptionPolicy'] = value
 
     @property
     def priority(self) -> int:
@@ -16195,6 +17006,38 @@ class PodSpec(_kuber_definitions.Definition):
         self._properties['tolerations'] = cleaned
 
     @property
+    def topology_spread_constraints(self) -> typing.List['TopologySpreadConstraint']:
+        """
+        TopologySpreadConstraints describes how a group of pods
+        ought to spread across topology domains. Scheduler will
+        schedule pods in a way which abides by the constraints. This
+        field is alpha-level and is only honored by clusters that
+        enables the EvenPodsSpread feature. All
+        topologySpreadConstraints are ANDed.
+        """
+        return self._properties.get('topologySpreadConstraints')
+
+    @topology_spread_constraints.setter
+    def topology_spread_constraints(
+            self,
+            value: typing.Union[typing.List['TopologySpreadConstraint'], typing.List[dict]]
+    ):
+        """
+        TopologySpreadConstraints describes how a group of pods
+        ought to spread across topology domains. Scheduler will
+        schedule pods in a way which abides by the constraints. This
+        field is alpha-level and is only honored by clusters that
+        enables the EvenPodsSpread feature. All
+        topologySpreadConstraints are ANDed.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = TopologySpreadConstraint().from_dict(item)
+            cleaned.append(item)
+        self._properties['topologySpreadConstraints'] = cleaned
+
+    @property
     def volumes(self) -> typing.List['Volume']:
         """
         List of volumes that can be mounted by containers belonging
@@ -16302,12 +17145,14 @@ class PodStatus(_kuber_definitions.Definition):
             self,
             conditions: typing.List['PodCondition'] = None,
             container_statuses: typing.List['ContainerStatus'] = None,
+            ephemeral_container_statuses: typing.List['ContainerStatus'] = None,
             host_ip: str = None,
             init_container_statuses: typing.List['ContainerStatus'] = None,
             message: str = None,
             nominated_node_name: str = None,
             phase: str = None,
             pod_ip: str = None,
+            pod_ips: typing.List['PodIP'] = None,
             qos_class: str = None,
             reason: str = None,
             start_time: str = None,
@@ -16320,12 +17165,14 @@ class PodStatus(_kuber_definitions.Definition):
         self._properties = {
             'conditions': conditions or [],
             'containerStatuses': container_statuses or [],
+            'ephemeralContainerStatuses': ephemeral_container_statuses or [],
             'hostIP': host_ip or '',
             'initContainerStatuses': init_container_statuses or [],
             'message': message or '',
             'nominatedNodeName': nominated_node_name or '',
             'phase': phase or '',
             'podIP': pod_ip or '',
+            'podIPs': pod_ips or [],
             'qosClass': qos_class or '',
             'reason': reason or '',
             'startTime': start_time or None,
@@ -16334,12 +17181,14 @@ class PodStatus(_kuber_definitions.Definition):
         self._types = {
             'conditions': (list, PodCondition),
             'containerStatuses': (list, ContainerStatus),
+            'ephemeralContainerStatuses': (list, ContainerStatus),
             'hostIP': (str, None),
             'initContainerStatuses': (list, ContainerStatus),
             'message': (str, None),
             'nominatedNodeName': (str, None),
             'phase': (str, None),
             'podIP': (str, None),
+            'podIPs': (list, PodIP),
             'qosClass': (str, None),
             'reason': (str, None),
             'startTime': (str, None),
@@ -16401,6 +17250,32 @@ class PodStatus(_kuber_definitions.Definition):
                 item = ContainerStatus().from_dict(item)
             cleaned.append(item)
         self._properties['containerStatuses'] = cleaned
+
+    @property
+    def ephemeral_container_statuses(self) -> typing.List['ContainerStatus']:
+        """
+        Status for any ephemeral containers that running in this
+        pod. This field is alpha-level and is only honored by
+        servers that enable the EphemeralContainers feature.
+        """
+        return self._properties.get('ephemeralContainerStatuses')
+
+    @ephemeral_container_statuses.setter
+    def ephemeral_container_statuses(
+            self,
+            value: typing.Union[typing.List['ContainerStatus'], typing.List[dict]]
+    ):
+        """
+        Status for any ephemeral containers that running in this
+        pod. This field is alpha-level and is only honored by
+        servers that enable the EphemeralContainers feature.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = ContainerStatus().from_dict(item)
+            cleaned.append(item)
+        self._properties['ephemeralContainerStatuses'] = cleaned
 
     @property
     def host_ip(self) -> str:
@@ -16577,6 +17452,36 @@ class PodStatus(_kuber_definitions.Definition):
         the cluster. Empty if not yet allocated.
         """
         self._properties['podIP'] = value
+
+    @property
+    def pod_ips(self) -> typing.List['PodIP']:
+        """
+        podIPs holds the IP addresses allocated to the pod. If this
+        field is specified, the 0th entry must match the podIP
+        field. Pods may be allocated at most 1 value for each of
+        IPv4 and IPv6. This list is empty if no IPs have been
+        allocated yet.
+        """
+        return self._properties.get('podIPs')
+
+    @pod_ips.setter
+    def pod_ips(
+            self,
+            value: typing.Union[typing.List['PodIP'], typing.List[dict]]
+    ):
+        """
+        podIPs holds the IP addresses allocated to the pod. If this
+        field is specified, the 0th entry must match the podIP
+        field. Pods may be allocated at most 1 value for each of
+        IPv4 and IPv6. This list is empty if no IPs have been
+        allocated yet.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = PodIP().from_dict(item)
+            cleaned.append(item)
+        self._properties['podIPs'] = cleaned
 
     @property
     def qos_class(self) -> str:
@@ -21453,14 +22358,20 @@ class SecurityContext(_kuber_definitions.Definition):
     @property
     def windows_options(self) -> 'WindowsSecurityContextOptions':
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options from the PodSecurityContext will be
+        used. If set in both SecurityContext and PodSecurityContext,
+        the value specified in SecurityContext takes precedence.
         """
         return self._properties.get('windowsOptions')
 
     @windows_options.setter
     def windows_options(self, value: typing.Union['WindowsSecurityContextOptions', dict]):
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options from the PodSecurityContext will be
+        used. If set in both SecurityContext and PodSecurityContext,
+        the value specified in SecurityContext takes precedence.
         """
         if isinstance(value, dict):
             value = WindowsSecurityContextOptions().from_dict(value)
@@ -23751,6 +24662,164 @@ class TopologySelectorTerm(_kuber_definitions.Definition):
         return False
 
 
+class TopologySpreadConstraint(_kuber_definitions.Definition):
+    """
+    TopologySpreadConstraint specifies how to spread matching
+    pods among the given topology.
+    """
+
+    def __init__(
+            self,
+            label_selector: 'LabelSelector' = None,
+            max_skew: int = None,
+            topology_key: str = None,
+            when_unsatisfiable: str = None,
+    ):
+        """Create TopologySpreadConstraint instance."""
+        super(TopologySpreadConstraint, self).__init__(
+            api_version='core/v1',
+            kind='TopologySpreadConstraint'
+        )
+        self._properties = {
+            'labelSelector': label_selector or LabelSelector(),
+            'maxSkew': max_skew or None,
+            'topologyKey': topology_key or '',
+            'whenUnsatisfiable': when_unsatisfiable or '',
+
+        }
+        self._types = {
+            'labelSelector': (LabelSelector, None),
+            'maxSkew': (int, None),
+            'topologyKey': (str, None),
+            'whenUnsatisfiable': (str, None),
+
+        }
+
+    @property
+    def label_selector(self) -> 'LabelSelector':
+        """
+        LabelSelector is used to find matching pods. Pods that match
+        this label selector are counted to determine the number of
+        pods in their corresponding topology domain.
+        """
+        return self._properties.get('labelSelector')
+
+    @label_selector.setter
+    def label_selector(self, value: typing.Union['LabelSelector', dict]):
+        """
+        LabelSelector is used to find matching pods. Pods that match
+        this label selector are counted to determine the number of
+        pods in their corresponding topology domain.
+        """
+        if isinstance(value, dict):
+            value = LabelSelector().from_dict(value)
+        self._properties['labelSelector'] = value
+
+    @property
+    def max_skew(self) -> int:
+        """
+        MaxSkew describes the degree to which pods may be unevenly
+        distributed. It's the maximum permitted difference between
+        the number of matching pods in any two topology domains of a
+        given topology type. For example, in a 3-zone cluster,
+        MaxSkew is set to 1, and pods with the same labelSelector
+        spread as 1/1/0: | zone1 | zone2 | zone3 | |   P   |   P   |
+        | - if MaxSkew is 1, incoming pod can only be scheduled to
+        zone3 to become 1/1/1; scheduling it onto zone1(zone2) would
+        make the ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1).
+        - if MaxSkew is 2, incoming pod can be scheduled onto any
+        zone. It's a required field. Default value is 1 and 0 is not
+        allowed.
+        """
+        return self._properties.get('maxSkew')
+
+    @max_skew.setter
+    def max_skew(self, value: int):
+        """
+        MaxSkew describes the degree to which pods may be unevenly
+        distributed. It's the maximum permitted difference between
+        the number of matching pods in any two topology domains of a
+        given topology type. For example, in a 3-zone cluster,
+        MaxSkew is set to 1, and pods with the same labelSelector
+        spread as 1/1/0: | zone1 | zone2 | zone3 | |   P   |   P   |
+        | - if MaxSkew is 1, incoming pod can only be scheduled to
+        zone3 to become 1/1/1; scheduling it onto zone1(zone2) would
+        make the ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1).
+        - if MaxSkew is 2, incoming pod can be scheduled onto any
+        zone. It's a required field. Default value is 1 and 0 is not
+        allowed.
+        """
+        self._properties['maxSkew'] = value
+
+    @property
+    def topology_key(self) -> str:
+        """
+        TopologyKey is the key of node labels. Nodes that have a
+        label with this key and identical values are considered to
+        be in the same topology. We consider each <key, value> as a
+        "bucket", and try to put balanced number of pods into each
+        bucket. It's a required field.
+        """
+        return self._properties.get('topologyKey')
+
+    @topology_key.setter
+    def topology_key(self, value: str):
+        """
+        TopologyKey is the key of node labels. Nodes that have a
+        label with this key and identical values are considered to
+        be in the same topology. We consider each <key, value> as a
+        "bucket", and try to put balanced number of pods into each
+        bucket. It's a required field.
+        """
+        self._properties['topologyKey'] = value
+
+    @property
+    def when_unsatisfiable(self) -> str:
+        """
+        WhenUnsatisfiable indicates how to deal with a pod if it
+        doesn't satisfy the spread constraint. - DoNotSchedule
+        (default) tells the scheduler not to schedule it -
+        ScheduleAnyway tells the scheduler to still schedule it It's
+        considered as "Unsatisfiable" if and only if placing
+        incoming pod on any topology violates "MaxSkew". For
+        example, in a 3-zone cluster, MaxSkew is set to 1, and pods
+        with the same labelSelector spread as 3/1/1: | zone1 | zone2
+        | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is
+        set to DoNotSchedule, incoming pod can only be scheduled to
+        zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on
+        zone2(zone3) satisfies MaxSkew(1). In other words, the
+        cluster can still be imbalanced, but scheduler won't make it
+        *more* imbalanced. It's a required field.
+        """
+        return self._properties.get('whenUnsatisfiable')
+
+    @when_unsatisfiable.setter
+    def when_unsatisfiable(self, value: str):
+        """
+        WhenUnsatisfiable indicates how to deal with a pod if it
+        doesn't satisfy the spread constraint. - DoNotSchedule
+        (default) tells the scheduler not to schedule it -
+        ScheduleAnyway tells the scheduler to still schedule it It's
+        considered as "Unsatisfiable" if and only if placing
+        incoming pod on any topology violates "MaxSkew". For
+        example, in a 3-zone cluster, MaxSkew is set to 1, and pods
+        with the same labelSelector spread as 3/1/1: | zone1 | zone2
+        | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is
+        set to DoNotSchedule, incoming pod can only be scheduled to
+        zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on
+        zone2(zone3) satisfies MaxSkew(1). In other words, the
+        cluster can still be imbalanced, but scheduler won't make it
+        *more* imbalanced. It's a required field.
+        """
+        self._properties['whenUnsatisfiable'] = value
+
+    def __enter__(self) -> 'TopologySpreadConstraint':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class TypedLocalObjectReference(_kuber_definitions.Definition):
     """
     TypedLocalObjectReference contains enough information to let
@@ -25070,6 +26139,9 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            gmsa_credential_spec: str = None,
+            gmsa_credential_spec_name: str = None,
+            run_as_user_name: str = None,
     ):
         """Create WindowsSecurityContextOptions instance."""
         super(WindowsSecurityContextOptions, self).__init__(
@@ -25077,11 +26149,87 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
             kind='WindowsSecurityContextOptions'
         )
         self._properties = {
+            'gmsaCredentialSpec': gmsa_credential_spec or '',
+            'gmsaCredentialSpecName': gmsa_credential_spec_name or '',
+            'runAsUserName': run_as_user_name or '',
 
         }
         self._types = {
+            'gmsaCredentialSpec': (str, None),
+            'gmsaCredentialSpecName': (str, None),
+            'runAsUserName': (str, None),
 
         }
+
+    @property
+    def gmsa_credential_spec(self) -> str:
+        """
+        GMSACredentialSpec is where the GMSA admission webhook
+        (https://github.com/kubernetes-sigs/windows-gmsa) inlines
+        the contents of the GMSA credential spec named by the
+        GMSACredentialSpecName field. This field is alpha-level and
+        is only honored by servers that enable the WindowsGMSA
+        feature flag.
+        """
+        return self._properties.get('gmsaCredentialSpec')
+
+    @gmsa_credential_spec.setter
+    def gmsa_credential_spec(self, value: str):
+        """
+        GMSACredentialSpec is where the GMSA admission webhook
+        (https://github.com/kubernetes-sigs/windows-gmsa) inlines
+        the contents of the GMSA credential spec named by the
+        GMSACredentialSpecName field. This field is alpha-level and
+        is only honored by servers that enable the WindowsGMSA
+        feature flag.
+        """
+        self._properties['gmsaCredentialSpec'] = value
+
+    @property
+    def gmsa_credential_spec_name(self) -> str:
+        """
+        GMSACredentialSpecName is the name of the GMSA credential
+        spec to use. This field is alpha-level and is only honored
+        by servers that enable the WindowsGMSA feature flag.
+        """
+        return self._properties.get('gmsaCredentialSpecName')
+
+    @gmsa_credential_spec_name.setter
+    def gmsa_credential_spec_name(self, value: str):
+        """
+        GMSACredentialSpecName is the name of the GMSA credential
+        spec to use. This field is alpha-level and is only honored
+        by servers that enable the WindowsGMSA feature flag.
+        """
+        self._properties['gmsaCredentialSpecName'] = value
+
+    @property
+    def run_as_user_name(self) -> str:
+        """
+        The UserName in Windows to run the entrypoint of the
+        container process. Defaults to the user specified in image
+        metadata if unspecified. May also be set in
+        PodSecurityContext. If set in both SecurityContext and
+        PodSecurityContext, the value specified in SecurityContext
+        takes precedence. This field is alpha-level and it is only
+        honored by servers that enable the WindowsRunAsUserName
+        feature flag.
+        """
+        return self._properties.get('runAsUserName')
+
+    @run_as_user_name.setter
+    def run_as_user_name(self, value: str):
+        """
+        The UserName in Windows to run the entrypoint of the
+        container process. Defaults to the user specified in image
+        metadata if unspecified. May also be set in
+        PodSecurityContext. If set in both SecurityContext and
+        PodSecurityContext, the value specified in SecurityContext
+        takes precedence. This field is alpha-level and it is only
+        honored by servers that enable the WindowsRunAsUserName
+        feature flag.
+        """
+        self._properties['runAsUserName'] = value
 
     def __enter__(self) -> 'WindowsSecurityContextOptions':
         return self
