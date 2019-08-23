@@ -355,6 +355,13 @@ class DaemonSet(_kuber_definitions.Resource):
         """
         return next((c for c in self.spec.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.template.spec.containers
+
     def create_resource(
             self,
             namespace: 'str' = None
@@ -970,6 +977,13 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
+
     def __enter__(self) -> 'DaemonSetSpec':
         return self
 
@@ -1430,6 +1444,13 @@ class Deployment(_kuber_definitions.Resource):
         by that name exists.
         """
         return next((c for c in self.spec.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.template.spec.containers
 
     def create_resource(
             self,
@@ -2260,6 +2281,13 @@ class DeploymentSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
 
     def __enter__(self) -> 'DeploymentSpec':
         return self
@@ -5628,6 +5656,13 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         return next((c for c in self.spec.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.template.spec.containers
+
     def create_resource(
             self,
             namespace: 'str' = None
@@ -6206,6 +6241,13 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
 
     def __enter__(self) -> 'ReplicaSetSpec':
         return self

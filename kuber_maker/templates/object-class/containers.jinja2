@@ -24,3 +24,10 @@
         by that name exists.
         """
         return next((c for c in self.{{ containers }} if c.name == name), None)
+
+    def get_containers(self) -> typing.List['{{ container_entity.class_name }}']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.{{ containers }}

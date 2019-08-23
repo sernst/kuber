@@ -6,6 +6,7 @@ from kuber import kube_api as _kube_api
 from kuber import definitions as _kuber_definitions
 from kuber.v1_16.meta_v1 import ListMeta
 from kuber.v1_16.meta_v1 import ObjectMeta
+from kuber.v1_16.core_v1 import Toleration
 
 
 class Overhead(_kuber_definitions.Definition):
@@ -366,6 +367,7 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
             self,
             overhead: 'Overhead' = None,
             runtime_handler: str = None,
+            scheduling: 'Scheduling' = None,
     ):
         """Create RuntimeClassSpec instance."""
         super(RuntimeClassSpec, self).__init__(
@@ -375,11 +377,13 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
         self._properties = {
             'overhead': overhead or Overhead(),
             'runtimeHandler': runtime_handler or '',
+            'scheduling': scheduling or Scheduling(),
 
         }
         self._types = {
             'overhead': (Overhead, None),
             'runtimeHandler': (str, None),
+            'scheduling': (Scheduling, None),
 
         }
 
@@ -441,7 +445,115 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
         """
         self._properties['runtimeHandler'] = value
 
+    @property
+    def scheduling(self) -> 'Scheduling':
+        """
+        Scheduling holds the scheduling constraints to ensure that
+        pods running with this RuntimeClass are scheduled to nodes
+        that support it. If scheduling is nil, this RuntimeClass is
+        assumed to be supported by all nodes.
+        """
+        return self._properties.get('scheduling')
+
+    @scheduling.setter
+    def scheduling(self, value: typing.Union['Scheduling', dict]):
+        """
+        Scheduling holds the scheduling constraints to ensure that
+        pods running with this RuntimeClass are scheduled to nodes
+        that support it. If scheduling is nil, this RuntimeClass is
+        assumed to be supported by all nodes.
+        """
+        if isinstance(value, dict):
+            value = Scheduling().from_dict(value)
+        self._properties['scheduling'] = value
+
     def __enter__(self) -> 'RuntimeClassSpec':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class Scheduling(_kuber_definitions.Definition):
+    """
+    Scheduling specifies the scheduling constraints for nodes
+    supporting a RuntimeClass.
+    """
+
+    def __init__(
+            self,
+            node_selector: dict = None,
+            tolerations: typing.List['Toleration'] = None,
+    ):
+        """Create Scheduling instance."""
+        super(Scheduling, self).__init__(
+            api_version='node/v1alpha1',
+            kind='Scheduling'
+        )
+        self._properties = {
+            'nodeSelector': node_selector or {},
+            'tolerations': tolerations or [],
+
+        }
+        self._types = {
+            'nodeSelector': (dict, None),
+            'tolerations': (list, Toleration),
+
+        }
+
+    @property
+    def node_selector(self) -> dict:
+        """
+        nodeSelector lists labels that must be present on nodes that
+        support this RuntimeClass. Pods using this RuntimeClass can
+        only be scheduled to a node matched by this selector. The
+        RuntimeClass nodeSelector is merged with a pod's existing
+        nodeSelector. Any conflicts will cause the pod to be
+        rejected in admission.
+        """
+        return self._properties.get('nodeSelector')
+
+    @node_selector.setter
+    def node_selector(self, value: dict):
+        """
+        nodeSelector lists labels that must be present on nodes that
+        support this RuntimeClass. Pods using this RuntimeClass can
+        only be scheduled to a node matched by this selector. The
+        RuntimeClass nodeSelector is merged with a pod's existing
+        nodeSelector. Any conflicts will cause the pod to be
+        rejected in admission.
+        """
+        self._properties['nodeSelector'] = value
+
+    @property
+    def tolerations(self) -> typing.List['Toleration']:
+        """
+        tolerations are appended (excluding duplicates) to pods
+        running with this RuntimeClass during admission, effectively
+        unioning the set of nodes tolerated by the pod and the
+        RuntimeClass.
+        """
+        return self._properties.get('tolerations')
+
+    @tolerations.setter
+    def tolerations(
+            self,
+            value: typing.Union[typing.List['Toleration'], typing.List[dict]]
+    ):
+        """
+        tolerations are appended (excluding duplicates) to pods
+        running with this RuntimeClass during admission, effectively
+        unioning the set of nodes tolerated by the pod and the
+        RuntimeClass.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = Toleration().from_dict(item)
+            cleaned.append(item)
+        self._properties['tolerations'] = cleaned
+
+    def __enter__(self) -> 'Scheduling':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

@@ -489,6 +489,13 @@ class Deployment(_kuber_definitions.Resource):
         """
         return next((c for c in self.spec.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.template.spec.containers
+
     def create_resource(
             self,
             namespace: 'str' = None
@@ -1310,6 +1317,13 @@ class DeploymentSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
 
     def __enter__(self) -> 'DeploymentSpec':
         return self
@@ -2348,6 +2362,13 @@ class StatefulSet(_kuber_definitions.Resource):
         """
         return next((c for c in self.spec.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.template.spec.containers
+
     def create_resource(
             self,
             namespace: 'str' = None
@@ -3042,6 +3063,13 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
 
     def __enter__(self) -> 'StatefulSetSpec':
         return self

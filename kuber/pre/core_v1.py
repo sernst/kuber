@@ -1312,8 +1312,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def monitors(self) -> typing.List[str]:
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('monitors')
 
@@ -1321,8 +1321,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def monitors(self, value: typing.List[str]):
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['monitors'] = value
 
@@ -1346,9 +1346,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('readOnly')
 
@@ -1356,9 +1356,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['readOnly'] = value
 
@@ -1366,8 +1366,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_file(self) -> str:
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('secretFile')
 
@@ -1375,8 +1376,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_file(self, value: str):
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['secretFile'] = value
 
@@ -1384,8 +1386,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'SecretReference':
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         return self._properties.get('secretRef')
@@ -1394,8 +1396,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['SecretReference', dict]):
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         if isinstance(value, dict):
@@ -1406,8 +1408,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def user(self) -> str:
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('user')
 
@@ -1415,8 +1417,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def user(self, value: str):
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['user'] = value
 
@@ -1471,8 +1473,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def monitors(self) -> typing.List[str]:
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('monitors')
 
@@ -1480,8 +1482,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def monitors(self, value: typing.List[str]):
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['monitors'] = value
 
@@ -1505,9 +1507,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('readOnly')
 
@@ -1515,9 +1517,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['readOnly'] = value
 
@@ -1525,8 +1527,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_file(self) -> str:
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('secretFile')
 
@@ -1534,8 +1537,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_file(self, value: str):
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['secretFile'] = value
 
@@ -1543,8 +1547,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'LocalObjectReference':
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         return self._properties.get('secretRef')
@@ -1553,8 +1557,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['LocalObjectReference', dict]):
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         if isinstance(value, dict):
@@ -1565,8 +1569,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def user(self) -> str:
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('user')
 
@@ -1574,8 +1578,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def user(self, value: str):
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['user'] = value
 
@@ -1627,9 +1631,8 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         return self._properties.get('fsType')
 
@@ -1639,9 +1642,8 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         self._properties['fsType'] = value
 
@@ -1650,8 +1652,7 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('readOnly')
 
@@ -1660,8 +1661,7 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['readOnly'] = value
 
@@ -1686,18 +1686,16 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
     @property
     def volume_id(self) -> str:
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('volumeID')
 
     @volume_id.setter
     def volume_id(self, value: str):
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['volumeID'] = value
 
@@ -1749,9 +1747,8 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         return self._properties.get('fsType')
 
@@ -1761,9 +1758,8 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         self._properties['fsType'] = value
 
@@ -1772,8 +1768,7 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('readOnly')
 
@@ -1782,8 +1777,7 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['readOnly'] = value
 
@@ -1808,18 +1802,16 @@ class CinderVolumeSource(_kuber_definitions.Definition):
     @property
     def volume_id(self) -> str:
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('volumeID')
 
     @volume_id.setter
     def volume_id(self, value: str):
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['volumeID'] = value
 
@@ -7853,8 +7845,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def endpoints(self) -> str:
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('endpoints')
 
@@ -7862,8 +7855,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def endpoints(self, value: str):
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['endpoints'] = value
 
@@ -7873,8 +7867,8 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
         EndpointsNamespace is the namespace that contains Glusterfs
         endpoint. If this field is empty, the EndpointNamespace
         defaults to the same namespace as the bound PVC. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/glusterfs/READ
-        ME.md#create-a-pod
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('endpointsNamespace')
 
@@ -7884,16 +7878,16 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
         EndpointsNamespace is the namespace that contains Glusterfs
         endpoint. If this field is empty, the EndpointNamespace
         defaults to the same namespace as the bound PVC. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/glusterfs/READ
-        ME.md#create-a-pod
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['endpointsNamespace'] = value
 
     @property
     def path(self) -> str:
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         return self._properties.get('path')
@@ -7901,8 +7895,8 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     @path.setter
     def path(self, value: str):
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         self._properties['path'] = value
@@ -7911,9 +7905,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('readOnly')
 
@@ -7921,9 +7915,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['readOnly'] = value
 
@@ -7969,8 +7963,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def endpoints(self) -> str:
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('endpoints')
 
@@ -7978,16 +7973,17 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def endpoints(self, value: str):
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['endpoints'] = value
 
     @property
     def path(self) -> str:
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         return self._properties.get('path')
@@ -7995,8 +7991,8 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     @path.setter
     def path(self, value: str):
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         self._properties['path'] = value
@@ -8005,9 +8001,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('readOnly')
 
@@ -8015,9 +8011,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['readOnly'] = value
 
@@ -14032,9 +14028,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cinder(self) -> 'CinderPersistentVolumeSource':
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('cinder')
 
@@ -14042,9 +14037,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cinder(self, value: typing.Union['CinderPersistentVolumeSource', dict]):
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         if isinstance(value, dict):
             value = CinderPersistentVolumeSource().from_dict(value)
@@ -14177,8 +14171,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         Glusterfs represents a Glusterfs volume that is attached to
         a host and exposed to the pod. Provisioned by an admin. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/glusterf
-        s/README.md
+        info: https://examples.k8s.io/volumes/glusterfs/README.md
         """
         return self._properties.get('glusterfs')
 
@@ -14187,8 +14180,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         Glusterfs represents a Glusterfs volume that is attached to
         a host and exposed to the pod. Provisioned by an admin. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/glusterf
-        s/README.md
+        info: https://examples.k8s.io/volumes/glusterfs/README.md
         """
         if isinstance(value, dict):
             value = GlusterfsPersistentVolumeSource().from_dict(value)
@@ -14407,7 +14399,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         return self._properties.get('rbd')
 
@@ -14416,7 +14408,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         if isinstance(value, dict):
             value = RBDPersistentVolumeSource().from_dict(value)
@@ -14463,8 +14455,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         StorageOS represents a StorageOS volume that is attached to
         the kubelet's host machine and mounted into the pod More
-        info: https://releases.k8s.io/HEAD/examples/volumes/storageo
-        s/README.md
+        info: https://examples.k8s.io/volumes/storageos/README.md
         """
         return self._properties.get('storageos')
 
@@ -14473,8 +14464,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         StorageOS represents a StorageOS volume that is attached to
         the kubelet's host machine and mounted into the pod More
-        info: https://releases.k8s.io/HEAD/examples/volumes/storageo
-        s/README.md
+        info: https://examples.k8s.io/volumes/storageos/README.md
         """
         if isinstance(value, dict):
             value = StorageOSPersistentVolumeSource().from_dict(value)
@@ -14838,6 +14828,13 @@ class Pod(_kuber_definitions.Resource):
         by that name exists.
         """
         return next((c for c in self.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.containers
 
     def create_resource(
             self,
@@ -17126,6 +17123,13 @@ class PodSpec(_kuber_definitions.Definition):
         """
         return next((c for c in self.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.containers
+
     def __enter__(self) -> 'PodSpec':
         return self
 
@@ -17687,6 +17691,13 @@ class PodTemplate(_kuber_definitions.Resource):
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
+
     def create_resource(self, namespace: 'str' = None):
         """
         Creates the PodTemplate in the currently
@@ -18037,6 +18048,13 @@ class PodTemplateSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.containers
 
     def __enter__(self) -> 'PodTemplateSpec':
         return self
@@ -18690,16 +18708,16 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     @property
     def image(self) -> str:
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('image')
 
     @image.setter
     def image(self, value: str):
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['image'] = value
 
@@ -18707,8 +18725,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def keyring(self) -> str:
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('keyring')
 
@@ -18716,42 +18734,40 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def keyring(self, value: str):
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['keyring'] = value
 
     @property
     def monitors(self) -> typing.List[str]:
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('monitors')
 
     @monitors.setter
     def monitors(self, value: typing.List[str]):
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['monitors'] = value
 
     @property
     def pool(self) -> str:
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('pool')
 
     @pool.setter
     def pool(self, value: str):
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['pool'] = value
 
@@ -18759,8 +18775,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('readOnly')
 
@@ -18768,8 +18784,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['readOnly'] = value
 
@@ -18777,9 +18793,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'SecretReference':
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('secretRef')
 
@@ -18787,9 +18802,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['SecretReference', dict]):
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         if isinstance(value, dict):
             value = SecretReference().from_dict(value)
@@ -18798,18 +18812,16 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     @property
     def user(self) -> str:
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('user')
 
     @user.setter
     def user(self, value: str):
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['user'] = value
 
@@ -18891,16 +18903,16 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     @property
     def image(self) -> str:
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('image')
 
     @image.setter
     def image(self, value: str):
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['image'] = value
 
@@ -18908,8 +18920,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def keyring(self) -> str:
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('keyring')
 
@@ -18917,42 +18929,40 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def keyring(self, value: str):
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['keyring'] = value
 
     @property
     def monitors(self) -> typing.List[str]:
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('monitors')
 
     @monitors.setter
     def monitors(self, value: typing.List[str]):
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['monitors'] = value
 
     @property
     def pool(self) -> str:
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('pool')
 
     @pool.setter
     def pool(self, value: str):
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['pool'] = value
 
@@ -18960,8 +18970,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('readOnly')
 
@@ -18969,8 +18979,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['readOnly'] = value
 
@@ -18978,9 +18988,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'LocalObjectReference':
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('secretRef')
 
@@ -18988,9 +18997,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['LocalObjectReference', dict]):
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         if isinstance(value, dict):
             value = LocalObjectReference().from_dict(value)
@@ -18999,18 +19007,16 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     @property
     def user(self) -> str:
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('user')
 
     @user.setter
     def user(self, value: str):
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['user'] = value
 
@@ -19185,6 +19191,13 @@ class ReplicationController(_kuber_definitions.Resource):
         by that name exists.
         """
         return next((c for c in self.spec.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.template.spec.containers
 
     def create_resource(
             self,
@@ -19770,6 +19783,13 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
 
     def __enter__(self) -> 'ReplicationControllerSpec':
         return self
@@ -25094,9 +25114,8 @@ class Volume(_kuber_definitions.Definition):
     def cinder(self) -> 'CinderVolumeSource':
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('cinder')
 
@@ -25104,9 +25123,8 @@ class Volume(_kuber_definitions.Definition):
     def cinder(self, value: typing.Union['CinderVolumeSource', dict]):
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         if isinstance(value, dict):
             value = CinderVolumeSource().from_dict(value)
@@ -25292,8 +25310,8 @@ class Volume(_kuber_definitions.Definition):
     def glusterfs(self) -> 'GlusterfsVolumeSource':
         """
         Glusterfs represents a Glusterfs mount on the host that
-        shares a pod's lifetime. More info: https://releases.k8s.io/
-        HEAD/examples/volumes/glusterfs/README.md
+        shares a pod's lifetime. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md
         """
         return self._properties.get('glusterfs')
 
@@ -25301,8 +25319,8 @@ class Volume(_kuber_definitions.Definition):
     def glusterfs(self, value: typing.Union['GlusterfsVolumeSource', dict]):
         """
         Glusterfs represents a Glusterfs mount on the host that
-        shares a pod's lifetime. More info: https://releases.k8s.io/
-        HEAD/examples/volumes/glusterfs/README.md
+        shares a pod's lifetime. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md
         """
         if isinstance(value, dict):
             value = GlusterfsVolumeSource().from_dict(value)
@@ -25339,8 +25357,7 @@ class Volume(_kuber_definitions.Definition):
         """
         ISCSI represents an ISCSI Disk resource that is attached to
         a kubelet's host machine and then exposed to the pod. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/iscsi/RE
-        ADME.md
+        info: https://examples.k8s.io/volumes/iscsi/README.md
         """
         return self._properties.get('iscsi')
 
@@ -25349,8 +25366,7 @@ class Volume(_kuber_definitions.Definition):
         """
         ISCSI represents an ISCSI Disk resource that is attached to
         a kubelet's host machine and then exposed to the pod. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/iscsi/RE
-        ADME.md
+        info: https://examples.k8s.io/volumes/iscsi/README.md
         """
         if isinstance(value, dict):
             value = ISCSIVolumeSource().from_dict(value)
@@ -25497,7 +25513,7 @@ class Volume(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         return self._properties.get('rbd')
 
@@ -25506,7 +25522,7 @@ class Volume(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         if isinstance(value, dict):
             value = RBDVolumeSource().from_dict(value)

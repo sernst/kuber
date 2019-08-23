@@ -13,6 +13,14 @@ Subpackages
 Submodules
 ----------
 
+kuber.tests.test\_containers module
+-----------------------------------
+
+.. automodule:: kuber.tests.test_containers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 kuber.tests.test\_definitions module
 ------------------------------------
 

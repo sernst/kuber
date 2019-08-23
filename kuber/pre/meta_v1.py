@@ -1035,8 +1035,22 @@ class DeleteOptions(_kuber_definitions.Definition):
 class Fields(_kuber_definitions.Definition):
     """
     Fields stores a set of fields in a data structure like a
-    Trie. To understand how this is used, see:
-    https://github.com/kubernetes-sigs/structured-merge-diff
+    Trie.
+
+    Each key is either a '.' representing the field
+    itself, and will always map to an empty set, or a string
+    representing a sub-field or item. The string will follow one
+    of these four formats: 'f:<name>', where <name> is the name
+    of a field in a struct, or key in a map 'v:<value>', where
+    <value> is the exact json formatted value of a list item
+    'i:<index>', where <index> is position of a item in a list
+    'k:<keys>', where <keys> is a map of  a list item's key
+    fields to their unique values If a key maps to an empty
+    Fields value, the field that key represents is part of the
+    set.
+
+    The exact format is defined in sigs.k8s.io/structured-
+    merge-diff
     """
 
     def __init__(
@@ -1441,6 +1455,10 @@ class ListMeta(_kuber_definitions.Definition):
         """
         selfLink is a URL representing this object. Populated by the
         system. Read-only.
+
+        DEPRECATED Kubernetes will stop
+        propagating this field in 1.20 release and the field is
+        planned to be removed in 1.21 release.
         """
         return self._properties.get('selfLink')
 
@@ -1449,6 +1467,10 @@ class ListMeta(_kuber_definitions.Definition):
         """
         selfLink is a URL representing this object. Populated by the
         system. Read-only.
+
+        DEPRECATED Kubernetes will stop
+        propagating this field in 1.20 release and the field is
+        planned to be removed in 1.21 release.
         """
         self._properties['selfLink'] = value
 
@@ -2147,6 +2169,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         """
         SelfLink is a URL representing this object. Populated by the
         system. Read-only.
+
+        DEPRECATED Kubernetes will stop
+        propagating this field in 1.20 release and the field is
+        planned to be removed in 1.21 release.
         """
         return self._properties.get('selfLink')
 
@@ -2155,6 +2181,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         """
         SelfLink is a URL representing this object. Populated by the
         system. Read-only.
+
+        DEPRECATED Kubernetes will stop
+        propagating this field in 1.20 release and the field is
+        planned to be removed in 1.21 release.
         """
         self._properties['selfLink'] = value
 

@@ -14015,6 +14015,13 @@ class Pod(_kuber_definitions.Resource):
         """
         return next((c for c in self.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.containers
+
     def create_resource(
             self,
             namespace: 'str' = None
@@ -16080,6 +16087,13 @@ class PodSpec(_kuber_definitions.Definition):
         """
         return next((c for c in self.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.containers
+
     def __enter__(self) -> 'PodSpec':
         return self
 
@@ -16579,6 +16593,13 @@ class PodTemplate(_kuber_definitions.Resource):
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
+
     def create_resource(self, namespace: 'str' = None):
         """
         Creates the PodTemplate in the currently
@@ -16929,6 +16950,13 @@ class PodTemplateSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.containers
 
     def __enter__(self) -> 'PodTemplateSpec':
         return self
@@ -18057,6 +18085,13 @@ class ReplicationController(_kuber_definitions.Resource):
         """
         return next((c for c in self.spec.template.spec.containers if c.name == name), None)
 
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.spec.template.spec.containers
+
     def create_resource(
             self,
             namespace: 'str' = None
@@ -18641,6 +18676,13 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
         by that name exists.
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
+
+    def get_containers(self) -> typing.List['Container']:
+        """
+        Returns the list of containers stored in this resource if any such
+        containers exist.
+        """
+        return self.template.spec.containers
 
     def __enter__(self) -> 'ReplicationControllerSpec':
         return self
