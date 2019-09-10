@@ -530,8 +530,8 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -539,8 +539,8 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -756,8 +756,8 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -765,8 +765,8 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -1525,8 +1525,8 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -1534,8 +1534,8 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1751,8 +1751,8 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -1760,8 +1760,8 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)

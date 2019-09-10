@@ -656,8 +656,8 @@ class Binding(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -665,8 +665,8 @@ class Binding(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -2029,8 +2029,8 @@ class ComponentStatus(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2038,8 +2038,8 @@ class ComponentStatus(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -2231,8 +2231,8 @@ class ComponentStatusList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -2240,8 +2240,8 @@ class ComponentStatusList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -2350,8 +2350,8 @@ class ConfigMap(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2359,8 +2359,8 @@ class ConfigMap(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -2704,8 +2704,8 @@ class ConfigMapList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2713,8 +2713,8 @@ class ConfigMapList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -3142,6 +3142,7 @@ class Container(_kuber_definitions.Definition):
             readiness_probe: 'Probe' = None,
             resources: 'ResourceRequirements' = None,
             security_context: 'SecurityContext' = None,
+            startup_probe: 'Probe' = None,
             stdin: bool = None,
             stdin_once: bool = None,
             termination_message_path: str = None,
@@ -3170,6 +3171,7 @@ class Container(_kuber_definitions.Definition):
             'readinessProbe': readiness_probe or Probe(),
             'resources': resources or ResourceRequirements(),
             'securityContext': security_context or SecurityContext(),
+            'startupProbe': startup_probe or Probe(),
             'stdin': stdin or None,
             'stdinOnce': stdin_once or None,
             'terminationMessagePath': termination_message_path or '',
@@ -3194,6 +3196,7 @@ class Container(_kuber_definitions.Definition):
             'readinessProbe': (Probe, None),
             'resources': (ResourceRequirements, None),
             'securityContext': (SecurityContext, None),
+            'startupProbe': (Probe, None),
             'stdin': (bool, None),
             'stdinOnce': (bool, None),
             'terminationMessagePath': (str, None),
@@ -3534,6 +3537,42 @@ class Container(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = SecurityContext().from_dict(value)
         self._properties['securityContext'] = value
+
+    @property
+    def startup_probe(self) -> 'Probe':
+        """
+        StartupProbe indicates that the Pod has successfully
+        initialized. If specified, no other probes are executed
+        until this completes successfully. If this probe fails, the
+        Pod will be restarted, just as if the livenessProbe failed.
+        This can be used to provide different probe parameters at
+        the beginning of a Pod's lifecycle, when it might take a
+        long time to load data or warm a cache, than during steady-
+        state operation. This cannot be updated. This is an alpha
+        feature enabled by the StartupProbe feature flag. More info:
+        https://kubernetes.io/docs/concepts/workloads/pods/pod-
+        lifecycle#container-probes
+        """
+        return self._properties.get('startupProbe')
+
+    @startup_probe.setter
+    def startup_probe(self, value: typing.Union['Probe', dict]):
+        """
+        StartupProbe indicates that the Pod has successfully
+        initialized. If specified, no other probes are executed
+        until this completes successfully. If this probe fails, the
+        Pod will be restarted, just as if the livenessProbe failed.
+        This can be used to provide different probe parameters at
+        the beginning of a Pod's lifecycle, when it might take a
+        long time to load data or warm a cache, than during steady-
+        state operation. This cannot be updated. This is an alpha
+        feature enabled by the StartupProbe feature flag. More info:
+        https://kubernetes.io/docs/concepts/workloads/pods/pod-
+        lifecycle#container-probes
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['startupProbe'] = value
 
     @property
     def stdin(self) -> bool:
@@ -4298,6 +4337,7 @@ class ContainerStatus(_kuber_definitions.Definition):
             name: str = None,
             ready: bool = None,
             restart_count: int = None,
+            started: bool = None,
             state: 'ContainerState' = None,
     ):
         """Create ContainerStatus instance."""
@@ -4313,6 +4353,7 @@ class ContainerStatus(_kuber_definitions.Definition):
             'name': name or '',
             'ready': ready or None,
             'restartCount': restart_count or None,
+            'started': started or None,
             'state': state or ContainerState(),
 
         }
@@ -4324,6 +4365,7 @@ class ContainerStatus(_kuber_definitions.Definition):
             'name': (str, None),
             'ready': (bool, None),
             'restartCount': (int, None),
+            'started': (bool, None),
             'state': (ContainerState, None),
 
         }
@@ -4441,6 +4483,28 @@ class ContainerStatus(_kuber_definitions.Definition):
         collection. This value will get capped at 5 by GC.
         """
         self._properties['restartCount'] = value
+
+    @property
+    def started(self) -> bool:
+        """
+        Specifies whether the container has passed its startup
+        probe. Initialized as false, becomes true after startupProbe
+        is considered successful. Resets to false when the container
+        is restarted, or if kubelet loses state temporarily. Is
+        always true when no startupProbe is defined.
+        """
+        return self._properties.get('started')
+
+    @started.setter
+    def started(self, value: bool):
+        """
+        Specifies whether the container has passed its startup
+        probe. Initialized as false, becomes true after startupProbe
+        is considered successful. Resets to false when the container
+        is restarted, or if kubelet loses state temporarily. Is
+        always true when no startupProbe is defined.
+        """
+        self._properties['started'] = value
 
     @property
     def state(self) -> 'ContainerState':
@@ -5208,8 +5272,8 @@ class Endpoints(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -5217,8 +5281,8 @@ class Endpoints(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -5447,8 +5511,8 @@ class EndpointsList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -5456,8 +5520,8 @@ class EndpointsList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -5781,19 +5845,18 @@ class EnvVarSource(_kuber_definitions.Definition):
 
 class EphemeralContainer(_kuber_definitions.Definition):
     """
-    An EphemeralContainer is a special type of container which
-    doesn't come with any resource or scheduling guarantees but
-    can be added to a pod that has already been created. They
-    are intended for user-initiated activities such as
-    troubleshooting a running pod. Ephemeral containers will not
-    be restarted when they exit, and they will be killed if the
-    pod is removed or restarted. If an ephemeral container
-    causes a pod to exceed its resource allocation, the pod may
-    be evicted. Ephemeral containers are added via a pod's
-    ephemeralcontainers subresource and will appear in the pod
-    spec once added. No fields in EphemeralContainer may be
-    changed once added. This is an alpha feature enabled by the
-    EphemeralContainers feature flag.
+    An EphemeralContainer is a container that may be added
+    temporarily to an existing pod for user-initiated activities
+    such as debugging. Ephemeral containers have no resource or
+    scheduling guarantees, and they will not be restarted when
+    they exit or when a pod is removed or restarted. If an
+    ephemeral container causes a pod to exceed its resource
+    allocation, the pod may be evicted. Ephemeral containers may
+    not be added by directly updating the pod spec. They must be
+    added via the pod's ephemeralcontainers subresource, and
+    they will appear in the pod spec once added. This is an
+    alpha feature enabled by the EphemeralContainers feature
+    flag.
     """
 
     def __init__(
@@ -5811,6 +5874,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
             readiness_probe: 'Probe' = None,
             resources: 'ResourceRequirements' = None,
             security_context: 'SecurityContext' = None,
+            startup_probe: 'Probe' = None,
             stdin: bool = None,
             stdin_once: bool = None,
             target_container_name: str = None,
@@ -5840,6 +5904,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
             'readinessProbe': readiness_probe or Probe(),
             'resources': resources or ResourceRequirements(),
             'securityContext': security_context or SecurityContext(),
+            'startupProbe': startup_probe or Probe(),
             'stdin': stdin or None,
             'stdinOnce': stdin_once or None,
             'targetContainerName': target_container_name or '',
@@ -5865,6 +5930,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
             'readinessProbe': (Probe, None),
             'resources': (ResourceRequirements, None),
             'securityContext': (SecurityContext, None),
+            'startupProbe': (Probe, None),
             'stdin': (bool, None),
             'stdinOnce': (bool, None),
             'targetContainerName': (str, None),
@@ -6164,6 +6230,22 @@ class EphemeralContainer(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = SecurityContext().from_dict(value)
         self._properties['securityContext'] = value
+
+    @property
+    def startup_probe(self) -> 'Probe':
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        return self._properties.get('startupProbe')
+
+    @startup_probe.setter
+    def startup_probe(self, value: typing.Union['Probe', dict]):
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['startupProbe'] = value
 
     @property
     def stdin(self) -> bool:
@@ -6581,8 +6663,8 @@ class Event(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -6590,8 +6672,8 @@ class Event(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -6898,8 +6980,8 @@ class EventList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -6907,8 +6989,8 @@ class EventList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -9081,15 +9163,15 @@ class Lifecycle(_kuber_definitions.Definition):
         """
         PreStop is called immediately before a container is
         terminated due to an API request or management event such as
-        liveness probe failure, preemption, resource contention,
-        etc. The handler is not called if the container crashes or
-        exits. The reason for termination is passed to the handler.
-        The Pod's termination grace period countdown begins before
-        the PreStop hooked is executed. Regardless of the outcome of
-        the handler, the container will eventually terminate within
-        the Pod's termination grace period. Other management of the
-        container blocks until the hook completes or until the
-        termination grace period is reached. More info:
+        liveness/startup probe failure, preemption, resource
+        contention, etc. The handler is not called if the container
+        crashes or exits. The reason for termination is passed to
+        the handler. The Pod's termination grace period countdown
+        begins before the PreStop hooked is executed. Regardless of
+        the outcome of the handler, the container will eventually
+        terminate within the Pod's termination grace period. Other
+        management of the container blocks until the hook completes
+        or until the termination grace period is reached. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
@@ -9100,15 +9182,15 @@ class Lifecycle(_kuber_definitions.Definition):
         """
         PreStop is called immediately before a container is
         terminated due to an API request or management event such as
-        liveness probe failure, preemption, resource contention,
-        etc. The handler is not called if the container crashes or
-        exits. The reason for termination is passed to the handler.
-        The Pod's termination grace period countdown begins before
-        the PreStop hooked is executed. Regardless of the outcome of
-        the handler, the container will eventually terminate within
-        the Pod's termination grace period. Other management of the
-        container blocks until the hook completes or until the
-        termination grace period is reached. More info:
+        liveness/startup probe failure, preemption, resource
+        contention, etc. The handler is not called if the container
+        crashes or exits. The reason for termination is passed to
+        the handler. The Pod's termination grace period countdown
+        begins before the PreStop hooked is executed. Regardless of
+        the outcome of the handler, the container will eventually
+        terminate within the Pod's termination grace period. Other
+        management of the container blocks until the hook completes
+        or until the termination grace period is reached. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
@@ -9156,8 +9238,8 @@ class LimitRange(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -9165,8 +9247,8 @@ class LimitRange(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -9176,8 +9258,8 @@ class LimitRange(_kuber_definitions.Resource):
     def spec(self) -> 'LimitRangeSpec':
         """
         Spec defines the limits enforced. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -9185,8 +9267,8 @@ class LimitRange(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['LimitRangeSpec', dict]):
         """
         Spec defines the limits enforced. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = LimitRangeSpec().from_dict(value)
@@ -9521,8 +9603,8 @@ class LimitRangeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -9530,8 +9612,8 @@ class LimitRangeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -9980,8 +10062,8 @@ class Namespace(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -9989,8 +10071,8 @@ class Namespace(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -10000,8 +10082,8 @@ class Namespace(_kuber_definitions.Resource):
     def spec(self) -> 'NamespaceSpec':
         """
         Spec defines the behavior of the Namespace. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -10009,8 +10091,8 @@ class Namespace(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['NamespaceSpec', dict]):
         """
         Spec defines the behavior of the Namespace. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NamespaceSpec().from_dict(value)
@@ -10020,8 +10102,8 @@ class Namespace(_kuber_definitions.Resource):
     def status(self) -> 'NamespaceStatus':
         """
         Status describes the current status of a Namespace. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -10029,8 +10111,8 @@ class Namespace(_kuber_definitions.Resource):
     def status(self, value: typing.Union['NamespaceStatus', dict]):
         """
         Status describes the current status of a Namespace. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NamespaceStatus().from_dict(value)
@@ -10212,6 +10294,126 @@ class Namespace(_kuber_definitions.Resource):
         return False
 
 
+class NamespaceCondition(_kuber_definitions.Definition):
+    """
+    NamespaceCondition contains details about state of
+    namespace.
+    """
+
+    def __init__(
+            self,
+            last_transition_time: str = None,
+            message: str = None,
+            reason: str = None,
+            status: str = None,
+            type_: str = None,
+    ):
+        """Create NamespaceCondition instance."""
+        super(NamespaceCondition, self).__init__(
+            api_version='core/v1',
+            kind='NamespaceCondition'
+        )
+        self._properties = {
+            'lastTransitionTime': last_transition_time or None,
+            'message': message or '',
+            'reason': reason or '',
+            'status': status or '',
+            'type': type_ or '',
+
+        }
+        self._types = {
+            'lastTransitionTime': (str, None),
+            'message': (str, None),
+            'reason': (str, None),
+            'status': (str, None),
+            'type': (str, None),
+
+        }
+
+    @property
+    def last_transition_time(self) -> str:
+        """
+
+        """
+        return self._properties.get('lastTransitionTime')
+
+    @last_transition_time.setter
+    def last_transition_time(
+            self,
+            value: typing.Union[str, _datetime.datetime, _datetime.date]
+    ):
+        """
+
+        """
+        if isinstance(value, _datetime.datetime):
+            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+        elif isinstance(value, _datetime.date):
+            value = value.strftime('%Y-%m-%dT00:00:00Z')
+        self._properties['lastTransitionTime'] = value
+
+    @property
+    def message(self) -> str:
+        """
+
+        """
+        return self._properties.get('message')
+
+    @message.setter
+    def message(self, value: str):
+        """
+
+        """
+        self._properties['message'] = value
+
+    @property
+    def reason(self) -> str:
+        """
+
+        """
+        return self._properties.get('reason')
+
+    @reason.setter
+    def reason(self, value: str):
+        """
+
+        """
+        self._properties['reason'] = value
+
+    @property
+    def status(self) -> str:
+        """
+        Status of the condition, one of True, False, Unknown.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: str):
+        """
+        Status of the condition, one of True, False, Unknown.
+        """
+        self._properties['status'] = value
+
+    @property
+    def type_(self) -> str:
+        """
+        Type of namespace controller condition.
+        """
+        return self._properties.get('type')
+
+    @type_.setter
+    def type_(self, value: str):
+        """
+        Type of namespace controller condition.
+        """
+        self._properties['type'] = value
+
+    def __enter__(self) -> 'NamespaceCondition':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class NamespaceList(_kuber_definitions.Collection):
     """
     NamespaceList is a list of Namespaces.
@@ -10270,8 +10472,8 @@ class NamespaceList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -10279,8 +10481,8 @@ class NamespaceList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -10364,6 +10566,7 @@ class NamespaceStatus(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            conditions: typing.List['NamespaceCondition'] = None,
             phase: str = None,
     ):
         """Create NamespaceStatus instance."""
@@ -10372,13 +10575,39 @@ class NamespaceStatus(_kuber_definitions.Definition):
             kind='NamespaceStatus'
         )
         self._properties = {
+            'conditions': conditions or [],
             'phase': phase or '',
 
         }
         self._types = {
+            'conditions': (list, NamespaceCondition),
             'phase': (str, None),
 
         }
+
+    @property
+    def conditions(self) -> typing.List['NamespaceCondition']:
+        """
+        Represents the latest available observations of a
+        namespace's current state.
+        """
+        return self._properties.get('conditions')
+
+    @conditions.setter
+    def conditions(
+            self,
+            value: typing.Union[typing.List['NamespaceCondition'], typing.List[dict]]
+    ):
+        """
+        Represents the latest available observations of a
+        namespace's current state.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = NamespaceCondition().from_dict(item)
+            cleaned.append(item)
+        self._properties['conditions'] = cleaned
 
     @property
     def phase(self) -> str:
@@ -10441,8 +10670,8 @@ class Node(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -10450,8 +10679,8 @@ class Node(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -10461,8 +10690,8 @@ class Node(_kuber_definitions.Resource):
     def spec(self) -> 'NodeSpec':
         """
         Spec defines the behavior of a node.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -10470,8 +10699,8 @@ class Node(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['NodeSpec', dict]):
         """
         Spec defines the behavior of a node.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NodeSpec().from_dict(value)
@@ -10482,8 +10711,8 @@ class Node(_kuber_definitions.Resource):
         """
         Most recently observed status of the node. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -10492,8 +10721,8 @@ class Node(_kuber_definitions.Resource):
         """
         Most recently observed status of the node. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NodeStatus().from_dict(value)
@@ -11325,8 +11554,8 @@ class NodeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -11334,8 +11563,8 @@ class NodeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -12431,8 +12660,8 @@ class ObjectReference(_kuber_definitions.Definition):
     def kind(self) -> str:
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -12440,8 +12669,8 @@ class ObjectReference(_kuber_definitions.Definition):
     def kind(self, value: str):
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -12486,8 +12715,9 @@ class ObjectReference(_kuber_definitions.Definition):
         """
         Specific resourceVersion to which this reference is made, if
         any. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         return self._properties.get('resourceVersion')
 
@@ -12496,8 +12726,9 @@ class ObjectReference(_kuber_definitions.Definition):
         """
         Specific resourceVersion to which this reference is made, if
         any. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         self._properties['resourceVersion'] = value
 
@@ -12564,8 +12795,8 @@ class PersistentVolume(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -12573,8 +12804,8 @@ class PersistentVolume(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -12838,8 +13069,8 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -12847,8 +13078,8 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -13287,8 +13518,8 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -13296,8 +13527,8 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -13763,8 +13994,8 @@ class PersistentVolumeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -13772,8 +14003,8 @@ class PersistentVolumeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -14710,8 +14941,8 @@ class Pod(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -14719,8 +14950,8 @@ class Pod(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -14730,8 +14961,8 @@ class Pod(_kuber_definitions.Resource):
     def spec(self) -> 'PodSpec':
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -14739,8 +14970,8 @@ class Pod(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['PodSpec', dict]):
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodSpec().from_dict(value)
@@ -14751,8 +14982,8 @@ class Pod(_kuber_definitions.Resource):
         """
         Most recently observed status of the pod. This data may not
         be up to date. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -14761,8 +14992,8 @@ class Pod(_kuber_definitions.Resource):
         """
         Most recently observed status of the pod. This data may not
         be up to date. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodStatus().from_dict(value)
@@ -14783,6 +15014,7 @@ class Pod(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -14807,6 +15039,7 @@ class Pod(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -15743,8 +15976,8 @@ class PodList(_kuber_definitions.Collection):
     def items(self) -> typing.List['Pod']:
         """
         List of pods. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md
         """
         return self._properties.get('items')
 
@@ -15755,8 +15988,8 @@ class PodList(_kuber_definitions.Collection):
     ):
         """
         List of pods. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md
         """
         cleaned = []
         for item in value:
@@ -15769,8 +16002,8 @@ class PodList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -15778,8 +16011,8 @@ class PodList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -16375,15 +16608,14 @@ class PodSpec(_kuber_definitions.Definition):
     @property
     def ephemeral_containers(self) -> typing.List['EphemeralContainer']:
         """
-        EphemeralContainers is the list of ephemeral containers that
-        run in this pod. Ephemeral containers are added to an
-        existing pod as a result of a user-initiated action such as
-        troubleshooting. This list is read-only in the pod spec. It
-        may not be specified in a create or modified in an update of
-        a pod or pod template. To add an ephemeral container use the
-        pod's ephemeralcontainers subresource, which allows update
-        using the EphemeralContainers kind. This field is alpha-
-        level and is only honored by servers that enable the
+        List of ephemeral containers run in this pod. Ephemeral
+        containers may be run in an existing pod to perform user-
+        initiated actions such as debugging. This list cannot be
+        specified when creating a pod, and it cannot be modified by
+        updating the pod spec. In order to add an ephemeral
+        container to an existing pod, use the pod's
+        ephemeralcontainers subresource. This field is alpha-level
+        and is only honored by servers that enable the
         EphemeralContainers feature.
         """
         return self._properties.get('ephemeralContainers')
@@ -16394,15 +16626,14 @@ class PodSpec(_kuber_definitions.Definition):
             value: typing.Union[typing.List['EphemeralContainer'], typing.List[dict]]
     ):
         """
-        EphemeralContainers is the list of ephemeral containers that
-        run in this pod. Ephemeral containers are added to an
-        existing pod as a result of a user-initiated action such as
-        troubleshooting. This list is read-only in the pod spec. It
-        may not be specified in a create or modified in an update of
-        a pod or pod template. To add an ephemeral container use the
-        pod's ephemeralcontainers subresource, which allows update
-        using the EphemeralContainers kind. This field is alpha-
-        level and is only honored by servers that enable the
+        List of ephemeral containers run in this pod. Ephemeral
+        containers may be run in an existing pod to perform user-
+        initiated actions such as debugging. This list cannot be
+        specified when creating a pod, and it cannot be modified by
+        updating the pod spec. In order to add an ephemeral
+        container to an existing pod, use the pod's
+        ephemeralcontainers subresource. This field is alpha-level
+        and is only honored by servers that enable the
         EphemeralContainers feature.
         """
         cleaned = []
@@ -16546,13 +16777,13 @@ class PodSpec(_kuber_definitions.Definition):
         restartPolicy. The name for an init container or normal
         container must be unique among all containers. Init
         containers may not have Lifecycle actions, Readiness probes,
-        or Liveness probes. The resourceRequirements of an init
-        container are taken into account during scheduling by
-        finding the highest request/limit for each resource type,
-        and then using the max of of that value or the sum of the
-        normal containers. Limits are applied to init containers in
-        a similar fashion. Init containers cannot currently be added
-        or removed. Cannot be updated. More info:
+        Liveness probes, or Startup probes. The resourceRequirements
+        of an init container are taken into account during
+        scheduling by finding the highest request/limit for each
+        resource type, and then using the max of of that value or
+        the sum of the normal containers. Limits are applied to init
+        containers in a similar fashion. Init containers cannot
+        currently be added or removed. Cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/init-
         containers/
         """
@@ -16571,13 +16802,13 @@ class PodSpec(_kuber_definitions.Definition):
         restartPolicy. The name for an init container or normal
         container must be unique among all containers. Init
         containers may not have Lifecycle actions, Readiness probes,
-        or Liveness probes. The resourceRequirements of an init
-        container are taken into account during scheduling by
-        finding the highest request/limit for each resource type,
-        and then using the max of of that value or the sum of the
-        normal containers. Limits are applied to init containers in
-        a similar fashion. Init containers cannot currently be added
-        or removed. Cannot be updated. More info:
+        Liveness probes, or Startup probes. The resourceRequirements
+        of an init container are taken into account during
+        scheduling by finding the highest request/limit for each
+        resource type, and then using the max of of that value or
+        the sum of the normal containers. Limits are applied to init
+        containers in a similar fashion. Init containers cannot
+        currently be added or removed. Cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/init-
         containers/
         """
@@ -17077,6 +17308,7 @@ class PodSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -17101,6 +17333,7 @@ class PodSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -17260,8 +17493,8 @@ class PodStatus(_kuber_definitions.Definition):
     @property
     def ephemeral_container_statuses(self) -> typing.List['ContainerStatus']:
         """
-        Status for any ephemeral containers that running in this
-        pod. This field is alpha-level and is only honored by
+        Status for any ephemeral containers that have run in this
+        pod. This field is alpha-level and is only populated by
         servers that enable the EphemeralContainers feature.
         """
         return self._properties.get('ephemeralContainerStatuses')
@@ -17272,8 +17505,8 @@ class PodStatus(_kuber_definitions.Definition):
             value: typing.Union[typing.List['ContainerStatus'], typing.List[dict]]
     ):
         """
-        Status for any ephemeral containers that running in this
-        pod. This field is alpha-level and is only honored by
+        Status for any ephemeral containers that have run in this
+        pod. This field is alpha-level and is only populated by
         servers that enable the EphemeralContainers feature.
         """
         cleaned = []
@@ -17592,8 +17825,8 @@ class PodTemplate(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -17601,8 +17834,8 @@ class PodTemplate(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -17613,8 +17846,8 @@ class PodTemplate(_kuber_definitions.Resource):
         """
         Template defines the pods that will be created from this pod
         template.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('template')
 
@@ -17623,8 +17856,8 @@ class PodTemplate(_kuber_definitions.Resource):
         """
         Template defines the pods that will be created from this pod
         template.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodTemplateSpec().from_dict(value)
@@ -17645,6 +17878,7 @@ class PodTemplate(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -17669,6 +17903,7 @@ class PodTemplate(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -17885,8 +18120,8 @@ class PodTemplateList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -17894,8 +18129,8 @@ class PodTemplateList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -17952,8 +18187,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -17961,8 +18196,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -17972,8 +18207,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def spec(self) -> 'PodSpec':
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -17981,8 +18216,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def spec(self, value: typing.Union['PodSpec', dict]):
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodSpec().from_dict(value)
@@ -18003,6 +18238,7 @@ class PodTemplateSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -18027,6 +18263,7 @@ class PodTemplateSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -18359,7 +18596,7 @@ class Probe(_kuber_definitions.Definition):
         """
         Minimum consecutive successes for the probe to be considered
         successful after having failed. Defaults to 1. Must be 1 for
-        liveness. Minimum value is 1.
+        liveness and startup. Minimum value is 1.
         """
         return self._properties.get('successThreshold')
 
@@ -18368,7 +18605,7 @@ class Probe(_kuber_definitions.Definition):
         """
         Minimum consecutive successes for the probe to be considered
         successful after having failed. Defaults to 1. Must be 1 for
-        liveness. Minimum value is 1.
+        liveness and startup. Minimum value is 1.
         """
         self._properties['successThreshold'] = value
 
@@ -19067,8 +19304,8 @@ class ReplicationController(_kuber_definitions.Resource):
         If the Labels of a ReplicationController are empty, they are
         defaulted to be the same as the Pod(s) that the replication
         controller manages. Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -19078,8 +19315,8 @@ class ReplicationController(_kuber_definitions.Resource):
         If the Labels of a ReplicationController are empty, they are
         defaulted to be the same as the Pod(s) that the replication
         controller manages. Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -19090,8 +19327,8 @@ class ReplicationController(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the replication controller. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -19100,8 +19337,8 @@ class ReplicationController(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the replication controller. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ReplicationControllerSpec().from_dict(value)
@@ -19113,8 +19350,8 @@ class ReplicationController(_kuber_definitions.Resource):
         Status is the most recently observed status of the
         replication controller. This data may be out of date by some
         window of time. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -19124,8 +19361,8 @@ class ReplicationController(_kuber_definitions.Resource):
         Status is the most recently observed status of the
         replication controller. This data may be out of date by some
         window of time. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ReplicationControllerStatus().from_dict(value)
@@ -19146,6 +19383,7 @@ class ReplicationController(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -19170,6 +19408,7 @@ class ReplicationController(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -19560,8 +19799,8 @@ class ReplicationControllerList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -19569,8 +19808,8 @@ class ReplicationControllerList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -19738,6 +19977,7 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -19762,6 +20002,7 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -20075,8 +20316,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -20084,8 +20325,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -20095,8 +20336,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def spec(self) -> 'ResourceQuotaSpec':
         """
         Spec defines the desired quota.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -20104,8 +20345,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ResourceQuotaSpec', dict]):
         """
         Spec defines the desired quota.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ResourceQuotaSpec().from_dict(value)
@@ -20115,8 +20356,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def status(self) -> 'ResourceQuotaStatus':
         """
         Status defines the actual enforced quota and its current
-        usage. https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        usage. https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -20124,8 +20365,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def status(self, value: typing.Union['ResourceQuotaStatus', dict]):
         """
         Status defines the actual enforced quota and its current
-        usage. https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        usage. https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ResourceQuotaStatus().from_dict(value)
@@ -20363,8 +20604,8 @@ class ResourceQuotaList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -20372,8 +20613,8 @@ class ResourceQuotaList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -21385,8 +21626,8 @@ class Secret(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -21394,8 +21635,8 @@ class Secret(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -21778,8 +22019,8 @@ class SecretList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -21787,8 +22028,8 @@ class SecretList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -22444,8 +22685,8 @@ class Service(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -22453,8 +22694,8 @@ class Service(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -22464,8 +22705,8 @@ class Service(_kuber_definitions.Resource):
     def spec(self) -> 'ServiceSpec':
         """
         Spec defines the behavior of a service.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -22473,8 +22714,8 @@ class Service(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ServiceSpec', dict]):
         """
         Spec defines the behavior of a service.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ServiceSpec().from_dict(value)
@@ -22485,8 +22726,8 @@ class Service(_kuber_definitions.Resource):
         """
         Most recently observed status of the service. Populated by
         the system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -22495,8 +22736,8 @@ class Service(_kuber_definitions.Resource):
         """
         Most recently observed status of the service. Populated by
         the system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ServiceStatus().from_dict(value)
@@ -22771,8 +23012,8 @@ class ServiceAccount(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -22780,8 +23021,8 @@ class ServiceAccount(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -23002,8 +23243,8 @@ class ServiceAccountList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -23011,8 +23252,8 @@ class ServiceAccountList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -23195,8 +23436,8 @@ class ServiceList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -23204,8 +23445,8 @@ class ServiceList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -23402,6 +23643,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             external_name: str = None,
             external_traffic_policy: str = None,
             health_check_node_port: int = None,
+            ip_family: str = None,
             load_balancer_ip: str = None,
             load_balancer_source_ranges: typing.List[str] = None,
             ports: typing.List['ServicePort'] = None,
@@ -23422,6 +23664,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             'externalName': external_name or '',
             'externalTrafficPolicy': external_traffic_policy or '',
             'healthCheckNodePort': health_check_node_port or None,
+            'ipFamily': ip_family or '',
             'loadBalancerIP': load_balancer_ip or '',
             'loadBalancerSourceRanges': load_balancer_source_ranges or [],
             'ports': ports or [],
@@ -23438,6 +23681,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             'externalName': (str, None),
             'externalTrafficPolicy': (str, None),
             'healthCheckNodePort': (int, None),
+            'ipFamily': (str, None),
             'loadBalancerIP': (str, None),
             'loadBalancerSourceRanges': (list, str),
             'ports': (list, ServicePort),
@@ -23580,6 +23824,44 @@ class ServiceSpec(_kuber_definitions.Definition):
         LoadBalancer and ExternalTrafficPolicy is set to Local.
         """
         self._properties['healthCheckNodePort'] = value
+
+    @property
+    def ip_family(self) -> str:
+        """
+        ipFamily specifies whether this Service has a preference for
+        a particular IP family (e.g. IPv4 vs. IPv6).  If a specific
+        IP family is requested, the clusterIP field will be
+        allocated from that family, if it is available in the
+        cluster.  If no IP family is requested, the cluster's
+        primary IP family will be used. Other IP fields
+        (loadBalancerIP, loadBalancerSourceRanges, externalIPs) and
+        controllers which allocate external load-balancers should
+        use the same IP family.  Endpoints for this Service will be
+        of this family.  This field is immutable after creation.
+        Assigning a ServiceIPFamily not available in the cluster
+        (e.g. IPv6 in IPv4 only cluster) is an error condition and
+        will fail during clusterIP assignment.
+        """
+        return self._properties.get('ipFamily')
+
+    @ip_family.setter
+    def ip_family(self, value: str):
+        """
+        ipFamily specifies whether this Service has a preference for
+        a particular IP family (e.g. IPv4 vs. IPv6).  If a specific
+        IP family is requested, the clusterIP field will be
+        allocated from that family, if it is available in the
+        cluster.  If no IP family is requested, the cluster's
+        primary IP family will be used. Other IP fields
+        (loadBalancerIP, loadBalancerSourceRanges, externalIPs) and
+        controllers which allocate external load-balancers should
+        use the same IP family.  Endpoints for this Service will be
+        of this family.  This field is immutable after creation.
+        Assigning a ServiceIPFamily not available in the cluster
+        (e.g. IPv6 in IPv4 only cluster) is an error condition and
+        will fail during clusterIP assignment.
+        """
+        self._properties['ipFamily'] = value
 
     @property
     def load_balancer_ip(self) -> str:

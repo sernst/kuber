@@ -53,14 +53,18 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
     @property
     def jsonpath(self) -> str:
         """
-        JSONPath is a simple JSON path, i.e. with array notation.
+        JSONPath is a simple JSON path (i.e. with array notation)
+        which is evaluated against each custom resource to produce
+        the value for this column.
         """
         return self._properties.get('JSONPath')
 
     @jsonpath.setter
     def jsonpath(self, value: str):
         """
-        JSONPath is a simple JSON path, i.e. with array notation.
+        JSONPath is a simple JSON path (i.e. with array notation)
+        which is evaluated against each custom resource to produce
+        the value for this column.
         """
         self._properties['JSONPath'] = value
 
@@ -86,7 +90,7 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
         identifier column to assist in clients identifying column is
         the resource name. See https://github.com/OAI/OpenAPI-
         Specification/blob/master/versions/2.0.md#data-types for
-        more.
+        details.
         """
         return self._properties.get('format')
 
@@ -98,7 +102,7 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
         identifier column to assist in clients identifying column is
         the resource name. See https://github.com/OAI/OpenAPI-
         Specification/blob/master/versions/2.0.md#data-types for
-        more.
+        details.
         """
         self._properties['format'] = value
 
@@ -122,7 +126,7 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
         priority is an integer defining the relative importance of
         this column compared to others. Lower numbers are considered
         higher priority. Columns that may be omitted in limited
-        space scenarios should be given a higher priority.
+        space scenarios should be given a priority greater than 0.
         """
         return self._properties.get('priority')
 
@@ -132,7 +136,7 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
         priority is an integer defining the relative importance of
         this column compared to others. Lower numbers are considered
         higher priority. Columns that may be omitted in limited
-        space scenarios should be given a higher priority.
+        space scenarios should be given a priority greater than 0.
         """
         self._properties['priority'] = value
 
@@ -142,7 +146,7 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
         type is an OpenAPI type definition for this column. See
         https://github.com/OAI/OpenAPI-
         Specification/blob/master/versions/2.0.md#data-types for
-        more.
+        details.
         """
         return self._properties.get('type')
 
@@ -152,7 +156,7 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
         type is an OpenAPI type definition for this column. See
         https://github.com/OAI/OpenAPI-
         Specification/blob/master/versions/2.0.md#data-types for
-        more.
+        details.
         """
         self._properties['type'] = value
 
@@ -196,76 +200,78 @@ class CustomResourceConversion(_kuber_definitions.Definition):
     @property
     def conversion_review_versions(self) -> typing.List[str]:
         """
-        ConversionReviewVersions is an ordered list of preferred
-        `ConversionReview` versions the Webhook expects. API server
-        will try to use first version in the list which it supports.
-        If none of the versions specified in this list supported by
-        API server, conversion will fail for this object. If a
-        persisted Webhook configuration specifies allowed versions
-        and does not include any versions known to the API Server,
-        calls to the webhook will fail. Default to `['v1beta1']`.
+        conversionReviewVersions is an ordered list of preferred
+        `ConversionReview` versions the Webhook expects. The API
+        server will use the first version in the list which it
+        supports. If none of the versions specified in this list are
+        supported by API server, conversion will fail for the custom
+        resource. If a persisted Webhook configuration specifies
+        allowed versions and does not include any versions known to
+        the API Server, calls to the webhook will fail. Defaults to
+        `["v1beta1"]`.
         """
         return self._properties.get('conversionReviewVersions')
 
     @conversion_review_versions.setter
     def conversion_review_versions(self, value: typing.List[str]):
         """
-        ConversionReviewVersions is an ordered list of preferred
-        `ConversionReview` versions the Webhook expects. API server
-        will try to use first version in the list which it supports.
-        If none of the versions specified in this list supported by
-        API server, conversion will fail for this object. If a
-        persisted Webhook configuration specifies allowed versions
-        and does not include any versions known to the API Server,
-        calls to the webhook will fail. Default to `['v1beta1']`.
+        conversionReviewVersions is an ordered list of preferred
+        `ConversionReview` versions the Webhook expects. The API
+        server will use the first version in the list which it
+        supports. If none of the versions specified in this list are
+        supported by API server, conversion will fail for the custom
+        resource. If a persisted Webhook configuration specifies
+        allowed versions and does not include any versions known to
+        the API Server, calls to the webhook will fail. Defaults to
+        `["v1beta1"]`.
         """
         self._properties['conversionReviewVersions'] = value
 
     @property
     def strategy(self) -> str:
         """
-        `strategy` specifies the conversion strategy. Allowed values
-        are: - `None`: The converter only change the apiVersion and
-        would not touch any other field in the CR. - `Webhook`: API
-        Server will call to an external webhook to do the
-        conversion. Additional information
-          is needed for this
-        option. This requires spec.preserveUnknownFields to be
-        false.
+        strategy specifies how custom resources are converted
+        between versions. Allowed values are: - `None`: The
+        converter only change the apiVersion and would not touch any
+        other field in the custom resource. - `Webhook`: API Server
+        will call to an external webhook to do the conversion.
+        Additional information
+          is needed for this option. This
+        requires spec.preserveUnknownFields to be false, and
+        spec.conversion.webhookClientConfig to be set.
         """
         return self._properties.get('strategy')
 
     @strategy.setter
     def strategy(self, value: str):
         """
-        `strategy` specifies the conversion strategy. Allowed values
-        are: - `None`: The converter only change the apiVersion and
-        would not touch any other field in the CR. - `Webhook`: API
-        Server will call to an external webhook to do the
-        conversion. Additional information
-          is needed for this
-        option. This requires spec.preserveUnknownFields to be
-        false.
+        strategy specifies how custom resources are converted
+        between versions. Allowed values are: - `None`: The
+        converter only change the apiVersion and would not touch any
+        other field in the custom resource. - `Webhook`: API Server
+        will call to an external webhook to do the conversion.
+        Additional information
+          is needed for this option. This
+        requires spec.preserveUnknownFields to be false, and
+        spec.conversion.webhookClientConfig to be set.
         """
         self._properties['strategy'] = value
 
     @property
     def webhook_client_config(self) -> 'WebhookClientConfig':
         """
-        `webhookClientConfig` is the instructions for how to call
-        the webhook if strategy is `Webhook`. This field is alpha-
-        level and is only honored by servers that enable the
-        CustomResourceWebhookConversion feature.
+        webhookClientConfig is the instructions for how to call the
+        webhook if strategy is `Webhook`. Required when `strategy`
+        is set to `Webhook`.
         """
         return self._properties.get('webhookClientConfig')
 
     @webhook_client_config.setter
     def webhook_client_config(self, value: typing.Union['WebhookClientConfig', dict]):
         """
-        `webhookClientConfig` is the instructions for how to call
-        the webhook if strategy is `Webhook`. This field is alpha-
-        level and is only honored by servers that enable the
-        CustomResourceWebhookConversion feature.
+        webhookClientConfig is the instructions for how to call the
+        webhook if strategy is `Webhook`. Required when `strategy`
+        is set to `Webhook`.
         """
         if isinstance(value, dict):
             value = WebhookClientConfig().from_dict(value)
@@ -282,7 +288,9 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
     """
     CustomResourceDefinition represents a resource that should
     be exposed on the API server.  Its name MUST be in the
-    format <.spec.name>.<.spec.group>.
+    format <.spec.name>.<.spec.group>. Deprecated in v1.16,
+    planned for removal in v1.19. Use apiextensions.k8s.io/v1
+    CustomResourceDefinition instead.
     """
 
     def __init__(
@@ -330,14 +338,14 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
     @property
     def spec(self) -> 'CustomResourceDefinitionSpec':
         """
-        Spec describes how the user wants the resources to appear
+        spec describes how the user wants the resources to appear
         """
         return self._properties.get('spec')
 
     @spec.setter
     def spec(self, value: typing.Union['CustomResourceDefinitionSpec', dict]):
         """
-        Spec describes how the user wants the resources to appear
+        spec describes how the user wants the resources to appear
         """
         if isinstance(value, dict):
             value = CustomResourceDefinitionSpec().from_dict(value)
@@ -346,7 +354,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
     @property
     def status(self) -> 'CustomResourceDefinitionStatus':
         """
-        Status indicates the actual state of the
+        status indicates the actual state of the
         CustomResourceDefinition
         """
         return self._properties.get('status')
@@ -354,7 +362,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
     @status.setter
     def status(self, value: typing.Union['CustomResourceDefinitionStatus', dict]):
         """
-        Status indicates the actual state of the
+        status indicates the actual state of the
         CustomResourceDefinition
         """
         if isinstance(value, dict):
@@ -576,8 +584,8 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
     @property
     def last_transition_time(self) -> str:
         """
-        Last time the condition transitioned from one status to
-        another.
+        lastTransitionTime last time the condition transitioned from
+        one status to another.
         """
         return self._properties.get('lastTransitionTime')
 
@@ -587,8 +595,8 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
             value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
-        Last time the condition transitioned from one status to
-        another.
+        lastTransitionTime last time the condition transitioned from
+        one status to another.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -599,39 +607,39 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
     @property
     def message(self) -> str:
         """
-        Human-readable message indicating details about last
-        transition.
+        message is a human-readable message indicating details about
+        last transition.
         """
         return self._properties.get('message')
 
     @message.setter
     def message(self, value: str):
         """
-        Human-readable message indicating details about last
-        transition.
+        message is a human-readable message indicating details about
+        last transition.
         """
         self._properties['message'] = value
 
     @property
     def reason(self) -> str:
         """
-        Unique, one-word, CamelCase reason for the condition's last
-        transition.
+        reason is a unique, one-word, CamelCase reason for the
+        condition's last transition.
         """
         return self._properties.get('reason')
 
     @reason.setter
     def reason(self, value: str):
         """
-        Unique, one-word, CamelCase reason for the condition's last
-        transition.
+        reason is a unique, one-word, CamelCase reason for the
+        condition's last transition.
         """
         self._properties['reason'] = value
 
     @property
     def status(self) -> str:
         """
-        Status is the status of the condition. Can be True, False,
+        status is the status of the condition. Can be True, False,
         Unknown.
         """
         return self._properties.get('status')
@@ -639,7 +647,7 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
     @status.setter
     def status(self, value: str):
         """
-        Status is the status of the condition. Can be True, False,
+        status is the status of the condition. Can be True, False,
         Unknown.
         """
         self._properties['status'] = value
@@ -647,7 +655,7 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
     @property
     def type_(self) -> str:
         """
-        Type is the type of the condition. Types include
+        type is the type of the condition. Types include
         Established, NamesAccepted and Terminating.
         """
         return self._properties.get('type')
@@ -655,7 +663,7 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
     @type_.setter
     def type_(self, value: str):
         """
-        Type is the type of the condition. Types include
+        type is the type of the condition. Types include
         Established, NamesAccepted and Terminating.
         """
         self._properties['type'] = value
@@ -699,7 +707,7 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List['CustomResourceDefinition']:
         """
-        Items individual CustomResourceDefinitions
+        items list individual CustomResourceDefinition objects
         """
         return self._properties.get('items')
 
@@ -709,7 +717,7 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
             value: typing.Union[typing.List['CustomResourceDefinition'], typing.List[dict]]
     ):
         """
-        Items individual CustomResourceDefinitions
+        items list individual CustomResourceDefinition objects
         """
         cleaned = []
         for item in value:
@@ -796,73 +804,85 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
     @property
     def categories(self) -> typing.List[str]:
         """
-        Categories is a list of grouped resources custom resources
-        belong to (e.g. 'all')
+        categories is a list of grouped resources this custom
+        resource belongs to (e.g. 'all'). This is published in API
+        discovery documents, and used by clients to support
+        invocations like `kubectl get all`.
         """
         return self._properties.get('categories')
 
     @categories.setter
     def categories(self, value: typing.List[str]):
         """
-        Categories is a list of grouped resources custom resources
-        belong to (e.g. 'all')
+        categories is a list of grouped resources this custom
+        resource belongs to (e.g. 'all'). This is published in API
+        discovery documents, and used by clients to support
+        invocations like `kubectl get all`.
         """
         self._properties['categories'] = value
 
     @property
     def kind(self) -> str:
         """
-        Kind is the serialized kind of the resource.  It is normally
-        CamelCase and singular.
+        kind is the serialized kind of the resource. It is normally
+        CamelCase and singular. Custom resource instances will use
+        this value as the `kind` attribute in API calls.
         """
         return self._properties.get('kind')
 
     @kind.setter
     def kind(self, value: str):
         """
-        Kind is the serialized kind of the resource.  It is normally
-        CamelCase and singular.
+        kind is the serialized kind of the resource. It is normally
+        CamelCase and singular. Custom resource instances will use
+        this value as the `kind` attribute in API calls.
         """
         self._properties['kind'] = value
 
     @property
     def list_kind(self) -> str:
         """
-        ListKind is the serialized kind of the list for this
-        resource.  Defaults to <kind>List.
+        listKind is the serialized kind of the list for this
+        resource. Defaults to "`kind`List".
         """
         return self._properties.get('listKind')
 
     @list_kind.setter
     def list_kind(self, value: str):
         """
-        ListKind is the serialized kind of the list for this
-        resource.  Defaults to <kind>List.
+        listKind is the serialized kind of the list for this
+        resource. Defaults to "`kind`List".
         """
         self._properties['listKind'] = value
 
     @property
     def plural(self) -> str:
         """
-        Plural is the plural name of the resource to serve.  It must
-        match the name of the CustomResourceDefinition-registration
-        too: plural.group and it must be all lowercase.
+        plural is the plural name of the resource to serve. The
+        custom resources are served under
+        `/apis/<group>/<version>/.../<plural>`. Must match the name
+        of the CustomResourceDefinition (in the form
+        `<names.plural>.<group>`). Must be all lowercase.
         """
         return self._properties.get('plural')
 
     @plural.setter
     def plural(self, value: str):
         """
-        Plural is the plural name of the resource to serve.  It must
-        match the name of the CustomResourceDefinition-registration
-        too: plural.group and it must be all lowercase.
+        plural is the plural name of the resource to serve. The
+        custom resources are served under
+        `/apis/<group>/<version>/.../<plural>`. Must match the name
+        of the CustomResourceDefinition (in the form
+        `<names.plural>.<group>`). Must be all lowercase.
         """
         self._properties['plural'] = value
 
     @property
     def short_names(self) -> typing.List[str]:
         """
-        ShortNames are short names for the resource.  It must be all
+        shortNames are short names for the resource, exposed in API
+        discovery documents, and used by clients to support
+        invocations like `kubectl get <shortname>`. It must be all
         lowercase.
         """
         return self._properties.get('shortNames')
@@ -870,7 +890,9 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
     @short_names.setter
     def short_names(self, value: typing.List[str]):
         """
-        ShortNames are short names for the resource.  It must be all
+        shortNames are short names for the resource, exposed in API
+        discovery documents, and used by clients to support
+        invocations like `kubectl get <shortname>`. It must be all
         lowercase.
         """
         self._properties['shortNames'] = value
@@ -878,16 +900,16 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
     @property
     def singular(self) -> str:
         """
-        Singular is the singular name of the resource.  It must be
-        all lowercase  Defaults to lowercased <kind>
+        singular is the singular name of the resource. It must be
+        all lowercase. Defaults to lowercased `kind`.
         """
         return self._properties.get('singular')
 
     @singular.setter
     def singular(self, value: str):
         """
-        Singular is the singular name of the resource.  It must be
-        all lowercase  Defaults to lowercased <kind>
+        singular is the singular name of the resource. It must be
+        all lowercase. Defaults to lowercased `kind`.
         """
         self._properties['singular'] = value
 
@@ -952,10 +974,14 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
     @property
     def additional_printer_columns(self) -> typing.List['CustomResourceColumnDefinition']:
         """
-        AdditionalPrinterColumns are additional columns shown e.g.
-        in kubectl next to the name. Defaults to a created-at
-        column. Optional, the global columns for all versions. Top-
-        level and per-version columns are mutually exclusive.
+        additionalPrinterColumns specifies additional columns
+        returned in Table output. See
+        https://kubernetes.io/docs/reference/using-api/api-
+        concepts/#receiving-resources-as-tables for details. If
+        present, this field configures columns for all versions.
+        Top-level and per-version columns are mutually exclusive. If
+        no top-level or per-version columns are specified, a single
+        column displaying the age of the custom resource is used.
         """
         return self._properties.get('additionalPrinterColumns')
 
@@ -965,10 +991,14 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             value: typing.Union[typing.List['CustomResourceColumnDefinition'], typing.List[dict]]
     ):
         """
-        AdditionalPrinterColumns are additional columns shown e.g.
-        in kubectl next to the name. Defaults to a created-at
-        column. Optional, the global columns for all versions. Top-
-        level and per-version columns are mutually exclusive.
+        additionalPrinterColumns specifies additional columns
+        returned in Table output. See
+        https://kubernetes.io/docs/reference/using-api/api-
+        concepts/#receiving-resources-as-tables for details. If
+        present, this field configures columns for all versions.
+        Top-level and per-version columns are mutually exclusive. If
+        no top-level or per-version columns are specified, a single
+        column displaying the age of the custom resource is used.
         """
         cleaned = []
         for item in value:
@@ -980,14 +1010,14 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
     @property
     def conversion(self) -> 'CustomResourceConversion':
         """
-        `conversion` defines conversion settings for the CRD.
+        conversion defines conversion settings for the CRD.
         """
         return self._properties.get('conversion')
 
     @conversion.setter
     def conversion(self, value: typing.Union['CustomResourceConversion', dict]):
         """
-        `conversion` defines conversion settings for the CRD.
+        conversion defines conversion settings for the CRD.
         """
         if isinstance(value, dict):
             value = CustomResourceConversion().from_dict(value)
@@ -996,28 +1026,36 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
     @property
     def group(self) -> str:
         """
-        Group is the group this resource belongs in
+        group is the API group of the defined custom resource. The
+        custom resources are served under `/apis/<group>/...`. Must
+        match the name of the CustomResourceDefinition (in the form
+        `<names.plural>.<group>`).
         """
         return self._properties.get('group')
 
     @group.setter
     def group(self, value: str):
         """
-        Group is the group this resource belongs in
+        group is the API group of the defined custom resource. The
+        custom resources are served under `/apis/<group>/...`. Must
+        match the name of the CustomResourceDefinition (in the form
+        `<names.plural>.<group>`).
         """
         self._properties['group'] = value
 
     @property
     def names(self) -> 'CustomResourceDefinitionNames':
         """
-        Names are the names used to describe this custom resource
+        names specify the resource and kind names for the custom
+        resource.
         """
         return self._properties.get('names')
 
     @names.setter
     def names(self, value: typing.Union['CustomResourceDefinitionNames', dict]):
         """
-        Names are the names used to describe this custom resource
+        names specify the resource and kind names for the custom
+        resource.
         """
         if isinstance(value, dict):
             value = CustomResourceDefinitionNames().from_dict(value)
@@ -1026,56 +1064,74 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
     @property
     def preserve_unknown_fields(self) -> bool:
         """
-        preserveUnknownFields disables pruning of object fields
-        which are not specified in the OpenAPI schema. apiVersion,
-        kind, metadata and known fields inside metadata are always
-        preserved. Defaults to true in v1beta and will default to
-        false in v1.
+        preserveUnknownFields indicates that object fields which are
+        not specified in the OpenAPI schema should be preserved when
+        persisting to storage. apiVersion, kind, metadata and known
+        fields inside metadata are always preserved. If false,
+        schemas must be defined for all versions. Defaults to true
+        in v1beta for backwards compatibility. Deprecated: will be
+        required to be false in v1. Preservation of unknown fields
+        can be specified in the validation schema using the
+        `x-kubernetes-preserve-unknown-fields: true` extension. See
+        https://kubernetes.io/docs/tasks/access-kubernetes-
+        api/custom-resources/custom-resource-definitions/#pruning-
+        versus-preserving-unknown-fields for details.
         """
         return self._properties.get('preserveUnknownFields')
 
     @preserve_unknown_fields.setter
     def preserve_unknown_fields(self, value: bool):
         """
-        preserveUnknownFields disables pruning of object fields
-        which are not specified in the OpenAPI schema. apiVersion,
-        kind, metadata and known fields inside metadata are always
-        preserved. Defaults to true in v1beta and will default to
-        false in v1.
+        preserveUnknownFields indicates that object fields which are
+        not specified in the OpenAPI schema should be preserved when
+        persisting to storage. apiVersion, kind, metadata and known
+        fields inside metadata are always preserved. If false,
+        schemas must be defined for all versions. Defaults to true
+        in v1beta for backwards compatibility. Deprecated: will be
+        required to be false in v1. Preservation of unknown fields
+        can be specified in the validation schema using the
+        `x-kubernetes-preserve-unknown-fields: true` extension. See
+        https://kubernetes.io/docs/tasks/access-kubernetes-
+        api/custom-resources/custom-resource-definitions/#pruning-
+        versus-preserving-unknown-fields for details.
         """
         self._properties['preserveUnknownFields'] = value
 
     @property
     def scope(self) -> str:
         """
-        Scope indicates whether this resource is cluster or
-        namespace scoped.  Default is namespaced
+        scope indicates whether the defined custom resource is
+        cluster- or namespace-scoped. Allowed values are `Cluster`
+        and `Namespaced`. Default is `Namespaced`.
         """
         return self._properties.get('scope')
 
     @scope.setter
     def scope(self, value: str):
         """
-        Scope indicates whether this resource is cluster or
-        namespace scoped.  Default is namespaced
+        scope indicates whether the defined custom resource is
+        cluster- or namespace-scoped. Allowed values are `Cluster`
+        and `Namespaced`. Default is `Namespaced`.
         """
         self._properties['scope'] = value
 
     @property
     def subresources(self) -> 'CustomResourceSubresources':
         """
-        Subresources describes the subresources for CustomResource
-        Optional, the global subresources for all versions. Top-
-        level and per-version subresources are mutually exclusive.
+        subresources specify what subresources the defined custom
+        resource has. If present, this field configures subresources
+        for all versions. Top-level and per-version subresources are
+        mutually exclusive.
         """
         return self._properties.get('subresources')
 
     @subresources.setter
     def subresources(self, value: typing.Union['CustomResourceSubresources', dict]):
         """
-        Subresources describes the subresources for CustomResource
-        Optional, the global subresources for all versions. Top-
-        level and per-version subresources are mutually exclusive.
+        subresources specify what subresources the defined custom
+        resource has. If present, this field configures subresources
+        for all versions. Top-level and per-version subresources are
+        mutually exclusive.
         """
         if isinstance(value, dict):
             value = CustomResourceSubresources().from_dict(value)
@@ -1084,20 +1140,20 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
     @property
     def validation(self) -> 'CustomResourceValidation':
         """
-        Validation describes the validation methods for
-        CustomResources Optional, the global validation schema for
-        all versions. Top-level and per-version schemas are mutually
-        exclusive.
+        validation describes the schema used for validation and
+        pruning of the custom resource. If present, this validation
+        schema is used to validate all versions. Top-level and per-
+        version schemas are mutually exclusive.
         """
         return self._properties.get('validation')
 
     @validation.setter
     def validation(self, value: typing.Union['CustomResourceValidation', dict]):
         """
-        Validation describes the validation methods for
-        CustomResources Optional, the global validation schema for
-        all versions. Top-level and per-version schemas are mutually
-        exclusive.
+        validation describes the schema used for validation and
+        pruning of the custom resource. If present, this validation
+        schema is used to validate all versions. Top-level and per-
+        version schemas are mutually exclusive.
         """
         if isinstance(value, dict):
             value = CustomResourceValidation().from_dict(value)
@@ -1106,42 +1162,46 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
     @property
     def version(self) -> str:
         """
-        Version is the version this resource belongs in Should be
-        always first item in Versions field if provided. Optional,
-        but at least one of Version or Versions must be set.
-        Deprecated: Please use `Versions`.
+        version is the API version of the defined custom resource.
+        The custom resources are served under
+        `/apis/<group>/<version>/...`. Must match the name of the
+        first item in the `versions` list if `version` and
+        `versions` are both specified. Optional if `versions` is
+        specified. Deprecated: use `versions` instead.
         """
         return self._properties.get('version')
 
     @version.setter
     def version(self, value: str):
         """
-        Version is the version this resource belongs in Should be
-        always first item in Versions field if provided. Optional,
-        but at least one of Version or Versions must be set.
-        Deprecated: Please use `Versions`.
+        version is the API version of the defined custom resource.
+        The custom resources are served under
+        `/apis/<group>/<version>/...`. Must match the name of the
+        first item in the `versions` list if `version` and
+        `versions` are both specified. Optional if `versions` is
+        specified. Deprecated: use `versions` instead.
         """
         self._properties['version'] = value
 
     @property
     def versions(self) -> typing.List['CustomResourceDefinitionVersion']:
         """
-        Versions is the list of all supported versions for this
-        resource. If Version field is provided, this field is
-        optional. Validation: All versions must use the same
-        validation schema for now. i.e., top level Validation field
-        is applied to all of these versions. Order: The version name
-        will be used to compute the order. If the version string is
-        "kube-like", it will sort above non "kube-like" version
-        strings, which are ordered lexicographically. "Kube-like"
-        versions start with a "v", then are followed by a number
-        (the major version), then optionally the string "alpha" or
-        "beta" and another number (the minor version). These are
-        sorted first by GA > beta > alpha (where GA is a version
-        with no suffix such as beta or alpha), and then by comparing
-        major version, then minor version. An example sorted list of
-        versions: v10, v2, v1, v11beta2, v10beta3, v3beta1,
-        v12alpha1, v11alpha2, foo1, foo10.
+        versions is the list of all API versions of the defined
+        custom resource. Optional if `version` is specified. The
+        name of the first item in the `versions` list must match the
+        `version` field if `version` and `versions` are both
+        specified. Version names are used to compute the order in
+        which served versions are listed in API discovery. If the
+        version string is "kube-like", it will sort above non "kube-
+        like" version strings, which are ordered lexicographically.
+        "Kube-like" versions start with a "v", then are followed by
+        a number (the major version), then optionally the string
+        "alpha" or "beta" and another number (the minor version).
+        These are sorted first by GA > beta > alpha (where GA is a
+        version with no suffix such as beta or alpha), and then by
+        comparing major version, then minor version. An example
+        sorted list of versions: v10, v2, v1, v11beta2, v10beta3,
+        v3beta1, v12alpha1, v11alpha2, foo1, foo10.
         """
         return self._properties.get('versions')
 
@@ -1151,22 +1211,22 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             value: typing.Union[typing.List['CustomResourceDefinitionVersion'], typing.List[dict]]
     ):
         """
-        Versions is the list of all supported versions for this
-        resource. If Version field is provided, this field is
-        optional. Validation: All versions must use the same
-        validation schema for now. i.e., top level Validation field
-        is applied to all of these versions. Order: The version name
-        will be used to compute the order. If the version string is
-        "kube-like", it will sort above non "kube-like" version
-        strings, which are ordered lexicographically. "Kube-like"
-        versions start with a "v", then are followed by a number
-        (the major version), then optionally the string "alpha" or
-        "beta" and another number (the minor version). These are
-        sorted first by GA > beta > alpha (where GA is a version
-        with no suffix such as beta or alpha), and then by comparing
-        major version, then minor version. An example sorted list of
-        versions: v10, v2, v1, v11beta2, v10beta3, v3beta1,
-        v12alpha1, v11alpha2, foo1, foo10.
+        versions is the list of all API versions of the defined
+        custom resource. Optional if `version` is specified. The
+        name of the first item in the `versions` list must match the
+        `version` field if `version` and `versions` are both
+        specified. Version names are used to compute the order in
+        which served versions are listed in API discovery. If the
+        version string is "kube-like", it will sort above non "kube-
+        like" version strings, which are ordered lexicographically.
+        "Kube-like" versions start with a "v", then are followed by
+        a number (the major version), then optionally the string
+        "alpha" or "beta" and another number (the minor version).
+        These are sorted first by GA > beta > alpha (where GA is a
+        version with no suffix such as beta or alpha), and then by
+        comparing major version, then minor version. An example
+        sorted list of versions: v10, v2, v1, v11beta2, v10beta3,
+        v3beta1, v12alpha1, v11alpha2, foo1, foo10.
         """
         cleaned = []
         for item in value:
@@ -1215,8 +1275,8 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
     @property
     def accepted_names(self) -> 'CustomResourceDefinitionNames':
         """
-        AcceptedNames are the names that are actually being used to
-        serve discovery They may be different than the names in
+        acceptedNames are the names that are actually being used to
+        serve discovery. They may be different than the names in
         spec.
         """
         return self._properties.get('acceptedNames')
@@ -1224,8 +1284,8 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
     @accepted_names.setter
     def accepted_names(self, value: typing.Union['CustomResourceDefinitionNames', dict]):
         """
-        AcceptedNames are the names that are actually being used to
-        serve discovery They may be different than the names in
+        acceptedNames are the names that are actually being used to
+        serve discovery. They may be different than the names in
         spec.
         """
         if isinstance(value, dict):
@@ -1235,7 +1295,7 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
     @property
     def conditions(self) -> typing.List['CustomResourceDefinitionCondition']:
         """
-        Conditions indicate state for particular aspects of a
+        conditions indicate state for particular aspects of a
         CustomResourceDefinition
         """
         return self._properties.get('conditions')
@@ -1246,7 +1306,7 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
             value: typing.Union[typing.List['CustomResourceDefinitionCondition'], typing.List[dict]]
     ):
         """
-        Conditions indicate state for particular aspects of a
+        conditions indicate state for particular aspects of a
         CustomResourceDefinition
         """
         cleaned = []
@@ -1259,28 +1319,28 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
     @property
     def stored_versions(self) -> typing.List[str]:
         """
-        StoredVersions are all versions of CustomResources that were
-        ever persisted. Tracking these versions allows a migration
-        path for stored versions in etcd. The field is mutable so
-        the migration controller can first finish a migration to
-        another version (i.e. that no old objects are left in the
+        storedVersions lists all versions of CustomResources that
+        were ever persisted. Tracking these versions allows a
+        migration path for stored versions in etcd. The field is
+        mutable so a migration controller can finish a migration to
+        another version (ensuring no old objects are left in
         storage), and then remove the rest of the versions from this
-        list. None of the versions in this list can be removed from
-        the spec.Versions field.
+        list. Versions may not be removed from `spec.versions` while
+        they exist in this list.
         """
         return self._properties.get('storedVersions')
 
     @stored_versions.setter
     def stored_versions(self, value: typing.List[str]):
         """
-        StoredVersions are all versions of CustomResources that were
-        ever persisted. Tracking these versions allows a migration
-        path for stored versions in etcd. The field is mutable so
-        the migration controller can first finish a migration to
-        another version (i.e. that no old objects are left in the
+        storedVersions lists all versions of CustomResources that
+        were ever persisted. Tracking these versions allows a
+        migration path for stored versions in etcd. The field is
+        mutable so a migration controller can finish a migration to
+        another version (ensuring no old objects are left in
         storage), and then remove the rest of the versions from this
-        list. None of the versions in this list can be removed from
-        the spec.Versions field.
+        list. Versions may not be removed from `spec.versions` while
+        they exist in this list.
         """
         self._properties['storedVersions'] = value
 
@@ -1332,18 +1392,15 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
     @property
     def additional_printer_columns(self) -> typing.List['CustomResourceColumnDefinition']:
         """
-        AdditionalPrinterColumns are additional columns shown e.g.
-        in kubectl next to the name. Defaults to a created-at
-        column. Top-level and per-version columns are mutually
-        exclusive. Per-version columns must not all be set to
-        identical values (top-level columns should be used instead)
-        This field is alpha-level and is only honored by servers
-        that enable the CustomResourceWebhookConversion feature.
-        NOTE: CRDs created prior to 1.13 populated the top-level
-        additionalPrinterColumns field by default. To apply an
-        update that changes to per-version additionalPrinterColumns,
-        the top-level additionalPrinterColumns field must be
-        explicitly set to null
+        additionalPrinterColumns specifies additional columns
+        returned in Table output. See
+        https://kubernetes.io/docs/reference/using-api/api-
+        concepts/#receiving-resources-as-tables for details. Top-
+        level and per-version columns are mutually exclusive. Per-
+        version columns must not all be set to identical values
+        (top-level columns should be used instead). If no top-level
+        or per-version columns are specified, a single column
+        displaying the age of the custom resource is used.
         """
         return self._properties.get('additionalPrinterColumns')
 
@@ -1353,18 +1410,15 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
             value: typing.Union[typing.List['CustomResourceColumnDefinition'], typing.List[dict]]
     ):
         """
-        AdditionalPrinterColumns are additional columns shown e.g.
-        in kubectl next to the name. Defaults to a created-at
-        column. Top-level and per-version columns are mutually
-        exclusive. Per-version columns must not all be set to
-        identical values (top-level columns should be used instead)
-        This field is alpha-level and is only honored by servers
-        that enable the CustomResourceWebhookConversion feature.
-        NOTE: CRDs created prior to 1.13 populated the top-level
-        additionalPrinterColumns field by default. To apply an
-        update that changes to per-version additionalPrinterColumns,
-        the top-level additionalPrinterColumns field must be
-        explicitly set to null
+        additionalPrinterColumns specifies additional columns
+        returned in Table output. See
+        https://kubernetes.io/docs/reference/using-api/api-
+        concepts/#receiving-resources-as-tables for details. Top-
+        level and per-version columns are mutually exclusive. Per-
+        version columns must not all be set to identical values
+        (top-level columns should be used instead). If no top-level
+        or per-version columns are specified, a single column
+        displaying the age of the custom resource is used.
         """
         cleaned = []
         for item in value:
@@ -1376,40 +1430,40 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name is the version name, e.g. v1, v2beta1, etc.
+        name is the version name, e.g. v1, v2beta1, etc. The custom
+        resources are served under this version at
+        `/apis/<group>/<version>/...` if `served` is true.
         """
         return self._properties.get('name')
 
     @name.setter
     def name(self, value: str):
         """
-        Name is the version name, e.g. v1, v2beta1, etc.
+        name is the version name, e.g. v1, v2beta1, etc. The custom
+        resources are served under this version at
+        `/apis/<group>/<version>/...` if `served` is true.
         """
         self._properties['name'] = value
 
     @property
     def schema(self) -> 'CustomResourceValidation':
         """
-        Schema describes the schema for CustomResource used in
-        validation, pruning, and defaulting. Top-level and per-
+        schema describes the schema used for validation and pruning
+        of this version of the custom resource. Top-level and per-
         version schemas are mutually exclusive. Per-version schemas
         must not all be set to identical values (top-level
-        validation schema should be used instead) This field is
-        alpha-level and is only honored by servers that enable the
-        CustomResourceWebhookConversion feature.
+        validation schema should be used instead).
         """
         return self._properties.get('schema')
 
     @schema.setter
     def schema(self, value: typing.Union['CustomResourceValidation', dict]):
         """
-        Schema describes the schema for CustomResource used in
-        validation, pruning, and defaulting. Top-level and per-
+        schema describes the schema used for validation and pruning
+        of this version of the custom resource. Top-level and per-
         version schemas are mutually exclusive. Per-version schemas
         must not all be set to identical values (top-level
-        validation schema should be used instead) This field is
-        alpha-level and is only honored by servers that enable the
-        CustomResourceWebhookConversion feature.
+        validation schema should be used instead).
         """
         if isinstance(value, dict):
             value = CustomResourceValidation().from_dict(value)
@@ -1418,7 +1472,7 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
     @property
     def served(self) -> bool:
         """
-        Served is a flag enabling/disabling this version from being
+        served is a flag enabling/disabling this version from being
         served via REST APIs
         """
         return self._properties.get('served')
@@ -1426,7 +1480,7 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
     @served.setter
     def served(self, value: bool):
         """
-        Served is a flag enabling/disabling this version from being
+        served is a flag enabling/disabling this version from being
         served via REST APIs
         """
         self._properties['served'] = value
@@ -1434,42 +1488,40 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
     @property
     def storage(self) -> bool:
         """
-        Storage flags the version as storage version. There must be
-        exactly one flagged as storage version.
+        storage indicates this version should be used when
+        persisting custom resources to storage. There must be
+        exactly one version with storage=true.
         """
         return self._properties.get('storage')
 
     @storage.setter
     def storage(self, value: bool):
         """
-        Storage flags the version as storage version. There must be
-        exactly one flagged as storage version.
+        storage indicates this version should be used when
+        persisting custom resources to storage. There must be
+        exactly one version with storage=true.
         """
         self._properties['storage'] = value
 
     @property
     def subresources(self) -> 'CustomResourceSubresources':
         """
-        Subresources describes the subresources for CustomResource
-        Top-level and per-version subresources are mutually
-        exclusive. Per-version subresources must not all be set to
-        identical values (top-level subresources should be used
-        instead) This field is alpha-level and is only honored by
-        servers that enable the CustomResourceWebhookConversion
-        feature.
+        subresources specify what subresources this version of the
+        defined custom resource have. Top-level and per-version
+        subresources are mutually exclusive. Per-version
+        subresources must not all be set to identical values (top-
+        level subresources should be used instead).
         """
         return self._properties.get('subresources')
 
     @subresources.setter
     def subresources(self, value: typing.Union['CustomResourceSubresources', dict]):
         """
-        Subresources describes the subresources for CustomResource
-        Top-level and per-version subresources are mutually
-        exclusive. Per-version subresources must not all be set to
-        identical values (top-level subresources should be used
-        instead) This field is alpha-level and is only honored by
-        servers that enable the CustomResourceWebhookConversion
-        feature.
+        subresources specify what subresources this version of the
+        defined custom resource have. Top-level and per-version
+        subresources are mutually exclusive. Per-version
+        subresources must not all be set to identical values (top-
+        level subresources should be used instead).
         """
         if isinstance(value, dict):
             value = CustomResourceSubresources().from_dict(value)
@@ -1515,84 +1567,86 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
     @property
     def label_selector_path(self) -> str:
         """
-        LabelSelectorPath defines the JSON path inside of a
-        CustomResource that corresponds to Scale.Status.Selector.
-        Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status or .spec. Must be set to work
-        with HPA. The field pointed by this JSON path must be a
-        string field (not a complex selector struct) which contains
-        a serialized label selector in string form. More info:
-        https://kubernetes.io/docs/tasks/access-kubernetes-
-        api/custom-resources/custom-resource-definitions#scale-
-        subresource If there is no value under the given path in the
-        CustomResource, the status label selector value in the
-        /scale subresource will default to the empty string.
+        labelSelectorPath defines the JSON path inside of a custom
+        resource that corresponds to Scale `status.selector`. Only
+        JSON paths without the array notation are allowed. Must be a
+        JSON Path under `.status` or `.spec`. Must be set to work
+        with HorizontalPodAutoscaler. The field pointed by this JSON
+        path must be a string field (not a complex selector struct)
+        which contains a serialized label selector in string form.
+        More info: https://kubernetes.io/docs/tasks/access-
+        kubernetes-api/custom-resources/custom-resource-
+        definitions#scale-subresource If there is no value under the
+        given path in the custom resource, the `status.selector`
+        value in the `/scale` subresource will default to the empty
+        string.
         """
         return self._properties.get('labelSelectorPath')
 
     @label_selector_path.setter
     def label_selector_path(self, value: str):
         """
-        LabelSelectorPath defines the JSON path inside of a
-        CustomResource that corresponds to Scale.Status.Selector.
-        Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status or .spec. Must be set to work
-        with HPA. The field pointed by this JSON path must be a
-        string field (not a complex selector struct) which contains
-        a serialized label selector in string form. More info:
-        https://kubernetes.io/docs/tasks/access-kubernetes-
-        api/custom-resources/custom-resource-definitions#scale-
-        subresource If there is no value under the given path in the
-        CustomResource, the status label selector value in the
-        /scale subresource will default to the empty string.
+        labelSelectorPath defines the JSON path inside of a custom
+        resource that corresponds to Scale `status.selector`. Only
+        JSON paths without the array notation are allowed. Must be a
+        JSON Path under `.status` or `.spec`. Must be set to work
+        with HorizontalPodAutoscaler. The field pointed by this JSON
+        path must be a string field (not a complex selector struct)
+        which contains a serialized label selector in string form.
+        More info: https://kubernetes.io/docs/tasks/access-
+        kubernetes-api/custom-resources/custom-resource-
+        definitions#scale-subresource If there is no value under the
+        given path in the custom resource, the `status.selector`
+        value in the `/scale` subresource will default to the empty
+        string.
         """
         self._properties['labelSelectorPath'] = value
 
     @property
     def spec_replicas_path(self) -> str:
         """
-        SpecReplicasPath defines the JSON path inside of a
-        CustomResource that corresponds to Scale.Spec.Replicas. Only
+        specReplicasPath defines the JSON path inside of a custom
+        resource that corresponds to Scale `spec.replicas`. Only
         JSON paths without the array notation are allowed. Must be a
-        JSON Path under .spec. If there is no value under the given
-        path in the CustomResource, the /scale subresource will
-        return an error on GET.
+        JSON Path under `.spec`. If there is no value under the
+        given path in the custom resource, the `/scale` subresource
+        will return an error on GET.
         """
         return self._properties.get('specReplicasPath')
 
     @spec_replicas_path.setter
     def spec_replicas_path(self, value: str):
         """
-        SpecReplicasPath defines the JSON path inside of a
-        CustomResource that corresponds to Scale.Spec.Replicas. Only
+        specReplicasPath defines the JSON path inside of a custom
+        resource that corresponds to Scale `spec.replicas`. Only
         JSON paths without the array notation are allowed. Must be a
-        JSON Path under .spec. If there is no value under the given
-        path in the CustomResource, the /scale subresource will
-        return an error on GET.
+        JSON Path under `.spec`. If there is no value under the
+        given path in the custom resource, the `/scale` subresource
+        will return an error on GET.
         """
         self._properties['specReplicasPath'] = value
 
     @property
     def status_replicas_path(self) -> str:
         """
-        StatusReplicasPath defines the JSON path inside of a
-        CustomResource that corresponds to Scale.Status.Replicas.
-        Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status. If there is no value under the
-        given path in the CustomResource, the status replica value
-        in the /scale subresource will default to 0.
+        statusReplicasPath defines the JSON path inside of a custom
+        resource that corresponds to Scale `status.replicas`. Only
+        JSON paths without the array notation are allowed. Must be a
+        JSON Path under `.status`. If there is no value under the
+        given path in the custom resource, the `status.replicas`
+        value in the `/scale` subresource will default to 0.
         """
         return self._properties.get('statusReplicasPath')
 
     @status_replicas_path.setter
     def status_replicas_path(self, value: str):
         """
-        StatusReplicasPath defines the JSON path inside of a
-        CustomResource that corresponds to Scale.Status.Replicas.
-        Only JSON paths without the array notation are allowed. Must
-        be a JSON Path under .status. If there is no value under the
-        given path in the CustomResource, the status replica value
-        in the /scale subresource will default to 0.
+        statusReplicasPath defines the JSON path inside of a custom
+        resource that corresponds to Scale `status.replicas`. Only
+        JSON paths without the array notation are allowed. Must be a
+        JSON Path under `.status`. If there is no value under the
+        given path in the custom resource, the `status.replicas`
+        value in the `/scale` subresource will default to 0.
         """
         self._properties['statusReplicasPath'] = value
 
@@ -1668,14 +1722,16 @@ class CustomResourceSubresources(_kuber_definitions.Definition):
     @property
     def scale(self) -> 'CustomResourceSubresourceScale':
         """
-        Scale denotes the scale subresource for CustomResources
+        scale indicates the custom resource should serve a `/scale`
+        subresource that returns an `autoscaling/v1` Scale object.
         """
         return self._properties.get('scale')
 
     @scale.setter
     def scale(self, value: typing.Union['CustomResourceSubresourceScale', dict]):
         """
-        Scale denotes the scale subresource for CustomResources
+        scale indicates the custom resource should serve a `/scale`
+        subresource that returns an `autoscaling/v1` Scale object.
         """
         if isinstance(value, dict):
             value = CustomResourceSubresourceScale().from_dict(value)
@@ -1684,14 +1740,24 @@ class CustomResourceSubresources(_kuber_definitions.Definition):
     @property
     def status(self) -> 'CustomResourceSubresourceStatus':
         """
-        Status denotes the status subresource for CustomResources
+        status indicates the custom resource should serve a
+        `/status` subresource. When enabled: 1. requests to the
+        custom resource primary endpoint ignore changes to the
+        `status` stanza of the object. 2. requests to the custom
+        resource `/status` subresource ignore changes to anything
+        other than the `status` stanza of the object.
         """
         return self._properties.get('status')
 
     @status.setter
     def status(self, value: typing.Union['CustomResourceSubresourceStatus', dict]):
         """
-        Status denotes the status subresource for CustomResources
+        status indicates the custom resource should serve a
+        `/status` subresource. When enabled: 1. requests to the
+        custom resource primary endpoint ignore changes to the
+        `status` stanza of the object. 2. requests to the custom
+        resource `/status` subresource ignore changes to anything
+        other than the `status` stanza of the object.
         """
         if isinstance(value, dict):
             value = CustomResourceSubresourceStatus().from_dict(value)
@@ -1731,16 +1797,16 @@ class CustomResourceValidation(_kuber_definitions.Definition):
     @property
     def open_apiv3_schema(self) -> 'JSONSchemaProps':
         """
-        OpenAPIV3Schema is the OpenAPI v3 schema to be validated
-        against.
+        openAPIV3Schema is the OpenAPI v3 schema to use for
+        validation and pruning.
         """
         return self._properties.get('openAPIV3Schema')
 
     @open_apiv3_schema.setter
     def open_apiv3_schema(self, value: typing.Union['JSONSchemaProps', dict]):
         """
-        OpenAPIV3Schema is the OpenAPI v3 schema to be validated
-        against.
+        openAPIV3Schema is the OpenAPI v3 schema to use for
+        validation and pruning.
         """
         if isinstance(value, dict):
             value = JSONSchemaProps().from_dict(value)
@@ -1889,6 +1955,8 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             unique_items: bool = None,
             x_kubernetes_embedded_resource: bool = None,
             x_kubernetes_int_or_string: bool = None,
+            x_kubernetes_list_map_keys: typing.List[str] = None,
+            x_kubernetes_list_type: str = None,
             x_kubernetes_preserve_unknown_fields: bool = None,
     ):
         """Create JSONSchemaProps instance."""
@@ -1934,6 +2002,8 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'uniqueItems': unique_items or None,
             'x-kubernetes-embedded-resource': x_kubernetes_embedded_resource or None,
             'x-kubernetes-int-or-string': x_kubernetes_int_or_string or None,
+            'x-kubernetes-list-map-keys': x_kubernetes_list_map_keys or [],
+            'x-kubernetes-list-type': x_kubernetes_list_type or '',
             'x-kubernetes-preserve-unknown-fields': x_kubernetes_preserve_unknown_fields or None,
 
         }
@@ -1975,6 +2045,8 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             'uniqueItems': (bool, None),
             'x-kubernetes-embedded-resource': (bool, None),
             'x-kubernetes-int-or-string': (bool, None),
+            'x-kubernetes-list-map-keys': (list, str),
+            'x-kubernetes-list-type': (str, None),
             'x-kubernetes-preserve-unknown-fields': (bool, None),
 
         }
@@ -2059,9 +2131,10 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     def default(self) -> 'JSON':
         """
         default is a default value for undefined object fields.
-        Defaulting is an alpha feature under the
-        CustomResourceDefaulting feature gate. Defaulting requires
-        spec.preserveUnknownFields to be false.
+        Defaulting is a beta feature under the
+        CustomResourceDefaulting feature gate.
+        CustomResourceDefinitions with defaults must be created
+        using the v1 (or newer) CustomResourceDefinition API.
         """
         return self._properties.get('default')
 
@@ -2069,9 +2142,10 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     def default(self, value: typing.Union['JSON', dict]):
         """
         default is a default value for undefined object fields.
-        Defaulting is an alpha feature under the
-        CustomResourceDefaulting feature gate. Defaulting requires
-        spec.preserveUnknownFields to be false.
+        Defaulting is a beta feature under the
+        CustomResourceDefaulting feature gate.
+        CustomResourceDefinitions with defaults must be created
+        using the v1 (or newer) CustomResourceDefinition API.
         """
         if isinstance(value, dict):
             value = JSON().from_dict(value)
@@ -2592,6 +2666,92 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         self._properties['x-kubernetes-int-or-string'] = value
 
     @property
+    def x_kubernetes_list_map_keys(self) -> typing.List[str]:
+        """
+        x-kubernetes-list-map-keys annotates an array with the
+        x-kubernetes-list-type `map` by specifying the keys used as
+        the index of the map.
+
+        This tag MUST only be used on lists
+        that have the "x-kubernetes-list-type" extension set to
+        "map". Also, the values specified for this attribute must be
+        a scalar typed field of the child structure (no nesting is
+        supported).
+        """
+        return self._properties.get('x-kubernetes-list-map-keys')
+
+    @x_kubernetes_list_map_keys.setter
+    def x_kubernetes_list_map_keys(self, value: typing.List[str]):
+        """
+        x-kubernetes-list-map-keys annotates an array with the
+        x-kubernetes-list-type `map` by specifying the keys used as
+        the index of the map.
+
+        This tag MUST only be used on lists
+        that have the "x-kubernetes-list-type" extension set to
+        "map". Also, the values specified for this attribute must be
+        a scalar typed field of the child structure (no nesting is
+        supported).
+        """
+        self._properties['x-kubernetes-list-map-keys'] = value
+
+    @property
+    def x_kubernetes_list_type(self) -> str:
+        """
+        x-kubernetes-list-type annotates an array to further
+        describe its topology. This extension must only be used on
+        lists and may have 3 possible values:
+
+        1) `atomic`: the list
+        is treated as a single entity, like a scalar.
+             Atomic
+        lists will be entirely replaced when updated. This extension
+        may be used on any type of list (struct, scalar, ...).
+        2)
+        `set`:
+             Sets are lists that must not have multiple items
+        with the same value. Each
+             value must be a scalar (or
+        another atomic type).
+        3) `map`:
+             These lists are like
+        maps in that their elements have a non-index key
+             used
+        to identify them. Order is preserved upon merge. The map tag
+        must only be used on a list with elements of type object.
+        Defaults to atomic for arrays.
+        """
+        return self._properties.get('x-kubernetes-list-type')
+
+    @x_kubernetes_list_type.setter
+    def x_kubernetes_list_type(self, value: str):
+        """
+        x-kubernetes-list-type annotates an array to further
+        describe its topology. This extension must only be used on
+        lists and may have 3 possible values:
+
+        1) `atomic`: the list
+        is treated as a single entity, like a scalar.
+             Atomic
+        lists will be entirely replaced when updated. This extension
+        may be used on any type of list (struct, scalar, ...).
+        2)
+        `set`:
+             Sets are lists that must not have multiple items
+        with the same value. Each
+             value must be a scalar (or
+        another atomic type).
+        3) `map`:
+             These lists are like
+        maps in that their elements have a non-index key
+             used
+        to identify them. Order is preserved upon merge. The map tag
+        must only be used on a list with elements of type object.
+        Defaults to atomic for arrays.
+        """
+        self._properties['x-kubernetes-list-type'] = value
+
+    @property
     def x_kubernetes_preserve_unknown_fields(self) -> bool:
         """
         x-kubernetes-preserve-unknown-fields stops the API server
@@ -2744,62 +2904,62 @@ class ServiceReference(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        `name` is the name of the service. Required
+        name is the name of the service. Required
         """
         return self._properties.get('name')
 
     @name.setter
     def name(self, value: str):
         """
-        `name` is the name of the service. Required
+        name is the name of the service. Required
         """
         self._properties['name'] = value
 
     @property
     def namespace(self) -> str:
         """
-        `namespace` is the namespace of the service. Required
+        namespace is the namespace of the service. Required
         """
         return self._properties.get('namespace')
 
     @namespace.setter
     def namespace(self, value: str):
         """
-        `namespace` is the namespace of the service. Required
+        namespace is the namespace of the service. Required
         """
         self._properties['namespace'] = value
 
     @property
     def path(self) -> str:
         """
-        `path` is an optional URL path which will be sent in any
-        request to this service.
+        path is an optional URL path at which the webhook will be
+        contacted.
         """
         return self._properties.get('path')
 
     @path.setter
     def path(self, value: str):
         """
-        `path` is an optional URL path which will be sent in any
-        request to this service.
+        path is an optional URL path at which the webhook will be
+        contacted.
         """
         self._properties['path'] = value
 
     @property
     def port(self) -> int:
         """
-        If specified, the port on the service that hosting webhook.
-        Default to 443 for backward compatibility. `port` should be
-        a valid port number (1-65535, inclusive).
+        port is an optional service port at which the webhook will
+        be contacted. `port` should be a valid port number (1-65535,
+        inclusive). Defaults to 443 for backward compatibility.
         """
         return self._properties.get('port')
 
     @port.setter
     def port(self, value: int):
         """
-        If specified, the port on the service that hosting webhook.
-        Default to 443 for backward compatibility. `port` should be
-        a valid port number (1-65535, inclusive).
+        port is an optional service port at which the webhook will
+        be contacted. `port` should be a valid port number (1-65535,
+        inclusive). Defaults to 443 for backward compatibility.
         """
         self._properties['port'] = value
 
@@ -2813,8 +2973,7 @@ class ServiceReference(_kuber_definitions.Definition):
 class WebhookClientConfig(_kuber_definitions.Definition):
     """
     WebhookClientConfig contains the information to make a TLS
-    connection with the webhook. It has the same field as
-    admissionregistration.v1beta1.WebhookClientConfig.
+    connection with the webhook.
     """
 
     def __init__(
@@ -2844,7 +3003,7 @@ class WebhookClientConfig(_kuber_definitions.Definition):
     @property
     def ca_bundle(self) -> str:
         """
-        `caBundle` is a PEM encoded CA bundle which will be used to
+        caBundle is a PEM encoded CA bundle which will be used to
         validate the webhook's server certificate. If unspecified,
         system trust roots on the apiserver are used.
         """
@@ -2853,7 +3012,7 @@ class WebhookClientConfig(_kuber_definitions.Definition):
     @ca_bundle.setter
     def ca_bundle(self, value: str):
         """
-        `caBundle` is a PEM encoded CA bundle which will be used to
+        caBundle is a PEM encoded CA bundle which will be used to
         validate the webhook's server certificate. If unspecified,
         system trust roots on the apiserver are used.
         """
@@ -2862,24 +3021,22 @@ class WebhookClientConfig(_kuber_definitions.Definition):
     @property
     def service(self) -> 'ServiceReference':
         """
-        `service` is a reference to the service for this webhook.
-        Either `service` or `url` must be specified.
+        service is a reference to the service for this webhook.
+        Either service or url must be specified.
 
-        If the webhook
-        is running within the cluster, then you should use
-        `service`.
+        If the webhook is
+        running within the cluster, then you should use `service`.
         """
         return self._properties.get('service')
 
     @service.setter
     def service(self, value: typing.Union['ServiceReference', dict]):
         """
-        `service` is a reference to the service for this webhook.
-        Either `service` or `url` must be specified.
+        service is a reference to the service for this webhook.
+        Either service or url must be specified.
 
-        If the webhook
-        is running within the cluster, then you should use
-        `service`.
+        If the webhook is
+        running within the cluster, then you should use `service`.
         """
         if isinstance(value, dict):
             value = ServiceReference().from_dict(value)
@@ -2888,8 +3045,8 @@ class WebhookClientConfig(_kuber_definitions.Definition):
     @property
     def url(self) -> str:
         """
-        `url` gives the location of the webhook, in standard URL
-        form (`scheme://host:port/path`). Exactly one of `url` or
+        url gives the location of the webhook, in standard URL form
+        (`scheme://host:port/path`). Exactly one of `url` or
         `service` must be specified.
 
         The `host` should not refer to
@@ -2924,8 +3081,8 @@ class WebhookClientConfig(_kuber_definitions.Definition):
     @url.setter
     def url(self, value: str):
         """
-        `url` gives the location of the webhook, in standard URL
-        form (`scheme://host:port/path`). Exactly one of `url` or
+        url gives the location of the webhook, in standard URL form
+        (`scheme://host:port/path`). Exactly one of `url` or
         `service` must be specified.
 
         The `host` should not refer to

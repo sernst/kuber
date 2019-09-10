@@ -58,7 +58,11 @@ class Definition:
             for p, v in self._properties.items()
             if p in self._types
         }
-        results = {p: v for p, v in results.items() if v}
+        results = {
+            p: v
+            for p, v in results.items()
+            if v or isinstance(v, bool)
+        }
         return results if results else None
 
     def from_dict(self, source: dict) -> 'Definition':

@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    kuber.tests.scenarios.cron_suspend
     kuber.tests.scenarios.custom_resource_definition
     kuber.tests.scenarios.empty_values
     kuber.tests.scenarios.metadata_owner_reference

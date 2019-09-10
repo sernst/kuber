@@ -60,8 +60,8 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     def kind(self) -> str:
         """
         Kind of the referent; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds"
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds"
         """
         return self._properties.get('kind')
 
@@ -69,8 +69,8 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     def kind(self, value: str):
         """
         Kind of the referent; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds"
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds"
         """
         self._properties['kind'] = value
 
@@ -364,8 +364,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         metadata is the standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -373,8 +373,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         metadata is the standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -385,8 +385,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         """
         spec is the specification for the behaviour of the
         autoscaler. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         return self._properties.get('spec')
 
@@ -395,8 +395,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         """
         spec is the specification for the behaviour of the
         autoscaler. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
             value = HorizontalPodAutoscalerSpec().from_dict(value)

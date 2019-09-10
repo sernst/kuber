@@ -90,8 +90,8 @@ class ControllerRevision(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -99,8 +99,8 @@ class ControllerRevision(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -308,8 +308,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -317,8 +317,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -441,6 +441,7 @@ class Deployment(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -465,6 +466,7 @@ class Deployment(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -949,8 +951,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -961,8 +963,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -973,8 +975,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -985,8 +987,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -1270,6 +1272,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -1294,6 +1297,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -1833,8 +1837,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -1842,8 +1846,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1853,8 +1857,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self) -> 'ScaleSpec':
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         return self._properties.get('spec')
 
@@ -1862,8 +1866,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ScaleSpec', dict]):
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
             value = ScaleSpec().from_dict(value)
@@ -1873,8 +1877,8 @@ class Scale(_kuber_definitions.Resource):
     def status(self) -> 'ScaleStatus':
         """
         current status of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status. Read-only.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status. Read-only.
         """
         return self._properties.get('status')
 
@@ -1882,8 +1886,8 @@ class Scale(_kuber_definitions.Resource):
     def status(self, value: typing.Union['ScaleStatus', dict]):
         """
         current status of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status. Read-only.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status. Read-only.
         """
         if isinstance(value, dict):
             value = ScaleStatus().from_dict(value)
@@ -2314,6 +2318,7 @@ class StatefulSet(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -2338,6 +2343,7 @@ class StatefulSet(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -3016,6 +3022,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -3040,6 +3047,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,

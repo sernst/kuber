@@ -212,6 +212,14 @@ kuber.v1\_16.core\_v1 module
     :undoc-members:
     :show-inheritance:
 
+kuber.v1\_16.discovery\_v1alpha1 module
+---------------------------------------
+
+.. automodule:: kuber.v1_16.discovery_v1alpha1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 kuber.v1\_16.events\_v1beta1 module
 -----------------------------------
 

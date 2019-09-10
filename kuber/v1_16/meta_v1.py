@@ -53,8 +53,8 @@ class APIGroup(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -65,8 +65,8 @@ class APIGroup(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -77,8 +77,8 @@ class APIGroup(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -89,8 +89,8 @@ class APIGroup(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -234,8 +234,8 @@ class APIGroupList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -246,8 +246,8 @@ class APIGroupList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -280,8 +280,8 @@ class APIGroupList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -292,8 +292,8 @@ class APIGroupList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -587,8 +587,8 @@ class APIResourceList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -599,8 +599,8 @@ class APIResourceList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -627,8 +627,8 @@ class APIResourceList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -639,8 +639,8 @@ class APIResourceList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -716,8 +716,8 @@ class APIVersions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -728,8 +728,8 @@ class APIVersions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -740,8 +740,8 @@ class APIVersions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -752,8 +752,8 @@ class APIVersions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -868,8 +868,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -880,8 +880,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -938,8 +938,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -950,8 +950,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -1032,34 +1032,34 @@ class DeleteOptions(_kuber_definitions.Definition):
         return False
 
 
-class Fields(_kuber_definitions.Definition):
+class FieldsV1(_kuber_definitions.Definition):
     """
-    Fields stores a set of fields in a data structure like a
-    Trie.
+    FieldsV1 stores a set of fields in a data structure like a
+    Trie, in JSON format.
 
-    Each key is either a '.' representing the field
-    itself, and will always map to an empty set, or a string
-    representing a sub-field or item. The string will follow one
-    of these four formats: 'f:<name>', where <name> is the name
-    of a field in a struct, or key in a map 'v:<value>', where
-    <value> is the exact json formatted value of a list item
-    'i:<index>', where <index> is position of a item in a list
-    'k:<keys>', where <keys> is a map of  a list item's key
-    fields to their unique values If a key maps to an empty
-    Fields value, the field that key represents is part of the
-    set.
+    Each key is either a '.' representing
+    the field itself, and will always map to an empty set, or a
+    string representing a sub-field or item. The string will
+    follow one of these four formats: 'f:<name>', where <name>
+    is the name of a field in a struct, or key in a map
+    'v:<value>', where <value> is the exact json formatted value
+    of a list item 'i:<index>', where <index> is position of a
+    item in a list 'k:<keys>', where <keys> is a map of  a list
+    item's key fields to their unique values If a key maps to an
+    empty Fields value, the field that key represents is part of
+    the set.
 
-    The exact format is defined in sigs.k8s.io/structured-
-    merge-diff
+    The exact format is defined in
+    sigs.k8s.io/structured-merge-diff
     """
 
     def __init__(
             self,
     ):
-        """Create Fields instance."""
-        super(Fields, self).__init__(
+        """Create FieldsV1 instance."""
+        super(FieldsV1, self).__init__(
             api_version='meta/v1',
-            kind='Fields'
+            kind='FieldsV1'
         )
         self._properties = {
 
@@ -1068,7 +1068,7 @@ class Fields(_kuber_definitions.Definition):
 
         }
 
-    def __enter__(self) -> 'Fields':
+    def __enter__(self) -> 'FieldsV1':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1399,8 +1399,6 @@ class ListMeta(_kuber_definitions.Definition):
         field. The intended use of the remainingItemCount is
         *estimating* the size of a collection. Clients should not
         rely on the remainingItemCount to be set or to be exact.
-        This field is alpha and can be changed or removed without
-        notice.
         """
         return self._properties.get('remainingItemCount')
 
@@ -1419,8 +1417,6 @@ class ListMeta(_kuber_definitions.Definition):
         field. The intended use of the remainingItemCount is
         *estimating* the size of a collection. Clients should not
         rely on the remainingItemCount to be set or to be exact.
-        This field is alpha and can be changed or removed without
-        notice.
         """
         self._properties['remainingItemCount'] = value
 
@@ -1432,8 +1428,9 @@ class ListMeta(_kuber_definitions.Definition):
         have changed. Value must be treated as opaque by clients and
         passed unmodified back to the server. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         return self._properties.get('resourceVersion')
 
@@ -1445,8 +1442,9 @@ class ListMeta(_kuber_definitions.Definition):
         have changed. Value must be treated as opaque by clients and
         passed unmodified back to the server. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         self._properties['resourceVersion'] = value
 
@@ -1490,7 +1488,8 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
     def __init__(
             self,
             api_version: str = None,
-            fields: 'Fields' = None,
+            fields_type: str = None,
+            fields_v1: 'FieldsV1' = None,
             manager: str = None,
             operation: str = None,
             time: str = None,
@@ -1502,7 +1501,8 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         )
         self._properties = {
             'apiVersion': api_version or '',
-            'fields': fields or Fields(),
+            'fieldsType': fields_type or '',
+            'fieldsV1': fields_v1 or FieldsV1(),
             'manager': manager or '',
             'operation': operation or '',
             'time': time or None,
@@ -1510,7 +1510,8 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         }
         self._types = {
             'apiVersion': (str, None),
-            'fields': (Fields, None),
+            'fieldsType': (str, None),
+            'fieldsV1': (FieldsV1, None),
             'manager': (str, None),
             'operation': (str, None),
             'time': (str, None),
@@ -1540,20 +1541,40 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         self._properties['apiVersion'] = value
 
     @property
-    def fields(self) -> 'Fields':
+    def fields_type(self) -> str:
         """
-        Fields identifies a set of fields.
+        FieldsType is the discriminator for the different fields
+        format and version. There is currently only one possible
+        value: "FieldsV1"
         """
-        return self._properties.get('fields')
+        return self._properties.get('fieldsType')
 
-    @fields.setter
-    def fields(self, value: typing.Union['Fields', dict]):
+    @fields_type.setter
+    def fields_type(self, value: str):
         """
-        Fields identifies a set of fields.
+        FieldsType is the discriminator for the different fields
+        format and version. There is currently only one possible
+        value: "FieldsV1"
+        """
+        self._properties['fieldsType'] = value
+
+    @property
+    def fields_v1(self) -> 'FieldsV1':
+        """
+        FieldsV1 holds the first JSON version format as described in
+        the "FieldsV1" type.
+        """
+        return self._properties.get('fieldsV1')
+
+    @fields_v1.setter
+    def fields_v1(self, value: typing.Union['FieldsV1', dict]):
+        """
+        FieldsV1 holds the first JSON version format as described in
+        the "FieldsV1" type.
         """
         if isinstance(value, dict):
-            value = Fields().from_dict(value)
-        self._properties['fields'] = value
+            value = FieldsV1().from_dict(value)
+        self._properties['fieldsV1'] = value
 
     @property
     def manager(self) -> str:
@@ -1771,8 +1792,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system. Read-only.
         Null for lists. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('creationTimestamp')
 
@@ -1790,8 +1811,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system. Read-only.
         Null for lists. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -1846,8 +1867,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system when a graceful
         deletion is requested. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('deletionTimestamp')
 
@@ -1881,8 +1902,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system when a graceful
         deletion is requested. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -1933,8 +1954,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         After header).
 
         Applied only if Name is not specified. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#idempotency
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#idempotency
         """
         return self._properties.get('generateName')
 
@@ -1959,8 +1980,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         After header).
 
         Applied only if Name is not specified. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#idempotency
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#idempotency
         """
         self._properties['generateName'] = value
 
@@ -2140,8 +2161,9 @@ class ObjectMeta(_kuber_definitions.Definition):
         Populated by
         the system. Read-only. Value must be treated as opaque by
         clients and . More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         return self._properties.get('resourceVersion')
 
@@ -2159,8 +2181,9 @@ class ObjectMeta(_kuber_definitions.Definition):
         Populated by
         the system. Read-only. Value must be treated as opaque by
         clients and . More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         self._properties['resourceVersion'] = value
 
@@ -2318,8 +2341,8 @@ class OwnerReference(_kuber_definitions.Definition):
     def kind(self) -> str:
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -2327,8 +2350,8 @@ class OwnerReference(_kuber_definitions.Definition):
     def kind(self, value: str):
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -2582,8 +2605,8 @@ class Status(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -2594,8 +2617,8 @@ class Status(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -2642,8 +2665,8 @@ class Status(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -2654,8 +2677,8 @@ class Status(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -2679,8 +2702,8 @@ class Status(_kuber_definitions.Definition):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -2688,8 +2711,8 @@ class Status(_kuber_definitions.Definition):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -2720,8 +2743,8 @@ class Status(_kuber_definitions.Definition):
         """
         Status of the operation. One of: "Success" or "Failure".
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -2730,8 +2753,8 @@ class Status(_kuber_definitions.Definition):
         """
         Status of the operation. One of: "Success" or "Failure".
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         self._properties['status'] = value
 
@@ -2936,8 +2959,8 @@ class StatusDetails(_kuber_definitions.Definition):
         The kind attribute of the resource associated with the
         status StatusReason. On some operations may differ from the
         requested resource Kind. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -2947,8 +2970,8 @@ class StatusDetails(_kuber_definitions.Definition):
         The kind attribute of the resource associated with the
         status StatusReason. On some operations may differ from the
         requested resource Kind. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 

@@ -60,8 +60,8 @@ class CSIDriver(_kuber_definitions.Resource):
         beginning and ending with an alphanumeric character
         ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics
         between. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -75,8 +75,8 @@ class CSIDriver(_kuber_definitions.Resource):
         beginning and ending with an alphanumeric character
         ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics
         between. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -283,8 +283,8 @@ class CSIDriverList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -292,8 +292,8 @@ class CSIDriverList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -328,6 +328,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             self,
             attach_required: bool = None,
             pod_info_on_mount: bool = None,
+            volume_lifecycle_modes: typing.List[str] = None,
     ):
         """Create CSIDriverSpec instance."""
         super(CSIDriverSpec, self).__init__(
@@ -337,11 +338,13 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._properties = {
             'attachRequired': attach_required or None,
             'podInfoOnMount': pod_info_on_mount or None,
+            'volumeLifecycleModes': volume_lifecycle_modes or [],
 
         }
         self._types = {
             'attachRequired': (bool, None),
             'podInfoOnMount': (bool, None),
+            'volumeLifecycleModes': (list, str),
 
         }
 
@@ -398,6 +401,18 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
+        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        ephemeral inline volume
+        defined by a CSIVolumeSource, otherwise "false"
+        "csi.storage.k8s.io/ephemeral" is a new feature in
+        Kubernetes 1.16. It is only required for drivers which
+        support both the "Persistent" and "Ephemeral"
+        VolumeLifecycleMode. Other drivers can leave pod info
+        disabled and/or ignore this field. As Kubernetes 1.15
+        doesn't support this field, drivers can only support one
+        mode when deployed on such a cluster and the deployment
+        determines which mode that is, for example via a command
+        line parameter of the driver.
         """
         return self._properties.get('podInfoOnMount')
 
@@ -418,8 +433,58 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
+        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        ephemeral inline volume
+        defined by a CSIVolumeSource, otherwise "false"
+        "csi.storage.k8s.io/ephemeral" is a new feature in
+        Kubernetes 1.16. It is only required for drivers which
+        support both the "Persistent" and "Ephemeral"
+        VolumeLifecycleMode. Other drivers can leave pod info
+        disabled and/or ignore this field. As Kubernetes 1.15
+        doesn't support this field, drivers can only support one
+        mode when deployed on such a cluster and the deployment
+        determines which mode that is, for example via a command
+        line parameter of the driver.
         """
         self._properties['podInfoOnMount'] = value
+
+    @property
+    def volume_lifecycle_modes(self) -> typing.List[str]:
+        """
+        VolumeLifecycleModes defines what kind of volumes this CSI
+        volume driver supports. The default if the list is empty is
+        "Persistent", which is the usage defined by the CSI
+        specification and implemented in Kubernetes via the usual
+        PV/PVC mechanism. The other mode is "Ephemeral". In this
+        mode, volumes are defined inline inside the pod spec with
+        CSIVolumeSource and their lifecycle is tied to the lifecycle
+        of that pod. A driver has to be aware of this because it is
+        only going to get a NodePublishVolume call for such a
+        volume. For more information about implementing this mode,
+        see https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future.
+        """
+        return self._properties.get('volumeLifecycleModes')
+
+    @volume_lifecycle_modes.setter
+    def volume_lifecycle_modes(self, value: typing.List[str]):
+        """
+        VolumeLifecycleModes defines what kind of volumes this CSI
+        volume driver supports. The default if the list is empty is
+        "Persistent", which is the usage defined by the CSI
+        specification and implemented in Kubernetes via the usual
+        PV/PVC mechanism. The other mode is "Ephemeral". In this
+        mode, volumes are defined inline inside the pod spec with
+        CSIVolumeSource and their lifecycle is tied to the lifecycle
+        of that pod. A driver has to be aware of this because it is
+        only going to get a NodePublishVolume call for such a
+        volume. For more information about implementing this mode,
+        see https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future.
+        """
+        self._properties['volumeLifecycleModes'] = value
 
     def __enter__(self) -> 'CSIDriverSpec':
         return self
@@ -826,8 +891,8 @@ class CSINodeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -835,8 +900,8 @@ class CSINodeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -1020,8 +1085,8 @@ class StorageClass(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1029,8 +1094,8 @@ class StorageClass(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1309,8 +1374,8 @@ class StorageClassList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1318,8 +1383,8 @@ class StorageClassList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -1382,8 +1447,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1391,8 +1456,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1667,8 +1732,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1676,8 +1741,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)

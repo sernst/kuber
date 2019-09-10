@@ -307,6 +307,7 @@ class DaemonSet(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -331,6 +332,7 @@ class DaemonSet(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -929,6 +931,7 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -953,6 +956,7 @@ class DaemonSetSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -1397,6 +1401,7 @@ class Deployment(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -1421,6 +1426,7 @@ class Deployment(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -1905,8 +1911,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -1917,8 +1923,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -1929,8 +1935,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -1941,8 +1947,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -2234,6 +2240,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -2258,6 +2265,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -5027,9 +5035,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         AllowedCSIDrivers is a whitelist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
         empty value indicates that any CSI driver can be used for
-        inline ephemeral volumes. This is an alpha field, and is
-        only honored if the API server enables the CSIInlineVolume
-        feature gate.
+        inline ephemeral volumes.
         """
         return self._properties.get('allowedCSIDrivers')
 
@@ -5042,9 +5048,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         AllowedCSIDrivers is a whitelist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
         empty value indicates that any CSI driver can be used for
-        inline ephemeral volumes. This is an alpha field, and is
-        only honored if the API server enables the CSIInlineVolume
-        feature gate.
+        inline ephemeral volumes.
         """
         cleaned = []
         for item in value:
@@ -5639,6 +5643,7 @@ class ReplicaSet(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -5663,6 +5668,7 @@ class ReplicaSet(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -6225,6 +6231,7 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -6249,6 +6256,7 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,

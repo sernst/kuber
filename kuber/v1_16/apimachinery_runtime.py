@@ -58,7 +58,6 @@ class RawExtension(_kuber_definitions.Definition):
 
     def __init__(
             self,
-            raw: str = None,
     ):
         """Create RawExtension instance."""
         super(RawExtension, self).__init__(
@@ -66,27 +65,11 @@ class RawExtension(_kuber_definitions.Definition):
             kind='RawExtension'
         )
         self._properties = {
-            'Raw': raw or '',
 
         }
         self._types = {
-            'Raw': (str, None),
 
         }
-
-    @property
-    def raw(self) -> str:
-        """
-        Raw is the underlying serialization of this object.
-        """
-        return self._properties.get('Raw')
-
-    @raw.setter
-    def raw(self, value: str):
-        """
-        Raw is the underlying serialization of this object.
-        """
-        self._properties['Raw'] = value
 
     def __enter__(self) -> 'RawExtension':
         return self
