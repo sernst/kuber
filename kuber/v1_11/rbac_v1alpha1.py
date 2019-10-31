@@ -25,7 +25,7 @@ class AggregationRule(_kuber_definitions.Definition):
             kind='AggregationRule'
         )
         self._properties = {
-            'clusterRoleSelectors': cluster_role_selectors or [],
+            'clusterRoleSelectors': cluster_role_selectors if cluster_role_selectors is not None else [],
 
         }
         self._types = {
@@ -87,9 +87,9 @@ class ClusterRole(_kuber_definitions.Resource):
             kind='ClusterRole'
         )
         self._properties = {
-            'aggregationRule': aggregation_rule or AggregationRule(),
-            'metadata': metadata or ObjectMeta(),
-            'rules': rules or [],
+            'aggregationRule': aggregation_rule if aggregation_rule is not None else AggregationRule(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'rules': rules if rules is not None else [],
 
         }
         self._types = {
@@ -311,9 +311,9 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
             kind='ClusterRoleBinding'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'roleRef': role_ref or RoleRef(),
-            'subjects': subjects or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'roleRef': role_ref if role_ref is not None else RoleRef(),
+            'subjects': subjects if subjects is not None else [],
 
         }
         self._types = {
@@ -533,8 +533,8 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
             kind='ClusterRoleBindingList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -619,8 +619,8 @@ class ClusterRoleList(_kuber_definitions.Collection):
             kind='ClusterRoleList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -710,11 +710,11 @@ class PolicyRule(_kuber_definitions.Definition):
             kind='PolicyRule'
         )
         self._properties = {
-            'apiGroups': api_groups or [],
-            'nonResourceURLs': non_resource_urls or [],
-            'resourceNames': resource_names or [],
-            'resources': resources or [],
-            'verbs': verbs or [],
+            'apiGroups': api_groups if api_groups is not None else [],
+            'nonResourceURLs': non_resource_urls if non_resource_urls is not None else [],
+            'resourceNames': resource_names if resource_names is not None else [],
+            'resources': resources if resources is not None else [],
+            'verbs': verbs if verbs is not None else [],
 
         }
         self._types = {
@@ -854,8 +854,8 @@ class Role(_kuber_definitions.Resource):
             kind='Role'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'rules': rules or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'rules': rules if rules is not None else [],
 
         }
         self._types = {
@@ -1057,9 +1057,9 @@ class RoleBinding(_kuber_definitions.Resource):
             kind='RoleBinding'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'roleRef': role_ref or RoleRef(),
-            'subjects': subjects or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'roleRef': role_ref if role_ref is not None else RoleRef(),
+            'subjects': subjects if subjects is not None else [],
 
         }
         self._types = {
@@ -1278,8 +1278,8 @@ class RoleBindingList(_kuber_definitions.Collection):
             kind='RoleBindingList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -1364,8 +1364,8 @@ class RoleList(_kuber_definitions.Collection):
             kind='RoleList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -1452,9 +1452,9 @@ class RoleRef(_kuber_definitions.Definition):
             kind='RoleRef'
         )
         self._properties = {
-            'apiGroup': api_group or '',
-            'kind': kind or '',
-            'name': name or '',
+            'apiGroup': api_group if api_group is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -1534,10 +1534,10 @@ class Subject(_kuber_definitions.Definition):
             kind='Subject'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
-            'namespace': namespace or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
 
         }
         self._types = {

@@ -29,9 +29,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
             kind='CrossVersionObjectReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -113,9 +113,9 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             kind='HorizontalPodAutoscaler'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or HorizontalPodAutoscalerSpec(),
-            'status': status or HorizontalPodAutoscalerStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else HorizontalPodAutoscalerSpec(),
+            'status': status if status is not None else HorizontalPodAutoscalerStatus(),
 
         }
         self._types = {
@@ -375,8 +375,8 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
             kind='HorizontalPodAutoscalerList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -463,10 +463,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerSpec'
         )
         self._properties = {
-            'maxReplicas': max_replicas or None,
-            'minReplicas': min_replicas or None,
-            'scaleTargetRef': scale_target_ref or CrossVersionObjectReference(),
-            'targetCPUUtilizationPercentage': target_cpuutilization_percentage or None,
+            'maxReplicas': max_replicas if max_replicas is not None else None,
+            'minReplicas': min_replicas if min_replicas is not None else None,
+            'scaleTargetRef': scale_target_ref if scale_target_ref is not None else CrossVersionObjectReference(),
+            'targetCPUUtilizationPercentage': target_cpuutilization_percentage if target_cpuutilization_percentage is not None else None,
 
         }
         self._types = {
@@ -581,11 +581,11 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerStatus'
         )
         self._properties = {
-            'currentCPUUtilizationPercentage': current_cpuutilization_percentage or None,
-            'currentReplicas': current_replicas or None,
-            'desiredReplicas': desired_replicas or None,
-            'lastScaleTime': last_scale_time or None,
-            'observedGeneration': observed_generation or None,
+            'currentCPUUtilizationPercentage': current_cpuutilization_percentage if current_cpuutilization_percentage is not None else None,
+            'currentReplicas': current_replicas if current_replicas is not None else None,
+            'desiredReplicas': desired_replicas if desired_replicas is not None else None,
+            'lastScaleTime': last_scale_time if last_scale_time is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
 
         }
         self._types = {
@@ -710,9 +710,9 @@ class Scale(_kuber_definitions.Resource):
             kind='Scale'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ScaleSpec(),
-            'status': status or ScaleStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ScaleSpec(),
+            'status': status if status is not None else ScaleStatus(),
 
         }
         self._types = {
@@ -975,7 +975,7 @@ class ScaleSpec(_kuber_definitions.Definition):
             kind='ScaleSpec'
         )
         self._properties = {
-            'replicas': replicas or None,
+            'replicas': replicas if replicas is not None else None,
 
         }
         self._types = {
@@ -1021,8 +1021,8 @@ class ScaleStatus(_kuber_definitions.Definition):
             kind='ScaleStatus'
         )
         self._properties = {
-            'replicas': replicas or None,
-            'selector': selector or '',
+            'replicas': replicas if replicas is not None else None,
+            'selector': selector if selector is not None else '',
 
         }
         self._types = {

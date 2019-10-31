@@ -25,8 +25,8 @@ class Lease(_kuber_definitions.Resource):
             kind='Lease'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or LeaseSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else LeaseSpec(),
 
         }
         self._types = {
@@ -41,8 +41,8 @@ class Lease(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -50,8 +50,8 @@ class Lease(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -61,8 +61,8 @@ class Lease(_kuber_definitions.Resource):
     def spec(self) -> 'LeaseSpec':
         """
         Specification of the Lease. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -70,8 +70,8 @@ class Lease(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['LeaseSpec', dict]):
         """
         Specification of the Lease. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = LeaseSpec().from_dict(value)
@@ -224,8 +224,8 @@ class LeaseList(_kuber_definitions.Collection):
             kind='LeaseList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -262,8 +262,8 @@ class LeaseList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -271,8 +271,8 @@ class LeaseList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -317,11 +317,11 @@ class LeaseSpec(_kuber_definitions.Definition):
             kind='LeaseSpec'
         )
         self._properties = {
-            'acquireTime': acquire_time or MicroTime(),
-            'holderIdentity': holder_identity or '',
-            'leaseDurationSeconds': lease_duration_seconds or None,
-            'leaseTransitions': lease_transitions or None,
-            'renewTime': renew_time or MicroTime(),
+            'acquireTime': acquire_time if acquire_time is not None else MicroTime(),
+            'holderIdentity': holder_identity if holder_identity is not None else '',
+            'leaseDurationSeconds': lease_duration_seconds if lease_duration_seconds is not None else None,
+            'leaseTransitions': lease_transitions if lease_transitions is not None else None,
+            'renewTime': renew_time if renew_time is not None else MicroTime(),
 
         }
         self._types = {

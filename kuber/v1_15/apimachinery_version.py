@@ -29,15 +29,15 @@ class Info(_kuber_definitions.Definition):
             kind='Info'
         )
         self._properties = {
-            'buildDate': build_date or '',
-            'compiler': compiler or '',
-            'gitCommit': git_commit or '',
-            'gitTreeState': git_tree_state or '',
-            'gitVersion': git_version or '',
-            'goVersion': go_version or '',
-            'major': major or '',
-            'minor': minor or '',
-            'platform': platform or '',
+            'buildDate': build_date if build_date is not None else '',
+            'compiler': compiler if compiler is not None else '',
+            'gitCommit': git_commit if git_commit is not None else '',
+            'gitTreeState': git_tree_state if git_tree_state is not None else '',
+            'gitVersion': git_version if git_version is not None else '',
+            'goVersion': go_version if go_version is not None else '',
+            'major': major if major is not None else '',
+            'minor': minor if minor is not None else '',
+            'platform': platform if platform is not None else '',
 
         }
         self._types = {

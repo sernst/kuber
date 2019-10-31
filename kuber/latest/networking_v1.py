@@ -28,8 +28,8 @@ class IPBlock(_kuber_definitions.Definition):
             kind='IPBlock'
         )
         self._properties = {
-            'cidr': cidr or '',
-            'except': except_ or [],
+            'cidr': cidr if cidr is not None else '',
+            'except': except_ if except_ is not None else [],
 
         }
         self._types = {
@@ -98,8 +98,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
             kind='NetworkPolicy'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or NetworkPolicySpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else NetworkPolicySpec(),
 
         }
         self._types = {
@@ -298,8 +298,8 @@ class NetworkPolicyEgressRule(_kuber_definitions.Definition):
             kind='NetworkPolicyEgressRule'
         )
         self._properties = {
-            'ports': ports or [],
-            'to': to or [],
+            'ports': ports if ports is not None else [],
+            'to': to if to is not None else [],
 
         }
         self._types = {
@@ -400,8 +400,8 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
             kind='NetworkPolicyIngressRule'
         )
         self._properties = {
-            'from': from_ or [],
-            'ports': ports or [],
+            'from': from_ if from_ is not None else [],
+            'ports': ports if ports is not None else [],
 
         }
         self._types = {
@@ -418,7 +418,7 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
         using a logical OR operation. If this field is empty or
         missing, this rule matches all sources (traffic not
         restricted by source). If this field is present and contains
-        at least on item, this rule allows traffic only if the
+        at least one item, this rule allows traffic only if the
         traffic matches at least one item in the from list.
         """
         return self._properties.get('from')
@@ -434,7 +434,7 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
         using a logical OR operation. If this field is empty or
         missing, this rule matches all sources (traffic not
         restricted by source). If this field is present and contains
-        at least on item, this rule allows traffic only if the
+        at least one item, this rule allows traffic only if the
         traffic matches at least one item in the from list.
         """
         cleaned = []
@@ -501,8 +501,8 @@ class NetworkPolicyList(_kuber_definitions.Collection):
             kind='NetworkPolicyList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -593,9 +593,9 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
             kind='NetworkPolicyPeer'
         )
         self._properties = {
-            'ipBlock': ip_block or IPBlock(),
-            'namespaceSelector': namespace_selector or LabelSelector(),
-            'podSelector': pod_selector or LabelSelector(),
+            'ipBlock': ip_block if ip_block is not None else IPBlock(),
+            'namespaceSelector': namespace_selector if namespace_selector is not None else LabelSelector(),
+            'podSelector': pod_selector if pod_selector is not None else LabelSelector(),
 
         }
         self._types = {
@@ -710,8 +710,8 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
             kind='NetworkPolicyPort'
         )
         self._properties = {
-            'port': port or None,
-            'protocol': protocol or '',
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
@@ -784,10 +784,10 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
             kind='NetworkPolicySpec'
         )
         self._properties = {
-            'egress': egress or [],
-            'ingress': ingress or [],
-            'podSelector': pod_selector or LabelSelector(),
-            'policyTypes': policy_types or [],
+            'egress': egress if egress is not None else [],
+            'ingress': ingress if ingress is not None else [],
+            'podSelector': pod_selector if pod_selector is not None else LabelSelector(),
+            'policyTypes': policy_types if policy_types is not None else [],
 
         }
         self._types = {

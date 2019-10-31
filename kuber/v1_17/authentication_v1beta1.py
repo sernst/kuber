@@ -29,9 +29,9 @@ class TokenReview(_kuber_definitions.Resource):
             kind='TokenReview'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or TokenReviewSpec(),
-            'status': status or TokenReviewStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else TokenReviewSpec(),
+            'status': status if status is not None else TokenReviewStatus(),
 
         }
         self._types = {
@@ -286,8 +286,8 @@ class TokenReviewSpec(_kuber_definitions.Definition):
             kind='TokenReviewSpec'
         )
         self._properties = {
-            'audiences': audiences or [],
-            'token': token or '',
+            'audiences': audiences if audiences is not None else [],
+            'token': token if token is not None else '',
 
         }
         self._types = {
@@ -360,10 +360,10 @@ class TokenReviewStatus(_kuber_definitions.Definition):
             kind='TokenReviewStatus'
         )
         self._properties = {
-            'audiences': audiences or [],
-            'authenticated': authenticated or None,
-            'error': error or '',
-            'user': user or UserInfo(),
+            'audiences': audiences if audiences is not None else [],
+            'authenticated': authenticated if authenticated is not None else None,
+            'error': error if error is not None else '',
+            'user': user if user is not None else UserInfo(),
 
         }
         self._types = {
@@ -480,10 +480,10 @@ class UserInfo(_kuber_definitions.Definition):
             kind='UserInfo'
         )
         self._properties = {
-            'extra': extra or {},
-            'groups': groups or [],
-            'uid': uid or '',
-            'username': username or '',
+            'extra': extra if extra is not None else {},
+            'groups': groups if groups is not None else [],
+            'uid': uid if uid is not None else '',
+            'username': username if username is not None else '',
 
         }
         self._types = {

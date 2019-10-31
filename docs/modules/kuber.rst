@@ -18,6 +18,7 @@ Subpackages
     kuber.v1_15
     kuber.v1_16
     kuber.v1_17
+    kuber.v1_18
 
 Submodules
 ----------

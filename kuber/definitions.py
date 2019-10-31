@@ -61,7 +61,9 @@ class Definition:
         results = {
             p: v
             for p, v in results.items()
-            if v or isinstance(v, bool)
+            if v
+            or isinstance(v, bool)
+            or v == 0
         }
         return results if results else None
 

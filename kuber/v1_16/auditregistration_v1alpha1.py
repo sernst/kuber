@@ -24,8 +24,8 @@ class AuditSink(_kuber_definitions.Resource):
             kind='AuditSink'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or AuditSinkSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else AuditSinkSpec(),
 
         }
         self._types = {
@@ -215,8 +215,8 @@ class AuditSinkList(_kuber_definitions.Collection):
             kind='AuditSinkList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -301,8 +301,8 @@ class AuditSinkSpec(_kuber_definitions.Definition):
             kind='AuditSinkSpec'
         )
         self._properties = {
-            'policy': policy or Policy(),
-            'webhook': webhook or Webhook(),
+            'policy': policy if policy is not None else Policy(),
+            'webhook': webhook if webhook is not None else Webhook(),
 
         }
         self._types = {
@@ -369,8 +369,8 @@ class Policy(_kuber_definitions.Definition):
             kind='Policy'
         )
         self._properties = {
-            'level': level or '',
-            'stages': stages or [],
+            'level': level if level is not None else '',
+            'stages': stages if stages is not None else [],
 
         }
         self._types = {
@@ -434,10 +434,10 @@ class ServiceReference(_kuber_definitions.Definition):
             kind='ServiceReference'
         )
         self._properties = {
-            'name': name or '',
-            'namespace': namespace or '',
-            'path': path or '',
-            'port': port or None,
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'path': path if path is not None else '',
+            'port': port if port is not None else None,
 
         }
         self._types = {
@@ -533,8 +533,8 @@ class Webhook(_kuber_definitions.Definition):
             kind='Webhook'
         )
         self._properties = {
-            'clientConfig': client_config or WebhookClientConfig(),
-            'throttle': throttle or WebhookThrottleConfig(),
+            'clientConfig': client_config if client_config is not None else WebhookClientConfig(),
+            'throttle': throttle if throttle is not None else WebhookThrottleConfig(),
 
         }
         self._types = {
@@ -602,9 +602,9 @@ class WebhookClientConfig(_kuber_definitions.Definition):
             kind='WebhookClientConfig'
         )
         self._properties = {
-            'caBundle': ca_bundle or '',
-            'service': service or ServiceReference(),
-            'url': url or '',
+            'caBundle': ca_bundle if ca_bundle is not None else '',
+            'service': service if service is not None else ServiceReference(),
+            'url': url if url is not None else '',
 
         }
         self._types = {
@@ -754,8 +754,8 @@ class WebhookThrottleConfig(_kuber_definitions.Definition):
             kind='WebhookThrottleConfig'
         )
         self._properties = {
-            'burst': burst or None,
-            'qps': qps or None,
+            'burst': burst if burst is not None else None,
+            'qps': qps if qps is not None else None,
 
         }
         self._types = {

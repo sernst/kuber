@@ -35,17 +35,17 @@ class MutatingWebhook(_kuber_definitions.Definition):
             kind='MutatingWebhook'
         )
         self._properties = {
-            'admissionReviewVersions': admission_review_versions or [],
-            'clientConfig': client_config or WebhookClientConfig(),
-            'failurePolicy': failure_policy or '',
-            'matchPolicy': match_policy or '',
-            'name': name or '',
-            'namespaceSelector': namespace_selector or LabelSelector(),
-            'objectSelector': object_selector or LabelSelector(),
-            'reinvocationPolicy': reinvocation_policy or '',
-            'rules': rules or [],
-            'sideEffects': side_effects or '',
-            'timeoutSeconds': timeout_seconds or None,
+            'admissionReviewVersions': admission_review_versions if admission_review_versions is not None else [],
+            'clientConfig': client_config if client_config is not None else WebhookClientConfig(),
+            'failurePolicy': failure_policy if failure_policy is not None else '',
+            'matchPolicy': match_policy if match_policy is not None else '',
+            'name': name if name is not None else '',
+            'namespaceSelector': namespace_selector if namespace_selector is not None else LabelSelector(),
+            'objectSelector': object_selector if object_selector is not None else LabelSelector(),
+            'reinvocationPolicy': reinvocation_policy if reinvocation_policy is not None else '',
+            'rules': rules if rules is not None else [],
+            'sideEffects': side_effects if side_effects is not None else '',
+            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
 
         }
         self._types = {
@@ -500,7 +500,9 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
     """
     MutatingWebhookConfiguration describes the configuration of
     and admission webhook that accept or reject and may change
-    the object.
+    the object. Deprecated in v1.16, planned for removal in
+    v1.19. Use admissionregistration.k8s.io/v1
+    MutatingWebhookConfiguration instead.
     """
 
     def __init__(
@@ -514,8 +516,8 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
             kind='MutatingWebhookConfiguration'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'webhooks': webhooks or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'webhooks': webhooks if webhooks is not None else [],
 
         }
         self._types = {
@@ -530,8 +532,8 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -539,8 +541,8 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -718,8 +720,8 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
             kind='MutatingWebhookConfigurationList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -756,8 +758,8 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -765,8 +767,8 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -813,11 +815,11 @@ class RuleWithOperations(_kuber_definitions.Definition):
             kind='RuleWithOperations'
         )
         self._properties = {
-            'apiGroups': api_groups or [],
-            'apiVersions': api_versions or [],
-            'operations': operations or [],
-            'resources': resources or [],
-            'scope': scope or '',
+            'apiGroups': api_groups if api_groups is not None else [],
+            'apiVersions': api_versions if api_versions is not None else [],
+            'operations': operations if operations is not None else [],
+            'resources': resources if resources is not None else [],
+            'scope': scope if scope is not None else '',
 
         }
         self._types = {
@@ -976,10 +978,10 @@ class ServiceReference(_kuber_definitions.Definition):
             kind='ServiceReference'
         )
         self._properties = {
-            'name': name or '',
-            'namespace': namespace or '',
-            'path': path or '',
-            'port': port or None,
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'path': path if path is not None else '',
+            'port': port if port is not None else None,
 
         }
         self._types = {
@@ -1084,16 +1086,16 @@ class ValidatingWebhook(_kuber_definitions.Definition):
             kind='ValidatingWebhook'
         )
         self._properties = {
-            'admissionReviewVersions': admission_review_versions or [],
-            'clientConfig': client_config or WebhookClientConfig(),
-            'failurePolicy': failure_policy or '',
-            'matchPolicy': match_policy or '',
-            'name': name or '',
-            'namespaceSelector': namespace_selector or LabelSelector(),
-            'objectSelector': object_selector or LabelSelector(),
-            'rules': rules or [],
-            'sideEffects': side_effects or '',
-            'timeoutSeconds': timeout_seconds or None,
+            'admissionReviewVersions': admission_review_versions if admission_review_versions is not None else [],
+            'clientConfig': client_config if client_config is not None else WebhookClientConfig(),
+            'failurePolicy': failure_policy if failure_policy is not None else '',
+            'matchPolicy': match_policy if match_policy is not None else '',
+            'name': name if name is not None else '',
+            'namespaceSelector': namespace_selector if namespace_selector is not None else LabelSelector(),
+            'objectSelector': object_selector if object_selector is not None else LabelSelector(),
+            'rules': rules if rules is not None else [],
+            'sideEffects': side_effects if side_effects is not None else '',
+            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
 
         }
         self._types = {
@@ -1495,7 +1497,9 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
     """
     ValidatingWebhookConfiguration describes the configuration
     of and admission webhook that accept or reject and object
-    without changing it.
+    without changing it. Deprecated in v1.16, planned for
+    removal in v1.19. Use admissionregistration.k8s.io/v1
+    ValidatingWebhookConfiguration instead.
     """
 
     def __init__(
@@ -1509,8 +1513,8 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
             kind='ValidatingWebhookConfiguration'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'webhooks': webhooks or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'webhooks': webhooks if webhooks is not None else [],
 
         }
         self._types = {
@@ -1525,8 +1529,8 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -1534,8 +1538,8 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1713,8 +1717,8 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
             kind='ValidatingWebhookConfigurationList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -1751,8 +1755,8 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -1760,8 +1764,8 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -1805,9 +1809,9 @@ class WebhookClientConfig(_kuber_definitions.Definition):
             kind='WebhookClientConfig'
         )
         self._properties = {
-            'caBundle': ca_bundle or '',
-            'service': service or ServiceReference(),
-            'url': url or '',
+            'caBundle': ca_bundle if ca_bundle is not None else '',
+            'service': service if service is not None else ServiceReference(),
+            'url': url if url is not None else '',
 
         }
         self._types = {

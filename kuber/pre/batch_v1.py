@@ -40,9 +40,9 @@ class Job(_kuber_definitions.Resource):
             kind='Job'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or JobSpec(),
-            'status': status or JobStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else JobSpec(),
+            'status': status if status is not None else JobStatus(),
 
         }
         self._types = {
@@ -58,8 +58,8 @@ class Job(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -67,8 +67,8 @@ class Job(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -78,8 +78,8 @@ class Job(_kuber_definitions.Resource):
     def spec(self) -> 'JobSpec':
         """
         Specification of the desired behavior of a job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -87,8 +87,8 @@ class Job(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['JobSpec', dict]):
         """
         Specification of the desired behavior of a job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = JobSpec().from_dict(value)
@@ -98,8 +98,8 @@ class Job(_kuber_definitions.Resource):
     def status(self) -> 'JobStatus':
         """
         Current status of a job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -107,8 +107,8 @@ class Job(_kuber_definitions.Resource):
     def status(self, value: typing.Union['JobStatus', dict]):
         """
         Current status of a job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = JobStatus().from_dict(value)
@@ -129,6 +129,7 @@ class Job(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -153,6 +154,7 @@ class Job(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -380,12 +382,12 @@ class JobCondition(_kuber_definitions.Definition):
             kind='JobCondition'
         )
         self._properties = {
-            'lastProbeTime': last_probe_time or None,
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastProbeTime': last_probe_time if last_probe_time is not None else None,
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -521,8 +523,8 @@ class JobList(_kuber_definitions.Collection):
             kind='JobList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -559,8 +561,8 @@ class JobList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -568,8 +570,8 @@ class JobList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -617,14 +619,14 @@ class JobSpec(_kuber_definitions.Definition):
             kind='JobSpec'
         )
         self._properties = {
-            'activeDeadlineSeconds': active_deadline_seconds or None,
-            'backoffLimit': backoff_limit or None,
-            'completions': completions or None,
-            'manualSelector': manual_selector or None,
-            'parallelism': parallelism or None,
-            'selector': selector or LabelSelector(),
-            'template': template or PodTemplateSpec(),
-            'ttlSecondsAfterFinished': ttl_seconds_after_finished or None,
+            'activeDeadlineSeconds': active_deadline_seconds if active_deadline_seconds is not None else None,
+            'backoffLimit': backoff_limit if backoff_limit is not None else None,
+            'completions': completions if completions is not None else None,
+            'manualSelector': manual_selector if manual_selector is not None else None,
+            'parallelism': parallelism if parallelism is not None else None,
+            'selector': selector if selector is not None else LabelSelector(),
+            'template': template if template is not None else PodTemplateSpec(),
+            'ttlSecondsAfterFinished': ttl_seconds_after_finished if ttl_seconds_after_finished is not None else None,
 
         }
         self._types = {
@@ -852,6 +854,7 @@ class JobSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -876,6 +879,7 @@ class JobSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -934,12 +938,12 @@ class JobStatus(_kuber_definitions.Definition):
             kind='JobStatus'
         )
         self._properties = {
-            'active': active or None,
-            'completionTime': completion_time or None,
-            'conditions': conditions or [],
-            'failed': failed or None,
-            'startTime': start_time or None,
-            'succeeded': succeeded or None,
+            'active': active if active is not None else None,
+            'completionTime': completion_time if completion_time is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'failed': failed if failed is not None else None,
+            'startTime': start_time if start_time is not None else None,
+            'succeeded': succeeded if succeeded is not None else None,
 
         }
         self._types = {

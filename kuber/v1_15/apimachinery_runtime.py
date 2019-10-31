@@ -66,7 +66,7 @@ class RawExtension(_kuber_definitions.Definition):
             kind='RawExtension'
         )
         self._properties = {
-            'Raw': raw or '',
+            'Raw': raw if raw is not None else '',
 
         }
         self._types = {

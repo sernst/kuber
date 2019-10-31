@@ -42,7 +42,7 @@ class AllowedFlexVolume(_kuber_definitions.Definition):
             kind='AllowedFlexVolume'
         )
         self._properties = {
-            'driver': driver or '',
+            'driver': driver if driver is not None else '',
 
         }
         self._types = {
@@ -90,8 +90,8 @@ class AllowedHostPath(_kuber_definitions.Definition):
             kind='AllowedHostPath'
         )
         self._properties = {
-            'pathPrefix': path_prefix or '',
-            'readOnly': read_only or None,
+            'pathPrefix': path_prefix if path_prefix is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -169,9 +169,9 @@ class DaemonSet(_kuber_definitions.Resource):
             kind='DaemonSet'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or DaemonSetSpec(),
-            'status': status or DaemonSetStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else DaemonSetSpec(),
+            'status': status if status is not None else DaemonSetStatus(),
 
         }
         self._types = {
@@ -513,11 +513,11 @@ class DaemonSetCondition(_kuber_definitions.Definition):
             kind='DaemonSetCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -633,8 +633,8 @@ class DaemonSetList(_kuber_definitions.Collection):
             kind='DaemonSetList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -727,12 +727,12 @@ class DaemonSetSpec(_kuber_definitions.Definition):
             kind='DaemonSetSpec'
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds or None,
-            'revisionHistoryLimit': revision_history_limit or None,
-            'selector': selector or LabelSelector(),
-            'template': template or PodTemplateSpec(),
-            'templateGeneration': template_generation or None,
-            'updateStrategy': update_strategy or DaemonSetUpdateStrategy(),
+            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
+            'revisionHistoryLimit': revision_history_limit if revision_history_limit is not None else None,
+            'selector': selector if selector is not None else LabelSelector(),
+            'template': template if template is not None else PodTemplateSpec(),
+            'templateGeneration': template_generation if template_generation is not None else None,
+            'updateStrategy': update_strategy if update_strategy is not None else DaemonSetUpdateStrategy(),
 
         }
         self._types = {
@@ -971,16 +971,16 @@ class DaemonSetStatus(_kuber_definitions.Definition):
             kind='DaemonSetStatus'
         )
         self._properties = {
-            'collisionCount': collision_count or None,
-            'conditions': conditions or [],
-            'currentNumberScheduled': current_number_scheduled or None,
-            'desiredNumberScheduled': desired_number_scheduled or None,
-            'numberAvailable': number_available or None,
-            'numberMisscheduled': number_misscheduled or None,
-            'numberReady': number_ready or None,
-            'numberUnavailable': number_unavailable or None,
-            'observedGeneration': observed_generation or None,
-            'updatedNumberScheduled': updated_number_scheduled or None,
+            'collisionCount': collision_count if collision_count is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'currentNumberScheduled': current_number_scheduled if current_number_scheduled is not None else None,
+            'desiredNumberScheduled': desired_number_scheduled if desired_number_scheduled is not None else None,
+            'numberAvailable': number_available if number_available is not None else None,
+            'numberMisscheduled': number_misscheduled if number_misscheduled is not None else None,
+            'numberReady': number_ready if number_ready is not None else None,
+            'numberUnavailable': number_unavailable if number_unavailable is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'updatedNumberScheduled': updated_number_scheduled if updated_number_scheduled is not None else None,
 
         }
         self._types = {
@@ -1204,8 +1204,8 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
             kind='DaemonSetUpdateStrategy'
         )
         self._properties = {
-            'rollingUpdate': rolling_update or RollingUpdateDaemonSet(),
-            'type': type_ or '',
+            'rollingUpdate': rolling_update if rolling_update is not None else RollingUpdateDaemonSet(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -1275,9 +1275,9 @@ class Deployment(_kuber_definitions.Resource):
             kind='Deployment'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or DeploymentSpec(),
-            'status': status or DeploymentStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else DeploymentSpec(),
+            'status': status if status is not None else DeploymentStatus(),
 
         }
         self._types = {
@@ -1604,12 +1604,12 @@ class DeploymentCondition(_kuber_definitions.Definition):
             kind='DeploymentCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'lastUpdateTime': last_update_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'lastUpdateTime': last_update_time if last_update_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -1747,8 +1747,8 @@ class DeploymentList(_kuber_definitions.Collection):
             kind='DeploymentList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -1837,11 +1837,11 @@ class DeploymentRollback(_kuber_definitions.Definition):
             kind='DeploymentRollback'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
-            'rollbackTo': rollback_to or RollbackConfig(),
-            'updatedAnnotations': updated_annotations or {},
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'rollbackTo': rollback_to if rollback_to is not None else RollbackConfig(),
+            'updatedAnnotations': updated_annotations if updated_annotations is not None else {},
 
         }
         self._types = {
@@ -1976,15 +1976,15 @@ class DeploymentSpec(_kuber_definitions.Definition):
             kind='DeploymentSpec'
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds or None,
-            'paused': paused or None,
-            'progressDeadlineSeconds': progress_deadline_seconds or None,
-            'replicas': replicas or None,
-            'revisionHistoryLimit': revision_history_limit or None,
-            'rollbackTo': rollback_to or RollbackConfig(),
-            'selector': selector or LabelSelector(),
-            'strategy': strategy or DeploymentStrategy(),
-            'template': template or PodTemplateSpec(),
+            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
+            'paused': paused if paused is not None else None,
+            'progressDeadlineSeconds': progress_deadline_seconds if progress_deadline_seconds is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'revisionHistoryLimit': revision_history_limit if revision_history_limit is not None else None,
+            'rollbackTo': rollback_to if rollback_to is not None else RollbackConfig(),
+            'selector': selector if selector is not None else LabelSelector(),
+            'strategy': strategy if strategy is not None else DeploymentStrategy(),
+            'template': template if template is not None else PodTemplateSpec(),
 
         }
         self._types = {
@@ -2274,14 +2274,14 @@ class DeploymentStatus(_kuber_definitions.Definition):
             kind='DeploymentStatus'
         )
         self._properties = {
-            'availableReplicas': available_replicas or None,
-            'collisionCount': collision_count or None,
-            'conditions': conditions or [],
-            'observedGeneration': observed_generation or None,
-            'readyReplicas': ready_replicas or None,
-            'replicas': replicas or None,
-            'unavailableReplicas': unavailable_replicas or None,
-            'updatedReplicas': updated_replicas or None,
+            'availableReplicas': available_replicas if available_replicas is not None else None,
+            'collisionCount': collision_count if collision_count is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'readyReplicas': ready_replicas if ready_replicas is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'unavailableReplicas': unavailable_replicas if unavailable_replicas is not None else None,
+            'updatedReplicas': updated_replicas if updated_replicas is not None else None,
 
         }
         self._types = {
@@ -2462,8 +2462,8 @@ class DeploymentStrategy(_kuber_definitions.Definition):
             kind='DeploymentStrategy'
         )
         self._properties = {
-            'rollingUpdate': rolling_update or RollingUpdateDeployment(),
-            'type': type_ or '',
+            'rollingUpdate': rolling_update if rolling_update is not None else RollingUpdateDeployment(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -2531,8 +2531,8 @@ class FSGroupStrategyOptions(_kuber_definitions.Definition):
             kind='FSGroupStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {
@@ -2608,8 +2608,8 @@ class HTTPIngressPath(_kuber_definitions.Definition):
             kind='HTTPIngressPath'
         )
         self._properties = {
-            'backend': backend or IngressBackend(),
-            'path': path or '',
+            'backend': backend if backend is not None else IngressBackend(),
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -2688,7 +2688,7 @@ class HTTPIngressRuleValue(_kuber_definitions.Definition):
             kind='HTTPIngressRuleValue'
         )
         self._properties = {
-            'paths': paths or [],
+            'paths': paths if paths is not None else [],
 
         }
         self._types = {
@@ -2744,8 +2744,8 @@ class HostPortRange(_kuber_definitions.Definition):
             kind='HostPortRange'
         )
         self._properties = {
-            'max': max_ or None,
-            'min': min_ or None,
+            'max': max_ if max_ is not None else None,
+            'min': min_ if min_ is not None else None,
 
         }
         self._types = {
@@ -2806,8 +2806,8 @@ class IDRange(_kuber_definitions.Definition):
             kind='IDRange'
         )
         self._properties = {
-            'max': max_ or None,
-            'min': min_ or None,
+            'max': max_ if max_ is not None else None,
+            'min': min_ if min_ is not None else None,
 
         }
         self._types = {
@@ -2872,8 +2872,8 @@ class IPBlock(_kuber_definitions.Definition):
             kind='IPBlock'
         )
         self._properties = {
-            'cidr': cidr or '',
-            'except': except_ or [],
+            'cidr': cidr if cidr is not None else '',
+            'except': except_ if except_ is not None else [],
 
         }
         self._types = {
@@ -2946,9 +2946,9 @@ class Ingress(_kuber_definitions.Resource):
             kind='Ingress'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or IngressSpec(),
-            'status': status or IngressStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else IngressSpec(),
+            'status': status if status is not None else IngressStatus(),
 
         }
         self._types = {
@@ -3213,8 +3213,8 @@ class IngressBackend(_kuber_definitions.Definition):
             kind='IngressBackend'
         )
         self._properties = {
-            'serviceName': service_name or '',
-            'servicePort': service_port or None,
+            'serviceName': service_name if service_name is not None else '',
+            'servicePort': service_port if service_port is not None else None,
 
         }
         self._types = {
@@ -3278,8 +3278,8 @@ class IngressList(_kuber_definitions.Collection):
             kind='IngressList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -3372,8 +3372,8 @@ class IngressRule(_kuber_definitions.Definition):
             kind='IngressRule'
         )
         self._properties = {
-            'host': host or '',
-            'http': http or HTTPIngressRuleValue(),
+            'host': host if host is not None else '',
+            'http': http if http is not None else HTTPIngressRuleValue(),
 
         }
         self._types = {
@@ -3464,9 +3464,9 @@ class IngressSpec(_kuber_definitions.Definition):
             kind='IngressSpec'
         )
         self._properties = {
-            'backend': backend or IngressBackend(),
-            'rules': rules or [],
-            'tls': tls or [],
+            'backend': backend if backend is not None else IngressBackend(),
+            'rules': rules if rules is not None else [],
+            'tls': tls if tls is not None else [],
 
         }
         self._types = {
@@ -3578,7 +3578,7 @@ class IngressStatus(_kuber_definitions.Definition):
             kind='IngressStatus'
         )
         self._properties = {
-            'loadBalancer': load_balancer or LoadBalancerStatus(),
+            'loadBalancer': load_balancer if load_balancer is not None else LoadBalancerStatus(),
 
         }
         self._types = {
@@ -3628,8 +3628,8 @@ class IngressTLS(_kuber_definitions.Definition):
             kind='IngressTLS'
         )
         self._properties = {
-            'hosts': hosts or [],
-            'secretName': secret_name or '',
+            'hosts': hosts if hosts is not None else [],
+            'secretName': secret_name if secret_name is not None else '',
 
         }
         self._types = {
@@ -3709,8 +3709,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
             kind='NetworkPolicy'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or NetworkPolicySpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else NetworkPolicySpec(),
 
         }
         self._types = {
@@ -3912,8 +3912,8 @@ class NetworkPolicyEgressRule(_kuber_definitions.Definition):
             kind='NetworkPolicyEgressRule'
         )
         self._properties = {
-            'ports': ports or [],
-            'to': to or [],
+            'ports': ports if ports is not None else [],
+            'to': to if to is not None else [],
 
         }
         self._types = {
@@ -4015,8 +4015,8 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
             kind='NetworkPolicyIngressRule'
         )
         self._properties = {
-            'from': from_ or [],
-            'ports': ports or [],
+            'from': from_ if from_ is not None else [],
+            'ports': ports if ports is not None else [],
 
         }
         self._types = {
@@ -4118,8 +4118,8 @@ class NetworkPolicyList(_kuber_definitions.Collection):
             kind='NetworkPolicyList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -4210,9 +4210,9 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
             kind='NetworkPolicyPeer'
         )
         self._properties = {
-            'ipBlock': ip_block or IPBlock(),
-            'namespaceSelector': namespace_selector or LabelSelector(),
-            'podSelector': pod_selector or LabelSelector(),
+            'ipBlock': ip_block if ip_block is not None else IPBlock(),
+            'namespaceSelector': namespace_selector if namespace_selector is not None else LabelSelector(),
+            'podSelector': pod_selector if pod_selector is not None else LabelSelector(),
 
         }
         self._types = {
@@ -4328,8 +4328,8 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
             kind='NetworkPolicyPort'
         )
         self._properties = {
-            'port': port or None,
-            'protocol': protocol or '',
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
@@ -4406,10 +4406,10 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
             kind='NetworkPolicySpec'
         )
         self._properties = {
-            'egress': egress or [],
-            'ingress': ingress or [],
-            'podSelector': pod_selector or LabelSelector(),
-            'policyTypes': policy_types or [],
+            'egress': egress if egress is not None else [],
+            'ingress': ingress if ingress is not None else [],
+            'podSelector': pod_selector if pod_selector is not None else LabelSelector(),
+            'policyTypes': policy_types if policy_types is not None else [],
 
         }
         self._types = {
@@ -4590,8 +4590,8 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             kind='PodSecurityPolicy'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodSecurityPolicySpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodSecurityPolicySpec(),
 
         }
         self._types = {
@@ -4787,8 +4787,8 @@ class PodSecurityPolicyList(_kuber_definitions.Collection):
             kind='PodSecurityPolicyList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -4899,28 +4899,28 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             kind='PodSecurityPolicySpec'
         )
         self._properties = {
-            'allowPrivilegeEscalation': allow_privilege_escalation or None,
-            'allowedCapabilities': allowed_capabilities or [],
-            'allowedFlexVolumes': allowed_flex_volumes or [],
-            'allowedHostPaths': allowed_host_paths or [],
-            'allowedProcMountTypes': allowed_proc_mount_types or [],
-            'allowedUnsafeSysctls': allowed_unsafe_sysctls or [],
-            'defaultAddCapabilities': default_add_capabilities or [],
-            'defaultAllowPrivilegeEscalation': default_allow_privilege_escalation or None,
-            'forbiddenSysctls': forbidden_sysctls or [],
-            'fsGroup': fs_group or FSGroupStrategyOptions(),
-            'hostIPC': host_ipc or None,
-            'hostNetwork': host_network or None,
-            'hostPID': host_pid or None,
-            'hostPorts': host_ports or [],
-            'privileged': privileged or None,
-            'readOnlyRootFilesystem': read_only_root_filesystem or None,
-            'requiredDropCapabilities': required_drop_capabilities or [],
-            'runAsGroup': run_as_group or RunAsGroupStrategyOptions(),
-            'runAsUser': run_as_user or RunAsUserStrategyOptions(),
-            'seLinux': se_linux or SELinuxStrategyOptions(),
-            'supplementalGroups': supplemental_groups or SupplementalGroupsStrategyOptions(),
-            'volumes': volumes or [],
+            'allowPrivilegeEscalation': allow_privilege_escalation if allow_privilege_escalation is not None else None,
+            'allowedCapabilities': allowed_capabilities if allowed_capabilities is not None else [],
+            'allowedFlexVolumes': allowed_flex_volumes if allowed_flex_volumes is not None else [],
+            'allowedHostPaths': allowed_host_paths if allowed_host_paths is not None else [],
+            'allowedProcMountTypes': allowed_proc_mount_types if allowed_proc_mount_types is not None else [],
+            'allowedUnsafeSysctls': allowed_unsafe_sysctls if allowed_unsafe_sysctls is not None else [],
+            'defaultAddCapabilities': default_add_capabilities if default_add_capabilities is not None else [],
+            'defaultAllowPrivilegeEscalation': default_allow_privilege_escalation if default_allow_privilege_escalation is not None else None,
+            'forbiddenSysctls': forbidden_sysctls if forbidden_sysctls is not None else [],
+            'fsGroup': fs_group if fs_group is not None else FSGroupStrategyOptions(),
+            'hostIPC': host_ipc if host_ipc is not None else None,
+            'hostNetwork': host_network if host_network is not None else None,
+            'hostPID': host_pid if host_pid is not None else None,
+            'hostPorts': host_ports if host_ports is not None else [],
+            'privileged': privileged if privileged is not None else None,
+            'readOnlyRootFilesystem': read_only_root_filesystem if read_only_root_filesystem is not None else None,
+            'requiredDropCapabilities': required_drop_capabilities if required_drop_capabilities is not None else [],
+            'runAsGroup': run_as_group if run_as_group is not None else RunAsGroupStrategyOptions(),
+            'runAsUser': run_as_user if run_as_user is not None else RunAsUserStrategyOptions(),
+            'seLinux': se_linux if se_linux is not None else SELinuxStrategyOptions(),
+            'supplementalGroups': supplemental_groups if supplemental_groups is not None else SupplementalGroupsStrategyOptions(),
+            'volumes': volumes if volumes is not None else [],
 
         }
         self._types = {
@@ -5430,9 +5430,9 @@ class ReplicaSet(_kuber_definitions.Resource):
             kind='ReplicaSet'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ReplicaSetSpec(),
-            'status': status or ReplicaSetStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ReplicaSetSpec(),
+            'status': status if status is not None else ReplicaSetStatus(),
 
         }
         self._types = {
@@ -5780,11 +5780,11 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
             kind='ReplicaSetCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -5900,8 +5900,8 @@ class ReplicaSetList(_kuber_definitions.Collection):
             kind='ReplicaSetList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -5994,10 +5994,10 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
             kind='ReplicaSetSpec'
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds or None,
-            'replicas': replicas or None,
-            'selector': selector or LabelSelector(),
-            'template': template or PodTemplateSpec(),
+            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'selector': selector if selector is not None else LabelSelector(),
+            'template': template if template is not None else PodTemplateSpec(),
 
         }
         self._types = {
@@ -6198,12 +6198,12 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
             kind='ReplicaSetStatus'
         )
         self._properties = {
-            'availableReplicas': available_replicas or None,
-            'conditions': conditions or [],
-            'fullyLabeledReplicas': fully_labeled_replicas or None,
-            'observedGeneration': observed_generation or None,
-            'readyReplicas': ready_replicas or None,
-            'replicas': replicas or None,
+            'availableReplicas': available_replicas if available_replicas is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'fullyLabeledReplicas': fully_labeled_replicas if fully_labeled_replicas is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'readyReplicas': ready_replicas if ready_replicas is not None else None,
+            'replicas': replicas if replicas is not None else None,
 
         }
         self._types = {
@@ -6344,7 +6344,7 @@ class RollbackConfig(_kuber_definitions.Definition):
             kind='RollbackConfig'
         )
         self._properties = {
-            'revision': revision or None,
+            'revision': revision if revision is not None else None,
 
         }
         self._types = {
@@ -6391,7 +6391,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
             kind='RollingUpdateDaemonSet'
         )
         self._properties = {
-            'maxUnavailable': max_unavailable or None,
+            'maxUnavailable': max_unavailable if max_unavailable is not None else None,
 
         }
         self._types = {
@@ -6466,8 +6466,8 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
             kind='RollingUpdateDeployment'
         )
         self._properties = {
-            'maxSurge': max_surge or None,
-            'maxUnavailable': max_unavailable or None,
+            'maxSurge': max_surge if max_surge is not None else None,
+            'maxUnavailable': max_unavailable if max_unavailable is not None else None,
 
         }
         self._types = {
@@ -6579,8 +6579,8 @@ class RunAsGroupStrategyOptions(_kuber_definitions.Definition):
             kind='RunAsGroupStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {
@@ -6656,8 +6656,8 @@ class RunAsUserStrategyOptions(_kuber_definitions.Definition):
             kind='RunAsUserStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {
@@ -6733,8 +6733,8 @@ class SELinuxStrategyOptions(_kuber_definitions.Definition):
             kind='SELinuxStrategyOptions'
         )
         self._properties = {
-            'rule': rule or '',
-            'seLinuxOptions': se_linux_options or SELinuxOptions(),
+            'rule': rule if rule is not None else '',
+            'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
 
         }
         self._types = {
@@ -6803,9 +6803,9 @@ class Scale(_kuber_definitions.Resource):
             kind='Scale'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ScaleSpec(),
-            'status': status or ScaleStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ScaleSpec(),
+            'status': status if status is not None else ScaleStatus(),
 
         }
         self._types = {
@@ -7068,7 +7068,7 @@ class ScaleSpec(_kuber_definitions.Definition):
             kind='ScaleSpec'
         )
         self._properties = {
-            'replicas': replicas or None,
+            'replicas': replicas if replicas is not None else None,
 
         }
         self._types = {
@@ -7114,9 +7114,9 @@ class ScaleStatus(_kuber_definitions.Definition):
             kind='ScaleStatus'
         )
         self._properties = {
-            'replicas': replicas or None,
-            'selector': selector or {},
-            'targetSelector': target_selector or '',
+            'replicas': replicas if replicas is not None else None,
+            'selector': selector if selector is not None else {},
+            'targetSelector': target_selector if target_selector is not None else '',
 
         }
         self._types = {
@@ -7214,8 +7214,8 @@ class SupplementalGroupsStrategyOptions(_kuber_definitions.Definition):
             kind='SupplementalGroupsStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {

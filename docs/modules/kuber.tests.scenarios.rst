@@ -12,6 +12,7 @@ Subpackages
     kuber.tests.scenarios.metadata_owner_reference
     kuber.tests.scenarios.odd_api_versions
     kuber.tests.scenarios.value_casting
+    kuber.tests.scenarios.zero_scale_deployment
 
 Module contents
 ---------------

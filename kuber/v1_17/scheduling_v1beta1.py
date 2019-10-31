@@ -31,11 +31,11 @@ class PriorityClass(_kuber_definitions.Resource):
             kind='PriorityClass'
         )
         self._properties = {
-            'description': description or '',
-            'globalDefault': global_default or None,
-            'metadata': metadata or ObjectMeta(),
-            'preemptionPolicy': preemption_policy or '',
-            'value': value or None,
+            'description': description if description is not None else '',
+            'globalDefault': global_default if global_default is not None else None,
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'preemptionPolicy': preemption_policy if preemption_policy is not None else '',
+            'value': value if value is not None else None,
 
         }
         self._types = {
@@ -298,8 +298,8 @@ class PriorityClassList(_kuber_definitions.Collection):
             kind='PriorityClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {

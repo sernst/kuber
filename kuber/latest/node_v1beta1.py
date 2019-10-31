@@ -6,6 +6,54 @@ from kuber import kube_api as _kube_api
 from kuber import definitions as _kuber_definitions
 from kuber.latest.meta_v1 import ListMeta
 from kuber.latest.meta_v1 import ObjectMeta
+from kuber.latest.core_v1 import Toleration
+
+
+class Overhead(_kuber_definitions.Definition):
+    """
+    Overhead structure represents the resource overhead
+    associated with running a pod.
+    """
+
+    def __init__(
+            self,
+            pod_fixed: dict = None,
+    ):
+        """Create Overhead instance."""
+        super(Overhead, self).__init__(
+            api_version='node/v1beta1',
+            kind='Overhead'
+        )
+        self._properties = {
+            'podFixed': pod_fixed if pod_fixed is not None else {},
+
+        }
+        self._types = {
+            'podFixed': (dict, None),
+
+        }
+
+    @property
+    def pod_fixed(self) -> dict:
+        """
+        PodFixed represents the fixed resource overhead associated
+        with running a pod.
+        """
+        return self._properties.get('podFixed')
+
+    @pod_fixed.setter
+    def pod_fixed(self, value: dict):
+        """
+        PodFixed represents the fixed resource overhead associated
+        with running a pod.
+        """
+        self._properties['podFixed'] = value
+
+    def __enter__(self) -> 'Overhead':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
 
 
 class RuntimeClass(_kuber_definitions.Resource):
@@ -25,6 +73,8 @@ class RuntimeClass(_kuber_definitions.Resource):
             self,
             handler: str = None,
             metadata: 'ObjectMeta' = None,
+            overhead: 'Overhead' = None,
+            scheduling: 'Scheduling' = None,
     ):
         """Create RuntimeClass instance."""
         super(RuntimeClass, self).__init__(
@@ -32,8 +82,10 @@ class RuntimeClass(_kuber_definitions.Resource):
             kind='RuntimeClass'
         )
         self._properties = {
-            'handler': handler or '',
-            'metadata': metadata or ObjectMeta(),
+            'handler': handler if handler is not None else '',
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'overhead': overhead if overhead is not None else Overhead(),
+            'scheduling': scheduling if scheduling is not None else Scheduling(),
 
         }
         self._types = {
@@ -41,6 +93,8 @@ class RuntimeClass(_kuber_definitions.Resource):
             'handler': (str, None),
             'kind': (str, None),
             'metadata': (ObjectMeta, None),
+            'overhead': (Overhead, None),
+            'scheduling': (Scheduling, None),
 
         }
 
@@ -80,8 +134,8 @@ class RuntimeClass(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -89,12 +143,60 @@ class RuntimeClass(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
         self._properties['metadata'] = value
+
+    @property
+    def overhead(self) -> 'Overhead':
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. For more details,
+        see https://git.k8s.io/enhancements/keps/sig-
+        node/20190226-pod-overhead.md This field is alpha-level as
+        of Kubernetes v1.15, and is only honored by servers that
+        enable the PodOverhead feature.
+        """
+        return self._properties.get('overhead')
+
+    @overhead.setter
+    def overhead(self, value: typing.Union['Overhead', dict]):
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. For more details,
+        see https://git.k8s.io/enhancements/keps/sig-
+        node/20190226-pod-overhead.md This field is alpha-level as
+        of Kubernetes v1.15, and is only honored by servers that
+        enable the PodOverhead feature.
+        """
+        if isinstance(value, dict):
+            value = Overhead().from_dict(value)
+        self._properties['overhead'] = value
+
+    @property
+    def scheduling(self) -> 'Scheduling':
+        """
+        Scheduling holds the scheduling constraints to ensure that
+        pods running with this RuntimeClass are scheduled to nodes
+        that support it. If scheduling is nil, this RuntimeClass is
+        assumed to be supported by all nodes.
+        """
+        return self._properties.get('scheduling')
+
+    @scheduling.setter
+    def scheduling(self, value: typing.Union['Scheduling', dict]):
+        """
+        Scheduling holds the scheduling constraints to ensure that
+        pods running with this RuntimeClass are scheduled to nodes
+        that support it. If scheduling is nil, this RuntimeClass is
+        assumed to be supported by all nodes.
+        """
+        if isinstance(value, dict):
+            value = Scheduling().from_dict(value)
+        self._properties['scheduling'] = value
 
     def create_resource(self, namespace: 'str' = None):
         """
@@ -243,8 +345,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
             kind='RuntimeClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -281,8 +383,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -290,8 +392,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -311,6 +413,92 @@ class RuntimeClassList(_kuber_definitions.Collection):
         return client.NodeV1beta1Api(**kwargs)
 
     def __enter__(self) -> 'RuntimeClassList':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class Scheduling(_kuber_definitions.Definition):
+    """
+    Scheduling specifies the scheduling constraints for nodes
+    supporting a RuntimeClass.
+    """
+
+    def __init__(
+            self,
+            node_selector: dict = None,
+            tolerations: typing.List['Toleration'] = None,
+    ):
+        """Create Scheduling instance."""
+        super(Scheduling, self).__init__(
+            api_version='node/v1beta1',
+            kind='Scheduling'
+        )
+        self._properties = {
+            'nodeSelector': node_selector if node_selector is not None else {},
+            'tolerations': tolerations if tolerations is not None else [],
+
+        }
+        self._types = {
+            'nodeSelector': (dict, None),
+            'tolerations': (list, Toleration),
+
+        }
+
+    @property
+    def node_selector(self) -> dict:
+        """
+        nodeSelector lists labels that must be present on nodes that
+        support this RuntimeClass. Pods using this RuntimeClass can
+        only be scheduled to a node matched by this selector. The
+        RuntimeClass nodeSelector is merged with a pod's existing
+        nodeSelector. Any conflicts will cause the pod to be
+        rejected in admission.
+        """
+        return self._properties.get('nodeSelector')
+
+    @node_selector.setter
+    def node_selector(self, value: dict):
+        """
+        nodeSelector lists labels that must be present on nodes that
+        support this RuntimeClass. Pods using this RuntimeClass can
+        only be scheduled to a node matched by this selector. The
+        RuntimeClass nodeSelector is merged with a pod's existing
+        nodeSelector. Any conflicts will cause the pod to be
+        rejected in admission.
+        """
+        self._properties['nodeSelector'] = value
+
+    @property
+    def tolerations(self) -> typing.List['Toleration']:
+        """
+        tolerations are appended (excluding duplicates) to pods
+        running with this RuntimeClass during admission, effectively
+        unioning the set of nodes tolerated by the pod and the
+        RuntimeClass.
+        """
+        return self._properties.get('tolerations')
+
+    @tolerations.setter
+    def tolerations(
+            self,
+            value: typing.Union[typing.List['Toleration'], typing.List[dict]]
+    ):
+        """
+        tolerations are appended (excluding duplicates) to pods
+        running with this RuntimeClass during admission, effectively
+        unioning the set of nodes tolerated by the pod and the
+        RuntimeClass.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = Toleration().from_dict(item)
+            cleaned.append(item)
+        self._properties['tolerations'] = cleaned
+
+    def __enter__(self) -> 'Scheduling':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

@@ -28,12 +28,12 @@ class APIGroup(_kuber_definitions.Definition):
             kind='APIGroup'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
-            'preferredVersion': preferred_version or GroupVersionForDiscovery(),
-            'serverAddressByClientCIDRs': server_address_by_client_cidrs or [],
-            'versions': versions or [],
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'preferredVersion': preferred_version if preferred_version is not None else GroupVersionForDiscovery(),
+            'serverAddressByClientCIDRs': server_address_by_client_cidrs if server_address_by_client_cidrs is not None else [],
+            'versions': versions if versions is not None else [],
 
         }
         self._types = {
@@ -53,8 +53,8 @@ class APIGroup(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -65,8 +65,8 @@ class APIGroup(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -77,8 +77,8 @@ class APIGroup(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -89,8 +89,8 @@ class APIGroup(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -215,9 +215,9 @@ class APIGroupList(_kuber_definitions.Definition):
             kind='APIGroupList'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'groups': groups or [],
-            'kind': kind or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'groups': groups if groups is not None else [],
+            'kind': kind if kind is not None else '',
 
         }
         self._types = {
@@ -234,8 +234,8 @@ class APIGroupList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -246,8 +246,8 @@ class APIGroupList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -280,8 +280,8 @@ class APIGroupList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -292,8 +292,8 @@ class APIGroupList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -329,16 +329,16 @@ class APIResource(_kuber_definitions.Definition):
             kind='APIResource'
         )
         self._properties = {
-            'categories': categories or [],
-            'group': group or '',
-            'kind': kind or '',
-            'name': name or '',
-            'namespaced': namespaced or None,
-            'shortNames': short_names or [],
-            'singularName': singular_name or '',
-            'storageVersionHash': storage_version_hash or '',
-            'verbs': verbs or [],
-            'version': version or '',
+            'categories': categories if categories is not None else [],
+            'group': group if group is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'namespaced': namespaced if namespaced is not None else None,
+            'shortNames': short_names if short_names is not None else [],
+            'singularName': singular_name if singular_name is not None else '',
+            'storageVersionHash': storage_version_hash if storage_version_hash is not None else '',
+            'verbs': verbs if verbs is not None else [],
+            'version': version if version is not None else '',
 
         }
         self._types = {
@@ -566,10 +566,10 @@ class APIResourceList(_kuber_definitions.Definition):
             kind='APIResourceList'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'groupVersion': group_version or '',
-            'kind': kind or '',
-            'resources': resources or [],
+            'apiVersion': api_version if api_version is not None else '',
+            'groupVersion': group_version if group_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'resources': resources if resources is not None else [],
 
         }
         self._types = {
@@ -587,8 +587,8 @@ class APIResourceList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -599,8 +599,8 @@ class APIResourceList(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -627,8 +627,8 @@ class APIResourceList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -639,8 +639,8 @@ class APIResourceList(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -695,10 +695,10 @@ class APIVersions(_kuber_definitions.Definition):
             kind='APIVersions'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'serverAddressByClientCIDRs': server_address_by_client_cidrs or [],
-            'versions': versions or [],
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'serverAddressByClientCIDRs': server_address_by_client_cidrs if server_address_by_client_cidrs is not None else [],
+            'versions': versions if versions is not None else [],
 
         }
         self._types = {
@@ -716,8 +716,8 @@ class APIVersions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -728,8 +728,8 @@ class APIVersions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -740,8 +740,8 @@ class APIVersions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -752,8 +752,8 @@ class APIVersions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -841,13 +841,13 @@ class DeleteOptions(_kuber_definitions.Definition):
             kind='DeleteOptions'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'dryRun': dry_run or [],
-            'gracePeriodSeconds': grace_period_seconds or None,
-            'kind': kind or '',
-            'orphanDependents': orphan_dependents or None,
-            'preconditions': preconditions or Preconditions(),
-            'propagationPolicy': propagation_policy or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'dryRun': dry_run if dry_run is not None else [],
+            'gracePeriodSeconds': grace_period_seconds if grace_period_seconds is not None else None,
+            'kind': kind if kind is not None else '',
+            'orphanDependents': orphan_dependents if orphan_dependents is not None else None,
+            'preconditions': preconditions if preconditions is not None else Preconditions(),
+            'propagationPolicy': propagation_policy if propagation_policy is not None else '',
 
         }
         self._types = {
@@ -868,8 +868,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -880,8 +880,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -938,8 +938,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -950,8 +950,8 @@ class DeleteOptions(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -1032,34 +1032,34 @@ class DeleteOptions(_kuber_definitions.Definition):
         return False
 
 
-class Fields(_kuber_definitions.Definition):
+class FieldsV1(_kuber_definitions.Definition):
     """
-    Fields stores a set of fields in a data structure like a
-    Trie.
+    FieldsV1 stores a set of fields in a data structure like a
+    Trie, in JSON format.
 
-    Each key is either a '.' representing the field
-    itself, and will always map to an empty set, or a string
-    representing a sub-field or item. The string will follow one
-    of these four formats: 'f:<name>', where <name> is the name
-    of a field in a struct, or key in a map 'v:<value>', where
-    <value> is the exact json formatted value of a list item
-    'i:<index>', where <index> is position of a item in a list
-    'k:<keys>', where <keys> is a map of  a list item's key
-    fields to their unique values If a key maps to an empty
-    Fields value, the field that key represents is part of the
-    set.
+    Each key is either a '.' representing
+    the field itself, and will always map to an empty set, or a
+    string representing a sub-field or item. The string will
+    follow one of these four formats: 'f:<name>', where <name>
+    is the name of a field in a struct, or key in a map
+    'v:<value>', where <value> is the exact json formatted value
+    of a list item 'i:<index>', where <index> is position of a
+    item in a list 'k:<keys>', where <keys> is a map of  a list
+    item's key fields to their unique values If a key maps to an
+    empty Fields value, the field that key represents is part of
+    the set.
 
-    The exact format is defined in sigs.k8s.io/structured-
-    merge-diff
+    The exact format is defined in
+    sigs.k8s.io/structured-merge-diff
     """
 
     def __init__(
             self,
     ):
-        """Create Fields instance."""
-        super(Fields, self).__init__(
+        """Create FieldsV1 instance."""
+        super(FieldsV1, self).__init__(
             api_version='meta/v1',
-            kind='Fields'
+            kind='FieldsV1'
         )
         self._properties = {
 
@@ -1068,7 +1068,7 @@ class Fields(_kuber_definitions.Definition):
 
         }
 
-    def __enter__(self) -> 'Fields':
+    def __enter__(self) -> 'FieldsV1':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1093,8 +1093,8 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
             kind='GroupVersionForDiscovery'
         )
         self._properties = {
-            'groupVersion': group_version or '',
-            'version': version or '',
+            'groupVersion': group_version if group_version is not None else '',
+            'version': version if version is not None else '',
 
         }
         self._types = {
@@ -1163,8 +1163,8 @@ class LabelSelector(_kuber_definitions.Definition):
             kind='LabelSelector'
         )
         self._properties = {
-            'matchExpressions': match_expressions or [],
-            'matchLabels': match_labels or {},
+            'matchExpressions': match_expressions if match_expressions is not None else [],
+            'matchLabels': match_labels if match_labels is not None else {},
 
         }
         self._types = {
@@ -1245,9 +1245,9 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
             kind='LabelSelectorRequirement'
         )
         self._properties = {
-            'key': key or '',
-            'operator': operator or '',
-            'values': values or [],
+            'key': key if key is not None else '',
+            'operator': operator if operator is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -1336,10 +1336,10 @@ class ListMeta(_kuber_definitions.Definition):
             kind='ListMeta'
         )
         self._properties = {
-            'continue': continue_ or '',
-            'remainingItemCount': remaining_item_count or None,
-            'resourceVersion': resource_version or '',
-            'selfLink': self_link or '',
+            'continue': continue_ if continue_ is not None else '',
+            'remainingItemCount': remaining_item_count if remaining_item_count is not None else None,
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'selfLink': self_link if self_link is not None else '',
 
         }
         self._types = {
@@ -1399,8 +1399,6 @@ class ListMeta(_kuber_definitions.Definition):
         field. The intended use of the remainingItemCount is
         *estimating* the size of a collection. Clients should not
         rely on the remainingItemCount to be set or to be exact.
-        This field is alpha and can be changed or removed without
-        notice.
         """
         return self._properties.get('remainingItemCount')
 
@@ -1419,8 +1417,6 @@ class ListMeta(_kuber_definitions.Definition):
         field. The intended use of the remainingItemCount is
         *estimating* the size of a collection. Clients should not
         rely on the remainingItemCount to be set or to be exact.
-        This field is alpha and can be changed or removed without
-        notice.
         """
         self._properties['remainingItemCount'] = value
 
@@ -1432,8 +1428,9 @@ class ListMeta(_kuber_definitions.Definition):
         have changed. Value must be treated as opaque by clients and
         passed unmodified back to the server. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         return self._properties.get('resourceVersion')
 
@@ -1445,8 +1442,9 @@ class ListMeta(_kuber_definitions.Definition):
         have changed. Value must be treated as opaque by clients and
         passed unmodified back to the server. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         self._properties['resourceVersion'] = value
 
@@ -1490,7 +1488,8 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
     def __init__(
             self,
             api_version: str = None,
-            fields: 'Fields' = None,
+            fields_type: str = None,
+            fields_v1: 'FieldsV1' = None,
             manager: str = None,
             operation: str = None,
             time: str = None,
@@ -1501,16 +1500,18 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
             kind='ManagedFieldsEntry'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'fields': fields or Fields(),
-            'manager': manager or '',
-            'operation': operation or '',
-            'time': time or None,
+            'apiVersion': api_version if api_version is not None else '',
+            'fieldsType': fields_type if fields_type is not None else '',
+            'fieldsV1': fields_v1 if fields_v1 is not None else FieldsV1(),
+            'manager': manager if manager is not None else '',
+            'operation': operation if operation is not None else '',
+            'time': time if time is not None else None,
 
         }
         self._types = {
             'apiVersion': (str, None),
-            'fields': (Fields, None),
+            'fieldsType': (str, None),
+            'fieldsV1': (FieldsV1, None),
             'manager': (str, None),
             'operation': (str, None),
             'time': (str, None),
@@ -1540,20 +1541,40 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         self._properties['apiVersion'] = value
 
     @property
-    def fields(self) -> 'Fields':
+    def fields_type(self) -> str:
         """
-        Fields identifies a set of fields.
+        FieldsType is the discriminator for the different fields
+        format and version. There is currently only one possible
+        value: "FieldsV1"
         """
-        return self._properties.get('fields')
+        return self._properties.get('fieldsType')
 
-    @fields.setter
-    def fields(self, value: typing.Union['Fields', dict]):
+    @fields_type.setter
+    def fields_type(self, value: str):
         """
-        Fields identifies a set of fields.
+        FieldsType is the discriminator for the different fields
+        format and version. There is currently only one possible
+        value: "FieldsV1"
+        """
+        self._properties['fieldsType'] = value
+
+    @property
+    def fields_v1(self) -> 'FieldsV1':
+        """
+        FieldsV1 holds the first JSON version format as described in
+        the "FieldsV1" type.
+        """
+        return self._properties.get('fieldsV1')
+
+    @fields_v1.setter
+    def fields_v1(self, value: typing.Union['FieldsV1', dict]):
+        """
+        FieldsV1 holds the first JSON version format as described in
+        the "FieldsV1" type.
         """
         if isinstance(value, dict):
-            value = Fields().from_dict(value)
-        self._properties['fields'] = value
+            value = FieldsV1().from_dict(value)
+        self._properties['fieldsV1'] = value
 
     @property
     def manager(self) -> str:
@@ -1678,22 +1699,22 @@ class ObjectMeta(_kuber_definitions.Definition):
             kind='ObjectMeta'
         )
         self._properties = {
-            'annotations': annotations or {},
-            'clusterName': cluster_name or '',
-            'creationTimestamp': creation_timestamp or None,
-            'deletionGracePeriodSeconds': deletion_grace_period_seconds or None,
-            'deletionTimestamp': deletion_timestamp or None,
-            'finalizers': finalizers or [],
-            'generateName': generate_name or '',
-            'generation': generation or None,
-            'labels': labels or {},
-            'managedFields': managed_fields or [],
-            'name': name or '',
-            'namespace': namespace or '',
-            'ownerReferences': owner_references or [],
-            'resourceVersion': resource_version or '',
-            'selfLink': self_link or '',
-            'uid': uid or '',
+            'annotations': annotations if annotations is not None else {},
+            'clusterName': cluster_name if cluster_name is not None else '',
+            'creationTimestamp': creation_timestamp if creation_timestamp is not None else None,
+            'deletionGracePeriodSeconds': deletion_grace_period_seconds if deletion_grace_period_seconds is not None else None,
+            'deletionTimestamp': deletion_timestamp if deletion_timestamp is not None else None,
+            'finalizers': finalizers if finalizers is not None else [],
+            'generateName': generate_name if generate_name is not None else '',
+            'generation': generation if generation is not None else None,
+            'labels': labels if labels is not None else {},
+            'managedFields': managed_fields if managed_fields is not None else [],
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'ownerReferences': owner_references if owner_references is not None else [],
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'selfLink': self_link if self_link is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -1771,8 +1792,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system. Read-only.
         Null for lists. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('creationTimestamp')
 
@@ -1790,8 +1811,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system. Read-only.
         Null for lists. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -1846,8 +1867,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system when a graceful
         deletion is requested. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('deletionTimestamp')
 
@@ -1881,8 +1902,8 @@ class ObjectMeta(_kuber_definitions.Definition):
 
         Populated by the system when a graceful
         deletion is requested. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -1897,7 +1918,18 @@ class ObjectMeta(_kuber_definitions.Definition):
         registry. Each entry is an identifier for the responsible
         component that will remove the entry from the list. If the
         deletionTimestamp of the object is non-nil, entries in this
-        list can only be removed.
+        list can only be removed. Finalizers may be processed and
+        removed in any order.  Order is NOT enforced because it
+        introduces significant risk of stuck finalizers. finalizers
+        is a shared field, any actor with permission can reorder it.
+        If the finalizer list is processed in order, then this can
+        lead to a situation in which the component responsible for
+        the first finalizer in the list is waiting for a signal
+        (field value, external system, or other) produced by a
+        component responsible for a finalizer later in the list,
+        resulting in a deadlock. Without enforced ordering
+        finalizers are free to order amongst themselves and are not
+        vulnerable to ordering changes in the list.
         """
         return self._properties.get('finalizers')
 
@@ -1908,7 +1940,18 @@ class ObjectMeta(_kuber_definitions.Definition):
         registry. Each entry is an identifier for the responsible
         component that will remove the entry from the list. If the
         deletionTimestamp of the object is non-nil, entries in this
-        list can only be removed.
+        list can only be removed. Finalizers may be processed and
+        removed in any order.  Order is NOT enforced because it
+        introduces significant risk of stuck finalizers. finalizers
+        is a shared field, any actor with permission can reorder it.
+        If the finalizer list is processed in order, then this can
+        lead to a situation in which the component responsible for
+        the first finalizer in the list is waiting for a signal
+        (field value, external system, or other) produced by a
+        component responsible for a finalizer later in the list,
+        resulting in a deadlock. Without enforced ordering
+        finalizers are free to order amongst themselves and are not
+        vulnerable to ordering changes in the list.
         """
         self._properties['finalizers'] = value
 
@@ -1933,8 +1976,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         After header).
 
         Applied only if Name is not specified. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#idempotency
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#idempotency
         """
         return self._properties.get('generateName')
 
@@ -1959,8 +2002,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         After header).
 
         Applied only if Name is not specified. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#idempotency
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#idempotency
         """
         self._properties['generateName'] = value
 
@@ -2010,8 +2053,6 @@ class ObjectMeta(_kuber_definitions.Definition):
         name, a controller's name, or the name of a specific apply
         path like "ci-cd". The set of fields is always in the
         version that the workflow used when modifying the object.
-        This field is alpha and can be changed or removed without
-        notice.
         """
         return self._properties.get('managedFields')
 
@@ -2028,8 +2069,6 @@ class ObjectMeta(_kuber_definitions.Definition):
         name, a controller's name, or the name of a specific apply
         path like "ci-cd". The set of fields is always in the
         version that the workflow used when modifying the object.
-        This field is alpha and can be changed or removed without
-        notice.
         """
         cleaned = []
         for item in value:
@@ -2140,8 +2179,9 @@ class ObjectMeta(_kuber_definitions.Definition):
         Populated by
         the system. Read-only. Value must be treated as opaque by
         clients and . More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         return self._properties.get('resourceVersion')
 
@@ -2159,8 +2199,9 @@ class ObjectMeta(_kuber_definitions.Definition):
         Populated by
         the system. Read-only. Value must be treated as opaque by
         clients and . More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         self._properties['resourceVersion'] = value
 
@@ -2244,12 +2285,12 @@ class OwnerReference(_kuber_definitions.Definition):
             kind='OwnerReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'blockOwnerDeletion': block_owner_deletion or None,
-            'controller': controller or None,
-            'kind': kind or '',
-            'name': name or '',
-            'uid': uid or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'blockOwnerDeletion': block_owner_deletion if block_owner_deletion is not None else None,
+            'controller': controller if controller is not None else None,
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2318,8 +2359,8 @@ class OwnerReference(_kuber_definitions.Definition):
     def kind(self) -> str:
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -2327,8 +2368,8 @@ class OwnerReference(_kuber_definitions.Definition):
     def kind(self, value: str):
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -2416,8 +2457,8 @@ class Preconditions(_kuber_definitions.Definition):
             kind='Preconditions'
         )
         self._properties = {
-            'resourceVersion': resource_version or '',
-            'uid': uid or '',
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2479,8 +2520,8 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
             kind='ServerAddressByClientCIDR'
         )
         self._properties = {
-            'clientCIDR': client_cidr or '',
-            'serverAddress': server_address or '',
+            'clientCIDR': client_cidr if client_cidr is not None else '',
+            'serverAddress': server_address if server_address is not None else '',
 
         }
         self._types = {
@@ -2553,14 +2594,14 @@ class Status(_kuber_definitions.Definition):
             kind='Status'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'code': code or None,
-            'details': details or StatusDetails(),
-            'kind': kind or '',
-            'message': message or '',
-            'metadata': metadata or ListMeta(),
-            'reason': reason or '',
-            'status': status or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'code': code if code is not None else None,
+            'details': details if details is not None else StatusDetails(),
+            'kind': kind if kind is not None else '',
+            'message': message if message is not None else '',
+            'metadata': metadata if metadata is not None else ListMeta(),
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
 
         }
         self._types = {
@@ -2582,8 +2623,8 @@ class Status(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -2594,8 +2635,8 @@ class Status(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -2642,8 +2683,8 @@ class Status(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -2654,8 +2695,8 @@ class Status(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -2679,8 +2720,8 @@ class Status(_kuber_definitions.Definition):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -2688,8 +2729,8 @@ class Status(_kuber_definitions.Definition):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -2720,8 +2761,8 @@ class Status(_kuber_definitions.Definition):
         """
         Status of the operation. One of: "Success" or "Failure".
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -2730,8 +2771,8 @@ class Status(_kuber_definitions.Definition):
         """
         Status of the operation. One of: "Success" or "Failure".
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         self._properties['status'] = value
 
@@ -2761,9 +2802,9 @@ class StatusCause(_kuber_definitions.Definition):
             kind='StatusCause'
         )
         self._properties = {
-            'field': field or '',
-            'message': message or '',
-            'reason': reason or '',
+            'field': field if field is not None else '',
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
 
         }
         self._types = {
@@ -2870,12 +2911,12 @@ class StatusDetails(_kuber_definitions.Definition):
             kind='StatusDetails'
         )
         self._properties = {
-            'causes': causes or [],
-            'group': group or '',
-            'kind': kind or '',
-            'name': name or '',
-            'retryAfterSeconds': retry_after_seconds or None,
-            'uid': uid or '',
+            'causes': causes if causes is not None else [],
+            'group': group if group is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'retryAfterSeconds': retry_after_seconds if retry_after_seconds is not None else None,
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2936,8 +2977,8 @@ class StatusDetails(_kuber_definitions.Definition):
         The kind attribute of the resource associated with the
         status StatusReason. On some operations may differ from the
         requested resource Kind. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -2947,8 +2988,8 @@ class StatusDetails(_kuber_definitions.Definition):
         The kind attribute of the resource associated with the
         status StatusReason. On some operations may differ from the
         requested resource Kind. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -3062,8 +3103,8 @@ class WatchEvent(_kuber_definitions.Definition):
             kind='WatchEvent'
         )
         self._properties = {
-            'object': object_ or RawExtension(),
-            'type': type_ or '',
+            'object': object_ if object_ is not None else RawExtension(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {

@@ -30,9 +30,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
             kind='CrossVersionObjectReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -116,8 +116,8 @@ class ExternalMetricSource(_kuber_definitions.Definition):
             kind='ExternalMetricSource'
         )
         self._properties = {
-            'metric': metric or MetricIdentifier(),
-            'target': target or MetricTarget(),
+            'metric': metric if metric is not None else MetricIdentifier(),
+            'target': target if target is not None else MetricTarget(),
 
         }
         self._types = {
@@ -182,8 +182,8 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
             kind='ExternalMetricStatus'
         )
         self._properties = {
-            'current': current or MetricValueStatus(),
-            'metric': metric or MetricIdentifier(),
+            'current': current if current is not None else MetricValueStatus(),
+            'metric': metric if metric is not None else MetricIdentifier(),
 
         }
         self._types = {
@@ -251,9 +251,9 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             kind='HorizontalPodAutoscaler'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or HorizontalPodAutoscalerSpec(),
-            'status': status or HorizontalPodAutoscalerStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else HorizontalPodAutoscalerSpec(),
+            'status': status if status is not None else HorizontalPodAutoscalerStatus(),
 
         }
         self._types = {
@@ -519,11 +519,11 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -640,8 +640,8 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
             kind='HorizontalPodAutoscalerList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -729,10 +729,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerSpec'
         )
         self._properties = {
-            'maxReplicas': max_replicas or None,
-            'metrics': metrics or [],
-            'minReplicas': min_replicas or None,
-            'scaleTargetRef': scale_target_ref or CrossVersionObjectReference(),
+            'maxReplicas': max_replicas if max_replicas is not None else None,
+            'metrics': metrics if metrics is not None else [],
+            'minReplicas': min_replicas if min_replicas is not None else None,
+            'scaleTargetRef': scale_target_ref if scale_target_ref is not None else CrossVersionObjectReference(),
 
         }
         self._types = {
@@ -873,12 +873,12 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerStatus'
         )
         self._properties = {
-            'conditions': conditions or [],
-            'currentMetrics': current_metrics or [],
-            'currentReplicas': current_replicas or None,
-            'desiredReplicas': desired_replicas or None,
-            'lastScaleTime': last_scale_time or None,
-            'observedGeneration': observed_generation or None,
+            'conditions': conditions if conditions is not None else [],
+            'currentMetrics': current_metrics if current_metrics is not None else [],
+            'currentReplicas': current_replicas if current_replicas is not None else None,
+            'desiredReplicas': desired_replicas if desired_replicas is not None else None,
+            'lastScaleTime': last_scale_time if last_scale_time is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
 
         }
         self._types = {
@@ -1040,8 +1040,8 @@ class MetricIdentifier(_kuber_definitions.Definition):
             kind='MetricIdentifier'
         )
         self._properties = {
-            'name': name or '',
-            'selector': selector or LabelSelector(),
+            'name': name if name is not None else '',
+            'selector': selector if selector is not None else LabelSelector(),
 
         }
         self._types = {
@@ -1116,11 +1116,11 @@ class MetricSpec(_kuber_definitions.Definition):
             kind='MetricSpec'
         )
         self._properties = {
-            'external': external or ExternalMetricSource(),
-            'object': object_ or ObjectMetricSource(),
-            'pods': pods or PodsMetricSource(),
-            'resource': resource or ResourceMetricSource(),
-            'type': type_ or '',
+            'external': external if external is not None else ExternalMetricSource(),
+            'object': object_ if object_ is not None else ObjectMetricSource(),
+            'pods': pods if pods is not None else PodsMetricSource(),
+            'resource': resource if resource is not None else ResourceMetricSource(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -1269,11 +1269,11 @@ class MetricStatus(_kuber_definitions.Definition):
             kind='MetricStatus'
         )
         self._properties = {
-            'external': external or ExternalMetricStatus(),
-            'object': object_ or ObjectMetricStatus(),
-            'pods': pods or PodsMetricStatus(),
-            'resource': resource or ResourceMetricStatus(),
-            'type': type_ or '',
+            'external': external if external is not None else ExternalMetricStatus(),
+            'object': object_ if object_ is not None else ObjectMetricStatus(),
+            'pods': pods if pods is not None else PodsMetricStatus(),
+            'resource': resource if resource is not None else ResourceMetricStatus(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -1421,10 +1421,10 @@ class MetricTarget(_kuber_definitions.Definition):
             kind='MetricTarget'
         )
         self._properties = {
-            'averageUtilization': average_utilization or None,
-            'averageValue': average_value or None,
-            'type': type_ or '',
-            'value': value or None,
+            'averageUtilization': average_utilization if average_utilization is not None else None,
+            'averageValue': average_value if average_value is not None else None,
+            'type': type_ if type_ is not None else '',
+            'value': value if value is not None else None,
 
         }
         self._types = {
@@ -1533,9 +1533,9 @@ class MetricValueStatus(_kuber_definitions.Definition):
             kind='MetricValueStatus'
         )
         self._properties = {
-            'averageUtilization': average_utilization or None,
-            'averageValue': average_value or None,
-            'value': value or None,
+            'averageUtilization': average_utilization if average_utilization is not None else None,
+            'averageValue': average_value if average_value is not None else None,
+            'value': value if value is not None else None,
 
         }
         self._types = {
@@ -1629,9 +1629,9 @@ class ObjectMetricSource(_kuber_definitions.Definition):
             kind='ObjectMetricSource'
         )
         self._properties = {
-            'describedObject': described_object or CrossVersionObjectReference(),
-            'metric': metric or MetricIdentifier(),
-            'target': target or MetricTarget(),
+            'describedObject': described_object if described_object is not None else CrossVersionObjectReference(),
+            'metric': metric if metric is not None else MetricIdentifier(),
+            'target': target if target is not None else MetricTarget(),
 
         }
         self._types = {
@@ -1715,9 +1715,9 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
             kind='ObjectMetricStatus'
         )
         self._properties = {
-            'current': current or MetricValueStatus(),
-            'describedObject': described_object or CrossVersionObjectReference(),
-            'metric': metric or MetricIdentifier(),
+            'current': current if current is not None else MetricValueStatus(),
+            'describedObject': described_object if described_object is not None else CrossVersionObjectReference(),
+            'metric': metric if metric is not None else MetricIdentifier(),
 
         }
         self._types = {
@@ -1802,8 +1802,8 @@ class PodsMetricSource(_kuber_definitions.Definition):
             kind='PodsMetricSource'
         )
         self._properties = {
-            'metric': metric or MetricIdentifier(),
-            'target': target or MetricTarget(),
+            'metric': metric if metric is not None else MetricIdentifier(),
+            'target': target if target is not None else MetricTarget(),
 
         }
         self._types = {
@@ -1869,8 +1869,8 @@ class PodsMetricStatus(_kuber_definitions.Definition):
             kind='PodsMetricStatus'
         )
         self._properties = {
-            'current': current or MetricValueStatus(),
-            'metric': metric or MetricIdentifier(),
+            'current': current if current is not None else MetricValueStatus(),
+            'metric': metric if metric is not None else MetricIdentifier(),
 
         }
         self._types = {
@@ -1941,8 +1941,8 @@ class ResourceMetricSource(_kuber_definitions.Definition):
             kind='ResourceMetricSource'
         )
         self._properties = {
-            'name': name or '',
-            'target': target or MetricTarget(),
+            'name': name if name is not None else '',
+            'target': target if target is not None else MetricTarget(),
 
         }
         self._types = {
@@ -2010,8 +2010,8 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
             kind='ResourceMetricStatus'
         )
         self._properties = {
-            'current': current or MetricValueStatus(),
-            'name': name or '',
+            'current': current if current is not None else MetricValueStatus(),
+            'name': name if name is not None else '',
 
         }
         self._types = {

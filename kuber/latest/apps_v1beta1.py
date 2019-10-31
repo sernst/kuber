@@ -56,9 +56,9 @@ class ControllerRevision(_kuber_definitions.Resource):
             kind='ControllerRevision'
         )
         self._properties = {
-            'data': data or RawExtension(),
-            'metadata': metadata or ObjectMeta(),
-            'revision': revision or None,
+            'data': data if data is not None else RawExtension(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'revision': revision if revision is not None else None,
 
         }
         self._types = {
@@ -90,8 +90,8 @@ class ControllerRevision(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -99,8 +99,8 @@ class ControllerRevision(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -270,8 +270,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
             kind='ControllerRevisionList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -308,8 +308,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -317,8 +317,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -364,9 +364,9 @@ class Deployment(_kuber_definitions.Resource):
             kind='Deployment'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or DeploymentSpec(),
-            'status': status or DeploymentStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else DeploymentSpec(),
+            'status': status if status is not None else DeploymentStatus(),
 
         }
         self._types = {
@@ -441,6 +441,7 @@ class Deployment(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -465,6 +466,7 @@ class Deployment(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -693,12 +695,12 @@ class DeploymentCondition(_kuber_definitions.Definition):
             kind='DeploymentCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'lastUpdateTime': last_update_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'lastUpdateTime': last_update_time if last_update_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -836,8 +838,8 @@ class DeploymentList(_kuber_definitions.Collection):
             kind='DeploymentList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -926,11 +928,11 @@ class DeploymentRollback(_kuber_definitions.Definition):
             kind='DeploymentRollback'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
-            'rollbackTo': rollback_to or RollbackConfig(),
-            'updatedAnnotations': updated_annotations or {},
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'rollbackTo': rollback_to if rollback_to is not None else RollbackConfig(),
+            'updatedAnnotations': updated_annotations if updated_annotations is not None else {},
 
         }
         self._types = {
@@ -949,8 +951,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         return self._properties.get('apiVersion')
 
@@ -961,8 +963,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         representation of an object. Servers should convert
         recognized schemas to the latest internal value, and may
         reject unrecognized values. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#resources
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#resources
         """
         self._properties['apiVersion'] = value
 
@@ -973,8 +975,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -985,8 +987,8 @@ class DeploymentRollback(_kuber_definitions.Definition):
         object represents. Servers may infer this from the endpoint
         the client submits requests to. Cannot be updated. In
         CamelCase. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -1065,15 +1067,15 @@ class DeploymentSpec(_kuber_definitions.Definition):
             kind='DeploymentSpec'
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds or None,
-            'paused': paused or None,
-            'progressDeadlineSeconds': progress_deadline_seconds or None,
-            'replicas': replicas or None,
-            'revisionHistoryLimit': revision_history_limit or None,
-            'rollbackTo': rollback_to or RollbackConfig(),
-            'selector': selector or LabelSelector(),
-            'strategy': strategy or DeploymentStrategy(),
-            'template': template or PodTemplateSpec(),
+            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
+            'paused': paused if paused is not None else None,
+            'progressDeadlineSeconds': progress_deadline_seconds if progress_deadline_seconds is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'revisionHistoryLimit': revision_history_limit if revision_history_limit is not None else None,
+            'rollbackTo': rollback_to if rollback_to is not None else RollbackConfig(),
+            'selector': selector if selector is not None else LabelSelector(),
+            'strategy': strategy if strategy is not None else DeploymentStrategy(),
+            'template': template if template is not None else PodTemplateSpec(),
 
         }
         self._types = {
@@ -1270,6 +1272,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -1294,6 +1297,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -1355,14 +1359,14 @@ class DeploymentStatus(_kuber_definitions.Definition):
             kind='DeploymentStatus'
         )
         self._properties = {
-            'availableReplicas': available_replicas or None,
-            'collisionCount': collision_count or None,
-            'conditions': conditions or [],
-            'observedGeneration': observed_generation or None,
-            'readyReplicas': ready_replicas or None,
-            'replicas': replicas or None,
-            'unavailableReplicas': unavailable_replicas or None,
-            'updatedReplicas': updated_replicas or None,
+            'availableReplicas': available_replicas if available_replicas is not None else None,
+            'collisionCount': collision_count if collision_count is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'readyReplicas': ready_replicas if ready_replicas is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'unavailableReplicas': unavailable_replicas if unavailable_replicas is not None else None,
+            'updatedReplicas': updated_replicas if updated_replicas is not None else None,
 
         }
         self._types = {
@@ -1543,8 +1547,8 @@ class DeploymentStrategy(_kuber_definitions.Definition):
             kind='DeploymentStrategy'
         )
         self._properties = {
-            'rollingUpdate': rolling_update or RollingUpdateDeployment(),
-            'type': type_ or '',
+            'rollingUpdate': rolling_update if rolling_update is not None else RollingUpdateDeployment(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -1609,7 +1613,7 @@ class RollbackConfig(_kuber_definitions.Definition):
             kind='RollbackConfig'
         )
         self._properties = {
-            'revision': revision or None,
+            'revision': revision if revision is not None else None,
 
         }
         self._types = {
@@ -1656,8 +1660,8 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
             kind='RollingUpdateDeployment'
         )
         self._properties = {
-            'maxSurge': max_surge or None,
-            'maxUnavailable': max_unavailable or None,
+            'maxSurge': max_surge if max_surge is not None else None,
+            'maxUnavailable': max_unavailable if max_unavailable is not None else None,
 
         }
         self._types = {
@@ -1767,7 +1771,7 @@ class RollingUpdateStatefulSetStrategy(_kuber_definitions.Definition):
             kind='RollingUpdateStatefulSetStrategy'
         )
         self._properties = {
-            'partition': partition or None,
+            'partition': partition if partition is not None else None,
 
         }
         self._types = {
@@ -1815,9 +1819,9 @@ class Scale(_kuber_definitions.Resource):
             kind='Scale'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ScaleSpec(),
-            'status': status or ScaleStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ScaleSpec(),
+            'status': status if status is not None else ScaleStatus(),
 
         }
         self._types = {
@@ -1833,8 +1837,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -1842,8 +1846,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1853,8 +1857,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self) -> 'ScaleSpec':
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         return self._properties.get('spec')
 
@@ -1862,8 +1866,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ScaleSpec', dict]):
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
             value = ScaleSpec().from_dict(value)
@@ -1873,8 +1877,8 @@ class Scale(_kuber_definitions.Resource):
     def status(self) -> 'ScaleStatus':
         """
         current status of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status. Read-only.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status. Read-only.
         """
         return self._properties.get('status')
 
@@ -1882,8 +1886,8 @@ class Scale(_kuber_definitions.Resource):
     def status(self, value: typing.Union['ScaleStatus', dict]):
         """
         current status of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status. Read-only.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status. Read-only.
         """
         if isinstance(value, dict):
             value = ScaleStatus().from_dict(value)
@@ -2080,7 +2084,7 @@ class ScaleSpec(_kuber_definitions.Definition):
             kind='ScaleSpec'
         )
         self._properties = {
-            'replicas': replicas or None,
+            'replicas': replicas if replicas is not None else None,
 
         }
         self._types = {
@@ -2127,9 +2131,9 @@ class ScaleStatus(_kuber_definitions.Definition):
             kind='ScaleStatus'
         )
         self._properties = {
-            'replicas': replicas or None,
-            'selector': selector or {},
-            'targetSelector': target_selector or '',
+            'replicas': replicas if replicas is not None else None,
+            'selector': selector if selector is not None else {},
+            'targetSelector': target_selector if target_selector is not None else '',
 
         }
         self._types = {
@@ -2235,9 +2239,9 @@ class StatefulSet(_kuber_definitions.Resource):
             kind='StatefulSet'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or StatefulSetSpec(),
-            'status': status or StatefulSetStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else StatefulSetSpec(),
+            'status': status if status is not None else StatefulSetStatus(),
 
         }
         self._types = {
@@ -2314,6 +2318,7 @@ class StatefulSet(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -2338,6 +2343,7 @@ class StatefulSet(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -2565,11 +2571,11 @@ class StatefulSetCondition(_kuber_definitions.Definition):
             kind='StatefulSetCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -2685,8 +2691,8 @@ class StatefulSetList(_kuber_definitions.Collection):
             kind='StatefulSetList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -2777,14 +2783,14 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             kind='StatefulSetSpec'
         )
         self._properties = {
-            'podManagementPolicy': pod_management_policy or '',
-            'replicas': replicas or None,
-            'revisionHistoryLimit': revision_history_limit or None,
-            'selector': selector or LabelSelector(),
-            'serviceName': service_name or '',
-            'template': template or PodTemplateSpec(),
-            'updateStrategy': update_strategy or StatefulSetUpdateStrategy(),
-            'volumeClaimTemplates': volume_claim_templates or [],
+            'podManagementPolicy': pod_management_policy if pod_management_policy is not None else '',
+            'replicas': replicas if replicas is not None else None,
+            'revisionHistoryLimit': revision_history_limit if revision_history_limit is not None else None,
+            'selector': selector if selector is not None else LabelSelector(),
+            'serviceName': service_name if service_name is not None else '',
+            'template': template if template is not None else PodTemplateSpec(),
+            'updateStrategy': update_strategy if update_strategy is not None else StatefulSetUpdateStrategy(),
+            'volumeClaimTemplates': volume_claim_templates if volume_claim_templates is not None else [],
 
         }
         self._types = {
@@ -3016,6 +3022,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -3040,6 +3047,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -3102,15 +3110,15 @@ class StatefulSetStatus(_kuber_definitions.Definition):
             kind='StatefulSetStatus'
         )
         self._properties = {
-            'collisionCount': collision_count or None,
-            'conditions': conditions or [],
-            'currentReplicas': current_replicas or None,
-            'currentRevision': current_revision or '',
-            'observedGeneration': observed_generation or None,
-            'readyReplicas': ready_replicas or None,
-            'replicas': replicas or None,
-            'updateRevision': update_revision or '',
-            'updatedReplicas': updated_replicas or None,
+            'collisionCount': collision_count if collision_count is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'currentReplicas': current_replicas if current_replicas is not None else None,
+            'currentRevision': current_revision if current_revision is not None else '',
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'readyReplicas': ready_replicas if ready_replicas is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'updateRevision': update_revision if update_revision is not None else '',
+            'updatedReplicas': updated_replicas if updated_replicas is not None else None,
 
         }
         self._types = {
@@ -3318,8 +3326,8 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
             kind='StatefulSetUpdateStrategy'
         )
         self._properties = {
-            'rollingUpdate': rolling_update or RollingUpdateStatefulSetStrategy(),
-            'type': type_ or '',
+            'rollingUpdate': rolling_update if rolling_update is not None else RollingUpdateStatefulSetStrategy(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {

@@ -25,7 +25,7 @@ class Overhead(_kuber_definitions.Definition):
             kind='Overhead'
         )
         self._properties = {
-            'podFixed': pod_fixed or {},
+            'podFixed': pod_fixed if pod_fixed is not None else {},
 
         }
         self._types = {
@@ -80,8 +80,8 @@ class RuntimeClass(_kuber_definitions.Resource):
             kind='RuntimeClass'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or RuntimeClassSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else RuntimeClassSpec(),
 
         }
         self._types = {
@@ -279,8 +279,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
             kind='RuntimeClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -375,9 +375,9 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
             kind='RuntimeClassSpec'
         )
         self._properties = {
-            'overhead': overhead or Overhead(),
-            'runtimeHandler': runtime_handler or '',
-            'scheduling': scheduling or Scheduling(),
+            'overhead': overhead if overhead is not None else Overhead(),
+            'runtimeHandler': runtime_handler if runtime_handler is not None else '',
+            'scheduling': scheduling if scheduling is not None else Scheduling(),
 
         }
         self._types = {
@@ -491,8 +491,8 @@ class Scheduling(_kuber_definitions.Definition):
             kind='Scheduling'
         )
         self._properties = {
-            'nodeSelector': node_selector or {},
-            'tolerations': tolerations or [],
+            'nodeSelector': node_selector if node_selector is not None else {},
+            'tolerations': tolerations if tolerations is not None else [],
 
         }
         self._types = {

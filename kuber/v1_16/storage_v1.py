@@ -38,14 +38,14 @@ class StorageClass(_kuber_definitions.Resource):
             kind='StorageClass'
         )
         self._properties = {
-            'allowVolumeExpansion': allow_volume_expansion or None,
-            'allowedTopologies': allowed_topologies or [],
-            'metadata': metadata or ObjectMeta(),
-            'mountOptions': mount_options or [],
-            'parameters': parameters or {},
-            'provisioner': provisioner or '',
-            'reclaimPolicy': reclaim_policy or '',
-            'volumeBindingMode': volume_binding_mode or '',
+            'allowVolumeExpansion': allow_volume_expansion if allow_volume_expansion is not None else None,
+            'allowedTopologies': allowed_topologies if allowed_topologies is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'mountOptions': mount_options if mount_options is not None else [],
+            'parameters': parameters if parameters is not None else {},
+            'provisioner': provisioner if provisioner is not None else '',
+            'reclaimPolicy': reclaim_policy if reclaim_policy is not None else '',
+            'volumeBindingMode': volume_binding_mode if volume_binding_mode is not None else '',
 
         }
         self._types = {
@@ -365,8 +365,8 @@ class StorageClassList(_kuber_definitions.Collection):
             kind='StorageClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -458,9 +458,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
             kind='VolumeAttachment'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or VolumeAttachmentSpec(),
-            'status': status or VolumeAttachmentStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else VolumeAttachmentSpec(),
+            'status': status if status is not None else VolumeAttachmentStatus(),
 
         }
         self._types = {
@@ -723,8 +723,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
             kind='VolumeAttachmentList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -816,8 +816,8 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
             kind='VolumeAttachmentSource'
         )
         self._properties = {
-            'inlineVolumeSpec': inline_volume_spec or PersistentVolumeSpec(),
-            'persistentVolumeName': persistent_volume_name or '',
+            'inlineVolumeSpec': inline_volume_spec if inline_volume_spec is not None else PersistentVolumeSpec(),
+            'persistentVolumeName': persistent_volume_name if persistent_volume_name is not None else '',
 
         }
         self._types = {
@@ -893,9 +893,9 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
             kind='VolumeAttachmentSpec'
         )
         self._properties = {
-            'attacher': attacher or '',
-            'nodeName': node_name or '',
-            'source': source or VolumeAttachmentSource(),
+            'attacher': attacher if attacher is not None else '',
+            'nodeName': node_name if node_name is not None else '',
+            'source': source if source is not None else VolumeAttachmentSource(),
 
         }
         self._types = {
@@ -979,10 +979,10 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
             kind='VolumeAttachmentStatus'
         )
         self._properties = {
-            'attachError': attach_error or VolumeError(),
-            'attached': attached or None,
-            'attachmentMetadata': attachment_metadata or {},
-            'detachError': detach_error or VolumeError(),
+            'attachError': attach_error if attach_error is not None else VolumeError(),
+            'attached': attached if attached is not None else None,
+            'attachmentMetadata': attachment_metadata if attachment_metadata is not None else {},
+            'detachError': detach_error if detach_error is not None else VolumeError(),
 
         }
         self._types = {
@@ -1097,8 +1097,8 @@ class VolumeError(_kuber_definitions.Definition):
             kind='VolumeError'
         )
         self._properties = {
-            'message': message or '',
-            'time': time or None,
+            'message': message if message is not None else '',
+            'time': time if time is not None else None,
 
         }
         self._types = {

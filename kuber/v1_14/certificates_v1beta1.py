@@ -28,9 +28,9 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
             kind='CertificateSigningRequest'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or CertificateSigningRequestSpec(),
-            'status': status or CertificateSigningRequestStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CertificateSigningRequestSpec(),
+            'status': status if status is not None else CertificateSigningRequestStatus(),
 
         }
         self._types = {
@@ -286,10 +286,10 @@ class CertificateSigningRequestCondition(_kuber_definitions.Definition):
             kind='CertificateSigningRequestCondition'
         )
         self._properties = {
-            'lastUpdateTime': last_update_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'type': type_ or '',
+            'lastUpdateTime': last_update_time if last_update_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -386,8 +386,8 @@ class CertificateSigningRequestList(_kuber_definitions.Collection):
             kind='CertificateSigningRequestList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -479,12 +479,12 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             kind='CertificateSigningRequestSpec'
         )
         self._properties = {
-            'extra': extra or {},
-            'groups': groups or [],
-            'request': request or '',
-            'uid': uid or '',
-            'usages': usages or [],
-            'username': username or '',
+            'extra': extra if extra is not None else {},
+            'groups': groups if groups is not None else [],
+            'request': request if request is not None else '',
+            'uid': uid if uid is not None else '',
+            'usages': usages if usages is not None else [],
+            'username': username if username is not None else '',
 
         }
         self._types = {
@@ -618,8 +618,8 @@ class CertificateSigningRequestStatus(_kuber_definitions.Definition):
             kind='CertificateSigningRequestStatus'
         )
         self._properties = {
-            'certificate': certificate or '',
-            'conditions': conditions or [],
+            'certificate': certificate if certificate is not None else '',
+            'conditions': conditions if conditions is not None else [],
 
         }
         self._types = {

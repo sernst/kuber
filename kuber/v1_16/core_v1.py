@@ -37,10 +37,10 @@ class AWSElasticBlockStoreVolumeSource(_kuber_definitions.Definition):
             kind='AWSElasticBlockStoreVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'partition': partition or None,
-            'readOnly': read_only or None,
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'partition': partition if partition is not None else None,
+            'readOnly': read_only if read_only is not None else None,
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -159,9 +159,9 @@ class Affinity(_kuber_definitions.Definition):
             kind='Affinity'
         )
         self._properties = {
-            'nodeAffinity': node_affinity or NodeAffinity(),
-            'podAffinity': pod_affinity or PodAffinity(),
-            'podAntiAffinity': pod_anti_affinity or PodAntiAffinity(),
+            'nodeAffinity': node_affinity if node_affinity is not None else NodeAffinity(),
+            'podAffinity': pod_affinity if pod_affinity is not None else PodAffinity(),
+            'podAntiAffinity': pod_anti_affinity if pod_anti_affinity is not None else PodAntiAffinity(),
 
         }
         self._types = {
@@ -248,8 +248,8 @@ class AttachedVolume(_kuber_definitions.Definition):
             kind='AttachedVolume'
         )
         self._properties = {
-            'devicePath': device_path or '',
-            'name': name or '',
+            'devicePath': device_path if device_path is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -316,12 +316,12 @@ class AzureDiskVolumeSource(_kuber_definitions.Definition):
             kind='AzureDiskVolumeSource'
         )
         self._properties = {
-            'cachingMode': caching_mode or '',
-            'diskName': disk_name or '',
-            'diskURI': disk_uri or '',
-            'fsType': fs_type or '',
-            'kind': kind or '',
-            'readOnly': read_only or None,
+            'cachingMode': caching_mode if caching_mode is not None else '',
+            'diskName': disk_name if disk_name is not None else '',
+            'diskURI': disk_uri if disk_uri is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'kind': kind if kind is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -456,10 +456,10 @@ class AzureFilePersistentVolumeSource(_kuber_definitions.Definition):
             kind='AzureFilePersistentVolumeSource'
         )
         self._properties = {
-            'readOnly': read_only or None,
-            'secretName': secret_name or '',
-            'secretNamespace': secret_namespace or '',
-            'shareName': share_name or '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretName': secret_name if secret_name is not None else '',
+            'secretNamespace': secret_namespace if secret_namespace is not None else '',
+            'shareName': share_name if share_name is not None else '',
 
         }
         self._types = {
@@ -557,9 +557,9 @@ class AzureFileVolumeSource(_kuber_definitions.Definition):
             kind='AzureFileVolumeSource'
         )
         self._properties = {
-            'readOnly': read_only or None,
-            'secretName': secret_name or '',
-            'shareName': share_name or '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretName': secret_name if secret_name is not None else '',
+            'shareName': share_name if share_name is not None else '',
 
         }
         self._types = {
@@ -640,8 +640,8 @@ class Binding(_kuber_definitions.Resource):
             kind='Binding'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'target': target or ObjectReference(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'target': target if target is not None else ObjectReference(),
 
         }
         self._types = {
@@ -845,15 +845,15 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CSIPersistentVolumeSource'
         )
         self._properties = {
-            'controllerExpandSecretRef': controller_expand_secret_ref or SecretReference(),
-            'controllerPublishSecretRef': controller_publish_secret_ref or SecretReference(),
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'nodePublishSecretRef': node_publish_secret_ref or SecretReference(),
-            'nodeStageSecretRef': node_stage_secret_ref or SecretReference(),
-            'readOnly': read_only or None,
-            'volumeAttributes': volume_attributes or {},
-            'volumeHandle': volume_handle or '',
+            'controllerExpandSecretRef': controller_expand_secret_ref if controller_expand_secret_ref is not None else SecretReference(),
+            'controllerPublishSecretRef': controller_publish_secret_ref if controller_publish_secret_ref is not None else SecretReference(),
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'nodePublishSecretRef': node_publish_secret_ref if node_publish_secret_ref is not None else SecretReference(),
+            'nodeStageSecretRef': node_stage_secret_ref if node_stage_secret_ref is not None else SecretReference(),
+            'readOnly': read_only if read_only is not None else None,
+            'volumeAttributes': volume_attributes if volume_attributes is not None else {},
+            'volumeHandle': volume_handle if volume_handle is not None else '',
 
         }
         self._types = {
@@ -1086,11 +1086,11 @@ class CSIVolumeSource(_kuber_definitions.Definition):
             kind='CSIVolumeSource'
         )
         self._properties = {
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'nodePublishSecretRef': node_publish_secret_ref or LocalObjectReference(),
-            'readOnly': read_only or None,
-            'volumeAttributes': volume_attributes or {},
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'nodePublishSecretRef': node_publish_secret_ref if node_publish_secret_ref is not None else LocalObjectReference(),
+            'readOnly': read_only if read_only is not None else None,
+            'volumeAttributes': volume_attributes if volume_attributes is not None else {},
 
         }
         self._types = {
@@ -1223,8 +1223,8 @@ class Capabilities(_kuber_definitions.Definition):
             kind='Capabilities'
         )
         self._properties = {
-            'add': add or [],
-            'drop': drop or [],
+            'add': add if add is not None else [],
+            'drop': drop if drop is not None else [],
 
         }
         self._types = {
@@ -1290,12 +1290,12 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CephFSPersistentVolumeSource'
         )
         self._properties = {
-            'monitors': monitors or [],
-            'path': path or '',
-            'readOnly': read_only or None,
-            'secretFile': secret_file or '',
-            'secretRef': secret_ref or SecretReference(),
-            'user': user or '',
+            'monitors': monitors if monitors is not None else [],
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretFile': secret_file if secret_file is not None else '',
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -1451,12 +1451,12 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
             kind='CephFSVolumeSource'
         )
         self._properties = {
-            'monitors': monitors or [],
-            'path': path or '',
-            'readOnly': read_only or None,
-            'secretFile': secret_file or '',
-            'secretRef': secret_ref or LocalObjectReference(),
-            'user': user or '',
+            'monitors': monitors if monitors is not None else [],
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretFile': secret_file if secret_file is not None else '',
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -1611,10 +1611,10 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CinderPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -1727,10 +1727,10 @@ class CinderVolumeSource(_kuber_definitions.Definition):
             kind='CinderVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -1838,7 +1838,7 @@ class ClientIPConfig(_kuber_definitions.Definition):
             kind='ClientIPConfig'
         )
         self._properties = {
-            'timeoutSeconds': timeout_seconds or None,
+            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
 
         }
         self._types = {
@@ -1891,10 +1891,10 @@ class ComponentCondition(_kuber_definitions.Definition):
             kind='ComponentCondition'
         )
         self._properties = {
-            'error': error or '',
-            'message': message or '',
-            'status': status or '',
-            'type': type_ or '',
+            'error': error if error is not None else '',
+            'message': message if message is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -1991,8 +1991,8 @@ class ComponentStatus(_kuber_definitions.Resource):
             kind='ComponentStatus'
         )
         self._properties = {
-            'conditions': conditions or [],
-            'metadata': metadata or ObjectMeta(),
+            'conditions': conditions if conditions is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
         self._types = {
@@ -2193,8 +2193,8 @@ class ComponentStatusList(_kuber_definitions.Collection):
             kind='ComponentStatusList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -2284,9 +2284,9 @@ class ConfigMap(_kuber_definitions.Resource):
             kind='ConfigMap'
         )
         self._properties = {
-            'binaryData': binary_data or {},
-            'data': data or {},
-            'metadata': metadata or ObjectMeta(),
+            'binaryData': binary_data if binary_data is not None else {},
+            'data': data if data is not None else {},
+            'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
         self._types = {
@@ -2518,8 +2518,8 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
             kind='ConfigMapEnvSource'
         )
         self._properties = {
-            'name': name or '',
-            'optional': optional or None,
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -2584,9 +2584,9 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
             kind='ConfigMapKeySelector'
         )
         self._properties = {
-            'key': key or '',
-            'name': name or '',
-            'optional': optional or None,
+            'key': key if key is not None else '',
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -2666,8 +2666,8 @@ class ConfigMapList(_kuber_definitions.Collection):
             kind='ConfigMapList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -2760,11 +2760,11 @@ class ConfigMapNodeConfigSource(_kuber_definitions.Definition):
             kind='ConfigMapNodeConfigSource'
         )
         self._properties = {
-            'kubeletConfigKey': kubelet_config_key or '',
-            'name': name or '',
-            'namespace': namespace or '',
-            'resourceVersion': resource_version or '',
-            'uid': uid or '',
+            'kubeletConfigKey': kubelet_config_key if kubelet_config_key is not None else '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2894,9 +2894,9 @@ class ConfigMapProjection(_kuber_definitions.Definition):
             kind='ConfigMapProjection'
         )
         self._properties = {
-            'items': items or [],
-            'name': name or '',
-            'optional': optional or None,
+            'items': items if items is not None else [],
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -3008,10 +3008,10 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
             kind='ConfigMapVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'items': items or [],
-            'name': name or '',
-            'optional': optional or None,
+            'defaultMode': default_mode if default_mode is not None else None,
+            'items': items if items is not None else [],
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -3158,28 +3158,28 @@ class Container(_kuber_definitions.Definition):
             kind='Container'
         )
         self._properties = {
-            'args': args or [],
-            'command': command or [],
-            'env': env or [],
-            'envFrom': env_from or [],
-            'image': image or '',
-            'imagePullPolicy': image_pull_policy or '',
-            'lifecycle': lifecycle or Lifecycle(),
-            'livenessProbe': liveness_probe or Probe(),
-            'name': name or '',
-            'ports': ports or [],
-            'readinessProbe': readiness_probe or Probe(),
-            'resources': resources or ResourceRequirements(),
-            'securityContext': security_context or SecurityContext(),
-            'startupProbe': startup_probe or Probe(),
-            'stdin': stdin or None,
-            'stdinOnce': stdin_once or None,
-            'terminationMessagePath': termination_message_path or '',
-            'terminationMessagePolicy': termination_message_policy or '',
-            'tty': tty or None,
-            'volumeDevices': volume_devices or [],
-            'volumeMounts': volume_mounts or [],
-            'workingDir': working_dir or '',
+            'args': args if args is not None else [],
+            'command': command if command is not None else [],
+            'env': env if env is not None else [],
+            'envFrom': env_from if env_from is not None else [],
+            'image': image if image is not None else '',
+            'imagePullPolicy': image_pull_policy if image_pull_policy is not None else '',
+            'lifecycle': lifecycle if lifecycle is not None else Lifecycle(),
+            'livenessProbe': liveness_probe if liveness_probe is not None else Probe(),
+            'name': name if name is not None else '',
+            'ports': ports if ports is not None else [],
+            'readinessProbe': readiness_probe if readiness_probe is not None else Probe(),
+            'resources': resources if resources is not None else ResourceRequirements(),
+            'securityContext': security_context if security_context is not None else SecurityContext(),
+            'startupProbe': startup_probe if startup_probe is not None else Probe(),
+            'stdin': stdin if stdin is not None else None,
+            'stdinOnce': stdin_once if stdin_once is not None else None,
+            'terminationMessagePath': termination_message_path if termination_message_path is not None else '',
+            'terminationMessagePolicy': termination_message_policy if termination_message_policy is not None else '',
+            'tty': tty if tty is not None else None,
+            'volumeDevices': volume_devices if volume_devices is not None else [],
+            'volumeMounts': volume_mounts if volume_mounts is not None else [],
+            'workingDir': working_dir if working_dir is not None else '',
 
         }
         self._types = {
@@ -3787,8 +3787,8 @@ class ContainerImage(_kuber_definitions.Definition):
             kind='ContainerImage'
         )
         self._properties = {
-            'names': names or [],
-            'sizeBytes': size_bytes or None,
+            'names': names if names is not None else [],
+            'sizeBytes': size_bytes if size_bytes is not None else None,
 
         }
         self._types = {
@@ -3856,11 +3856,11 @@ class ContainerPort(_kuber_definitions.Definition):
             kind='ContainerPort'
         )
         self._properties = {
-            'containerPort': container_port or None,
-            'hostIP': host_ip or '',
-            'hostPort': host_port or None,
-            'name': name or '',
-            'protocol': protocol or '',
+            'containerPort': container_port if container_port is not None else None,
+            'hostIP': host_ip if host_ip is not None else '',
+            'hostPort': host_port if host_port is not None else None,
+            'name': name if name is not None else '',
+            'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
@@ -3982,9 +3982,9 @@ class ContainerState(_kuber_definitions.Definition):
             kind='ContainerState'
         )
         self._properties = {
-            'running': running or ContainerStateRunning(),
-            'terminated': terminated or ContainerStateTerminated(),
-            'waiting': waiting or ContainerStateWaiting(),
+            'running': running if running is not None else ContainerStateRunning(),
+            'terminated': terminated if terminated is not None else ContainerStateTerminated(),
+            'waiting': waiting if waiting is not None else ContainerStateWaiting(),
 
         }
         self._types = {
@@ -4064,7 +4064,7 @@ class ContainerStateRunning(_kuber_definitions.Definition):
             kind='ContainerStateRunning'
         )
         self._properties = {
-            'startedAt': started_at or None,
+            'startedAt': started_at if started_at is not None else None,
 
         }
         self._types = {
@@ -4122,13 +4122,13 @@ class ContainerStateTerminated(_kuber_definitions.Definition):
             kind='ContainerStateTerminated'
         )
         self._properties = {
-            'containerID': container_id or '',
-            'exitCode': exit_code or None,
-            'finishedAt': finished_at or None,
-            'message': message or '',
-            'reason': reason or '',
-            'signal': signal or None,
-            'startedAt': started_at or None,
+            'containerID': container_id if container_id is not None else '',
+            'exitCode': exit_code if exit_code is not None else None,
+            'finishedAt': finished_at if finished_at is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'signal': signal if signal is not None else None,
+            'startedAt': started_at if started_at is not None else None,
 
         }
         self._types = {
@@ -4277,8 +4277,8 @@ class ContainerStateWaiting(_kuber_definitions.Definition):
             kind='ContainerStateWaiting'
         )
         self._properties = {
-            'message': message or '',
-            'reason': reason or '',
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
 
         }
         self._types = {
@@ -4346,15 +4346,15 @@ class ContainerStatus(_kuber_definitions.Definition):
             kind='ContainerStatus'
         )
         self._properties = {
-            'containerID': container_id or '',
-            'image': image or '',
-            'imageID': image_id or '',
-            'lastState': last_state or ContainerState(),
-            'name': name or '',
-            'ready': ready or None,
-            'restartCount': restart_count or None,
-            'started': started or None,
-            'state': state or ContainerState(),
+            'containerID': container_id if container_id is not None else '',
+            'image': image if image is not None else '',
+            'imageID': image_id if image_id is not None else '',
+            'lastState': last_state if last_state is not None else ContainerState(),
+            'name': name if name is not None else '',
+            'ready': ready if ready is not None else None,
+            'restartCount': restart_count if restart_count is not None else None,
+            'started': started if started is not None else None,
+            'state': state if state is not None else ContainerState(),
 
         }
         self._types = {
@@ -4545,7 +4545,7 @@ class DaemonEndpoint(_kuber_definitions.Definition):
             kind='DaemonEndpoint'
         )
         self._properties = {
-            'Port': port or None,
+            'Port': port if port is not None else None,
 
         }
         self._types = {
@@ -4591,7 +4591,7 @@ class DownwardAPIProjection(_kuber_definitions.Definition):
             kind='DownwardAPIProjection'
         )
         self._properties = {
-            'items': items or [],
+            'items': items if items is not None else [],
 
         }
         self._types = {
@@ -4647,10 +4647,10 @@ class DownwardAPIVolumeFile(_kuber_definitions.Definition):
             kind='DownwardAPIVolumeFile'
         )
         self._properties = {
-            'fieldRef': field_ref or ObjectFieldSelector(),
-            'mode': mode or None,
-            'path': path or '',
-            'resourceFieldRef': resource_field_ref or ResourceFieldSelector(),
+            'fieldRef': field_ref if field_ref is not None else ObjectFieldSelector(),
+            'mode': mode if mode is not None else None,
+            'path': path if path is not None else '',
+            'resourceFieldRef': resource_field_ref if resource_field_ref is not None else ResourceFieldSelector(),
 
         }
         self._types = {
@@ -4766,8 +4766,8 @@ class DownwardAPIVolumeSource(_kuber_definitions.Definition):
             kind='DownwardAPIVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'items': items or [],
+            'defaultMode': default_mode if default_mode is not None else None,
+            'items': items if items is not None else [],
 
         }
         self._types = {
@@ -4844,8 +4844,8 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
             kind='EmptyDirVolumeSource'
         )
         self._properties = {
-            'medium': medium or '',
-            'sizeLimit': size_limit or None,
+            'medium': medium if medium is not None else '',
+            'sizeLimit': size_limit if size_limit is not None else None,
 
         }
         self._types = {
@@ -4929,10 +4929,10 @@ class EndpointAddress(_kuber_definitions.Definition):
             kind='EndpointAddress'
         )
         self._properties = {
-            'hostname': hostname or '',
-            'ip': ip or '',
-            'nodeName': node_name or '',
-            'targetRef': target_ref or ObjectReference(),
+            'hostname': hostname if hostname is not None else '',
+            'ip': ip if ip is not None else '',
+            'nodeName': node_name if node_name is not None else '',
+            'targetRef': target_ref if target_ref is not None else ObjectReference(),
 
         }
         self._types = {
@@ -5035,9 +5035,9 @@ class EndpointPort(_kuber_definitions.Definition):
             kind='EndpointPort'
         )
         self._properties = {
-            'name': name or '',
-            'port': port or None,
-            'protocol': protocol or '',
+            'name': name if name is not None else '',
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
@@ -5131,9 +5131,9 @@ class EndpointSubset(_kuber_definitions.Definition):
             kind='EndpointSubset'
         )
         self._properties = {
-            'addresses': addresses or [],
-            'notReadyAddresses': not_ready_addresses or [],
-            'ports': ports or [],
+            'addresses': addresses if addresses is not None else [],
+            'notReadyAddresses': not_ready_addresses if not_ready_addresses is not None else [],
+            'ports': ports if ports is not None else [],
 
         }
         self._types = {
@@ -5256,8 +5256,8 @@ class Endpoints(_kuber_definitions.Resource):
             kind='Endpoints'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'subsets': subsets or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'subsets': subsets if subsets is not None else [],
 
         }
         self._types = {
@@ -5473,8 +5473,8 @@ class EndpointsList(_kuber_definitions.Collection):
             kind='EndpointsList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -5564,9 +5564,9 @@ class EnvFromSource(_kuber_definitions.Definition):
             kind='EnvFromSource'
         )
         self._properties = {
-            'configMapRef': config_map_ref or ConfigMapEnvSource(),
-            'prefix': prefix or '',
-            'secretRef': secret_ref or SecretEnvSource(),
+            'configMapRef': config_map_ref if config_map_ref is not None else ConfigMapEnvSource(),
+            'prefix': prefix if prefix is not None else '',
+            'secretRef': secret_ref if secret_ref is not None else SecretEnvSource(),
 
         }
         self._types = {
@@ -5649,9 +5649,9 @@ class EnvVar(_kuber_definitions.Definition):
             kind='EnvVar'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
-            'valueFrom': value_from or EnvVarSource(),
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
+            'valueFrom': value_from if value_from is not None else EnvVarSource(),
 
         }
         self._types = {
@@ -5746,10 +5746,10 @@ class EnvVarSource(_kuber_definitions.Definition):
             kind='EnvVarSource'
         )
         self._properties = {
-            'configMapKeyRef': config_map_key_ref or ConfigMapKeySelector(),
-            'fieldRef': field_ref or ObjectFieldSelector(),
-            'resourceFieldRef': resource_field_ref or ResourceFieldSelector(),
-            'secretKeyRef': secret_key_ref or SecretKeySelector(),
+            'configMapKeyRef': config_map_key_ref if config_map_key_ref is not None else ConfigMapKeySelector(),
+            'fieldRef': field_ref if field_ref is not None else ObjectFieldSelector(),
+            'resourceFieldRef': resource_field_ref if resource_field_ref is not None else ResourceFieldSelector(),
+            'secretKeyRef': secret_key_ref if secret_key_ref is not None else SecretKeySelector(),
 
         }
         self._types = {
@@ -5891,29 +5891,29 @@ class EphemeralContainer(_kuber_definitions.Definition):
             kind='EphemeralContainer'
         )
         self._properties = {
-            'args': args or [],
-            'command': command or [],
-            'env': env or [],
-            'envFrom': env_from or [],
-            'image': image or '',
-            'imagePullPolicy': image_pull_policy or '',
-            'lifecycle': lifecycle or Lifecycle(),
-            'livenessProbe': liveness_probe or Probe(),
-            'name': name or '',
-            'ports': ports or [],
-            'readinessProbe': readiness_probe or Probe(),
-            'resources': resources or ResourceRequirements(),
-            'securityContext': security_context or SecurityContext(),
-            'startupProbe': startup_probe or Probe(),
-            'stdin': stdin or None,
-            'stdinOnce': stdin_once or None,
-            'targetContainerName': target_container_name or '',
-            'terminationMessagePath': termination_message_path or '',
-            'terminationMessagePolicy': termination_message_policy or '',
-            'tty': tty or None,
-            'volumeDevices': volume_devices or [],
-            'volumeMounts': volume_mounts or [],
-            'workingDir': working_dir or '',
+            'args': args if args is not None else [],
+            'command': command if command is not None else [],
+            'env': env if env is not None else [],
+            'envFrom': env_from if env_from is not None else [],
+            'image': image if image is not None else '',
+            'imagePullPolicy': image_pull_policy if image_pull_policy is not None else '',
+            'lifecycle': lifecycle if lifecycle is not None else Lifecycle(),
+            'livenessProbe': liveness_probe if liveness_probe is not None else Probe(),
+            'name': name if name is not None else '',
+            'ports': ports if ports is not None else [],
+            'readinessProbe': readiness_probe if readiness_probe is not None else Probe(),
+            'resources': resources if resources is not None else ResourceRequirements(),
+            'securityContext': security_context if security_context is not None else SecurityContext(),
+            'startupProbe': startup_probe if startup_probe is not None else Probe(),
+            'stdin': stdin if stdin is not None else None,
+            'stdinOnce': stdin_once if stdin_once is not None else None,
+            'targetContainerName': target_container_name if target_container_name is not None else '',
+            'terminationMessagePath': termination_message_path if termination_message_path is not None else '',
+            'terminationMessagePolicy': termination_message_policy if termination_message_policy is not None else '',
+            'tty': tty if tty is not None else None,
+            'volumeDevices': volume_devices if volume_devices is not None else [],
+            'volumeMounts': volume_mounts if volume_mounts is not None else [],
+            'workingDir': working_dir if working_dir is not None else '',
 
         }
         self._types = {
@@ -6497,21 +6497,21 @@ class Event(_kuber_definitions.Resource):
             kind='Event'
         )
         self._properties = {
-            'action': action or '',
-            'count': count or None,
-            'eventTime': event_time or MicroTime(),
-            'firstTimestamp': first_timestamp or None,
-            'involvedObject': involved_object or ObjectReference(),
-            'lastTimestamp': last_timestamp or None,
-            'message': message or '',
-            'metadata': metadata or ObjectMeta(),
-            'reason': reason or '',
-            'related': related or ObjectReference(),
-            'reportingComponent': reporting_component or '',
-            'reportingInstance': reporting_instance or '',
-            'series': series or EventSeries(),
-            'source': source or EventSource(),
-            'type': type_ or '',
+            'action': action if action is not None else '',
+            'count': count if count is not None else None,
+            'eventTime': event_time if event_time is not None else MicroTime(),
+            'firstTimestamp': first_timestamp if first_timestamp is not None else None,
+            'involvedObject': involved_object if involved_object is not None else ObjectReference(),
+            'lastTimestamp': last_timestamp if last_timestamp is not None else None,
+            'message': message if message is not None else '',
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'reason': reason if reason is not None else '',
+            'related': related if related is not None else ObjectReference(),
+            'reportingComponent': reporting_component if reporting_component is not None else '',
+            'reportingInstance': reporting_instance if reporting_instance is not None else '',
+            'series': series if series is not None else EventSeries(),
+            'source': source if source is not None else EventSource(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -6942,8 +6942,8 @@ class EventList(_kuber_definitions.Collection):
             kind='EventList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -7034,9 +7034,9 @@ class EventSeries(_kuber_definitions.Definition):
             kind='EventSeries'
         )
         self._properties = {
-            'count': count or None,
-            'lastObservedTime': last_observed_time or MicroTime(),
-            'state': state or '',
+            'count': count if count is not None else None,
+            'lastObservedTime': last_observed_time if last_observed_time is not None else MicroTime(),
+            'state': state if state is not None else '',
 
         }
         self._types = {
@@ -7117,8 +7117,8 @@ class EventSource(_kuber_definitions.Definition):
             kind='EventSource'
         )
         self._properties = {
-            'component': component or '',
-            'host': host or '',
+            'component': component if component is not None else '',
+            'host': host if host is not None else '',
 
         }
         self._types = {
@@ -7177,7 +7177,7 @@ class ExecAction(_kuber_definitions.Definition):
             kind='ExecAction'
         )
         self._properties = {
-            'command': command or [],
+            'command': command if command is not None else [],
 
         }
         self._types = {
@@ -7239,11 +7239,11 @@ class FCVolumeSource(_kuber_definitions.Definition):
             kind='FCVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'lun': lun or None,
-            'readOnly': read_only or None,
-            'targetWWNs': target_wwns or [],
-            'wwids': wwids or [],
+            'fsType': fs_type if fs_type is not None else '',
+            'lun': lun if lun is not None else None,
+            'readOnly': read_only if read_only is not None else None,
+            'targetWWNs': target_wwns if target_wwns is not None else [],
+            'wwids': wwids if wwids is not None else [],
 
         }
         self._types = {
@@ -7363,11 +7363,11 @@ class FlexPersistentVolumeSource(_kuber_definitions.Definition):
             kind='FlexPersistentVolumeSource'
         )
         self._properties = {
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'options': options or {},
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'options': options if options is not None else {},
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
 
         }
         self._types = {
@@ -7492,11 +7492,11 @@ class FlexVolumeSource(_kuber_definitions.Definition):
             kind='FlexVolumeSource'
         )
         self._properties = {
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'options': options or {},
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'options': options if options is not None else {},
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
 
         }
         self._types = {
@@ -7620,8 +7620,8 @@ class FlockerVolumeSource(_kuber_definitions.Definition):
             kind='FlockerVolumeSource'
         )
         self._properties = {
-            'datasetName': dataset_name or '',
-            'datasetUUID': dataset_uuid or '',
+            'datasetName': dataset_name if dataset_name is not None else '',
+            'datasetUUID': dataset_uuid if dataset_uuid is not None else '',
 
         }
         self._types = {
@@ -7694,10 +7694,10 @@ class GCEPersistentDiskVolumeSource(_kuber_definitions.Definition):
             kind='GCEPersistentDiskVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'partition': partition or None,
-            'pdName': pd_name or '',
-            'readOnly': read_only or None,
+            'fsType': fs_type if fs_type is not None else '',
+            'partition': partition if partition is not None else None,
+            'pdName': pd_name if pd_name is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -7822,9 +7822,9 @@ class GitRepoVolumeSource(_kuber_definitions.Definition):
             kind='GitRepoVolumeSource'
         )
         self._properties = {
-            'directory': directory or '',
-            'repository': repository or '',
-            'revision': revision or '',
+            'directory': directory if directory is not None else '',
+            'repository': repository if repository is not None else '',
+            'revision': revision if revision is not None else '',
 
         }
         self._types = {
@@ -7911,10 +7911,10 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
             kind='GlusterfsPersistentVolumeSource'
         )
         self._properties = {
-            'endpoints': endpoints or '',
-            'endpointsNamespace': endpoints_namespace or '',
-            'path': path or '',
-            'readOnly': read_only or None,
+            'endpoints': endpoints if endpoints is not None else '',
+            'endpointsNamespace': endpoints_namespace if endpoints_namespace is not None else '',
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -8031,9 +8031,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
             kind='GlusterfsVolumeSource'
         )
         self._properties = {
-            'endpoints': endpoints or '',
-            'path': path or '',
-            'readOnly': read_only or None,
+            'endpoints': endpoints if endpoints is not None else '',
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -8128,11 +8128,11 @@ class HTTPGetAction(_kuber_definitions.Definition):
             kind='HTTPGetAction'
         )
         self._properties = {
-            'host': host or '',
-            'httpHeaders': http_headers or [],
-            'path': path or '',
-            'port': port or None,
-            'scheme': scheme or '',
+            'host': host if host is not None else '',
+            'httpHeaders': http_headers if http_headers is not None else [],
+            'path': path if path is not None else '',
+            'port': port if port is not None else None,
+            'scheme': scheme if scheme is not None else '',
 
         }
         self._types = {
@@ -8258,8 +8258,8 @@ class HTTPHeader(_kuber_definitions.Definition):
             kind='HTTPHeader'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -8320,9 +8320,9 @@ class Handler(_kuber_definitions.Definition):
             kind='Handler'
         )
         self._properties = {
-            'exec': exec_ or ExecAction(),
-            'httpGet': http_get or HTTPGetAction(),
-            'tcpSocket': tcp_socket or TCPSocketAction(),
+            'exec': exec_ if exec_ is not None else ExecAction(),
+            'httpGet': http_get if http_get is not None else HTTPGetAction(),
+            'tcpSocket': tcp_socket if tcp_socket is not None else TCPSocketAction(),
 
         }
         self._types = {
@@ -8408,8 +8408,8 @@ class HostAlias(_kuber_definitions.Definition):
             kind='HostAlias'
         )
         self._properties = {
-            'hostnames': hostnames or [],
-            'ip': ip or '',
+            'hostnames': hostnames if hostnames is not None else [],
+            'ip': ip if ip is not None else '',
 
         }
         self._types = {
@@ -8470,8 +8470,8 @@ class HostPathVolumeSource(_kuber_definitions.Definition):
             kind='HostPathVolumeSource'
         )
         self._properties = {
-            'path': path or '',
-            'type': type_ or '',
+            'path': path if path is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -8548,17 +8548,17 @@ class ISCSIPersistentVolumeSource(_kuber_definitions.Definition):
             kind='ISCSIPersistentVolumeSource'
         )
         self._properties = {
-            'chapAuthDiscovery': chap_auth_discovery or None,
-            'chapAuthSession': chap_auth_session or None,
-            'fsType': fs_type or '',
-            'initiatorName': initiator_name or '',
-            'iqn': iqn or '',
-            'iscsiInterface': iscsi_interface or '',
-            'lun': lun or None,
-            'portals': portals or [],
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'targetPortal': target_portal or '',
+            'chapAuthDiscovery': chap_auth_discovery if chap_auth_discovery is not None else None,
+            'chapAuthSession': chap_auth_session if chap_auth_session is not None else None,
+            'fsType': fs_type if fs_type is not None else '',
+            'initiatorName': initiator_name if initiator_name is not None else '',
+            'iqn': iqn if iqn is not None else '',
+            'iscsiInterface': iscsi_interface if iscsi_interface is not None else '',
+            'lun': lun if lun is not None else None,
+            'portals': portals if portals is not None else [],
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'targetPortal': target_portal if target_portal is not None else '',
 
         }
         self._types = {
@@ -8792,17 +8792,17 @@ class ISCSIVolumeSource(_kuber_definitions.Definition):
             kind='ISCSIVolumeSource'
         )
         self._properties = {
-            'chapAuthDiscovery': chap_auth_discovery or None,
-            'chapAuthSession': chap_auth_session or None,
-            'fsType': fs_type or '',
-            'initiatorName': initiator_name or '',
-            'iqn': iqn or '',
-            'iscsiInterface': iscsi_interface or '',
-            'lun': lun or None,
-            'portals': portals or [],
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'targetPortal': target_portal or '',
+            'chapAuthDiscovery': chap_auth_discovery if chap_auth_discovery is not None else None,
+            'chapAuthSession': chap_auth_session if chap_auth_session is not None else None,
+            'fsType': fs_type if fs_type is not None else '',
+            'initiatorName': initiator_name if initiator_name is not None else '',
+            'iqn': iqn if iqn is not None else '',
+            'iscsiInterface': iscsi_interface if iscsi_interface is not None else '',
+            'lun': lun if lun is not None else None,
+            'portals': portals if portals is not None else [],
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'targetPortal': target_portal if target_portal is not None else '',
 
         }
         self._types = {
@@ -9026,9 +9026,9 @@ class KeyToPath(_kuber_definitions.Definition):
             kind='KeyToPath'
         )
         self._properties = {
-            'key': key or '',
-            'mode': mode or None,
-            'path': path or '',
+            'key': key if key is not None else '',
+            'mode': mode if mode is not None else None,
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -9120,8 +9120,8 @@ class Lifecycle(_kuber_definitions.Definition):
             kind='Lifecycle'
         )
         self._properties = {
-            'postStart': post_start or Handler(),
-            'preStop': pre_stop or Handler(),
+            'postStart': post_start if post_start is not None else Handler(),
+            'preStop': pre_stop if pre_stop is not None else Handler(),
 
         }
         self._types = {
@@ -9222,8 +9222,8 @@ class LimitRange(_kuber_definitions.Resource):
             kind='LimitRange'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or LimitRangeSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else LimitRangeSpec(),
 
         }
         self._types = {
@@ -9426,12 +9426,12 @@ class LimitRangeItem(_kuber_definitions.Definition):
             kind='LimitRangeItem'
         )
         self._properties = {
-            'default': default or {},
-            'defaultRequest': default_request or {},
-            'max': max_ or {},
-            'maxLimitRequestRatio': max_limit_request_ratio or {},
-            'min': min_ or {},
-            'type': type_ or '',
+            'default': default if default is not None else {},
+            'defaultRequest': default_request if default_request is not None else {},
+            'max': max_ if max_ is not None else {},
+            'maxLimitRequestRatio': max_limit_request_ratio if max_limit_request_ratio is not None else {},
+            'min': min_ if min_ is not None else {},
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -9561,8 +9561,8 @@ class LimitRangeList(_kuber_definitions.Collection):
             kind='LimitRangeList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -9655,7 +9655,7 @@ class LimitRangeSpec(_kuber_definitions.Definition):
             kind='LimitRangeSpec'
         )
         self._properties = {
-            'limits': limits or [],
+            'limits': limits if limits is not None else [],
 
         }
         self._types = {
@@ -9712,8 +9712,8 @@ class LoadBalancerIngress(_kuber_definitions.Definition):
             kind='LoadBalancerIngress'
         )
         self._properties = {
-            'hostname': hostname or '',
-            'ip': ip or '',
+            'hostname': hostname if hostname is not None else '',
+            'ip': ip if ip is not None else '',
 
         }
         self._types = {
@@ -9776,7 +9776,7 @@ class LoadBalancerStatus(_kuber_definitions.Definition):
             kind='LoadBalancerStatus'
         )
         self._properties = {
-            'ingress': ingress or [],
+            'ingress': ingress if ingress is not None else [],
 
         }
         self._types = {
@@ -9833,7 +9833,7 @@ class LocalObjectReference(_kuber_definitions.Definition):
             kind='LocalObjectReference'
         )
         self._properties = {
-            'name': name or '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -9883,8 +9883,8 @@ class LocalVolumeSource(_kuber_definitions.Definition):
             kind='LocalVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'path': path or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -9955,9 +9955,9 @@ class NFSVolumeSource(_kuber_definitions.Definition):
             kind='NFSVolumeSource'
         )
         self._properties = {
-            'path': path or '',
-            'readOnly': read_only or None,
-            'server': server or '',
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'server': server if server is not None else '',
 
         }
         self._types = {
@@ -10044,9 +10044,9 @@ class Namespace(_kuber_definitions.Resource):
             kind='Namespace'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or NamespaceSpec(),
-            'status': status or NamespaceStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else NamespaceSpec(),
+            'status': status if status is not None else NamespaceStatus(),
 
         }
         self._types = {
@@ -10314,11 +10314,11 @@ class NamespaceCondition(_kuber_definitions.Definition):
             kind='NamespaceCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -10430,8 +10430,8 @@ class NamespaceList(_kuber_definitions.Collection):
             kind='NamespaceList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -10523,7 +10523,7 @@ class NamespaceSpec(_kuber_definitions.Definition):
             kind='NamespaceSpec'
         )
         self._properties = {
-            'finalizers': finalizers or [],
+            'finalizers': finalizers if finalizers is not None else [],
 
         }
         self._types = {
@@ -10575,8 +10575,8 @@ class NamespaceStatus(_kuber_definitions.Definition):
             kind='NamespaceStatus'
         )
         self._properties = {
-            'conditions': conditions or [],
-            'phase': phase or '',
+            'conditions': conditions if conditions is not None else [],
+            'phase': phase if phase is not None else '',
 
         }
         self._types = {
@@ -10652,9 +10652,9 @@ class Node(_kuber_definitions.Resource):
             kind='Node'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or NodeSpec(),
-            'status': status or NodeStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else NodeSpec(),
+            'status': status if status is not None else NodeStatus(),
 
         }
         self._types = {
@@ -10920,8 +10920,8 @@ class NodeAddress(_kuber_definitions.Definition):
             kind='NodeAddress'
         )
         self._properties = {
-            'address': address or '',
-            'type': type_ or '',
+            'address': address if address is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -10983,8 +10983,8 @@ class NodeAffinity(_kuber_definitions.Definition):
             kind='NodeAffinity'
         )
         self._properties = {
-            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution or [],
-            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution or NodeSelector(),
+            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution if preferred_during_scheduling_ignored_during_execution is not None else [],
+            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution if required_during_scheduling_ignored_during_execution is not None else NodeSelector(),
 
         }
         self._types = {
@@ -11088,12 +11088,12 @@ class NodeCondition(_kuber_definitions.Definition):
             kind='NodeCondition'
         )
         self._properties = {
-            'lastHeartbeatTime': last_heartbeat_time or None,
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastHeartbeatTime': last_heartbeat_time if last_heartbeat_time is not None else None,
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -11229,7 +11229,7 @@ class NodeConfigSource(_kuber_definitions.Definition):
             kind='NodeConfigSource'
         )
         self._properties = {
-            'configMap': config_map or ConfigMapNodeConfigSource(),
+            'configMap': config_map if config_map is not None else ConfigMapNodeConfigSource(),
 
         }
         self._types = {
@@ -11279,10 +11279,10 @@ class NodeConfigStatus(_kuber_definitions.Definition):
             kind='NodeConfigStatus'
         )
         self._properties = {
-            'active': active or NodeConfigSource(),
-            'assigned': assigned or NodeConfigSource(),
-            'error': error or '',
-            'lastKnownGood': last_known_good or NodeConfigSource(),
+            'active': active if active is not None else NodeConfigSource(),
+            'assigned': assigned if assigned is not None else NodeConfigSource(),
+            'error': error if error is not None else '',
+            'lastKnownGood': last_known_good if last_known_good is not None else NodeConfigSource(),
 
         }
         self._types = {
@@ -11468,7 +11468,7 @@ class NodeDaemonEndpoints(_kuber_definitions.Definition):
             kind='NodeDaemonEndpoints'
         )
         self._properties = {
-            'kubeletEndpoint': kubelet_endpoint or DaemonEndpoint(),
+            'kubeletEndpoint': kubelet_endpoint if kubelet_endpoint is not None else DaemonEndpoint(),
 
         }
         self._types = {
@@ -11516,8 +11516,8 @@ class NodeList(_kuber_definitions.Collection):
             kind='NodeList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -11608,7 +11608,7 @@ class NodeSelector(_kuber_definitions.Definition):
             kind='NodeSelector'
         )
         self._properties = {
-            'nodeSelectorTerms': node_selector_terms or [],
+            'nodeSelectorTerms': node_selector_terms if node_selector_terms is not None else [],
 
         }
         self._types = {
@@ -11664,9 +11664,9 @@ class NodeSelectorRequirement(_kuber_definitions.Definition):
             kind='NodeSelectorRequirement'
         )
         self._properties = {
-            'key': key or '',
-            'operator': operator or '',
-            'values': values or [],
+            'key': key if key is not None else '',
+            'operator': operator if operator is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -11755,8 +11755,8 @@ class NodeSelectorTerm(_kuber_definitions.Definition):
             kind='NodeSelectorTerm'
         )
         self._properties = {
-            'matchExpressions': match_expressions or [],
-            'matchFields': match_fields or [],
+            'matchExpressions': match_expressions if match_expressions is not None else [],
+            'matchFields': match_fields if match_fields is not None else [],
 
         }
         self._types = {
@@ -11838,13 +11838,13 @@ class NodeSpec(_kuber_definitions.Definition):
             kind='NodeSpec'
         )
         self._properties = {
-            'configSource': config_source or NodeConfigSource(),
-            'externalID': external_id or '',
-            'podCIDR': pod_cidr or '',
-            'podCIDRs': pod_cidrs or [],
-            'providerID': provider_id or '',
-            'taints': taints or [],
-            'unschedulable': unschedulable or None,
+            'configSource': config_source if config_source is not None else NodeConfigSource(),
+            'externalID': external_id if external_id is not None else '',
+            'podCIDR': pod_cidr if pod_cidr is not None else '',
+            'podCIDRs': pod_cidrs if pod_cidrs is not None else [],
+            'providerID': provider_id if provider_id is not None else '',
+            'taints': taints if taints is not None else [],
+            'unschedulable': unschedulable if unschedulable is not None else None,
 
         }
         self._types = {
@@ -12019,17 +12019,17 @@ class NodeStatus(_kuber_definitions.Definition):
             kind='NodeStatus'
         )
         self._properties = {
-            'addresses': addresses or [],
-            'allocatable': allocatable or {},
-            'capacity': capacity or {},
-            'conditions': conditions or [],
-            'config': config or NodeConfigStatus(),
-            'daemonEndpoints': daemon_endpoints or NodeDaemonEndpoints(),
-            'images': images or [],
-            'nodeInfo': node_info or NodeSystemInfo(),
-            'phase': phase or '',
-            'volumesAttached': volumes_attached or [],
-            'volumesInUse': volumes_in_use or [],
+            'addresses': addresses if addresses is not None else [],
+            'allocatable': allocatable if allocatable is not None else {},
+            'capacity': capacity if capacity is not None else {},
+            'conditions': conditions if conditions is not None else [],
+            'config': config if config is not None else NodeConfigStatus(),
+            'daemonEndpoints': daemon_endpoints if daemon_endpoints is not None else NodeDaemonEndpoints(),
+            'images': images if images is not None else [],
+            'nodeInfo': node_info if node_info is not None else NodeSystemInfo(),
+            'phase': phase if phase is not None else '',
+            'volumesAttached': volumes_attached if volumes_attached is not None else [],
+            'volumesInUse': volumes_in_use if volumes_in_use is not None else [],
 
         }
         self._types = {
@@ -12307,16 +12307,16 @@ class NodeSystemInfo(_kuber_definitions.Definition):
             kind='NodeSystemInfo'
         )
         self._properties = {
-            'architecture': architecture or '',
-            'bootID': boot_id or '',
-            'containerRuntimeVersion': container_runtime_version or '',
-            'kernelVersion': kernel_version or '',
-            'kubeProxyVersion': kube_proxy_version or '',
-            'kubeletVersion': kubelet_version or '',
-            'machineID': machine_id or '',
-            'operatingSystem': operating_system or '',
-            'osImage': os_image or '',
-            'systemUUID': system_uuid or '',
+            'architecture': architecture if architecture is not None else '',
+            'bootID': boot_id if boot_id is not None else '',
+            'containerRuntimeVersion': container_runtime_version if container_runtime_version is not None else '',
+            'kernelVersion': kernel_version if kernel_version is not None else '',
+            'kubeProxyVersion': kube_proxy_version if kube_proxy_version is not None else '',
+            'kubeletVersion': kubelet_version if kubelet_version is not None else '',
+            'machineID': machine_id if machine_id is not None else '',
+            'operatingSystem': operating_system if operating_system is not None else '',
+            'osImage': os_image if os_image is not None else '',
+            'systemUUID': system_uuid if system_uuid is not None else '',
 
         }
         self._types = {
@@ -12519,8 +12519,8 @@ class ObjectFieldSelector(_kuber_definitions.Definition):
             kind='ObjectFieldSelector'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'fieldPath': field_path or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'fieldPath': field_path if field_path is not None else '',
 
         }
         self._types = {
@@ -12588,13 +12588,13 @@ class ObjectReference(_kuber_definitions.Definition):
             kind='ObjectReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'fieldPath': field_path or '',
-            'kind': kind or '',
-            'name': name or '',
-            'namespace': namespace or '',
-            'resourceVersion': resource_version or '',
-            'uid': uid or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'fieldPath': field_path if field_path is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -12777,9 +12777,9 @@ class PersistentVolume(_kuber_definitions.Resource):
             kind='PersistentVolume'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PersistentVolumeSpec(),
-            'status': status or PersistentVolumeStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PersistentVolumeSpec(),
+            'status': status if status is not None else PersistentVolumeStatus(),
 
         }
         self._types = {
@@ -13051,9 +13051,9 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
             kind='PersistentVolumeClaim'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PersistentVolumeClaimSpec(),
-            'status': status or PersistentVolumeClaimStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PersistentVolumeClaimSpec(),
+            'status': status if status is not None else PersistentVolumeClaimStatus(),
 
         }
         self._types = {
@@ -13326,12 +13326,12 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimCondition'
         )
         self._properties = {
-            'lastProbeTime': last_probe_time or None,
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastProbeTime': last_probe_time if last_probe_time is not None else None,
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -13476,8 +13476,8 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
             kind='PersistentVolumeClaimList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -13577,13 +13577,13 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimSpec'
         )
         self._properties = {
-            'accessModes': access_modes or [],
-            'dataSource': data_source or TypedLocalObjectReference(),
-            'resources': resources or ResourceRequirements(),
-            'selector': selector or LabelSelector(),
-            'storageClassName': storage_class_name or '',
-            'volumeMode': volume_mode or '',
-            'volumeName': volume_name or '',
+            'accessModes': access_modes if access_modes is not None else [],
+            'dataSource': data_source if data_source is not None else TypedLocalObjectReference(),
+            'resources': resources if resources is not None else ResourceRequirements(),
+            'selector': selector if selector is not None else LabelSelector(),
+            'storageClassName': storage_class_name if storage_class_name is not None else '',
+            'volumeMode': volume_mode if volume_mode is not None else '',
+            'volumeName': volume_name if volume_name is not None else '',
 
         }
         self._types = {
@@ -13767,10 +13767,10 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimStatus'
         )
         self._properties = {
-            'accessModes': access_modes or [],
-            'capacity': capacity or {},
-            'conditions': conditions or [],
-            'phase': phase or '',
+            'accessModes': access_modes if access_modes is not None else [],
+            'capacity': capacity if capacity is not None else {},
+            'conditions': conditions if conditions is not None else [],
+            'phase': phase if phase is not None else '',
 
         }
         self._types = {
@@ -13883,8 +13883,8 @@ class PersistentVolumeClaimVolumeSource(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimVolumeSource'
         )
         self._properties = {
-            'claimName': claim_name or '',
-            'readOnly': read_only or None,
+            'claimName': claim_name if claim_name is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -13952,8 +13952,8 @@ class PersistentVolumeList(_kuber_definitions.Collection):
             kind='PersistentVolumeList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -14075,36 +14075,36 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
             kind='PersistentVolumeSpec'
         )
         self._properties = {
-            'accessModes': access_modes or [],
-            'awsElasticBlockStore': aws_elastic_block_store or AWSElasticBlockStoreVolumeSource(),
-            'azureDisk': azure_disk or AzureDiskVolumeSource(),
-            'azureFile': azure_file or AzureFilePersistentVolumeSource(),
-            'capacity': capacity or {},
-            'cephfs': cephfs or CephFSPersistentVolumeSource(),
-            'cinder': cinder or CinderPersistentVolumeSource(),
-            'claimRef': claim_ref or ObjectReference(),
-            'csi': csi or CSIPersistentVolumeSource(),
-            'fc': fc or FCVolumeSource(),
-            'flexVolume': flex_volume or FlexPersistentVolumeSource(),
-            'flocker': flocker or FlockerVolumeSource(),
-            'gcePersistentDisk': gce_persistent_disk or GCEPersistentDiskVolumeSource(),
-            'glusterfs': glusterfs or GlusterfsPersistentVolumeSource(),
-            'hostPath': host_path or HostPathVolumeSource(),
-            'iscsi': iscsi or ISCSIPersistentVolumeSource(),
-            'local': local or LocalVolumeSource(),
-            'mountOptions': mount_options or [],
-            'nfs': nfs or NFSVolumeSource(),
-            'nodeAffinity': node_affinity or VolumeNodeAffinity(),
-            'persistentVolumeReclaimPolicy': persistent_volume_reclaim_policy or '',
-            'photonPersistentDisk': photon_persistent_disk or PhotonPersistentDiskVolumeSource(),
-            'portworxVolume': portworx_volume or PortworxVolumeSource(),
-            'quobyte': quobyte or QuobyteVolumeSource(),
-            'rbd': rbd or RBDPersistentVolumeSource(),
-            'scaleIO': scale_io or ScaleIOPersistentVolumeSource(),
-            'storageClassName': storage_class_name or '',
-            'storageos': storageos or StorageOSPersistentVolumeSource(),
-            'volumeMode': volume_mode or '',
-            'vsphereVolume': vsphere_volume or VsphereVirtualDiskVolumeSource(),
+            'accessModes': access_modes if access_modes is not None else [],
+            'awsElasticBlockStore': aws_elastic_block_store if aws_elastic_block_store is not None else AWSElasticBlockStoreVolumeSource(),
+            'azureDisk': azure_disk if azure_disk is not None else AzureDiskVolumeSource(),
+            'azureFile': azure_file if azure_file is not None else AzureFilePersistentVolumeSource(),
+            'capacity': capacity if capacity is not None else {},
+            'cephfs': cephfs if cephfs is not None else CephFSPersistentVolumeSource(),
+            'cinder': cinder if cinder is not None else CinderPersistentVolumeSource(),
+            'claimRef': claim_ref if claim_ref is not None else ObjectReference(),
+            'csi': csi if csi is not None else CSIPersistentVolumeSource(),
+            'fc': fc if fc is not None else FCVolumeSource(),
+            'flexVolume': flex_volume if flex_volume is not None else FlexPersistentVolumeSource(),
+            'flocker': flocker if flocker is not None else FlockerVolumeSource(),
+            'gcePersistentDisk': gce_persistent_disk if gce_persistent_disk is not None else GCEPersistentDiskVolumeSource(),
+            'glusterfs': glusterfs if glusterfs is not None else GlusterfsPersistentVolumeSource(),
+            'hostPath': host_path if host_path is not None else HostPathVolumeSource(),
+            'iscsi': iscsi if iscsi is not None else ISCSIPersistentVolumeSource(),
+            'local': local if local is not None else LocalVolumeSource(),
+            'mountOptions': mount_options if mount_options is not None else [],
+            'nfs': nfs if nfs is not None else NFSVolumeSource(),
+            'nodeAffinity': node_affinity if node_affinity is not None else VolumeNodeAffinity(),
+            'persistentVolumeReclaimPolicy': persistent_volume_reclaim_policy if persistent_volume_reclaim_policy is not None else '',
+            'photonPersistentDisk': photon_persistent_disk if photon_persistent_disk is not None else PhotonPersistentDiskVolumeSource(),
+            'portworxVolume': portworx_volume if portworx_volume is not None else PortworxVolumeSource(),
+            'quobyte': quobyte if quobyte is not None else QuobyteVolumeSource(),
+            'rbd': rbd if rbd is not None else RBDPersistentVolumeSource(),
+            'scaleIO': scale_io if scale_io is not None else ScaleIOPersistentVolumeSource(),
+            'storageClassName': storage_class_name if storage_class_name is not None else '',
+            'storageos': storageos if storageos is not None else StorageOSPersistentVolumeSource(),
+            'volumeMode': volume_mode if volume_mode is not None else '',
+            'vsphereVolume': vsphere_volume if vsphere_volume is not None else VsphereVirtualDiskVolumeSource(),
 
         }
         self._types = {
@@ -14766,9 +14766,9 @@ class PersistentVolumeStatus(_kuber_definitions.Definition):
             kind='PersistentVolumeStatus'
         )
         self._properties = {
-            'message': message or '',
-            'phase': phase or '',
-            'reason': reason or '',
+            'message': message if message is not None else '',
+            'phase': phase if phase is not None else '',
+            'reason': reason if reason is not None else '',
 
         }
         self._types = {
@@ -14855,8 +14855,8 @@ class PhotonPersistentDiskVolumeSource(_kuber_definitions.Definition):
             kind='PhotonPersistentDiskVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'pdID': pd_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'pdID': pd_id if pd_id is not None else '',
 
         }
         self._types = {
@@ -14923,9 +14923,9 @@ class Pod(_kuber_definitions.Resource):
             kind='Pod'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodSpec(),
-            'status': status or PodStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodSpec(),
+            'status': status if status is not None else PodStatus(),
 
         }
         self._types = {
@@ -15264,8 +15264,8 @@ class PodAffinity(_kuber_definitions.Definition):
             kind='PodAffinity'
         )
         self._properties = {
-            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution or [],
-            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution or [],
+            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution if preferred_during_scheduling_ignored_during_execution is not None else [],
+            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution if required_during_scheduling_ignored_during_execution is not None else [],
 
         }
         self._types = {
@@ -15384,9 +15384,9 @@ class PodAffinityTerm(_kuber_definitions.Definition):
             kind='PodAffinityTerm'
         )
         self._properties = {
-            'labelSelector': label_selector or LabelSelector(),
-            'namespaces': namespaces or [],
-            'topologyKey': topology_key or '',
+            'labelSelector': label_selector if label_selector is not None else LabelSelector(),
+            'namespaces': namespaces if namespaces is not None else [],
+            'topologyKey': topology_key if topology_key is not None else '',
 
         }
         self._types = {
@@ -15478,8 +15478,8 @@ class PodAntiAffinity(_kuber_definitions.Definition):
             kind='PodAntiAffinity'
         )
         self._properties = {
-            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution or [],
-            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution or [],
+            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution if preferred_during_scheduling_ignored_during_execution is not None else [],
+            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution if required_during_scheduling_ignored_during_execution is not None else [],
 
         }
         self._types = {
@@ -15596,12 +15596,12 @@ class PodCondition(_kuber_definitions.Definition):
             kind='PodCondition'
         )
         self._properties = {
-            'lastProbeTime': last_probe_time or None,
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastProbeTime': last_probe_time if last_probe_time is not None else None,
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -15753,9 +15753,9 @@ class PodDNSConfig(_kuber_definitions.Definition):
             kind='PodDNSConfig'
         )
         self._properties = {
-            'nameservers': nameservers or [],
-            'options': options or [],
-            'searches': searches or [],
+            'nameservers': nameservers if nameservers is not None else [],
+            'options': options if options is not None else [],
+            'searches': searches if searches is not None else [],
 
         }
         self._types = {
@@ -15852,8 +15852,8 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
             kind='PodDNSConfigOption'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -15915,7 +15915,7 @@ class PodIP(_kuber_definitions.Definition):
             kind='PodIP'
         )
         self._properties = {
-            'ip': ip or '',
+            'ip': ip if ip is not None else '',
 
         }
         self._types = {
@@ -15960,8 +15960,8 @@ class PodList(_kuber_definitions.Collection):
             kind='PodList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -16053,7 +16053,7 @@ class PodReadinessGate(_kuber_definitions.Definition):
             kind='PodReadinessGate'
         )
         self._properties = {
-            'conditionType': condition_type or '',
+            'conditionType': condition_type if condition_type is not None else '',
 
         }
         self._types = {
@@ -16110,14 +16110,14 @@ class PodSecurityContext(_kuber_definitions.Definition):
             kind='PodSecurityContext'
         )
         self._properties = {
-            'fsGroup': fs_group or None,
-            'runAsGroup': run_as_group or None,
-            'runAsNonRoot': run_as_non_root or None,
-            'runAsUser': run_as_user or None,
-            'seLinuxOptions': se_linux_options or SELinuxOptions(),
-            'supplementalGroups': supplemental_groups or [],
-            'sysctls': sysctls or [],
-            'windowsOptions': windows_options or WindowsSecurityContextOptions(),
+            'fsGroup': fs_group if fs_group is not None else None,
+            'runAsGroup': run_as_group if run_as_group is not None else None,
+            'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
+            'runAsUser': run_as_user if run_as_user is not None else None,
+            'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
+            'supplementalGroups': supplemental_groups if supplemental_groups is not None else [],
+            'sysctls': sysctls if sysctls is not None else [],
+            'windowsOptions': windows_options if windows_options is not None else WindowsSecurityContextOptions(),
 
         }
         self._types = {
@@ -16389,40 +16389,40 @@ class PodSpec(_kuber_definitions.Definition):
             kind='PodSpec'
         )
         self._properties = {
-            'activeDeadlineSeconds': active_deadline_seconds or None,
-            'affinity': affinity or Affinity(),
-            'automountServiceAccountToken': automount_service_account_token or None,
-            'containers': containers or [],
-            'dnsConfig': dns_config or PodDNSConfig(),
-            'dnsPolicy': dns_policy or '',
-            'enableServiceLinks': enable_service_links or None,
-            'ephemeralContainers': ephemeral_containers or [],
-            'hostAliases': host_aliases or [],
-            'hostIPC': host_ipc or None,
-            'hostNetwork': host_network or None,
-            'hostPID': host_pid or None,
-            'hostname': hostname or '',
-            'imagePullSecrets': image_pull_secrets or [],
-            'initContainers': init_containers or [],
-            'nodeName': node_name or '',
-            'nodeSelector': node_selector or {},
-            'overhead': overhead or {},
-            'preemptionPolicy': preemption_policy or '',
-            'priority': priority or None,
-            'priorityClassName': priority_class_name or '',
-            'readinessGates': readiness_gates or [],
-            'restartPolicy': restart_policy or '',
-            'runtimeClassName': runtime_class_name or '',
-            'schedulerName': scheduler_name or '',
-            'securityContext': security_context or PodSecurityContext(),
-            'serviceAccount': service_account or '',
-            'serviceAccountName': service_account_name or '',
-            'shareProcessNamespace': share_process_namespace or None,
-            'subdomain': subdomain or '',
-            'terminationGracePeriodSeconds': termination_grace_period_seconds or None,
-            'tolerations': tolerations or [],
-            'topologySpreadConstraints': topology_spread_constraints or [],
-            'volumes': volumes or [],
+            'activeDeadlineSeconds': active_deadline_seconds if active_deadline_seconds is not None else None,
+            'affinity': affinity if affinity is not None else Affinity(),
+            'automountServiceAccountToken': automount_service_account_token if automount_service_account_token is not None else None,
+            'containers': containers if containers is not None else [],
+            'dnsConfig': dns_config if dns_config is not None else PodDNSConfig(),
+            'dnsPolicy': dns_policy if dns_policy is not None else '',
+            'enableServiceLinks': enable_service_links if enable_service_links is not None else None,
+            'ephemeralContainers': ephemeral_containers if ephemeral_containers is not None else [],
+            'hostAliases': host_aliases if host_aliases is not None else [],
+            'hostIPC': host_ipc if host_ipc is not None else None,
+            'hostNetwork': host_network if host_network is not None else None,
+            'hostPID': host_pid if host_pid is not None else None,
+            'hostname': hostname if hostname is not None else '',
+            'imagePullSecrets': image_pull_secrets if image_pull_secrets is not None else [],
+            'initContainers': init_containers if init_containers is not None else [],
+            'nodeName': node_name if node_name is not None else '',
+            'nodeSelector': node_selector if node_selector is not None else {},
+            'overhead': overhead if overhead is not None else {},
+            'preemptionPolicy': preemption_policy if preemption_policy is not None else '',
+            'priority': priority if priority is not None else None,
+            'priorityClassName': priority_class_name if priority_class_name is not None else '',
+            'readinessGates': readiness_gates if readiness_gates is not None else [],
+            'restartPolicy': restart_policy if restart_policy is not None else '',
+            'runtimeClassName': runtime_class_name if runtime_class_name is not None else '',
+            'schedulerName': scheduler_name if scheduler_name is not None else '',
+            'securityContext': security_context if security_context is not None else PodSecurityContext(),
+            'serviceAccount': service_account if service_account is not None else '',
+            'serviceAccountName': service_account_name if service_account_name is not None else '',
+            'shareProcessNamespace': share_process_namespace if share_process_namespace is not None else None,
+            'subdomain': subdomain if subdomain is not None else '',
+            'terminationGracePeriodSeconds': termination_grace_period_seconds if termination_grace_period_seconds is not None else None,
+            'tolerations': tolerations if tolerations is not None else [],
+            'topologySpreadConstraints': topology_spread_constraints if topology_spread_constraints is not None else [],
+            'volumes': volumes if volumes is not None else [],
 
         }
         self._types = {
@@ -17402,19 +17402,19 @@ class PodStatus(_kuber_definitions.Definition):
             kind='PodStatus'
         )
         self._properties = {
-            'conditions': conditions or [],
-            'containerStatuses': container_statuses or [],
-            'ephemeralContainerStatuses': ephemeral_container_statuses or [],
-            'hostIP': host_ip or '',
-            'initContainerStatuses': init_container_statuses or [],
-            'message': message or '',
-            'nominatedNodeName': nominated_node_name or '',
-            'phase': phase or '',
-            'podIP': pod_ip or '',
-            'podIPs': pod_ips or [],
-            'qosClass': qos_class or '',
-            'reason': reason or '',
-            'startTime': start_time or None,
+            'conditions': conditions if conditions is not None else [],
+            'containerStatuses': container_statuses if container_statuses is not None else [],
+            'ephemeralContainerStatuses': ephemeral_container_statuses if ephemeral_container_statuses is not None else [],
+            'hostIP': host_ip if host_ip is not None else '',
+            'initContainerStatuses': init_container_statuses if init_container_statuses is not None else [],
+            'message': message if message is not None else '',
+            'nominatedNodeName': nominated_node_name if nominated_node_name is not None else '',
+            'phase': phase if phase is not None else '',
+            'podIP': pod_ip if pod_ip is not None else '',
+            'podIPs': pod_ips if pod_ips is not None else [],
+            'qosClass': qos_class if qos_class is not None else '',
+            'reason': reason if reason is not None else '',
+            'startTime': start_time if start_time is not None else None,
 
         }
         self._types = {
@@ -17809,8 +17809,8 @@ class PodTemplate(_kuber_definitions.Resource):
             kind='PodTemplate'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'template': template or PodTemplateSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'template': template if template is not None else PodTemplateSpec(),
 
         }
         self._types = {
@@ -18082,8 +18082,8 @@ class PodTemplateList(_kuber_definitions.Collection):
             kind='PodTemplateList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -18173,8 +18173,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
             kind='PodTemplateSpec'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodSpec(),
 
         }
         self._types = {
@@ -18319,9 +18319,9 @@ class PortworxVolumeSource(_kuber_definitions.Definition):
             kind='PortworxVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -18406,8 +18406,8 @@ class PreferredSchedulingTerm(_kuber_definitions.Definition):
             kind='PreferredSchedulingTerm'
         )
         self._properties = {
-            'preference': preference or NodeSelectorTerm(),
-            'weight': weight or None,
+            'preference': preference if preference is not None else NodeSelectorTerm(),
+            'weight': weight if weight is not None else None,
 
         }
         self._types = {
@@ -18481,14 +18481,14 @@ class Probe(_kuber_definitions.Definition):
             kind='Probe'
         )
         self._properties = {
-            'exec': exec_ or ExecAction(),
-            'failureThreshold': failure_threshold or None,
-            'httpGet': http_get or HTTPGetAction(),
-            'initialDelaySeconds': initial_delay_seconds or None,
-            'periodSeconds': period_seconds or None,
-            'successThreshold': success_threshold or None,
-            'tcpSocket': tcp_socket or TCPSocketAction(),
-            'timeoutSeconds': timeout_seconds or None,
+            'exec': exec_ if exec_ is not None else ExecAction(),
+            'failureThreshold': failure_threshold if failure_threshold is not None else None,
+            'httpGet': http_get if http_get is not None else HTTPGetAction(),
+            'initialDelaySeconds': initial_delay_seconds if initial_delay_seconds is not None else None,
+            'periodSeconds': period_seconds if period_seconds is not None else None,
+            'successThreshold': success_threshold if success_threshold is not None else None,
+            'tcpSocket': tcp_socket if tcp_socket is not None else TCPSocketAction(),
+            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
 
         }
         self._types = {
@@ -18670,8 +18670,8 @@ class ProjectedVolumeSource(_kuber_definitions.Definition):
             kind='ProjectedVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'sources': sources or [],
+            'defaultMode': default_mode if default_mode is not None else None,
+            'sources': sources if sources is not None else [],
 
         }
         self._types = {
@@ -18753,12 +18753,12 @@ class QuobyteVolumeSource(_kuber_definitions.Definition):
             kind='QuobyteVolumeSource'
         )
         self._properties = {
-            'group': group or '',
-            'readOnly': read_only or None,
-            'registry': registry or '',
-            'tenant': tenant or '',
-            'user': user or '',
-            'volume': volume or '',
+            'group': group if group is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'registry': registry if registry is not None else '',
+            'tenant': tenant if tenant is not None else '',
+            'user': user if user is not None else '',
+            'volume': volume if volume is not None else '',
 
         }
         self._types = {
@@ -18900,14 +18900,14 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
             kind='RBDPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'image': image or '',
-            'keyring': keyring or '',
-            'monitors': monitors or [],
-            'pool': pool or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'user': user or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'image': image if image is not None else '',
+            'keyring': keyring if keyring is not None else '',
+            'monitors': monitors if monitors is not None else [],
+            'pool': pool if pool is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -19095,14 +19095,14 @@ class RBDVolumeSource(_kuber_definitions.Definition):
             kind='RBDVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'image': image or '',
-            'keyring': keyring or '',
-            'monitors': monitors or [],
-            'pool': pool or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'user': user or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'image': image if image is not None else '',
+            'keyring': keyring if keyring is not None else '',
+            'monitors': monitors if monitors is not None else [],
+            'pool': pool if pool is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -19284,9 +19284,9 @@ class ReplicationController(_kuber_definitions.Resource):
             kind='ReplicationController'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ReplicationControllerSpec(),
-            'status': status or ReplicationControllerStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ReplicationControllerSpec(),
+            'status': status if status is not None else ReplicationControllerStatus(),
 
         }
         self._types = {
@@ -19636,11 +19636,11 @@ class ReplicationControllerCondition(_kuber_definitions.Definition):
             kind='ReplicationControllerCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -19757,8 +19757,8 @@ class ReplicationControllerList(_kuber_definitions.Collection):
             kind='ReplicationControllerList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -19854,10 +19854,10 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
             kind='ReplicationControllerSpec'
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds or None,
-            'replicas': replicas or None,
-            'selector': selector or {},
-            'template': template or PodTemplateSpec(),
+            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'selector': selector if selector is not None else {},
+            'template': template if template is not None else PodTemplateSpec(),
 
         }
         self._types = {
@@ -20062,12 +20062,12 @@ class ReplicationControllerStatus(_kuber_definitions.Definition):
             kind='ReplicationControllerStatus'
         )
         self._properties = {
-            'availableReplicas': available_replicas or None,
-            'conditions': conditions or [],
-            'fullyLabeledReplicas': fully_labeled_replicas or None,
-            'observedGeneration': observed_generation or None,
-            'readyReplicas': ready_replicas or None,
-            'replicas': replicas or None,
+            'availableReplicas': available_replicas if available_replicas is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'fullyLabeledReplicas': fully_labeled_replicas if fully_labeled_replicas is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'readyReplicas': ready_replicas if ready_replicas is not None else None,
+            'replicas': replicas if replicas is not None else None,
 
         }
         self._types = {
@@ -20213,9 +20213,9 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
             kind='ResourceFieldSelector'
         )
         self._properties = {
-            'containerName': container_name or '',
-            'divisor': divisor or None,
-            'resource': resource or '',
+            'containerName': container_name if container_name is not None else '',
+            'divisor': divisor if divisor is not None else None,
+            'resource': resource if resource is not None else '',
 
         }
         self._types = {
@@ -20298,9 +20298,9 @@ class ResourceQuota(_kuber_definitions.Resource):
             kind='ResourceQuota'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ResourceQuotaSpec(),
-            'status': status or ResourceQuotaStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ResourceQuotaSpec(),
+            'status': status if status is not None else ResourceQuotaStatus(),
 
         }
         self._types = {
@@ -20564,8 +20564,8 @@ class ResourceQuotaList(_kuber_definitions.Collection):
             kind='ResourceQuotaList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -20658,9 +20658,9 @@ class ResourceQuotaSpec(_kuber_definitions.Definition):
             kind='ResourceQuotaSpec'
         )
         self._properties = {
-            'hard': hard or {},
-            'scopeSelector': scope_selector or ScopeSelector(),
-            'scopes': scopes or [],
+            'hard': hard if hard is not None else {},
+            'scopeSelector': scope_selector if scope_selector is not None else ScopeSelector(),
+            'scopes': scopes if scopes is not None else [],
 
         }
         self._types = {
@@ -20752,8 +20752,8 @@ class ResourceQuotaStatus(_kuber_definitions.Definition):
             kind='ResourceQuotaStatus'
         )
         self._properties = {
-            'hard': hard or {},
-            'used': used or {},
+            'hard': hard if hard is not None else {},
+            'used': used if used is not None else {},
 
         }
         self._types = {
@@ -20820,8 +20820,8 @@ class ResourceRequirements(_kuber_definitions.Definition):
             kind='ResourceRequirements'
         )
         self._properties = {
-            'limits': limits or {},
-            'requests': requests or {},
+            'limits': limits if limits is not None else {},
+            'requests': requests if requests is not None else {},
 
         }
         self._types = {
@@ -20899,10 +20899,10 @@ class SELinuxOptions(_kuber_definitions.Definition):
             kind='SELinuxOptions'
         )
         self._properties = {
-            'level': level or '',
-            'role': role or '',
-            'type': type_ or '',
-            'user': user or '',
+            'level': level if level is not None else '',
+            'role': role if role is not None else '',
+            'type': type_ if type_ is not None else '',
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -21001,16 +21001,16 @@ class ScaleIOPersistentVolumeSource(_kuber_definitions.Definition):
             kind='ScaleIOPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'gateway': gateway or '',
-            'protectionDomain': protection_domain or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'sslEnabled': ssl_enabled or None,
-            'storageMode': storage_mode or '',
-            'storagePool': storage_pool or '',
-            'system': system or '',
-            'volumeName': volume_name or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'gateway': gateway if gateway is not None else '',
+            'protectionDomain': protection_domain if protection_domain is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'sslEnabled': ssl_enabled if ssl_enabled is not None else None,
+            'storageMode': storage_mode if storage_mode is not None else '',
+            'storagePool': storage_pool if storage_pool is not None else '',
+            'system': system if system is not None else '',
+            'volumeName': volume_name if volume_name is not None else '',
 
         }
         self._types = {
@@ -21222,16 +21222,16 @@ class ScaleIOVolumeSource(_kuber_definitions.Definition):
             kind='ScaleIOVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'gateway': gateway or '',
-            'protectionDomain': protection_domain or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'sslEnabled': ssl_enabled or None,
-            'storageMode': storage_mode or '',
-            'storagePool': storage_pool or '',
-            'system': system or '',
-            'volumeName': volume_name or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'gateway': gateway if gateway is not None else '',
+            'protectionDomain': protection_domain if protection_domain is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'sslEnabled': ssl_enabled if ssl_enabled is not None else None,
+            'storageMode': storage_mode if storage_mode is not None else '',
+            'storagePool': storage_pool if storage_pool is not None else '',
+            'system': system if system is not None else '',
+            'volumeName': volume_name if volume_name is not None else '',
 
         }
         self._types = {
@@ -21435,7 +21435,7 @@ class ScopeSelector(_kuber_definitions.Definition):
             kind='ScopeSelector'
         )
         self._properties = {
-            'matchExpressions': match_expressions or [],
+            'matchExpressions': match_expressions if match_expressions is not None else [],
 
         }
         self._types = {
@@ -21493,9 +21493,9 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
             kind='ScopedResourceSelectorRequirement'
         )
         self._properties = {
-            'operator': operator or '',
-            'scopeName': scope_name or '',
-            'values': values or [],
+            'operator': operator if operator is not None else '',
+            'scopeName': scope_name if scope_name is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -21582,10 +21582,10 @@ class Secret(_kuber_definitions.Resource):
             kind='Secret'
         )
         self._properties = {
-            'data': data or {},
-            'metadata': metadata or ObjectMeta(),
-            'stringData': string_data or {},
-            'type': type_ or '',
+            'data': data if data is not None else {},
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'stringData': string_data if string_data is not None else {},
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -21830,8 +21830,8 @@ class SecretEnvSource(_kuber_definitions.Definition):
             kind='SecretEnvSource'
         )
         self._properties = {
-            'name': name or '',
-            'optional': optional or None,
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -21896,9 +21896,9 @@ class SecretKeySelector(_kuber_definitions.Definition):
             kind='SecretKeySelector'
         )
         self._properties = {
-            'key': key or '',
-            'name': name or '',
-            'optional': optional or None,
+            'key': key if key is not None else '',
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -21979,8 +21979,8 @@ class SecretList(_kuber_definitions.Collection):
             kind='SecretList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -22078,9 +22078,9 @@ class SecretProjection(_kuber_definitions.Definition):
             kind='SecretProjection'
         )
         self._properties = {
-            'items': items or [],
-            'name': name or '',
-            'optional': optional or None,
+            'items': items if items is not None else [],
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -22184,8 +22184,8 @@ class SecretReference(_kuber_definitions.Definition):
             kind='SecretReference'
         )
         self._properties = {
-            'name': name or '',
-            'namespace': namespace or '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
 
         }
         self._types = {
@@ -22256,10 +22256,10 @@ class SecretVolumeSource(_kuber_definitions.Definition):
             kind='SecretVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'items': items or [],
-            'optional': optional or None,
-            'secretName': secret_name or '',
+            'defaultMode': default_mode if default_mode is not None else None,
+            'items': items if items is not None else [],
+            'optional': optional if optional is not None else None,
+            'secretName': secret_name if secret_name is not None else '',
 
         }
         self._types = {
@@ -22394,16 +22394,16 @@ class SecurityContext(_kuber_definitions.Definition):
             kind='SecurityContext'
         )
         self._properties = {
-            'allowPrivilegeEscalation': allow_privilege_escalation or None,
-            'capabilities': capabilities or Capabilities(),
-            'privileged': privileged or None,
-            'procMount': proc_mount or '',
-            'readOnlyRootFilesystem': read_only_root_filesystem or None,
-            'runAsGroup': run_as_group or None,
-            'runAsNonRoot': run_as_non_root or None,
-            'runAsUser': run_as_user or None,
-            'seLinuxOptions': se_linux_options or SELinuxOptions(),
-            'windowsOptions': windows_options or WindowsSecurityContextOptions(),
+            'allowPrivilegeEscalation': allow_privilege_escalation if allow_privilege_escalation is not None else None,
+            'capabilities': capabilities if capabilities is not None else Capabilities(),
+            'privileged': privileged if privileged is not None else None,
+            'procMount': proc_mount if proc_mount is not None else '',
+            'readOnlyRootFilesystem': read_only_root_filesystem if read_only_root_filesystem is not None else None,
+            'runAsGroup': run_as_group if run_as_group is not None else None,
+            'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
+            'runAsUser': run_as_user if run_as_user is not None else None,
+            'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
+            'windowsOptions': windows_options if windows_options is not None else WindowsSecurityContextOptions(),
 
         }
         self._types = {
@@ -22667,9 +22667,9 @@ class Service(_kuber_definitions.Resource):
             kind='Service'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ServiceSpec(),
-            'status': status or ServiceStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ServiceSpec(),
+            'status': status if status is not None else ServiceStatus(),
 
         }
         self._types = {
@@ -22940,10 +22940,10 @@ class ServiceAccount(_kuber_definitions.Resource):
             kind='ServiceAccount'
         )
         self._properties = {
-            'automountServiceAccountToken': automount_service_account_token or None,
-            'imagePullSecrets': image_pull_secrets or [],
-            'metadata': metadata or ObjectMeta(),
-            'secrets': secrets or [],
+            'automountServiceAccountToken': automount_service_account_token if automount_service_account_token is not None else None,
+            'imagePullSecrets': image_pull_secrets if image_pull_secrets is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'secrets': secrets if secrets is not None else [],
 
         }
         self._types = {
@@ -23201,8 +23201,8 @@ class ServiceAccountList(_kuber_definitions.Collection):
             kind='ServiceAccountList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -23299,9 +23299,9 @@ class ServiceAccountTokenProjection(_kuber_definitions.Definition):
             kind='ServiceAccountTokenProjection'
         )
         self._properties = {
-            'audience': audience or '',
-            'expirationSeconds': expiration_seconds or None,
-            'path': path or '',
+            'audience': audience if audience is not None else '',
+            'expirationSeconds': expiration_seconds if expiration_seconds is not None else None,
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -23398,8 +23398,8 @@ class ServiceList(_kuber_definitions.Collection):
             kind='ServiceList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -23491,11 +23491,11 @@ class ServicePort(_kuber_definitions.Definition):
             kind='ServicePort'
         )
         self._properties = {
-            'name': name or '',
-            'nodePort': node_port or None,
-            'port': port or None,
-            'protocol': protocol or '',
-            'targetPort': target_port or None,
+            'name': name if name is not None else '',
+            'nodePort': node_port if node_port is not None else None,
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
+            'targetPort': target_port if target_port is not None else None,
 
         }
         self._types = {
@@ -23659,20 +23659,20 @@ class ServiceSpec(_kuber_definitions.Definition):
             kind='ServiceSpec'
         )
         self._properties = {
-            'clusterIP': cluster_ip or '',
-            'externalIPs': external_ips or [],
-            'externalName': external_name or '',
-            'externalTrafficPolicy': external_traffic_policy or '',
-            'healthCheckNodePort': health_check_node_port or None,
-            'ipFamily': ip_family or '',
-            'loadBalancerIP': load_balancer_ip or '',
-            'loadBalancerSourceRanges': load_balancer_source_ranges or [],
-            'ports': ports or [],
-            'publishNotReadyAddresses': publish_not_ready_addresses or None,
-            'selector': selector or {},
-            'sessionAffinity': session_affinity or '',
-            'sessionAffinityConfig': session_affinity_config or SessionAffinityConfig(),
-            'type': type_ or '',
+            'clusterIP': cluster_ip if cluster_ip is not None else '',
+            'externalIPs': external_ips if external_ips is not None else [],
+            'externalName': external_name if external_name is not None else '',
+            'externalTrafficPolicy': external_traffic_policy if external_traffic_policy is not None else '',
+            'healthCheckNodePort': health_check_node_port if health_check_node_port is not None else None,
+            'ipFamily': ip_family if ip_family is not None else '',
+            'loadBalancerIP': load_balancer_ip if load_balancer_ip is not None else '',
+            'loadBalancerSourceRanges': load_balancer_source_ranges if load_balancer_source_ranges is not None else [],
+            'ports': ports if ports is not None else [],
+            'publishNotReadyAddresses': publish_not_ready_addresses if publish_not_ready_addresses is not None else None,
+            'selector': selector if selector is not None else {},
+            'sessionAffinity': session_affinity if session_affinity is not None else '',
+            'sessionAffinityConfig': session_affinity_config if session_affinity_config is not None else SessionAffinityConfig(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -24099,7 +24099,7 @@ class ServiceStatus(_kuber_definitions.Definition):
             kind='ServiceStatus'
         )
         self._properties = {
-            'loadBalancer': load_balancer or LoadBalancerStatus(),
+            'loadBalancer': load_balancer if load_balancer is not None else LoadBalancerStatus(),
 
         }
         self._types = {
@@ -24148,7 +24148,7 @@ class SessionAffinityConfig(_kuber_definitions.Definition):
             kind='SessionAffinityConfig'
         )
         self._properties = {
-            'clientIP': client_ip or ClientIPConfig(),
+            'clientIP': client_ip if client_ip is not None else ClientIPConfig(),
 
         }
         self._types = {
@@ -24200,11 +24200,11 @@ class StorageOSPersistentVolumeSource(_kuber_definitions.Definition):
             kind='StorageOSPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or ObjectReference(),
-            'volumeName': volume_name or '',
-            'volumeNamespace': volume_namespace or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else ObjectReference(),
+            'volumeName': volume_name if volume_name is not None else '',
+            'volumeNamespace': volume_namespace if volume_namespace is not None else '',
 
         }
         self._types = {
@@ -24340,11 +24340,11 @@ class StorageOSVolumeSource(_kuber_definitions.Definition):
             kind='StorageOSVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'volumeName': volume_name or '',
-            'volumeNamespace': volume_namespace or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'volumeName': volume_name if volume_name is not None else '',
+            'volumeNamespace': volume_namespace if volume_namespace is not None else '',
 
         }
         self._types = {
@@ -24477,8 +24477,8 @@ class Sysctl(_kuber_definitions.Definition):
             kind='Sysctl'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -24539,8 +24539,8 @@ class TCPSocketAction(_kuber_definitions.Definition):
             kind='TCPSocketAction'
         )
         self._properties = {
-            'host': host or '',
-            'port': port or None,
+            'host': host if host is not None else '',
+            'port': port if port is not None else None,
 
         }
         self._types = {
@@ -24611,10 +24611,10 @@ class Taint(_kuber_definitions.Definition):
             kind='Taint'
         )
         self._properties = {
-            'effect': effect or '',
-            'key': key or '',
-            'timeAdded': time_added or None,
-            'value': value or '',
+            'effect': effect if effect is not None else '',
+            'key': key if key is not None else '',
+            'timeAdded': time_added if time_added is not None else None,
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -24722,11 +24722,11 @@ class Toleration(_kuber_definitions.Definition):
             kind='Toleration'
         )
         self._properties = {
-            'effect': effect or '',
-            'key': key or '',
-            'operator': operator or '',
-            'tolerationSeconds': toleration_seconds or None,
-            'value': value or '',
+            'effect': effect if effect is not None else '',
+            'key': key if key is not None else '',
+            'operator': operator if operator is not None else '',
+            'tolerationSeconds': toleration_seconds if toleration_seconds is not None else None,
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -24863,8 +24863,8 @@ class TopologySelectorLabelRequirement(_kuber_definitions.Definition):
             kind='TopologySelectorLabelRequirement'
         )
         self._properties = {
-            'key': key or '',
-            'values': values or [],
+            'key': key if key is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -24929,7 +24929,7 @@ class TopologySelectorTerm(_kuber_definitions.Definition):
             kind='TopologySelectorTerm'
         )
         self._properties = {
-            'matchLabelExpressions': match_label_expressions or [],
+            'matchLabelExpressions': match_label_expressions if match_label_expressions is not None else [],
 
         }
         self._types = {
@@ -24985,10 +24985,10 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
             kind='TopologySpreadConstraint'
         )
         self._properties = {
-            'labelSelector': label_selector or LabelSelector(),
-            'maxSkew': max_skew or None,
-            'topologyKey': topology_key or '',
-            'whenUnsatisfiable': when_unsatisfiable or '',
+            'labelSelector': label_selector if label_selector is not None else LabelSelector(),
+            'maxSkew': max_skew if max_skew is not None else None,
+            'topologyKey': topology_key if topology_key is not None else '',
+            'whenUnsatisfiable': when_unsatisfiable if when_unsatisfiable is not None else '',
 
         }
         self._types = {
@@ -25143,9 +25143,9 @@ class TypedLocalObjectReference(_kuber_definitions.Definition):
             kind='TypedLocalObjectReference'
         )
         self._properties = {
-            'apiGroup': api_group or '',
-            'kind': kind or '',
-            'name': name or '',
+            'apiGroup': api_group if api_group is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -25254,35 +25254,35 @@ class Volume(_kuber_definitions.Definition):
             kind='Volume'
         )
         self._properties = {
-            'awsElasticBlockStore': aws_elastic_block_store or AWSElasticBlockStoreVolumeSource(),
-            'azureDisk': azure_disk or AzureDiskVolumeSource(),
-            'azureFile': azure_file or AzureFileVolumeSource(),
-            'cephfs': cephfs or CephFSVolumeSource(),
-            'cinder': cinder or CinderVolumeSource(),
-            'configMap': config_map or ConfigMapVolumeSource(),
-            'csi': csi or CSIVolumeSource(),
-            'downwardAPI': downward_api or DownwardAPIVolumeSource(),
-            'emptyDir': empty_dir or EmptyDirVolumeSource(),
-            'fc': fc or FCVolumeSource(),
-            'flexVolume': flex_volume or FlexVolumeSource(),
-            'flocker': flocker or FlockerVolumeSource(),
-            'gcePersistentDisk': gce_persistent_disk or GCEPersistentDiskVolumeSource(),
-            'gitRepo': git_repo or GitRepoVolumeSource(),
-            'glusterfs': glusterfs or GlusterfsVolumeSource(),
-            'hostPath': host_path or HostPathVolumeSource(),
-            'iscsi': iscsi or ISCSIVolumeSource(),
-            'name': name or '',
-            'nfs': nfs or NFSVolumeSource(),
-            'persistentVolumeClaim': persistent_volume_claim or PersistentVolumeClaimVolumeSource(),
-            'photonPersistentDisk': photon_persistent_disk or PhotonPersistentDiskVolumeSource(),
-            'portworxVolume': portworx_volume or PortworxVolumeSource(),
-            'projected': projected or ProjectedVolumeSource(),
-            'quobyte': quobyte or QuobyteVolumeSource(),
-            'rbd': rbd or RBDVolumeSource(),
-            'scaleIO': scale_io or ScaleIOVolumeSource(),
-            'secret': secret or SecretVolumeSource(),
-            'storageos': storageos or StorageOSVolumeSource(),
-            'vsphereVolume': vsphere_volume or VsphereVirtualDiskVolumeSource(),
+            'awsElasticBlockStore': aws_elastic_block_store if aws_elastic_block_store is not None else AWSElasticBlockStoreVolumeSource(),
+            'azureDisk': azure_disk if azure_disk is not None else AzureDiskVolumeSource(),
+            'azureFile': azure_file if azure_file is not None else AzureFileVolumeSource(),
+            'cephfs': cephfs if cephfs is not None else CephFSVolumeSource(),
+            'cinder': cinder if cinder is not None else CinderVolumeSource(),
+            'configMap': config_map if config_map is not None else ConfigMapVolumeSource(),
+            'csi': csi if csi is not None else CSIVolumeSource(),
+            'downwardAPI': downward_api if downward_api is not None else DownwardAPIVolumeSource(),
+            'emptyDir': empty_dir if empty_dir is not None else EmptyDirVolumeSource(),
+            'fc': fc if fc is not None else FCVolumeSource(),
+            'flexVolume': flex_volume if flex_volume is not None else FlexVolumeSource(),
+            'flocker': flocker if flocker is not None else FlockerVolumeSource(),
+            'gcePersistentDisk': gce_persistent_disk if gce_persistent_disk is not None else GCEPersistentDiskVolumeSource(),
+            'gitRepo': git_repo if git_repo is not None else GitRepoVolumeSource(),
+            'glusterfs': glusterfs if glusterfs is not None else GlusterfsVolumeSource(),
+            'hostPath': host_path if host_path is not None else HostPathVolumeSource(),
+            'iscsi': iscsi if iscsi is not None else ISCSIVolumeSource(),
+            'name': name if name is not None else '',
+            'nfs': nfs if nfs is not None else NFSVolumeSource(),
+            'persistentVolumeClaim': persistent_volume_claim if persistent_volume_claim is not None else PersistentVolumeClaimVolumeSource(),
+            'photonPersistentDisk': photon_persistent_disk if photon_persistent_disk is not None else PhotonPersistentDiskVolumeSource(),
+            'portworxVolume': portworx_volume if portworx_volume is not None else PortworxVolumeSource(),
+            'projected': projected if projected is not None else ProjectedVolumeSource(),
+            'quobyte': quobyte if quobyte is not None else QuobyteVolumeSource(),
+            'rbd': rbd if rbd is not None else RBDVolumeSource(),
+            'scaleIO': scale_io if scale_io is not None else ScaleIOVolumeSource(),
+            'secret': secret if secret is not None else SecretVolumeSource(),
+            'storageos': storageos if storageos is not None else StorageOSVolumeSource(),
+            'vsphereVolume': vsphere_volume if vsphere_volume is not None else VsphereVirtualDiskVolumeSource(),
 
         }
         self._types = {
@@ -25910,8 +25910,8 @@ class VolumeDevice(_kuber_definitions.Definition):
             kind='VolumeDevice'
         )
         self._properties = {
-            'devicePath': device_path or '',
-            'name': name or '',
+            'devicePath': device_path if device_path is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -25980,12 +25980,12 @@ class VolumeMount(_kuber_definitions.Definition):
             kind='VolumeMount'
         )
         self._properties = {
-            'mountPath': mount_path or '',
-            'mountPropagation': mount_propagation or '',
-            'name': name or '',
-            'readOnly': read_only or None,
-            'subPath': sub_path or '',
-            'subPathExpr': sub_path_expr or '',
+            'mountPath': mount_path if mount_path is not None else '',
+            'mountPropagation': mount_propagation if mount_propagation is not None else '',
+            'name': name if name is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'subPath': sub_path if sub_path is not None else '',
+            'subPathExpr': sub_path_expr if sub_path_expr is not None else '',
 
         }
         self._types = {
@@ -26127,7 +26127,7 @@ class VolumeNodeAffinity(_kuber_definitions.Definition):
             kind='VolumeNodeAffinity'
         )
         self._properties = {
-            'required': required or NodeSelector(),
+            'required': required if required is not None else NodeSelector(),
 
         }
         self._types = {
@@ -26177,10 +26177,10 @@ class VolumeProjection(_kuber_definitions.Definition):
             kind='VolumeProjection'
         )
         self._properties = {
-            'configMap': config_map or ConfigMapProjection(),
-            'downwardAPI': downward_api or DownwardAPIProjection(),
-            'secret': secret or SecretProjection(),
-            'serviceAccountToken': service_account_token or ServiceAccountTokenProjection(),
+            'configMap': config_map if config_map is not None else ConfigMapProjection(),
+            'downwardAPI': downward_api if downward_api is not None else DownwardAPIProjection(),
+            'secret': secret if secret is not None else SecretProjection(),
+            'serviceAccountToken': service_account_token if service_account_token is not None else ServiceAccountTokenProjection(),
 
         }
         self._types = {
@@ -26280,10 +26280,10 @@ class VsphereVirtualDiskVolumeSource(_kuber_definitions.Definition):
             kind='VsphereVirtualDiskVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'storagePolicyID': storage_policy_id or '',
-            'storagePolicyName': storage_policy_name or '',
-            'volumePath': volume_path or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'storagePolicyID': storage_policy_id if storage_policy_id is not None else '',
+            'storagePolicyName': storage_policy_name if storage_policy_name is not None else '',
+            'volumePath': volume_path if volume_path is not None else '',
 
         }
         self._types = {
@@ -26380,8 +26380,8 @@ class WeightedPodAffinityTerm(_kuber_definitions.Definition):
             kind='WeightedPodAffinityTerm'
         )
         self._properties = {
-            'podAffinityTerm': pod_affinity_term or PodAffinityTerm(),
-            'weight': weight or None,
+            'podAffinityTerm': pod_affinity_term if pod_affinity_term is not None else PodAffinityTerm(),
+            'weight': weight if weight is not None else None,
 
         }
         self._types = {
@@ -26449,9 +26449,9 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
             kind='WindowsSecurityContextOptions'
         )
         self._properties = {
-            'gmsaCredentialSpec': gmsa_credential_spec or '',
-            'gmsaCredentialSpecName': gmsa_credential_spec_name or '',
-            'runAsUserName': run_as_user_name or '',
+            'gmsaCredentialSpec': gmsa_credential_spec if gmsa_credential_spec is not None else '',
+            'gmsaCredentialSpecName': gmsa_credential_spec_name if gmsa_credential_spec_name is not None else '',
+            'runAsUserName': run_as_user_name if run_as_user_name is not None else '',
 
         }
         self._types = {

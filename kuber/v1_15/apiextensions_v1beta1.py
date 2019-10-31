@@ -32,12 +32,12 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
             kind='CustomResourceColumnDefinition'
         )
         self._properties = {
-            'JSONPath': jsonpath or '',
-            'description': description or '',
-            'format': format_ or '',
-            'name': name or '',
-            'priority': priority or None,
-            'type': type_ or '',
+            'JSONPath': jsonpath if jsonpath is not None else '',
+            'description': description if description is not None else '',
+            'format': format_ if format_ is not None else '',
+            'name': name if name is not None else '',
+            'priority': priority if priority is not None else None,
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -181,9 +181,9 @@ class CustomResourceConversion(_kuber_definitions.Definition):
             kind='CustomResourceConversion'
         )
         self._properties = {
-            'conversionReviewVersions': conversion_review_versions or [],
-            'strategy': strategy or '',
-            'webhookClientConfig': webhook_client_config or WebhookClientConfig(),
+            'conversionReviewVersions': conversion_review_versions if conversion_review_versions is not None else [],
+            'strategy': strategy if strategy is not None else '',
+            'webhookClientConfig': webhook_client_config if webhook_client_config is not None else WebhookClientConfig(),
 
         }
         self._types = {
@@ -297,9 +297,9 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
             kind='CustomResourceDefinition'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or CustomResourceDefinitionSpec(),
-            'status': status or CustomResourceDefinitionStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CustomResourceDefinitionSpec(),
+            'status': status if status is not None else CustomResourceDefinitionStatus(),
 
         }
         self._types = {
@@ -557,11 +557,11 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
             kind='CustomResourceDefinitionCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -684,8 +684,8 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
             kind='CustomResourceDefinitionList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -775,12 +775,12 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
             kind='CustomResourceDefinitionNames'
         )
         self._properties = {
-            'categories': categories or [],
-            'kind': kind or '',
-            'listKind': list_kind or '',
-            'plural': plural or '',
-            'shortNames': short_names or [],
-            'singular': singular or '',
+            'categories': categories if categories is not None else [],
+            'kind': kind if kind is not None else '',
+            'listKind': list_kind if list_kind is not None else '',
+            'plural': plural if plural is not None else '',
+            'shortNames': short_names if short_names is not None else [],
+            'singular': singular if singular is not None else '',
 
         }
         self._types = {
@@ -923,16 +923,16 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             kind='CustomResourceDefinitionSpec'
         )
         self._properties = {
-            'additionalPrinterColumns': additional_printer_columns or [],
-            'conversion': conversion or CustomResourceConversion(),
-            'group': group or '',
-            'names': names or CustomResourceDefinitionNames(),
-            'preserveUnknownFields': preserve_unknown_fields or None,
-            'scope': scope or '',
-            'subresources': subresources or CustomResourceSubresources(),
-            'validation': validation or CustomResourceValidation(),
-            'version': version or '',
-            'versions': versions or [],
+            'additionalPrinterColumns': additional_printer_columns if additional_printer_columns is not None else [],
+            'conversion': conversion if conversion is not None else CustomResourceConversion(),
+            'group': group if group is not None else '',
+            'names': names if names is not None else CustomResourceDefinitionNames(),
+            'preserveUnknownFields': preserve_unknown_fields if preserve_unknown_fields is not None else None,
+            'scope': scope if scope is not None else '',
+            'subresources': subresources if subresources is not None else CustomResourceSubresources(),
+            'validation': validation if validation is not None else CustomResourceValidation(),
+            'version': version if version is not None else '',
+            'versions': versions if versions is not None else [],
 
         }
         self._types = {
@@ -1200,9 +1200,9 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
             kind='CustomResourceDefinitionStatus'
         )
         self._properties = {
-            'acceptedNames': accepted_names or CustomResourceDefinitionNames(),
-            'conditions': conditions or [],
-            'storedVersions': stored_versions or [],
+            'acceptedNames': accepted_names if accepted_names is not None else CustomResourceDefinitionNames(),
+            'conditions': conditions if conditions is not None else [],
+            'storedVersions': stored_versions if stored_versions is not None else [],
 
         }
         self._types = {
@@ -1311,12 +1311,12 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
             kind='CustomResourceDefinitionVersion'
         )
         self._properties = {
-            'additionalPrinterColumns': additional_printer_columns or [],
-            'name': name or '',
-            'schema': schema or CustomResourceValidation(),
-            'served': served or None,
-            'storage': storage or None,
-            'subresources': subresources or CustomResourceSubresources(),
+            'additionalPrinterColumns': additional_printer_columns if additional_printer_columns is not None else [],
+            'name': name if name is not None else '',
+            'schema': schema if schema is not None else CustomResourceValidation(),
+            'served': served if served is not None else None,
+            'storage': storage if storage is not None else None,
+            'subresources': subresources if subresources is not None else CustomResourceSubresources(),
 
         }
         self._types = {
@@ -1500,9 +1500,9 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
             kind='CustomResourceSubresourceScale'
         )
         self._properties = {
-            'labelSelectorPath': label_selector_path or '',
-            'specReplicasPath': spec_replicas_path or '',
-            'statusReplicasPath': status_replicas_path or '',
+            'labelSelectorPath': label_selector_path if label_selector_path is not None else '',
+            'specReplicasPath': spec_replicas_path if spec_replicas_path is not None else '',
+            'statusReplicasPath': status_replicas_path if status_replicas_path is not None else '',
 
         }
         self._types = {
@@ -1655,8 +1655,8 @@ class CustomResourceSubresources(_kuber_definitions.Definition):
             kind='CustomResourceSubresources'
         )
         self._properties = {
-            'scale': scale or CustomResourceSubresourceScale(),
-            'status': status or CustomResourceSubresourceStatus(),
+            'scale': scale if scale is not None else CustomResourceSubresourceScale(),
+            'status': status if status is not None else CustomResourceSubresourceStatus(),
 
         }
         self._types = {
@@ -1720,7 +1720,7 @@ class CustomResourceValidation(_kuber_definitions.Definition):
             kind='CustomResourceValidation'
         )
         self._properties = {
-            'openAPIV3Schema': open_apiv3_schema or JSONSchemaProps(),
+            'openAPIV3Schema': open_apiv3_schema if open_apiv3_schema is not None else JSONSchemaProps(),
 
         }
         self._types = {
@@ -1770,8 +1770,8 @@ class ExternalDocumentation(_kuber_definitions.Definition):
             kind='ExternalDocumentation'
         )
         self._properties = {
-            'description': description or '',
-            'url': url or '',
+            'description': description if description is not None else '',
+            'url': url if url is not None else '',
 
         }
         self._types = {
@@ -1897,44 +1897,44 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             kind='JSONSchemaProps'
         )
         self._properties = {
-            'additionalItems': additional_items or JSONSchemaPropsOrBool(),
-            'additionalProperties': additional_properties or JSONSchemaPropsOrBool(),
-            'allOf': all_of or [],
-            'anyOf': any_of or [],
-            'default': default or JSON(),
-            'definitions': definitions or {},
-            'dependencies': dependencies or {},
-            'description': description or '',
-            'enum': enum or [],
-            'example': example or JSON(),
-            'exclusiveMaximum': exclusive_maximum or None,
-            'exclusiveMinimum': exclusive_minimum or None,
-            'externalDocs': external_docs or ExternalDocumentation(),
-            'format': format_ or '',
-            'id': id_ or '',
-            'items': items or JSONSchemaPropsOrArray(),
-            'maxItems': max_items or None,
-            'maxLength': max_length or None,
-            'maxProperties': max_properties or None,
-            'maximum': maximum or None,
-            'minItems': min_items or None,
-            'minLength': min_length or None,
-            'minProperties': min_properties or None,
-            'minimum': minimum or None,
-            'multipleOf': multiple_of or None,
-            'not': not_ or None,
-            'nullable': nullable or None,
-            'oneOf': one_of or [],
-            'pattern': pattern or '',
-            'patternProperties': pattern_properties or {},
-            'properties': properties or {},
-            'required': required or [],
-            'title': title or '',
-            'type': type_ or '',
-            'uniqueItems': unique_items or None,
-            'x-kubernetes-embedded-resource': x_kubernetes_embedded_resource or None,
-            'x-kubernetes-int-or-string': x_kubernetes_int_or_string or None,
-            'x-kubernetes-preserve-unknown-fields': x_kubernetes_preserve_unknown_fields or None,
+            'additionalItems': additional_items if additional_items is not None else JSONSchemaPropsOrBool(),
+            'additionalProperties': additional_properties if additional_properties is not None else JSONSchemaPropsOrBool(),
+            'allOf': all_of if all_of is not None else [],
+            'anyOf': any_of if any_of is not None else [],
+            'default': default if default is not None else JSON(),
+            'definitions': definitions if definitions is not None else {},
+            'dependencies': dependencies if dependencies is not None else {},
+            'description': description if description is not None else '',
+            'enum': enum if enum is not None else [],
+            'example': example if example is not None else JSON(),
+            'exclusiveMaximum': exclusive_maximum if exclusive_maximum is not None else None,
+            'exclusiveMinimum': exclusive_minimum if exclusive_minimum is not None else None,
+            'externalDocs': external_docs if external_docs is not None else ExternalDocumentation(),
+            'format': format_ if format_ is not None else '',
+            'id': id_ if id_ is not None else '',
+            'items': items if items is not None else JSONSchemaPropsOrArray(),
+            'maxItems': max_items if max_items is not None else None,
+            'maxLength': max_length if max_length is not None else None,
+            'maxProperties': max_properties if max_properties is not None else None,
+            'maximum': maximum if maximum is not None else None,
+            'minItems': min_items if min_items is not None else None,
+            'minLength': min_length if min_length is not None else None,
+            'minProperties': min_properties if min_properties is not None else None,
+            'minimum': minimum if minimum is not None else None,
+            'multipleOf': multiple_of if multiple_of is not None else None,
+            'not': not_ if not_ is not None else None,
+            'nullable': nullable if nullable is not None else None,
+            'oneOf': one_of if one_of is not None else [],
+            'pattern': pattern if pattern is not None else '',
+            'patternProperties': pattern_properties if pattern_properties is not None else {},
+            'properties': properties if properties is not None else {},
+            'required': required if required is not None else [],
+            'title': title if title is not None else '',
+            'type': type_ if type_ is not None else '',
+            'uniqueItems': unique_items if unique_items is not None else None,
+            'x-kubernetes-embedded-resource': x_kubernetes_embedded_resource if x_kubernetes_embedded_resource is not None else None,
+            'x-kubernetes-int-or-string': x_kubernetes_int_or_string if x_kubernetes_int_or_string is not None else None,
+            'x-kubernetes-preserve-unknown-fields': x_kubernetes_preserve_unknown_fields if x_kubernetes_preserve_unknown_fields is not None else None,
 
         }
         self._types = {
@@ -2727,10 +2727,10 @@ class ServiceReference(_kuber_definitions.Definition):
             kind='ServiceReference'
         )
         self._properties = {
-            'name': name or '',
-            'namespace': namespace or '',
-            'path': path or '',
-            'port': port or None,
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'path': path if path is not None else '',
+            'port': port if port is not None else None,
 
         }
         self._types = {
@@ -2829,9 +2829,9 @@ class WebhookClientConfig(_kuber_definitions.Definition):
             kind='WebhookClientConfig'
         )
         self._properties = {
-            'caBundle': ca_bundle or '',
-            'service': service or ServiceReference(),
-            'url': url or '',
+            'caBundle': ca_bundle if ca_bundle is not None else '',
+            'service': service if service is not None else ServiceReference(),
+            'url': url if url is not None else '',
 
         }
         self._types = {

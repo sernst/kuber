@@ -32,8 +32,8 @@ class RuntimeClass(_kuber_definitions.Resource):
             kind='RuntimeClass'
         )
         self._properties = {
-            'handler': handler or '',
-            'metadata': metadata or ObjectMeta(),
+            'handler': handler if handler is not None else '',
+            'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
         self._types = {
@@ -243,8 +243,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
             kind='RuntimeClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {

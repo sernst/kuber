@@ -29,11 +29,11 @@ class Endpoint(_kuber_definitions.Definition):
             kind='Endpoint'
         )
         self._properties = {
-            'addresses': addresses or [],
-            'conditions': conditions or EndpointConditions(),
-            'hostname': hostname or '',
-            'targetRef': target_ref or ObjectReference(),
-            'topology': topology or {},
+            'addresses': addresses if addresses is not None else [],
+            'conditions': conditions if conditions is not None else EndpointConditions(),
+            'hostname': hostname if hostname is not None else '',
+            'targetRef': target_ref if target_ref is not None else ObjectReference(),
+            'topology': topology if topology is not None else {},
 
         }
         self._types = {
@@ -204,7 +204,7 @@ class EndpointConditions(_kuber_definitions.Definition):
             kind='EndpointConditions'
         )
         self._properties = {
-            'ready': ready or None,
+            'ready': ready if ready is not None else None,
 
         }
         self._types = {
@@ -258,9 +258,9 @@ class EndpointPort(_kuber_definitions.Definition):
             kind='EndpointPort'
         )
         self._properties = {
-            'name': name or '',
-            'port': port or None,
-            'protocol': protocol or '',
+            'name': name if name is not None else '',
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
@@ -362,10 +362,10 @@ class EndpointSlice(_kuber_definitions.Resource):
             kind='EndpointSlice'
         )
         self._properties = {
-            'addressType': address_type or '',
-            'endpoints': endpoints or [],
-            'metadata': metadata or ObjectMeta(),
-            'ports': ports or [],
+            'addressType': address_type if address_type is not None else '',
+            'endpoints': endpoints if endpoints is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'ports': ports if ports is not None else [],
 
         }
         self._types = {
@@ -615,8 +615,8 @@ class EndpointSliceList(_kuber_definitions.Collection):
             kind='EndpointSliceList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {

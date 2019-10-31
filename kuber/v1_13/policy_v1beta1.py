@@ -29,7 +29,7 @@ class AllowedFlexVolume(_kuber_definitions.Definition):
             kind='AllowedFlexVolume'
         )
         self._properties = {
-            'driver': driver or '',
+            'driver': driver if driver is not None else '',
 
         }
         self._types = {
@@ -76,8 +76,8 @@ class AllowedHostPath(_kuber_definitions.Definition):
             kind='AllowedHostPath'
         )
         self._properties = {
-            'pathPrefix': path_prefix or '',
-            'readOnly': read_only or None,
+            'pathPrefix': path_prefix if path_prefix is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -154,8 +154,8 @@ class Eviction(_kuber_definitions.Resource):
             kind='Eviction'
         )
         self._properties = {
-            'deleteOptions': delete_options or DeleteOptions(),
-            'metadata': metadata or ObjectMeta(),
+            'deleteOptions': delete_options if delete_options is not None else DeleteOptions(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
         self._types = {
@@ -346,8 +346,8 @@ class FSGroupStrategyOptions(_kuber_definitions.Definition):
             kind='FSGroupStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {
@@ -423,8 +423,8 @@ class HostPortRange(_kuber_definitions.Definition):
             kind='HostPortRange'
         )
         self._properties = {
-            'max': max_ or None,
-            'min': min_ or None,
+            'max': max_ if max_ is not None else None,
+            'min': min_ if min_ is not None else None,
 
         }
         self._types = {
@@ -484,8 +484,8 @@ class IDRange(_kuber_definitions.Definition):
             kind='IDRange'
         )
         self._properties = {
-            'max': max_ or None,
-            'min': min_ or None,
+            'max': max_ if max_ is not None else None,
+            'min': min_ if min_ is not None else None,
 
         }
         self._types = {
@@ -547,9 +547,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             kind='PodDisruptionBudget'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodDisruptionBudgetSpec(),
-            'status': status or PodDisruptionBudgetStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodDisruptionBudgetSpec(),
+            'status': status if status is not None else PodDisruptionBudgetStatus(),
 
         }
         self._types = {
@@ -804,8 +804,8 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
             kind='PodDisruptionBudgetList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -892,9 +892,9 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
             kind='PodDisruptionBudgetSpec'
         )
         self._properties = {
-            'maxUnavailable': max_unavailable or None,
-            'minAvailable': min_available or None,
-            'selector': selector or LabelSelector(),
+            'maxUnavailable': max_unavailable if max_unavailable is not None else None,
+            'minAvailable': min_available if min_available is not None else None,
+            'selector': selector if selector is not None else LabelSelector(),
 
         }
         self._types = {
@@ -1003,12 +1003,12 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
             kind='PodDisruptionBudgetStatus'
         )
         self._properties = {
-            'currentHealthy': current_healthy or None,
-            'desiredHealthy': desired_healthy or None,
-            'disruptedPods': disrupted_pods or {},
-            'disruptionsAllowed': disruptions_allowed or None,
-            'expectedPods': expected_pods or None,
-            'observedGeneration': observed_generation or None,
+            'currentHealthy': current_healthy if current_healthy is not None else None,
+            'desiredHealthy': desired_healthy if desired_healthy is not None else None,
+            'disruptedPods': disrupted_pods if disrupted_pods is not None else {},
+            'disruptionsAllowed': disruptions_allowed if disruptions_allowed is not None else None,
+            'expectedPods': expected_pods if expected_pods is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
 
         }
         self._types = {
@@ -1164,8 +1164,8 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             kind='PodSecurityPolicy'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodSecurityPolicySpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodSecurityPolicySpec(),
 
         }
         self._types = {
@@ -1360,8 +1360,8 @@ class PodSecurityPolicyList(_kuber_definitions.Collection):
             kind='PodSecurityPolicyList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -1470,28 +1470,28 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             kind='PodSecurityPolicySpec'
         )
         self._properties = {
-            'allowPrivilegeEscalation': allow_privilege_escalation or None,
-            'allowedCapabilities': allowed_capabilities or [],
-            'allowedFlexVolumes': allowed_flex_volumes or [],
-            'allowedHostPaths': allowed_host_paths or [],
-            'allowedProcMountTypes': allowed_proc_mount_types or [],
-            'allowedUnsafeSysctls': allowed_unsafe_sysctls or [],
-            'defaultAddCapabilities': default_add_capabilities or [],
-            'defaultAllowPrivilegeEscalation': default_allow_privilege_escalation or None,
-            'forbiddenSysctls': forbidden_sysctls or [],
-            'fsGroup': fs_group or FSGroupStrategyOptions(),
-            'hostIPC': host_ipc or None,
-            'hostNetwork': host_network or None,
-            'hostPID': host_pid or None,
-            'hostPorts': host_ports or [],
-            'privileged': privileged or None,
-            'readOnlyRootFilesystem': read_only_root_filesystem or None,
-            'requiredDropCapabilities': required_drop_capabilities or [],
-            'runAsGroup': run_as_group or RunAsGroupStrategyOptions(),
-            'runAsUser': run_as_user or RunAsUserStrategyOptions(),
-            'seLinux': se_linux or SELinuxStrategyOptions(),
-            'supplementalGroups': supplemental_groups or SupplementalGroupsStrategyOptions(),
-            'volumes': volumes or [],
+            'allowPrivilegeEscalation': allow_privilege_escalation if allow_privilege_escalation is not None else None,
+            'allowedCapabilities': allowed_capabilities if allowed_capabilities is not None else [],
+            'allowedFlexVolumes': allowed_flex_volumes if allowed_flex_volumes is not None else [],
+            'allowedHostPaths': allowed_host_paths if allowed_host_paths is not None else [],
+            'allowedProcMountTypes': allowed_proc_mount_types if allowed_proc_mount_types is not None else [],
+            'allowedUnsafeSysctls': allowed_unsafe_sysctls if allowed_unsafe_sysctls is not None else [],
+            'defaultAddCapabilities': default_add_capabilities if default_add_capabilities is not None else [],
+            'defaultAllowPrivilegeEscalation': default_allow_privilege_escalation if default_allow_privilege_escalation is not None else None,
+            'forbiddenSysctls': forbidden_sysctls if forbidden_sysctls is not None else [],
+            'fsGroup': fs_group if fs_group is not None else FSGroupStrategyOptions(),
+            'hostIPC': host_ipc if host_ipc is not None else None,
+            'hostNetwork': host_network if host_network is not None else None,
+            'hostPID': host_pid if host_pid is not None else None,
+            'hostPorts': host_ports if host_ports is not None else [],
+            'privileged': privileged if privileged is not None else None,
+            'readOnlyRootFilesystem': read_only_root_filesystem if read_only_root_filesystem is not None else None,
+            'requiredDropCapabilities': required_drop_capabilities if required_drop_capabilities is not None else [],
+            'runAsGroup': run_as_group if run_as_group is not None else RunAsGroupStrategyOptions(),
+            'runAsUser': run_as_user if run_as_user is not None else RunAsUserStrategyOptions(),
+            'seLinux': se_linux if se_linux is not None else SELinuxStrategyOptions(),
+            'supplementalGroups': supplemental_groups if supplemental_groups is not None else SupplementalGroupsStrategyOptions(),
+            'volumes': volumes if volumes is not None else [],
 
         }
         self._types = {
@@ -1998,8 +1998,8 @@ class RunAsGroupStrategyOptions(_kuber_definitions.Definition):
             kind='RunAsGroupStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {
@@ -2074,8 +2074,8 @@ class RunAsUserStrategyOptions(_kuber_definitions.Definition):
             kind='RunAsUserStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {
@@ -2150,8 +2150,8 @@ class SELinuxStrategyOptions(_kuber_definitions.Definition):
             kind='SELinuxStrategyOptions'
         )
         self._properties = {
-            'rule': rule or '',
-            'seLinuxOptions': se_linux_options or SELinuxOptions(),
+            'rule': rule if rule is not None else '',
+            'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
 
         }
         self._types = {
@@ -2220,8 +2220,8 @@ class SupplementalGroupsStrategyOptions(_kuber_definitions.Definition):
             kind='SupplementalGroupsStrategyOptions'
         )
         self._properties = {
-            'ranges': ranges or [],
-            'rule': rule or '',
+            'ranges': ranges if ranges is not None else [],
+            'rule': rule if rule is not None else '',
 
         }
         self._types = {

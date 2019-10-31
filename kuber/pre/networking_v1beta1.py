@@ -29,8 +29,8 @@ class HTTPIngressPath(_kuber_definitions.Definition):
             kind='HTTPIngressPath'
         )
         self._properties = {
-            'backend': backend or IngressBackend(),
-            'path': path or '',
+            'backend': backend if backend is not None else IngressBackend(),
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -109,7 +109,7 @@ class HTTPIngressRuleValue(_kuber_definitions.Definition):
             kind='HTTPIngressRuleValue'
         )
         self._properties = {
-            'paths': paths or [],
+            'paths': paths if paths is not None else [],
 
         }
         self._types = {
@@ -167,9 +167,9 @@ class Ingress(_kuber_definitions.Resource):
             kind='Ingress'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or IngressSpec(),
-            'status': status or IngressStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else IngressSpec(),
+            'status': status if status is not None else IngressStatus(),
 
         }
         self._types = {
@@ -185,8 +185,8 @@ class Ingress(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -194,8 +194,8 @@ class Ingress(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -205,8 +205,8 @@ class Ingress(_kuber_definitions.Resource):
     def spec(self) -> 'IngressSpec':
         """
         Spec is the desired state of the Ingress. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -214,8 +214,8 @@ class Ingress(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['IngressSpec', dict]):
         """
         Spec is the desired state of the Ingress. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = IngressSpec().from_dict(value)
@@ -225,8 +225,8 @@ class Ingress(_kuber_definitions.Resource):
     def status(self) -> 'IngressStatus':
         """
         Status is the current state of the Ingress. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -234,8 +234,8 @@ class Ingress(_kuber_definitions.Resource):
     def status(self, value: typing.Union['IngressStatus', dict]):
         """
         Status is the current state of the Ingress. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = IngressStatus().from_dict(value)
@@ -434,8 +434,8 @@ class IngressBackend(_kuber_definitions.Definition):
             kind='IngressBackend'
         )
         self._properties = {
-            'serviceName': service_name or '',
-            'servicePort': service_port or None,
+            'serviceName': service_name if service_name is not None else '',
+            'servicePort': service_port if service_port is not None else None,
 
         }
         self._types = {
@@ -499,8 +499,8 @@ class IngressList(_kuber_definitions.Collection):
             kind='IngressList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -537,8 +537,8 @@ class IngressList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -546,8 +546,8 @@ class IngressList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -593,8 +593,8 @@ class IngressRule(_kuber_definitions.Definition):
             kind='IngressRule'
         )
         self._properties = {
-            'host': host or '',
-            'http': http or HTTPIngressRuleValue(),
+            'host': host if host is not None else '',
+            'http': http if http is not None else HTTPIngressRuleValue(),
 
         }
         self._types = {
@@ -685,9 +685,9 @@ class IngressSpec(_kuber_definitions.Definition):
             kind='IngressSpec'
         )
         self._properties = {
-            'backend': backend or IngressBackend(),
-            'rules': rules or [],
-            'tls': tls or [],
+            'backend': backend if backend is not None else IngressBackend(),
+            'rules': rules if rules is not None else [],
+            'tls': tls if tls is not None else [],
 
         }
         self._types = {
@@ -799,7 +799,7 @@ class IngressStatus(_kuber_definitions.Definition):
             kind='IngressStatus'
         )
         self._properties = {
-            'loadBalancer': load_balancer or LoadBalancerStatus(),
+            'loadBalancer': load_balancer if load_balancer is not None else LoadBalancerStatus(),
 
         }
         self._types = {
@@ -849,8 +849,8 @@ class IngressTLS(_kuber_definitions.Definition):
             kind='IngressTLS'
         )
         self._properties = {
-            'hosts': hosts or [],
-            'secretName': secret_name or '',
+            'hosts': hosts if hosts is not None else [],
+            'secretName': secret_name if secret_name is not None else '',
 
         }
         self._types = {

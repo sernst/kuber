@@ -42,21 +42,21 @@ class Event(_kuber_definitions.Resource):
             kind='Event'
         )
         self._properties = {
-            'action': action or '',
-            'deprecatedCount': deprecated_count or None,
-            'deprecatedFirstTimestamp': deprecated_first_timestamp or None,
-            'deprecatedLastTimestamp': deprecated_last_timestamp or None,
-            'deprecatedSource': deprecated_source or EventSource(),
-            'eventTime': event_time or MicroTime(),
-            'metadata': metadata or ObjectMeta(),
-            'note': note or '',
-            'reason': reason or '',
-            'regarding': regarding or ObjectReference(),
-            'related': related or ObjectReference(),
-            'reportingController': reporting_controller or '',
-            'reportingInstance': reporting_instance or '',
-            'series': series or EventSeries(),
-            'type': type_ or '',
+            'action': action if action is not None else '',
+            'deprecatedCount': deprecated_count if deprecated_count is not None else None,
+            'deprecatedFirstTimestamp': deprecated_first_timestamp if deprecated_first_timestamp is not None else None,
+            'deprecatedLastTimestamp': deprecated_last_timestamp if deprecated_last_timestamp is not None else None,
+            'deprecatedSource': deprecated_source if deprecated_source is not None else EventSource(),
+            'eventTime': event_time if event_time is not None else MicroTime(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'note': note if note is not None else '',
+            'reason': reason if reason is not None else '',
+            'regarding': regarding if regarding is not None else ObjectReference(),
+            'related': related if related is not None else ObjectReference(),
+            'reportingController': reporting_controller if reporting_controller is not None else '',
+            'reportingInstance': reporting_instance if reporting_instance is not None else '',
+            'series': series if series is not None else EventSeries(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -493,8 +493,8 @@ class EventList(_kuber_definitions.Collection):
             kind='EventList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -531,8 +531,8 @@ class EventList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -540,8 +540,8 @@ class EventList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -585,9 +585,9 @@ class EventSeries(_kuber_definitions.Definition):
             kind='EventSeries'
         )
         self._properties = {
-            'count': count or None,
-            'lastObservedTime': last_observed_time or MicroTime(),
-            'state': state or '',
+            'count': count if count is not None else None,
+            'lastObservedTime': last_observed_time if last_observed_time is not None else MicroTime(),
+            'state': state if state is not None else '',
 
         }
         self._types = {

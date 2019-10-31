@@ -38,8 +38,8 @@ class CSIDriver(_kuber_definitions.Resource):
             kind='CSIDriver'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or CSIDriverSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CSIDriverSpec(),
 
         }
         self._types = {
@@ -60,8 +60,8 @@ class CSIDriver(_kuber_definitions.Resource):
         beginning and ending with an alphanumeric character
         ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics
         between. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -75,8 +75,8 @@ class CSIDriver(_kuber_definitions.Resource):
         beginning and ending with an alphanumeric character
         ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics
         between. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -245,8 +245,8 @@ class CSIDriverList(_kuber_definitions.Collection):
             kind='CSIDriverList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -283,8 +283,8 @@ class CSIDriverList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -292,8 +292,8 @@ class CSIDriverList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -328,6 +328,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             self,
             attach_required: bool = None,
             pod_info_on_mount: bool = None,
+            volume_lifecycle_modes: typing.List[str] = None,
     ):
         """Create CSIDriverSpec instance."""
         super(CSIDriverSpec, self).__init__(
@@ -335,13 +336,15 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             kind='CSIDriverSpec'
         )
         self._properties = {
-            'attachRequired': attach_required or None,
-            'podInfoOnMount': pod_info_on_mount or None,
+            'attachRequired': attach_required if attach_required is not None else None,
+            'podInfoOnMount': pod_info_on_mount if pod_info_on_mount is not None else None,
+            'volumeLifecycleModes': volume_lifecycle_modes if volume_lifecycle_modes is not None else [],
 
         }
         self._types = {
             'attachRequired': (bool, None),
             'podInfoOnMount': (bool, None),
+            'volumeLifecycleModes': (list, str),
 
         }
 
@@ -398,6 +401,18 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
+        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        ephemeral inline volume
+        defined by a CSIVolumeSource, otherwise "false"
+        "csi.storage.k8s.io/ephemeral" is a new feature in
+        Kubernetes 1.16. It is only required for drivers which
+        support both the "Persistent" and "Ephemeral"
+        VolumeLifecycleMode. Other drivers can leave pod info
+        disabled and/or ignore this field. As Kubernetes 1.15
+        doesn't support this field, drivers can only support one
+        mode when deployed on such a cluster and the deployment
+        determines which mode that is, for example via a command
+        line parameter of the driver.
         """
         return self._properties.get('podInfoOnMount')
 
@@ -418,8 +433,58 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
+        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        ephemeral inline volume
+        defined by a CSIVolumeSource, otherwise "false"
+        "csi.storage.k8s.io/ephemeral" is a new feature in
+        Kubernetes 1.16. It is only required for drivers which
+        support both the "Persistent" and "Ephemeral"
+        VolumeLifecycleMode. Other drivers can leave pod info
+        disabled and/or ignore this field. As Kubernetes 1.15
+        doesn't support this field, drivers can only support one
+        mode when deployed on such a cluster and the deployment
+        determines which mode that is, for example via a command
+        line parameter of the driver.
         """
         self._properties['podInfoOnMount'] = value
+
+    @property
+    def volume_lifecycle_modes(self) -> typing.List[str]:
+        """
+        VolumeLifecycleModes defines what kind of volumes this CSI
+        volume driver supports. The default if the list is empty is
+        "Persistent", which is the usage defined by the CSI
+        specification and implemented in Kubernetes via the usual
+        PV/PVC mechanism. The other mode is "Ephemeral". In this
+        mode, volumes are defined inline inside the pod spec with
+        CSIVolumeSource and their lifecycle is tied to the lifecycle
+        of that pod. A driver has to be aware of this because it is
+        only going to get a NodePublishVolume call for such a
+        volume. For more information about implementing this mode,
+        see https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future.
+        """
+        return self._properties.get('volumeLifecycleModes')
+
+    @volume_lifecycle_modes.setter
+    def volume_lifecycle_modes(self, value: typing.List[str]):
+        """
+        VolumeLifecycleModes defines what kind of volumes this CSI
+        volume driver supports. The default if the list is empty is
+        "Persistent", which is the usage defined by the CSI
+        specification and implemented in Kubernetes via the usual
+        PV/PVC mechanism. The other mode is "Ephemeral". In this
+        mode, volumes are defined inline inside the pod spec with
+        CSIVolumeSource and their lifecycle is tied to the lifecycle
+        of that pod. A driver has to be aware of this because it is
+        only going to get a NodePublishVolume call for such a
+        volume. For more information about implementing this mode,
+        see https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future.
+        """
+        self._properties['volumeLifecycleModes'] = value
 
     def __enter__(self) -> 'CSIDriverSpec':
         return self
@@ -453,8 +518,8 @@ class CSINode(_kuber_definitions.Resource):
             kind='CSINode'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or CSINodeSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CSINodeSpec(),
 
         }
         self._types = {
@@ -636,6 +701,7 @@ class CSINodeDriver(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            allocatable: 'VolumeNodeResources' = None,
             name: str = None,
             node_id: str = None,
             topology_keys: typing.List[str] = None,
@@ -646,17 +712,37 @@ class CSINodeDriver(_kuber_definitions.Definition):
             kind='CSINodeDriver'
         )
         self._properties = {
-            'name': name or '',
-            'nodeID': node_id or '',
-            'topologyKeys': topology_keys or [],
+            'allocatable': allocatable if allocatable is not None else VolumeNodeResources(),
+            'name': name if name is not None else '',
+            'nodeID': node_id if node_id is not None else '',
+            'topologyKeys': topology_keys if topology_keys is not None else [],
 
         }
         self._types = {
+            'allocatable': (VolumeNodeResources, None),
             'name': (str, None),
             'nodeID': (str, None),
             'topologyKeys': (list, str),
 
         }
+
+    @property
+    def allocatable(self) -> 'VolumeNodeResources':
+        """
+        allocatable represents the volume resources of a node that
+        are available for scheduling.
+        """
+        return self._properties.get('allocatable')
+
+    @allocatable.setter
+    def allocatable(self, value: typing.Union['VolumeNodeResources', dict]):
+        """
+        allocatable represents the volume resources of a node that
+        are available for scheduling.
+        """
+        if isinstance(value, dict):
+            value = VolumeNodeResources().from_dict(value)
+        self._properties['allocatable'] = value
 
     @property
     def name(self) -> str:
@@ -767,8 +853,8 @@ class CSINodeList(_kuber_definitions.Collection):
             kind='CSINodeList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -805,8 +891,8 @@ class CSINodeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -814,8 +900,8 @@ class CSINodeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -857,7 +943,7 @@ class CSINodeSpec(_kuber_definitions.Definition):
             kind='CSINodeSpec'
         )
         self._properties = {
-            'drivers': drivers or [],
+            'drivers': drivers if drivers is not None else [],
 
         }
         self._types = {
@@ -923,14 +1009,14 @@ class StorageClass(_kuber_definitions.Resource):
             kind='StorageClass'
         )
         self._properties = {
-            'allowVolumeExpansion': allow_volume_expansion or None,
-            'allowedTopologies': allowed_topologies or [],
-            'metadata': metadata or ObjectMeta(),
-            'mountOptions': mount_options or [],
-            'parameters': parameters or {},
-            'provisioner': provisioner or '',
-            'reclaimPolicy': reclaim_policy or '',
-            'volumeBindingMode': volume_binding_mode or '',
+            'allowVolumeExpansion': allow_volume_expansion if allow_volume_expansion is not None else None,
+            'allowedTopologies': allowed_topologies if allowed_topologies is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'mountOptions': mount_options if mount_options is not None else [],
+            'parameters': parameters if parameters is not None else {},
+            'provisioner': provisioner if provisioner is not None else '',
+            'reclaimPolicy': reclaim_policy if reclaim_policy is not None else '',
+            'volumeBindingMode': volume_binding_mode if volume_binding_mode is not None else '',
 
         }
         self._types = {
@@ -999,8 +1085,8 @@ class StorageClass(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1008,8 +1094,8 @@ class StorageClass(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1250,8 +1336,8 @@ class StorageClassList(_kuber_definitions.Collection):
             kind='StorageClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -1288,8 +1374,8 @@ class StorageClassList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1297,8 +1383,8 @@ class StorageClassList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -1343,9 +1429,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
             kind='VolumeAttachment'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or VolumeAttachmentSpec(),
-            'status': status or VolumeAttachmentStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else VolumeAttachmentSpec(),
+            'status': status if status is not None else VolumeAttachmentStatus(),
 
         }
         self._types = {
@@ -1361,8 +1447,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1370,8 +1456,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1608,8 +1694,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
             kind='VolumeAttachmentList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -1646,8 +1732,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1655,8 +1741,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -1701,8 +1787,8 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
             kind='VolumeAttachmentSource'
         )
         self._properties = {
-            'inlineVolumeSpec': inline_volume_spec or PersistentVolumeSpec(),
-            'persistentVolumeName': persistent_volume_name or '',
+            'inlineVolumeSpec': inline_volume_spec if inline_volume_spec is not None else PersistentVolumeSpec(),
+            'persistentVolumeName': persistent_volume_name if persistent_volume_name is not None else '',
 
         }
         self._types = {
@@ -1778,9 +1864,9 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
             kind='VolumeAttachmentSpec'
         )
         self._properties = {
-            'attacher': attacher or '',
-            'nodeName': node_name or '',
-            'source': source or VolumeAttachmentSource(),
+            'attacher': attacher if attacher is not None else '',
+            'nodeName': node_name if node_name is not None else '',
+            'source': source if source is not None else VolumeAttachmentSource(),
 
         }
         self._types = {
@@ -1864,10 +1950,10 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
             kind='VolumeAttachmentStatus'
         )
         self._properties = {
-            'attachError': attach_error or VolumeError(),
-            'attached': attached or None,
-            'attachmentMetadata': attachment_metadata or {},
-            'detachError': detach_error or VolumeError(),
+            'attachError': attach_error if attach_error is not None else VolumeError(),
+            'attached': attached if attached is not None else None,
+            'attachmentMetadata': attachment_metadata if attachment_metadata is not None else {},
+            'detachError': detach_error if detach_error is not None else VolumeError(),
 
         }
         self._types = {
@@ -1982,8 +2068,8 @@ class VolumeError(_kuber_definitions.Definition):
             kind='VolumeError'
         )
         self._properties = {
-            'message': message or '',
-            'time': time or None,
+            'message': message if message is not None else '',
+            'time': time if time is not None else None,
 
         }
         self._types = {
@@ -2032,6 +2118,63 @@ class VolumeError(_kuber_definitions.Definition):
         self._properties['time'] = value
 
     def __enter__(self) -> 'VolumeError':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class VolumeNodeResources(_kuber_definitions.Definition):
+    """
+    VolumeNodeResources is a set of resource limits for
+    scheduling of volumes.
+    """
+
+    def __init__(
+            self,
+            count: int = None,
+    ):
+        """Create VolumeNodeResources instance."""
+        super(VolumeNodeResources, self).__init__(
+            api_version='storage/v1beta1',
+            kind='VolumeNodeResources'
+        )
+        self._properties = {
+            'count': count if count is not None else None,
+
+        }
+        self._types = {
+            'count': (int, None),
+
+        }
+
+    @property
+    def count(self) -> int:
+        """
+        Maximum number of unique volumes managed by the CSI driver
+        that can be used on a node. A volume that is both attached
+        and mounted on a node is considered to be used once, not
+        twice. The same rule applies for a unique volume that is
+        shared among multiple pods on the same node. If this field
+        is nil, then the supported number of volumes on this node is
+        unbounded.
+        """
+        return self._properties.get('count')
+
+    @count.setter
+    def count(self, value: int):
+        """
+        Maximum number of unique volumes managed by the CSI driver
+        that can be used on a node. A volume that is both attached
+        and mounted on a node is considered to be used once, not
+        twice. The same rule applies for a unique volume that is
+        shared among multiple pods on the same node. If this field
+        is nil, then the supported number of volumes on this node is
+        unbounded.
+        """
+        self._properties['count'] = value
+
+    def __enter__(self) -> 'VolumeNodeResources':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

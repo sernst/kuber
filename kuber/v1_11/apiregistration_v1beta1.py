@@ -29,9 +29,9 @@ class APIService(_kuber_definitions.Resource):
             kind='APIService'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or APIServiceSpec(),
-            'status': status or APIServiceStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else APIServiceSpec(),
+            'status': status if status is not None else APIServiceStatus(),
 
         }
         self._types = {
@@ -288,11 +288,11 @@ class APIServiceCondition(_kuber_definitions.Definition):
             kind='APIServiceCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -412,8 +412,8 @@ class APIServiceList(_kuber_definitions.Collection):
             kind='APIServiceList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -505,13 +505,13 @@ class APIServiceSpec(_kuber_definitions.Definition):
             kind='APIServiceSpec'
         )
         self._properties = {
-            'caBundle': ca_bundle or '',
-            'group': group or '',
-            'groupPriorityMinimum': group_priority_minimum or None,
-            'insecureSkipTLSVerify': insecure_skip_tlsverify or None,
-            'service': service or ServiceReference(),
-            'version': version or '',
-            'versionPriority': version_priority or None,
+            'caBundle': ca_bundle if ca_bundle is not None else '',
+            'group': group if group is not None else '',
+            'groupPriorityMinimum': group_priority_minimum if group_priority_minimum is not None else None,
+            'insecureSkipTLSVerify': insecure_skip_tlsverify if insecure_skip_tlsverify is not None else None,
+            'service': service if service is not None else ServiceReference(),
+            'version': version if version is not None else '',
+            'versionPriority': version_priority if version_priority is not None else None,
 
         }
         self._types = {
@@ -718,7 +718,7 @@ class APIServiceStatus(_kuber_definitions.Definition):
             kind='APIServiceStatus'
         )
         self._properties = {
-            'conditions': conditions or [],
+            'conditions': conditions if conditions is not None else [],
 
         }
         self._types = {
@@ -771,8 +771,8 @@ class ServiceReference(_kuber_definitions.Definition):
             kind='ServiceReference'
         )
         self._properties = {
-            'name': name or '',
-            'namespace': namespace or '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
 
         }
         self._types = {

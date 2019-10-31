@@ -25,7 +25,7 @@ class Overhead(_kuber_definitions.Definition):
             kind='Overhead'
         )
         self._properties = {
-            'podFixed': pod_fixed or {},
+            'podFixed': pod_fixed if pod_fixed is not None else {},
 
         }
         self._types = {
@@ -82,10 +82,10 @@ class RuntimeClass(_kuber_definitions.Resource):
             kind='RuntimeClass'
         )
         self._properties = {
-            'handler': handler or '',
-            'metadata': metadata or ObjectMeta(),
-            'overhead': overhead or Overhead(),
-            'scheduling': scheduling or Scheduling(),
+            'handler': handler if handler is not None else '',
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'overhead': overhead if overhead is not None else Overhead(),
+            'scheduling': scheduling if scheduling is not None else Scheduling(),
 
         }
         self._types = {
@@ -134,8 +134,8 @@ class RuntimeClass(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -143,8 +143,8 @@ class RuntimeClass(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -345,8 +345,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
             kind='RuntimeClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -383,8 +383,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -392,8 +392,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -436,8 +436,8 @@ class Scheduling(_kuber_definitions.Definition):
             kind='Scheduling'
         )
         self._properties = {
-            'nodeSelector': node_selector or {},
-            'tolerations': tolerations or [],
+            'nodeSelector': node_selector if node_selector is not None else {},
+            'tolerations': tolerations if tolerations is not None else [],
 
         }
         self._types = {

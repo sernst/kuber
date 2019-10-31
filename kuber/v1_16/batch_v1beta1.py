@@ -40,9 +40,9 @@ class CronJob(_kuber_definitions.Resource):
             kind='CronJob'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or CronJobSpec(),
-            'status': status or CronJobStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CronJobSpec(),
+            'status': status if status is not None else CronJobStatus(),
 
         }
         self._types = {
@@ -380,8 +380,8 @@ class CronJobList(_kuber_definitions.Collection):
             kind='CronJobList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -476,13 +476,13 @@ class CronJobSpec(_kuber_definitions.Definition):
             kind='CronJobSpec'
         )
         self._properties = {
-            'concurrencyPolicy': concurrency_policy or '',
-            'failedJobsHistoryLimit': failed_jobs_history_limit or None,
-            'jobTemplate': job_template or JobTemplateSpec(),
-            'schedule': schedule or '',
-            'startingDeadlineSeconds': starting_deadline_seconds or None,
-            'successfulJobsHistoryLimit': successful_jobs_history_limit or None,
-            'suspend': suspend or None,
+            'concurrencyPolicy': concurrency_policy if concurrency_policy is not None else '',
+            'failedJobsHistoryLimit': failed_jobs_history_limit if failed_jobs_history_limit is not None else None,
+            'jobTemplate': job_template if job_template is not None else JobTemplateSpec(),
+            'schedule': schedule if schedule is not None else '',
+            'startingDeadlineSeconds': starting_deadline_seconds if starting_deadline_seconds is not None else None,
+            'successfulJobsHistoryLimit': successful_jobs_history_limit if successful_jobs_history_limit is not None else None,
+            'suspend': suspend if suspend is not None else None,
 
         }
         self._types = {
@@ -719,8 +719,8 @@ class CronJobStatus(_kuber_definitions.Definition):
             kind='CronJobStatus'
         )
         self._properties = {
-            'active': active or [],
-            'lastScheduleTime': last_schedule_time or None,
+            'active': active if active is not None else [],
+            'lastScheduleTime': last_schedule_time if last_schedule_time is not None else None,
 
         }
         self._types = {
@@ -798,8 +798,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
             kind='JobTemplateSpec'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or JobSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else JobSpec(),
 
         }
         self._types = {

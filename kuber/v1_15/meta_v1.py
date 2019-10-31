@@ -28,12 +28,12 @@ class APIGroup(_kuber_definitions.Definition):
             kind='APIGroup'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
-            'preferredVersion': preferred_version or GroupVersionForDiscovery(),
-            'serverAddressByClientCIDRs': server_address_by_client_cidrs or [],
-            'versions': versions or [],
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'preferredVersion': preferred_version if preferred_version is not None else GroupVersionForDiscovery(),
+            'serverAddressByClientCIDRs': server_address_by_client_cidrs if server_address_by_client_cidrs is not None else [],
+            'versions': versions if versions is not None else [],
 
         }
         self._types = {
@@ -215,9 +215,9 @@ class APIGroupList(_kuber_definitions.Definition):
             kind='APIGroupList'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'groups': groups or [],
-            'kind': kind or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'groups': groups if groups is not None else [],
+            'kind': kind if kind is not None else '',
 
         }
         self._types = {
@@ -329,16 +329,16 @@ class APIResource(_kuber_definitions.Definition):
             kind='APIResource'
         )
         self._properties = {
-            'categories': categories or [],
-            'group': group or '',
-            'kind': kind or '',
-            'name': name or '',
-            'namespaced': namespaced or None,
-            'shortNames': short_names or [],
-            'singularName': singular_name or '',
-            'storageVersionHash': storage_version_hash or '',
-            'verbs': verbs or [],
-            'version': version or '',
+            'categories': categories if categories is not None else [],
+            'group': group if group is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'namespaced': namespaced if namespaced is not None else None,
+            'shortNames': short_names if short_names is not None else [],
+            'singularName': singular_name if singular_name is not None else '',
+            'storageVersionHash': storage_version_hash if storage_version_hash is not None else '',
+            'verbs': verbs if verbs is not None else [],
+            'version': version if version is not None else '',
 
         }
         self._types = {
@@ -566,10 +566,10 @@ class APIResourceList(_kuber_definitions.Definition):
             kind='APIResourceList'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'groupVersion': group_version or '',
-            'kind': kind or '',
-            'resources': resources or [],
+            'apiVersion': api_version if api_version is not None else '',
+            'groupVersion': group_version if group_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'resources': resources if resources is not None else [],
 
         }
         self._types = {
@@ -695,10 +695,10 @@ class APIVersions(_kuber_definitions.Definition):
             kind='APIVersions'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'serverAddressByClientCIDRs': server_address_by_client_cidrs or [],
-            'versions': versions or [],
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'serverAddressByClientCIDRs': server_address_by_client_cidrs if server_address_by_client_cidrs is not None else [],
+            'versions': versions if versions is not None else [],
 
         }
         self._types = {
@@ -841,13 +841,13 @@ class DeleteOptions(_kuber_definitions.Definition):
             kind='DeleteOptions'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'dryRun': dry_run or [],
-            'gracePeriodSeconds': grace_period_seconds or None,
-            'kind': kind or '',
-            'orphanDependents': orphan_dependents or None,
-            'preconditions': preconditions or Preconditions(),
-            'propagationPolicy': propagation_policy or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'dryRun': dry_run if dry_run is not None else [],
+            'gracePeriodSeconds': grace_period_seconds if grace_period_seconds is not None else None,
+            'kind': kind if kind is not None else '',
+            'orphanDependents': orphan_dependents if orphan_dependents is not None else None,
+            'preconditions': preconditions if preconditions is not None else Preconditions(),
+            'propagationPolicy': propagation_policy if propagation_policy is not None else '',
 
         }
         self._types = {
@@ -1079,8 +1079,8 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
             kind='GroupVersionForDiscovery'
         )
         self._properties = {
-            'groupVersion': group_version or '',
-            'version': version or '',
+            'groupVersion': group_version if group_version is not None else '',
+            'version': version if version is not None else '',
 
         }
         self._types = {
@@ -1146,7 +1146,7 @@ class Initializer(_kuber_definitions.Definition):
             kind='Initializer'
         )
         self._properties = {
-            'name': name or '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -1193,8 +1193,8 @@ class Initializers(_kuber_definitions.Definition):
             kind='Initializers'
         )
         self._properties = {
-            'pending': pending or [],
-            'result': result or Status(),
+            'pending': pending if pending is not None else [],
+            'result': result if result is not None else Status(),
 
         }
         self._types = {
@@ -1279,8 +1279,8 @@ class LabelSelector(_kuber_definitions.Definition):
             kind='LabelSelector'
         )
         self._properties = {
-            'matchExpressions': match_expressions or [],
-            'matchLabels': match_labels or {},
+            'matchExpressions': match_expressions if match_expressions is not None else [],
+            'matchLabels': match_labels if match_labels is not None else {},
 
         }
         self._types = {
@@ -1361,9 +1361,9 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
             kind='LabelSelectorRequirement'
         )
         self._properties = {
-            'key': key or '',
-            'operator': operator or '',
-            'values': values or [],
+            'key': key if key is not None else '',
+            'operator': operator if operator is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -1452,10 +1452,10 @@ class ListMeta(_kuber_definitions.Definition):
             kind='ListMeta'
         )
         self._properties = {
-            'continue': continue_ or '',
-            'remainingItemCount': remaining_item_count or None,
-            'resourceVersion': resource_version or '',
-            'selfLink': self_link or '',
+            'continue': continue_ if continue_ is not None else '',
+            'remainingItemCount': remaining_item_count if remaining_item_count is not None else None,
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'selfLink': self_link if self_link is not None else '',
 
         }
         self._types = {
@@ -1609,11 +1609,11 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
             kind='ManagedFieldsEntry'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'fields': fields or Fields(),
-            'manager': manager or '',
-            'operation': operation or '',
-            'time': time or None,
+            'apiVersion': api_version if api_version is not None else '',
+            'fields': fields if fields is not None else Fields(),
+            'manager': manager if manager is not None else '',
+            'operation': operation if operation is not None else '',
+            'time': time if time is not None else None,
 
         }
         self._types = {
@@ -1787,23 +1787,23 @@ class ObjectMeta(_kuber_definitions.Definition):
             kind='ObjectMeta'
         )
         self._properties = {
-            'annotations': annotations or {},
-            'clusterName': cluster_name or '',
-            'creationTimestamp': creation_timestamp or None,
-            'deletionGracePeriodSeconds': deletion_grace_period_seconds or None,
-            'deletionTimestamp': deletion_timestamp or None,
-            'finalizers': finalizers or [],
-            'generateName': generate_name or '',
-            'generation': generation or None,
-            'initializers': initializers or Initializers(),
-            'labels': labels or {},
-            'managedFields': managed_fields or [],
-            'name': name or '',
-            'namespace': namespace or '',
-            'ownerReferences': owner_references or [],
-            'resourceVersion': resource_version or '',
-            'selfLink': self_link or '',
-            'uid': uid or '',
+            'annotations': annotations if annotations is not None else {},
+            'clusterName': cluster_name if cluster_name is not None else '',
+            'creationTimestamp': creation_timestamp if creation_timestamp is not None else None,
+            'deletionGracePeriodSeconds': deletion_grace_period_seconds if deletion_grace_period_seconds is not None else None,
+            'deletionTimestamp': deletion_timestamp if deletion_timestamp is not None else None,
+            'finalizers': finalizers if finalizers is not None else [],
+            'generateName': generate_name if generate_name is not None else '',
+            'generation': generation if generation is not None else None,
+            'initializers': initializers if initializers is not None else Initializers(),
+            'labels': labels if labels is not None else {},
+            'managedFields': managed_fields if managed_fields is not None else [],
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'ownerReferences': owner_references if owner_references is not None else [],
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'selfLink': self_link if self_link is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2391,12 +2391,12 @@ class OwnerReference(_kuber_definitions.Definition):
             kind='OwnerReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'blockOwnerDeletion': block_owner_deletion or None,
-            'controller': controller or None,
-            'kind': kind or '',
-            'name': name or '',
-            'uid': uid or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'blockOwnerDeletion': block_owner_deletion if block_owner_deletion is not None else None,
+            'controller': controller if controller is not None else None,
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2563,8 +2563,8 @@ class Preconditions(_kuber_definitions.Definition):
             kind='Preconditions'
         )
         self._properties = {
-            'resourceVersion': resource_version or '',
-            'uid': uid or '',
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2626,8 +2626,8 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
             kind='ServerAddressByClientCIDR'
         )
         self._properties = {
-            'clientCIDR': client_cidr or '',
-            'serverAddress': server_address or '',
+            'clientCIDR': client_cidr if client_cidr is not None else '',
+            'serverAddress': server_address if server_address is not None else '',
 
         }
         self._types = {
@@ -2700,14 +2700,14 @@ class Status(_kuber_definitions.Definition):
             kind='Status'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'code': code or None,
-            'details': details or StatusDetails(),
-            'kind': kind or '',
-            'message': message or '',
-            'metadata': metadata or ListMeta(),
-            'reason': reason or '',
-            'status': status or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'code': code if code is not None else None,
+            'details': details if details is not None else StatusDetails(),
+            'kind': kind if kind is not None else '',
+            'message': message if message is not None else '',
+            'metadata': metadata if metadata is not None else ListMeta(),
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
 
         }
         self._types = {
@@ -2908,9 +2908,9 @@ class StatusCause(_kuber_definitions.Definition):
             kind='StatusCause'
         )
         self._properties = {
-            'field': field or '',
-            'message': message or '',
-            'reason': reason or '',
+            'field': field if field is not None else '',
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
 
         }
         self._types = {
@@ -3017,12 +3017,12 @@ class StatusDetails(_kuber_definitions.Definition):
             kind='StatusDetails'
         )
         self._properties = {
-            'causes': causes or [],
-            'group': group or '',
-            'kind': kind or '',
-            'name': name or '',
-            'retryAfterSeconds': retry_after_seconds or None,
-            'uid': uid or '',
+            'causes': causes if causes is not None else [],
+            'group': group if group is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'retryAfterSeconds': retry_after_seconds if retry_after_seconds is not None else None,
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -3209,8 +3209,8 @@ class WatchEvent(_kuber_definitions.Definition):
             kind='WatchEvent'
         )
         self._properties = {
-            'object': object_ or RawExtension(),
-            'type': type_ or '',
+            'object': object_ if object_ is not None else RawExtension(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {

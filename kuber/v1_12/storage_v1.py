@@ -34,14 +34,14 @@ class StorageClass(_kuber_definitions.Resource):
             kind='StorageClass'
         )
         self._properties = {
-            'allowVolumeExpansion': allow_volume_expansion or None,
-            'allowedTopologies': allowed_topologies or [],
-            'metadata': metadata or ObjectMeta(),
-            'mountOptions': mount_options or [],
-            'parameters': parameters or {},
-            'provisioner': provisioner or '',
-            'reclaimPolicy': reclaim_policy or '',
-            'volumeBindingMode': volume_binding_mode or '',
+            'allowVolumeExpansion': allow_volume_expansion if allow_volume_expansion is not None else None,
+            'allowedTopologies': allowed_topologies if allowed_topologies is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'mountOptions': mount_options if mount_options is not None else [],
+            'parameters': parameters if parameters is not None else {},
+            'provisioner': provisioner if provisioner is not None else '',
+            'reclaimPolicy': reclaim_policy if reclaim_policy is not None else '',
+            'volumeBindingMode': volume_binding_mode if volume_binding_mode is not None else '',
 
         }
         self._types = {
@@ -361,8 +361,8 @@ class StorageClassList(_kuber_definitions.Collection):
             kind='StorageClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {

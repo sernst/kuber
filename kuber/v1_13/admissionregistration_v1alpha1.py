@@ -25,8 +25,8 @@ class Initializer(_kuber_definitions.Definition):
             kind='Initializer'
         )
         self._properties = {
-            'name': name or '',
-            'rules': rules or [],
+            'name': name if name is not None else '',
+            'rules': rules if rules is not None else [],
 
         }
         self._types = {
@@ -109,8 +109,8 @@ class InitializerConfiguration(_kuber_definitions.Resource):
             kind='InitializerConfiguration'
         )
         self._properties = {
-            'initializers': initializers or [],
-            'metadata': metadata or ObjectMeta(),
+            'initializers': initializers if initializers is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
         self._types = {
@@ -321,8 +321,8 @@ class InitializerConfigurationList(_kuber_definitions.Collection):
             kind='InitializerConfigurationList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -414,9 +414,9 @@ class Rule(_kuber_definitions.Definition):
             kind='Rule'
         )
         self._properties = {
-            'apiGroups': api_groups or [],
-            'apiVersions': api_versions or [],
-            'resources': resources or [],
+            'apiGroups': api_groups if api_groups is not None else [],
+            'apiVersions': api_versions if api_versions is not None else [],
+            'resources': resources if resources is not None else [],
 
         }
         self._types = {

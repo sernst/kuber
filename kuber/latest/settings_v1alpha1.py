@@ -30,8 +30,8 @@ class PodPreset(_kuber_definitions.Resource):
             kind='PodPreset'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodPresetSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodPresetSpec(),
 
         }
         self._types = {
@@ -221,8 +221,8 @@ class PodPresetList(_kuber_definitions.Collection):
             kind='PodPresetList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -314,11 +314,11 @@ class PodPresetSpec(_kuber_definitions.Definition):
             kind='PodPresetSpec'
         )
         self._properties = {
-            'env': env or [],
-            'envFrom': env_from or [],
-            'selector': selector or LabelSelector(),
-            'volumeMounts': volume_mounts or [],
-            'volumes': volumes or [],
+            'env': env if env is not None else [],
+            'envFrom': env_from if env_from is not None else [],
+            'selector': selector if selector is not None else LabelSelector(),
+            'volumeMounts': volume_mounts if volume_mounts is not None else [],
+            'volumes': volumes if volumes is not None else [],
 
         }
         self._types = {

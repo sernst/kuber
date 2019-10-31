@@ -30,10 +30,10 @@ class BoundObjectReference(_kuber_definitions.Definition):
             kind='BoundObjectReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
-            'uid': uid or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -124,9 +124,9 @@ class TokenRequest(_kuber_definitions.Resource):
             kind='TokenRequest'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or TokenRequestSpec(),
-            'status': status or TokenRequestStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else TokenRequestSpec(),
+            'status': status if status is not None else TokenRequestStatus(),
 
         }
         self._types = {
@@ -380,9 +380,9 @@ class TokenRequestSpec(_kuber_definitions.Definition):
             kind='TokenRequestSpec'
         )
         self._properties = {
-            'audiences': audiences or [],
-            'boundObjectRef': bound_object_ref or BoundObjectReference(),
-            'expirationSeconds': expiration_seconds or None,
+            'audiences': audiences if audiences is not None else [],
+            'boundObjectRef': bound_object_ref if bound_object_ref is not None else BoundObjectReference(),
+            'expirationSeconds': expiration_seconds if expiration_seconds is not None else None,
 
         }
         self._types = {
@@ -487,8 +487,8 @@ class TokenRequestStatus(_kuber_definitions.Definition):
             kind='TokenRequestStatus'
         )
         self._properties = {
-            'expirationTimestamp': expiration_timestamp or None,
-            'token': token or '',
+            'expirationTimestamp': expiration_timestamp if expiration_timestamp is not None else None,
+            'token': token if token is not None else '',
 
         }
         self._types = {
@@ -560,9 +560,9 @@ class TokenReview(_kuber_definitions.Resource):
             kind='TokenReview'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or TokenReviewSpec(),
-            'status': status or TokenReviewStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else TokenReviewSpec(),
+            'status': status if status is not None else TokenReviewStatus(),
 
         }
         self._types = {
@@ -817,8 +817,8 @@ class TokenReviewSpec(_kuber_definitions.Definition):
             kind='TokenReviewSpec'
         )
         self._properties = {
-            'audiences': audiences or [],
-            'token': token or '',
+            'audiences': audiences if audiences is not None else [],
+            'token': token if token is not None else '',
 
         }
         self._types = {
@@ -891,10 +891,10 @@ class TokenReviewStatus(_kuber_definitions.Definition):
             kind='TokenReviewStatus'
         )
         self._properties = {
-            'audiences': audiences or [],
-            'authenticated': authenticated or None,
-            'error': error or '',
-            'user': user or UserInfo(),
+            'audiences': audiences if audiences is not None else [],
+            'authenticated': authenticated if authenticated is not None else None,
+            'error': error if error is not None else '',
+            'user': user if user is not None else UserInfo(),
 
         }
         self._types = {
@@ -1011,10 +1011,10 @@ class UserInfo(_kuber_definitions.Definition):
             kind='UserInfo'
         )
         self._properties = {
-            'extra': extra or {},
-            'groups': groups or [],
-            'uid': uid or '',
-            'username': username or '',
+            'extra': extra if extra is not None else {},
+            'groups': groups if groups is not None else [],
+            'uid': uid if uid is not None else '',
+            'username': username if username is not None else '',
 
         }
         self._types = {

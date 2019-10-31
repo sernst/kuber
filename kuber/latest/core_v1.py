@@ -37,10 +37,10 @@ class AWSElasticBlockStoreVolumeSource(_kuber_definitions.Definition):
             kind='AWSElasticBlockStoreVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'partition': partition or None,
-            'readOnly': read_only or None,
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'partition': partition if partition is not None else None,
+            'readOnly': read_only if read_only is not None else None,
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -159,9 +159,9 @@ class Affinity(_kuber_definitions.Definition):
             kind='Affinity'
         )
         self._properties = {
-            'nodeAffinity': node_affinity or NodeAffinity(),
-            'podAffinity': pod_affinity or PodAffinity(),
-            'podAntiAffinity': pod_anti_affinity or PodAntiAffinity(),
+            'nodeAffinity': node_affinity if node_affinity is not None else NodeAffinity(),
+            'podAffinity': pod_affinity if pod_affinity is not None else PodAffinity(),
+            'podAntiAffinity': pod_anti_affinity if pod_anti_affinity is not None else PodAntiAffinity(),
 
         }
         self._types = {
@@ -248,8 +248,8 @@ class AttachedVolume(_kuber_definitions.Definition):
             kind='AttachedVolume'
         )
         self._properties = {
-            'devicePath': device_path or '',
-            'name': name or '',
+            'devicePath': device_path if device_path is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -316,12 +316,12 @@ class AzureDiskVolumeSource(_kuber_definitions.Definition):
             kind='AzureDiskVolumeSource'
         )
         self._properties = {
-            'cachingMode': caching_mode or '',
-            'diskName': disk_name or '',
-            'diskURI': disk_uri or '',
-            'fsType': fs_type or '',
-            'kind': kind or '',
-            'readOnly': read_only or None,
+            'cachingMode': caching_mode if caching_mode is not None else '',
+            'diskName': disk_name if disk_name is not None else '',
+            'diskURI': disk_uri if disk_uri is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'kind': kind if kind is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -456,10 +456,10 @@ class AzureFilePersistentVolumeSource(_kuber_definitions.Definition):
             kind='AzureFilePersistentVolumeSource'
         )
         self._properties = {
-            'readOnly': read_only or None,
-            'secretName': secret_name or '',
-            'secretNamespace': secret_namespace or '',
-            'shareName': share_name or '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretName': secret_name if secret_name is not None else '',
+            'secretNamespace': secret_namespace if secret_namespace is not None else '',
+            'shareName': share_name if share_name is not None else '',
 
         }
         self._types = {
@@ -557,9 +557,9 @@ class AzureFileVolumeSource(_kuber_definitions.Definition):
             kind='AzureFileVolumeSource'
         )
         self._properties = {
-            'readOnly': read_only or None,
-            'secretName': secret_name or '',
-            'shareName': share_name or '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretName': secret_name if secret_name is not None else '',
+            'shareName': share_name if share_name is not None else '',
 
         }
         self._types = {
@@ -640,8 +640,8 @@ class Binding(_kuber_definitions.Resource):
             kind='Binding'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'target': target or ObjectReference(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'target': target if target is not None else ObjectReference(),
 
         }
         self._types = {
@@ -656,8 +656,8 @@ class Binding(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -665,8 +665,8 @@ class Binding(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -845,15 +845,15 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CSIPersistentVolumeSource'
         )
         self._properties = {
-            'controllerExpandSecretRef': controller_expand_secret_ref or SecretReference(),
-            'controllerPublishSecretRef': controller_publish_secret_ref or SecretReference(),
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'nodePublishSecretRef': node_publish_secret_ref or SecretReference(),
-            'nodeStageSecretRef': node_stage_secret_ref or SecretReference(),
-            'readOnly': read_only or None,
-            'volumeAttributes': volume_attributes or {},
-            'volumeHandle': volume_handle or '',
+            'controllerExpandSecretRef': controller_expand_secret_ref if controller_expand_secret_ref is not None else SecretReference(),
+            'controllerPublishSecretRef': controller_publish_secret_ref if controller_publish_secret_ref is not None else SecretReference(),
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'nodePublishSecretRef': node_publish_secret_ref if node_publish_secret_ref is not None else SecretReference(),
+            'nodeStageSecretRef': node_stage_secret_ref if node_stage_secret_ref is not None else SecretReference(),
+            'readOnly': read_only if read_only is not None else None,
+            'volumeAttributes': volume_attributes if volume_attributes is not None else {},
+            'volumeHandle': volume_handle if volume_handle is not None else '',
 
         }
         self._types = {
@@ -1086,11 +1086,11 @@ class CSIVolumeSource(_kuber_definitions.Definition):
             kind='CSIVolumeSource'
         )
         self._properties = {
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'nodePublishSecretRef': node_publish_secret_ref or LocalObjectReference(),
-            'readOnly': read_only or None,
-            'volumeAttributes': volume_attributes or {},
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'nodePublishSecretRef': node_publish_secret_ref if node_publish_secret_ref is not None else LocalObjectReference(),
+            'readOnly': read_only if read_only is not None else None,
+            'volumeAttributes': volume_attributes if volume_attributes is not None else {},
 
         }
         self._types = {
@@ -1223,8 +1223,8 @@ class Capabilities(_kuber_definitions.Definition):
             kind='Capabilities'
         )
         self._properties = {
-            'add': add or [],
-            'drop': drop or [],
+            'add': add if add is not None else [],
+            'drop': drop if drop is not None else [],
 
         }
         self._types = {
@@ -1290,12 +1290,12 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CephFSPersistentVolumeSource'
         )
         self._properties = {
-            'monitors': monitors or [],
-            'path': path or '',
-            'readOnly': read_only or None,
-            'secretFile': secret_file or '',
-            'secretRef': secret_ref or SecretReference(),
-            'user': user or '',
+            'monitors': monitors if monitors is not None else [],
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretFile': secret_file if secret_file is not None else '',
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -1312,8 +1312,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def monitors(self) -> typing.List[str]:
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('monitors')
 
@@ -1321,8 +1321,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def monitors(self, value: typing.List[str]):
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['monitors'] = value
 
@@ -1346,9 +1346,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('readOnly')
 
@@ -1356,9 +1356,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['readOnly'] = value
 
@@ -1366,8 +1366,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_file(self) -> str:
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('secretFile')
 
@@ -1375,8 +1376,9 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_file(self, value: str):
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['secretFile'] = value
 
@@ -1384,8 +1386,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'SecretReference':
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         return self._properties.get('secretRef')
@@ -1394,8 +1396,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['SecretReference', dict]):
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         if isinstance(value, dict):
@@ -1406,8 +1408,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def user(self) -> str:
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('user')
 
@@ -1415,8 +1417,8 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
     def user(self, value: str):
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['user'] = value
 
@@ -1449,12 +1451,12 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
             kind='CephFSVolumeSource'
         )
         self._properties = {
-            'monitors': monitors or [],
-            'path': path or '',
-            'readOnly': read_only or None,
-            'secretFile': secret_file or '',
-            'secretRef': secret_ref or LocalObjectReference(),
-            'user': user or '',
+            'monitors': monitors if monitors is not None else [],
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretFile': secret_file if secret_file is not None else '',
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -1471,8 +1473,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def monitors(self) -> typing.List[str]:
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('monitors')
 
@@ -1480,8 +1482,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def monitors(self, value: typing.List[str]):
         """
         Required: Monitors is a collection of Ceph monitors More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['monitors'] = value
 
@@ -1505,9 +1507,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('readOnly')
 
@@ -1515,9 +1517,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
-        force the ReadOnly setting in VolumeMounts. More info: https
-        ://releases.k8s.io/HEAD/examples/volumes/cephfs/README.md#ho
-        w-to-use-it
+        force the ReadOnly setting in VolumeMounts. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['readOnly'] = value
 
@@ -1525,8 +1527,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_file(self) -> str:
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         return self._properties.get('secretFile')
 
@@ -1534,8 +1537,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_file(self, value: str):
         """
         Optional: SecretFile is the path to key ring for User,
-        default is /etc/ceph/user.secret More info: https://releases
-        .k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-it
+        default is /etc/ceph/user.secret More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
+        it
         """
         self._properties['secretFile'] = value
 
@@ -1543,8 +1547,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'LocalObjectReference':
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         return self._properties.get('secretRef')
@@ -1553,8 +1557,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['LocalObjectReference', dict]):
         """
         Optional: SecretRef is reference to the authentication
-        secret for User, default is empty. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/cephfs/README.md#how-to-use-
+        secret for User, default is empty. More info:
+        https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-
         it
         """
         if isinstance(value, dict):
@@ -1565,8 +1569,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def user(self) -> str:
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         return self._properties.get('user')
 
@@ -1574,8 +1578,8 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
     def user(self, value: str):
         """
         Optional: User is the rados user name, default is admin More
-        info: https://releases.k8s.io/HEAD/examples/volumes/cephfs/R
-        EADME.md#how-to-use-it
+        info: https://examples.k8s.io/volumes/cephfs/README.md#how-
+        to-use-it
         """
         self._properties['user'] = value
 
@@ -1607,10 +1611,10 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
             kind='CinderPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -1627,9 +1631,8 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         return self._properties.get('fsType')
 
@@ -1639,9 +1642,8 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         self._properties['fsType'] = value
 
@@ -1650,8 +1652,7 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('readOnly')
 
@@ -1660,8 +1661,7 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['readOnly'] = value
 
@@ -1686,18 +1686,16 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
     @property
     def volume_id(self) -> str:
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('volumeID')
 
     @volume_id.setter
     def volume_id(self, value: str):
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['volumeID'] = value
 
@@ -1729,10 +1727,10 @@ class CinderVolumeSource(_kuber_definitions.Definition):
             kind='CinderVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -1749,9 +1747,8 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         return self._properties.get('fsType')
 
@@ -1761,9 +1758,8 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. Must be a filesystem type
         supported by the host operating system. Examples: "ext4",
         "xfs", "ntfs". Implicitly inferred to be "ext4" if
-        unspecified. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        unspecified. More info: https://examples.k8s.io/mysql-
+        cinder-pd/README.md
         """
         self._properties['fsType'] = value
 
@@ -1772,8 +1768,7 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('readOnly')
 
@@ -1782,8 +1777,7 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         """
         Optional: Defaults to false (read/write). ReadOnly here will
         force the ReadOnly setting in VolumeMounts. More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['readOnly'] = value
 
@@ -1808,18 +1802,16 @@ class CinderVolumeSource(_kuber_definitions.Definition):
     @property
     def volume_id(self) -> str:
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('volumeID')
 
     @volume_id.setter
     def volume_id(self, value: str):
         """
-        volume id used to identify the volume in cinder More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        volume id used to identify the volume in cinder. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         self._properties['volumeID'] = value
 
@@ -1846,7 +1838,7 @@ class ClientIPConfig(_kuber_definitions.Definition):
             kind='ClientIPConfig'
         )
         self._properties = {
-            'timeoutSeconds': timeout_seconds or None,
+            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
 
         }
         self._types = {
@@ -1899,10 +1891,10 @@ class ComponentCondition(_kuber_definitions.Definition):
             kind='ComponentCondition'
         )
         self._properties = {
-            'error': error or '',
-            'message': message or '',
-            'status': status or '',
-            'type': type_ or '',
+            'error': error if error is not None else '',
+            'message': message if message is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -1999,8 +1991,8 @@ class ComponentStatus(_kuber_definitions.Resource):
             kind='ComponentStatus'
         )
         self._properties = {
-            'conditions': conditions or [],
-            'metadata': metadata or ObjectMeta(),
+            'conditions': conditions if conditions is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
         self._types = {
@@ -2037,8 +2029,8 @@ class ComponentStatus(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2046,8 +2038,8 @@ class ComponentStatus(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -2201,8 +2193,8 @@ class ComponentStatusList(_kuber_definitions.Collection):
             kind='ComponentStatusList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -2239,8 +2231,8 @@ class ComponentStatusList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -2248,8 +2240,8 @@ class ComponentStatusList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -2292,9 +2284,9 @@ class ConfigMap(_kuber_definitions.Resource):
             kind='ConfigMap'
         )
         self._properties = {
-            'binaryData': binary_data or {},
-            'data': data or {},
-            'metadata': metadata or ObjectMeta(),
+            'binaryData': binary_data if binary_data is not None else {},
+            'data': data if data is not None else {},
+            'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
         self._types = {
@@ -2358,8 +2350,8 @@ class ConfigMap(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2367,8 +2359,8 @@ class ConfigMap(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -2526,8 +2518,8 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
             kind='ConfigMapEnvSource'
         )
         self._properties = {
-            'name': name or '',
-            'optional': optional or None,
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -2592,9 +2584,9 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
             kind='ConfigMapKeySelector'
         )
         self._properties = {
-            'key': key or '',
-            'name': name or '',
-            'optional': optional or None,
+            'key': key if key is not None else '',
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -2674,8 +2666,8 @@ class ConfigMapList(_kuber_definitions.Collection):
             kind='ConfigMapList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -2712,8 +2704,8 @@ class ConfigMapList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -2721,8 +2713,8 @@ class ConfigMapList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -2768,11 +2760,11 @@ class ConfigMapNodeConfigSource(_kuber_definitions.Definition):
             kind='ConfigMapNodeConfigSource'
         )
         self._properties = {
-            'kubeletConfigKey': kubelet_config_key or '',
-            'name': name or '',
-            'namespace': namespace or '',
-            'resourceVersion': resource_version or '',
-            'uid': uid or '',
+            'kubeletConfigKey': kubelet_config_key if kubelet_config_key is not None else '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -2902,9 +2894,9 @@ class ConfigMapProjection(_kuber_definitions.Definition):
             kind='ConfigMapProjection'
         )
         self._properties = {
-            'items': items or [],
-            'name': name or '',
-            'optional': optional or None,
+            'items': items if items is not None else [],
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -3016,10 +3008,10 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
             kind='ConfigMapVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'items': items or [],
-            'name': name or '',
-            'optional': optional or None,
+            'defaultMode': default_mode if default_mode is not None else None,
+            'items': items if items is not None else [],
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -3150,6 +3142,7 @@ class Container(_kuber_definitions.Definition):
             readiness_probe: 'Probe' = None,
             resources: 'ResourceRequirements' = None,
             security_context: 'SecurityContext' = None,
+            startup_probe: 'Probe' = None,
             stdin: bool = None,
             stdin_once: bool = None,
             termination_message_path: str = None,
@@ -3165,27 +3158,28 @@ class Container(_kuber_definitions.Definition):
             kind='Container'
         )
         self._properties = {
-            'args': args or [],
-            'command': command or [],
-            'env': env or [],
-            'envFrom': env_from or [],
-            'image': image or '',
-            'imagePullPolicy': image_pull_policy or '',
-            'lifecycle': lifecycle or Lifecycle(),
-            'livenessProbe': liveness_probe or Probe(),
-            'name': name or '',
-            'ports': ports or [],
-            'readinessProbe': readiness_probe or Probe(),
-            'resources': resources or ResourceRequirements(),
-            'securityContext': security_context or SecurityContext(),
-            'stdin': stdin or None,
-            'stdinOnce': stdin_once or None,
-            'terminationMessagePath': termination_message_path or '',
-            'terminationMessagePolicy': termination_message_policy or '',
-            'tty': tty or None,
-            'volumeDevices': volume_devices or [],
-            'volumeMounts': volume_mounts or [],
-            'workingDir': working_dir or '',
+            'args': args if args is not None else [],
+            'command': command if command is not None else [],
+            'env': env if env is not None else [],
+            'envFrom': env_from if env_from is not None else [],
+            'image': image if image is not None else '',
+            'imagePullPolicy': image_pull_policy if image_pull_policy is not None else '',
+            'lifecycle': lifecycle if lifecycle is not None else Lifecycle(),
+            'livenessProbe': liveness_probe if liveness_probe is not None else Probe(),
+            'name': name if name is not None else '',
+            'ports': ports if ports is not None else [],
+            'readinessProbe': readiness_probe if readiness_probe is not None else Probe(),
+            'resources': resources if resources is not None else ResourceRequirements(),
+            'securityContext': security_context if security_context is not None else SecurityContext(),
+            'startupProbe': startup_probe if startup_probe is not None else Probe(),
+            'stdin': stdin if stdin is not None else None,
+            'stdinOnce': stdin_once if stdin_once is not None else None,
+            'terminationMessagePath': termination_message_path if termination_message_path is not None else '',
+            'terminationMessagePolicy': termination_message_policy if termination_message_policy is not None else '',
+            'tty': tty if tty is not None else None,
+            'volumeDevices': volume_devices if volume_devices is not None else [],
+            'volumeMounts': volume_mounts if volume_mounts is not None else [],
+            'workingDir': working_dir if working_dir is not None else '',
 
         }
         self._types = {
@@ -3202,6 +3196,7 @@ class Container(_kuber_definitions.Definition):
             'readinessProbe': (Probe, None),
             'resources': (ResourceRequirements, None),
             'securityContext': (SecurityContext, None),
+            'startupProbe': (Probe, None),
             'stdin': (bool, None),
             'stdinOnce': (bool, None),
             'terminationMessagePath': (str, None),
@@ -3544,6 +3539,42 @@ class Container(_kuber_definitions.Definition):
         self._properties['securityContext'] = value
 
     @property
+    def startup_probe(self) -> 'Probe':
+        """
+        StartupProbe indicates that the Pod has successfully
+        initialized. If specified, no other probes are executed
+        until this completes successfully. If this probe fails, the
+        Pod will be restarted, just as if the livenessProbe failed.
+        This can be used to provide different probe parameters at
+        the beginning of a Pod's lifecycle, when it might take a
+        long time to load data or warm a cache, than during steady-
+        state operation. This cannot be updated. This is an alpha
+        feature enabled by the StartupProbe feature flag. More info:
+        https://kubernetes.io/docs/concepts/workloads/pods/pod-
+        lifecycle#container-probes
+        """
+        return self._properties.get('startupProbe')
+
+    @startup_probe.setter
+    def startup_probe(self, value: typing.Union['Probe', dict]):
+        """
+        StartupProbe indicates that the Pod has successfully
+        initialized. If specified, no other probes are executed
+        until this completes successfully. If this probe fails, the
+        Pod will be restarted, just as if the livenessProbe failed.
+        This can be used to provide different probe parameters at
+        the beginning of a Pod's lifecycle, when it might take a
+        long time to load data or warm a cache, than during steady-
+        state operation. This cannot be updated. This is an alpha
+        feature enabled by the StartupProbe feature flag. More info:
+        https://kubernetes.io/docs/concepts/workloads/pods/pod-
+        lifecycle#container-probes
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['startupProbe'] = value
+
+    @property
     def stdin(self) -> bool:
         """
         Whether this container should allocate a buffer for stdin in
@@ -3756,8 +3787,8 @@ class ContainerImage(_kuber_definitions.Definition):
             kind='ContainerImage'
         )
         self._properties = {
-            'names': names or [],
-            'sizeBytes': size_bytes or None,
+            'names': names if names is not None else [],
+            'sizeBytes': size_bytes if size_bytes is not None else None,
 
         }
         self._types = {
@@ -3825,11 +3856,11 @@ class ContainerPort(_kuber_definitions.Definition):
             kind='ContainerPort'
         )
         self._properties = {
-            'containerPort': container_port or None,
-            'hostIP': host_ip or '',
-            'hostPort': host_port or None,
-            'name': name or '',
-            'protocol': protocol or '',
+            'containerPort': container_port if container_port is not None else None,
+            'hostIP': host_ip if host_ip is not None else '',
+            'hostPort': host_port if host_port is not None else None,
+            'name': name if name is not None else '',
+            'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
@@ -3951,9 +3982,9 @@ class ContainerState(_kuber_definitions.Definition):
             kind='ContainerState'
         )
         self._properties = {
-            'running': running or ContainerStateRunning(),
-            'terminated': terminated or ContainerStateTerminated(),
-            'waiting': waiting or ContainerStateWaiting(),
+            'running': running if running is not None else ContainerStateRunning(),
+            'terminated': terminated if terminated is not None else ContainerStateTerminated(),
+            'waiting': waiting if waiting is not None else ContainerStateWaiting(),
 
         }
         self._types = {
@@ -4033,7 +4064,7 @@ class ContainerStateRunning(_kuber_definitions.Definition):
             kind='ContainerStateRunning'
         )
         self._properties = {
-            'startedAt': started_at or None,
+            'startedAt': started_at if started_at is not None else None,
 
         }
         self._types = {
@@ -4091,13 +4122,13 @@ class ContainerStateTerminated(_kuber_definitions.Definition):
             kind='ContainerStateTerminated'
         )
         self._properties = {
-            'containerID': container_id or '',
-            'exitCode': exit_code or None,
-            'finishedAt': finished_at or None,
-            'message': message or '',
-            'reason': reason or '',
-            'signal': signal or None,
-            'startedAt': started_at or None,
+            'containerID': container_id if container_id is not None else '',
+            'exitCode': exit_code if exit_code is not None else None,
+            'finishedAt': finished_at if finished_at is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'signal': signal if signal is not None else None,
+            'startedAt': started_at if started_at is not None else None,
 
         }
         self._types = {
@@ -4246,8 +4277,8 @@ class ContainerStateWaiting(_kuber_definitions.Definition):
             kind='ContainerStateWaiting'
         )
         self._properties = {
-            'message': message or '',
-            'reason': reason or '',
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
 
         }
         self._types = {
@@ -4306,6 +4337,7 @@ class ContainerStatus(_kuber_definitions.Definition):
             name: str = None,
             ready: bool = None,
             restart_count: int = None,
+            started: bool = None,
             state: 'ContainerState' = None,
     ):
         """Create ContainerStatus instance."""
@@ -4314,14 +4346,15 @@ class ContainerStatus(_kuber_definitions.Definition):
             kind='ContainerStatus'
         )
         self._properties = {
-            'containerID': container_id or '',
-            'image': image or '',
-            'imageID': image_id or '',
-            'lastState': last_state or ContainerState(),
-            'name': name or '',
-            'ready': ready or None,
-            'restartCount': restart_count or None,
-            'state': state or ContainerState(),
+            'containerID': container_id if container_id is not None else '',
+            'image': image if image is not None else '',
+            'imageID': image_id if image_id is not None else '',
+            'lastState': last_state if last_state is not None else ContainerState(),
+            'name': name if name is not None else '',
+            'ready': ready if ready is not None else None,
+            'restartCount': restart_count if restart_count is not None else None,
+            'started': started if started is not None else None,
+            'state': state if state is not None else ContainerState(),
 
         }
         self._types = {
@@ -4332,6 +4365,7 @@ class ContainerStatus(_kuber_definitions.Definition):
             'name': (str, None),
             'ready': (bool, None),
             'restartCount': (int, None),
+            'started': (bool, None),
             'state': (ContainerState, None),
 
         }
@@ -4451,6 +4485,28 @@ class ContainerStatus(_kuber_definitions.Definition):
         self._properties['restartCount'] = value
 
     @property
+    def started(self) -> bool:
+        """
+        Specifies whether the container has passed its startup
+        probe. Initialized as false, becomes true after startupProbe
+        is considered successful. Resets to false when the container
+        is restarted, or if kubelet loses state temporarily. Is
+        always true when no startupProbe is defined.
+        """
+        return self._properties.get('started')
+
+    @started.setter
+    def started(self, value: bool):
+        """
+        Specifies whether the container has passed its startup
+        probe. Initialized as false, becomes true after startupProbe
+        is considered successful. Resets to false when the container
+        is restarted, or if kubelet loses state temporarily. Is
+        always true when no startupProbe is defined.
+        """
+        self._properties['started'] = value
+
+    @property
     def state(self) -> 'ContainerState':
         """
         Details about the container's current condition.
@@ -4489,7 +4545,7 @@ class DaemonEndpoint(_kuber_definitions.Definition):
             kind='DaemonEndpoint'
         )
         self._properties = {
-            'Port': port or None,
+            'Port': port if port is not None else None,
 
         }
         self._types = {
@@ -4535,7 +4591,7 @@ class DownwardAPIProjection(_kuber_definitions.Definition):
             kind='DownwardAPIProjection'
         )
         self._properties = {
-            'items': items or [],
+            'items': items if items is not None else [],
 
         }
         self._types = {
@@ -4591,10 +4647,10 @@ class DownwardAPIVolumeFile(_kuber_definitions.Definition):
             kind='DownwardAPIVolumeFile'
         )
         self._properties = {
-            'fieldRef': field_ref or ObjectFieldSelector(),
-            'mode': mode or None,
-            'path': path or '',
-            'resourceFieldRef': resource_field_ref or ResourceFieldSelector(),
+            'fieldRef': field_ref if field_ref is not None else ObjectFieldSelector(),
+            'mode': mode if mode is not None else None,
+            'path': path if path is not None else '',
+            'resourceFieldRef': resource_field_ref if resource_field_ref is not None else ResourceFieldSelector(),
 
         }
         self._types = {
@@ -4710,8 +4766,8 @@ class DownwardAPIVolumeSource(_kuber_definitions.Definition):
             kind='DownwardAPIVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'items': items or [],
+            'defaultMode': default_mode if default_mode is not None else None,
+            'items': items if items is not None else [],
 
         }
         self._types = {
@@ -4788,8 +4844,8 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
             kind='EmptyDirVolumeSource'
         )
         self._properties = {
-            'medium': medium or '',
-            'sizeLimit': size_limit or None,
+            'medium': medium if medium is not None else '',
+            'sizeLimit': size_limit if size_limit is not None else None,
 
         }
         self._types = {
@@ -4873,10 +4929,10 @@ class EndpointAddress(_kuber_definitions.Definition):
             kind='EndpointAddress'
         )
         self._properties = {
-            'hostname': hostname or '',
-            'ip': ip or '',
-            'nodeName': node_name or '',
-            'targetRef': target_ref or ObjectReference(),
+            'hostname': hostname if hostname is not None else '',
+            'ip': ip if ip is not None else '',
+            'nodeName': node_name if node_name is not None else '',
+            'targetRef': target_ref if target_ref is not None else ObjectReference(),
 
         }
         self._types = {
@@ -4979,9 +5035,9 @@ class EndpointPort(_kuber_definitions.Definition):
             kind='EndpointPort'
         )
         self._properties = {
-            'name': name or '',
-            'port': port or None,
-            'protocol': protocol or '',
+            'name': name if name is not None else '',
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
@@ -4994,16 +5050,18 @@ class EndpointPort(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        The name of this port (corresponds to ServicePort.Name).
-        Must be a DNS_LABEL. Optional only if one port is defined.
+        The name of this port.  This must match the 'name' field in
+        the corresponding ServicePort. Must be a DNS_LABEL. Optional
+        only if one port is defined.
         """
         return self._properties.get('name')
 
     @name.setter
     def name(self, value: str):
         """
-        The name of this port (corresponds to ServicePort.Name).
-        Must be a DNS_LABEL. Optional only if one port is defined.
+        The name of this port.  This must match the 'name' field in
+        the corresponding ServicePort. Must be a DNS_LABEL. Optional
+        only if one port is defined.
         """
         self._properties['name'] = value
 
@@ -5073,9 +5131,9 @@ class EndpointSubset(_kuber_definitions.Definition):
             kind='EndpointSubset'
         )
         self._properties = {
-            'addresses': addresses or [],
-            'notReadyAddresses': not_ready_addresses or [],
-            'ports': ports or [],
+            'addresses': addresses if addresses is not None else [],
+            'notReadyAddresses': not_ready_addresses if not_ready_addresses is not None else [],
+            'ports': ports if ports is not None else [],
 
         }
         self._types = {
@@ -5198,8 +5256,8 @@ class Endpoints(_kuber_definitions.Resource):
             kind='Endpoints'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'subsets': subsets or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'subsets': subsets if subsets is not None else [],
 
         }
         self._types = {
@@ -5214,8 +5272,8 @@ class Endpoints(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -5223,8 +5281,8 @@ class Endpoints(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -5415,8 +5473,8 @@ class EndpointsList(_kuber_definitions.Collection):
             kind='EndpointsList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -5453,8 +5511,8 @@ class EndpointsList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -5462,8 +5520,8 @@ class EndpointsList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -5506,9 +5564,9 @@ class EnvFromSource(_kuber_definitions.Definition):
             kind='EnvFromSource'
         )
         self._properties = {
-            'configMapRef': config_map_ref or ConfigMapEnvSource(),
-            'prefix': prefix or '',
-            'secretRef': secret_ref or SecretEnvSource(),
+            'configMapRef': config_map_ref if config_map_ref is not None else ConfigMapEnvSource(),
+            'prefix': prefix if prefix is not None else '',
+            'secretRef': secret_ref if secret_ref is not None else SecretEnvSource(),
 
         }
         self._types = {
@@ -5591,9 +5649,9 @@ class EnvVar(_kuber_definitions.Definition):
             kind='EnvVar'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
-            'valueFrom': value_from or EnvVarSource(),
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
+            'valueFrom': value_from if value_from is not None else EnvVarSource(),
 
         }
         self._types = {
@@ -5688,10 +5746,10 @@ class EnvVarSource(_kuber_definitions.Definition):
             kind='EnvVarSource'
         )
         self._properties = {
-            'configMapKeyRef': config_map_key_ref or ConfigMapKeySelector(),
-            'fieldRef': field_ref or ObjectFieldSelector(),
-            'resourceFieldRef': resource_field_ref or ResourceFieldSelector(),
-            'secretKeyRef': secret_key_ref or SecretKeySelector(),
+            'configMapKeyRef': config_map_key_ref if config_map_key_ref is not None else ConfigMapKeySelector(),
+            'fieldRef': field_ref if field_ref is not None else ObjectFieldSelector(),
+            'resourceFieldRef': resource_field_ref if resource_field_ref is not None else ResourceFieldSelector(),
+            'secretKeyRef': secret_key_ref if secret_key_ref is not None else SecretKeySelector(),
 
         }
         self._types = {
@@ -5785,6 +5843,631 @@ class EnvVarSource(_kuber_definitions.Definition):
         return False
 
 
+class EphemeralContainer(_kuber_definitions.Definition):
+    """
+    An EphemeralContainer is a container that may be added
+    temporarily to an existing pod for user-initiated activities
+    such as debugging. Ephemeral containers have no resource or
+    scheduling guarantees, and they will not be restarted when
+    they exit or when a pod is removed or restarted. If an
+    ephemeral container causes a pod to exceed its resource
+    allocation, the pod may be evicted. Ephemeral containers may
+    not be added by directly updating the pod spec. They must be
+    added via the pod's ephemeralcontainers subresource, and
+    they will appear in the pod spec once added. This is an
+    alpha feature enabled by the EphemeralContainers feature
+    flag.
+    """
+
+    def __init__(
+            self,
+            args: typing.List[str] = None,
+            command: typing.List[str] = None,
+            env: typing.List['EnvVar'] = None,
+            env_from: typing.List['EnvFromSource'] = None,
+            image: str = None,
+            image_pull_policy: str = None,
+            lifecycle: 'Lifecycle' = None,
+            liveness_probe: 'Probe' = None,
+            name: str = None,
+            ports: typing.List['ContainerPort'] = None,
+            readiness_probe: 'Probe' = None,
+            resources: 'ResourceRequirements' = None,
+            security_context: 'SecurityContext' = None,
+            startup_probe: 'Probe' = None,
+            stdin: bool = None,
+            stdin_once: bool = None,
+            target_container_name: str = None,
+            termination_message_path: str = None,
+            termination_message_policy: str = None,
+            tty: bool = None,
+            volume_devices: typing.List['VolumeDevice'] = None,
+            volume_mounts: typing.List['VolumeMount'] = None,
+            working_dir: str = None,
+    ):
+        """Create EphemeralContainer instance."""
+        super(EphemeralContainer, self).__init__(
+            api_version='core/v1',
+            kind='EphemeralContainer'
+        )
+        self._properties = {
+            'args': args if args is not None else [],
+            'command': command if command is not None else [],
+            'env': env if env is not None else [],
+            'envFrom': env_from if env_from is not None else [],
+            'image': image if image is not None else '',
+            'imagePullPolicy': image_pull_policy if image_pull_policy is not None else '',
+            'lifecycle': lifecycle if lifecycle is not None else Lifecycle(),
+            'livenessProbe': liveness_probe if liveness_probe is not None else Probe(),
+            'name': name if name is not None else '',
+            'ports': ports if ports is not None else [],
+            'readinessProbe': readiness_probe if readiness_probe is not None else Probe(),
+            'resources': resources if resources is not None else ResourceRequirements(),
+            'securityContext': security_context if security_context is not None else SecurityContext(),
+            'startupProbe': startup_probe if startup_probe is not None else Probe(),
+            'stdin': stdin if stdin is not None else None,
+            'stdinOnce': stdin_once if stdin_once is not None else None,
+            'targetContainerName': target_container_name if target_container_name is not None else '',
+            'terminationMessagePath': termination_message_path if termination_message_path is not None else '',
+            'terminationMessagePolicy': termination_message_policy if termination_message_policy is not None else '',
+            'tty': tty if tty is not None else None,
+            'volumeDevices': volume_devices if volume_devices is not None else [],
+            'volumeMounts': volume_mounts if volume_mounts is not None else [],
+            'workingDir': working_dir if working_dir is not None else '',
+
+        }
+        self._types = {
+            'args': (list, str),
+            'command': (list, str),
+            'env': (list, EnvVar),
+            'envFrom': (list, EnvFromSource),
+            'image': (str, None),
+            'imagePullPolicy': (str, None),
+            'lifecycle': (Lifecycle, None),
+            'livenessProbe': (Probe, None),
+            'name': (str, None),
+            'ports': (list, ContainerPort),
+            'readinessProbe': (Probe, None),
+            'resources': (ResourceRequirements, None),
+            'securityContext': (SecurityContext, None),
+            'startupProbe': (Probe, None),
+            'stdin': (bool, None),
+            'stdinOnce': (bool, None),
+            'targetContainerName': (str, None),
+            'terminationMessagePath': (str, None),
+            'terminationMessagePolicy': (str, None),
+            'tty': (bool, None),
+            'volumeDevices': (list, VolumeDevice),
+            'volumeMounts': (list, VolumeMount),
+            'workingDir': (str, None),
+
+        }
+
+    @property
+    def args(self) -> typing.List[str]:
+        """
+        Arguments to the entrypoint. The docker image's CMD is used
+        if this is not provided. Variable references $(VAR_NAME) are
+        expanded using the container's environment. If a variable
+        cannot be resolved, the reference in the input string will
+        be unchanged. The $(VAR_NAME) syntax can be escaped with a
+        double $$, ie: $$(VAR_NAME). Escaped references will never
+        be expanded, regardless of whether the variable exists or
+        not. Cannot be updated. More info:
+        https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        return self._properties.get('args')
+
+    @args.setter
+    def args(self, value: typing.List[str]):
+        """
+        Arguments to the entrypoint. The docker image's CMD is used
+        if this is not provided. Variable references $(VAR_NAME) are
+        expanded using the container's environment. If a variable
+        cannot be resolved, the reference in the input string will
+        be unchanged. The $(VAR_NAME) syntax can be escaped with a
+        double $$, ie: $$(VAR_NAME). Escaped references will never
+        be expanded, regardless of whether the variable exists or
+        not. Cannot be updated. More info:
+        https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        self._properties['args'] = value
+
+    @property
+    def command(self) -> typing.List[str]:
+        """
+        Entrypoint array. Not executed within a shell. The docker
+        image's ENTRYPOINT is used if this is not provided. Variable
+        references $(VAR_NAME) are expanded using the container's
+        environment. If a variable cannot be resolved, the reference
+        in the input string will be unchanged. The $(VAR_NAME)
+        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
+        Escaped references will never be expanded, regardless of
+        whether the variable exists or not. Cannot be updated. More
+        info: https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        return self._properties.get('command')
+
+    @command.setter
+    def command(self, value: typing.List[str]):
+        """
+        Entrypoint array. Not executed within a shell. The docker
+        image's ENTRYPOINT is used if this is not provided. Variable
+        references $(VAR_NAME) are expanded using the container's
+        environment. If a variable cannot be resolved, the reference
+        in the input string will be unchanged. The $(VAR_NAME)
+        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
+        Escaped references will never be expanded, regardless of
+        whether the variable exists or not. Cannot be updated. More
+        info: https://kubernetes.io/docs/tasks/inject-data-
+        application/define-command-argument-container/#running-a-
+        command-in-a-shell
+        """
+        self._properties['command'] = value
+
+    @property
+    def env(self) -> typing.List['EnvVar']:
+        """
+        List of environment variables to set in the container.
+        Cannot be updated.
+        """
+        return self._properties.get('env')
+
+    @env.setter
+    def env(
+            self,
+            value: typing.Union[typing.List['EnvVar'], typing.List[dict]]
+    ):
+        """
+        List of environment variables to set in the container.
+        Cannot be updated.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = EnvVar().from_dict(item)
+            cleaned.append(item)
+        self._properties['env'] = cleaned
+
+    @property
+    def env_from(self) -> typing.List['EnvFromSource']:
+        """
+        List of sources to populate environment variables in the
+        container. The keys defined within a source must be a
+        C_IDENTIFIER. All invalid keys will be reported as an event
+        when the container is starting. When a key exists in
+        multiple sources, the value associated with the last source
+        will take precedence. Values defined by an Env with a
+        duplicate key will take precedence. Cannot be updated.
+        """
+        return self._properties.get('envFrom')
+
+    @env_from.setter
+    def env_from(
+            self,
+            value: typing.Union[typing.List['EnvFromSource'], typing.List[dict]]
+    ):
+        """
+        List of sources to populate environment variables in the
+        container. The keys defined within a source must be a
+        C_IDENTIFIER. All invalid keys will be reported as an event
+        when the container is starting. When a key exists in
+        multiple sources, the value associated with the last source
+        will take precedence. Values defined by an Env with a
+        duplicate key will take precedence. Cannot be updated.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = EnvFromSource().from_dict(item)
+            cleaned.append(item)
+        self._properties['envFrom'] = cleaned
+
+    @property
+    def image(self) -> str:
+        """
+        Docker image name. More info:
+        https://kubernetes.io/docs/concepts/containers/images
+        """
+        return self._properties.get('image')
+
+    @image.setter
+    def image(self, value: str):
+        """
+        Docker image name. More info:
+        https://kubernetes.io/docs/concepts/containers/images
+        """
+        self._properties['image'] = value
+
+    @property
+    def image_pull_policy(self) -> str:
+        """
+        Image pull policy. One of Always, Never, IfNotPresent.
+        Defaults to Always if :latest tag is specified, or
+        IfNotPresent otherwise. Cannot be updated. More info: https:
+        //kubernetes.io/docs/concepts/containers/images#updating-
+        images
+        """
+        return self._properties.get('imagePullPolicy')
+
+    @image_pull_policy.setter
+    def image_pull_policy(self, value: str):
+        """
+        Image pull policy. One of Always, Never, IfNotPresent.
+        Defaults to Always if :latest tag is specified, or
+        IfNotPresent otherwise. Cannot be updated. More info: https:
+        //kubernetes.io/docs/concepts/containers/images#updating-
+        images
+        """
+        self._properties['imagePullPolicy'] = value
+
+    @property
+    def lifecycle(self) -> 'Lifecycle':
+        """
+        Lifecycle is not allowed for ephemeral containers.
+        """
+        return self._properties.get('lifecycle')
+
+    @lifecycle.setter
+    def lifecycle(self, value: typing.Union['Lifecycle', dict]):
+        """
+        Lifecycle is not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Lifecycle().from_dict(value)
+        self._properties['lifecycle'] = value
+
+    @property
+    def liveness_probe(self) -> 'Probe':
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        return self._properties.get('livenessProbe')
+
+    @liveness_probe.setter
+    def liveness_probe(self, value: typing.Union['Probe', dict]):
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['livenessProbe'] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name of the ephemeral container specified as a DNS_LABEL.
+        This name must be unique among all containers, init
+        containers and ephemeral containers.
+        """
+        return self._properties.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name of the ephemeral container specified as a DNS_LABEL.
+        This name must be unique among all containers, init
+        containers and ephemeral containers.
+        """
+        self._properties['name'] = value
+
+    @property
+    def ports(self) -> typing.List['ContainerPort']:
+        """
+        Ports are not allowed for ephemeral containers.
+        """
+        return self._properties.get('ports')
+
+    @ports.setter
+    def ports(
+            self,
+            value: typing.Union[typing.List['ContainerPort'], typing.List[dict]]
+    ):
+        """
+        Ports are not allowed for ephemeral containers.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = ContainerPort().from_dict(item)
+            cleaned.append(item)
+        self._properties['ports'] = cleaned
+
+    @property
+    def readiness_probe(self) -> 'Probe':
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        return self._properties.get('readinessProbe')
+
+    @readiness_probe.setter
+    def readiness_probe(self, value: typing.Union['Probe', dict]):
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['readinessProbe'] = value
+
+    @property
+    def resources(self) -> 'ResourceRequirements':
+        """
+        Resources are not allowed for ephemeral containers.
+        Ephemeral containers use spare resources already allocated
+        to the pod.
+        """
+        return self._properties.get('resources')
+
+    @resources.setter
+    def resources(self, value: typing.Union['ResourceRequirements', dict]):
+        """
+        Resources are not allowed for ephemeral containers.
+        Ephemeral containers use spare resources already allocated
+        to the pod.
+        """
+        if isinstance(value, dict):
+            value = ResourceRequirements().from_dict(value)
+        self._properties['resources'] = value
+
+    @property
+    def security_context(self) -> 'SecurityContext':
+        """
+        SecurityContext is not allowed for ephemeral containers.
+        """
+        return self._properties.get('securityContext')
+
+    @security_context.setter
+    def security_context(self, value: typing.Union['SecurityContext', dict]):
+        """
+        SecurityContext is not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = SecurityContext().from_dict(value)
+        self._properties['securityContext'] = value
+
+    @property
+    def startup_probe(self) -> 'Probe':
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        return self._properties.get('startupProbe')
+
+    @startup_probe.setter
+    def startup_probe(self, value: typing.Union['Probe', dict]):
+        """
+        Probes are not allowed for ephemeral containers.
+        """
+        if isinstance(value, dict):
+            value = Probe().from_dict(value)
+        self._properties['startupProbe'] = value
+
+    @property
+    def stdin(self) -> bool:
+        """
+        Whether this container should allocate a buffer for stdin in
+        the container runtime. If this is not set, reads from stdin
+        in the container will always result in EOF. Default is
+        false.
+        """
+        return self._properties.get('stdin')
+
+    @stdin.setter
+    def stdin(self, value: bool):
+        """
+        Whether this container should allocate a buffer for stdin in
+        the container runtime. If this is not set, reads from stdin
+        in the container will always result in EOF. Default is
+        false.
+        """
+        self._properties['stdin'] = value
+
+    @property
+    def stdin_once(self) -> bool:
+        """
+        Whether the container runtime should close the stdin channel
+        after it has been opened by a single attach. When stdin is
+        true the stdin stream will remain open across multiple
+        attach sessions. If stdinOnce is set to true, stdin is
+        opened on container start, is empty until the first client
+        attaches to stdin, and then remains open and accepts data
+        until the client disconnects, at which time stdin is closed
+        and remains closed until the container is restarted. If this
+        flag is false, a container processes that reads from stdin
+        will never receive an EOF. Default is false
+        """
+        return self._properties.get('stdinOnce')
+
+    @stdin_once.setter
+    def stdin_once(self, value: bool):
+        """
+        Whether the container runtime should close the stdin channel
+        after it has been opened by a single attach. When stdin is
+        true the stdin stream will remain open across multiple
+        attach sessions. If stdinOnce is set to true, stdin is
+        opened on container start, is empty until the first client
+        attaches to stdin, and then remains open and accepts data
+        until the client disconnects, at which time stdin is closed
+        and remains closed until the container is restarted. If this
+        flag is false, a container processes that reads from stdin
+        will never receive an EOF. Default is false
+        """
+        self._properties['stdinOnce'] = value
+
+    @property
+    def target_container_name(self) -> str:
+        """
+        If set, the name of the container from PodSpec that this
+        ephemeral container targets. The ephemeral container will be
+        run in the namespaces (IPC, PID, etc) of this container. If
+        not set then the ephemeral container is run in whatever
+        namespaces are shared for the pod. Note that the container
+        runtime must support this feature.
+        """
+        return self._properties.get('targetContainerName')
+
+    @target_container_name.setter
+    def target_container_name(self, value: str):
+        """
+        If set, the name of the container from PodSpec that this
+        ephemeral container targets. The ephemeral container will be
+        run in the namespaces (IPC, PID, etc) of this container. If
+        not set then the ephemeral container is run in whatever
+        namespaces are shared for the pod. Note that the container
+        runtime must support this feature.
+        """
+        self._properties['targetContainerName'] = value
+
+    @property
+    def termination_message_path(self) -> str:
+        """
+        Optional: Path at which the file to which the container's
+        termination message will be written is mounted into the
+        container's filesystem. Message written is intended to be
+        brief final status, such as an assertion failure message.
+        Will be truncated by the node if greater than 4096 bytes.
+        The total message length across all containers will be
+        limited to 12kb. Defaults to /dev/termination-log. Cannot be
+        updated.
+        """
+        return self._properties.get('terminationMessagePath')
+
+    @termination_message_path.setter
+    def termination_message_path(self, value: str):
+        """
+        Optional: Path at which the file to which the container's
+        termination message will be written is mounted into the
+        container's filesystem. Message written is intended to be
+        brief final status, such as an assertion failure message.
+        Will be truncated by the node if greater than 4096 bytes.
+        The total message length across all containers will be
+        limited to 12kb. Defaults to /dev/termination-log. Cannot be
+        updated.
+        """
+        self._properties['terminationMessagePath'] = value
+
+    @property
+    def termination_message_policy(self) -> str:
+        """
+        Indicate how the termination message should be populated.
+        File will use the contents of terminationMessagePath to
+        populate the container status message on both success and
+        failure. FallbackToLogsOnError will use the last chunk of
+        container log output if the termination message file is
+        empty and the container exited with an error. The log output
+        is limited to 2048 bytes or 80 lines, whichever is smaller.
+        Defaults to File. Cannot be updated.
+        """
+        return self._properties.get('terminationMessagePolicy')
+
+    @termination_message_policy.setter
+    def termination_message_policy(self, value: str):
+        """
+        Indicate how the termination message should be populated.
+        File will use the contents of terminationMessagePath to
+        populate the container status message on both success and
+        failure. FallbackToLogsOnError will use the last chunk of
+        container log output if the termination message file is
+        empty and the container exited with an error. The log output
+        is limited to 2048 bytes or 80 lines, whichever is smaller.
+        Defaults to File. Cannot be updated.
+        """
+        self._properties['terminationMessagePolicy'] = value
+
+    @property
+    def tty(self) -> bool:
+        """
+        Whether this container should allocate a TTY for itself,
+        also requires 'stdin' to be true. Default is false.
+        """
+        return self._properties.get('tty')
+
+    @tty.setter
+    def tty(self, value: bool):
+        """
+        Whether this container should allocate a TTY for itself,
+        also requires 'stdin' to be true. Default is false.
+        """
+        self._properties['tty'] = value
+
+    @property
+    def volume_devices(self) -> typing.List['VolumeDevice']:
+        """
+        volumeDevices is the list of block devices to be used by the
+        container. This is a beta feature.
+        """
+        return self._properties.get('volumeDevices')
+
+    @volume_devices.setter
+    def volume_devices(
+            self,
+            value: typing.Union[typing.List['VolumeDevice'], typing.List[dict]]
+    ):
+        """
+        volumeDevices is the list of block devices to be used by the
+        container. This is a beta feature.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = VolumeDevice().from_dict(item)
+            cleaned.append(item)
+        self._properties['volumeDevices'] = cleaned
+
+    @property
+    def volume_mounts(self) -> typing.List['VolumeMount']:
+        """
+        Pod volumes to mount into the container's filesystem. Cannot
+        be updated.
+        """
+        return self._properties.get('volumeMounts')
+
+    @volume_mounts.setter
+    def volume_mounts(
+            self,
+            value: typing.Union[typing.List['VolumeMount'], typing.List[dict]]
+    ):
+        """
+        Pod volumes to mount into the container's filesystem. Cannot
+        be updated.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = VolumeMount().from_dict(item)
+            cleaned.append(item)
+        self._properties['volumeMounts'] = cleaned
+
+    @property
+    def working_dir(self) -> str:
+        """
+        Container's working directory. If not specified, the
+        container runtime's default will be used, which might be
+        configured in the container image. Cannot be updated.
+        """
+        return self._properties.get('workingDir')
+
+    @working_dir.setter
+    def working_dir(self, value: str):
+        """
+        Container's working directory. If not specified, the
+        container runtime's default will be used, which might be
+        configured in the container image. Cannot be updated.
+        """
+        self._properties['workingDir'] = value
+
+    def __enter__(self) -> 'EphemeralContainer':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class Event(_kuber_definitions.Resource):
     """
     Event is a report of an event somewhere in the cluster.
@@ -5814,21 +6497,21 @@ class Event(_kuber_definitions.Resource):
             kind='Event'
         )
         self._properties = {
-            'action': action or '',
-            'count': count or None,
-            'eventTime': event_time or MicroTime(),
-            'firstTimestamp': first_timestamp or None,
-            'involvedObject': involved_object or ObjectReference(),
-            'lastTimestamp': last_timestamp or None,
-            'message': message or '',
-            'metadata': metadata or ObjectMeta(),
-            'reason': reason or '',
-            'related': related or ObjectReference(),
-            'reportingComponent': reporting_component or '',
-            'reportingInstance': reporting_instance or '',
-            'series': series or EventSeries(),
-            'source': source or EventSource(),
-            'type': type_ or '',
+            'action': action if action is not None else '',
+            'count': count if count is not None else None,
+            'eventTime': event_time if event_time is not None else MicroTime(),
+            'firstTimestamp': first_timestamp if first_timestamp is not None else None,
+            'involvedObject': involved_object if involved_object is not None else ObjectReference(),
+            'lastTimestamp': last_timestamp if last_timestamp is not None else None,
+            'message': message if message is not None else '',
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'reason': reason if reason is not None else '',
+            'related': related if related is not None else ObjectReference(),
+            'reportingComponent': reporting_component if reporting_component is not None else '',
+            'reportingInstance': reporting_instance if reporting_instance is not None else '',
+            'series': series if series is not None else EventSeries(),
+            'source': source if source is not None else EventSource(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -5980,8 +6663,8 @@ class Event(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -5989,8 +6672,8 @@ class Event(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -6259,8 +6942,8 @@ class EventList(_kuber_definitions.Collection):
             kind='EventList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -6297,8 +6980,8 @@ class EventList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -6306,8 +6989,8 @@ class EventList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -6351,9 +7034,9 @@ class EventSeries(_kuber_definitions.Definition):
             kind='EventSeries'
         )
         self._properties = {
-            'count': count or None,
-            'lastObservedTime': last_observed_time or MicroTime(),
-            'state': state or '',
+            'count': count if count is not None else None,
+            'lastObservedTime': last_observed_time if last_observed_time is not None else MicroTime(),
+            'state': state if state is not None else '',
 
         }
         self._types = {
@@ -6434,8 +7117,8 @@ class EventSource(_kuber_definitions.Definition):
             kind='EventSource'
         )
         self._properties = {
-            'component': component or '',
-            'host': host or '',
+            'component': component if component is not None else '',
+            'host': host if host is not None else '',
 
         }
         self._types = {
@@ -6494,7 +7177,7 @@ class ExecAction(_kuber_definitions.Definition):
             kind='ExecAction'
         )
         self._properties = {
-            'command': command or [],
+            'command': command if command is not None else [],
 
         }
         self._types = {
@@ -6556,11 +7239,11 @@ class FCVolumeSource(_kuber_definitions.Definition):
             kind='FCVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'lun': lun or None,
-            'readOnly': read_only or None,
-            'targetWWNs': target_wwns or [],
-            'wwids': wwids or [],
+            'fsType': fs_type if fs_type is not None else '',
+            'lun': lun if lun is not None else None,
+            'readOnly': read_only if read_only is not None else None,
+            'targetWWNs': target_wwns if target_wwns is not None else [],
+            'wwids': wwids if wwids is not None else [],
 
         }
         self._types = {
@@ -6680,11 +7363,11 @@ class FlexPersistentVolumeSource(_kuber_definitions.Definition):
             kind='FlexPersistentVolumeSource'
         )
         self._properties = {
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'options': options or {},
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'options': options if options is not None else {},
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
 
         }
         self._types = {
@@ -6809,11 +7492,11 @@ class FlexVolumeSource(_kuber_definitions.Definition):
             kind='FlexVolumeSource'
         )
         self._properties = {
-            'driver': driver or '',
-            'fsType': fs_type or '',
-            'options': options or {},
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
+            'driver': driver if driver is not None else '',
+            'fsType': fs_type if fs_type is not None else '',
+            'options': options if options is not None else {},
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
 
         }
         self._types = {
@@ -6937,8 +7620,8 @@ class FlockerVolumeSource(_kuber_definitions.Definition):
             kind='FlockerVolumeSource'
         )
         self._properties = {
-            'datasetName': dataset_name or '',
-            'datasetUUID': dataset_uuid or '',
+            'datasetName': dataset_name if dataset_name is not None else '',
+            'datasetUUID': dataset_uuid if dataset_uuid is not None else '',
 
         }
         self._types = {
@@ -7011,10 +7694,10 @@ class GCEPersistentDiskVolumeSource(_kuber_definitions.Definition):
             kind='GCEPersistentDiskVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'partition': partition or None,
-            'pdName': pd_name or '',
-            'readOnly': read_only or None,
+            'fsType': fs_type if fs_type is not None else '',
+            'partition': partition if partition is not None else None,
+            'pdName': pd_name if pd_name is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -7139,9 +7822,9 @@ class GitRepoVolumeSource(_kuber_definitions.Definition):
             kind='GitRepoVolumeSource'
         )
         self._properties = {
-            'directory': directory or '',
-            'repository': repository or '',
-            'revision': revision or '',
+            'directory': directory if directory is not None else '',
+            'repository': repository if repository is not None else '',
+            'revision': revision if revision is not None else '',
 
         }
         self._types = {
@@ -7228,10 +7911,10 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
             kind='GlusterfsPersistentVolumeSource'
         )
         self._properties = {
-            'endpoints': endpoints or '',
-            'endpointsNamespace': endpoints_namespace or '',
-            'path': path or '',
-            'readOnly': read_only or None,
+            'endpoints': endpoints if endpoints is not None else '',
+            'endpointsNamespace': endpoints_namespace if endpoints_namespace is not None else '',
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -7246,8 +7929,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def endpoints(self) -> str:
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('endpoints')
 
@@ -7255,8 +7939,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def endpoints(self, value: str):
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['endpoints'] = value
 
@@ -7266,8 +7951,8 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
         EndpointsNamespace is the namespace that contains Glusterfs
         endpoint. If this field is empty, the EndpointNamespace
         defaults to the same namespace as the bound PVC. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/glusterfs/READ
-        ME.md#create-a-pod
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('endpointsNamespace')
 
@@ -7277,16 +7962,16 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
         EndpointsNamespace is the namespace that contains Glusterfs
         endpoint. If this field is empty, the EndpointNamespace
         defaults to the same namespace as the bound PVC. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/glusterfs/READ
-        ME.md#create-a-pod
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['endpointsNamespace'] = value
 
     @property
     def path(self) -> str:
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         return self._properties.get('path')
@@ -7294,8 +7979,8 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     @path.setter
     def path(self, value: str):
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         self._properties['path'] = value
@@ -7304,9 +7989,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('readOnly')
 
@@ -7314,9 +7999,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['readOnly'] = value
 
@@ -7346,9 +8031,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
             kind='GlusterfsVolumeSource'
         )
         self._properties = {
-            'endpoints': endpoints or '',
-            'path': path or '',
-            'readOnly': read_only or None,
+            'endpoints': endpoints if endpoints is not None else '',
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -7362,8 +8047,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def endpoints(self) -> str:
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('endpoints')
 
@@ -7371,16 +8057,17 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def endpoints(self, value: str):
         """
         EndpointsName is the endpoint name that details Glusterfs
-        topology. More info: https://releases.k8s.io/HEAD/examples/v
-        olumes/glusterfs/README.md#create-a-pod
+        topology. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['endpoints'] = value
 
     @property
     def path(self) -> str:
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         return self._properties.get('path')
@@ -7388,8 +8075,8 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     @path.setter
     def path(self, value: str):
         """
-        Path is the Glusterfs volume path. More info: https://releas
-        es.k8s.io/HEAD/examples/volumes/glusterfs/README.md#create-
+        Path is the Glusterfs volume path. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
         a-pod
         """
         self._properties['path'] = value
@@ -7398,9 +8085,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         return self._properties.get('readOnly')
 
@@ -7408,9 +8095,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the Glusterfs volume to be mounted
-        with read-only permissions. Defaults to false. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/glusterfs/README
-        .md#create-a-pod
+        with read-only permissions. Defaults to false. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md#create-
+        a-pod
         """
         self._properties['readOnly'] = value
 
@@ -7441,11 +8128,11 @@ class HTTPGetAction(_kuber_definitions.Definition):
             kind='HTTPGetAction'
         )
         self._properties = {
-            'host': host or '',
-            'httpHeaders': http_headers or [],
-            'path': path or '',
-            'port': port or None,
-            'scheme': scheme or '',
+            'host': host if host is not None else '',
+            'httpHeaders': http_headers if http_headers is not None else [],
+            'path': path if path is not None else '',
+            'port': port if port is not None else None,
+            'scheme': scheme if scheme is not None else '',
 
         }
         self._types = {
@@ -7571,8 +8258,8 @@ class HTTPHeader(_kuber_definitions.Definition):
             kind='HTTPHeader'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -7633,9 +8320,9 @@ class Handler(_kuber_definitions.Definition):
             kind='Handler'
         )
         self._properties = {
-            'exec': exec_ or ExecAction(),
-            'httpGet': http_get or HTTPGetAction(),
-            'tcpSocket': tcp_socket or TCPSocketAction(),
+            'exec': exec_ if exec_ is not None else ExecAction(),
+            'httpGet': http_get if http_get is not None else HTTPGetAction(),
+            'tcpSocket': tcp_socket if tcp_socket is not None else TCPSocketAction(),
 
         }
         self._types = {
@@ -7721,8 +8408,8 @@ class HostAlias(_kuber_definitions.Definition):
             kind='HostAlias'
         )
         self._properties = {
-            'hostnames': hostnames or [],
-            'ip': ip or '',
+            'hostnames': hostnames if hostnames is not None else [],
+            'ip': ip if ip is not None else '',
 
         }
         self._types = {
@@ -7783,8 +8470,8 @@ class HostPathVolumeSource(_kuber_definitions.Definition):
             kind='HostPathVolumeSource'
         )
         self._properties = {
-            'path': path or '',
-            'type': type_ or '',
+            'path': path if path is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -7861,17 +8548,17 @@ class ISCSIPersistentVolumeSource(_kuber_definitions.Definition):
             kind='ISCSIPersistentVolumeSource'
         )
         self._properties = {
-            'chapAuthDiscovery': chap_auth_discovery or None,
-            'chapAuthSession': chap_auth_session or None,
-            'fsType': fs_type or '',
-            'initiatorName': initiator_name or '',
-            'iqn': iqn or '',
-            'iscsiInterface': iscsi_interface or '',
-            'lun': lun or None,
-            'portals': portals or [],
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'targetPortal': target_portal or '',
+            'chapAuthDiscovery': chap_auth_discovery if chap_auth_discovery is not None else None,
+            'chapAuthSession': chap_auth_session if chap_auth_session is not None else None,
+            'fsType': fs_type if fs_type is not None else '',
+            'initiatorName': initiator_name if initiator_name is not None else '',
+            'iqn': iqn if iqn is not None else '',
+            'iscsiInterface': iscsi_interface if iscsi_interface is not None else '',
+            'lun': lun if lun is not None else None,
+            'portals': portals if portals is not None else [],
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'targetPortal': target_portal if target_portal is not None else '',
 
         }
         self._types = {
@@ -8105,17 +8792,17 @@ class ISCSIVolumeSource(_kuber_definitions.Definition):
             kind='ISCSIVolumeSource'
         )
         self._properties = {
-            'chapAuthDiscovery': chap_auth_discovery or None,
-            'chapAuthSession': chap_auth_session or None,
-            'fsType': fs_type or '',
-            'initiatorName': initiator_name or '',
-            'iqn': iqn or '',
-            'iscsiInterface': iscsi_interface or '',
-            'lun': lun or None,
-            'portals': portals or [],
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'targetPortal': target_portal or '',
+            'chapAuthDiscovery': chap_auth_discovery if chap_auth_discovery is not None else None,
+            'chapAuthSession': chap_auth_session if chap_auth_session is not None else None,
+            'fsType': fs_type if fs_type is not None else '',
+            'initiatorName': initiator_name if initiator_name is not None else '',
+            'iqn': iqn if iqn is not None else '',
+            'iscsiInterface': iscsi_interface if iscsi_interface is not None else '',
+            'lun': lun if lun is not None else None,
+            'portals': portals if portals is not None else [],
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'targetPortal': target_portal if target_portal is not None else '',
 
         }
         self._types = {
@@ -8339,9 +9026,9 @@ class KeyToPath(_kuber_definitions.Definition):
             kind='KeyToPath'
         )
         self._properties = {
-            'key': key or '',
-            'mode': mode or None,
-            'path': path or '',
+            'key': key if key is not None else '',
+            'mode': mode if mode is not None else None,
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -8433,8 +9120,8 @@ class Lifecycle(_kuber_definitions.Definition):
             kind='Lifecycle'
         )
         self._properties = {
-            'postStart': post_start or Handler(),
-            'preStop': pre_stop or Handler(),
+            'postStart': post_start if post_start is not None else Handler(),
+            'preStop': pre_stop if pre_stop is not None else Handler(),
 
         }
         self._types = {
@@ -8476,15 +9163,15 @@ class Lifecycle(_kuber_definitions.Definition):
         """
         PreStop is called immediately before a container is
         terminated due to an API request or management event such as
-        liveness probe failure, preemption, resource contention,
-        etc. The handler is not called if the container crashes or
-        exits. The reason for termination is passed to the handler.
-        The Pod's termination grace period countdown begins before
-        the PreStop hooked is executed. Regardless of the outcome of
-        the handler, the container will eventually terminate within
-        the Pod's termination grace period. Other management of the
-        container blocks until the hook completes or until the
-        termination grace period is reached. More info:
+        liveness/startup probe failure, preemption, resource
+        contention, etc. The handler is not called if the container
+        crashes or exits. The reason for termination is passed to
+        the handler. The Pod's termination grace period countdown
+        begins before the PreStop hooked is executed. Regardless of
+        the outcome of the handler, the container will eventually
+        terminate within the Pod's termination grace period. Other
+        management of the container blocks until the hook completes
+        or until the termination grace period is reached. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
@@ -8495,15 +9182,15 @@ class Lifecycle(_kuber_definitions.Definition):
         """
         PreStop is called immediately before a container is
         terminated due to an API request or management event such as
-        liveness probe failure, preemption, resource contention,
-        etc. The handler is not called if the container crashes or
-        exits. The reason for termination is passed to the handler.
-        The Pod's termination grace period countdown begins before
-        the PreStop hooked is executed. Regardless of the outcome of
-        the handler, the container will eventually terminate within
-        the Pod's termination grace period. Other management of the
-        container blocks until the hook completes or until the
-        termination grace period is reached. More info:
+        liveness/startup probe failure, preemption, resource
+        contention, etc. The handler is not called if the container
+        crashes or exits. The reason for termination is passed to
+        the handler. The Pod's termination grace period countdown
+        begins before the PreStop hooked is executed. Regardless of
+        the outcome of the handler, the container will eventually
+        terminate within the Pod's termination grace period. Other
+        management of the container blocks until the hook completes
+        or until the termination grace period is reached. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
@@ -8535,8 +9222,8 @@ class LimitRange(_kuber_definitions.Resource):
             kind='LimitRange'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or LimitRangeSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else LimitRangeSpec(),
 
         }
         self._types = {
@@ -8551,8 +9238,8 @@ class LimitRange(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -8560,8 +9247,8 @@ class LimitRange(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -8571,8 +9258,8 @@ class LimitRange(_kuber_definitions.Resource):
     def spec(self) -> 'LimitRangeSpec':
         """
         Spec defines the limits enforced. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -8580,8 +9267,8 @@ class LimitRange(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['LimitRangeSpec', dict]):
         """
         Spec defines the limits enforced. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = LimitRangeSpec().from_dict(value)
@@ -8739,12 +9426,12 @@ class LimitRangeItem(_kuber_definitions.Definition):
             kind='LimitRangeItem'
         )
         self._properties = {
-            'default': default or {},
-            'defaultRequest': default_request or {},
-            'max': max_ or {},
-            'maxLimitRequestRatio': max_limit_request_ratio or {},
-            'min': min_ or {},
-            'type': type_ or '',
+            'default': default if default is not None else {},
+            'defaultRequest': default_request if default_request is not None else {},
+            'max': max_ if max_ is not None else {},
+            'maxLimitRequestRatio': max_limit_request_ratio if max_limit_request_ratio is not None else {},
+            'min': min_ if min_ is not None else {},
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -8874,8 +9561,8 @@ class LimitRangeList(_kuber_definitions.Collection):
             kind='LimitRangeList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -8916,8 +9603,8 @@ class LimitRangeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -8925,8 +9612,8 @@ class LimitRangeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -8968,7 +9655,7 @@ class LimitRangeSpec(_kuber_definitions.Definition):
             kind='LimitRangeSpec'
         )
         self._properties = {
-            'limits': limits or [],
+            'limits': limits if limits is not None else [],
 
         }
         self._types = {
@@ -9025,8 +9712,8 @@ class LoadBalancerIngress(_kuber_definitions.Definition):
             kind='LoadBalancerIngress'
         )
         self._properties = {
-            'hostname': hostname or '',
-            'ip': ip or '',
+            'hostname': hostname if hostname is not None else '',
+            'ip': ip if ip is not None else '',
 
         }
         self._types = {
@@ -9089,7 +9776,7 @@ class LoadBalancerStatus(_kuber_definitions.Definition):
             kind='LoadBalancerStatus'
         )
         self._properties = {
-            'ingress': ingress or [],
+            'ingress': ingress if ingress is not None else [],
 
         }
         self._types = {
@@ -9146,7 +9833,7 @@ class LocalObjectReference(_kuber_definitions.Definition):
             kind='LocalObjectReference'
         )
         self._properties = {
-            'name': name or '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -9196,8 +9883,8 @@ class LocalVolumeSource(_kuber_definitions.Definition):
             kind='LocalVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'path': path or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -9268,9 +9955,9 @@ class NFSVolumeSource(_kuber_definitions.Definition):
             kind='NFSVolumeSource'
         )
         self._properties = {
-            'path': path or '',
-            'readOnly': read_only or None,
-            'server': server or '',
+            'path': path if path is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'server': server if server is not None else '',
 
         }
         self._types = {
@@ -9357,9 +10044,9 @@ class Namespace(_kuber_definitions.Resource):
             kind='Namespace'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or NamespaceSpec(),
-            'status': status or NamespaceStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else NamespaceSpec(),
+            'status': status if status is not None else NamespaceStatus(),
 
         }
         self._types = {
@@ -9375,8 +10062,8 @@ class Namespace(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -9384,8 +10071,8 @@ class Namespace(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -9395,8 +10082,8 @@ class Namespace(_kuber_definitions.Resource):
     def spec(self) -> 'NamespaceSpec':
         """
         Spec defines the behavior of the Namespace. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -9404,8 +10091,8 @@ class Namespace(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['NamespaceSpec', dict]):
         """
         Spec defines the behavior of the Namespace. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NamespaceSpec().from_dict(value)
@@ -9415,8 +10102,8 @@ class Namespace(_kuber_definitions.Resource):
     def status(self) -> 'NamespaceStatus':
         """
         Status describes the current status of a Namespace. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -9424,8 +10111,8 @@ class Namespace(_kuber_definitions.Resource):
     def status(self, value: typing.Union['NamespaceStatus', dict]):
         """
         Status describes the current status of a Namespace. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NamespaceStatus().from_dict(value)
@@ -9607,6 +10294,126 @@ class Namespace(_kuber_definitions.Resource):
         return False
 
 
+class NamespaceCondition(_kuber_definitions.Definition):
+    """
+    NamespaceCondition contains details about state of
+    namespace.
+    """
+
+    def __init__(
+            self,
+            last_transition_time: str = None,
+            message: str = None,
+            reason: str = None,
+            status: str = None,
+            type_: str = None,
+    ):
+        """Create NamespaceCondition instance."""
+        super(NamespaceCondition, self).__init__(
+            api_version='core/v1',
+            kind='NamespaceCondition'
+        )
+        self._properties = {
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
+
+        }
+        self._types = {
+            'lastTransitionTime': (str, None),
+            'message': (str, None),
+            'reason': (str, None),
+            'status': (str, None),
+            'type': (str, None),
+
+        }
+
+    @property
+    def last_transition_time(self) -> str:
+        """
+
+        """
+        return self._properties.get('lastTransitionTime')
+
+    @last_transition_time.setter
+    def last_transition_time(
+            self,
+            value: typing.Union[str, _datetime.datetime, _datetime.date]
+    ):
+        """
+
+        """
+        if isinstance(value, _datetime.datetime):
+            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+        elif isinstance(value, _datetime.date):
+            value = value.strftime('%Y-%m-%dT00:00:00Z')
+        self._properties['lastTransitionTime'] = value
+
+    @property
+    def message(self) -> str:
+        """
+
+        """
+        return self._properties.get('message')
+
+    @message.setter
+    def message(self, value: str):
+        """
+
+        """
+        self._properties['message'] = value
+
+    @property
+    def reason(self) -> str:
+        """
+
+        """
+        return self._properties.get('reason')
+
+    @reason.setter
+    def reason(self, value: str):
+        """
+
+        """
+        self._properties['reason'] = value
+
+    @property
+    def status(self) -> str:
+        """
+        Status of the condition, one of True, False, Unknown.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: str):
+        """
+        Status of the condition, one of True, False, Unknown.
+        """
+        self._properties['status'] = value
+
+    @property
+    def type_(self) -> str:
+        """
+        Type of namespace controller condition.
+        """
+        return self._properties.get('type')
+
+    @type_.setter
+    def type_(self, value: str):
+        """
+        Type of namespace controller condition.
+        """
+        self._properties['type'] = value
+
+    def __enter__(self) -> 'NamespaceCondition':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class NamespaceList(_kuber_definitions.Collection):
     """
     NamespaceList is a list of Namespaces.
@@ -9623,8 +10430,8 @@ class NamespaceList(_kuber_definitions.Collection):
             kind='NamespaceList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -9665,8 +10472,8 @@ class NamespaceList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -9674,8 +10481,8 @@ class NamespaceList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -9716,7 +10523,7 @@ class NamespaceSpec(_kuber_definitions.Definition):
             kind='NamespaceSpec'
         )
         self._properties = {
-            'finalizers': finalizers or [],
+            'finalizers': finalizers if finalizers is not None else [],
 
         }
         self._types = {
@@ -9759,6 +10566,7 @@ class NamespaceStatus(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            conditions: typing.List['NamespaceCondition'] = None,
             phase: str = None,
     ):
         """Create NamespaceStatus instance."""
@@ -9767,13 +10575,39 @@ class NamespaceStatus(_kuber_definitions.Definition):
             kind='NamespaceStatus'
         )
         self._properties = {
-            'phase': phase or '',
+            'conditions': conditions if conditions is not None else [],
+            'phase': phase if phase is not None else '',
 
         }
         self._types = {
+            'conditions': (list, NamespaceCondition),
             'phase': (str, None),
 
         }
+
+    @property
+    def conditions(self) -> typing.List['NamespaceCondition']:
+        """
+        Represents the latest available observations of a
+        namespace's current state.
+        """
+        return self._properties.get('conditions')
+
+    @conditions.setter
+    def conditions(
+            self,
+            value: typing.Union[typing.List['NamespaceCondition'], typing.List[dict]]
+    ):
+        """
+        Represents the latest available observations of a
+        namespace's current state.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = NamespaceCondition().from_dict(item)
+            cleaned.append(item)
+        self._properties['conditions'] = cleaned
 
     @property
     def phase(self) -> str:
@@ -9818,9 +10652,9 @@ class Node(_kuber_definitions.Resource):
             kind='Node'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or NodeSpec(),
-            'status': status or NodeStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else NodeSpec(),
+            'status': status if status is not None else NodeStatus(),
 
         }
         self._types = {
@@ -9836,8 +10670,8 @@ class Node(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -9845,8 +10679,8 @@ class Node(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -9856,8 +10690,8 @@ class Node(_kuber_definitions.Resource):
     def spec(self) -> 'NodeSpec':
         """
         Spec defines the behavior of a node.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -9865,8 +10699,8 @@ class Node(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['NodeSpec', dict]):
         """
         Spec defines the behavior of a node.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NodeSpec().from_dict(value)
@@ -9877,8 +10711,8 @@ class Node(_kuber_definitions.Resource):
         """
         Most recently observed status of the node. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -9887,8 +10721,8 @@ class Node(_kuber_definitions.Resource):
         """
         Most recently observed status of the node. Populated by the
         system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = NodeStatus().from_dict(value)
@@ -10086,8 +10920,8 @@ class NodeAddress(_kuber_definitions.Definition):
             kind='NodeAddress'
         )
         self._properties = {
-            'address': address or '',
-            'type': type_ or '',
+            'address': address if address is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -10149,8 +10983,8 @@ class NodeAffinity(_kuber_definitions.Definition):
             kind='NodeAffinity'
         )
         self._properties = {
-            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution or [],
-            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution or NodeSelector(),
+            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution if preferred_during_scheduling_ignored_during_execution is not None else [],
+            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution if required_during_scheduling_ignored_during_execution is not None else NodeSelector(),
 
         }
         self._types = {
@@ -10254,12 +11088,12 @@ class NodeCondition(_kuber_definitions.Definition):
             kind='NodeCondition'
         )
         self._properties = {
-            'lastHeartbeatTime': last_heartbeat_time or None,
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastHeartbeatTime': last_heartbeat_time if last_heartbeat_time is not None else None,
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -10395,7 +11229,7 @@ class NodeConfigSource(_kuber_definitions.Definition):
             kind='NodeConfigSource'
         )
         self._properties = {
-            'configMap': config_map or ConfigMapNodeConfigSource(),
+            'configMap': config_map if config_map is not None else ConfigMapNodeConfigSource(),
 
         }
         self._types = {
@@ -10445,10 +11279,10 @@ class NodeConfigStatus(_kuber_definitions.Definition):
             kind='NodeConfigStatus'
         )
         self._properties = {
-            'active': active or NodeConfigSource(),
-            'assigned': assigned or NodeConfigSource(),
-            'error': error or '',
-            'lastKnownGood': last_known_good or NodeConfigSource(),
+            'active': active if active is not None else NodeConfigSource(),
+            'assigned': assigned if assigned is not None else NodeConfigSource(),
+            'error': error if error is not None else '',
+            'lastKnownGood': last_known_good if last_known_good is not None else NodeConfigSource(),
 
         }
         self._types = {
@@ -10634,7 +11468,7 @@ class NodeDaemonEndpoints(_kuber_definitions.Definition):
             kind='NodeDaemonEndpoints'
         )
         self._properties = {
-            'kubeletEndpoint': kubelet_endpoint or DaemonEndpoint(),
+            'kubeletEndpoint': kubelet_endpoint if kubelet_endpoint is not None else DaemonEndpoint(),
 
         }
         self._types = {
@@ -10682,8 +11516,8 @@ class NodeList(_kuber_definitions.Collection):
             kind='NodeList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -10720,8 +11554,8 @@ class NodeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -10729,8 +11563,8 @@ class NodeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -10774,7 +11608,7 @@ class NodeSelector(_kuber_definitions.Definition):
             kind='NodeSelector'
         )
         self._properties = {
-            'nodeSelectorTerms': node_selector_terms or [],
+            'nodeSelectorTerms': node_selector_terms if node_selector_terms is not None else [],
 
         }
         self._types = {
@@ -10830,9 +11664,9 @@ class NodeSelectorRequirement(_kuber_definitions.Definition):
             kind='NodeSelectorRequirement'
         )
         self._properties = {
-            'key': key or '',
-            'operator': operator or '',
-            'values': values or [],
+            'key': key if key is not None else '',
+            'operator': operator if operator is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -10921,8 +11755,8 @@ class NodeSelectorTerm(_kuber_definitions.Definition):
             kind='NodeSelectorTerm'
         )
         self._properties = {
-            'matchExpressions': match_expressions or [],
-            'matchFields': match_fields or [],
+            'matchExpressions': match_expressions if match_expressions is not None else [],
+            'matchFields': match_fields if match_fields is not None else [],
 
         }
         self._types = {
@@ -10993,6 +11827,7 @@ class NodeSpec(_kuber_definitions.Definition):
             config_source: 'NodeConfigSource' = None,
             external_id: str = None,
             pod_cidr: str = None,
+            pod_cidrs: typing.List[str] = None,
             provider_id: str = None,
             taints: typing.List['Taint'] = None,
             unschedulable: bool = None,
@@ -11003,18 +11838,20 @@ class NodeSpec(_kuber_definitions.Definition):
             kind='NodeSpec'
         )
         self._properties = {
-            'configSource': config_source or NodeConfigSource(),
-            'externalID': external_id or '',
-            'podCIDR': pod_cidr or '',
-            'providerID': provider_id or '',
-            'taints': taints or [],
-            'unschedulable': unschedulable or None,
+            'configSource': config_source if config_source is not None else NodeConfigSource(),
+            'externalID': external_id if external_id is not None else '',
+            'podCIDR': pod_cidr if pod_cidr is not None else '',
+            'podCIDRs': pod_cidrs if pod_cidrs is not None else [],
+            'providerID': provider_id if provider_id is not None else '',
+            'taints': taints if taints is not None else [],
+            'unschedulable': unschedulable if unschedulable is not None else None,
 
         }
         self._types = {
             'configSource': (NodeConfigSource, None),
             'externalID': (str, None),
             'podCIDR': (str, None),
+            'podCIDRs': (list, str),
             'providerID': (str, None),
             'taints': (list, Taint),
             'unschedulable': (bool, None),
@@ -11070,6 +11907,26 @@ class NodeSpec(_kuber_definitions.Definition):
         PodCIDR represents the pod IP range assigned to the node.
         """
         self._properties['podCIDR'] = value
+
+    @property
+    def pod_cidrs(self) -> typing.List[str]:
+        """
+        podCIDRs represents the IP ranges assigned to the node for
+        usage by Pods on that node. If this field is specified, the
+        0th entry must match the podCIDR field. It may contain at
+        most 1 value for each of IPv4 and IPv6.
+        """
+        return self._properties.get('podCIDRs')
+
+    @pod_cidrs.setter
+    def pod_cidrs(self, value: typing.List[str]):
+        """
+        podCIDRs represents the IP ranges assigned to the node for
+        usage by Pods on that node. If this field is specified, the
+        0th entry must match the podCIDR field. It may contain at
+        most 1 value for each of IPv4 and IPv6.
+        """
+        self._properties['podCIDRs'] = value
 
     @property
     def provider_id(self) -> str:
@@ -11162,17 +12019,17 @@ class NodeStatus(_kuber_definitions.Definition):
             kind='NodeStatus'
         )
         self._properties = {
-            'addresses': addresses or [],
-            'allocatable': allocatable or {},
-            'capacity': capacity or {},
-            'conditions': conditions or [],
-            'config': config or NodeConfigStatus(),
-            'daemonEndpoints': daemon_endpoints or NodeDaemonEndpoints(),
-            'images': images or [],
-            'nodeInfo': node_info or NodeSystemInfo(),
-            'phase': phase or '',
-            'volumesAttached': volumes_attached or [],
-            'volumesInUse': volumes_in_use or [],
+            'addresses': addresses if addresses is not None else [],
+            'allocatable': allocatable if allocatable is not None else {},
+            'capacity': capacity if capacity is not None else {},
+            'conditions': conditions if conditions is not None else [],
+            'config': config if config is not None else NodeConfigStatus(),
+            'daemonEndpoints': daemon_endpoints if daemon_endpoints is not None else NodeDaemonEndpoints(),
+            'images': images if images is not None else [],
+            'nodeInfo': node_info if node_info is not None else NodeSystemInfo(),
+            'phase': phase if phase is not None else '',
+            'volumesAttached': volumes_attached if volumes_attached is not None else [],
+            'volumesInUse': volumes_in_use if volumes_in_use is not None else [],
 
         }
         self._types = {
@@ -11196,6 +12053,11 @@ class NodeStatus(_kuber_definitions.Definition):
         List of addresses reachable to the node. Queried from cloud
         provider, if available. More info:
         https://kubernetes.io/docs/concepts/nodes/node/#addresses
+        Note: This field is declared as mergeable, but the merge key
+        is not sufficiently unique, which can cause data corruption
+        when it is merged. Callers should instead use a full-
+        replacement patch. See http://pr.k8s.io/79391 for an
+        example.
         """
         return self._properties.get('addresses')
 
@@ -11208,6 +12070,11 @@ class NodeStatus(_kuber_definitions.Definition):
         List of addresses reachable to the node. Queried from cloud
         provider, if available. More info:
         https://kubernetes.io/docs/concepts/nodes/node/#addresses
+        Note: This field is declared as mergeable, but the merge key
+        is not sufficiently unique, which can cause data corruption
+        when it is merged. Callers should instead use a full-
+        replacement patch. See http://pr.k8s.io/79391 for an
+        example.
         """
         cleaned = []
         for item in value:
@@ -11440,16 +12307,16 @@ class NodeSystemInfo(_kuber_definitions.Definition):
             kind='NodeSystemInfo'
         )
         self._properties = {
-            'architecture': architecture or '',
-            'bootID': boot_id or '',
-            'containerRuntimeVersion': container_runtime_version or '',
-            'kernelVersion': kernel_version or '',
-            'kubeProxyVersion': kube_proxy_version or '',
-            'kubeletVersion': kubelet_version or '',
-            'machineID': machine_id or '',
-            'operatingSystem': operating_system or '',
-            'osImage': os_image or '',
-            'systemUUID': system_uuid or '',
+            'architecture': architecture if architecture is not None else '',
+            'bootID': boot_id if boot_id is not None else '',
+            'containerRuntimeVersion': container_runtime_version if container_runtime_version is not None else '',
+            'kernelVersion': kernel_version if kernel_version is not None else '',
+            'kubeProxyVersion': kube_proxy_version if kube_proxy_version is not None else '',
+            'kubeletVersion': kubelet_version if kubelet_version is not None else '',
+            'machineID': machine_id if machine_id is not None else '',
+            'operatingSystem': operating_system if operating_system is not None else '',
+            'osImage': os_image if os_image is not None else '',
+            'systemUUID': system_uuid if system_uuid is not None else '',
 
         }
         self._types = {
@@ -11652,8 +12519,8 @@ class ObjectFieldSelector(_kuber_definitions.Definition):
             kind='ObjectFieldSelector'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'fieldPath': field_path or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'fieldPath': field_path if field_path is not None else '',
 
         }
         self._types = {
@@ -11721,13 +12588,13 @@ class ObjectReference(_kuber_definitions.Definition):
             kind='ObjectReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'fieldPath': field_path or '',
-            'kind': kind or '',
-            'name': name or '',
-            'namespace': namespace or '',
-            'resourceVersion': resource_version or '',
-            'uid': uid or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'fieldPath': field_path if field_path is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'resourceVersion': resource_version if resource_version is not None else '',
+            'uid': uid if uid is not None else '',
 
         }
         self._types = {
@@ -11793,8 +12660,8 @@ class ObjectReference(_kuber_definitions.Definition):
     def kind(self) -> str:
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('kind')
 
@@ -11802,8 +12669,8 @@ class ObjectReference(_kuber_definitions.Definition):
     def kind(self, value: str):
         """
         Kind of the referent. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         self._properties['kind'] = value
 
@@ -11848,8 +12715,9 @@ class ObjectReference(_kuber_definitions.Definition):
         """
         Specific resourceVersion to which this reference is made, if
         any. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         return self._properties.get('resourceVersion')
 
@@ -11858,8 +12726,9 @@ class ObjectReference(_kuber_definitions.Definition):
         """
         Specific resourceVersion to which this reference is made, if
         any. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#concurrency-control-and-consistency
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#concurrency-control-and-
+        consistency
         """
         self._properties['resourceVersion'] = value
 
@@ -11908,9 +12777,9 @@ class PersistentVolume(_kuber_definitions.Resource):
             kind='PersistentVolume'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PersistentVolumeSpec(),
-            'status': status or PersistentVolumeStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PersistentVolumeSpec(),
+            'status': status if status is not None else PersistentVolumeStatus(),
 
         }
         self._types = {
@@ -11926,8 +12795,8 @@ class PersistentVolume(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -11935,8 +12804,8 @@ class PersistentVolume(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -12182,9 +13051,9 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
             kind='PersistentVolumeClaim'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PersistentVolumeClaimSpec(),
-            'status': status or PersistentVolumeClaimStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PersistentVolumeClaimSpec(),
+            'status': status if status is not None else PersistentVolumeClaimStatus(),
 
         }
         self._types = {
@@ -12200,8 +13069,8 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -12209,8 +13078,8 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -12457,12 +13326,12 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimCondition'
         )
         self._properties = {
-            'lastProbeTime': last_probe_time or None,
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastProbeTime': last_probe_time if last_probe_time is not None else None,
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -12607,8 +13476,8 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
             kind='PersistentVolumeClaimList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -12649,8 +13518,8 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -12658,8 +13527,8 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -12708,13 +13577,13 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimSpec'
         )
         self._properties = {
-            'accessModes': access_modes or [],
-            'dataSource': data_source or TypedLocalObjectReference(),
-            'resources': resources or ResourceRequirements(),
-            'selector': selector or LabelSelector(),
-            'storageClassName': storage_class_name or '',
-            'volumeMode': volume_mode or '',
-            'volumeName': volume_name or '',
+            'accessModes': access_modes if access_modes is not None else [],
+            'dataSource': data_source if data_source is not None else TypedLocalObjectReference(),
+            'resources': resources if resources is not None else ResourceRequirements(),
+            'selector': selector if selector is not None else LabelSelector(),
+            'storageClassName': storage_class_name if storage_class_name is not None else '',
+            'volumeMode': volume_mode if volume_mode is not None else '',
+            'volumeName': volume_name if volume_name is not None else '',
 
         }
         self._types = {
@@ -12898,10 +13767,10 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimStatus'
         )
         self._properties = {
-            'accessModes': access_modes or [],
-            'capacity': capacity or {},
-            'conditions': conditions or [],
-            'phase': phase or '',
+            'accessModes': access_modes if access_modes is not None else [],
+            'capacity': capacity if capacity is not None else {},
+            'conditions': conditions if conditions is not None else [],
+            'phase': phase if phase is not None else '',
 
         }
         self._types = {
@@ -13014,8 +13883,8 @@ class PersistentVolumeClaimVolumeSource(_kuber_definitions.Definition):
             kind='PersistentVolumeClaimVolumeSource'
         )
         self._properties = {
-            'claimName': claim_name or '',
-            'readOnly': read_only or None,
+            'claimName': claim_name if claim_name is not None else '',
+            'readOnly': read_only if read_only is not None else None,
 
         }
         self._types = {
@@ -13083,8 +13952,8 @@ class PersistentVolumeList(_kuber_definitions.Collection):
             kind='PersistentVolumeList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -13125,8 +13994,8 @@ class PersistentVolumeList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -13134,8 +14003,8 @@ class PersistentVolumeList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -13206,36 +14075,36 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
             kind='PersistentVolumeSpec'
         )
         self._properties = {
-            'accessModes': access_modes or [],
-            'awsElasticBlockStore': aws_elastic_block_store or AWSElasticBlockStoreVolumeSource(),
-            'azureDisk': azure_disk or AzureDiskVolumeSource(),
-            'azureFile': azure_file or AzureFilePersistentVolumeSource(),
-            'capacity': capacity or {},
-            'cephfs': cephfs or CephFSPersistentVolumeSource(),
-            'cinder': cinder or CinderPersistentVolumeSource(),
-            'claimRef': claim_ref or ObjectReference(),
-            'csi': csi or CSIPersistentVolumeSource(),
-            'fc': fc or FCVolumeSource(),
-            'flexVolume': flex_volume or FlexPersistentVolumeSource(),
-            'flocker': flocker or FlockerVolumeSource(),
-            'gcePersistentDisk': gce_persistent_disk or GCEPersistentDiskVolumeSource(),
-            'glusterfs': glusterfs or GlusterfsPersistentVolumeSource(),
-            'hostPath': host_path or HostPathVolumeSource(),
-            'iscsi': iscsi or ISCSIPersistentVolumeSource(),
-            'local': local or LocalVolumeSource(),
-            'mountOptions': mount_options or [],
-            'nfs': nfs or NFSVolumeSource(),
-            'nodeAffinity': node_affinity or VolumeNodeAffinity(),
-            'persistentVolumeReclaimPolicy': persistent_volume_reclaim_policy or '',
-            'photonPersistentDisk': photon_persistent_disk or PhotonPersistentDiskVolumeSource(),
-            'portworxVolume': portworx_volume or PortworxVolumeSource(),
-            'quobyte': quobyte or QuobyteVolumeSource(),
-            'rbd': rbd or RBDPersistentVolumeSource(),
-            'scaleIO': scale_io or ScaleIOPersistentVolumeSource(),
-            'storageClassName': storage_class_name or '',
-            'storageos': storageos or StorageOSPersistentVolumeSource(),
-            'volumeMode': volume_mode or '',
-            'vsphereVolume': vsphere_volume or VsphereVirtualDiskVolumeSource(),
+            'accessModes': access_modes if access_modes is not None else [],
+            'awsElasticBlockStore': aws_elastic_block_store if aws_elastic_block_store is not None else AWSElasticBlockStoreVolumeSource(),
+            'azureDisk': azure_disk if azure_disk is not None else AzureDiskVolumeSource(),
+            'azureFile': azure_file if azure_file is not None else AzureFilePersistentVolumeSource(),
+            'capacity': capacity if capacity is not None else {},
+            'cephfs': cephfs if cephfs is not None else CephFSPersistentVolumeSource(),
+            'cinder': cinder if cinder is not None else CinderPersistentVolumeSource(),
+            'claimRef': claim_ref if claim_ref is not None else ObjectReference(),
+            'csi': csi if csi is not None else CSIPersistentVolumeSource(),
+            'fc': fc if fc is not None else FCVolumeSource(),
+            'flexVolume': flex_volume if flex_volume is not None else FlexPersistentVolumeSource(),
+            'flocker': flocker if flocker is not None else FlockerVolumeSource(),
+            'gcePersistentDisk': gce_persistent_disk if gce_persistent_disk is not None else GCEPersistentDiskVolumeSource(),
+            'glusterfs': glusterfs if glusterfs is not None else GlusterfsPersistentVolumeSource(),
+            'hostPath': host_path if host_path is not None else HostPathVolumeSource(),
+            'iscsi': iscsi if iscsi is not None else ISCSIPersistentVolumeSource(),
+            'local': local if local is not None else LocalVolumeSource(),
+            'mountOptions': mount_options if mount_options is not None else [],
+            'nfs': nfs if nfs is not None else NFSVolumeSource(),
+            'nodeAffinity': node_affinity if node_affinity is not None else VolumeNodeAffinity(),
+            'persistentVolumeReclaimPolicy': persistent_volume_reclaim_policy if persistent_volume_reclaim_policy is not None else '',
+            'photonPersistentDisk': photon_persistent_disk if photon_persistent_disk is not None else PhotonPersistentDiskVolumeSource(),
+            'portworxVolume': portworx_volume if portworx_volume is not None else PortworxVolumeSource(),
+            'quobyte': quobyte if quobyte is not None else QuobyteVolumeSource(),
+            'rbd': rbd if rbd is not None else RBDPersistentVolumeSource(),
+            'scaleIO': scale_io if scale_io is not None else ScaleIOPersistentVolumeSource(),
+            'storageClassName': storage_class_name if storage_class_name is not None else '',
+            'storageos': storageos if storageos is not None else StorageOSPersistentVolumeSource(),
+            'volumeMode': volume_mode if volume_mode is not None else '',
+            'vsphereVolume': vsphere_volume if vsphere_volume is not None else VsphereVirtualDiskVolumeSource(),
 
         }
         self._types = {
@@ -13392,9 +14261,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cinder(self) -> 'CinderPersistentVolumeSource':
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('cinder')
 
@@ -13402,9 +14270,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cinder(self, value: typing.Union['CinderPersistentVolumeSource', dict]):
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         if isinstance(value, dict):
             value = CinderPersistentVolumeSource().from_dict(value)
@@ -13537,8 +14404,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         Glusterfs represents a Glusterfs volume that is attached to
         a host and exposed to the pod. Provisioned by an admin. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/glusterf
-        s/README.md
+        info: https://examples.k8s.io/volumes/glusterfs/README.md
         """
         return self._properties.get('glusterfs')
 
@@ -13547,8 +14413,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         Glusterfs represents a Glusterfs volume that is attached to
         a host and exposed to the pod. Provisioned by an admin. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/glusterf
-        s/README.md
+        info: https://examples.k8s.io/volumes/glusterfs/README.md
         """
         if isinstance(value, dict):
             value = GlusterfsPersistentVolumeSource().from_dict(value)
@@ -13767,7 +14632,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         return self._properties.get('rbd')
 
@@ -13776,7 +14641,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         if isinstance(value, dict):
             value = RBDPersistentVolumeSource().from_dict(value)
@@ -13823,8 +14688,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         StorageOS represents a StorageOS volume that is attached to
         the kubelet's host machine and mounted into the pod More
-        info: https://releases.k8s.io/HEAD/examples/volumes/storageo
-        s/README.md
+        info: https://examples.k8s.io/volumes/storageos/README.md
         """
         return self._properties.get('storageos')
 
@@ -13833,8 +14697,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         StorageOS represents a StorageOS volume that is attached to
         the kubelet's host machine and mounted into the pod More
-        info: https://releases.k8s.io/HEAD/examples/volumes/storageo
-        s/README.md
+        info: https://examples.k8s.io/volumes/storageos/README.md
         """
         if isinstance(value, dict):
             value = StorageOSPersistentVolumeSource().from_dict(value)
@@ -13903,9 +14766,9 @@ class PersistentVolumeStatus(_kuber_definitions.Definition):
             kind='PersistentVolumeStatus'
         )
         self._properties = {
-            'message': message or '',
-            'phase': phase or '',
-            'reason': reason or '',
+            'message': message if message is not None else '',
+            'phase': phase if phase is not None else '',
+            'reason': reason if reason is not None else '',
 
         }
         self._types = {
@@ -13992,8 +14855,8 @@ class PhotonPersistentDiskVolumeSource(_kuber_definitions.Definition):
             kind='PhotonPersistentDiskVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'pdID': pd_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'pdID': pd_id if pd_id is not None else '',
 
         }
         self._types = {
@@ -14060,9 +14923,9 @@ class Pod(_kuber_definitions.Resource):
             kind='Pod'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodSpec(),
-            'status': status or PodStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodSpec(),
+            'status': status if status is not None else PodStatus(),
 
         }
         self._types = {
@@ -14078,8 +14941,8 @@ class Pod(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -14087,8 +14950,8 @@ class Pod(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -14098,8 +14961,8 @@ class Pod(_kuber_definitions.Resource):
     def spec(self) -> 'PodSpec':
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -14107,8 +14970,8 @@ class Pod(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['PodSpec', dict]):
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodSpec().from_dict(value)
@@ -14119,8 +14982,8 @@ class Pod(_kuber_definitions.Resource):
         """
         Most recently observed status of the pod. This data may not
         be up to date. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -14129,8 +14992,8 @@ class Pod(_kuber_definitions.Resource):
         """
         Most recently observed status of the pod. This data may not
         be up to date. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodStatus().from_dict(value)
@@ -14151,6 +15014,7 @@ class Pod(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -14175,6 +15039,7 @@ class Pod(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -14399,8 +15264,8 @@ class PodAffinity(_kuber_definitions.Definition):
             kind='PodAffinity'
         )
         self._properties = {
-            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution or [],
-            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution or [],
+            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution if preferred_during_scheduling_ignored_during_execution is not None else [],
+            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution if required_during_scheduling_ignored_during_execution is not None else [],
 
         }
         self._types = {
@@ -14519,9 +15384,9 @@ class PodAffinityTerm(_kuber_definitions.Definition):
             kind='PodAffinityTerm'
         )
         self._properties = {
-            'labelSelector': label_selector or LabelSelector(),
-            'namespaces': namespaces or [],
-            'topologyKey': topology_key or '',
+            'labelSelector': label_selector if label_selector is not None else LabelSelector(),
+            'namespaces': namespaces if namespaces is not None else [],
+            'topologyKey': topology_key if topology_key is not None else '',
 
         }
         self._types = {
@@ -14613,8 +15478,8 @@ class PodAntiAffinity(_kuber_definitions.Definition):
             kind='PodAntiAffinity'
         )
         self._properties = {
-            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution or [],
-            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution or [],
+            'preferredDuringSchedulingIgnoredDuringExecution': preferred_during_scheduling_ignored_during_execution if preferred_during_scheduling_ignored_during_execution is not None else [],
+            'requiredDuringSchedulingIgnoredDuringExecution': required_during_scheduling_ignored_during_execution if required_during_scheduling_ignored_during_execution is not None else [],
 
         }
         self._types = {
@@ -14731,12 +15596,12 @@ class PodCondition(_kuber_definitions.Definition):
             kind='PodCondition'
         )
         self._properties = {
-            'lastProbeTime': last_probe_time or None,
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastProbeTime': last_probe_time if last_probe_time is not None else None,
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -14888,9 +15753,9 @@ class PodDNSConfig(_kuber_definitions.Definition):
             kind='PodDNSConfig'
         )
         self._properties = {
-            'nameservers': nameservers or [],
-            'options': options or [],
-            'searches': searches or [],
+            'nameservers': nameservers if nameservers is not None else [],
+            'options': options if options is not None else [],
+            'searches': searches if searches is not None else [],
 
         }
         self._types = {
@@ -14987,8 +15852,8 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
             kind='PodDNSConfigOption'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -15032,6 +15897,53 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
         return False
 
 
+class PodIP(_kuber_definitions.Definition):
+    """
+    IP address information for entries in the (plural) PodIPs
+    field. Each entry includes:
+       IP: An IP address allocated
+    to the pod. Routable at least within the cluster.
+    """
+
+    def __init__(
+            self,
+            ip: str = None,
+    ):
+        """Create PodIP instance."""
+        super(PodIP, self).__init__(
+            api_version='core/v1',
+            kind='PodIP'
+        )
+        self._properties = {
+            'ip': ip if ip is not None else '',
+
+        }
+        self._types = {
+            'ip': (str, None),
+
+        }
+
+    @property
+    def ip(self) -> str:
+        """
+        ip is an IP address (IPv4 or IPv6) assigned to the pod
+        """
+        return self._properties.get('ip')
+
+    @ip.setter
+    def ip(self, value: str):
+        """
+        ip is an IP address (IPv4 or IPv6) assigned to the pod
+        """
+        self._properties['ip'] = value
+
+    def __enter__(self) -> 'PodIP':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class PodList(_kuber_definitions.Collection):
     """
     PodList is a list of Pods.
@@ -15048,8 +15960,8 @@ class PodList(_kuber_definitions.Collection):
             kind='PodList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -15064,8 +15976,8 @@ class PodList(_kuber_definitions.Collection):
     def items(self) -> typing.List['Pod']:
         """
         List of pods. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md
         """
         return self._properties.get('items')
 
@@ -15076,8 +15988,8 @@ class PodList(_kuber_definitions.Collection):
     ):
         """
         List of pods. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md
         """
         cleaned = []
         for item in value:
@@ -15090,8 +16002,8 @@ class PodList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -15099,8 +16011,8 @@ class PodList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -15141,7 +16053,7 @@ class PodReadinessGate(_kuber_definitions.Definition):
             kind='PodReadinessGate'
         )
         self._properties = {
-            'conditionType': condition_type or '',
+            'conditionType': condition_type if condition_type is not None else '',
 
         }
         self._types = {
@@ -15198,14 +16110,14 @@ class PodSecurityContext(_kuber_definitions.Definition):
             kind='PodSecurityContext'
         )
         self._properties = {
-            'fsGroup': fs_group or None,
-            'runAsGroup': run_as_group or None,
-            'runAsNonRoot': run_as_non_root or None,
-            'runAsUser': run_as_user or None,
-            'seLinuxOptions': se_linux_options or SELinuxOptions(),
-            'supplementalGroups': supplemental_groups or [],
-            'sysctls': sysctls or [],
-            'windowsOptions': windows_options or WindowsSecurityContextOptions(),
+            'fsGroup': fs_group if fs_group is not None else None,
+            'runAsGroup': run_as_group if run_as_group is not None else None,
+            'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
+            'runAsUser': run_as_user if run_as_user is not None else None,
+            'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
+            'supplementalGroups': supplemental_groups if supplemental_groups is not None else [],
+            'sysctls': sysctls if sysctls is not None else [],
+            'windowsOptions': windows_options if windows_options is not None else WindowsSecurityContextOptions(),
 
         }
         self._types = {
@@ -15401,14 +16313,22 @@ class PodSecurityContext(_kuber_definitions.Definition):
     @property
     def windows_options(self) -> 'WindowsSecurityContextOptions':
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options within a container's
+        SecurityContext will be used. If set in both SecurityContext
+        and PodSecurityContext, the value specified in
+        SecurityContext takes precedence.
         """
         return self._properties.get('windowsOptions')
 
     @windows_options.setter
     def windows_options(self, value: typing.Union['WindowsSecurityContextOptions', dict]):
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options within a container's
+        SecurityContext will be used. If set in both SecurityContext
+        and PodSecurityContext, the value specified in
+        SecurityContext takes precedence.
         """
         if isinstance(value, dict):
             value = WindowsSecurityContextOptions().from_dict(value)
@@ -15435,6 +16355,7 @@ class PodSpec(_kuber_definitions.Definition):
             dns_config: 'PodDNSConfig' = None,
             dns_policy: str = None,
             enable_service_links: bool = None,
+            ephemeral_containers: typing.List['EphemeralContainer'] = None,
             host_aliases: typing.List['HostAlias'] = None,
             host_ipc: bool = None,
             host_network: bool = None,
@@ -15444,6 +16365,7 @@ class PodSpec(_kuber_definitions.Definition):
             init_containers: typing.List['Container'] = None,
             node_name: str = None,
             node_selector: dict = None,
+            overhead: dict = None,
             preemption_policy: str = None,
             priority: int = None,
             priority_class_name: str = None,
@@ -15458,6 +16380,7 @@ class PodSpec(_kuber_definitions.Definition):
             subdomain: str = None,
             termination_grace_period_seconds: int = None,
             tolerations: typing.List['Toleration'] = None,
+            topology_spread_constraints: typing.List['TopologySpreadConstraint'] = None,
             volumes: typing.List['Volume'] = None,
     ):
         """Create PodSpec instance."""
@@ -15466,37 +16389,40 @@ class PodSpec(_kuber_definitions.Definition):
             kind='PodSpec'
         )
         self._properties = {
-            'activeDeadlineSeconds': active_deadline_seconds or None,
-            'affinity': affinity or Affinity(),
-            'automountServiceAccountToken': automount_service_account_token or None,
-            'containers': containers or [],
-            'dnsConfig': dns_config or PodDNSConfig(),
-            'dnsPolicy': dns_policy or '',
-            'enableServiceLinks': enable_service_links or None,
-            'hostAliases': host_aliases or [],
-            'hostIPC': host_ipc or None,
-            'hostNetwork': host_network or None,
-            'hostPID': host_pid or None,
-            'hostname': hostname or '',
-            'imagePullSecrets': image_pull_secrets or [],
-            'initContainers': init_containers or [],
-            'nodeName': node_name or '',
-            'nodeSelector': node_selector or {},
-            'preemptionPolicy': preemption_policy or '',
-            'priority': priority or None,
-            'priorityClassName': priority_class_name or '',
-            'readinessGates': readiness_gates or [],
-            'restartPolicy': restart_policy or '',
-            'runtimeClassName': runtime_class_name or '',
-            'schedulerName': scheduler_name or '',
-            'securityContext': security_context or PodSecurityContext(),
-            'serviceAccount': service_account or '',
-            'serviceAccountName': service_account_name or '',
-            'shareProcessNamespace': share_process_namespace or None,
-            'subdomain': subdomain or '',
-            'terminationGracePeriodSeconds': termination_grace_period_seconds or None,
-            'tolerations': tolerations or [],
-            'volumes': volumes or [],
+            'activeDeadlineSeconds': active_deadline_seconds if active_deadline_seconds is not None else None,
+            'affinity': affinity if affinity is not None else Affinity(),
+            'automountServiceAccountToken': automount_service_account_token if automount_service_account_token is not None else None,
+            'containers': containers if containers is not None else [],
+            'dnsConfig': dns_config if dns_config is not None else PodDNSConfig(),
+            'dnsPolicy': dns_policy if dns_policy is not None else '',
+            'enableServiceLinks': enable_service_links if enable_service_links is not None else None,
+            'ephemeralContainers': ephemeral_containers if ephemeral_containers is not None else [],
+            'hostAliases': host_aliases if host_aliases is not None else [],
+            'hostIPC': host_ipc if host_ipc is not None else None,
+            'hostNetwork': host_network if host_network is not None else None,
+            'hostPID': host_pid if host_pid is not None else None,
+            'hostname': hostname if hostname is not None else '',
+            'imagePullSecrets': image_pull_secrets if image_pull_secrets is not None else [],
+            'initContainers': init_containers if init_containers is not None else [],
+            'nodeName': node_name if node_name is not None else '',
+            'nodeSelector': node_selector if node_selector is not None else {},
+            'overhead': overhead if overhead is not None else {},
+            'preemptionPolicy': preemption_policy if preemption_policy is not None else '',
+            'priority': priority if priority is not None else None,
+            'priorityClassName': priority_class_name if priority_class_name is not None else '',
+            'readinessGates': readiness_gates if readiness_gates is not None else [],
+            'restartPolicy': restart_policy if restart_policy is not None else '',
+            'runtimeClassName': runtime_class_name if runtime_class_name is not None else '',
+            'schedulerName': scheduler_name if scheduler_name is not None else '',
+            'securityContext': security_context if security_context is not None else PodSecurityContext(),
+            'serviceAccount': service_account if service_account is not None else '',
+            'serviceAccountName': service_account_name if service_account_name is not None else '',
+            'shareProcessNamespace': share_process_namespace if share_process_namespace is not None else None,
+            'subdomain': subdomain if subdomain is not None else '',
+            'terminationGracePeriodSeconds': termination_grace_period_seconds if termination_grace_period_seconds is not None else None,
+            'tolerations': tolerations if tolerations is not None else [],
+            'topologySpreadConstraints': topology_spread_constraints if topology_spread_constraints is not None else [],
+            'volumes': volumes if volumes is not None else [],
 
         }
         self._types = {
@@ -15507,6 +16433,7 @@ class PodSpec(_kuber_definitions.Definition):
             'dnsConfig': (PodDNSConfig, None),
             'dnsPolicy': (str, None),
             'enableServiceLinks': (bool, None),
+            'ephemeralContainers': (list, EphemeralContainer),
             'hostAliases': (list, HostAlias),
             'hostIPC': (bool, None),
             'hostNetwork': (bool, None),
@@ -15516,6 +16443,7 @@ class PodSpec(_kuber_definitions.Definition):
             'initContainers': (list, Container),
             'nodeName': (str, None),
             'nodeSelector': (dict, None),
+            'overhead': (dict, None),
             'preemptionPolicy': (str, None),
             'priority': (int, None),
             'priorityClassName': (str, None),
@@ -15530,6 +16458,7 @@ class PodSpec(_kuber_definitions.Definition):
             'subdomain': (str, None),
             'terminationGracePeriodSeconds': (int, None),
             'tolerations': (list, Toleration),
+            'topologySpreadConstraints': (list, TopologySpreadConstraint),
             'volumes': (list, Volume),
 
         }
@@ -15677,6 +16606,44 @@ class PodSpec(_kuber_definitions.Definition):
         self._properties['enableServiceLinks'] = value
 
     @property
+    def ephemeral_containers(self) -> typing.List['EphemeralContainer']:
+        """
+        List of ephemeral containers run in this pod. Ephemeral
+        containers may be run in an existing pod to perform user-
+        initiated actions such as debugging. This list cannot be
+        specified when creating a pod, and it cannot be modified by
+        updating the pod spec. In order to add an ephemeral
+        container to an existing pod, use the pod's
+        ephemeralcontainers subresource. This field is alpha-level
+        and is only honored by servers that enable the
+        EphemeralContainers feature.
+        """
+        return self._properties.get('ephemeralContainers')
+
+    @ephemeral_containers.setter
+    def ephemeral_containers(
+            self,
+            value: typing.Union[typing.List['EphemeralContainer'], typing.List[dict]]
+    ):
+        """
+        List of ephemeral containers run in this pod. Ephemeral
+        containers may be run in an existing pod to perform user-
+        initiated actions such as debugging. This list cannot be
+        specified when creating a pod, and it cannot be modified by
+        updating the pod spec. In order to add an ephemeral
+        container to an existing pod, use the pod's
+        ephemeralcontainers subresource. This field is alpha-level
+        and is only honored by servers that enable the
+        EphemeralContainers feature.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = EphemeralContainer().from_dict(item)
+            cleaned.append(item)
+        self._properties['ephemeralContainers'] = cleaned
+
+    @property
     def host_aliases(self) -> typing.List['HostAlias']:
         """
         HostAliases is an optional list of hosts and IPs that will
@@ -15810,13 +16777,13 @@ class PodSpec(_kuber_definitions.Definition):
         restartPolicy. The name for an init container or normal
         container must be unique among all containers. Init
         containers may not have Lifecycle actions, Readiness probes,
-        or Liveness probes. The resourceRequirements of an init
-        container are taken into account during scheduling by
-        finding the highest request/limit for each resource type,
-        and then using the max of of that value or the sum of the
-        normal containers. Limits are applied to init containers in
-        a similar fashion. Init containers cannot currently be added
-        or removed. Cannot be updated. More info:
+        Liveness probes, or Startup probes. The resourceRequirements
+        of an init container are taken into account during
+        scheduling by finding the highest request/limit for each
+        resource type, and then using the max of of that value or
+        the sum of the normal containers. Limits are applied to init
+        containers in a similar fashion. Init containers cannot
+        currently be added or removed. Cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/init-
         containers/
         """
@@ -15835,13 +16802,13 @@ class PodSpec(_kuber_definitions.Definition):
         restartPolicy. The name for an init container or normal
         container must be unique among all containers. Init
         containers may not have Lifecycle actions, Readiness probes,
-        or Liveness probes. The resourceRequirements of an init
-        container are taken into account during scheduling by
-        finding the highest request/limit for each resource type,
-        and then using the max of of that value or the sum of the
-        normal containers. Limits are applied to init containers in
-        a similar fashion. Init containers cannot currently be added
-        or removed. Cannot be updated. More info:
+        Liveness probes, or Startup probes. The resourceRequirements
+        of an init container are taken into account during
+        scheduling by finding the highest request/limit for each
+        resource type, and then using the max of of that value or
+        the sum of the normal containers. Limits are applied to init
+        containers in a similar fashion. Init containers cannot
+        currently be added or removed. Cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/init-
         containers/
         """
@@ -15893,6 +16860,48 @@ class PodSpec(_kuber_definitions.Definition):
         pod-node/
         """
         self._properties['nodeSelector'] = value
+
+    @property
+    def overhead(self) -> dict:
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. This field will be
+        autopopulated at admission time by the RuntimeClass
+        admission controller. If the RuntimeClass admission
+        controller is enabled, overhead must not be set in Pod
+        create requests. The RuntimeClass admission controller will
+        reject Pod create requests which have the overhead already
+        set. If RuntimeClass is configured and selected in the
+        PodSpec, Overhead will be set to the value defined in the
+        corresponding RuntimeClass, otherwise it will remain unset
+        and treated as zero. More info:
+        https://git.k8s.io/enhancements/keps/sig-node/20190226-pod-
+        overhead.md This field is alpha-level as of Kubernetes
+        v1.16, and is only honored by servers that enable the
+        PodOverhead feature.
+        """
+        return self._properties.get('overhead')
+
+    @overhead.setter
+    def overhead(self, value: dict):
+        """
+        Overhead represents the resource overhead associated with
+        running a pod for a given RuntimeClass. This field will be
+        autopopulated at admission time by the RuntimeClass
+        admission controller. If the RuntimeClass admission
+        controller is enabled, overhead must not be set in Pod
+        create requests. The RuntimeClass admission controller will
+        reject Pod create requests which have the overhead already
+        set. If RuntimeClass is configured and selected in the
+        PodSpec, Overhead will be set to the value defined in the
+        corresponding RuntimeClass, otherwise it will remain unset
+        and treated as zero. More info:
+        https://git.k8s.io/enhancements/keps/sig-node/20190226-pod-
+        overhead.md This field is alpha-level as of Kubernetes
+        v1.16, and is only honored by servers that enable the
+        PodOverhead feature.
+        """
+        self._properties['overhead'] = value
 
     @property
     def preemption_policy(self) -> str:
@@ -16227,6 +17236,38 @@ class PodSpec(_kuber_definitions.Definition):
         self._properties['tolerations'] = cleaned
 
     @property
+    def topology_spread_constraints(self) -> typing.List['TopologySpreadConstraint']:
+        """
+        TopologySpreadConstraints describes how a group of pods
+        ought to spread across topology domains. Scheduler will
+        schedule pods in a way which abides by the constraints. This
+        field is alpha-level and is only honored by clusters that
+        enables the EvenPodsSpread feature. All
+        topologySpreadConstraints are ANDed.
+        """
+        return self._properties.get('topologySpreadConstraints')
+
+    @topology_spread_constraints.setter
+    def topology_spread_constraints(
+            self,
+            value: typing.Union[typing.List['TopologySpreadConstraint'], typing.List[dict]]
+    ):
+        """
+        TopologySpreadConstraints describes how a group of pods
+        ought to spread across topology domains. Scheduler will
+        schedule pods in a way which abides by the constraints. This
+        field is alpha-level and is only honored by clusters that
+        enables the EvenPodsSpread feature. All
+        topologySpreadConstraints are ANDed.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = TopologySpreadConstraint().from_dict(item)
+            cleaned.append(item)
+        self._properties['topologySpreadConstraints'] = cleaned
+
+    @property
     def volumes(self) -> typing.List['Volume']:
         """
         List of volumes that can be mounted by containers belonging
@@ -16267,6 +17308,7 @@ class PodSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -16291,6 +17333,7 @@ class PodSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -16341,12 +17384,14 @@ class PodStatus(_kuber_definitions.Definition):
             self,
             conditions: typing.List['PodCondition'] = None,
             container_statuses: typing.List['ContainerStatus'] = None,
+            ephemeral_container_statuses: typing.List['ContainerStatus'] = None,
             host_ip: str = None,
             init_container_statuses: typing.List['ContainerStatus'] = None,
             message: str = None,
             nominated_node_name: str = None,
             phase: str = None,
             pod_ip: str = None,
+            pod_ips: typing.List['PodIP'] = None,
             qos_class: str = None,
             reason: str = None,
             start_time: str = None,
@@ -16357,28 +17402,32 @@ class PodStatus(_kuber_definitions.Definition):
             kind='PodStatus'
         )
         self._properties = {
-            'conditions': conditions or [],
-            'containerStatuses': container_statuses or [],
-            'hostIP': host_ip or '',
-            'initContainerStatuses': init_container_statuses or [],
-            'message': message or '',
-            'nominatedNodeName': nominated_node_name or '',
-            'phase': phase or '',
-            'podIP': pod_ip or '',
-            'qosClass': qos_class or '',
-            'reason': reason or '',
-            'startTime': start_time or None,
+            'conditions': conditions if conditions is not None else [],
+            'containerStatuses': container_statuses if container_statuses is not None else [],
+            'ephemeralContainerStatuses': ephemeral_container_statuses if ephemeral_container_statuses is not None else [],
+            'hostIP': host_ip if host_ip is not None else '',
+            'initContainerStatuses': init_container_statuses if init_container_statuses is not None else [],
+            'message': message if message is not None else '',
+            'nominatedNodeName': nominated_node_name if nominated_node_name is not None else '',
+            'phase': phase if phase is not None else '',
+            'podIP': pod_ip if pod_ip is not None else '',
+            'podIPs': pod_ips if pod_ips is not None else [],
+            'qosClass': qos_class if qos_class is not None else '',
+            'reason': reason if reason is not None else '',
+            'startTime': start_time if start_time is not None else None,
 
         }
         self._types = {
             'conditions': (list, PodCondition),
             'containerStatuses': (list, ContainerStatus),
+            'ephemeralContainerStatuses': (list, ContainerStatus),
             'hostIP': (str, None),
             'initContainerStatuses': (list, ContainerStatus),
             'message': (str, None),
             'nominatedNodeName': (str, None),
             'phase': (str, None),
             'podIP': (str, None),
+            'podIPs': (list, PodIP),
             'qosClass': (str, None),
             'reason': (str, None),
             'startTime': (str, None),
@@ -16440,6 +17489,32 @@ class PodStatus(_kuber_definitions.Definition):
                 item = ContainerStatus().from_dict(item)
             cleaned.append(item)
         self._properties['containerStatuses'] = cleaned
+
+    @property
+    def ephemeral_container_statuses(self) -> typing.List['ContainerStatus']:
+        """
+        Status for any ephemeral containers that have run in this
+        pod. This field is alpha-level and is only populated by
+        servers that enable the EphemeralContainers feature.
+        """
+        return self._properties.get('ephemeralContainerStatuses')
+
+    @ephemeral_container_statuses.setter
+    def ephemeral_container_statuses(
+            self,
+            value: typing.Union[typing.List['ContainerStatus'], typing.List[dict]]
+    ):
+        """
+        Status for any ephemeral containers that have run in this
+        pod. This field is alpha-level and is only populated by
+        servers that enable the EphemeralContainers feature.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = ContainerStatus().from_dict(item)
+            cleaned.append(item)
+        self._properties['ephemeralContainerStatuses'] = cleaned
 
     @property
     def host_ip(self) -> str:
@@ -16618,6 +17693,36 @@ class PodStatus(_kuber_definitions.Definition):
         self._properties['podIP'] = value
 
     @property
+    def pod_ips(self) -> typing.List['PodIP']:
+        """
+        podIPs holds the IP addresses allocated to the pod. If this
+        field is specified, the 0th entry must match the podIP
+        field. Pods may be allocated at most 1 value for each of
+        IPv4 and IPv6. This list is empty if no IPs have been
+        allocated yet.
+        """
+        return self._properties.get('podIPs')
+
+    @pod_ips.setter
+    def pod_ips(
+            self,
+            value: typing.Union[typing.List['PodIP'], typing.List[dict]]
+    ):
+        """
+        podIPs holds the IP addresses allocated to the pod. If this
+        field is specified, the 0th entry must match the podIP
+        field. Pods may be allocated at most 1 value for each of
+        IPv4 and IPv6. This list is empty if no IPs have been
+        allocated yet.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = PodIP().from_dict(item)
+            cleaned.append(item)
+        self._properties['podIPs'] = cleaned
+
+    @property
     def qos_class(self) -> str:
         """
         The Quality of Service (QOS) classification assigned to the
@@ -16704,8 +17809,8 @@ class PodTemplate(_kuber_definitions.Resource):
             kind='PodTemplate'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'template': template or PodTemplateSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'template': template if template is not None else PodTemplateSpec(),
 
         }
         self._types = {
@@ -16720,8 +17825,8 @@ class PodTemplate(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -16729,8 +17834,8 @@ class PodTemplate(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -16741,8 +17846,8 @@ class PodTemplate(_kuber_definitions.Resource):
         """
         Template defines the pods that will be created from this pod
         template.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('template')
 
@@ -16751,8 +17856,8 @@ class PodTemplate(_kuber_definitions.Resource):
         """
         Template defines the pods that will be created from this pod
         template.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodTemplateSpec().from_dict(value)
@@ -16773,6 +17878,7 @@ class PodTemplate(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -16797,6 +17903,7 @@ class PodTemplate(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -16975,8 +18082,8 @@ class PodTemplateList(_kuber_definitions.Collection):
             kind='PodTemplateList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -17013,8 +18120,8 @@ class PodTemplateList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -17022,8 +18129,8 @@ class PodTemplateList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -17066,8 +18173,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
             kind='PodTemplateSpec'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or PodSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PodSpec(),
 
         }
         self._types = {
@@ -17080,8 +18187,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -17089,8 +18196,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -17100,8 +18207,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def spec(self) -> 'PodSpec':
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -17109,8 +18216,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
     def spec(self, value: typing.Union['PodSpec', dict]):
         """
         Specification of the desired behavior of the pod. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PodSpec().from_dict(value)
@@ -17131,6 +18238,7 @@ class PodTemplateSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -17155,6 +18263,7 @@ class PodTemplateSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -17210,9 +18319,9 @@ class PortworxVolumeSource(_kuber_definitions.Definition):
             kind='PortworxVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'volumeID': volume_id or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'volumeID': volume_id if volume_id is not None else '',
 
         }
         self._types = {
@@ -17297,8 +18406,8 @@ class PreferredSchedulingTerm(_kuber_definitions.Definition):
             kind='PreferredSchedulingTerm'
         )
         self._properties = {
-            'preference': preference or NodeSelectorTerm(),
-            'weight': weight or None,
+            'preference': preference if preference is not None else NodeSelectorTerm(),
+            'weight': weight if weight is not None else None,
 
         }
         self._types = {
@@ -17372,14 +18481,14 @@ class Probe(_kuber_definitions.Definition):
             kind='Probe'
         )
         self._properties = {
-            'exec': exec_ or ExecAction(),
-            'failureThreshold': failure_threshold or None,
-            'httpGet': http_get or HTTPGetAction(),
-            'initialDelaySeconds': initial_delay_seconds or None,
-            'periodSeconds': period_seconds or None,
-            'successThreshold': success_threshold or None,
-            'tcpSocket': tcp_socket or TCPSocketAction(),
-            'timeoutSeconds': timeout_seconds or None,
+            'exec': exec_ if exec_ is not None else ExecAction(),
+            'failureThreshold': failure_threshold if failure_threshold is not None else None,
+            'httpGet': http_get if http_get is not None else HTTPGetAction(),
+            'initialDelaySeconds': initial_delay_seconds if initial_delay_seconds is not None else None,
+            'periodSeconds': period_seconds if period_seconds is not None else None,
+            'successThreshold': success_threshold if success_threshold is not None else None,
+            'tcpSocket': tcp_socket if tcp_socket is not None else TCPSocketAction(),
+            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
 
         }
         self._types = {
@@ -17487,7 +18596,7 @@ class Probe(_kuber_definitions.Definition):
         """
         Minimum consecutive successes for the probe to be considered
         successful after having failed. Defaults to 1. Must be 1 for
-        liveness. Minimum value is 1.
+        liveness and startup. Minimum value is 1.
         """
         return self._properties.get('successThreshold')
 
@@ -17496,7 +18605,7 @@ class Probe(_kuber_definitions.Definition):
         """
         Minimum consecutive successes for the probe to be considered
         successful after having failed. Defaults to 1. Must be 1 for
-        liveness. Minimum value is 1.
+        liveness and startup. Minimum value is 1.
         """
         self._properties['successThreshold'] = value
 
@@ -17561,8 +18670,8 @@ class ProjectedVolumeSource(_kuber_definitions.Definition):
             kind='ProjectedVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'sources': sources or [],
+            'defaultMode': default_mode if default_mode is not None else None,
+            'sources': sources if sources is not None else [],
 
         }
         self._types = {
@@ -17644,12 +18753,12 @@ class QuobyteVolumeSource(_kuber_definitions.Definition):
             kind='QuobyteVolumeSource'
         )
         self._properties = {
-            'group': group or '',
-            'readOnly': read_only or None,
-            'registry': registry or '',
-            'tenant': tenant or '',
-            'user': user or '',
-            'volume': volume or '',
+            'group': group if group is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'registry': registry if registry is not None else '',
+            'tenant': tenant if tenant is not None else '',
+            'user': user if user is not None else '',
+            'volume': volume if volume is not None else '',
 
         }
         self._types = {
@@ -17791,14 +18900,14 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
             kind='RBDPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'image': image or '',
-            'keyring': keyring or '',
-            'monitors': monitors or [],
-            'pool': pool or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'user': user or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'image': image if image is not None else '',
+            'keyring': keyring if keyring is not None else '',
+            'monitors': monitors if monitors is not None else [],
+            'pool': pool if pool is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -17838,16 +18947,16 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     @property
     def image(self) -> str:
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('image')
 
     @image.setter
     def image(self, value: str):
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['image'] = value
 
@@ -17855,8 +18964,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def keyring(self) -> str:
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('keyring')
 
@@ -17864,42 +18973,40 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def keyring(self, value: str):
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['keyring'] = value
 
     @property
     def monitors(self) -> typing.List[str]:
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('monitors')
 
     @monitors.setter
     def monitors(self, value: typing.List[str]):
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['monitors'] = value
 
     @property
     def pool(self) -> str:
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('pool')
 
     @pool.setter
     def pool(self, value: str):
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['pool'] = value
 
@@ -17907,8 +19014,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('readOnly')
 
@@ -17916,8 +19023,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['readOnly'] = value
 
@@ -17925,9 +19032,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'SecretReference':
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('secretRef')
 
@@ -17935,9 +19041,8 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['SecretReference', dict]):
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         if isinstance(value, dict):
             value = SecretReference().from_dict(value)
@@ -17946,18 +19051,16 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
     @property
     def user(self) -> str:
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('user')
 
     @user.setter
     def user(self, value: str):
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['user'] = value
 
@@ -17992,14 +19095,14 @@ class RBDVolumeSource(_kuber_definitions.Definition):
             kind='RBDVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'image': image or '',
-            'keyring': keyring or '',
-            'monitors': monitors or [],
-            'pool': pool or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'user': user or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'image': image if image is not None else '',
+            'keyring': keyring if keyring is not None else '',
+            'monitors': monitors if monitors is not None else [],
+            'pool': pool if pool is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -18039,16 +19142,16 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     @property
     def image(self) -> str:
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('image')
 
     @image.setter
     def image(self, value: str):
         """
-        The rados image name. More info: https://releases.k8s.io/HEA
-        D/examples/volumes/rbd/README.md#how-to-use-it
+        The rados image name. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['image'] = value
 
@@ -18056,8 +19159,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def keyring(self) -> str:
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('keyring')
 
@@ -18065,42 +19168,40 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def keyring(self, value: str):
         """
         Keyring is the path to key ring for RBDUser. Default is
-        /etc/ceph/keyring. More info: https://releases.k8s.io/HEAD/e
-        xamples/volumes/rbd/README.md#how-to-use-it
+        /etc/ceph/keyring. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['keyring'] = value
 
     @property
     def monitors(self) -> typing.List[str]:
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('monitors')
 
     @monitors.setter
     def monitors(self, value: typing.List[str]):
         """
-        A collection of Ceph monitors. More info: https://releases.k
-        8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        A collection of Ceph monitors. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['monitors'] = value
 
     @property
     def pool(self) -> str:
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('pool')
 
     @pool.setter
     def pool(self, value: str):
         """
-        The rados pool name. Default is rbd. More info: https://rele
-        ases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-
-        it
+        The rados pool name. Default is rbd. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['pool'] = value
 
@@ -18108,8 +19209,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def read_only(self) -> bool:
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('readOnly')
 
@@ -18117,8 +19218,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def read_only(self, value: bool):
         """
         ReadOnly here will force the ReadOnly setting in
-        VolumeMounts. Defaults to false. More info: https://releases
-        .k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-use-it
+        VolumeMounts. Defaults to false. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['readOnly'] = value
 
@@ -18126,9 +19227,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self) -> 'LocalObjectReference':
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('secretRef')
 
@@ -18136,9 +19236,8 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     def secret_ref(self, value: typing.Union['LocalObjectReference', dict]):
         """
         SecretRef is name of the authentication secret for RBDUser.
-        If provided overrides keyring. Default is nil. More info: ht
-        tps://releases.k8s.io/HEAD/examples/volumes/rbd/README.md#ho
-        w-to-use-it
+        If provided overrides keyring. Default is nil. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         if isinstance(value, dict):
             value = LocalObjectReference().from_dict(value)
@@ -18147,18 +19246,16 @@ class RBDVolumeSource(_kuber_definitions.Definition):
     @property
     def user(self) -> str:
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         return self._properties.get('user')
 
     @user.setter
     def user(self, value: str):
         """
-        The rados user name. Default is admin. More info: https://re
-        leases.k8s.io/HEAD/examples/volumes/rbd/README.md#how-to-
-        use-it
+        The rados user name. Default is admin. More info:
+        https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
         """
         self._properties['user'] = value
 
@@ -18187,9 +19284,9 @@ class ReplicationController(_kuber_definitions.Resource):
             kind='ReplicationController'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ReplicationControllerSpec(),
-            'status': status or ReplicationControllerStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ReplicationControllerSpec(),
+            'status': status if status is not None else ReplicationControllerStatus(),
 
         }
         self._types = {
@@ -18207,8 +19304,8 @@ class ReplicationController(_kuber_definitions.Resource):
         If the Labels of a ReplicationController are empty, they are
         defaulted to be the same as the Pod(s) that the replication
         controller manages. Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -18218,8 +19315,8 @@ class ReplicationController(_kuber_definitions.Resource):
         If the Labels of a ReplicationController are empty, they are
         defaulted to be the same as the Pod(s) that the replication
         controller manages. Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -18230,8 +19327,8 @@ class ReplicationController(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the replication controller. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -18240,8 +19337,8 @@ class ReplicationController(_kuber_definitions.Resource):
         """
         Spec defines the specification of the desired behavior of
         the replication controller. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ReplicationControllerSpec().from_dict(value)
@@ -18253,8 +19350,8 @@ class ReplicationController(_kuber_definitions.Resource):
         Status is the most recently observed status of the
         replication controller. This data may be out of date by some
         window of time. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -18264,8 +19361,8 @@ class ReplicationController(_kuber_definitions.Resource):
         Status is the most recently observed status of the
         replication controller. This data may be out of date by some
         window of time. Populated by the system. Read-only. More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ReplicationControllerStatus().from_dict(value)
@@ -18286,6 +19383,7 @@ class ReplicationController(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -18310,6 +19408,7 @@ class ReplicationController(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -18537,11 +19636,11 @@ class ReplicationControllerCondition(_kuber_definitions.Definition):
             kind='ReplicationControllerCondition'
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time or None,
-            'message': message or '',
-            'reason': reason or '',
-            'status': status or '',
-            'type': type_ or '',
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -18658,8 +19757,8 @@ class ReplicationControllerList(_kuber_definitions.Collection):
             kind='ReplicationControllerList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -18700,8 +19799,8 @@ class ReplicationControllerList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -18709,8 +19808,8 @@ class ReplicationControllerList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -18755,10 +19854,10 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
             kind='ReplicationControllerSpec'
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds or None,
-            'replicas': replicas or None,
-            'selector': selector or {},
-            'template': template or PodTemplateSpec(),
+            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
+            'replicas': replicas if replicas is not None else None,
+            'selector': selector if selector is not None else {},
+            'template': template if template is not None else PodTemplateSpec(),
 
         }
         self._types = {
@@ -18878,6 +19977,7 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -18902,6 +20002,7 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -18961,12 +20062,12 @@ class ReplicationControllerStatus(_kuber_definitions.Definition):
             kind='ReplicationControllerStatus'
         )
         self._properties = {
-            'availableReplicas': available_replicas or None,
-            'conditions': conditions or [],
-            'fullyLabeledReplicas': fully_labeled_replicas or None,
-            'observedGeneration': observed_generation or None,
-            'readyReplicas': ready_replicas or None,
-            'replicas': replicas or None,
+            'availableReplicas': available_replicas if available_replicas is not None else None,
+            'conditions': conditions if conditions is not None else [],
+            'fullyLabeledReplicas': fully_labeled_replicas if fully_labeled_replicas is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'readyReplicas': ready_replicas if ready_replicas is not None else None,
+            'replicas': replicas if replicas is not None else None,
 
         }
         self._types = {
@@ -19112,9 +20213,9 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
             kind='ResourceFieldSelector'
         )
         self._properties = {
-            'containerName': container_name or '',
-            'divisor': divisor or None,
-            'resource': resource or '',
+            'containerName': container_name if container_name is not None else '',
+            'divisor': divisor if divisor is not None else None,
+            'resource': resource if resource is not None else '',
 
         }
         self._types = {
@@ -19197,9 +20298,9 @@ class ResourceQuota(_kuber_definitions.Resource):
             kind='ResourceQuota'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ResourceQuotaSpec(),
-            'status': status or ResourceQuotaStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ResourceQuotaSpec(),
+            'status': status if status is not None else ResourceQuotaStatus(),
 
         }
         self._types = {
@@ -19215,8 +20316,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -19224,8 +20325,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -19235,8 +20336,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def spec(self) -> 'ResourceQuotaSpec':
         """
         Spec defines the desired quota.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -19244,8 +20345,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ResourceQuotaSpec', dict]):
         """
         Spec defines the desired quota.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ResourceQuotaSpec().from_dict(value)
@@ -19255,8 +20356,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def status(self) -> 'ResourceQuotaStatus':
         """
         Status defines the actual enforced quota and its current
-        usage. https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        usage. https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -19264,8 +20365,8 @@ class ResourceQuota(_kuber_definitions.Resource):
     def status(self, value: typing.Union['ResourceQuotaStatus', dict]):
         """
         Status defines the actual enforced quota and its current
-        usage. https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        usage. https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ResourceQuotaStatus().from_dict(value)
@@ -19463,8 +20564,8 @@ class ResourceQuotaList(_kuber_definitions.Collection):
             kind='ResourceQuotaList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -19503,8 +20604,8 @@ class ResourceQuotaList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -19512,8 +20613,8 @@ class ResourceQuotaList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -19557,9 +20658,9 @@ class ResourceQuotaSpec(_kuber_definitions.Definition):
             kind='ResourceQuotaSpec'
         )
         self._properties = {
-            'hard': hard or {},
-            'scopeSelector': scope_selector or ScopeSelector(),
-            'scopes': scopes or [],
+            'hard': hard if hard is not None else {},
+            'scopeSelector': scope_selector if scope_selector is not None else ScopeSelector(),
+            'scopes': scopes if scopes is not None else [],
 
         }
         self._types = {
@@ -19651,8 +20752,8 @@ class ResourceQuotaStatus(_kuber_definitions.Definition):
             kind='ResourceQuotaStatus'
         )
         self._properties = {
-            'hard': hard or {},
-            'used': used or {},
+            'hard': hard if hard is not None else {},
+            'used': used if used is not None else {},
 
         }
         self._types = {
@@ -19719,8 +20820,8 @@ class ResourceRequirements(_kuber_definitions.Definition):
             kind='ResourceRequirements'
         )
         self._properties = {
-            'limits': limits or {},
-            'requests': requests or {},
+            'limits': limits if limits is not None else {},
+            'requests': requests if requests is not None else {},
 
         }
         self._types = {
@@ -19798,10 +20899,10 @@ class SELinuxOptions(_kuber_definitions.Definition):
             kind='SELinuxOptions'
         )
         self._properties = {
-            'level': level or '',
-            'role': role or '',
-            'type': type_ or '',
-            'user': user or '',
+            'level': level if level is not None else '',
+            'role': role if role is not None else '',
+            'type': type_ if type_ is not None else '',
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -19900,16 +21001,16 @@ class ScaleIOPersistentVolumeSource(_kuber_definitions.Definition):
             kind='ScaleIOPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'gateway': gateway or '',
-            'protectionDomain': protection_domain or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or SecretReference(),
-            'sslEnabled': ssl_enabled or None,
-            'storageMode': storage_mode or '',
-            'storagePool': storage_pool or '',
-            'system': system or '',
-            'volumeName': volume_name or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'gateway': gateway if gateway is not None else '',
+            'protectionDomain': protection_domain if protection_domain is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else SecretReference(),
+            'sslEnabled': ssl_enabled if ssl_enabled is not None else None,
+            'storageMode': storage_mode if storage_mode is not None else '',
+            'storagePool': storage_pool if storage_pool is not None else '',
+            'system': system if system is not None else '',
+            'volumeName': volume_name if volume_name is not None else '',
 
         }
         self._types = {
@@ -20121,16 +21222,16 @@ class ScaleIOVolumeSource(_kuber_definitions.Definition):
             kind='ScaleIOVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'gateway': gateway or '',
-            'protectionDomain': protection_domain or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'sslEnabled': ssl_enabled or None,
-            'storageMode': storage_mode or '',
-            'storagePool': storage_pool or '',
-            'system': system or '',
-            'volumeName': volume_name or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'gateway': gateway if gateway is not None else '',
+            'protectionDomain': protection_domain if protection_domain is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'sslEnabled': ssl_enabled if ssl_enabled is not None else None,
+            'storageMode': storage_mode if storage_mode is not None else '',
+            'storagePool': storage_pool if storage_pool is not None else '',
+            'system': system if system is not None else '',
+            'volumeName': volume_name if volume_name is not None else '',
 
         }
         self._types = {
@@ -20334,7 +21435,7 @@ class ScopeSelector(_kuber_definitions.Definition):
             kind='ScopeSelector'
         )
         self._properties = {
-            'matchExpressions': match_expressions or [],
+            'matchExpressions': match_expressions if match_expressions is not None else [],
 
         }
         self._types = {
@@ -20392,9 +21493,9 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
             kind='ScopedResourceSelectorRequirement'
         )
         self._properties = {
-            'operator': operator or '',
-            'scopeName': scope_name or '',
-            'values': values or [],
+            'operator': operator if operator is not None else '',
+            'scopeName': scope_name if scope_name is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -20481,10 +21582,10 @@ class Secret(_kuber_definitions.Resource):
             kind='Secret'
         )
         self._properties = {
-            'data': data or {},
-            'metadata': metadata or ObjectMeta(),
-            'stringData': string_data or {},
-            'type': type_ or '',
+            'data': data if data is not None else {},
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'stringData': string_data if string_data is not None else {},
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -20525,8 +21626,8 @@ class Secret(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -20534,8 +21635,8 @@ class Secret(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -20729,8 +21830,8 @@ class SecretEnvSource(_kuber_definitions.Definition):
             kind='SecretEnvSource'
         )
         self._properties = {
-            'name': name or '',
-            'optional': optional or None,
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -20795,9 +21896,9 @@ class SecretKeySelector(_kuber_definitions.Definition):
             kind='SecretKeySelector'
         )
         self._properties = {
-            'key': key or '',
-            'name': name or '',
-            'optional': optional or None,
+            'key': key if key is not None else '',
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -20878,8 +21979,8 @@ class SecretList(_kuber_definitions.Collection):
             kind='SecretList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -20918,8 +22019,8 @@ class SecretList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -20927,8 +22028,8 @@ class SecretList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -20977,9 +22078,9 @@ class SecretProjection(_kuber_definitions.Definition):
             kind='SecretProjection'
         )
         self._properties = {
-            'items': items or [],
-            'name': name or '',
-            'optional': optional or None,
+            'items': items if items is not None else [],
+            'name': name if name is not None else '',
+            'optional': optional if optional is not None else None,
 
         }
         self._types = {
@@ -21083,8 +22184,8 @@ class SecretReference(_kuber_definitions.Definition):
             kind='SecretReference'
         )
         self._properties = {
-            'name': name or '',
-            'namespace': namespace or '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
 
         }
         self._types = {
@@ -21155,10 +22256,10 @@ class SecretVolumeSource(_kuber_definitions.Definition):
             kind='SecretVolumeSource'
         )
         self._properties = {
-            'defaultMode': default_mode or None,
-            'items': items or [],
-            'optional': optional or None,
-            'secretName': secret_name or '',
+            'defaultMode': default_mode if default_mode is not None else None,
+            'items': items if items is not None else [],
+            'optional': optional if optional is not None else None,
+            'secretName': secret_name if secret_name is not None else '',
 
         }
         self._types = {
@@ -21293,16 +22394,16 @@ class SecurityContext(_kuber_definitions.Definition):
             kind='SecurityContext'
         )
         self._properties = {
-            'allowPrivilegeEscalation': allow_privilege_escalation or None,
-            'capabilities': capabilities or Capabilities(),
-            'privileged': privileged or None,
-            'procMount': proc_mount or '',
-            'readOnlyRootFilesystem': read_only_root_filesystem or None,
-            'runAsGroup': run_as_group or None,
-            'runAsNonRoot': run_as_non_root or None,
-            'runAsUser': run_as_user or None,
-            'seLinuxOptions': se_linux_options or SELinuxOptions(),
-            'windowsOptions': windows_options or WindowsSecurityContextOptions(),
+            'allowPrivilegeEscalation': allow_privilege_escalation if allow_privilege_escalation is not None else None,
+            'capabilities': capabilities if capabilities is not None else Capabilities(),
+            'privileged': privileged if privileged is not None else None,
+            'procMount': proc_mount if proc_mount is not None else '',
+            'readOnlyRootFilesystem': read_only_root_filesystem if read_only_root_filesystem is not None else None,
+            'runAsGroup': run_as_group if run_as_group is not None else None,
+            'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
+            'runAsUser': run_as_user if run_as_user is not None else None,
+            'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
+            'windowsOptions': windows_options if windows_options is not None else WindowsSecurityContextOptions(),
 
         }
         self._types = {
@@ -21520,14 +22621,20 @@ class SecurityContext(_kuber_definitions.Definition):
     @property
     def windows_options(self) -> 'WindowsSecurityContextOptions':
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options from the PodSecurityContext will be
+        used. If set in both SecurityContext and PodSecurityContext,
+        the value specified in SecurityContext takes precedence.
         """
         return self._properties.get('windowsOptions')
 
     @windows_options.setter
     def windows_options(self, value: typing.Union['WindowsSecurityContextOptions', dict]):
         """
-        Windows security options.
+        The Windows specific settings applied to all containers. If
+        unspecified, the options from the PodSecurityContext will be
+        used. If set in both SecurityContext and PodSecurityContext,
+        the value specified in SecurityContext takes precedence.
         """
         if isinstance(value, dict):
             value = WindowsSecurityContextOptions().from_dict(value)
@@ -21560,9 +22667,9 @@ class Service(_kuber_definitions.Resource):
             kind='Service'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ServiceSpec(),
-            'status': status or ServiceStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ServiceSpec(),
+            'status': status if status is not None else ServiceStatus(),
 
         }
         self._types = {
@@ -21578,8 +22685,8 @@ class Service(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -21587,8 +22694,8 @@ class Service(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -21598,8 +22705,8 @@ class Service(_kuber_definitions.Resource):
     def spec(self) -> 'ServiceSpec':
         """
         Spec defines the behavior of a service.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -21607,8 +22714,8 @@ class Service(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ServiceSpec', dict]):
         """
         Spec defines the behavior of a service.
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ServiceSpec().from_dict(value)
@@ -21619,8 +22726,8 @@ class Service(_kuber_definitions.Resource):
         """
         Most recently observed status of the service. Populated by
         the system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -21629,8 +22736,8 @@ class Service(_kuber_definitions.Resource):
         """
         Most recently observed status of the service. Populated by
         the system. Read-only. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = ServiceStatus().from_dict(value)
@@ -21833,10 +22940,10 @@ class ServiceAccount(_kuber_definitions.Resource):
             kind='ServiceAccount'
         )
         self._properties = {
-            'automountServiceAccountToken': automount_service_account_token or None,
-            'imagePullSecrets': image_pull_secrets or [],
-            'metadata': metadata or ObjectMeta(),
-            'secrets': secrets or [],
+            'automountServiceAccountToken': automount_service_account_token if automount_service_account_token is not None else None,
+            'imagePullSecrets': image_pull_secrets if image_pull_secrets is not None else [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'secrets': secrets if secrets is not None else [],
 
         }
         self._types = {
@@ -21905,8 +23012,8 @@ class ServiceAccount(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -21914,8 +23021,8 @@ class ServiceAccount(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -22094,8 +23201,8 @@ class ServiceAccountList(_kuber_definitions.Collection):
             kind='ServiceAccountList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -22136,8 +23243,8 @@ class ServiceAccountList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -22145,8 +23252,8 @@ class ServiceAccountList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -22192,9 +23299,9 @@ class ServiceAccountTokenProjection(_kuber_definitions.Definition):
             kind='ServiceAccountTokenProjection'
         )
         self._properties = {
-            'audience': audience or '',
-            'expirationSeconds': expiration_seconds or None,
-            'path': path or '',
+            'audience': audience if audience is not None else '',
+            'expirationSeconds': expiration_seconds if expiration_seconds is not None else None,
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -22291,8 +23398,8 @@ class ServiceList(_kuber_definitions.Collection):
             kind='ServiceList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -22329,8 +23436,8 @@ class ServiceList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         return self._properties.get('metadata')
 
@@ -22338,8 +23445,8 @@ class ServiceList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -22384,11 +23491,11 @@ class ServicePort(_kuber_definitions.Definition):
             kind='ServicePort'
         )
         self._properties = {
-            'name': name or '',
-            'nodePort': node_port or None,
-            'port': port or None,
-            'protocol': protocol or '',
-            'targetPort': target_port or None,
+            'name': name if name is not None else '',
+            'nodePort': node_port if node_port is not None else None,
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
+            'targetPort': target_port if target_port is not None else None,
 
         }
         self._types = {
@@ -22405,9 +23512,9 @@ class ServicePort(_kuber_definitions.Definition):
         """
         The name of this port within the service. This must be a
         DNS_LABEL. All ports within a ServiceSpec must have unique
-        names. This maps to the 'Name' field in EndpointPort
-        objects. Optional if only one ServicePort is defined on this
-        service.
+        names. When considering the endpoints for a Service, this
+        must match the 'name' field in the EndpointPort. Optional if
+        only one ServicePort is defined on this service.
         """
         return self._properties.get('name')
 
@@ -22416,9 +23523,9 @@ class ServicePort(_kuber_definitions.Definition):
         """
         The name of this port within the service. This must be a
         DNS_LABEL. All ports within a ServiceSpec must have unique
-        names. This maps to the 'Name' field in EndpointPort
-        objects. Optional if only one ServicePort is defined on this
-        service.
+        names. When considering the endpoints for a Service, this
+        must match the 'name' field in the EndpointPort. Optional if
+        only one ServicePort is defined on this service.
         """
         self._properties['name'] = value
 
@@ -22536,6 +23643,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             external_name: str = None,
             external_traffic_policy: str = None,
             health_check_node_port: int = None,
+            ip_family: str = None,
             load_balancer_ip: str = None,
             load_balancer_source_ranges: typing.List[str] = None,
             ports: typing.List['ServicePort'] = None,
@@ -22551,19 +23659,20 @@ class ServiceSpec(_kuber_definitions.Definition):
             kind='ServiceSpec'
         )
         self._properties = {
-            'clusterIP': cluster_ip or '',
-            'externalIPs': external_ips or [],
-            'externalName': external_name or '',
-            'externalTrafficPolicy': external_traffic_policy or '',
-            'healthCheckNodePort': health_check_node_port or None,
-            'loadBalancerIP': load_balancer_ip or '',
-            'loadBalancerSourceRanges': load_balancer_source_ranges or [],
-            'ports': ports or [],
-            'publishNotReadyAddresses': publish_not_ready_addresses or None,
-            'selector': selector or {},
-            'sessionAffinity': session_affinity or '',
-            'sessionAffinityConfig': session_affinity_config or SessionAffinityConfig(),
-            'type': type_ or '',
+            'clusterIP': cluster_ip if cluster_ip is not None else '',
+            'externalIPs': external_ips if external_ips is not None else [],
+            'externalName': external_name if external_name is not None else '',
+            'externalTrafficPolicy': external_traffic_policy if external_traffic_policy is not None else '',
+            'healthCheckNodePort': health_check_node_port if health_check_node_port is not None else None,
+            'ipFamily': ip_family if ip_family is not None else '',
+            'loadBalancerIP': load_balancer_ip if load_balancer_ip is not None else '',
+            'loadBalancerSourceRanges': load_balancer_source_ranges if load_balancer_source_ranges is not None else [],
+            'ports': ports if ports is not None else [],
+            'publishNotReadyAddresses': publish_not_ready_addresses if publish_not_ready_addresses is not None else None,
+            'selector': selector if selector is not None else {},
+            'sessionAffinity': session_affinity if session_affinity is not None else '',
+            'sessionAffinityConfig': session_affinity_config if session_affinity_config is not None else SessionAffinityConfig(),
+            'type': type_ if type_ is not None else '',
 
         }
         self._types = {
@@ -22572,6 +23681,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             'externalName': (str, None),
             'externalTrafficPolicy': (str, None),
             'healthCheckNodePort': (int, None),
+            'ipFamily': (str, None),
             'loadBalancerIP': (str, None),
             'loadBalancerSourceRanges': (list, str),
             'ports': (list, ServicePort),
@@ -22714,6 +23824,44 @@ class ServiceSpec(_kuber_definitions.Definition):
         LoadBalancer and ExternalTrafficPolicy is set to Local.
         """
         self._properties['healthCheckNodePort'] = value
+
+    @property
+    def ip_family(self) -> str:
+        """
+        ipFamily specifies whether this Service has a preference for
+        a particular IP family (e.g. IPv4 vs. IPv6).  If a specific
+        IP family is requested, the clusterIP field will be
+        allocated from that family, if it is available in the
+        cluster.  If no IP family is requested, the cluster's
+        primary IP family will be used. Other IP fields
+        (loadBalancerIP, loadBalancerSourceRanges, externalIPs) and
+        controllers which allocate external load-balancers should
+        use the same IP family.  Endpoints for this Service will be
+        of this family.  This field is immutable after creation.
+        Assigning a ServiceIPFamily not available in the cluster
+        (e.g. IPv6 in IPv4 only cluster) is an error condition and
+        will fail during clusterIP assignment.
+        """
+        return self._properties.get('ipFamily')
+
+    @ip_family.setter
+    def ip_family(self, value: str):
+        """
+        ipFamily specifies whether this Service has a preference for
+        a particular IP family (e.g. IPv4 vs. IPv6).  If a specific
+        IP family is requested, the clusterIP field will be
+        allocated from that family, if it is available in the
+        cluster.  If no IP family is requested, the cluster's
+        primary IP family will be used. Other IP fields
+        (loadBalancerIP, loadBalancerSourceRanges, externalIPs) and
+        controllers which allocate external load-balancers should
+        use the same IP family.  Endpoints for this Service will be
+        of this family.  This field is immutable after creation.
+        Assigning a ServiceIPFamily not available in the cluster
+        (e.g. IPv6 in IPv4 only cluster) is an error condition and
+        will fail during clusterIP assignment.
+        """
+        self._properties['ipFamily'] = value
 
     @property
     def load_balancer_ip(self) -> str:
@@ -22951,7 +24099,7 @@ class ServiceStatus(_kuber_definitions.Definition):
             kind='ServiceStatus'
         )
         self._properties = {
-            'loadBalancer': load_balancer or LoadBalancerStatus(),
+            'loadBalancer': load_balancer if load_balancer is not None else LoadBalancerStatus(),
 
         }
         self._types = {
@@ -23000,7 +24148,7 @@ class SessionAffinityConfig(_kuber_definitions.Definition):
             kind='SessionAffinityConfig'
         )
         self._properties = {
-            'clientIP': client_ip or ClientIPConfig(),
+            'clientIP': client_ip if client_ip is not None else ClientIPConfig(),
 
         }
         self._types = {
@@ -23052,11 +24200,11 @@ class StorageOSPersistentVolumeSource(_kuber_definitions.Definition):
             kind='StorageOSPersistentVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or ObjectReference(),
-            'volumeName': volume_name or '',
-            'volumeNamespace': volume_namespace or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else ObjectReference(),
+            'volumeName': volume_name if volume_name is not None else '',
+            'volumeNamespace': volume_namespace if volume_namespace is not None else '',
 
         }
         self._types = {
@@ -23192,11 +24340,11 @@ class StorageOSVolumeSource(_kuber_definitions.Definition):
             kind='StorageOSVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'readOnly': read_only or None,
-            'secretRef': secret_ref or LocalObjectReference(),
-            'volumeName': volume_name or '',
-            'volumeNamespace': volume_namespace or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'secretRef': secret_ref if secret_ref is not None else LocalObjectReference(),
+            'volumeName': volume_name if volume_name is not None else '',
+            'volumeNamespace': volume_namespace if volume_namespace is not None else '',
 
         }
         self._types = {
@@ -23329,8 +24477,8 @@ class Sysctl(_kuber_definitions.Definition):
             kind='Sysctl'
         )
         self._properties = {
-            'name': name or '',
-            'value': value or '',
+            'name': name if name is not None else '',
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -23391,8 +24539,8 @@ class TCPSocketAction(_kuber_definitions.Definition):
             kind='TCPSocketAction'
         )
         self._properties = {
-            'host': host or '',
-            'port': port or None,
+            'host': host if host is not None else '',
+            'port': port if port is not None else None,
 
         }
         self._types = {
@@ -23463,10 +24611,10 @@ class Taint(_kuber_definitions.Definition):
             kind='Taint'
         )
         self._properties = {
-            'effect': effect or '',
-            'key': key or '',
-            'timeAdded': time_added or None,
-            'value': value or '',
+            'effect': effect if effect is not None else '',
+            'key': key if key is not None else '',
+            'timeAdded': time_added if time_added is not None else None,
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -23574,11 +24722,11 @@ class Toleration(_kuber_definitions.Definition):
             kind='Toleration'
         )
         self._properties = {
-            'effect': effect or '',
-            'key': key or '',
-            'operator': operator or '',
-            'tolerationSeconds': toleration_seconds or None,
-            'value': value or '',
+            'effect': effect if effect is not None else '',
+            'key': key if key is not None else '',
+            'operator': operator if operator is not None else '',
+            'tolerationSeconds': toleration_seconds if toleration_seconds is not None else None,
+            'value': value if value is not None else '',
 
         }
         self._types = {
@@ -23715,8 +24863,8 @@ class TopologySelectorLabelRequirement(_kuber_definitions.Definition):
             kind='TopologySelectorLabelRequirement'
         )
         self._properties = {
-            'key': key or '',
-            'values': values or [],
+            'key': key if key is not None else '',
+            'values': values if values is not None else [],
 
         }
         self._types = {
@@ -23781,7 +24929,7 @@ class TopologySelectorTerm(_kuber_definitions.Definition):
             kind='TopologySelectorTerm'
         )
         self._properties = {
-            'matchLabelExpressions': match_label_expressions or [],
+            'matchLabelExpressions': match_label_expressions if match_label_expressions is not None else [],
 
         }
         self._types = {
@@ -23818,6 +24966,164 @@ class TopologySelectorTerm(_kuber_definitions.Definition):
         return False
 
 
+class TopologySpreadConstraint(_kuber_definitions.Definition):
+    """
+    TopologySpreadConstraint specifies how to spread matching
+    pods among the given topology.
+    """
+
+    def __init__(
+            self,
+            label_selector: 'LabelSelector' = None,
+            max_skew: int = None,
+            topology_key: str = None,
+            when_unsatisfiable: str = None,
+    ):
+        """Create TopologySpreadConstraint instance."""
+        super(TopologySpreadConstraint, self).__init__(
+            api_version='core/v1',
+            kind='TopologySpreadConstraint'
+        )
+        self._properties = {
+            'labelSelector': label_selector if label_selector is not None else LabelSelector(),
+            'maxSkew': max_skew if max_skew is not None else None,
+            'topologyKey': topology_key if topology_key is not None else '',
+            'whenUnsatisfiable': when_unsatisfiable if when_unsatisfiable is not None else '',
+
+        }
+        self._types = {
+            'labelSelector': (LabelSelector, None),
+            'maxSkew': (int, None),
+            'topologyKey': (str, None),
+            'whenUnsatisfiable': (str, None),
+
+        }
+
+    @property
+    def label_selector(self) -> 'LabelSelector':
+        """
+        LabelSelector is used to find matching pods. Pods that match
+        this label selector are counted to determine the number of
+        pods in their corresponding topology domain.
+        """
+        return self._properties.get('labelSelector')
+
+    @label_selector.setter
+    def label_selector(self, value: typing.Union['LabelSelector', dict]):
+        """
+        LabelSelector is used to find matching pods. Pods that match
+        this label selector are counted to determine the number of
+        pods in their corresponding topology domain.
+        """
+        if isinstance(value, dict):
+            value = LabelSelector().from_dict(value)
+        self._properties['labelSelector'] = value
+
+    @property
+    def max_skew(self) -> int:
+        """
+        MaxSkew describes the degree to which pods may be unevenly
+        distributed. It's the maximum permitted difference between
+        the number of matching pods in any two topology domains of a
+        given topology type. For example, in a 3-zone cluster,
+        MaxSkew is set to 1, and pods with the same labelSelector
+        spread as 1/1/0: | zone1 | zone2 | zone3 | |   P   |   P   |
+        | - if MaxSkew is 1, incoming pod can only be scheduled to
+        zone3 to become 1/1/1; scheduling it onto zone1(zone2) would
+        make the ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1).
+        - if MaxSkew is 2, incoming pod can be scheduled onto any
+        zone. It's a required field. Default value is 1 and 0 is not
+        allowed.
+        """
+        return self._properties.get('maxSkew')
+
+    @max_skew.setter
+    def max_skew(self, value: int):
+        """
+        MaxSkew describes the degree to which pods may be unevenly
+        distributed. It's the maximum permitted difference between
+        the number of matching pods in any two topology domains of a
+        given topology type. For example, in a 3-zone cluster,
+        MaxSkew is set to 1, and pods with the same labelSelector
+        spread as 1/1/0: | zone1 | zone2 | zone3 | |   P   |   P   |
+        | - if MaxSkew is 1, incoming pod can only be scheduled to
+        zone3 to become 1/1/1; scheduling it onto zone1(zone2) would
+        make the ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1).
+        - if MaxSkew is 2, incoming pod can be scheduled onto any
+        zone. It's a required field. Default value is 1 and 0 is not
+        allowed.
+        """
+        self._properties['maxSkew'] = value
+
+    @property
+    def topology_key(self) -> str:
+        """
+        TopologyKey is the key of node labels. Nodes that have a
+        label with this key and identical values are considered to
+        be in the same topology. We consider each <key, value> as a
+        "bucket", and try to put balanced number of pods into each
+        bucket. It's a required field.
+        """
+        return self._properties.get('topologyKey')
+
+    @topology_key.setter
+    def topology_key(self, value: str):
+        """
+        TopologyKey is the key of node labels. Nodes that have a
+        label with this key and identical values are considered to
+        be in the same topology. We consider each <key, value> as a
+        "bucket", and try to put balanced number of pods into each
+        bucket. It's a required field.
+        """
+        self._properties['topologyKey'] = value
+
+    @property
+    def when_unsatisfiable(self) -> str:
+        """
+        WhenUnsatisfiable indicates how to deal with a pod if it
+        doesn't satisfy the spread constraint. - DoNotSchedule
+        (default) tells the scheduler not to schedule it -
+        ScheduleAnyway tells the scheduler to still schedule it It's
+        considered as "Unsatisfiable" if and only if placing
+        incoming pod on any topology violates "MaxSkew". For
+        example, in a 3-zone cluster, MaxSkew is set to 1, and pods
+        with the same labelSelector spread as 3/1/1: | zone1 | zone2
+        | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is
+        set to DoNotSchedule, incoming pod can only be scheduled to
+        zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on
+        zone2(zone3) satisfies MaxSkew(1). In other words, the
+        cluster can still be imbalanced, but scheduler won't make it
+        *more* imbalanced. It's a required field.
+        """
+        return self._properties.get('whenUnsatisfiable')
+
+    @when_unsatisfiable.setter
+    def when_unsatisfiable(self, value: str):
+        """
+        WhenUnsatisfiable indicates how to deal with a pod if it
+        doesn't satisfy the spread constraint. - DoNotSchedule
+        (default) tells the scheduler not to schedule it -
+        ScheduleAnyway tells the scheduler to still schedule it It's
+        considered as "Unsatisfiable" if and only if placing
+        incoming pod on any topology violates "MaxSkew". For
+        example, in a 3-zone cluster, MaxSkew is set to 1, and pods
+        with the same labelSelector spread as 3/1/1: | zone1 | zone2
+        | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is
+        set to DoNotSchedule, incoming pod can only be scheduled to
+        zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on
+        zone2(zone3) satisfies MaxSkew(1). In other words, the
+        cluster can still be imbalanced, but scheduler won't make it
+        *more* imbalanced. It's a required field.
+        """
+        self._properties['whenUnsatisfiable'] = value
+
+    def __enter__(self) -> 'TopologySpreadConstraint':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class TypedLocalObjectReference(_kuber_definitions.Definition):
     """
     TypedLocalObjectReference contains enough information to let
@@ -23837,9 +25143,9 @@ class TypedLocalObjectReference(_kuber_definitions.Definition):
             kind='TypedLocalObjectReference'
         )
         self._properties = {
-            'apiGroup': api_group or '',
-            'kind': kind or '',
-            'name': name or '',
+            'apiGroup': api_group if api_group is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -23948,35 +25254,35 @@ class Volume(_kuber_definitions.Definition):
             kind='Volume'
         )
         self._properties = {
-            'awsElasticBlockStore': aws_elastic_block_store or AWSElasticBlockStoreVolumeSource(),
-            'azureDisk': azure_disk or AzureDiskVolumeSource(),
-            'azureFile': azure_file or AzureFileVolumeSource(),
-            'cephfs': cephfs or CephFSVolumeSource(),
-            'cinder': cinder or CinderVolumeSource(),
-            'configMap': config_map or ConfigMapVolumeSource(),
-            'csi': csi or CSIVolumeSource(),
-            'downwardAPI': downward_api or DownwardAPIVolumeSource(),
-            'emptyDir': empty_dir or EmptyDirVolumeSource(),
-            'fc': fc or FCVolumeSource(),
-            'flexVolume': flex_volume or FlexVolumeSource(),
-            'flocker': flocker or FlockerVolumeSource(),
-            'gcePersistentDisk': gce_persistent_disk or GCEPersistentDiskVolumeSource(),
-            'gitRepo': git_repo or GitRepoVolumeSource(),
-            'glusterfs': glusterfs or GlusterfsVolumeSource(),
-            'hostPath': host_path or HostPathVolumeSource(),
-            'iscsi': iscsi or ISCSIVolumeSource(),
-            'name': name or '',
-            'nfs': nfs or NFSVolumeSource(),
-            'persistentVolumeClaim': persistent_volume_claim or PersistentVolumeClaimVolumeSource(),
-            'photonPersistentDisk': photon_persistent_disk or PhotonPersistentDiskVolumeSource(),
-            'portworxVolume': portworx_volume or PortworxVolumeSource(),
-            'projected': projected or ProjectedVolumeSource(),
-            'quobyte': quobyte or QuobyteVolumeSource(),
-            'rbd': rbd or RBDVolumeSource(),
-            'scaleIO': scale_io or ScaleIOVolumeSource(),
-            'secret': secret or SecretVolumeSource(),
-            'storageos': storageos or StorageOSVolumeSource(),
-            'vsphereVolume': vsphere_volume or VsphereVirtualDiskVolumeSource(),
+            'awsElasticBlockStore': aws_elastic_block_store if aws_elastic_block_store is not None else AWSElasticBlockStoreVolumeSource(),
+            'azureDisk': azure_disk if azure_disk is not None else AzureDiskVolumeSource(),
+            'azureFile': azure_file if azure_file is not None else AzureFileVolumeSource(),
+            'cephfs': cephfs if cephfs is not None else CephFSVolumeSource(),
+            'cinder': cinder if cinder is not None else CinderVolumeSource(),
+            'configMap': config_map if config_map is not None else ConfigMapVolumeSource(),
+            'csi': csi if csi is not None else CSIVolumeSource(),
+            'downwardAPI': downward_api if downward_api is not None else DownwardAPIVolumeSource(),
+            'emptyDir': empty_dir if empty_dir is not None else EmptyDirVolumeSource(),
+            'fc': fc if fc is not None else FCVolumeSource(),
+            'flexVolume': flex_volume if flex_volume is not None else FlexVolumeSource(),
+            'flocker': flocker if flocker is not None else FlockerVolumeSource(),
+            'gcePersistentDisk': gce_persistent_disk if gce_persistent_disk is not None else GCEPersistentDiskVolumeSource(),
+            'gitRepo': git_repo if git_repo is not None else GitRepoVolumeSource(),
+            'glusterfs': glusterfs if glusterfs is not None else GlusterfsVolumeSource(),
+            'hostPath': host_path if host_path is not None else HostPathVolumeSource(),
+            'iscsi': iscsi if iscsi is not None else ISCSIVolumeSource(),
+            'name': name if name is not None else '',
+            'nfs': nfs if nfs is not None else NFSVolumeSource(),
+            'persistentVolumeClaim': persistent_volume_claim if persistent_volume_claim is not None else PersistentVolumeClaimVolumeSource(),
+            'photonPersistentDisk': photon_persistent_disk if photon_persistent_disk is not None else PhotonPersistentDiskVolumeSource(),
+            'portworxVolume': portworx_volume if portworx_volume is not None else PortworxVolumeSource(),
+            'projected': projected if projected is not None else ProjectedVolumeSource(),
+            'quobyte': quobyte if quobyte is not None else QuobyteVolumeSource(),
+            'rbd': rbd if rbd is not None else RBDVolumeSource(),
+            'scaleIO': scale_io if scale_io is not None else ScaleIOVolumeSource(),
+            'secret': secret if secret is not None else SecretVolumeSource(),
+            'storageos': storageos if storageos is not None else StorageOSVolumeSource(),
+            'vsphereVolume': vsphere_volume if vsphere_volume is not None else VsphereVirtualDiskVolumeSource(),
 
         }
         self._types = {
@@ -24092,9 +25398,8 @@ class Volume(_kuber_definitions.Definition):
     def cinder(self) -> 'CinderVolumeSource':
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return self._properties.get('cinder')
 
@@ -24102,9 +25407,8 @@ class Volume(_kuber_definitions.Definition):
     def cinder(self, value: typing.Union['CinderVolumeSource', dict]):
         """
         Cinder represents a cinder volume attached and mounted on
-        kubelets host machine More info:
-        https://releases.k8s.io/HEAD/examples/mysql-cinder-
-        pd/README.md
+        kubelets host machine. More info:
+        https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         if isinstance(value, dict):
             value = CinderVolumeSource().from_dict(value)
@@ -24290,8 +25594,8 @@ class Volume(_kuber_definitions.Definition):
     def glusterfs(self) -> 'GlusterfsVolumeSource':
         """
         Glusterfs represents a Glusterfs mount on the host that
-        shares a pod's lifetime. More info: https://releases.k8s.io/
-        HEAD/examples/volumes/glusterfs/README.md
+        shares a pod's lifetime. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md
         """
         return self._properties.get('glusterfs')
 
@@ -24299,8 +25603,8 @@ class Volume(_kuber_definitions.Definition):
     def glusterfs(self, value: typing.Union['GlusterfsVolumeSource', dict]):
         """
         Glusterfs represents a Glusterfs mount on the host that
-        shares a pod's lifetime. More info: https://releases.k8s.io/
-        HEAD/examples/volumes/glusterfs/README.md
+        shares a pod's lifetime. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md
         """
         if isinstance(value, dict):
             value = GlusterfsVolumeSource().from_dict(value)
@@ -24337,8 +25641,7 @@ class Volume(_kuber_definitions.Definition):
         """
         ISCSI represents an ISCSI Disk resource that is attached to
         a kubelet's host machine and then exposed to the pod. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/iscsi/RE
-        ADME.md
+        info: https://examples.k8s.io/volumes/iscsi/README.md
         """
         return self._properties.get('iscsi')
 
@@ -24347,8 +25650,7 @@ class Volume(_kuber_definitions.Definition):
         """
         ISCSI represents an ISCSI Disk resource that is attached to
         a kubelet's host machine and then exposed to the pod. More
-        info: https://releases.k8s.io/HEAD/examples/volumes/iscsi/RE
-        ADME.md
+        info: https://examples.k8s.io/volumes/iscsi/README.md
         """
         if isinstance(value, dict):
             value = ISCSIVolumeSource().from_dict(value)
@@ -24495,7 +25797,7 @@ class Volume(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         return self._properties.get('rbd')
 
@@ -24504,7 +25806,7 @@ class Volume(_kuber_definitions.Definition):
         """
         RBD represents a Rados Block Device mount on the host that
         shares a pod's lifetime. More info:
-        https://releases.k8s.io/HEAD/examples/volumes/rbd/README.md
+        https://examples.k8s.io/volumes/rbd/README.md
         """
         if isinstance(value, dict):
             value = RBDVolumeSource().from_dict(value)
@@ -24608,8 +25910,8 @@ class VolumeDevice(_kuber_definitions.Definition):
             kind='VolumeDevice'
         )
         self._properties = {
-            'devicePath': device_path or '',
-            'name': name or '',
+            'devicePath': device_path if device_path is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -24678,12 +25980,12 @@ class VolumeMount(_kuber_definitions.Definition):
             kind='VolumeMount'
         )
         self._properties = {
-            'mountPath': mount_path or '',
-            'mountPropagation': mount_propagation or '',
-            'name': name or '',
-            'readOnly': read_only or None,
-            'subPath': sub_path or '',
-            'subPathExpr': sub_path_expr or '',
+            'mountPath': mount_path if mount_path is not None else '',
+            'mountPropagation': mount_propagation if mount_propagation is not None else '',
+            'name': name if name is not None else '',
+            'readOnly': read_only if read_only is not None else None,
+            'subPath': sub_path if sub_path is not None else '',
+            'subPathExpr': sub_path_expr if sub_path_expr is not None else '',
 
         }
         self._types = {
@@ -24825,7 +26127,7 @@ class VolumeNodeAffinity(_kuber_definitions.Definition):
             kind='VolumeNodeAffinity'
         )
         self._properties = {
-            'required': required or NodeSelector(),
+            'required': required if required is not None else NodeSelector(),
 
         }
         self._types = {
@@ -24875,10 +26177,10 @@ class VolumeProjection(_kuber_definitions.Definition):
             kind='VolumeProjection'
         )
         self._properties = {
-            'configMap': config_map or ConfigMapProjection(),
-            'downwardAPI': downward_api or DownwardAPIProjection(),
-            'secret': secret or SecretProjection(),
-            'serviceAccountToken': service_account_token or ServiceAccountTokenProjection(),
+            'configMap': config_map if config_map is not None else ConfigMapProjection(),
+            'downwardAPI': downward_api if downward_api is not None else DownwardAPIProjection(),
+            'secret': secret if secret is not None else SecretProjection(),
+            'serviceAccountToken': service_account_token if service_account_token is not None else ServiceAccountTokenProjection(),
 
         }
         self._types = {
@@ -24978,10 +26280,10 @@ class VsphereVirtualDiskVolumeSource(_kuber_definitions.Definition):
             kind='VsphereVirtualDiskVolumeSource'
         )
         self._properties = {
-            'fsType': fs_type or '',
-            'storagePolicyID': storage_policy_id or '',
-            'storagePolicyName': storage_policy_name or '',
-            'volumePath': volume_path or '',
+            'fsType': fs_type if fs_type is not None else '',
+            'storagePolicyID': storage_policy_id if storage_policy_id is not None else '',
+            'storagePolicyName': storage_policy_name if storage_policy_name is not None else '',
+            'volumePath': volume_path if volume_path is not None else '',
 
         }
         self._types = {
@@ -25078,8 +26380,8 @@ class WeightedPodAffinityTerm(_kuber_definitions.Definition):
             kind='WeightedPodAffinityTerm'
         )
         self._properties = {
-            'podAffinityTerm': pod_affinity_term or PodAffinityTerm(),
-            'weight': weight or None,
+            'podAffinityTerm': pod_affinity_term if pod_affinity_term is not None else PodAffinityTerm(),
+            'weight': weight if weight is not None else None,
 
         }
         self._types = {
@@ -25139,6 +26441,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
             self,
             gmsa_credential_spec: str = None,
             gmsa_credential_spec_name: str = None,
+            run_as_user_name: str = None,
     ):
         """Create WindowsSecurityContextOptions instance."""
         super(WindowsSecurityContextOptions, self).__init__(
@@ -25146,13 +26449,15 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
             kind='WindowsSecurityContextOptions'
         )
         self._properties = {
-            'gmsaCredentialSpec': gmsa_credential_spec or '',
-            'gmsaCredentialSpecName': gmsa_credential_spec_name or '',
+            'gmsaCredentialSpec': gmsa_credential_spec if gmsa_credential_spec is not None else '',
+            'gmsaCredentialSpecName': gmsa_credential_spec_name if gmsa_credential_spec_name is not None else '',
+            'runAsUserName': run_as_user_name if run_as_user_name is not None else '',
 
         }
         self._types = {
             'gmsaCredentialSpec': (str, None),
             'gmsaCredentialSpecName': (str, None),
+            'runAsUserName': (str, None),
 
         }
 
@@ -25197,6 +26502,34 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         by servers that enable the WindowsGMSA feature flag.
         """
         self._properties['gmsaCredentialSpecName'] = value
+
+    @property
+    def run_as_user_name(self) -> str:
+        """
+        The UserName in Windows to run the entrypoint of the
+        container process. Defaults to the user specified in image
+        metadata if unspecified. May also be set in
+        PodSecurityContext. If set in both SecurityContext and
+        PodSecurityContext, the value specified in SecurityContext
+        takes precedence. This field is alpha-level and it is only
+        honored by servers that enable the WindowsRunAsUserName
+        feature flag.
+        """
+        return self._properties.get('runAsUserName')
+
+    @run_as_user_name.setter
+    def run_as_user_name(self, value: str):
+        """
+        The UserName in Windows to run the entrypoint of the
+        container process. Defaults to the user specified in image
+        metadata if unspecified. May also be set in
+        PodSecurityContext. If set in both SecurityContext and
+        PodSecurityContext, the value specified in SecurityContext
+        takes precedence. This field is alpha-level and it is only
+        honored by servers that enable the WindowsRunAsUserName
+        feature flag.
+        """
+        self._properties['runAsUserName'] = value
 
     def __enter__(self) -> 'WindowsSecurityContextOptions':
         return self

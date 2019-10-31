@@ -40,9 +40,9 @@ class CronJob(_kuber_definitions.Resource):
             kind='CronJob'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or CronJobSpec(),
-            'status': status or CronJobStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CronJobSpec(),
+            'status': status if status is not None else CronJobStatus(),
 
         }
         self._types = {
@@ -58,8 +58,8 @@ class CronJob(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -67,8 +67,8 @@ class CronJob(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -79,8 +79,8 @@ class CronJob(_kuber_definitions.Resource):
         """
         Specification of the desired behavior of a cron job,
         including the schedule. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -89,8 +89,8 @@ class CronJob(_kuber_definitions.Resource):
         """
         Specification of the desired behavior of a cron job,
         including the schedule. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = CronJobSpec().from_dict(value)
@@ -100,8 +100,8 @@ class CronJob(_kuber_definitions.Resource):
     def status(self) -> 'CronJobStatus':
         """
         Current status of a cron job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -109,8 +109,8 @@ class CronJob(_kuber_definitions.Resource):
     def status(self, value: typing.Union['CronJobStatus', dict]):
         """
         Current status of a cron job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = CronJobStatus().from_dict(value)
@@ -131,6 +131,7 @@ class CronJob(_kuber_definitions.Resource):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -155,6 +156,7 @@ class CronJob(_kuber_definitions.Resource):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -378,8 +380,8 @@ class CronJobList(_kuber_definitions.Collection):
             kind='CronJobList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -416,8 +418,8 @@ class CronJobList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -425,8 +427,8 @@ class CronJobList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -474,13 +476,13 @@ class CronJobSpec(_kuber_definitions.Definition):
             kind='CronJobSpec'
         )
         self._properties = {
-            'concurrencyPolicy': concurrency_policy or '',
-            'failedJobsHistoryLimit': failed_jobs_history_limit or None,
-            'jobTemplate': job_template or JobTemplateSpec(),
-            'schedule': schedule or '',
-            'startingDeadlineSeconds': starting_deadline_seconds or None,
-            'successfulJobsHistoryLimit': successful_jobs_history_limit or None,
-            'suspend': suspend or None,
+            'concurrencyPolicy': concurrency_policy if concurrency_policy is not None else '',
+            'failedJobsHistoryLimit': failed_jobs_history_limit if failed_jobs_history_limit is not None else None,
+            'jobTemplate': job_template if job_template is not None else JobTemplateSpec(),
+            'schedule': schedule if schedule is not None else '',
+            'startingDeadlineSeconds': starting_deadline_seconds if starting_deadline_seconds is not None else None,
+            'successfulJobsHistoryLimit': successful_jobs_history_limit if successful_jobs_history_limit is not None else None,
+            'suspend': suspend if suspend is not None else None,
 
         }
         self._types = {
@@ -637,6 +639,7 @@ class CronJobSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -661,6 +664,7 @@ class CronJobSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,
@@ -715,8 +719,8 @@ class CronJobStatus(_kuber_definitions.Definition):
             kind='CronJobStatus'
         )
         self._properties = {
-            'active': active or [],
-            'lastScheduleTime': last_schedule_time or None,
+            'active': active if active is not None else [],
+            'lastScheduleTime': last_schedule_time if last_schedule_time is not None else None,
 
         }
         self._types = {
@@ -794,8 +798,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
             kind='JobTemplateSpec'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or JobSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else JobSpec(),
 
         }
         self._types = {
@@ -809,8 +813,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
         """
         Standard object's metadata of the jobs created from this
         template. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -819,8 +823,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
         """
         Standard object's metadata of the jobs created from this
         template. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -830,8 +834,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
     def spec(self) -> 'JobSpec':
         """
         Specification of the desired behavior of the job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -839,8 +843,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
     def spec(self, value: typing.Union['JobSpec', dict]):
         """
         Specification of the desired behavior of the job. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = JobSpec().from_dict(value)
@@ -861,6 +865,7 @@ class JobTemplateSpec(_kuber_definitions.Definition):
         readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
         security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
+        startup_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
         stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
         stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
         termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
@@ -885,6 +890,7 @@ class JobTemplateSpec(_kuber_definitions.Definition):
             'readiness_probe': readiness_probe,
             'resources': resources,
             'security_context': security_context,
+            'startup_probe': startup_probe,
             'stdin': stdin,
             'stdin_once': stdin_once,
             'termination_message_path': termination_message_path,

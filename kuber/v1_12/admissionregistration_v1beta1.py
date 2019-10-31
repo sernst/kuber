@@ -27,8 +27,8 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
             kind='MutatingWebhookConfiguration'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'webhooks': webhooks or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'webhooks': webhooks if webhooks is not None else [],
 
         }
         self._types = {
@@ -231,8 +231,8 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
             kind='MutatingWebhookConfigurationList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -325,10 +325,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
             kind='RuleWithOperations'
         )
         self._properties = {
-            'apiGroups': api_groups or [],
-            'apiVersions': api_versions or [],
-            'operations': operations or [],
-            'resources': resources or [],
+            'apiGroups': api_groups if api_groups is not None else [],
+            'apiVersions': api_versions if api_versions is not None else [],
+            'operations': operations if operations is not None else [],
+            'resources': resources if resources is not None else [],
 
         }
         self._types = {
@@ -459,9 +459,9 @@ class ServiceReference(_kuber_definitions.Definition):
             kind='ServiceReference'
         )
         self._properties = {
-            'name': name or '',
-            'namespace': namespace or '',
-            'path': path or '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'path': path if path is not None else '',
 
         }
         self._types = {
@@ -540,8 +540,8 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
             kind='ValidatingWebhookConfiguration'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'webhooks': webhooks or [],
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'webhooks': webhooks if webhooks is not None else [],
 
         }
         self._types = {
@@ -744,8 +744,8 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
             kind='ValidatingWebhookConfigurationList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -839,12 +839,12 @@ class Webhook(_kuber_definitions.Definition):
             kind='Webhook'
         )
         self._properties = {
-            'clientConfig': client_config or WebhookClientConfig(),
-            'failurePolicy': failure_policy or '',
-            'name': name or '',
-            'namespaceSelector': namespace_selector or LabelSelector(),
-            'rules': rules or [],
-            'sideEffects': side_effects or '',
+            'clientConfig': client_config if client_config is not None else WebhookClientConfig(),
+            'failurePolicy': failure_policy if failure_policy is not None else '',
+            'name': name if name is not None else '',
+            'namespaceSelector': namespace_selector if namespace_selector is not None else LabelSelector(),
+            'rules': rules if rules is not None else [],
+            'sideEffects': side_effects if side_effects is not None else '',
 
         }
         self._types = {
@@ -1110,9 +1110,9 @@ class WebhookClientConfig(_kuber_definitions.Definition):
             kind='WebhookClientConfig'
         )
         self._properties = {
-            'caBundle': ca_bundle or '',
-            'service': service or ServiceReference(),
-            'url': url or '',
+            'caBundle': ca_bundle if ca_bundle is not None else '',
+            'service': service if service is not None else ServiceReference(),
+            'url': url if url is not None else '',
 
         }
         self._types = {

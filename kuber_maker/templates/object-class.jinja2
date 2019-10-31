@@ -17,7 +17,7 @@ class {{ entity.class_name }}(_kuber_definitions.{{ base_class }}):
         )
         self._properties = {
             {%  for p, v in entity.properties.items() if base_class == 'Definition' or p not in property_ignores -%}
-            '{{ p }}': {{ p | snake_case }} or {{ v.data_type.constructor }},
+            '{{ p }}': {{ p | snake_case }} if {{ p | snake_case }} is not None else {{ v.data_type.constructor }},
             {% endfor %}
         }
         self._types = {

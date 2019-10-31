@@ -32,8 +32,8 @@ class RuntimeClass(_kuber_definitions.Resource):
             kind='RuntimeClass'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or RuntimeClassSpec(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else RuntimeClassSpec(),
 
         }
         self._types = {
@@ -231,8 +231,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
             kind='RuntimeClassList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -325,7 +325,7 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
             kind='RuntimeClassSpec'
         )
         self._properties = {
-            'runtimeHandler': runtime_handler or '',
+            'runtimeHandler': runtime_handler if runtime_handler is not None else '',
 
         }
         self._types = {

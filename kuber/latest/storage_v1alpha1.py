@@ -31,9 +31,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
             kind='VolumeAttachment'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or VolumeAttachmentSpec(),
-            'status': status or VolumeAttachmentStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else VolumeAttachmentSpec(),
+            'status': status if status is not None else VolumeAttachmentStatus(),
 
         }
         self._types = {
@@ -49,8 +49,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -58,8 +58,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -296,8 +296,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
             kind='VolumeAttachmentList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -334,8 +334,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -343,8 +343,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         Standard list metadata More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -389,8 +389,8 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
             kind='VolumeAttachmentSource'
         )
         self._properties = {
-            'inlineVolumeSpec': inline_volume_spec or PersistentVolumeSpec(),
-            'persistentVolumeName': persistent_volume_name or '',
+            'inlineVolumeSpec': inline_volume_spec if inline_volume_spec is not None else PersistentVolumeSpec(),
+            'persistentVolumeName': persistent_volume_name if persistent_volume_name is not None else '',
 
         }
         self._types = {
@@ -466,9 +466,9 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
             kind='VolumeAttachmentSpec'
         )
         self._properties = {
-            'attacher': attacher or '',
-            'nodeName': node_name or '',
-            'source': source or VolumeAttachmentSource(),
+            'attacher': attacher if attacher is not None else '',
+            'nodeName': node_name if node_name is not None else '',
+            'source': source if source is not None else VolumeAttachmentSource(),
 
         }
         self._types = {
@@ -552,10 +552,10 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
             kind='VolumeAttachmentStatus'
         )
         self._properties = {
-            'attachError': attach_error or VolumeError(),
-            'attached': attached or None,
-            'attachmentMetadata': attachment_metadata or {},
-            'detachError': detach_error or VolumeError(),
+            'attachError': attach_error if attach_error is not None else VolumeError(),
+            'attached': attached if attached is not None else None,
+            'attachmentMetadata': attachment_metadata if attachment_metadata is not None else {},
+            'detachError': detach_error if detach_error is not None else VolumeError(),
 
         }
         self._types = {
@@ -670,8 +670,8 @@ class VolumeError(_kuber_definitions.Definition):
             kind='VolumeError'
         )
         self._properties = {
-            'message': message or '',
-            'time': time or None,
+            'message': message if message is not None else '',
+            'time': time if time is not None else None,
 
         }
         self._types = {

@@ -20,6 +20,14 @@ kuber.pre.admissionregistration\_v1beta1 module
     :undoc-members:
     :show-inheritance:
 
+kuber.pre.apiextensions\_v1 module
+----------------------------------
+
+.. automodule:: kuber.pre.apiextensions_v1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 kuber.pre.apiextensions\_v1beta1 module
 ---------------------------------------
 
@@ -200,6 +208,14 @@ kuber.pre.core\_v1 module
 -------------------------
 
 .. automodule:: kuber.pre.core_v1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.pre.discovery\_v1alpha1 module
+------------------------------------
+
+.. automodule:: kuber.pre.discovery_v1alpha1
     :members:
     :undoc-members:
     :show-inheritance:

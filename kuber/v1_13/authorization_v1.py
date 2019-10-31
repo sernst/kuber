@@ -30,9 +30,9 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
             kind='LocalSubjectAccessReview'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or SubjectAccessReviewSpec(),
-            'status': status or SubjectAccessReviewStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else SubjectAccessReviewSpec(),
+            'status': status if status is not None else SubjectAccessReviewStatus(),
 
         }
         self._types = {
@@ -292,8 +292,8 @@ class NonResourceAttributes(_kuber_definitions.Definition):
             kind='NonResourceAttributes'
         )
         self._properties = {
-            'path': path or '',
-            'verb': verb or '',
+            'path': path if path is not None else '',
+            'verb': verb if verb is not None else '',
 
         }
         self._types = {
@@ -354,8 +354,8 @@ class NonResourceRule(_kuber_definitions.Definition):
             kind='NonResourceRule'
         )
         self._properties = {
-            'nonResourceURLs': non_resource_urls or [],
-            'verbs': verbs or [],
+            'nonResourceURLs': non_resource_urls if non_resource_urls is not None else [],
+            'verbs': verbs if verbs is not None else [],
 
         }
         self._types = {
@@ -429,13 +429,13 @@ class ResourceAttributes(_kuber_definitions.Definition):
             kind='ResourceAttributes'
         )
         self._properties = {
-            'group': group or '',
-            'name': name or '',
-            'namespace': namespace or '',
-            'resource': resource or '',
-            'subresource': subresource or '',
-            'verb': verb or '',
-            'version': version or '',
+            'group': group if group is not None else '',
+            'name': name if name is not None else '',
+            'namespace': namespace if namespace is not None else '',
+            'resource': resource if resource is not None else '',
+            'subresource': subresource if subresource is not None else '',
+            'verb': verb if verb is not None else '',
+            'version': version if version is not None else '',
 
         }
         self._types = {
@@ -595,10 +595,10 @@ class ResourceRule(_kuber_definitions.Definition):
             kind='ResourceRule'
         )
         self._properties = {
-            'apiGroups': api_groups or [],
-            'resourceNames': resource_names or [],
-            'resources': resources or [],
-            'verbs': verbs or [],
+            'apiGroups': api_groups if api_groups is not None else [],
+            'resourceNames': resource_names if resource_names is not None else [],
+            'resources': resources if resources is not None else [],
+            'verbs': verbs if verbs is not None else [],
 
         }
         self._types = {
@@ -713,9 +713,9 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
             kind='SelfSubjectAccessReview'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or SelfSubjectAccessReviewSpec(),
-            'status': status or SubjectAccessReviewStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else SelfSubjectAccessReviewSpec(),
+            'status': status if status is not None else SubjectAccessReviewStatus(),
 
         }
         self._types = {
@@ -973,8 +973,8 @@ class SelfSubjectAccessReviewSpec(_kuber_definitions.Definition):
             kind='SelfSubjectAccessReviewSpec'
         )
         self._properties = {
-            'nonResourceAttributes': non_resource_attributes or NonResourceAttributes(),
-            'resourceAttributes': resource_attributes or ResourceAttributes(),
+            'nonResourceAttributes': non_resource_attributes if non_resource_attributes is not None else NonResourceAttributes(),
+            'resourceAttributes': resource_attributes if resource_attributes is not None else ResourceAttributes(),
 
         }
         self._types = {
@@ -1054,9 +1054,9 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
             kind='SelfSubjectRulesReview'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or SelfSubjectRulesReviewSpec(),
-            'status': status or SubjectRulesReviewStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else SelfSubjectRulesReviewSpec(),
+            'status': status if status is not None else SubjectRulesReviewStatus(),
 
         }
         self._types = {
@@ -1309,7 +1309,7 @@ class SelfSubjectRulesReviewSpec(_kuber_definitions.Definition):
             kind='SelfSubjectRulesReviewSpec'
         )
         self._properties = {
-            'namespace': namespace or '',
+            'namespace': namespace if namespace is not None else '',
 
         }
         self._types = {
@@ -1356,9 +1356,9 @@ class SubjectAccessReview(_kuber_definitions.Resource):
             kind='SubjectAccessReview'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or SubjectAccessReviewSpec(),
-            'status': status or SubjectAccessReviewStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else SubjectAccessReviewSpec(),
+            'status': status if status is not None else SubjectAccessReviewStatus(),
 
         }
         self._types = {
@@ -1618,12 +1618,12 @@ class SubjectAccessReviewSpec(_kuber_definitions.Definition):
             kind='SubjectAccessReviewSpec'
         )
         self._properties = {
-            'extra': extra or {},
-            'groups': groups or [],
-            'nonResourceAttributes': non_resource_attributes or NonResourceAttributes(),
-            'resourceAttributes': resource_attributes or ResourceAttributes(),
-            'uid': uid or '',
-            'user': user or '',
+            'extra': extra if extra is not None else {},
+            'groups': groups if groups is not None else [],
+            'nonResourceAttributes': non_resource_attributes if non_resource_attributes is not None else NonResourceAttributes(),
+            'resourceAttributes': resource_attributes if resource_attributes is not None else ResourceAttributes(),
+            'uid': uid if uid is not None else '',
+            'user': user if user is not None else '',
 
         }
         self._types = {
@@ -1761,10 +1761,10 @@ class SubjectAccessReviewStatus(_kuber_definitions.Definition):
             kind='SubjectAccessReviewStatus'
         )
         self._properties = {
-            'allowed': allowed or None,
-            'denied': denied or None,
-            'evaluationError': evaluation_error or '',
-            'reason': reason or '',
+            'allowed': allowed if allowed is not None else None,
+            'denied': denied if denied is not None else None,
+            'evaluationError': evaluation_error if evaluation_error is not None else '',
+            'reason': reason if reason is not None else '',
 
         }
         self._types = {
@@ -1884,10 +1884,10 @@ class SubjectRulesReviewStatus(_kuber_definitions.Definition):
             kind='SubjectRulesReviewStatus'
         )
         self._properties = {
-            'evaluationError': evaluation_error or '',
-            'incomplete': incomplete or None,
-            'nonResourceRules': non_resource_rules or [],
-            'resourceRules': resource_rules or [],
+            'evaluationError': evaluation_error if evaluation_error is not None else '',
+            'incomplete': incomplete if incomplete is not None else None,
+            'nonResourceRules': non_resource_rules if non_resource_rules is not None else [],
+            'resourceRules': resource_rules if resource_rules is not None else [],
 
         }
         self._types = {

@@ -29,9 +29,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
             kind='CrossVersionObjectReference'
         )
         self._properties = {
-            'apiVersion': api_version or '',
-            'kind': kind or '',
-            'name': name or '',
+            'apiVersion': api_version if api_version is not None else '',
+            'kind': kind if kind is not None else '',
+            'name': name if name is not None else '',
 
         }
         self._types = {
@@ -59,8 +59,8 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     def kind(self) -> str:
         """
         Kind of the referent; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds"
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds"
         """
         return self._properties.get('kind')
 
@@ -68,8 +68,8 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     def kind(self, value: str):
         """
         Kind of the referent; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#types-kinds"
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#types-kinds"
         """
         self._properties['kind'] = value
 
@@ -113,9 +113,9 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             kind='HorizontalPodAutoscaler'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or HorizontalPodAutoscalerSpec(),
-            'status': status or HorizontalPodAutoscalerStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else HorizontalPodAutoscalerSpec(),
+            'status': status if status is not None else HorizontalPodAutoscalerStatus(),
 
         }
         self._types = {
@@ -131,8 +131,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -140,8 +140,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -151,8 +151,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def spec(self) -> 'HorizontalPodAutoscalerSpec':
         """
         behaviour of autoscaler. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         return self._properties.get('spec')
 
@@ -160,8 +160,8 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['HorizontalPodAutoscalerSpec', dict]):
         """
         behaviour of autoscaler. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
             value = HorizontalPodAutoscalerSpec().from_dict(value)
@@ -375,8 +375,8 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
             kind='HorizontalPodAutoscalerList'
         )
         self._properties = {
-            'items': items or [],
-            'metadata': metadata or ListMeta(),
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
 
         }
         self._types = {
@@ -463,10 +463,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerSpec'
         )
         self._properties = {
-            'maxReplicas': max_replicas or None,
-            'minReplicas': min_replicas or None,
-            'scaleTargetRef': scale_target_ref or CrossVersionObjectReference(),
-            'targetCPUUtilizationPercentage': target_cpuutilization_percentage or None,
+            'maxReplicas': max_replicas if max_replicas is not None else None,
+            'minReplicas': min_replicas if min_replicas is not None else None,
+            'scaleTargetRef': scale_target_ref if scale_target_ref is not None else CrossVersionObjectReference(),
+            'targetCPUUtilizationPercentage': target_cpuutilization_percentage if target_cpuutilization_percentage is not None else None,
 
         }
         self._types = {
@@ -496,16 +496,24 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     @property
     def min_replicas(self) -> int:
         """
-        lower limit for the number of pods that can be set by the
-        autoscaler, default 1.
+        minReplicas is the lower limit for the number of replicas to
+        which the autoscaler can scale down.  It defaults to 1 pod.
+        minReplicas is allowed to be 0 if the alpha feature gate
+        HPAScaleToZero is enabled and at least one Object or
+        External metric is configured.  Scaling is active as long as
+        at least one metric value is available.
         """
         return self._properties.get('minReplicas')
 
     @min_replicas.setter
     def min_replicas(self, value: int):
         """
-        lower limit for the number of pods that can be set by the
-        autoscaler, default 1.
+        minReplicas is the lower limit for the number of replicas to
+        which the autoscaler can scale down.  It defaults to 1 pod.
+        minReplicas is allowed to be 0 if the alpha feature gate
+        HPAScaleToZero is enabled and at least one Object or
+        External metric is configured.  Scaling is active as long as
+        at least one metric value is available.
         """
         self._properties['minReplicas'] = value
 
@@ -573,11 +581,11 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerStatus'
         )
         self._properties = {
-            'currentCPUUtilizationPercentage': current_cpuutilization_percentage or None,
-            'currentReplicas': current_replicas or None,
-            'desiredReplicas': desired_replicas or None,
-            'lastScaleTime': last_scale_time or None,
-            'observedGeneration': observed_generation or None,
+            'currentCPUUtilizationPercentage': current_cpuutilization_percentage if current_cpuutilization_percentage is not None else None,
+            'currentReplicas': current_replicas if current_replicas is not None else None,
+            'desiredReplicas': desired_replicas if desired_replicas is not None else None,
+            'lastScaleTime': last_scale_time if last_scale_time is not None else None,
+            'observedGeneration': observed_generation if observed_generation is not None else None,
 
         }
         self._types = {
@@ -702,9 +710,9 @@ class Scale(_kuber_definitions.Resource):
             kind='Scale'
         )
         self._properties = {
-            'metadata': metadata or ObjectMeta(),
-            'spec': spec or ScaleSpec(),
-            'status': status or ScaleStatus(),
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else ScaleSpec(),
+            'status': status if status is not None else ScaleStatus(),
 
         }
         self._types = {
@@ -720,8 +728,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         return self._properties.get('metadata')
 
@@ -729,8 +737,8 @@ class Scale(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         Standard object metadata; More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -740,8 +748,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self) -> 'ScaleSpec':
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         return self._properties.get('spec')
 
@@ -749,8 +757,8 @@ class Scale(_kuber_definitions.Resource):
     def spec(self, value: typing.Union['ScaleSpec', dict]):
         """
         defines the behavior of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
             value = ScaleSpec().from_dict(value)
@@ -760,8 +768,8 @@ class Scale(_kuber_definitions.Resource):
     def status(self) -> 'ScaleStatus':
         """
         current status of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status. Read-only.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status. Read-only.
         """
         return self._properties.get('status')
 
@@ -769,8 +777,8 @@ class Scale(_kuber_definitions.Resource):
     def status(self, value: typing.Union['ScaleStatus', dict]):
         """
         current status of the scale. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status. Read-only.
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status. Read-only.
         """
         if isinstance(value, dict):
             value = ScaleStatus().from_dict(value)
@@ -967,7 +975,7 @@ class ScaleSpec(_kuber_definitions.Definition):
             kind='ScaleSpec'
         )
         self._properties = {
-            'replicas': replicas or None,
+            'replicas': replicas if replicas is not None else None,
 
         }
         self._types = {
@@ -1013,8 +1021,8 @@ class ScaleStatus(_kuber_definitions.Definition):
             kind='ScaleStatus'
         )
         self._properties = {
-            'replicas': replicas or None,
-            'selector': selector or '',
+            'replicas': replicas if replicas is not None else None,
+            'selector': selector if selector is not None else '',
 
         }
         self._types = {

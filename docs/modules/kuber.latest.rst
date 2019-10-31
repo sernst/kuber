@@ -4,10 +4,26 @@ kuber.latest package
 Submodules
 ----------
 
+kuber.latest.admissionregistration\_v1 module
+---------------------------------------------
+
+.. automodule:: kuber.latest.admissionregistration_v1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 kuber.latest.admissionregistration\_v1beta1 module
 --------------------------------------------------
 
 .. automodule:: kuber.latest.admissionregistration_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.latest.apiextensions\_v1 module
+-------------------------------------
+
+.. automodule:: kuber.latest.apiextensions_v1
     :members:
     :undoc-members:
     :show-inheritance:
@@ -192,6 +208,14 @@ kuber.latest.core\_v1 module
 ----------------------------
 
 .. automodule:: kuber.latest.core_v1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.latest.discovery\_v1alpha1 module
+---------------------------------------
+
+.. automodule:: kuber.latest.discovery_v1alpha1
     :members:
     :undoc-members:
     :show-inheritance:
