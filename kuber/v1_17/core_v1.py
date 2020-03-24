@@ -5782,7 +5782,7 @@ class EnvVarSource(_kuber_definitions.Definition):
         Selects a field of the pod: supports metadata.name,
         metadata.namespace, metadata.labels, metadata.annotations,
         spec.nodeName, spec.serviceAccountName, status.hostIP,
-        status.podIP.
+        status.podIP, status.podIPs.
         """
         return self._properties.get('fieldRef')
 
@@ -5792,7 +5792,7 @@ class EnvVarSource(_kuber_definitions.Definition):
         Selects a field of the pod: supports metadata.name,
         metadata.namespace, metadata.labels, metadata.annotations,
         spec.nodeName, spec.serviceAccountName, status.hostIP,
-        status.podIP.
+        status.podIP, status.podIPs.
         """
         if isinstance(value, dict):
             value = ObjectFieldSelector().from_dict(value)
@@ -17141,9 +17141,7 @@ class PodSpec(_kuber_definitions.Definition):
         able to view and signal processes from other containers in
         the same pod, and the first process in each container will
         not be assigned PID 1. HostPID and ShareProcessNamespace
-        cannot both be set. Optional: Default to false. This field
-        is beta-level and may be disabled with the
-        PodShareProcessNamespace feature.
+        cannot both be set. Optional: Default to false.
         """
         return self._properties.get('shareProcessNamespace')
 
@@ -17155,9 +17153,7 @@ class PodSpec(_kuber_definitions.Definition):
         able to view and signal processes from other containers in
         the same pod, and the first process in each container will
         not be assigned PID 1. HostPID and ShareProcessNamespace
-        cannot both be set. Optional: Default to false. This field
-        is beta-level and may be disabled with the
-        PodShareProcessNamespace feature.
+        cannot both be set. Optional: Default to false.
         """
         self._properties['shareProcessNamespace'] = value
 
@@ -23651,6 +23647,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             selector: dict = None,
             session_affinity: str = None,
             session_affinity_config: 'SessionAffinityConfig' = None,
+            topology_keys: typing.List[str] = None,
             type_: str = None,
     ):
         """Create ServiceSpec instance."""
@@ -23672,6 +23669,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             'selector': selector if selector is not None else {},
             'sessionAffinity': session_affinity if session_affinity is not None else '',
             'sessionAffinityConfig': session_affinity_config if session_affinity_config is not None else SessionAffinityConfig(),
+            'topologyKeys': topology_keys if topology_keys is not None else [],
             'type': type_ if type_ is not None else '',
 
         }
@@ -23689,6 +23687,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             'selector': (dict, None),
             'sessionAffinity': (str, None),
             'sessionAffinityConfig': (SessionAffinityConfig, None),
+            'topologyKeys': (list, str),
             'type': (str, None),
 
         }
@@ -24032,6 +24031,46 @@ class ServiceSpec(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = SessionAffinityConfig().from_dict(value)
         self._properties['sessionAffinityConfig'] = value
+
+    @property
+    def topology_keys(self) -> typing.List[str]:
+        """
+        topologyKeys is a preference-order list of topology keys
+        which implementations of services should use to
+        preferentially sort endpoints when accessing this Service,
+        it can not be used at the same time as
+        externalTrafficPolicy=Local. Topology keys must be valid
+        label keys and at most 16 keys may be specified. Endpoints
+        are chosen based on the first topology key with available
+        backends. If this field is specified and all entries have no
+        backends that match the topology of the client, the service
+        has no backends for that client and connections should fail.
+        The special value "*" may be used to mean "any topology".
+        This catch-all value, if used, only makes sense as the last
+        value in the list. If this is not specified or empty, no
+        topology constraints will be applied.
+        """
+        return self._properties.get('topologyKeys')
+
+    @topology_keys.setter
+    def topology_keys(self, value: typing.List[str]):
+        """
+        topologyKeys is a preference-order list of topology keys
+        which implementations of services should use to
+        preferentially sort endpoints when accessing this Service,
+        it can not be used at the same time as
+        externalTrafficPolicy=Local. Topology keys must be valid
+        label keys and at most 16 keys may be specified. Endpoints
+        are chosen based on the first topology key with available
+        backends. If this field is specified and all entries have no
+        backends that match the topology of the client, the service
+        has no backends for that client and connections should fail.
+        The special value "*" may be used to mean "any topology".
+        This catch-all value, if used, only makes sense as the last
+        value in the list. If this is not specified or empty, no
+        topology constraints will be applied.
+        """
+        self._properties['topologyKeys'] = value
 
     @property
     def type_(self) -> str:
@@ -26509,9 +26548,8 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         metadata if unspecified. May also be set in
         PodSecurityContext. If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence. This field is alpha-level and it is only
-        honored by servers that enable the WindowsRunAsUserName
-        feature flag.
+        takes precedence. This field is beta-level and may be
+        disabled with the WindowsRunAsUserName feature flag.
         """
         return self._properties.get('runAsUserName')
 
@@ -26523,9 +26561,8 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         metadata if unspecified. May also be set in
         PodSecurityContext. If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence. This field is alpha-level and it is only
-        honored by servers that enable the WindowsRunAsUserName
-        feature flag.
+        takes precedence. This field is beta-level and may be
+        disabled with the WindowsRunAsUserName feature flag.
         """
         self._properties['runAsUserName'] = value
 

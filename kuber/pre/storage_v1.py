@@ -13,6 +13,497 @@ from kuber.pre.meta_v1 import StatusDetails
 from kuber.pre.core_v1 import TopologySelectorTerm
 
 
+class CSINode(_kuber_definitions.Resource):
+    """
+    CSINode holds information about all CSI drivers installed on
+    a node. CSI drivers do not need to create the CSINode object
+    directly. As long as they use the node-driver-registrar
+    sidecar container, the kubelet will automatically populate
+    the CSINode object for the CSI driver as part of kubelet
+    plugin registration. CSINode has the same name as a node. If
+    the object is missing, it means either there are no CSI
+    Drivers available on the node, or the Kubelet version is low
+    enough that it doesn't create this object. CSINode has an
+    OwnerReference that points to the corresponding node object.
+    """
+
+    def __init__(
+            self,
+            metadata: 'ObjectMeta' = None,
+            spec: 'CSINodeSpec' = None,
+    ):
+        """Create CSINode instance."""
+        super(CSINode, self).__init__(
+            api_version='storage/v1',
+            kind='CSINode'
+        )
+        self._properties = {
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CSINodeSpec(),
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'kind': (str, None),
+            'metadata': (ObjectMeta, None),
+            'spec': (CSINodeSpec, None),
+
+        }
+
+    @property
+    def metadata(self) -> 'ObjectMeta':
+        """
+        metadata.name must be the Kubernetes node name.
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+        """
+        metadata.name must be the Kubernetes node name.
+        """
+        if isinstance(value, dict):
+            value = ObjectMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @property
+    def spec(self) -> 'CSINodeSpec':
+        """
+        spec is the specification of CSINode
+        """
+        return self._properties.get('spec')
+
+    @spec.setter
+    def spec(self, value: typing.Union['CSINodeSpec', dict]):
+        """
+        spec is the specification of CSINode
+        """
+        if isinstance(value, dict):
+            value = CSINodeSpec().from_dict(value)
+        self._properties['spec'] = value
+
+    def create_resource(self, namespace: 'str' = None):
+        """
+        Creates the CSINode in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'create_namespaced_csinode',
+            'create_csinode'
+        ]
+
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
+        """
+        Replaces the CSINode in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'replace_namespaced_csinode',
+            'replace_csinode'
+        ]
+
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
+        """
+        Patches the CSINode in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'patch_namespaced_csinode',
+            'patch_csinode'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the CSINode from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_csinode',
+            'read_csinode'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
+        """
+        Deletes the CSINode from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_csinode',
+            'delete_csinode'
+        ]
+
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name, 'body': body}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> 'client.StorageV1Api':
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.StorageV1Api(**kwargs)
+
+    def __enter__(self) -> 'CSINode':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class CSINodeDriver(_kuber_definitions.Definition):
+    """
+    CSINodeDriver holds information about the specification of
+    one CSI driver installed on a node
+    """
+
+    def __init__(
+            self,
+            allocatable: 'VolumeNodeResources' = None,
+            name: str = None,
+            node_id: str = None,
+            topology_keys: typing.List[str] = None,
+    ):
+        """Create CSINodeDriver instance."""
+        super(CSINodeDriver, self).__init__(
+            api_version='storage/v1',
+            kind='CSINodeDriver'
+        )
+        self._properties = {
+            'allocatable': allocatable if allocatable is not None else VolumeNodeResources(),
+            'name': name if name is not None else '',
+            'nodeID': node_id if node_id is not None else '',
+            'topologyKeys': topology_keys if topology_keys is not None else [],
+
+        }
+        self._types = {
+            'allocatable': (VolumeNodeResources, None),
+            'name': (str, None),
+            'nodeID': (str, None),
+            'topologyKeys': (list, str),
+
+        }
+
+    @property
+    def allocatable(self) -> 'VolumeNodeResources':
+        """
+        allocatable represents the volume resources of a node that
+        are available for scheduling. This field is beta.
+        """
+        return self._properties.get('allocatable')
+
+    @allocatable.setter
+    def allocatable(self, value: typing.Union['VolumeNodeResources', dict]):
+        """
+        allocatable represents the volume resources of a node that
+        are available for scheduling. This field is beta.
+        """
+        if isinstance(value, dict):
+            value = VolumeNodeResources().from_dict(value)
+        self._properties['allocatable'] = value
+
+    @property
+    def name(self) -> str:
+        """
+        This is the name of the CSI driver that this object refers
+        to. This MUST be the same name returned by the CSI
+        GetPluginName() call for that driver.
+        """
+        return self._properties.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        """
+        This is the name of the CSI driver that this object refers
+        to. This MUST be the same name returned by the CSI
+        GetPluginName() call for that driver.
+        """
+        self._properties['name'] = value
+
+    @property
+    def node_id(self) -> str:
+        """
+        nodeID of the node from the driver point of view. This field
+        enables Kubernetes to communicate with storage systems that
+        do not share the same nomenclature for nodes. For example,
+        Kubernetes may refer to a given node as "node1", but the
+        storage system may refer to the same node as "nodeA". When
+        Kubernetes issues a command to the storage system to attach
+        a volume to a specific node, it can use this field to refer
+        to the node name using the ID that the storage system will
+        understand, e.g. "nodeA" instead of "node1". This field is
+        required.
+        """
+        return self._properties.get('nodeID')
+
+    @node_id.setter
+    def node_id(self, value: str):
+        """
+        nodeID of the node from the driver point of view. This field
+        enables Kubernetes to communicate with storage systems that
+        do not share the same nomenclature for nodes. For example,
+        Kubernetes may refer to a given node as "node1", but the
+        storage system may refer to the same node as "nodeA". When
+        Kubernetes issues a command to the storage system to attach
+        a volume to a specific node, it can use this field to refer
+        to the node name using the ID that the storage system will
+        understand, e.g. "nodeA" instead of "node1". This field is
+        required.
+        """
+        self._properties['nodeID'] = value
+
+    @property
+    def topology_keys(self) -> typing.List[str]:
+        """
+        topologyKeys is the list of keys supported by the driver.
+        When a driver is initialized on a cluster, it provides a set
+        of topology keys that it understands (e.g.
+        "company.com/zone", "company.com/region"). When a driver is
+        initialized on a node, it provides the same topology keys
+        along with values. Kubelet will expose these topology keys
+        as labels on its own node object. When Kubernetes does
+        topology aware provisioning, it can use this list to
+        determine which labels it should retrieve from the node
+        object and pass back to the driver. It is possible for
+        different nodes to use different topology keys. This can be
+        empty if driver does not support topology.
+        """
+        return self._properties.get('topologyKeys')
+
+    @topology_keys.setter
+    def topology_keys(self, value: typing.List[str]):
+        """
+        topologyKeys is the list of keys supported by the driver.
+        When a driver is initialized on a cluster, it provides a set
+        of topology keys that it understands (e.g.
+        "company.com/zone", "company.com/region"). When a driver is
+        initialized on a node, it provides the same topology keys
+        along with values. Kubelet will expose these topology keys
+        as labels on its own node object. When Kubernetes does
+        topology aware provisioning, it can use this list to
+        determine which labels it should retrieve from the node
+        object and pass back to the driver. It is possible for
+        different nodes to use different topology keys. This can be
+        empty if driver does not support topology.
+        """
+        self._properties['topologyKeys'] = value
+
+    def __enter__(self) -> 'CSINodeDriver':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class CSINodeList(_kuber_definitions.Collection):
+    """
+    CSINodeList is a collection of CSINode objects.
+    """
+
+    def __init__(
+            self,
+            items: typing.List['CSINode'] = None,
+            metadata: 'ListMeta' = None,
+    ):
+        """Create CSINodeList instance."""
+        super(CSINodeList, self).__init__(
+            api_version='storage/v1',
+            kind='CSINodeList'
+        )
+        self._properties = {
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'items': (list, CSINode),
+            'kind': (str, None),
+            'metadata': (ListMeta, None),
+
+        }
+
+    @property
+    def items(self) -> typing.List['CSINode']:
+        """
+        items is the list of CSINode
+        """
+        return self._properties.get('items')
+
+    @items.setter
+    def items(
+            self,
+            value: typing.Union[typing.List['CSINode'], typing.List[dict]]
+    ):
+        """
+        items is the list of CSINode
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = CSINode().from_dict(item)
+            cleaned.append(item)
+        self._properties['items'] = cleaned
+
+    @property
+    def metadata(self) -> 'ListMeta':
+        """
+        Standard list metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ListMeta', dict]):
+        """
+        Standard list metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        if isinstance(value, dict):
+            value = ListMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> 'client.StorageV1Api':
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.StorageV1Api(**kwargs)
+
+    def __enter__(self) -> 'CSINodeList':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class CSINodeSpec(_kuber_definitions.Definition):
+    """
+    CSINodeSpec holds information about the specification of all
+    CSI drivers installed on a node
+    """
+
+    def __init__(
+            self,
+            drivers: typing.List['CSINodeDriver'] = None,
+    ):
+        """Create CSINodeSpec instance."""
+        super(CSINodeSpec, self).__init__(
+            api_version='storage/v1',
+            kind='CSINodeSpec'
+        )
+        self._properties = {
+            'drivers': drivers if drivers is not None else [],
+
+        }
+        self._types = {
+            'drivers': (list, CSINodeDriver),
+
+        }
+
+    @property
+    def drivers(self) -> typing.List['CSINodeDriver']:
+        """
+        drivers is a list of information of all CSI Drivers existing
+        on a node. If all drivers in the list are uninstalled, this
+        can become empty.
+        """
+        return self._properties.get('drivers')
+
+    @drivers.setter
+    def drivers(
+            self,
+            value: typing.Union[typing.List['CSINodeDriver'], typing.List[dict]]
+    ):
+        """
+        drivers is a list of information of all CSI Drivers existing
+        on a node. If all drivers in the list are uninstalled, this
+        can become empty.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = CSINodeDriver().from_dict(item)
+            cleaned.append(item)
+        self._properties['drivers'] = cleaned
+
+    def __enter__(self) -> 'CSINodeSpec':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class StorageClass(_kuber_definitions.Resource):
     """
     StorageClass describes the parameters for a class of storage
@@ -1147,6 +1638,63 @@ class VolumeError(_kuber_definitions.Definition):
         self._properties['time'] = value
 
     def __enter__(self) -> 'VolumeError':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class VolumeNodeResources(_kuber_definitions.Definition):
+    """
+    VolumeNodeResources is a set of resource limits for
+    scheduling of volumes.
+    """
+
+    def __init__(
+            self,
+            count: int = None,
+    ):
+        """Create VolumeNodeResources instance."""
+        super(VolumeNodeResources, self).__init__(
+            api_version='storage/v1',
+            kind='VolumeNodeResources'
+        )
+        self._properties = {
+            'count': count if count is not None else None,
+
+        }
+        self._types = {
+            'count': (int, None),
+
+        }
+
+    @property
+    def count(self) -> int:
+        """
+        Maximum number of unique volumes managed by the CSI driver
+        that can be used on a node. A volume that is both attached
+        and mounted on a node is considered to be used once, not
+        twice. The same rule applies for a unique volume that is
+        shared among multiple pods on the same node. If this field
+        is not specified, then the supported number of volumes on
+        this node is unbounded.
+        """
+        return self._properties.get('count')
+
+    @count.setter
+    def count(self, value: int):
+        """
+        Maximum number of unique volumes managed by the CSI driver
+        that can be used on a node. A volume that is both attached
+        and mounted on a node is considered to be used once, not
+        twice. The same rule applies for a unique volume that is
+        shared among multiple pods on the same node. If this field
+        is not specified, then the supported number of volumes on
+        this node is unbounded.
+        """
+        self._properties['count'] = value
+
+    def __enter__(self) -> 'VolumeNodeResources':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

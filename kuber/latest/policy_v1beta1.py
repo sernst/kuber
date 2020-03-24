@@ -1168,8 +1168,8 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
     def observed_generation(self) -> int:
         """
         Most recent generation observed when updating this PDB
-        status. PodDisruptionsAllowed and other status informatio is
-        valid only if observedGeneration equals to PDB's object
+        status. PodDisruptionsAllowed and other status information
+        is valid only if observedGeneration equals to PDB's object
         generation.
         """
         return self._properties.get('observedGeneration')
@@ -1178,8 +1178,8 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
     def observed_generation(self, value: int):
         """
         Most recent generation observed when updating this PDB
-        status. PodDisruptionsAllowed and other status informatio is
-        valid only if observedGeneration equals to PDB's object
+        status. PodDisruptionsAllowed and other status information
+        is valid only if observedGeneration equals to PDB's object
         generation.
         """
         self._properties['observedGeneration'] = value

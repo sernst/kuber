@@ -72,7 +72,9 @@ class ClusterRole(_kuber_definitions.Resource):
     """
     ClusterRole is a cluster level, logical grouping of
     PolicyRules that can be referenced as a unit by a
-    RoleBinding or ClusterRoleBinding.
+    RoleBinding or ClusterRoleBinding. Deprecated in v1.17 in
+    favor of rbac.authorization.k8s.io/v1 ClusterRole, and will
+    no longer be served in v1.20.
     """
 
     def __init__(
@@ -296,7 +298,9 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
     """
     ClusterRoleBinding references a ClusterRole, but not contain
     it.  It can reference a ClusterRole in the global namespace,
-    and adds who information via Subject.
+    and adds who information via Subject. Deprecated in v1.17 in
+    favor of rbac.authorization.k8s.io/v1 ClusterRoleBinding,
+    and will no longer be served in v1.20.
     """
 
     def __init__(
@@ -519,7 +523,9 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
 class ClusterRoleBindingList(_kuber_definitions.Collection):
     """
     ClusterRoleBindingList is a collection of
-    ClusterRoleBindings
+    ClusterRoleBindings. Deprecated in v1.17 in favor of
+    rbac.authorization.k8s.io/v1 ClusterRoleBindings, and will
+    no longer be served in v1.20.
     """
 
     def __init__(
@@ -605,7 +611,9 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
 
 class ClusterRoleList(_kuber_definitions.Collection):
     """
-    ClusterRoleList is a collection of ClusterRoles
+    ClusterRoleList is a collection of ClusterRoles. Deprecated
+    in v1.17 in favor of rbac.authorization.k8s.io/v1
+    ClusterRoles, and will no longer be served in v1.20.
     """
 
     def __init__(
@@ -840,7 +848,9 @@ class PolicyRule(_kuber_definitions.Definition):
 class Role(_kuber_definitions.Resource):
     """
     Role is a namespaced, logical grouping of PolicyRules that
-    can be referenced as a unit by a RoleBinding.
+    can be referenced as a unit by a RoleBinding. Deprecated in
+    v1.17 in favor of rbac.authorization.k8s.io/v1 Role, and
+    will no longer be served in v1.20.
     """
 
     def __init__(
@@ -1042,7 +1052,9 @@ class RoleBinding(_kuber_definitions.Resource):
     in the global namespace. It adds who information via
     Subjects and namespace information by which namespace it
     exists in.  RoleBindings in a given namespace only have
-    effect in that namespace.
+    effect in that namespace. Deprecated in v1.17 in favor of
+    rbac.authorization.k8s.io/v1 RoleBinding, and will no longer
+    be served in v1.20.
     """
 
     def __init__(
@@ -1264,7 +1276,9 @@ class RoleBinding(_kuber_definitions.Resource):
 
 class RoleBindingList(_kuber_definitions.Collection):
     """
-    RoleBindingList is a collection of RoleBindings
+    RoleBindingList is a collection of RoleBindings Deprecated
+    in v1.17 in favor of rbac.authorization.k8s.io/v1
+    RoleBindingList, and will no longer be served in v1.20.
     """
 
     def __init__(
@@ -1350,7 +1364,9 @@ class RoleBindingList(_kuber_definitions.Collection):
 
 class RoleList(_kuber_definitions.Collection):
     """
-    RoleList is a collection of Roles
+    RoleList is a collection of Roles. Deprecated in v1.17 in
+    favor of rbac.authorization.k8s.io/v1 RoleList, and will no
+    longer be served in v1.20.
     """
 
     def __init__(

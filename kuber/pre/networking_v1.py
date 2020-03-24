@@ -11,10 +11,11 @@ from kuber.pre.meta_v1 import ObjectMeta
 
 class IPBlock(_kuber_definitions.Definition):
     """
-    IPBlock describes a particular CIDR (Ex. "192.168.1.1/24")
-    that is allowed to the pods matched by a NetworkPolicySpec's
-    podSelector. The except entry describes CIDRs that should
-    not be included within this rule.
+    IPBlock describes a particular CIDR (Ex.
+    "192.168.1.1/24","2001:db9::/64") that is allowed to the
+    pods matched by a NetworkPolicySpec's podSelector. The
+    except entry describes CIDRs that should not be included
+    within this rule.
     """
 
     def __init__(
@@ -42,7 +43,7 @@ class IPBlock(_kuber_definitions.Definition):
     def cidr(self) -> str:
         """
         CIDR is a string representing the IP Block Valid examples
-        are "192.168.1.1/24"
+        are "192.168.1.1/24" or "2001:db9::/64"
         """
         return self._properties.get('cidr')
 
@@ -50,7 +51,7 @@ class IPBlock(_kuber_definitions.Definition):
     def cidr(self, value: str):
         """
         CIDR is a string representing the IP Block Valid examples
-        are "192.168.1.1/24"
+        are "192.168.1.1/24" or "2001:db9::/64"
         """
         self._properties['cidr'] = value
 
@@ -58,9 +59,9 @@ class IPBlock(_kuber_definitions.Definition):
     def except_(self) -> typing.List[str]:
         """
         Except is a slice of CIDRs that should not be included
-        within an IP Block Valid examples are "192.168.1.1/24"
-        Except values will be rejected if they are outside the CIDR
-        range
+        within an IP Block Valid examples are "192.168.1.1/24" or
+        "2001:db9::/64" Except values will be rejected if they are
+        outside the CIDR range
         """
         return self._properties.get('except')
 
@@ -68,9 +69,9 @@ class IPBlock(_kuber_definitions.Definition):
     def except_(self, value: typing.List[str]):
         """
         Except is a slice of CIDRs that should not be included
-        within an IP Block Valid examples are "192.168.1.1/24"
-        Except values will be rejected if they are outside the CIDR
-        range
+        within an IP Block Valid examples are "192.168.1.1/24" or
+        "2001:db9::/64" Except values will be rejected if they are
+        outside the CIDR range
         """
         self._properties['except'] = value
 

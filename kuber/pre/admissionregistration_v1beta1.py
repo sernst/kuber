@@ -442,7 +442,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
     @property
     def side_effects(self) -> str:
         """
-        SideEffects states whether this webhookk has side effects.
+        SideEffects states whether this webhook has side effects.
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in
@@ -456,7 +456,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
     @side_effects.setter
     def side_effects(self, value: str):
         """
-        SideEffects states whether this webhookk has side effects.
+        SideEffects states whether this webhook has side effects.
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in
@@ -1439,7 +1439,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
     @property
     def side_effects(self) -> str:
         """
-        SideEffects states whether this webhookk has side effects.
+        SideEffects states whether this webhook has side effects.
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in
@@ -1453,7 +1453,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
     @side_effects.setter
     def side_effects(self, value: str):
         """
-        SideEffects states whether this webhookk has side effects.
+        SideEffects states whether this webhook has side effects.
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in

@@ -212,10 +212,10 @@ kuber.v1\_17.core\_v1 module
     :undoc-members:
     :show-inheritance:
 
-kuber.v1\_17.discovery\_v1alpha1 module
----------------------------------------
+kuber.v1\_17.discovery\_v1beta1 module
+--------------------------------------
 
-.. automodule:: kuber.v1_17.discovery_v1alpha1
+.. automodule:: kuber.v1_17.discovery_v1beta1
     :members:
     :undoc-members:
     :show-inheritance:
@@ -232,6 +232,14 @@ kuber.v1\_17.extensions\_v1beta1 module
 ---------------------------------------
 
 .. automodule:: kuber.v1_17.extensions_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_17.flowcontrol\_v1alpha1 module
+-----------------------------------------
+
+.. automodule:: kuber.v1_17.flowcontrol_v1alpha1
     :members:
     :undoc-members:
     :show-inheritance:

@@ -2526,14 +2526,18 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         `set`:
              Sets are lists that must not have multiple items
         with the same value. Each
-             value must be a scalar (or
-        another atomic type).
+             value must be a scalar, an
+        object with x-kubernetes-map-type `atomic` or an
+             array
+        with x-kubernetes-list-type `atomic`.
         3) `map`:
-             These lists are like
-        maps in that their elements have a non-index key
-             used
-        to identify them. Order is preserved upon merge. The map tag
-        must only be used on a list with elements of type object.
+             These
+        lists are like maps in that their elements have a non-index
+        key
+             used to identify them. Order is preserved upon
+        merge. The map tag
+             must only be used on a list with
+        elements of type object.
         Defaults to atomic for arrays.
         """
         return self._properties.get('x-kubernetes-list-type')
@@ -2554,14 +2558,18 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         `set`:
              Sets are lists that must not have multiple items
         with the same value. Each
-             value must be a scalar (or
-        another atomic type).
+             value must be a scalar, an
+        object with x-kubernetes-map-type `atomic` or an
+             array
+        with x-kubernetes-list-type `atomic`.
         3) `map`:
-             These lists are like
-        maps in that their elements have a non-index key
-             used
-        to identify them. Order is preserved upon merge. The map tag
-        must only be used on a list with elements of type object.
+             These
+        lists are like maps in that their elements have a non-index
+        key
+             used to identify them. Order is preserved upon
+        merge. The map tag
+             must only be used on a list with
+        elements of type object.
         Defaults to atomic for arrays.
         """
         self._properties['x-kubernetes-list-type'] = value

@@ -76,22 +76,6 @@ kuber.v1\_18.apps\_v1 module
     :undoc-members:
     :show-inheritance:
 
-kuber.v1\_18.apps\_v1beta1 module
----------------------------------
-
-.. automodule:: kuber.v1_18.apps_v1beta1
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-kuber.v1\_18.apps\_v1beta2 module
----------------------------------
-
-.. automodule:: kuber.v1_18.apps_v1beta2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 kuber.v1\_18.auditregistration\_v1alpha1 module
 -----------------------------------------------
 
@@ -212,10 +196,10 @@ kuber.v1\_18.core\_v1 module
     :undoc-members:
     :show-inheritance:
 
-kuber.v1\_18.discovery\_v1alpha1 module
----------------------------------------
+kuber.v1\_18.discovery\_v1beta1 module
+--------------------------------------
 
-.. automodule:: kuber.v1_18.discovery_v1alpha1
+.. automodule:: kuber.v1_18.discovery_v1beta1
     :members:
     :undoc-members:
     :show-inheritance:
@@ -232,6 +216,14 @@ kuber.v1\_18.extensions\_v1beta1 module
 ---------------------------------------
 
 .. automodule:: kuber.v1_18.extensions_v1beta1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kuber.v1\_18.flowcontrol\_v1alpha1 module
+-----------------------------------------
+
+.. automodule:: kuber.v1_18.flowcontrol_v1alpha1
     :members:
     :undoc-members:
     :show-inheritance:

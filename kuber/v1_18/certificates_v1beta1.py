@@ -469,6 +469,7 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             extra: dict = None,
             groups: typing.List[str] = None,
             request: str = None,
+            signer_name: str = None,
             uid: str = None,
             usages: typing.List[str] = None,
             username: str = None,
@@ -482,6 +483,7 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             'extra': extra if extra is not None else {},
             'groups': groups if groups is not None else [],
             'request': request if request is not None else '',
+            'signerName': signer_name if signer_name is not None else '',
             'uid': uid if uid is not None else '',
             'usages': usages if usages is not None else [],
             'username': username if username is not None else '',
@@ -491,6 +493,7 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             'extra': (dict, None),
             'groups': (list, str),
             'request': (str, None),
+            'signerName': (str, None),
             'uid': (str, None),
             'usages': (list, str),
             'username': (str, None),
@@ -542,6 +545,44 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
         Base64-encoded PKCS#10 CSR data
         """
         self._properties['request'] = value
+
+    @property
+    def signer_name(self) -> str:
+        """
+        Requested signer for the request. It is a qualified name in
+        the form: `scope-hostname.io/name`. If empty, it will be
+        defaulted:
+         1. If it's a kubelet client certificate, it is
+        assigned
+            "kubernetes.io/kube-apiserver-client-kubelet".
+        2. If it's a kubelet serving certificate, it is assigned
+        "kubernetes.io/kubelet-serving".
+         3. Otherwise, it is
+        assigned "kubernetes.io/legacy-unknown".
+        Distribution of
+        trust for signers happens out of band. You can select on
+        this field using `spec.signerName`.
+        """
+        return self._properties.get('signerName')
+
+    @signer_name.setter
+    def signer_name(self, value: str):
+        """
+        Requested signer for the request. It is a qualified name in
+        the form: `scope-hostname.io/name`. If empty, it will be
+        defaulted:
+         1. If it's a kubelet client certificate, it is
+        assigned
+            "kubernetes.io/kube-apiserver-client-kubelet".
+        2. If it's a kubelet serving certificate, it is assigned
+        "kubernetes.io/kubelet-serving".
+         3. Otherwise, it is
+        assigned "kubernetes.io/legacy-unknown".
+        Distribution of
+        trust for signers happens out of band. You can select on
+        this field using `spec.signerName`.
+        """
+        self._properties['signerName'] = value
 
     @property
     def uid(self) -> str:

@@ -2276,6 +2276,7 @@ class ConfigMap(_kuber_definitions.Resource):
             self,
             binary_data: dict = None,
             data: dict = None,
+            immutable: bool = None,
             metadata: 'ObjectMeta' = None,
     ):
         """Create ConfigMap instance."""
@@ -2286,6 +2287,7 @@ class ConfigMap(_kuber_definitions.Resource):
         self._properties = {
             'binaryData': binary_data if binary_data is not None else {},
             'data': data if data is not None else {},
+            'immutable': immutable if immutable is not None else None,
             'metadata': metadata if metadata is not None else ObjectMeta(),
 
         }
@@ -2293,6 +2295,7 @@ class ConfigMap(_kuber_definitions.Resource):
             'apiVersion': (str, None),
             'binaryData': (dict, None),
             'data': (dict, None),
+            'immutable': (bool, None),
             'kind': (str, None),
             'metadata': (ObjectMeta, None),
 
@@ -2345,6 +2348,28 @@ class ConfigMap(_kuber_definitions.Resource):
         process.
         """
         self._properties['data'] = value
+
+    @property
+    def immutable(self) -> bool:
+        """
+        Immutable, if set to true, ensures that data stored in the
+        ConfigMap cannot be updated (only object metadata can be
+        modified). If not set to true, the field can be modified at
+        any time. Defaulted to nil. This is an alpha field enabled
+        by ImmutableEphemeralVolumes feature gate.
+        """
+        return self._properties.get('immutable')
+
+    @immutable.setter
+    def immutable(self, value: bool):
+        """
+        Immutable, if set to true, ensures that data stored in the
+        ConfigMap cannot be updated (only object metadata can be
+        modified). If not set to true, the field can be modified at
+        any time. Defaulted to nil. This is an alpha field enabled
+        by ImmutableEphemeralVolumes feature gate.
+        """
+        self._properties['immutable'] = value
 
     @property
     def metadata(self) -> 'ObjectMeta':
@@ -3548,7 +3573,7 @@ class Container(_kuber_definitions.Definition):
         This can be used to provide different probe parameters at
         the beginning of a Pod's lifecycle, when it might take a
         long time to load data or warm a cache, than during steady-
-        state operation. This cannot be updated. This is an alpha
+        state operation. This cannot be updated. This is a beta
         feature enabled by the StartupProbe feature flag. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#container-probes
@@ -3565,7 +3590,7 @@ class Container(_kuber_definitions.Definition):
         This can be used to provide different probe parameters at
         the beginning of a Pod's lifecycle, when it might take a
         long time to load data or warm a cache, than during steady-
-        state operation. This cannot be updated. This is an alpha
+        state operation. This cannot be updated. This is a beta
         feature enabled by the StartupProbe feature flag. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#container-probes
@@ -3702,7 +3727,7 @@ class Container(_kuber_definitions.Definition):
     def volume_devices(self) -> typing.List['VolumeDevice']:
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         return self._properties.get('volumeDevices')
 
@@ -3713,7 +3738,7 @@ class Container(_kuber_definitions.Definition):
     ):
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         cleaned = []
         for item in value:
@@ -5025,6 +5050,7 @@ class EndpointPort(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            app_protocol: str = None,
             name: str = None,
             port: int = None,
             protocol: str = None,
@@ -5035,17 +5061,45 @@ class EndpointPort(_kuber_definitions.Definition):
             kind='EndpointPort'
         )
         self._properties = {
+            'appProtocol': app_protocol if app_protocol is not None else '',
             'name': name if name is not None else '',
             'port': port if port is not None else None,
             'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
+            'appProtocol': (str, None),
             'name': (str, None),
             'port': (int, None),
             'protocol': (str, None),
 
         }
+
+    @property
+    def app_protocol(self) -> str:
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. Field can be enabled with
+        ServiceAppProtocol feature gate.
+        """
+        return self._properties.get('appProtocol')
+
+    @app_protocol.setter
+    def app_protocol(self, value: str):
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. Field can be enabled with
+        ServiceAppProtocol feature gate.
+        """
+        self._properties['appProtocol'] = value
 
     @property
     def name(self) -> str:
@@ -5782,7 +5836,7 @@ class EnvVarSource(_kuber_definitions.Definition):
         Selects a field of the pod: supports metadata.name,
         metadata.namespace, metadata.labels, metadata.annotations,
         spec.nodeName, spec.serviceAccountName, status.hostIP,
-        status.podIP.
+        status.podIP, status.podIPs.
         """
         return self._properties.get('fieldRef')
 
@@ -5792,7 +5846,7 @@ class EnvVarSource(_kuber_definitions.Definition):
         Selects a field of the pod: supports metadata.name,
         metadata.namespace, metadata.labels, metadata.annotations,
         spec.nodeName, spec.serviceAccountName, status.hostIP,
-        status.podIP.
+        status.podIP, status.podIPs.
         """
         if isinstance(value, dict):
             value = ObjectFieldSelector().from_dict(value)
@@ -6399,7 +6453,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
     def volume_devices(self) -> typing.List['VolumeDevice']:
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         return self._properties.get('volumeDevices')
 
@@ -6410,7 +6464,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
     ):
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         cleaned = []
         for item in value:
@@ -13620,32 +13674,42 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
     @property
     def data_source(self) -> 'TypedLocalObjectReference':
         """
-        This field requires the VolumeSnapshotDataSource alpha
-        feature gate to be enabled and currently VolumeSnapshot is
-        the only supported data source. If the provisioner can
-        support VolumeSnapshot data source, it will create a new
-        volume and data will be restored to the volume at the same
-        time. If the provisioner does not support VolumeSnapshot
-        data source, volume will not be created and the failure will
-        be reported as an event. In the future, we plan to support
-        more data source types and the behavior of the provisioner
-        may change.
+        This field can be used to specify either: * An existing
+        VolumeSnapshot object
+        (snapshot.storage.k8s.io/VolumeSnapshot - Beta) * An
+        existing PVC (PersistentVolumeClaim) * An existing custom
+        resource/object that implements data population (Alpha) In
+        order to use VolumeSnapshot object types, the appropriate
+        feature gate must be enabled (VolumeSnapshotDataSource or
+        AnyVolumeDataSource) If the provisioner or an external
+        controller can support the specified data source, it will
+        create a new volume based on the contents of the specified
+        data source. If the specified data source is not supported,
+        the volume will not be created and the failure will be
+        reported as an event. In the future, we plan to support more
+        data source types and the behavior of the provisioner may
+        change.
         """
         return self._properties.get('dataSource')
 
     @data_source.setter
     def data_source(self, value: typing.Union['TypedLocalObjectReference', dict]):
         """
-        This field requires the VolumeSnapshotDataSource alpha
-        feature gate to be enabled and currently VolumeSnapshot is
-        the only supported data source. If the provisioner can
-        support VolumeSnapshot data source, it will create a new
-        volume and data will be restored to the volume at the same
-        time. If the provisioner does not support VolumeSnapshot
-        data source, volume will not be created and the failure will
-        be reported as an event. In the future, we plan to support
-        more data source types and the behavior of the provisioner
-        may change.
+        This field can be used to specify either: * An existing
+        VolumeSnapshot object
+        (snapshot.storage.k8s.io/VolumeSnapshot - Beta) * An
+        existing PVC (PersistentVolumeClaim) * An existing custom
+        resource/object that implements data population (Alpha) In
+        order to use VolumeSnapshot object types, the appropriate
+        feature gate must be enabled (VolumeSnapshotDataSource or
+        AnyVolumeDataSource) If the provisioner or an external
+        controller can support the specified data source, it will
+        create a new volume based on the contents of the specified
+        data source. If the specified data source is not supported,
+        the volume will not be created and the failure will be
+        reported as an event. In the future, we plan to support more
+        data source types and the behavior of the provisioner may
+        change.
         """
         if isinstance(value, dict):
             value = TypedLocalObjectReference().from_dict(value)
@@ -13712,7 +13776,7 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         """
         volumeMode defines what type of volume is required by the
         claim. Value of Filesystem is implied when not included in
-        claim spec. This is a beta feature.
+        claim spec.
         """
         return self._properties.get('volumeMode')
 
@@ -13721,7 +13785,7 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         """
         volumeMode defines what type of volume is required by the
         claim. Value of Filesystem is implied when not included in
-        claim spec. This is a beta feature.
+        claim spec.
         """
         self._properties['volumeMode'] = value
 
@@ -14708,8 +14772,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         volumeMode defines if a volume is intended to be used with a
         formatted filesystem or to remain in raw block state. Value
-        of Filesystem is implied when not included in spec. This is
-        a beta feature.
+        of Filesystem is implied when not included in spec.
         """
         return self._properties.get('volumeMode')
 
@@ -14718,8 +14781,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         volumeMode defines if a volume is intended to be used with a
         formatted filesystem or to remain in raw block state. Value
-        of Filesystem is implied when not included in spec. This is
-        a beta feature.
+        of Filesystem is implied when not included in spec.
         """
         self._properties['volumeMode'] = value
 
@@ -16096,6 +16158,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
     def __init__(
             self,
             fs_group: int = None,
+            fs_group_change_policy: str = None,
             run_as_group: int = None,
             run_as_non_root: bool = None,
             run_as_user: int = None,
@@ -16111,6 +16174,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
         )
         self._properties = {
             'fsGroup': fs_group if fs_group is not None else None,
+            'fsGroupChangePolicy': fs_group_change_policy if fs_group_change_policy is not None else '',
             'runAsGroup': run_as_group if run_as_group is not None else None,
             'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
             'runAsUser': run_as_user if run_as_user is not None else None,
@@ -16122,6 +16186,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
         }
         self._types = {
             'fsGroup': (int, None),
+            'fsGroupChangePolicy': (str, None),
             'runAsGroup': (int, None),
             'runAsNonRoot': (bool, None),
             'runAsUser': (int, None),
@@ -16167,6 +16232,32 @@ class PodSecurityContext(_kuber_definitions.Definition):
         volume.
         """
         self._properties['fsGroup'] = value
+
+    @property
+    def fs_group_change_policy(self) -> str:
+        """
+        fsGroupChangePolicy defines behavior of changing ownership
+        and permission of the volume before being exposed inside
+        Pod. This field will only apply to volume types which
+        support fsGroup based ownership(and permissions). It will
+        have no effect on ephemeral volume types such as: secret,
+        configmaps and emptydir. Valid values are "OnRootMismatch"
+        and "Always". If not specified defaults to "Always".
+        """
+        return self._properties.get('fsGroupChangePolicy')
+
+    @fs_group_change_policy.setter
+    def fs_group_change_policy(self, value: str):
+        """
+        fsGroupChangePolicy defines behavior of changing ownership
+        and permission of the volume before being exposed inside
+        Pod. This field will only apply to volume types which
+        support fsGroup based ownership(and permissions). It will
+        have no effect on ephemeral volume types such as: secret,
+        configmaps and emptydir. Valid values are "OnRootMismatch"
+        and "Always". If not specified defaults to "Always".
+        """
+        self._properties['fsGroupChangePolicy'] = value
 
     @property
     def run_as_group(self) -> int:
@@ -17141,9 +17232,7 @@ class PodSpec(_kuber_definitions.Definition):
         able to view and signal processes from other containers in
         the same pod, and the first process in each container will
         not be assigned PID 1. HostPID and ShareProcessNamespace
-        cannot both be set. Optional: Default to false. This field
-        is beta-level and may be disabled with the
-        PodShareProcessNamespace feature.
+        cannot both be set. Optional: Default to false.
         """
         return self._properties.get('shareProcessNamespace')
 
@@ -17155,9 +17244,7 @@ class PodSpec(_kuber_definitions.Definition):
         able to view and signal processes from other containers in
         the same pod, and the first process in each container will
         not be assigned PID 1. HostPID and ShareProcessNamespace
-        cannot both be set. Optional: Default to false. This field
-        is beta-level and may be disabled with the
-        PodShareProcessNamespace feature.
+        cannot both be set. Optional: Default to false.
         """
         self._properties['shareProcessNamespace'] = value
 
@@ -17241,9 +17328,9 @@ class PodSpec(_kuber_definitions.Definition):
         TopologySpreadConstraints describes how a group of pods
         ought to spread across topology domains. Scheduler will
         schedule pods in a way which abides by the constraints. This
-        field is alpha-level and is only honored by clusters that
-        enables the EvenPodsSpread feature. All
-        topologySpreadConstraints are ANDed.
+        field is only honored by clusters that enable the
+        EvenPodsSpread feature. All topologySpreadConstraints are
+        ANDed.
         """
         return self._properties.get('topologySpreadConstraints')
 
@@ -17256,9 +17343,9 @@ class PodSpec(_kuber_definitions.Definition):
         TopologySpreadConstraints describes how a group of pods
         ought to spread across topology domains. Scheduler will
         schedule pods in a way which abides by the constraints. This
-        field is alpha-level and is only honored by clusters that
-        enables the EvenPodsSpread feature. All
-        topologySpreadConstraints are ANDed.
+        field is only honored by clusters that enable the
+        EvenPodsSpread feature. All topologySpreadConstraints are
+        ANDed.
         """
         cleaned = []
         for item in value:
@@ -21572,6 +21659,7 @@ class Secret(_kuber_definitions.Resource):
     def __init__(
             self,
             data: dict = None,
+            immutable: bool = None,
             metadata: 'ObjectMeta' = None,
             string_data: dict = None,
             type_: str = None,
@@ -21583,6 +21671,7 @@ class Secret(_kuber_definitions.Resource):
         )
         self._properties = {
             'data': data if data is not None else {},
+            'immutable': immutable if immutable is not None else None,
             'metadata': metadata if metadata is not None else ObjectMeta(),
             'stringData': string_data if string_data is not None else {},
             'type': type_ if type_ is not None else '',
@@ -21591,6 +21680,7 @@ class Secret(_kuber_definitions.Resource):
         self._types = {
             'apiVersion': (str, None),
             'data': (dict, None),
+            'immutable': (bool, None),
             'kind': (str, None),
             'metadata': (ObjectMeta, None),
             'stringData': (dict, None),
@@ -21621,6 +21711,28 @@ class Secret(_kuber_definitions.Resource):
         https://tools.ietf.org/html/rfc4648#section-4
         """
         self._properties['data'] = value
+
+    @property
+    def immutable(self) -> bool:
+        """
+        Immutable, if set to true, ensures that data stored in the
+        Secret cannot be updated (only object metadata can be
+        modified). If not set to true, the field can be modified at
+        any time. Defaulted to nil. This is an alpha field enabled
+        by ImmutableEphemeralVolumes feature gate.
+        """
+        return self._properties.get('immutable')
+
+    @immutable.setter
+    def immutable(self, value: bool):
+        """
+        Immutable, if set to true, ensures that data stored in the
+        Secret cannot be updated (only object metadata can be
+        modified). If not set to true, the field can be modified at
+        any time. Defaulted to nil. This is an alpha field enabled
+        by ImmutableEphemeralVolumes feature gate.
+        """
+        self._properties['immutable'] = value
 
     @property
     def metadata(self) -> 'ObjectMeta':
@@ -23479,6 +23591,7 @@ class ServicePort(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            app_protocol: str = None,
             name: str = None,
             node_port: int = None,
             port: int = None,
@@ -23491,6 +23604,7 @@ class ServicePort(_kuber_definitions.Definition):
             kind='ServicePort'
         )
         self._properties = {
+            'appProtocol': app_protocol if app_protocol is not None else '',
             'name': name if name is not None else '',
             'nodePort': node_port if node_port is not None else None,
             'port': port if port is not None else None,
@@ -23499,6 +23613,7 @@ class ServicePort(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'appProtocol': (str, None),
             'name': (str, None),
             'nodePort': (int, None),
             'port': (int, None),
@@ -23506,6 +23621,32 @@ class ServicePort(_kuber_definitions.Definition):
             'targetPort': (int, None),
 
         }
+
+    @property
+    def app_protocol(self) -> str:
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. Field can be enabled with
+        ServiceAppProtocol feature gate.
+        """
+        return self._properties.get('appProtocol')
+
+    @app_protocol.setter
+    def app_protocol(self, value: str):
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. Field can be enabled with
+        ServiceAppProtocol feature gate.
+        """
+        self._properties['appProtocol'] = value
 
     @property
     def name(self) -> str:
@@ -23651,6 +23792,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             selector: dict = None,
             session_affinity: str = None,
             session_affinity_config: 'SessionAffinityConfig' = None,
+            topology_keys: typing.List[str] = None,
             type_: str = None,
     ):
         """Create ServiceSpec instance."""
@@ -23672,6 +23814,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             'selector': selector if selector is not None else {},
             'sessionAffinity': session_affinity if session_affinity is not None else '',
             'sessionAffinityConfig': session_affinity_config if session_affinity_config is not None else SessionAffinityConfig(),
+            'topologyKeys': topology_keys if topology_keys is not None else [],
             'type': type_ if type_ is not None else '',
 
         }
@@ -23689,6 +23832,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             'selector': (dict, None),
             'sessionAffinity': (str, None),
             'sessionAffinityConfig': (SessionAffinityConfig, None),
+            'topologyKeys': (list, str),
             'type': (str, None),
 
         }
@@ -24032,6 +24176,46 @@ class ServiceSpec(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = SessionAffinityConfig().from_dict(value)
         self._properties['sessionAffinityConfig'] = value
+
+    @property
+    def topology_keys(self) -> typing.List[str]:
+        """
+        topologyKeys is a preference-order list of topology keys
+        which implementations of services should use to
+        preferentially sort endpoints when accessing this Service,
+        it can not be used at the same time as
+        externalTrafficPolicy=Local. Topology keys must be valid
+        label keys and at most 16 keys may be specified. Endpoints
+        are chosen based on the first topology key with available
+        backends. If this field is specified and all entries have no
+        backends that match the topology of the client, the service
+        has no backends for that client and connections should fail.
+        The special value "*" may be used to mean "any topology".
+        This catch-all value, if used, only makes sense as the last
+        value in the list. If this is not specified or empty, no
+        topology constraints will be applied.
+        """
+        return self._properties.get('topologyKeys')
+
+    @topology_keys.setter
+    def topology_keys(self, value: typing.List[str]):
+        """
+        topologyKeys is a preference-order list of topology keys
+        which implementations of services should use to
+        preferentially sort endpoints when accessing this Service,
+        it can not be used at the same time as
+        externalTrafficPolicy=Local. Topology keys must be valid
+        label keys and at most 16 keys may be specified. Endpoints
+        are chosen based on the first topology key with available
+        backends. If this field is specified and all entries have no
+        backends that match the topology of the client, the service
+        has no backends for that client and connections should fail.
+        The special value "*" may be used to mean "any topology".
+        This catch-all value, if used, only makes sense as the last
+        value in the list. If this is not specified or empty, no
+        topology constraints will be applied.
+        """
+        self._properties['topologyKeys'] = value
 
     @property
     def type_(self) -> str:
@@ -24683,14 +24867,14 @@ class Taint(_kuber_definitions.Definition):
     @property
     def value(self) -> str:
         """
-        Required. The taint value corresponding to the taint key.
+        The taint value corresponding to the taint key.
         """
         return self._properties.get('value')
 
     @value.setter
     def value(self, value: str):
         """
-        Required. The taint value corresponding to the taint key.
+        The taint value corresponding to the taint key.
         """
         self._properties['value'] = value
 
@@ -26465,9 +26649,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         GMSACredentialSpec is where the GMSA admission webhook
         (https://github.com/kubernetes-sigs/windows-gmsa) inlines
         the contents of the GMSA credential spec named by the
-        GMSACredentialSpecName field. This field is alpha-level and
-        is only honored by servers that enable the WindowsGMSA
-        feature flag.
+        GMSACredentialSpecName field.
         """
         return self._properties.get('gmsaCredentialSpec')
 
@@ -26477,9 +26659,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         GMSACredentialSpec is where the GMSA admission webhook
         (https://github.com/kubernetes-sigs/windows-gmsa) inlines
         the contents of the GMSA credential spec named by the
-        GMSACredentialSpecName field. This field is alpha-level and
-        is only honored by servers that enable the WindowsGMSA
-        feature flag.
+        GMSACredentialSpecName field.
         """
         self._properties['gmsaCredentialSpec'] = value
 
@@ -26487,8 +26667,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
     def gmsa_credential_spec_name(self) -> str:
         """
         GMSACredentialSpecName is the name of the GMSA credential
-        spec to use. This field is alpha-level and is only honored
-        by servers that enable the WindowsGMSA feature flag.
+        spec to use.
         """
         return self._properties.get('gmsaCredentialSpecName')
 
@@ -26496,8 +26675,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
     def gmsa_credential_spec_name(self, value: str):
         """
         GMSACredentialSpecName is the name of the GMSA credential
-        spec to use. This field is alpha-level and is only honored
-        by servers that enable the WindowsGMSA feature flag.
+        spec to use.
         """
         self._properties['gmsaCredentialSpecName'] = value
 
@@ -26509,9 +26687,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         metadata if unspecified. May also be set in
         PodSecurityContext. If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence. This field is alpha-level and it is only
-        honored by servers that enable the WindowsRunAsUserName
-        feature flag.
+        takes precedence.
         """
         return self._properties.get('runAsUserName')
 
@@ -26523,9 +26699,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         metadata if unspecified. May also be set in
         PodSecurityContext. If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence. This field is alpha-level and it is only
-        honored by servers that enable the WindowsRunAsUserName
-        feature flag.
+        takes precedence.
         """
         self._properties['runAsUserName'] = value
 
