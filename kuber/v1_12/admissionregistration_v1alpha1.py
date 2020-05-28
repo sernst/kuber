@@ -467,19 +467,17 @@ class Rule(_kuber_definitions.Definition):
         """
         Resources is a list of resources this rule applies to.
 
-        For
-        example: 'pods' means pods. 'pods/log' means the log
+        For example: 'pods' means pods. 'pods/log' means the log
         subresource of pods. '*' means all resources, but not
         subresources. 'pods/*' means all subresources of pods.
         '*/scale' means all scale subresources. '*/*' means all
         resources and their subresources.
 
-        If wildcard is present,
-        the validation rule will ensure resources do not overlap
-        with each other.
+        If wildcard is present, the validation rule will ensure
+        resources do not overlap with each other.
 
-        Depending on the enclosing object,
-        subresources might not be allowed. Required.
+        Depending on the enclosing object, subresources might not be
+        allowed. Required.
         """
         return self._properties.get('resources')
 
@@ -488,19 +486,17 @@ class Rule(_kuber_definitions.Definition):
         """
         Resources is a list of resources this rule applies to.
 
-        For
-        example: 'pods' means pods. 'pods/log' means the log
+        For example: 'pods' means pods. 'pods/log' means the log
         subresource of pods. '*' means all resources, but not
         subresources. 'pods/*' means all subresources of pods.
         '*/scale' means all scale subresources. '*/*' means all
         resources and their subresources.
 
-        If wildcard is present,
-        the validation rule will ensure resources do not overlap
-        with each other.
+        If wildcard is present, the validation rule will ensure
+        resources do not overlap with each other.
 
-        Depending on the enclosing object,
-        subresources might not be allowed. Required.
+        Depending on the enclosing object, subresources might not be
+        allowed. Required.
         """
         self._properties['resources'] = value
 

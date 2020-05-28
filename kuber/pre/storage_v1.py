@@ -13,6 +13,488 @@ from kuber.pre.meta_v1 import StatusDetails
 from kuber.pre.core_v1 import TopologySelectorTerm
 
 
+class CSIDriver(_kuber_definitions.Resource):
+    """
+    CSIDriver captures information about a Container Storage
+    Interface (CSI) volume driver deployed on the cluster.
+    Kubernetes attach detach controller uses this object to
+    determine whether attach is required. Kubelet uses this
+    object to determine whether pod information needs to be
+    passed on mount. CSIDriver objects are non-namespaced.
+    """
+
+    def __init__(
+            self,
+            metadata: 'ObjectMeta' = None,
+            spec: 'CSIDriverSpec' = None,
+    ):
+        """Create CSIDriver instance."""
+        super(CSIDriver, self).__init__(
+            api_version='storage/v1',
+            kind='CSIDriver'
+        )
+        self._properties = {
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else CSIDriverSpec(),
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'kind': (str, None),
+            'metadata': (ObjectMeta, None),
+            'spec': (CSIDriverSpec, None),
+
+        }
+
+    @property
+    def metadata(self) -> 'ObjectMeta':
+        """
+        Standard object metadata. metadata.Name indicates the name
+        of the CSI driver that this object refers to; it MUST be the
+        same name returned by the CSI GetPluginName() call for that
+        driver. The driver name must be 63 characters or less,
+        beginning and ending with an alphanumeric character
+        ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics
+        between. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+        """
+        Standard object metadata. metadata.Name indicates the name
+        of the CSI driver that this object refers to; it MUST be the
+        same name returned by the CSI GetPluginName() call for that
+        driver. The driver name must be 63 characters or less,
+        beginning and ending with an alphanumeric character
+        ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics
+        between. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        if isinstance(value, dict):
+            value = ObjectMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @property
+    def spec(self) -> 'CSIDriverSpec':
+        """
+        Specification of the CSI Driver.
+        """
+        return self._properties.get('spec')
+
+    @spec.setter
+    def spec(self, value: typing.Union['CSIDriverSpec', dict]):
+        """
+        Specification of the CSI Driver.
+        """
+        if isinstance(value, dict):
+            value = CSIDriverSpec().from_dict(value)
+        self._properties['spec'] = value
+
+    def create_resource(self, namespace: 'str' = None):
+        """
+        Creates the CSIDriver in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'create_namespaced_csidriver',
+            'create_csidriver'
+        ]
+
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
+        """
+        Replaces the CSIDriver in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'replace_namespaced_csidriver',
+            'replace_csidriver'
+        ]
+
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
+        """
+        Patches the CSIDriver in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'patch_namespaced_csidriver',
+            'patch_csidriver'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the CSIDriver from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_csidriver',
+            'read_csidriver'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
+        """
+        Deletes the CSIDriver from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_csidriver',
+            'delete_csidriver'
+        ]
+
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name, 'body': body}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> 'client.StorageV1Api':
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.StorageV1Api(**kwargs)
+
+    def __enter__(self) -> 'CSIDriver':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class CSIDriverList(_kuber_definitions.Collection):
+    """
+    CSIDriverList is a collection of CSIDriver objects.
+    """
+
+    def __init__(
+            self,
+            items: typing.List['CSIDriver'] = None,
+            metadata: 'ListMeta' = None,
+    ):
+        """Create CSIDriverList instance."""
+        super(CSIDriverList, self).__init__(
+            api_version='storage/v1',
+            kind='CSIDriverList'
+        )
+        self._properties = {
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'items': (list, CSIDriver),
+            'kind': (str, None),
+            'metadata': (ListMeta, None),
+
+        }
+
+    @property
+    def items(self) -> typing.List['CSIDriver']:
+        """
+        items is the list of CSIDriver
+        """
+        return self._properties.get('items')
+
+    @items.setter
+    def items(
+            self,
+            value: typing.Union[typing.List['CSIDriver'], typing.List[dict]]
+    ):
+        """
+        items is the list of CSIDriver
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = CSIDriver().from_dict(item)
+            cleaned.append(item)
+        self._properties['items'] = cleaned
+
+    @property
+    def metadata(self) -> 'ListMeta':
+        """
+        Standard list metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ListMeta', dict]):
+        """
+        Standard list metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        if isinstance(value, dict):
+            value = ListMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> 'client.StorageV1Api':
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.StorageV1Api(**kwargs)
+
+    def __enter__(self) -> 'CSIDriverList':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class CSIDriverSpec(_kuber_definitions.Definition):
+    """
+    CSIDriverSpec is the specification of a CSIDriver.
+    """
+
+    def __init__(
+            self,
+            attach_required: bool = None,
+            pod_info_on_mount: bool = None,
+            volume_lifecycle_modes: typing.List[str] = None,
+    ):
+        """Create CSIDriverSpec instance."""
+        super(CSIDriverSpec, self).__init__(
+            api_version='storage/v1',
+            kind='CSIDriverSpec'
+        )
+        self._properties = {
+            'attachRequired': attach_required if attach_required is not None else None,
+            'podInfoOnMount': pod_info_on_mount if pod_info_on_mount is not None else None,
+            'volumeLifecycleModes': volume_lifecycle_modes if volume_lifecycle_modes is not None else [],
+
+        }
+        self._types = {
+            'attachRequired': (bool, None),
+            'podInfoOnMount': (bool, None),
+            'volumeLifecycleModes': (list, str),
+
+        }
+
+    @property
+    def attach_required(self) -> bool:
+        """
+        attachRequired indicates this CSI volume driver requires an
+        attach operation (because it implements the CSI
+        ControllerPublishVolume() method), and that the Kubernetes
+        attach detach controller should call the attach volume
+        interface which checks the volumeattachment status and waits
+        until the volume is attached before proceeding to mounting.
+        The CSI external-attacher coordinates with CSI volume driver
+        and updates the volumeattachment status when the attach
+        operation is complete. If the CSIDriverRegistry feature gate
+        is enabled and the value is specified to false, the attach
+        operation will be skipped. Otherwise the attach operation
+        will be called.
+        """
+        return self._properties.get('attachRequired')
+
+    @attach_required.setter
+    def attach_required(self, value: bool):
+        """
+        attachRequired indicates this CSI volume driver requires an
+        attach operation (because it implements the CSI
+        ControllerPublishVolume() method), and that the Kubernetes
+        attach detach controller should call the attach volume
+        interface which checks the volumeattachment status and waits
+        until the volume is attached before proceeding to mounting.
+        The CSI external-attacher coordinates with CSI volume driver
+        and updates the volumeattachment status when the attach
+        operation is complete. If the CSIDriverRegistry feature gate
+        is enabled and the value is specified to false, the attach
+        operation will be skipped. Otherwise the attach operation
+        will be called.
+        """
+        self._properties['attachRequired'] = value
+
+    @property
+    def pod_info_on_mount(self) -> bool:
+        """
+        If set to true, podInfoOnMount indicates this CSI volume
+        driver requires additional pod information (like podName,
+        podUID, etc.) during mount operations. If set to false, pod
+        information will not be passed on mount. Default is false.
+        The CSI driver specifies podInfoOnMount as part of driver
+        deployment. If true, Kubelet will pass pod information as
+        VolumeContext in the CSI NodePublishVolume() calls. The CSI
+        driver is responsible for parsing and validating the
+        information passed in as VolumeContext. The following
+        VolumeConext will be passed if podInfoOnMount is set to
+        true. This list might grow, but the prefix will be used.
+        "csi.storage.k8s.io/pod.name": pod.Name
+        "csi.storage.k8s.io/pod.namespace": pod.Namespace
+        "csi.storage.k8s.io/pod.uid": string(pod.UID)
+        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        ephemeral inline volume
+                                        defined by a
+        CSIVolumeSource, otherwise "false"
+
+        "csi.storage.k8s.io/ephemeral" is a new feature in
+        Kubernetes 1.16. It is only required for drivers which
+        support both the "Persistent" and "Ephemeral"
+        VolumeLifecycleMode. Other drivers can leave pod info
+        disabled and/or ignore this field. As Kubernetes 1.15
+        doesn't support this field, drivers can only support one
+        mode when deployed on such a cluster and the deployment
+        determines which mode that is, for example via a command
+        line parameter of the driver.
+        """
+        return self._properties.get('podInfoOnMount')
+
+    @pod_info_on_mount.setter
+    def pod_info_on_mount(self, value: bool):
+        """
+        If set to true, podInfoOnMount indicates this CSI volume
+        driver requires additional pod information (like podName,
+        podUID, etc.) during mount operations. If set to false, pod
+        information will not be passed on mount. Default is false.
+        The CSI driver specifies podInfoOnMount as part of driver
+        deployment. If true, Kubelet will pass pod information as
+        VolumeContext in the CSI NodePublishVolume() calls. The CSI
+        driver is responsible for parsing and validating the
+        information passed in as VolumeContext. The following
+        VolumeConext will be passed if podInfoOnMount is set to
+        true. This list might grow, but the prefix will be used.
+        "csi.storage.k8s.io/pod.name": pod.Name
+        "csi.storage.k8s.io/pod.namespace": pod.Namespace
+        "csi.storage.k8s.io/pod.uid": string(pod.UID)
+        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        ephemeral inline volume
+                                        defined by a
+        CSIVolumeSource, otherwise "false"
+
+        "csi.storage.k8s.io/ephemeral" is a new feature in
+        Kubernetes 1.16. It is only required for drivers which
+        support both the "Persistent" and "Ephemeral"
+        VolumeLifecycleMode. Other drivers can leave pod info
+        disabled and/or ignore this field. As Kubernetes 1.15
+        doesn't support this field, drivers can only support one
+        mode when deployed on such a cluster and the deployment
+        determines which mode that is, for example via a command
+        line parameter of the driver.
+        """
+        self._properties['podInfoOnMount'] = value
+
+    @property
+    def volume_lifecycle_modes(self) -> typing.List[str]:
+        """
+        volumeLifecycleModes defines what kind of volumes this CSI
+        volume driver supports. The default if the list is empty is
+        "Persistent", which is the usage defined by the CSI
+        specification and implemented in Kubernetes via the usual
+        PV/PVC mechanism. The other mode is "Ephemeral". In this
+        mode, volumes are defined inline inside the pod spec with
+        CSIVolumeSource and their lifecycle is tied to the lifecycle
+        of that pod. A driver has to be aware of this because it is
+        only going to get a NodePublishVolume call for such a
+        volume. For more information about implementing this mode,
+        see https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future. This field is
+        beta.
+        """
+        return self._properties.get('volumeLifecycleModes')
+
+    @volume_lifecycle_modes.setter
+    def volume_lifecycle_modes(self, value: typing.List[str]):
+        """
+        volumeLifecycleModes defines what kind of volumes this CSI
+        volume driver supports. The default if the list is empty is
+        "Persistent", which is the usage defined by the CSI
+        specification and implemented in Kubernetes via the usual
+        PV/PVC mechanism. The other mode is "Ephemeral". In this
+        mode, volumes are defined inline inside the pod spec with
+        CSIVolumeSource and their lifecycle is tied to the lifecycle
+        of that pod. A driver has to be aware of this because it is
+        only going to get a NodePublishVolume call for such a
+        volume. For more information about implementing this mode,
+        see https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future. This field is
+        beta.
+        """
+        self._properties['volumeLifecycleModes'] = value
+
+    def __enter__(self) -> 'CSIDriverSpec':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class CSINode(_kuber_definitions.Resource):
     """
     CSINode holds information about all CSI drivers installed on
@@ -508,6 +990,7 @@ class StorageClass(_kuber_definitions.Resource):
     """
     StorageClass describes the parameters for a class of storage
     for which PersistentVolumes can be dynamically provisioned.
+
     StorageClasses are non-namespaced; the name of the storage
     class according to etcd is in ObjectMeta.Name.
     """
@@ -934,6 +1417,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
     """
     VolumeAttachment captures the intent to attach or detach the
     specified volume to/from the specified node.
+
     VolumeAttachment objects are non-namespaced.
     """
 

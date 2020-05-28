@@ -107,9 +107,8 @@ class AllowedHostPath(_kuber_definitions.Definition):
         match. It does not support `*`. Trailing slashes are trimmed
         when validating the path prefix with a host path.
 
-        Examples:
-        `/foo` would allow `/foo`, `/foo/` and `/foo/bar` `/foo`
-        would not allow `/food` or `/etc/foo`
+        Examples: `/foo` would allow `/foo`, `/foo/` and `/foo/bar`
+        `/foo` would not allow `/food` or `/etc/foo`
         """
         return self._properties.get('pathPrefix')
 
@@ -120,9 +119,8 @@ class AllowedHostPath(_kuber_definitions.Definition):
         match. It does not support `*`. Trailing slashes are trimmed
         when validating the path prefix with a host path.
 
-        Examples:
-        `/foo` would allow `/foo`, `/foo/` and `/foo/bar` `/foo`
-        would not allow `/food` or `/etc/foo`
+        Examples: `/foo` would allow `/foo`, `/foo/` and `/foo/bar`
+        `/foo` would not allow `/food` or `/etc/foo`
         """
         self._properties['pathPrefix'] = value
 
@@ -3387,15 +3385,15 @@ class IngressRule(_kuber_definitions.Definition):
         not allowed. Currently an IngressRuleValue can only apply to
         the
         	  IP in the Spec of the parent Ingress.
-        2. The `:`
-        delimiter is not respected because ports are not allowed.
-        Currently the port of an Ingress is implicitly :80 for http
-        and
+        2. The `:` delimiter is not respected because ports are not
+        allowed.
+        	  Currently the port of an Ingress is implicitly :80 for
+        http and
         	  :443 for https.
-        Both these may change in the future.
-        Incoming requests are matched against the host before the
-        IngressRuleValue. If the host is unspecified, the Ingress
-        routes all traffic based on the specified IngressRuleValue.
+        Both these may change in the future. Incoming requests are
+        matched against the host before the IngressRuleValue. If the
+        host is unspecified, the Ingress routes all traffic based on
+        the specified IngressRuleValue.
         """
         return self._properties.get('host')
 
@@ -3408,15 +3406,15 @@ class IngressRule(_kuber_definitions.Definition):
         not allowed. Currently an IngressRuleValue can only apply to
         the
         	  IP in the Spec of the parent Ingress.
-        2. The `:`
-        delimiter is not respected because ports are not allowed.
-        Currently the port of an Ingress is implicitly :80 for http
-        and
+        2. The `:` delimiter is not respected because ports are not
+        allowed.
+        	  Currently the port of an Ingress is implicitly :80 for
+        http and
         	  :443 for https.
-        Both these may change in the future.
-        Incoming requests are matched against the host before the
-        IngressRuleValue. If the host is unspecified, the Ingress
-        routes all traffic based on the specified IngressRuleValue.
+        Both these may change in the future. Incoming requests are
+        matched against the host before the IngressRuleValue. If the
+        host is unspecified, the Ingress routes all traffic based on
+        the specified IngressRuleValue.
         """
         self._properties['host'] = value
 
@@ -4243,11 +4241,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all namespaces.
 
-        If PodSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects all Pods in the
-        Namespaces selected by NamespaceSelector.
+        If PodSelector is also set, then the NetworkPolicyPeer as a
+        whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects all Pods in the Namespaces selected by
+        NamespaceSelector.
         """
         return self._properties.get('namespaceSelector')
 
@@ -4258,11 +4256,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all namespaces.
 
-        If PodSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects all Pods in the
-        Namespaces selected by NamespaceSelector.
+        If PodSelector is also set, then the NetworkPolicyPeer as a
+        whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects all Pods in the Namespaces selected by
+        NamespaceSelector.
         """
         if isinstance(value, dict):
             value = LabelSelector().from_dict(value)
@@ -4275,11 +4273,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all pods.
 
-        If NamespaceSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects the Pods matching
-        PodSelector in the policy's own Namespace.
+        If NamespaceSelector is also set, then the NetworkPolicyPeer
+        as a whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects the Pods matching PodSelector in the policy's own
+        Namespace.
         """
         return self._properties.get('podSelector')
 
@@ -4290,11 +4288,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all pods.
 
-        If NamespaceSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects the Pods matching
-        PodSelector in the policy's own Namespace.
+        If NamespaceSelector is also set, then the NetworkPolicyPeer
+        as a whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects the Pods matching PodSelector in the policy's own
+        Namespace.
         """
         if isinstance(value, dict):
             value = LabelSelector().from_dict(value)
@@ -5041,9 +5039,8 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         sysctls are allowed. Kubelet has to whitelist all allowed
         unsafe sysctls explicitly to avoid rejection.
 
-        Examples:
-        e.g. "foo/*" allows "foo/bar", "foo/baz", etc. e.g. "foo.*"
-        allows "foo.bar", "foo.baz", etc.
+        Examples: e.g. "foo/*" allows "foo/bar", "foo/baz", etc.
+        e.g. "foo.*" allows "foo.bar", "foo.baz", etc.
         """
         return self._properties.get('allowedUnsafeSysctls')
 
@@ -5057,9 +5054,8 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         sysctls are allowed. Kubelet has to whitelist all allowed
         unsafe sysctls explicitly to avoid rejection.
 
-        Examples:
-        e.g. "foo/*" allows "foo/bar", "foo/baz", etc. e.g. "foo.*"
-        allows "foo.bar", "foo.baz", etc.
+        Examples: e.g. "foo/*" allows "foo/bar", "foo/baz", etc.
+        e.g. "foo.*" allows "foo.bar", "foo.baz", etc.
         """
         self._properties['allowedUnsafeSysctls'] = value
 
@@ -5114,6 +5110,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         defaults to none. Each entry is either a plain sysctl name
         or ends in "*" in which case it is considered as a prefix of
         forbidden sysctls. Single * means all sysctls are forbidden.
+
         Examples: e.g. "foo/*" forbids "foo/bar", "foo/baz", etc.
         e.g. "foo.*" forbids "foo.bar", "foo.baz", etc.
         """
@@ -5126,6 +5123,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         defaults to none. Each entry is either a plain sysctl name
         or ends in "*" in which case it is considered as a prefix of
         forbidden sysctls. Single * means all sysctls are forbidden.
+
         Examples: e.g. "foo/*" forbids "foo/bar", "foo/baz", etc.
         e.g. "foo.*" forbids "foo.bar", "foo.baz", etc.
         """

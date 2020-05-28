@@ -4090,13 +4090,10 @@ class StatefulSet(_kuber_definitions.Resource):
     by apps/v1/StatefulSet. See the release notes for more
     information. StatefulSet represents a set of pods with
     consistent identities. Identities are defined as:
-     -
-    Network: A single stable DNS and hostname.
-     - Storage: As
-    many VolumeClaims as requested.
-    The StatefulSet guarantees
-    that a given network identity will always map to the same
-    storage identity.
+     - Network: A single stable DNS and hostname.
+     - Storage: As many VolumeClaims as requested.
+    The StatefulSet guarantees that a given network identity
+    will always map to the same storage identity.
     """
 
     def __init__(

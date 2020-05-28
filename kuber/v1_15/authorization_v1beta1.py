@@ -652,9 +652,8 @@ class ResourceRule(_kuber_definitions.Definition):
         """
         Resources is a list of resources this rule applies to.  "*"
         means all in the specified apiGroups.
-         "*/foo" represents
-        the subresource 'foo' for all resources in the specified
-        apiGroups.
+         "*/foo" represents the subresource 'foo' for all resources
+        in the specified apiGroups.
         """
         return self._properties.get('resources')
 
@@ -663,9 +662,8 @@ class ResourceRule(_kuber_definitions.Definition):
         """
         Resources is a list of resources this rule applies to.  "*"
         means all in the specified apiGroups.
-         "*/foo" represents
-        the subresource 'foo' for all resources in the specified
-        apiGroups.
+         "*/foo" represents the subresource 'foo' for all resources
+        in the specified apiGroups.
         """
         self._properties['resources'] = value
 

@@ -17,11 +17,11 @@ class AWSElasticBlockStoreVolumeSource(_kuber_definitions.Definition):
     """
     Represents a Persistent Disk resource in AWS.
 
-    An AWS EBS
-    disk must exist before mounting to a container. The disk
-    must also be in the same AWS zone as the kubelet. An AWS EBS
-    disk can only be mounted as read/write once. AWS EBS volumes
-    support ownership management and SELinux relabeling.
+    An AWS EBS disk must exist before mounting to a container.
+    The disk must also be in the same AWS zone as the kubelet.
+    An AWS EBS disk can only be mounted as read/write once. AWS
+    EBS volumes support ownership management and SELinux
+    relabeling.
     """
 
     def __init__(
@@ -2355,8 +2355,8 @@ class ConfigMap(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         ConfigMap cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is an alpha field enabled
-        by ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil. This is a beta field enabled by
+        ImmutableEphemeralVolumes feature gate.
         """
         return self._properties.get('immutable')
 
@@ -2366,8 +2366,8 @@ class ConfigMap(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         ConfigMap cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is an alpha field enabled
-        by ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil. This is a beta field enabled by
+        ImmutableEphemeralVolumes feature gate.
         """
         self._properties['immutable'] = value
 
@@ -2527,9 +2527,8 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
     ConfigMapEnvSource selects a ConfigMap to populate the
     environment variables with.
 
-    The contents of the target
-    ConfigMap's Data field will represent the key-value pairs as
-    environment variables.
+    The contents of the target ConfigMap's Data field will
+    represent the key-value pairs as environment variables.
     """
 
     def __init__(
@@ -2898,13 +2897,12 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     """
     Adapts a ConfigMap into a projected volume.
 
-    The contents of
-    the target ConfigMap's Data field will be presented in a
-    projected volume as files using the keys in the Data field
-    as the file names, unless the items element is populated
-    with specific mappings of keys to paths. Note that this is
-    identical to a configmap volume source without the default
-    mode.
+    The contents of the target ConfigMap's Data field will be
+    presented in a projected volume as files using the keys in
+    the Data field as the file names, unless the items element
+    is populated with specific mappings of keys to paths. Note
+    that this is identical to a configmap volume source without
+    the default mode.
     """
 
     def __init__(
@@ -3012,12 +3010,11 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     """
     Adapts a ConfigMap into a volume.
 
-    The contents of the
-    target ConfigMap's Data field will be presented in a volume
-    as files using the keys in the Data field as the file names,
-    unless the items element is populated with specific mappings
-    of keys to paths. ConfigMap volumes support ownership
-    management and SELinux relabeling.
+    The contents of the target ConfigMap's Data field will be
+    presented in a volume as files using the keys in the Data
+    field as the file names, unless the items element is
+    populated with specific mappings of keys to paths. ConfigMap
+    volumes support ownership management and SELinux relabeling.
     """
 
     def __init__(
@@ -3050,22 +3047,28 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     @property
     def default_mode(self) -> int:
         """
-        Optional: mode bits to use on created files by default. Must
-        be a value between 0 and 0777. Defaults to 0644. Directories
-        within the path are not affected by this setting. This might
-        be in conflict with other options that affect the file mode,
-        like fsGroup, and the result can be other mode bits set.
+        Optional: mode bits used to set permissions on created files
+        by default. Must be an octal value between 0000 and 0777 or
+        a decimal value between 0 and 511. YAML accepts both octal
+        and decimal values, JSON requires decimal values for mode
+        bits. Defaults to 0644. Directories within the path are not
+        affected by this setting. This might be in conflict with
+        other options that affect the file mode, like fsGroup, and
+        the result can be other mode bits set.
         """
         return self._properties.get('defaultMode')
 
     @default_mode.setter
     def default_mode(self, value: int):
         """
-        Optional: mode bits to use on created files by default. Must
-        be a value between 0 and 0777. Defaults to 0644. Directories
-        within the path are not affected by this setting. This might
-        be in conflict with other options that affect the file mode,
-        like fsGroup, and the result can be other mode bits set.
+        Optional: mode bits used to set permissions on created files
+        by default. Must be an octal value between 0000 and 0777 or
+        a decimal value between 0 and 511. YAML accepts both octal
+        and decimal values, JSON requires decimal values for mode
+        bits. Defaults to 0644. Directories within the path are not
+        affected by this setting. This might be in conflict with
+        other options that affect the file mode, like fsGroup, and
+        the result can be other mode bits set.
         """
         self._properties['defaultMode'] = value
 
@@ -3727,7 +3730,7 @@ class Container(_kuber_definitions.Definition):
     def volume_devices(self) -> typing.List['VolumeDevice']:
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         return self._properties.get('volumeDevices')
 
@@ -3738,7 +3741,7 @@ class Container(_kuber_definitions.Definition):
     ):
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         cleaned = []
         for item in value:
@@ -4707,22 +4710,26 @@ class DownwardAPIVolumeFile(_kuber_definitions.Definition):
     @property
     def mode(self) -> int:
         """
-        Optional: mode bits to use on this file, must be a value
-        between 0 and 0777. If not specified, the volume defaultMode
-        will be used. This might be in conflict with other options
-        that affect the file mode, like fsGroup, and the result can
-        be other mode bits set.
+        Optional: mode bits used to set permissions on this file,
+        must be an octal value between 0000 and 0777 or a decimal
+        value between 0 and 511. YAML accepts both octal and decimal
+        values, JSON requires decimal values for mode bits. If not
+        specified, the volume defaultMode will be used. This might
+        be in conflict with other options that affect the file mode,
+        like fsGroup, and the result can be other mode bits set.
         """
         return self._properties.get('mode')
 
     @mode.setter
     def mode(self, value: int):
         """
-        Optional: mode bits to use on this file, must be a value
-        between 0 and 0777. If not specified, the volume defaultMode
-        will be used. This might be in conflict with other options
-        that affect the file mode, like fsGroup, and the result can
-        be other mode bits set.
+        Optional: mode bits used to set permissions on this file,
+        must be an octal value between 0000 and 0777 or a decimal
+        value between 0 and 511. YAML accepts both octal and decimal
+        values, JSON requires decimal values for mode bits. If not
+        specified, the volume defaultMode will be used. This might
+        be in conflict with other options that affect the file mode,
+        like fsGroup, and the result can be other mode bits set.
         """
         self._properties['mode'] = value
 
@@ -4805,10 +4812,14 @@ class DownwardAPIVolumeSource(_kuber_definitions.Definition):
     def default_mode(self) -> int:
         """
         Optional: mode bits to use on created files by default. Must
-        be a value between 0 and 0777. Defaults to 0644. Directories
-        within the path are not affected by this setting. This might
-        be in conflict with other options that affect the file mode,
-        like fsGroup, and the result can be other mode bits set.
+        be a Optional: mode bits used to set permissions on created
+        files by default. Must be an octal value between 0000 and
+        0777 or a decimal value between 0 and 511. YAML accepts both
+        octal and decimal values, JSON requires decimal values for
+        mode bits. Defaults to 0644. Directories within the path are
+        not affected by this setting. This might be in conflict with
+        other options that affect the file mode, like fsGroup, and
+        the result can be other mode bits set.
         """
         return self._properties.get('defaultMode')
 
@@ -4816,10 +4827,14 @@ class DownwardAPIVolumeSource(_kuber_definitions.Definition):
     def default_mode(self, value: int):
         """
         Optional: mode bits to use on created files by default. Must
-        be a value between 0 and 0777. Defaults to 0644. Directories
-        within the path are not affected by this setting. This might
-        be in conflict with other options that affect the file mode,
-        like fsGroup, and the result can be other mode bits set.
+        be a Optional: mode bits used to set permissions on created
+        files by default. Must be an octal value between 0000 and
+        0777 or a decimal value between 0 and 511. YAML accepts both
+        octal and decimal values, JSON requires decimal values for
+        mode bits. Defaults to 0644. Directories within the path are
+        not affected by this setting. This might be in conflict with
+        other options that affect the file mode, like fsGroup, and
+        the result can be other mode bits set.
         """
         self._properties['defaultMode'] = value
 
@@ -5050,6 +5065,7 @@ class EndpointPort(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            app_protocol: str = None,
             name: str = None,
             port: int = None,
             protocol: str = None,
@@ -5060,17 +5076,47 @@ class EndpointPort(_kuber_definitions.Definition):
             kind='EndpointPort'
         )
         self._properties = {
+            'appProtocol': app_protocol if app_protocol is not None else '',
             'name': name if name is not None else '',
             'port': port if port is not None else None,
             'protocol': protocol if protocol is not None else '',
 
         }
         self._types = {
+            'appProtocol': (str, None),
             'name': (str, None),
             'port': (int, None),
             'protocol': (str, None),
 
         }
+
+    @property
+    def app_protocol(self) -> str:
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. This is a beta field that
+        is guarded by the ServiceAppProtocol feature gate and
+        enabled by default.
+        """
+        return self._properties.get('appProtocol')
+
+    @app_protocol.setter
+    def app_protocol(self, value: str):
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. This is a beta field that
+        is guarded by the ServiceAppProtocol feature gate and
+        enabled by default.
+        """
+        self._properties['appProtocol'] = value
 
     @property
     def name(self) -> str:
@@ -5133,15 +5179,13 @@ class EndpointSubset(_kuber_definitions.Definition):
     ports. The expanded set of endpoints is the Cartesian
     product of Addresses x Ports. For example, given:
       {
-    Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-    Ports:     [{"name": "a", "port": 8675}, {"name": "b",
+        Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+        Ports:     [{"name": "a", "port": 8675}, {"name": "b",
     "port": 309}]
       }
-    The resulting set of endpoints can be
-    viewed as:
+    The resulting set of endpoints can be viewed as:
         a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
-        b:
-    [ 10.10.1.1:309, 10.10.2.2:309 ]
+        b: [ 10.10.1.1:309, 10.10.2.2:309 ]
     """
 
     def __init__(
@@ -5258,14 +5302,14 @@ class Endpoints(_kuber_definitions.Resource):
       Name: "mysvc",
       Subsets: [
         {
-    Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-    Ports: [{"name": "a", "port": 8675}, {"name": "b", "port":
-    309}]
+          Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+          Ports: [{"name": "a", "port": 8675}, {"name": "b",
+    "port": 309}]
         },
         {
           Addresses: [{"ip": "10.10.3.3"}],
-    Ports: [{"name": "a", "port": 93}, {"name": "b", "port":
-    76}]
+          Ports: [{"name": "a", "port": 93}, {"name": "b",
+    "port": 76}]
         },
      ]
     """
@@ -5805,9 +5849,10 @@ class EnvVarSource(_kuber_definitions.Definition):
     def field_ref(self) -> 'ObjectFieldSelector':
         """
         Selects a field of the pod: supports metadata.name,
-        metadata.namespace, metadata.labels, metadata.annotations,
-        spec.nodeName, spec.serviceAccountName, status.hostIP,
-        status.podIP, status.podIPs.
+        metadata.namespace, `metadata.labels['<KEY>']`,
+        `metadata.annotations['<KEY>']`, spec.nodeName,
+        spec.serviceAccountName, status.hostIP, status.podIP,
+        status.podIPs.
         """
         return self._properties.get('fieldRef')
 
@@ -5815,9 +5860,10 @@ class EnvVarSource(_kuber_definitions.Definition):
     def field_ref(self, value: typing.Union['ObjectFieldSelector', dict]):
         """
         Selects a field of the pod: supports metadata.name,
-        metadata.namespace, metadata.labels, metadata.annotations,
-        spec.nodeName, spec.serviceAccountName, status.hostIP,
-        status.podIP, status.podIPs.
+        metadata.namespace, `metadata.labels['<KEY>']`,
+        `metadata.annotations['<KEY>']`, spec.nodeName,
+        spec.serviceAccountName, status.hostIP, status.podIP,
+        status.podIPs.
         """
         if isinstance(value, dict):
             value = ObjectFieldSelector().from_dict(value)
@@ -6424,7 +6470,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
     def volume_devices(self) -> typing.List['VolumeDevice']:
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         return self._properties.get('volumeDevices')
 
@@ -6435,7 +6481,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
     ):
         """
         volumeDevices is the list of block devices to be used by the
-        container. This is a beta feature.
+        container.
         """
         cleaned = []
         for item in value:
@@ -7051,7 +7097,6 @@ class EventSeries(_kuber_definitions.Definition):
             self,
             count: int = None,
             last_observed_time: 'MicroTime' = None,
-            state: str = None,
     ):
         """Create EventSeries instance."""
         super(EventSeries, self).__init__(
@@ -7061,13 +7106,11 @@ class EventSeries(_kuber_definitions.Definition):
         self._properties = {
             'count': count if count is not None else None,
             'lastObservedTime': last_observed_time if last_observed_time is not None else MicroTime(),
-            'state': state if state is not None else '',
 
         }
         self._types = {
             'count': (int, None),
             'lastObservedTime': (MicroTime, None),
-            'state': (str, None),
 
         }
 
@@ -7102,22 +7145,6 @@ class EventSeries(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = MicroTime().from_dict(value)
         self._properties['lastObservedTime'] = value
-
-    @property
-    def state(self) -> str:
-        """
-        State of this Series: Ongoing or Finished Deprecated.
-        Planned removal for 1.18
-        """
-        return self._properties.get('state')
-
-    @state.setter
-    def state(self, value: str):
-        """
-        State of this Series: Ongoing or Finished Deprecated.
-        Planned removal for 1.18
-        """
-        self._properties['state'] = value
 
     def __enter__(self) -> 'EventSeries':
         return self
@@ -7699,11 +7726,11 @@ class GCEPersistentDiskVolumeSource(_kuber_definitions.Definition):
     Represents a Persistent Disk resource in Google Compute
     Engine.
 
-    A GCE PD must exist before mounting to a container.
-    The disk must also be in the same GCE project and zone as
-    the kubelet. A GCE PD can only be mounted as read/write once
-    or read-only many times. GCE PDs support ownership
-    management and SELinux relabeling.
+    A GCE PD must exist before mounting to a container. The disk
+    must also be in the same GCE project and zone as the
+    kubelet. A GCE PD can only be mounted as read/write once or
+    read-only many times. GCE PDs support ownership management
+    and SELinux relabeling.
     """
 
     def __init__(
@@ -7829,6 +7856,7 @@ class GitRepoVolumeSource(_kuber_definitions.Definition):
     Represents a volume that is populated with the contents of a
     git repository. Git repo volumes do not support ownership
     management. Git repo volumes support SELinux relabeling.
+
     DEPRECATED: GitRepo is deprecated. To provision a container
     with a git repo, mount an EmptyDir into an InitContainer
     that clones the repo using git, then mount the EmptyDir into
@@ -9080,22 +9108,26 @@ class KeyToPath(_kuber_definitions.Definition):
     @property
     def mode(self) -> int:
         """
-        Optional: mode bits to use on this file, must be a value
-        between 0 and 0777. If not specified, the volume defaultMode
-        will be used. This might be in conflict with other options
-        that affect the file mode, like fsGroup, and the result can
-        be other mode bits set.
+        Optional: mode bits used to set permissions on this file.
+        Must be an octal value between 0000 and 0777 or a decimal
+        value between 0 and 511. YAML accepts both octal and decimal
+        values, JSON requires decimal values for mode bits. If not
+        specified, the volume defaultMode will be used. This might
+        be in conflict with other options that affect the file mode,
+        like fsGroup, and the result can be other mode bits set.
         """
         return self._properties.get('mode')
 
     @mode.setter
     def mode(self, value: int):
         """
-        Optional: mode bits to use on this file, must be a value
-        between 0 and 0777. If not specified, the volume defaultMode
-        will be used. This might be in conflict with other options
-        that affect the file mode, like fsGroup, and the result can
-        be other mode bits set.
+        Optional: mode bits used to set permissions on this file.
+        Must be an octal value between 0000 and 0777 or a decimal
+        value between 0 and 511. YAML accepts both octal and decimal
+        values, JSON requires decimal values for mode bits. If not
+        specified, the volume defaultMode will be used. This might
+        be in conflict with other options that affect the file mode,
+        like fsGroup, and the result can be other mode bits set.
         """
         self._properties['mode'] = value
 
@@ -12503,8 +12535,7 @@ class NodeSystemInfo(_kuber_definitions.Definition):
         identification MachineID is preferred. This field is
         specific to Red Hat hosts
         https://access.redhat.com/documentation/en-
-        US/Red_Hat_Subscription_Management/1/html/RHSM/getting-
-        system-uuid.html
+        us/red_hat_subscription_management/1/html/rhsm/uuid
         """
         return self._properties.get('systemUUID')
 
@@ -12515,8 +12546,7 @@ class NodeSystemInfo(_kuber_definitions.Definition):
         identification MachineID is preferred. This field is
         specific to Red Hat hosts
         https://access.redhat.com/documentation/en-
-        US/Red_Hat_Subscription_Management/1/html/RHSM/getting-
-        system-uuid.html
+        us/red_hat_subscription_management/1/html/rhsm/uuid
         """
         self._properties['systemUUID'] = value
 
@@ -13645,32 +13675,42 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
     @property
     def data_source(self) -> 'TypedLocalObjectReference':
         """
-        This field requires the VolumeSnapshotDataSource alpha
-        feature gate to be enabled and currently VolumeSnapshot is
-        the only supported data source. If the provisioner can
-        support VolumeSnapshot data source, it will create a new
-        volume and data will be restored to the volume at the same
-        time. If the provisioner does not support VolumeSnapshot
-        data source, volume will not be created and the failure will
-        be reported as an event. In the future, we plan to support
-        more data source types and the behavior of the provisioner
-        may change.
+        This field can be used to specify either: * An existing
+        VolumeSnapshot object
+        (snapshot.storage.k8s.io/VolumeSnapshot - Beta) * An
+        existing PVC (PersistentVolumeClaim) * An existing custom
+        resource/object that implements data population (Alpha) In
+        order to use VolumeSnapshot object types, the appropriate
+        feature gate must be enabled (VolumeSnapshotDataSource or
+        AnyVolumeDataSource) If the provisioner or an external
+        controller can support the specified data source, it will
+        create a new volume based on the contents of the specified
+        data source. If the specified data source is not supported,
+        the volume will not be created and the failure will be
+        reported as an event. In the future, we plan to support more
+        data source types and the behavior of the provisioner may
+        change.
         """
         return self._properties.get('dataSource')
 
     @data_source.setter
     def data_source(self, value: typing.Union['TypedLocalObjectReference', dict]):
         """
-        This field requires the VolumeSnapshotDataSource alpha
-        feature gate to be enabled and currently VolumeSnapshot is
-        the only supported data source. If the provisioner can
-        support VolumeSnapshot data source, it will create a new
-        volume and data will be restored to the volume at the same
-        time. If the provisioner does not support VolumeSnapshot
-        data source, volume will not be created and the failure will
-        be reported as an event. In the future, we plan to support
-        more data source types and the behavior of the provisioner
-        may change.
+        This field can be used to specify either: * An existing
+        VolumeSnapshot object
+        (snapshot.storage.k8s.io/VolumeSnapshot - Beta) * An
+        existing PVC (PersistentVolumeClaim) * An existing custom
+        resource/object that implements data population (Alpha) In
+        order to use VolumeSnapshot object types, the appropriate
+        feature gate must be enabled (VolumeSnapshotDataSource or
+        AnyVolumeDataSource) If the provisioner or an external
+        controller can support the specified data source, it will
+        create a new volume based on the contents of the specified
+        data source. If the specified data source is not supported,
+        the volume will not be created and the failure will be
+        reported as an event. In the future, we plan to support more
+        data source types and the behavior of the provisioner may
+        change.
         """
         if isinstance(value, dict):
             value = TypedLocalObjectReference().from_dict(value)
@@ -13737,7 +13777,7 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         """
         volumeMode defines what type of volume is required by the
         claim. Value of Filesystem is implied when not included in
-        claim spec. This is a beta feature.
+        claim spec.
         """
         return self._properties.get('volumeMode')
 
@@ -13746,7 +13786,7 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         """
         volumeMode defines what type of volume is required by the
         claim. Value of Filesystem is implied when not included in
-        claim spec. This is a beta feature.
+        claim spec.
         """
         self._properties['volumeMode'] = value
 
@@ -14733,8 +14773,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         volumeMode defines if a volume is intended to be used with a
         formatted filesystem or to remain in raw block state. Value
-        of Filesystem is implied when not included in spec. This is
-        a beta feature.
+        of Filesystem is implied when not included in spec.
         """
         return self._properties.get('volumeMode')
 
@@ -14743,8 +14782,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         volumeMode defines if a volume is intended to be used with a
         formatted filesystem or to remain in raw block state. Value
-        of Filesystem is implied when not included in spec. This is
-        a beta feature.
+        of Filesystem is implied when not included in spec.
         """
         self._properties['volumeMode'] = value
 
@@ -15926,8 +15964,8 @@ class PodIP(_kuber_definitions.Definition):
     """
     IP address information for entries in the (plural) PodIPs
     field. Each entry includes:
-       IP: An IP address allocated
-    to the pod. Routable at least within the cluster.
+       IP: An IP address allocated to the pod. Routable at least
+    within the cluster.
     """
 
     def __init__(
@@ -16121,6 +16159,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
     def __init__(
             self,
             fs_group: int = None,
+            fs_group_change_policy: str = None,
             run_as_group: int = None,
             run_as_non_root: bool = None,
             run_as_user: int = None,
@@ -16136,6 +16175,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
         )
         self._properties = {
             'fsGroup': fs_group if fs_group is not None else None,
+            'fsGroupChangePolicy': fs_group_change_policy if fs_group_change_policy is not None else '',
             'runAsGroup': run_as_group if run_as_group is not None else None,
             'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
             'runAsUser': run_as_user if run_as_user is not None else None,
@@ -16147,6 +16187,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
         }
         self._types = {
             'fsGroup': (int, None),
+            'fsGroupChangePolicy': (str, None),
             'runAsGroup': (int, None),
             'runAsNonRoot': (bool, None),
             'runAsUser': (int, None),
@@ -16164,14 +16205,12 @@ class PodSecurityContext(_kuber_definitions.Definition):
         in a pod. Some volume types allow the Kubelet to change the
         ownership of that volume to be owned by the pod:
 
-        1. The
-        owning GID will be the FSGroup 2. The setgid bit is set (new
-        files created in the volume will be owned by FSGroup) 3. The
-        permission bits are OR'd with rw-rw----
+        1. The owning GID will be the FSGroup 2. The setgid bit is
+        set (new files created in the volume will be owned by
+        FSGroup) 3. The permission bits are OR'd with rw-rw----
 
-        If unset, the
-        Kubelet will not modify the ownership and permissions of any
-        volume.
+        If unset, the Kubelet will not modify the ownership and
+        permissions of any volume.
         """
         return self._properties.get('fsGroup')
 
@@ -16182,16 +16221,40 @@ class PodSecurityContext(_kuber_definitions.Definition):
         in a pod. Some volume types allow the Kubelet to change the
         ownership of that volume to be owned by the pod:
 
-        1. The
-        owning GID will be the FSGroup 2. The setgid bit is set (new
-        files created in the volume will be owned by FSGroup) 3. The
-        permission bits are OR'd with rw-rw----
+        1. The owning GID will be the FSGroup 2. The setgid bit is
+        set (new files created in the volume will be owned by
+        FSGroup) 3. The permission bits are OR'd with rw-rw----
 
-        If unset, the
-        Kubelet will not modify the ownership and permissions of any
-        volume.
+        If unset, the Kubelet will not modify the ownership and
+        permissions of any volume.
         """
         self._properties['fsGroup'] = value
+
+    @property
+    def fs_group_change_policy(self) -> str:
+        """
+        fsGroupChangePolicy defines behavior of changing ownership
+        and permission of the volume before being exposed inside
+        Pod. This field will only apply to volume types which
+        support fsGroup based ownership(and permissions). It will
+        have no effect on ephemeral volume types such as: secret,
+        configmaps and emptydir. Valid values are "OnRootMismatch"
+        and "Always". If not specified defaults to "Always".
+        """
+        return self._properties.get('fsGroupChangePolicy')
+
+    @fs_group_change_policy.setter
+    def fs_group_change_policy(self, value: str):
+        """
+        fsGroupChangePolicy defines behavior of changing ownership
+        and permission of the volume before being exposed inside
+        Pod. This field will only apply to volume types which
+        support fsGroup based ownership(and permissions). It will
+        have no effect on ephemeral volume types such as: secret,
+        configmaps and emptydir. Valid values are "OnRootMismatch"
+        and "Always". If not specified defaults to "Always".
+        """
+        self._properties['fsGroupChangePolicy'] = value
 
     @property
     def run_as_group(self) -> int:
@@ -17262,9 +17325,9 @@ class PodSpec(_kuber_definitions.Definition):
         TopologySpreadConstraints describes how a group of pods
         ought to spread across topology domains. Scheduler will
         schedule pods in a way which abides by the constraints. This
-        field is alpha-level and is only honored by clusters that
-        enables the EvenPodsSpread feature. All
-        topologySpreadConstraints are ANDed.
+        field is only honored by clusters that enable the
+        EvenPodsSpread feature. All topologySpreadConstraints are
+        ANDed.
         """
         return self._properties.get('topologySpreadConstraints')
 
@@ -17277,9 +17340,9 @@ class PodSpec(_kuber_definitions.Definition):
         TopologySpreadConstraints describes how a group of pods
         ought to spread across topology domains. Scheduler will
         schedule pods in a way which abides by the constraints. This
-        field is alpha-level and is only honored by clusters that
-        enables the EvenPodsSpread feature. All
-        topologySpreadConstraints are ANDed.
+        field is only honored by clusters that enable the
+        EvenPodsSpread feature. All topologySpreadConstraints are
+        ANDed.
         """
         cleaned = []
         for item in value:
@@ -17642,22 +17705,21 @@ class PodStatus(_kuber_definitions.Definition):
         status arrays contain more detail about the pod's status.
         There are five possible phase values:
 
-        Pending: The pod has
-        been accepted by the Kubernetes system, but one or more of
-        the container images has not been created. This includes
-        time before being scheduled as well as time spent
-        downloading images over the network, which could take a
-        while. Running: The pod has been bound to a node, and all of
-        the containers have been created. At least one container is
-        still running, or is in the process of starting or
-        restarting. Succeeded: All containers in the pod have
-        terminated in success, and will not be restarted. Failed:
-        All containers in the pod have terminated, and at least one
-        container has terminated in failure. The container either
-        exited with non-zero status or was terminated by the system.
-        Unknown: For some reason the state of the pod could not be
-        obtained, typically due to an error in communicating with
-        the host of the pod.
+        Pending: The pod has been accepted by the Kubernetes system,
+        but one or more of the container images has not been
+        created. This includes time before being scheduled as well
+        as time spent downloading images over the network, which
+        could take a while. Running: The pod has been bound to a
+        node, and all of the containers have been created. At least
+        one container is still running, or is in the process of
+        starting or restarting. Succeeded: All containers in the pod
+        have terminated in success, and will not be restarted.
+        Failed: All containers in the pod have terminated, and at
+        least one container has terminated in failure. The container
+        either exited with non-zero status or was terminated by the
+        system. Unknown: For some reason the state of the pod could
+        not be obtained, typically due to an error in communicating
+        with the host of the pod.
 
         More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
@@ -17674,22 +17736,21 @@ class PodStatus(_kuber_definitions.Definition):
         status arrays contain more detail about the pod's status.
         There are five possible phase values:
 
-        Pending: The pod has
-        been accepted by the Kubernetes system, but one or more of
-        the container images has not been created. This includes
-        time before being scheduled as well as time spent
-        downloading images over the network, which could take a
-        while. Running: The pod has been bound to a node, and all of
-        the containers have been created. At least one container is
-        still running, or is in the process of starting or
-        restarting. Succeeded: All containers in the pod have
-        terminated in success, and will not be restarted. Failed:
-        All containers in the pod have terminated, and at least one
-        container has terminated in failure. The container either
-        exited with non-zero status or was terminated by the system.
-        Unknown: For some reason the state of the pod could not be
-        obtained, typically due to an error in communicating with
-        the host of the pod.
+        Pending: The pod has been accepted by the Kubernetes system,
+        but one or more of the container images has not been
+        created. This includes time before being scheduled as well
+        as time spent downloading images over the network, which
+        could take a while. Running: The pod has been bound to a
+        node, and all of the containers have been created. At least
+        one container is still running, or is in the process of
+        starting or restarting. Succeeded: All containers in the pod
+        have terminated in success, and will not be restarted.
+        Failed: All containers in the pod have terminated, and at
+        least one container has terminated in failure. The container
+        either exited with non-zero status or was terminated by the
+        system. Unknown: For some reason the state of the pod could
+        not be obtained, typically due to an error in communicating
+        with the host of the pod.
 
         More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
@@ -18704,22 +18765,28 @@ class ProjectedVolumeSource(_kuber_definitions.Definition):
     @property
     def default_mode(self) -> int:
         """
-        Mode bits to use on created files by default. Must be a
-        value between 0 and 0777. Directories within the path are
-        not affected by this setting. This might be in conflict with
-        other options that affect the file mode, like fsGroup, and
-        the result can be other mode bits set.
+        Mode bits used to set permissions on created files by
+        default. Must be an octal value between 0000 and 0777 or a
+        decimal value between 0 and 511. YAML accepts both octal and
+        decimal values, JSON requires decimal values for mode bits.
+        Directories within the path are not affected by this
+        setting. This might be in conflict with other options that
+        affect the file mode, like fsGroup, and the result can be
+        other mode bits set.
         """
         return self._properties.get('defaultMode')
 
     @default_mode.setter
     def default_mode(self, value: int):
         """
-        Mode bits to use on created files by default. Must be a
-        value between 0 and 0777. Directories within the path are
-        not affected by this setting. This might be in conflict with
-        other options that affect the file mode, like fsGroup, and
-        the result can be other mode bits set.
+        Mode bits used to set permissions on created files by
+        default. Must be an octal value between 0000 and 0777 or a
+        decimal value between 0 and 511. YAML accepts both octal and
+        decimal values, JSON requires decimal values for mode bits.
+        Directories within the path are not affected by this
+        setting. This might be in conflict with other options that
+        affect the file mode, like fsGroup, and the result can be
+        other mode bits set.
         """
         self._properties['defaultMode'] = value
 
@@ -21652,8 +21719,8 @@ class Secret(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         Secret cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is an alpha field enabled
-        by ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil. This is a beta field enabled by
+        ImmutableEphemeralVolumes feature gate.
         """
         return self._properties.get('immutable')
 
@@ -21663,8 +21730,8 @@ class Secret(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         Secret cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is an alpha field enabled
-        by ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil. This is a beta field enabled by
+        ImmutableEphemeralVolumes feature gate.
         """
         self._properties['immutable'] = value
 
@@ -21860,9 +21927,8 @@ class SecretEnvSource(_kuber_definitions.Definition):
     SecretEnvSource selects a Secret to populate the environment
     variables with.
 
-    The contents of the target Secret's Data
-    field will represent the key-value pairs as environment
-    variables.
+    The contents of the target Secret's Data field will
+    represent the key-value pairs as environment variables.
     """
 
     def __init__(
@@ -22105,11 +22171,11 @@ class SecretProjection(_kuber_definitions.Definition):
     """
     Adapts a secret into a projected volume.
 
-    The contents of
-    the target Secret's Data field will be presented in a
-    projected volume as files using the keys in the Data field
-    as the file names. Note that this is identical to a secret
-    volume source without the default mode.
+    The contents of the target Secret's Data field will be
+    presented in a projected volume as files using the keys in
+    the Data field as the file names. Note that this is
+    identical to a secret volume source without the default
+    mode.
     """
 
     def __init__(
@@ -22283,10 +22349,10 @@ class SecretVolumeSource(_kuber_definitions.Definition):
     """
     Adapts a Secret into a volume.
 
-    The contents of the target
-    Secret's Data field will be presented in a volume as files
-    using the keys in the Data field as the file names. Secret
-    volumes support ownership management and SELinux relabeling.
+    The contents of the target Secret's Data field will be
+    presented in a volume as files using the keys in the Data
+    field as the file names. Secret volumes support ownership
+    management and SELinux relabeling.
     """
 
     def __init__(
@@ -22319,22 +22385,28 @@ class SecretVolumeSource(_kuber_definitions.Definition):
     @property
     def default_mode(self) -> int:
         """
-        Optional: mode bits to use on created files by default. Must
-        be a value between 0 and 0777. Defaults to 0644. Directories
-        within the path are not affected by this setting. This might
-        be in conflict with other options that affect the file mode,
-        like fsGroup, and the result can be other mode bits set.
+        Optional: mode bits used to set permissions on created files
+        by default. Must be an octal value between 0000 and 0777 or
+        a decimal value between 0 and 511. YAML accepts both octal
+        and decimal values, JSON requires decimal values for mode
+        bits. Defaults to 0644. Directories within the path are not
+        affected by this setting. This might be in conflict with
+        other options that affect the file mode, like fsGroup, and
+        the result can be other mode bits set.
         """
         return self._properties.get('defaultMode')
 
     @default_mode.setter
     def default_mode(self, value: int):
         """
-        Optional: mode bits to use on created files by default. Must
-        be a value between 0 and 0777. Defaults to 0644. Directories
-        within the path are not affected by this setting. This might
-        be in conflict with other options that affect the file mode,
-        like fsGroup, and the result can be other mode bits set.
+        Optional: mode bits used to set permissions on created files
+        by default. Must be an octal value between 0000 and 0777 or
+        a decimal value between 0 and 511. YAML accepts both octal
+        and decimal values, JSON requires decimal values for mode
+        bits. Defaults to 0644. Directories within the path are not
+        affected by this setting. This might be in conflict with
+        other options that affect the file mode, like fsGroup, and
+        the result can be other mode bits set.
         """
         self._properties['defaultMode'] = value
 
@@ -23525,6 +23597,7 @@ class ServicePort(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            app_protocol: str = None,
             name: str = None,
             node_port: int = None,
             port: int = None,
@@ -23537,6 +23610,7 @@ class ServicePort(_kuber_definitions.Definition):
             kind='ServicePort'
         )
         self._properties = {
+            'appProtocol': app_protocol if app_protocol is not None else '',
             'name': name if name is not None else '',
             'nodePort': node_port if node_port is not None else None,
             'port': port if port is not None else None,
@@ -23545,6 +23619,7 @@ class ServicePort(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'appProtocol': (str, None),
             'name': (str, None),
             'nodePort': (int, None),
             'port': (int, None),
@@ -23552,6 +23627,34 @@ class ServicePort(_kuber_definitions.Definition):
             'targetPort': (int, None),
 
         }
+
+    @property
+    def app_protocol(self) -> str:
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. This is a beta field that
+        is guarded by the ServiceAppProtocol feature gate and
+        enabled by default.
+        """
+        return self._properties.get('appProtocol')
+
+    @app_protocol.setter
+    def app_protocol(self, value: str):
+        """
+        The application protocol for this port. This field follows
+        standard Kubernetes label syntax. Un-prefixed names are
+        reserved for IANA standard service names (as per RFC-6335
+        and http://www.iana.org/assignments/service-names). Non-
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol. This is a beta field that
+        is guarded by the ServiceAppProtocol feature gate and
+        enabled by default.
+        """
+        self._properties['appProtocol'] = value
 
     @property
     def name(self) -> str:
@@ -24772,14 +24875,14 @@ class Taint(_kuber_definitions.Definition):
     @property
     def value(self) -> str:
         """
-        Required. The taint value corresponding to the taint key.
+        The taint value corresponding to the taint key.
         """
         return self._properties.get('value')
 
     @value.setter
     def value(self, value: str):
         """
-        Required. The taint value corresponding to the taint key.
+        The taint value corresponding to the taint key.
         """
         self._properties['value'] = value
 
@@ -25112,17 +25215,19 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
     def max_skew(self) -> int:
         """
         MaxSkew describes the degree to which pods may be unevenly
-        distributed. It's the maximum permitted difference between
-        the number of matching pods in any two topology domains of a
-        given topology type. For example, in a 3-zone cluster,
-        MaxSkew is set to 1, and pods with the same labelSelector
-        spread as 1/1/0: | zone1 | zone2 | zone3 | |   P   |   P   |
-        | - if MaxSkew is 1, incoming pod can only be scheduled to
-        zone3 to become 1/1/1; scheduling it onto zone1(zone2) would
-        make the ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1).
-        - if MaxSkew is 2, incoming pod can be scheduled onto any
-        zone. It's a required field. Default value is 1 and 0 is not
-        allowed.
+        distributed. When `whenUnsatisfiable=DoNotSchedule`, it is
+        the maximum permitted difference between the number of
+        matching pods in the target topology and the global minimum.
+        For example, in a 3-zone cluster, MaxSkew is set to 1, and
+        pods with the same labelSelector spread as 1/1/0: | zone1 |
+        zone2 | zone3 | |   P   |   P   |       | - if MaxSkew is 1,
+        incoming pod can only be scheduled to zone3 to become 1/1/1;
+        scheduling it onto zone1(zone2) would make the
+        ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1). - if
+        MaxSkew is 2, incoming pod can be scheduled onto any zone.
+        When `whenUnsatisfiable=ScheduleAnyway`, it is used to give
+        higher precedence to topologies that satisfy it. It's a
+        required field. Default value is 1 and 0 is not allowed.
         """
         return self._properties.get('maxSkew')
 
@@ -25130,17 +25235,19 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
     def max_skew(self, value: int):
         """
         MaxSkew describes the degree to which pods may be unevenly
-        distributed. It's the maximum permitted difference between
-        the number of matching pods in any two topology domains of a
-        given topology type. For example, in a 3-zone cluster,
-        MaxSkew is set to 1, and pods with the same labelSelector
-        spread as 1/1/0: | zone1 | zone2 | zone3 | |   P   |   P   |
-        | - if MaxSkew is 1, incoming pod can only be scheduled to
-        zone3 to become 1/1/1; scheduling it onto zone1(zone2) would
-        make the ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1).
-        - if MaxSkew is 2, incoming pod can be scheduled onto any
-        zone. It's a required field. Default value is 1 and 0 is not
-        allowed.
+        distributed. When `whenUnsatisfiable=DoNotSchedule`, it is
+        the maximum permitted difference between the number of
+        matching pods in the target topology and the global minimum.
+        For example, in a 3-zone cluster, MaxSkew is set to 1, and
+        pods with the same labelSelector spread as 1/1/0: | zone1 |
+        zone2 | zone3 | |   P   |   P   |       | - if MaxSkew is 1,
+        incoming pod can only be scheduled to zone3 to become 1/1/1;
+        scheduling it onto zone1(zone2) would make the
+        ActualSkew(2-0) on zone1(zone2) violate MaxSkew(1). - if
+        MaxSkew is 2, incoming pod can be scheduled onto any zone.
+        When `whenUnsatisfiable=ScheduleAnyway`, it is used to give
+        higher precedence to topologies that satisfy it. It's a
+        required field. Default value is 1 and 0 is not allowed.
         """
         self._properties['maxSkew'] = value
 
@@ -25171,14 +25278,19 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         """
         WhenUnsatisfiable indicates how to deal with a pod if it
         doesn't satisfy the spread constraint. - DoNotSchedule
-        (default) tells the scheduler not to schedule it -
-        ScheduleAnyway tells the scheduler to still schedule it It's
-        considered as "Unsatisfiable" if and only if placing
-        incoming pod on any topology violates "MaxSkew". For
-        example, in a 3-zone cluster, MaxSkew is set to 1, and pods
-        with the same labelSelector spread as 3/1/1: | zone1 | zone2
-        | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is
-        set to DoNotSchedule, incoming pod can only be scheduled to
+        (default) tells the scheduler not to schedule it. -
+        ScheduleAnyway tells the scheduler to schedule the pod in
+        any location,
+          but giving higher precedence to topologies that would help
+        reduce the
+          skew.
+        A constraint is considered "Unsatisfiable" for an incoming
+        pod if and only if every possible node assigment for that
+        pod would violate "MaxSkew" on some topology. For example,
+        in a 3-zone cluster, MaxSkew is set to 1, and pods with the
+        same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3
+        | | P P P |   P   |   P   | If WhenUnsatisfiable is set to
+        DoNotSchedule, incoming pod can only be scheduled to
         zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on
         zone2(zone3) satisfies MaxSkew(1). In other words, the
         cluster can still be imbalanced, but scheduler won't make it
@@ -25191,14 +25303,19 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         """
         WhenUnsatisfiable indicates how to deal with a pod if it
         doesn't satisfy the spread constraint. - DoNotSchedule
-        (default) tells the scheduler not to schedule it -
-        ScheduleAnyway tells the scheduler to still schedule it It's
-        considered as "Unsatisfiable" if and only if placing
-        incoming pod on any topology violates "MaxSkew". For
-        example, in a 3-zone cluster, MaxSkew is set to 1, and pods
-        with the same labelSelector spread as 3/1/1: | zone1 | zone2
-        | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is
-        set to DoNotSchedule, incoming pod can only be scheduled to
+        (default) tells the scheduler not to schedule it. -
+        ScheduleAnyway tells the scheduler to schedule the pod in
+        any location,
+          but giving higher precedence to topologies that would help
+        reduce the
+          skew.
+        A constraint is considered "Unsatisfiable" for an incoming
+        pod if and only if every possible node assigment for that
+        pod would violate "MaxSkew" on some topology. For example,
+        in a 3-zone cluster, MaxSkew is set to 1, and pods with the
+        same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3
+        | | P P P |   P   |   P   | If WhenUnsatisfiable is set to
+        DoNotSchedule, incoming pod can only be scheduled to
         zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on
         zone2(zone3) satisfies MaxSkew(1). In other words, the
         cluster can still be imbalanced, but scheduler won't make it
@@ -26554,9 +26671,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         GMSACredentialSpec is where the GMSA admission webhook
         (https://github.com/kubernetes-sigs/windows-gmsa) inlines
         the contents of the GMSA credential spec named by the
-        GMSACredentialSpecName field. This field is alpha-level and
-        is only honored by servers that enable the WindowsGMSA
-        feature flag.
+        GMSACredentialSpecName field.
         """
         return self._properties.get('gmsaCredentialSpec')
 
@@ -26566,9 +26681,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         GMSACredentialSpec is where the GMSA admission webhook
         (https://github.com/kubernetes-sigs/windows-gmsa) inlines
         the contents of the GMSA credential spec named by the
-        GMSACredentialSpecName field. This field is alpha-level and
-        is only honored by servers that enable the WindowsGMSA
-        feature flag.
+        GMSACredentialSpecName field.
         """
         self._properties['gmsaCredentialSpec'] = value
 
@@ -26576,8 +26689,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
     def gmsa_credential_spec_name(self) -> str:
         """
         GMSACredentialSpecName is the name of the GMSA credential
-        spec to use. This field is alpha-level and is only honored
-        by servers that enable the WindowsGMSA feature flag.
+        spec to use.
         """
         return self._properties.get('gmsaCredentialSpecName')
 
@@ -26585,8 +26697,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
     def gmsa_credential_spec_name(self, value: str):
         """
         GMSACredentialSpecName is the name of the GMSA credential
-        spec to use. This field is alpha-level and is only honored
-        by servers that enable the WindowsGMSA feature flag.
+        spec to use.
         """
         self._properties['gmsaCredentialSpecName'] = value
 
@@ -26598,8 +26709,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         metadata if unspecified. May also be set in
         PodSecurityContext. If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence. This field is beta-level and may be
-        disabled with the WindowsRunAsUserName feature flag.
+        takes precedence.
         """
         return self._properties.get('runAsUserName')
 
@@ -26611,8 +26721,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         metadata if unspecified. May also be set in
         PodSecurityContext. If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence. This field is beta-level and may be
-        disabled with the WindowsRunAsUserName feature flag.
+        takes precedence.
         """
         self._properties['runAsUserName'] = value
 

@@ -96,8 +96,8 @@ class FlowSchema(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         `metadata` is the standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -105,8 +105,8 @@ class FlowSchema(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         `metadata` is the standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -117,8 +117,8 @@ class FlowSchema(_kuber_definitions.Resource):
         """
         `spec` is the specification of the desired behavior of a
         FlowSchema. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -127,8 +127,8 @@ class FlowSchema(_kuber_definitions.Resource):
         """
         `spec` is the specification of the desired behavior of a
         FlowSchema. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = FlowSchemaSpec().from_dict(value)
@@ -138,8 +138,8 @@ class FlowSchema(_kuber_definitions.Resource):
     def status(self) -> 'FlowSchemaStatus':
         """
         `status` is the current status of a FlowSchema. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -147,8 +147,8 @@ class FlowSchema(_kuber_definitions.Resource):
     def status(self, value: typing.Union['FlowSchemaStatus', dict]):
         """
         `status` is the current status of a FlowSchema. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = FlowSchemaStatus().from_dict(value)
@@ -511,8 +511,8 @@ class FlowSchemaList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         `metadata` is the standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -520,8 +520,8 @@ class FlowSchemaList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         `metadata` is the standard list metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)
@@ -871,7 +871,7 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
     requests that are subject to limits. It addresses two
     issues:
      * How are requests for this priority level limited?
-    * What should be done with requests that exceed the limit?
+     * What should be done with requests that exceed the limit?
     """
 
     def __init__(
@@ -908,13 +908,12 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         number of requests that may be executing at a time --- for
         each such priority level:
 
-                    ACV(l) = ceil( SCL *
-        ACS(l) / ( sum[priority levels k] ACS(k) ) )
+                    ACV(l) = ceil( SCL * ACS(l) / ( sum[priority
+        levels k] ACS(k) ) )
 
-        bigger numbers
-        of ACS mean more reserved concurrent requests (at the
-        expense of every other PL). This field has a default value
-        of 30.
+        bigger numbers of ACS mean more reserved concurrent requests
+        (at the expense of every other PL). This field has a default
+        value of 30.
         """
         return self._properties.get('assuredConcurrencyShares')
 
@@ -931,13 +930,12 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         number of requests that may be executing at a time --- for
         each such priority level:
 
-                    ACV(l) = ceil( SCL *
-        ACS(l) / ( sum[priority levels k] ACS(k) ) )
+                    ACV(l) = ceil( SCL * ACS(l) / ( sum[priority
+        levels k] ACS(k) ) )
 
-        bigger numbers
-        of ACS mean more reserved concurrent requests (at the
-        expense of every other PL). This field has a default value
-        of 30.
+        bigger numbers of ACS mean more reserved concurrent requests
+        (at the expense of every other PL). This field has a default
+        value of 30.
         """
         self._properties['assuredConcurrencyShares'] = value
 
@@ -1002,16 +1000,13 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         """
         `nonResourceURLs` is a set of url prefixes that a user
         should have access to and may not be empty. For example:
-          -
-        "/healthz" is legal
+          - "/healthz" is legal
           - "/hea*" is illegal
-          - "/hea" is
-        legal but matches nothing
+          - "/hea" is legal but matches nothing
           - "/hea/*" also matches nothing
-        - "/healthz/*" matches all per-component health checks.
-        "*"
-        matches all non-resource urls. if it is present, it must be
-        the only entry. Required.
+          - "/healthz/*" matches all per-component health checks.
+        "*" matches all non-resource urls. if it is present, it must
+        be the only entry. Required.
         """
         return self._properties.get('nonResourceURLs')
 
@@ -1020,16 +1015,13 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         """
         `nonResourceURLs` is a set of url prefixes that a user
         should have access to and may not be empty. For example:
-          -
-        "/healthz" is legal
+          - "/healthz" is legal
           - "/hea*" is illegal
-          - "/hea" is
-        legal but matches nothing
+          - "/hea" is legal but matches nothing
           - "/hea/*" also matches nothing
-        - "/healthz/*" matches all per-component health checks.
-        "*"
-        matches all non-resource urls. if it is present, it must be
-        the only entry. Required.
+          - "/healthz/*" matches all per-component health checks.
+        "*" matches all non-resource urls. if it is present, it must
+        be the only entry. Required.
         """
         self._properties['nonResourceURLs'] = value
 
@@ -1221,8 +1213,8 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
     def metadata(self) -> 'ObjectMeta':
         """
         `metadata` is the standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1230,8 +1222,8 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union['ObjectMeta', dict]):
         """
         `metadata` is the standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ObjectMeta().from_dict(value)
@@ -1242,8 +1234,8 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         """
         `spec` is the specification of the desired behavior of a
         "request-priority". More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('spec')
 
@@ -1252,8 +1244,8 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         """
         `spec` is the specification of the desired behavior of a
         "request-priority". More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PriorityLevelConfigurationSpec().from_dict(value)
@@ -1263,8 +1255,8 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
     def status(self) -> 'PriorityLevelConfigurationStatus':
         """
         `status` is the current status of a "request-priority". More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         return self._properties.get('status')
 
@@ -1272,8 +1264,8 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
     def status(self, value: typing.Union['PriorityLevelConfigurationStatus', dict]):
         """
         `status` is the current status of a "request-priority". More
-        info: https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#spec-and-status
+        info: https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
             value = PriorityLevelConfigurationStatus().from_dict(value)
@@ -1638,8 +1630,8 @@ class PriorityLevelConfigurationList(_kuber_definitions.Collection):
     def metadata(self) -> 'ListMeta':
         """
         `metadata` is the standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return self._properties.get('metadata')
 
@@ -1647,8 +1639,8 @@ class PriorityLevelConfigurationList(_kuber_definitions.Collection):
     def metadata(self, value: typing.Union['ListMeta', dict]):
         """
         `metadata` is the standard object's metadata. More info:
-        https://git.k8s.io/community/contributors/devel/api-
-        conventions.md#metadata
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = ListMeta().from_dict(value)

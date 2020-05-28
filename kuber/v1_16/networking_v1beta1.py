@@ -612,15 +612,15 @@ class IngressRule(_kuber_definitions.Definition):
         not allowed. Currently an IngressRuleValue can only apply to
         the
         	  IP in the Spec of the parent Ingress.
-        2. The `:`
-        delimiter is not respected because ports are not allowed.
-        Currently the port of an Ingress is implicitly :80 for http
-        and
+        2. The `:` delimiter is not respected because ports are not
+        allowed.
+        	  Currently the port of an Ingress is implicitly :80 for
+        http and
         	  :443 for https.
-        Both these may change in the future.
-        Incoming requests are matched against the host before the
-        IngressRuleValue. If the host is unspecified, the Ingress
-        routes all traffic based on the specified IngressRuleValue.
+        Both these may change in the future. Incoming requests are
+        matched against the host before the IngressRuleValue. If the
+        host is unspecified, the Ingress routes all traffic based on
+        the specified IngressRuleValue.
         """
         return self._properties.get('host')
 
@@ -633,15 +633,15 @@ class IngressRule(_kuber_definitions.Definition):
         not allowed. Currently an IngressRuleValue can only apply to
         the
         	  IP in the Spec of the parent Ingress.
-        2. The `:`
-        delimiter is not respected because ports are not allowed.
-        Currently the port of an Ingress is implicitly :80 for http
-        and
+        2. The `:` delimiter is not respected because ports are not
+        allowed.
+        	  Currently the port of an Ingress is implicitly :80 for
+        http and
         	  :443 for https.
-        Both these may change in the future.
-        Incoming requests are matched against the host before the
-        IngressRuleValue. If the host is unspecified, the Ingress
-        routes all traffic based on the specified IngressRuleValue.
+        Both these may change in the future. Incoming requests are
+        matched against the host before the IngressRuleValue. If the
+        host is unspecified, the Ingress routes all traffic based on
+        the specified IngressRuleValue.
         """
         self._properties['host'] = value
 

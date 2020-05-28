@@ -1837,9 +1837,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         Clients may not set this value. It is represented in RFC3339
         form and is in UTC.
 
-        Populated by the system. Read-only.
-        Null for lists. More info:
-        https://git.k8s.io/community/contributors/devel/api-
+        Populated by the system. Read-only. Null for lists. More
+        info: https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
         return self._properties.get('creationTimestamp')
@@ -1856,9 +1855,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         Clients may not set this value. It is represented in RFC3339
         form and is in UTC.
 
-        Populated by the system. Read-only.
-        Null for lists. More info:
-        https://git.k8s.io/community/contributors/devel/api-
+        Populated by the system. Read-only. Null for lists. More
+        info: https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
         if isinstance(value, _datetime.datetime):
@@ -1912,8 +1910,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         terminated. If not set, graceful deletion of the object has
         not been requested.
 
-        Populated by the system when a graceful
-        deletion is requested. Read-only. More info:
+        Populated by the system when a graceful deletion is
+        requested. Read-only. More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
@@ -1947,8 +1945,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         terminated. If not set, graceful deletion of the object has
         not been requested.
 
-        Populated by the system when a graceful
-        deletion is requested. Read-only. More info:
+        Populated by the system when a graceful deletion is
+        requested. Read-only. More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
@@ -1992,16 +1990,15 @@ class ObjectMeta(_kuber_definitions.Definition):
         may be truncated by the length of the suffix required to
         make the value unique on the server.
 
-        If this field is
-        specified and the generated name exists, the server will NOT
-        return a 409 - instead, it will either return 201 Created or
-        500 with Reason ServerTimeout indicating a unique name could
-        not be found in the time allotted, and the client should
-        retry (optionally after the time indicated in the Retry-
-        After header).
+        If this field is specified and the generated name exists,
+        the server will NOT return a 409 - instead, it will either
+        return 201 Created or 500 with Reason ServerTimeout
+        indicating a unique name could not be found in the time
+        allotted, and the client should retry (optionally after the
+        time indicated in the Retry-After header).
 
-        Applied only if Name is not specified. More
-        info: https://git.k8s.io/community/contributors/devel/api-
+        Applied only if Name is not specified. More info:
+        https://git.k8s.io/community/contributors/devel/api-
         conventions.md#idempotency
         """
         return self._properties.get('generateName')
@@ -2018,16 +2015,15 @@ class ObjectMeta(_kuber_definitions.Definition):
         may be truncated by the length of the suffix required to
         make the value unique on the server.
 
-        If this field is
-        specified and the generated name exists, the server will NOT
-        return a 409 - instead, it will either return 201 Created or
-        500 with Reason ServerTimeout indicating a unique name could
-        not be found in the time allotted, and the client should
-        retry (optionally after the time indicated in the Retry-
-        After header).
+        If this field is specified and the generated name exists,
+        the server will NOT return a 409 - instead, it will either
+        return 201 Created or 500 with Reason ServerTimeout
+        indicating a unique name could not be found in the time
+        allotted, and the client should retry (optionally after the
+        time indicated in the Retry-After header).
 
-        Applied only if Name is not specified. More
-        info: https://git.k8s.io/community/contributors/devel/api-
+        Applied only if Name is not specified. More info:
+        https://git.k8s.io/community/contributors/devel/api-
         conventions.md#idempotency
         """
         self._properties['generateName'] = value
@@ -2058,14 +2054,14 @@ class ObjectMeta(_kuber_definitions.Definition):
         Otherwise, the object is considered uninitialized and is
         hidden (in list/watch and get calls) from clients that
         haven't explicitly asked to observe uninitialized objects.
+
         When an object is created, the system will populate this
         list with the current set of initializers. Only privileged
         users may set or modify this list. Once it is empty, it may
         not be modified further by any user.
 
-        DEPRECATED -
-        initializers are an alpha field and will be removed in
-        v1.15.
+        DEPRECATED - initializers are an alpha field and will be
+        removed in v1.15.
         """
         return self._properties.get('initializers')
 
@@ -2079,14 +2075,14 @@ class ObjectMeta(_kuber_definitions.Definition):
         Otherwise, the object is considered uninitialized and is
         hidden (in list/watch and get calls) from clients that
         haven't explicitly asked to observe uninitialized objects.
+
         When an object is created, the system will populate this
         list with the current set of initializers. Only privileged
         users may set or modify this list. Once it is empty, it may
         not be modified further by any user.
 
-        DEPRECATED -
-        initializers are an alpha field and will be removed in
-        v1.15.
+        DEPRECATED - initializers are an alpha field and will be
+        removed in v1.15.
         """
         if isinstance(value, dict):
             value = Initializers().from_dict(value)
@@ -2122,6 +2118,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         name, a controller's name, or the name of a specific apply
         path like "ci-cd". The set of fields is always in the
         version that the workflow used when modifying the object.
+
         This field is alpha and can be changed or removed without
         notice.
         """
@@ -2140,6 +2137,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         name, a controller's name, or the name of a specific apply
         path like "ci-cd". The set of fields is always in the
         version that the workflow used when modifying the object.
+
         This field is alpha and can be changed or removed without
         notice.
         """
@@ -2185,8 +2183,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         objects are required to be scoped to a namespace - the value
         of this field for those objects will be empty.
 
-        Must be a
-        DNS_LABEL. Cannot be updated. More info:
+        Must be a DNS_LABEL. Cannot be updated. More info:
         http://kubernetes.io/docs/user-guide/namespaces
         """
         return self._properties.get('namespace')
@@ -2200,8 +2197,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         objects are required to be scoped to a namespace - the value
         of this field for those objects will be empty.
 
-        Must be a
-        DNS_LABEL. Cannot be updated. More info:
+        Must be a DNS_LABEL. Cannot be updated. More info:
         http://kubernetes.io/docs/user-guide/namespaces
         """
         self._properties['namespace'] = value
@@ -2249,9 +2245,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         passed unmodified back to the server. They may only be valid
         for a particular resource or set of resources.
 
-        Populated by
-        the system. Read-only. Value must be treated as opaque by
-        clients and . More info:
+        Populated by the system. Read-only. Value must be treated as
+        opaque by clients and . More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#concurrency-control-and-consistency
         """
@@ -2268,9 +2263,8 @@ class ObjectMeta(_kuber_definitions.Definition):
         passed unmodified back to the server. They may only be valid
         for a particular resource or set of resources.
 
-        Populated by
-        the system. Read-only. Value must be treated as opaque by
-        clients and . More info:
+        Populated by the system. Read-only. Value must be treated as
+        opaque by clients and . More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#concurrency-control-and-consistency
         """
@@ -2887,9 +2881,9 @@ class StatusCause(_kuber_definitions.Definition):
         to fields having multiple errors. Optional.
 
         Examples:
-        "name" - the field "name" on the current resource
-        "items[0].name" - the field "name" on the first array entry
-        in "items"
+          "name" - the field "name" on the current resource
+          "items[0].name" - the field "name" on the first array
+        entry in "items"
         """
         return self._properties.get('field')
 
@@ -2903,9 +2897,9 @@ class StatusCause(_kuber_definitions.Definition):
         to fields having multiple errors. Optional.
 
         Examples:
-        "name" - the field "name" on the current resource
-        "items[0].name" - the field "name" on the first array entry
-        in "items"
+          "name" - the field "name" on the current resource
+          "items[0].name" - the field "name" on the first array
+        entry in "items"
         """
         self._properties['field'] = value
 
@@ -3180,14 +3174,13 @@ class WatchEvent(_kuber_definitions.Definition):
     def object_(self) -> 'RawExtension':
         """
         Object is:
-         * If Type is Added or Modified: the new state of
-        the object.
-         * If Type is Deleted: the state of the object
-        immediately before deletion.
-         * If Type is Error: *Status is
-        recommended; other types may make sense
-           depending on
-        context.
+         * If Type is Added or Modified: the new state of the
+        object.
+         * If Type is Deleted: the state of the object immediately
+        before deletion.
+         * If Type is Error: *Status is recommended; other types may
+        make sense
+           depending on context.
         """
         return self._properties.get('object')
 
@@ -3195,14 +3188,13 @@ class WatchEvent(_kuber_definitions.Definition):
     def object_(self, value: typing.Union['RawExtension', dict]):
         """
         Object is:
-         * If Type is Added or Modified: the new state of
-        the object.
-         * If Type is Deleted: the state of the object
-        immediately before deletion.
-         * If Type is Error: *Status is
-        recommended; other types may make sense
-           depending on
-        context.
+         * If Type is Added or Modified: the new state of the
+        object.
+         * If Type is Deleted: the state of the object immediately
+        before deletion.
+         * If Type is Error: *Status is recommended; other types may
+        make sense
+           depending on context.
         """
         if isinstance(value, dict):
             value = RawExtension().from_dict(value)

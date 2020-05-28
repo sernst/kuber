@@ -577,7 +577,6 @@ class EventSeries(_kuber_definitions.Definition):
             self,
             count: int = None,
             last_observed_time: 'MicroTime' = None,
-            state: str = None,
     ):
         """Create EventSeries instance."""
         super(EventSeries, self).__init__(
@@ -587,13 +586,11 @@ class EventSeries(_kuber_definitions.Definition):
         self._properties = {
             'count': count if count is not None else None,
             'lastObservedTime': last_observed_time if last_observed_time is not None else MicroTime(),
-            'state': state if state is not None else '',
 
         }
         self._types = {
             'count': (int, None),
             'lastObservedTime': (MicroTime, None),
-            'state': (str, None),
 
         }
 
@@ -630,22 +627,6 @@ class EventSeries(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = MicroTime().from_dict(value)
         self._properties['lastObservedTime'] = value
-
-    @property
-    def state(self) -> str:
-        """
-        Information whether this series is ongoing or finished.
-        Deprecated. Planned removal for 1.18
-        """
-        return self._properties.get('state')
-
-    @state.setter
-    def state(self, value: str):
-        """
-        Information whether this series is ongoing or finished.
-        Deprecated. Planned removal for 1.18
-        """
-        self._properties['state'] = value
 
     def __enter__(self) -> 'EventSeries':
         return self

@@ -136,18 +136,17 @@ class Endpoint(_kuber_definitions.Definition):
         key/value pairs. This includes, but is not limited to the
         following well known keys: * kubernetes.io/hostname: the
         value indicates the hostname of the node
-          where the
-        endpoint is located. This should match the corresponding
+          where the endpoint is located. This should match the
+        corresponding
+          node label.
+        * topology.kubernetes.io/zone: the value indicates the zone
+        where the
+          endpoint is located. This should match the corresponding
         node label.
-        * topology.kubernetes.io/zone: the value
-        indicates the zone where the
-          endpoint is located. This
-        should match the corresponding node label.
-        *
-        topology.kubernetes.io/region: the value indicates the
+        * topology.kubernetes.io/region: the value indicates the
         region where the
-          endpoint is located. This should match
-        the corresponding node label.
+          endpoint is located. This should match the corresponding
+        node label.
         """
         return self._properties.get('topology')
 
@@ -162,18 +161,17 @@ class Endpoint(_kuber_definitions.Definition):
         key/value pairs. This includes, but is not limited to the
         following well known keys: * kubernetes.io/hostname: the
         value indicates the hostname of the node
-          where the
-        endpoint is located. This should match the corresponding
+          where the endpoint is located. This should match the
+        corresponding
+          node label.
+        * topology.kubernetes.io/zone: the value indicates the zone
+        where the
+          endpoint is located. This should match the corresponding
         node label.
-        * topology.kubernetes.io/zone: the value
-        indicates the zone where the
-          endpoint is located. This
-        should match the corresponding node label.
-        *
-        topology.kubernetes.io/region: the value indicates the
+        * topology.kubernetes.io/region: the value indicates the
         region where the
-          endpoint is located. This should match
-        the corresponding node label.
+          endpoint is located. This should match the corresponding
+        node label.
         """
         self._properties['topology'] = value
 
@@ -276,8 +274,8 @@ class EndpointPort(_kuber_definitions.Definition):
         standard Kubernetes label syntax. Un-prefixed names are
         reserved for IANA standard service names (as per RFC-6335
         and http://www.iana.org/assignments/service-names). Non-
-        standard protocols should use prefixed names. Default is
-        empty string.
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol.
         """
         return self._properties.get('appProtocol')
 
@@ -288,8 +286,8 @@ class EndpointPort(_kuber_definitions.Definition):
         standard Kubernetes label syntax. Un-prefixed names are
         reserved for IANA standard service names (as per RFC-6335
         and http://www.iana.org/assignments/service-names). Non-
-        standard protocols should use prefixed names. Default is
-        empty string.
+        standard protocols should use prefixed names such as
+        mycompany.com/my-custom-protocol.
         """
         self._properties['appProtocol'] = value
 

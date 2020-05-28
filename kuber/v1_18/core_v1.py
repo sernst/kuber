@@ -17,11 +17,11 @@ class AWSElasticBlockStoreVolumeSource(_kuber_definitions.Definition):
     """
     Represents a Persistent Disk resource in AWS.
 
-    An AWS EBS
-    disk must exist before mounting to a container. The disk
-    must also be in the same AWS zone as the kubelet. An AWS EBS
-    disk can only be mounted as read/write once. AWS EBS volumes
-    support ownership management and SELinux relabeling.
+    An AWS EBS disk must exist before mounting to a container.
+    The disk must also be in the same AWS zone as the kubelet.
+    An AWS EBS disk can only be mounted as read/write once. AWS
+    EBS volumes support ownership management and SELinux
+    relabeling.
     """
 
     def __init__(
@@ -2527,9 +2527,8 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
     ConfigMapEnvSource selects a ConfigMap to populate the
     environment variables with.
 
-    The contents of the target
-    ConfigMap's Data field will represent the key-value pairs as
-    environment variables.
+    The contents of the target ConfigMap's Data field will
+    represent the key-value pairs as environment variables.
     """
 
     def __init__(
@@ -2898,13 +2897,12 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     """
     Adapts a ConfigMap into a projected volume.
 
-    The contents of
-    the target ConfigMap's Data field will be presented in a
-    projected volume as files using the keys in the Data field
-    as the file names, unless the items element is populated
-    with specific mappings of keys to paths. Note that this is
-    identical to a configmap volume source without the default
-    mode.
+    The contents of the target ConfigMap's Data field will be
+    presented in a projected volume as files using the keys in
+    the Data field as the file names, unless the items element
+    is populated with specific mappings of keys to paths. Note
+    that this is identical to a configmap volume source without
+    the default mode.
     """
 
     def __init__(
@@ -3012,12 +3010,11 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     """
     Adapts a ConfigMap into a volume.
 
-    The contents of the
-    target ConfigMap's Data field will be presented in a volume
-    as files using the keys in the Data field as the file names,
-    unless the items element is populated with specific mappings
-    of keys to paths. ConfigMap volumes support ownership
-    management and SELinux relabeling.
+    The contents of the target ConfigMap's Data field will be
+    presented in a volume as files using the keys in the Data
+    field as the file names, unless the items element is
+    populated with specific mappings of keys to paths. ConfigMap
+    volumes support ownership management and SELinux relabeling.
     """
 
     def __init__(
@@ -5162,15 +5159,13 @@ class EndpointSubset(_kuber_definitions.Definition):
     ports. The expanded set of endpoints is the Cartesian
     product of Addresses x Ports. For example, given:
       {
-    Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-    Ports:     [{"name": "a", "port": 8675}, {"name": "b",
+        Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+        Ports:     [{"name": "a", "port": 8675}, {"name": "b",
     "port": 309}]
       }
-    The resulting set of endpoints can be
-    viewed as:
+    The resulting set of endpoints can be viewed as:
         a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
-        b:
-    [ 10.10.1.1:309, 10.10.2.2:309 ]
+        b: [ 10.10.1.1:309, 10.10.2.2:309 ]
     """
 
     def __init__(
@@ -5287,14 +5282,14 @@ class Endpoints(_kuber_definitions.Resource):
       Name: "mysvc",
       Subsets: [
         {
-    Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-    Ports: [{"name": "a", "port": 8675}, {"name": "b", "port":
-    309}]
+          Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+          Ports: [{"name": "a", "port": 8675}, {"name": "b",
+    "port": 309}]
         },
         {
           Addresses: [{"ip": "10.10.3.3"}],
-    Ports: [{"name": "a", "port": 93}, {"name": "b", "port":
-    76}]
+          Ports: [{"name": "a", "port": 93}, {"name": "b",
+    "port": 76}]
         },
      ]
     """
@@ -7728,11 +7723,11 @@ class GCEPersistentDiskVolumeSource(_kuber_definitions.Definition):
     Represents a Persistent Disk resource in Google Compute
     Engine.
 
-    A GCE PD must exist before mounting to a container.
-    The disk must also be in the same GCE project and zone as
-    the kubelet. A GCE PD can only be mounted as read/write once
-    or read-only many times. GCE PDs support ownership
-    management and SELinux relabeling.
+    A GCE PD must exist before mounting to a container. The disk
+    must also be in the same GCE project and zone as the
+    kubelet. A GCE PD can only be mounted as read/write once or
+    read-only many times. GCE PDs support ownership management
+    and SELinux relabeling.
     """
 
     def __init__(
@@ -7858,6 +7853,7 @@ class GitRepoVolumeSource(_kuber_definitions.Definition):
     Represents a volume that is populated with the contents of a
     git repository. Git repo volumes do not support ownership
     management. Git repo volumes support SELinux relabeling.
+
     DEPRECATED: GitRepo is deprecated. To provision a container
     with a git repo, mount an EmptyDir into an InitContainer
     that clones the repo using git, then mount the EmptyDir into
@@ -15963,8 +15959,8 @@ class PodIP(_kuber_definitions.Definition):
     """
     IP address information for entries in the (plural) PodIPs
     field. Each entry includes:
-       IP: An IP address allocated
-    to the pod. Routable at least within the cluster.
+       IP: An IP address allocated to the pod. Routable at least
+    within the cluster.
     """
 
     def __init__(
@@ -16204,14 +16200,12 @@ class PodSecurityContext(_kuber_definitions.Definition):
         in a pod. Some volume types allow the Kubelet to change the
         ownership of that volume to be owned by the pod:
 
-        1. The
-        owning GID will be the FSGroup 2. The setgid bit is set (new
-        files created in the volume will be owned by FSGroup) 3. The
-        permission bits are OR'd with rw-rw----
+        1. The owning GID will be the FSGroup 2. The setgid bit is
+        set (new files created in the volume will be owned by
+        FSGroup) 3. The permission bits are OR'd with rw-rw----
 
-        If unset, the
-        Kubelet will not modify the ownership and permissions of any
-        volume.
+        If unset, the Kubelet will not modify the ownership and
+        permissions of any volume.
         """
         return self._properties.get('fsGroup')
 
@@ -16222,14 +16216,12 @@ class PodSecurityContext(_kuber_definitions.Definition):
         in a pod. Some volume types allow the Kubelet to change the
         ownership of that volume to be owned by the pod:
 
-        1. The
-        owning GID will be the FSGroup 2. The setgid bit is set (new
-        files created in the volume will be owned by FSGroup) 3. The
-        permission bits are OR'd with rw-rw----
+        1. The owning GID will be the FSGroup 2. The setgid bit is
+        set (new files created in the volume will be owned by
+        FSGroup) 3. The permission bits are OR'd with rw-rw----
 
-        If unset, the
-        Kubelet will not modify the ownership and permissions of any
-        volume.
+        If unset, the Kubelet will not modify the ownership and
+        permissions of any volume.
         """
         self._properties['fsGroup'] = value
 
@@ -17708,22 +17700,21 @@ class PodStatus(_kuber_definitions.Definition):
         status arrays contain more detail about the pod's status.
         There are five possible phase values:
 
-        Pending: The pod has
-        been accepted by the Kubernetes system, but one or more of
-        the container images has not been created. This includes
-        time before being scheduled as well as time spent
-        downloading images over the network, which could take a
-        while. Running: The pod has been bound to a node, and all of
-        the containers have been created. At least one container is
-        still running, or is in the process of starting or
-        restarting. Succeeded: All containers in the pod have
-        terminated in success, and will not be restarted. Failed:
-        All containers in the pod have terminated, and at least one
-        container has terminated in failure. The container either
-        exited with non-zero status or was terminated by the system.
-        Unknown: For some reason the state of the pod could not be
-        obtained, typically due to an error in communicating with
-        the host of the pod.
+        Pending: The pod has been accepted by the Kubernetes system,
+        but one or more of the container images has not been
+        created. This includes time before being scheduled as well
+        as time spent downloading images over the network, which
+        could take a while. Running: The pod has been bound to a
+        node, and all of the containers have been created. At least
+        one container is still running, or is in the process of
+        starting or restarting. Succeeded: All containers in the pod
+        have terminated in success, and will not be restarted.
+        Failed: All containers in the pod have terminated, and at
+        least one container has terminated in failure. The container
+        either exited with non-zero status or was terminated by the
+        system. Unknown: For some reason the state of the pod could
+        not be obtained, typically due to an error in communicating
+        with the host of the pod.
 
         More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
@@ -17740,22 +17731,21 @@ class PodStatus(_kuber_definitions.Definition):
         status arrays contain more detail about the pod's status.
         There are five possible phase values:
 
-        Pending: The pod has
-        been accepted by the Kubernetes system, but one or more of
-        the container images has not been created. This includes
-        time before being scheduled as well as time spent
-        downloading images over the network, which could take a
-        while. Running: The pod has been bound to a node, and all of
-        the containers have been created. At least one container is
-        still running, or is in the process of starting or
-        restarting. Succeeded: All containers in the pod have
-        terminated in success, and will not be restarted. Failed:
-        All containers in the pod have terminated, and at least one
-        container has terminated in failure. The container either
-        exited with non-zero status or was terminated by the system.
-        Unknown: For some reason the state of the pod could not be
-        obtained, typically due to an error in communicating with
-        the host of the pod.
+        Pending: The pod has been accepted by the Kubernetes system,
+        but one or more of the container images has not been
+        created. This includes time before being scheduled as well
+        as time spent downloading images over the network, which
+        could take a while. Running: The pod has been bound to a
+        node, and all of the containers have been created. At least
+        one container is still running, or is in the process of
+        starting or restarting. Succeeded: All containers in the pod
+        have terminated in success, and will not be restarted.
+        Failed: All containers in the pod have terminated, and at
+        least one container has terminated in failure. The container
+        either exited with non-zero status or was terminated by the
+        system. Unknown: For some reason the state of the pod could
+        not be obtained, typically due to an error in communicating
+        with the host of the pod.
 
         More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
@@ -21926,9 +21916,8 @@ class SecretEnvSource(_kuber_definitions.Definition):
     SecretEnvSource selects a Secret to populate the environment
     variables with.
 
-    The contents of the target Secret's Data
-    field will represent the key-value pairs as environment
-    variables.
+    The contents of the target Secret's Data field will
+    represent the key-value pairs as environment variables.
     """
 
     def __init__(
@@ -22171,11 +22160,11 @@ class SecretProjection(_kuber_definitions.Definition):
     """
     Adapts a secret into a projected volume.
 
-    The contents of
-    the target Secret's Data field will be presented in a
-    projected volume as files using the keys in the Data field
-    as the file names. Note that this is identical to a secret
-    volume source without the default mode.
+    The contents of the target Secret's Data field will be
+    presented in a projected volume as files using the keys in
+    the Data field as the file names. Note that this is
+    identical to a secret volume source without the default
+    mode.
     """
 
     def __init__(
@@ -22349,10 +22338,10 @@ class SecretVolumeSource(_kuber_definitions.Definition):
     """
     Adapts a Secret into a volume.
 
-    The contents of the target
-    Secret's Data field will be presented in a volume as files
-    using the keys in the Data field as the file names. Secret
-    volumes support ownership management and SELinux relabeling.
+    The contents of the target Secret's Data field will be
+    presented in a volume as files using the keys in the Data
+    field as the file names. Secret volumes support ownership
+    management and SELinux relabeling.
     """
 
     def __init__(

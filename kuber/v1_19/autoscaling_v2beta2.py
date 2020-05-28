@@ -751,10 +751,8 @@ class HorizontalPodAutoscalerBehavior(_kuber_definitions.Definition):
         """
         scaleUp is scaling policy for scaling Up. If not set, the
         default value is the higher of:
-          * increase no more than 4
-        pods per 60 seconds
-          * double the number of pods per 60
-        seconds
+          * increase no more than 4 pods per 60 seconds
+          * double the number of pods per 60 seconds
         No stabilization is used.
         """
         return self._properties.get('scaleUp')
@@ -764,10 +762,8 @@ class HorizontalPodAutoscalerBehavior(_kuber_definitions.Definition):
         """
         scaleUp is scaling policy for scaling Up. If not set, the
         default value is the higher of:
-          * increase no more than 4
-        pods per 60 seconds
-          * double the number of pods per 60
-        seconds
+          * increase no more than 4 pods per 60 seconds
+          * double the number of pods per 60 seconds
         No stabilization is used.
         """
         if isinstance(value, dict):

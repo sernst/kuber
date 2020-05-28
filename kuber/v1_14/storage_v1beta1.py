@@ -901,6 +901,7 @@ class StorageClass(_kuber_definitions.Resource):
     """
     StorageClass describes the parameters for a class of storage
     for which PersistentVolumes can be dynamically provisioned.
+
     StorageClasses are non-namespaced; the name of the storage
     class according to etcd is in ObjectMeta.Name.
     """
@@ -1327,6 +1328,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
     """
     VolumeAttachment captures the intent to attach or detach the
     specified volume to/from the specified node.
+
     VolumeAttachment objects are non-namespaced.
     """
 

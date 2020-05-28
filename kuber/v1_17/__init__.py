@@ -7,12 +7,12 @@ from kuber import versioning
 # kuber library.
 KUBERNETES_VERSION = versioning.KubernetesVersion(
     label='v1.17',
-    version='v1.17.4',
+    version='v1.17.6',
     major='1',
     minor='17',
-    patch='4',
+    patch='6',
     pre_release='',
     build='',
-    created_at=_datetime.datetime(2020, 3, 24),
-    commit_sha='8d8aa39598534325ad77120c120a22b3a990b5ea'
+    created_at=_datetime.datetime(2020, 5, 28),
+    commit_sha='d32e40e20d167e103faf894261614c5b45c44198'
 )

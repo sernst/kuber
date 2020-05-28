@@ -15,6 +15,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
     """
     VolumeAttachment captures the intent to attach or detach the
     specified volume to/from the specified node.
+
     VolumeAttachment objects are non-namespaced.
     """
 

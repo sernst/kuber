@@ -93,9 +93,8 @@ class AllowedHostPath(_kuber_definitions.Definition):
         match. It does not support `*`. Trailing slashes are trimmed
         when validating the path prefix with a host path.
 
-        Examples:
-        `/foo` would allow `/foo`, `/foo/` and `/foo/bar` `/foo`
-        would not allow `/food` or `/etc/foo`
+        Examples: `/foo` would allow `/foo`, `/foo/` and `/foo/bar`
+        `/foo` would not allow `/food` or `/etc/foo`
         """
         return self._properties.get('pathPrefix')
 
@@ -106,9 +105,8 @@ class AllowedHostPath(_kuber_definitions.Definition):
         match. It does not support `*`. Trailing slashes are trimmed
         when validating the path prefix with a host path.
 
-        Examples:
-        `/foo` would allow `/foo`, `/foo/` and `/foo/bar` `/foo`
-        would not allow `/food` or `/etc/foo`
+        Examples: `/foo` would allow `/foo`, `/foo/` and `/foo/bar`
+        `/foo` would not allow `/food` or `/etc/foo`
         """
         self._properties['pathPrefix'] = value
 
@@ -1642,9 +1640,8 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         sysctls are allowed. Kubelet has to whitelist all allowed
         unsafe sysctls explicitly to avoid rejection.
 
-        Examples:
-        e.g. "foo/*" allows "foo/bar", "foo/baz", etc. e.g. "foo.*"
-        allows "foo.bar", "foo.baz", etc.
+        Examples: e.g. "foo/*" allows "foo/bar", "foo/baz", etc.
+        e.g. "foo.*" allows "foo.bar", "foo.baz", etc.
         """
         return self._properties.get('allowedUnsafeSysctls')
 
@@ -1658,9 +1655,8 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         sysctls are allowed. Kubelet has to whitelist all allowed
         unsafe sysctls explicitly to avoid rejection.
 
-        Examples:
-        e.g. "foo/*" allows "foo/bar", "foo/baz", etc. e.g. "foo.*"
-        allows "foo.bar", "foo.baz", etc.
+        Examples: e.g. "foo/*" allows "foo/bar", "foo/baz", etc.
+        e.g. "foo.*" allows "foo.bar", "foo.baz", etc.
         """
         self._properties['allowedUnsafeSysctls'] = value
 
@@ -1715,6 +1711,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         defaults to none. Each entry is either a plain sysctl name
         or ends in "*" in which case it is considered as a prefix of
         forbidden sysctls. Single * means all sysctls are forbidden.
+
         Examples: e.g. "foo/*" forbids "foo/bar", "foo/baz", etc.
         e.g. "foo.*" forbids "foo.bar", "foo.baz", etc.
         """
@@ -1727,6 +1724,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         defaults to none. Each entry is either a plain sysctl name
         or ends in "*" in which case it is considered as a prefix of
         forbidden sysctls. Single * means all sysctls are forbidden.
+
         Examples: e.g. "foo/*" forbids "foo/bar", "foo/baz", etc.
         e.g. "foo.*" forbids "foo.bar", "foo.baz", etc.
         """

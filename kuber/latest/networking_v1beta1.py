@@ -9,19 +9,20 @@ from kuber.latest.core_v1 import LoadBalancerStatus
 from kuber.latest.meta_v1 import ObjectMeta
 from kuber.latest.meta_v1 import Status
 from kuber.latest.meta_v1 import StatusDetails
+from kuber.latest.core_v1 import TypedLocalObjectReference
 
 
 class HTTPIngressPath(_kuber_definitions.Definition):
     """
-    HTTPIngressPath associates a path regex with a backend.
-    Incoming urls matching the path are forwarded to the
-    backend.
+    HTTPIngressPath associates a path with a backend. Incoming
+    urls matching the path are forwarded to the backend.
     """
 
     def __init__(
             self,
             backend: 'IngressBackend' = None,
             path: str = None,
+            path_type: str = None,
     ):
         """Create HTTPIngressPath instance."""
         super(HTTPIngressPath, self).__init__(
@@ -31,11 +32,13 @@ class HTTPIngressPath(_kuber_definitions.Definition):
         self._properties = {
             'backend': backend if backend is not None else IngressBackend(),
             'path': path if path is not None else '',
+            'pathType': path_type if path_type is not None else '',
 
         }
         self._types = {
             'backend': (IngressBackend, None),
             'path': (str, None),
+            'pathType': (str, None),
 
         }
 
@@ -60,28 +63,80 @@ class HTTPIngressPath(_kuber_definitions.Definition):
     @property
     def path(self) -> str:
         """
-        Path is an extended POSIX regex as defined by IEEE Std
-        1003.1, (i.e this follows the egrep/unix syntax, not the
-        perl syntax) matched against the path of an incoming
-        request. Currently it can contain characters disallowed from
-        the conventional "path" part of a URL as defined by RFC
-        3986. Paths must begin with a '/'. If unspecified, the path
-        defaults to a catch all sending traffic to the backend.
+        Path is matched against the path of an incoming request.
+        Currently it can contain characters disallowed from the
+        conventional "path" part of a URL as defined by RFC 3986.
+        Paths must begin with a '/'. When unspecified, all paths
+        from incoming requests are matched.
         """
         return self._properties.get('path')
 
     @path.setter
     def path(self, value: str):
         """
-        Path is an extended POSIX regex as defined by IEEE Std
-        1003.1, (i.e this follows the egrep/unix syntax, not the
-        perl syntax) matched against the path of an incoming
-        request. Currently it can contain characters disallowed from
-        the conventional "path" part of a URL as defined by RFC
-        3986. Paths must begin with a '/'. If unspecified, the path
-        defaults to a catch all sending traffic to the backend.
+        Path is matched against the path of an incoming request.
+        Currently it can contain characters disallowed from the
+        conventional "path" part of a URL as defined by RFC 3986.
+        Paths must begin with a '/'. When unspecified, all paths
+        from incoming requests are matched.
         """
         self._properties['path'] = value
+
+    @property
+    def path_type(self) -> str:
+        """
+        PathType determines the interpretation of the Path matching.
+        PathType can be one of the following values: * Exact:
+        Matches the URL path exactly. * Prefix: Matches based on a
+        URL path prefix split by '/'. Matching is
+          done on a path element by element basis. A path element
+        refers is the
+          list of labels in the path split by the '/' separator. A
+        request is a
+          match for path p if every p is an element-wise prefix of p
+        of the
+          request path. Note that if the last element of the path is
+        a substring
+          of the last element in request path, it is not a match
+        (e.g. /foo/bar
+          matches /foo/bar/baz, but does not match /foo/barbaz).
+        * ImplementationSpecific: Interpretation of the Path
+        matching is up to
+          the IngressClass. Implementations can treat this as a
+        separate PathType
+          or treat it identically to Prefix or Exact path types.
+        Implementations are required to support all path types.
+        Defaults to ImplementationSpecific.
+        """
+        return self._properties.get('pathType')
+
+    @path_type.setter
+    def path_type(self, value: str):
+        """
+        PathType determines the interpretation of the Path matching.
+        PathType can be one of the following values: * Exact:
+        Matches the URL path exactly. * Prefix: Matches based on a
+        URL path prefix split by '/'. Matching is
+          done on a path element by element basis. A path element
+        refers is the
+          list of labels in the path split by the '/' separator. A
+        request is a
+          match for path p if every p is an element-wise prefix of p
+        of the
+          request path. Note that if the last element of the path is
+        a substring
+          of the last element in request path, it is not a match
+        (e.g. /foo/bar
+          matches /foo/bar/baz, but does not match /foo/barbaz).
+        * ImplementationSpecific: Interpretation of the Path
+        matching is up to
+          the IngressClass. Implementations can treat this as a
+        separate PathType
+          or treat it identically to Prefix or Exact path types.
+        Implementations are required to support all path types.
+        Defaults to ImplementationSpecific.
+        """
+        self._properties['pathType'] = value
 
     def __enter__(self) -> 'HTTPIngressPath':
         return self
@@ -425,6 +480,7 @@ class IngressBackend(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            resource: 'TypedLocalObjectReference' = None,
             service_name: str = None,
             service_port: typing.Union[str, int, None] = None,
     ):
@@ -434,15 +490,39 @@ class IngressBackend(_kuber_definitions.Definition):
             kind='IngressBackend'
         )
         self._properties = {
+            'resource': resource if resource is not None else TypedLocalObjectReference(),
             'serviceName': service_name if service_name is not None else '',
             'servicePort': service_port if service_port is not None else None,
 
         }
         self._types = {
+            'resource': (TypedLocalObjectReference, None),
             'serviceName': (str, None),
             'servicePort': (int, None),
 
         }
+
+    @property
+    def resource(self) -> 'TypedLocalObjectReference':
+        """
+        Resource is an ObjectRef to another Kubernetes resource in
+        the namespace of the Ingress object. If resource is
+        specified, serviceName and servicePort must not be
+        specified.
+        """
+        return self._properties.get('resource')
+
+    @resource.setter
+    def resource(self, value: typing.Union['TypedLocalObjectReference', dict]):
+        """
+        Resource is an ObjectRef to another Kubernetes resource in
+        the namespace of the Ingress object. If resource is
+        specified, serviceName and servicePort must not be
+        specified.
+        """
+        if isinstance(value, dict):
+            value = TypedLocalObjectReference().from_dict(value)
+        self._properties['resource'] = value
 
     @property
     def service_name(self) -> str:
@@ -477,6 +557,379 @@ class IngressBackend(_kuber_definitions.Definition):
         self._properties['servicePort'] = None if value is None else f'{value}'
 
     def __enter__(self) -> 'IngressBackend':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class IngressClass(_kuber_definitions.Resource):
+    """
+    IngressClass represents the class of the Ingress, referenced
+    by the Ingress Spec. The `ingressclass.kubernetes.io/is-
+    default-class` annotation can be used to indicate that an
+    IngressClass should be considered default. When a single
+    IngressClass resource has this annotation set to true, new
+    Ingress resources without a class specified will be assigned
+    this default class.
+    """
+
+    def __init__(
+            self,
+            metadata: 'ObjectMeta' = None,
+            spec: 'IngressClassSpec' = None,
+    ):
+        """Create IngressClass instance."""
+        super(IngressClass, self).__init__(
+            api_version='networking/v1beta1',
+            kind='IngressClass'
+        )
+        self._properties = {
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else IngressClassSpec(),
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'kind': (str, None),
+            'metadata': (ObjectMeta, None),
+            'spec': (IngressClassSpec, None),
+
+        }
+
+    @property
+    def metadata(self) -> 'ObjectMeta':
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        if isinstance(value, dict):
+            value = ObjectMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @property
+    def spec(self) -> 'IngressClassSpec':
+        """
+        Spec is the desired state of the IngressClass. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
+        """
+        return self._properties.get('spec')
+
+    @spec.setter
+    def spec(self, value: typing.Union['IngressClassSpec', dict]):
+        """
+        Spec is the desired state of the IngressClass. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = IngressClassSpec().from_dict(value)
+        self._properties['spec'] = value
+
+    def create_resource(self, namespace: 'str' = None):
+        """
+        Creates the IngressClass in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'create_namespaced_ingress_class',
+            'create_ingress_class'
+        ]
+
+        _kube_api.execute(
+            action='create',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict()}
+        )
+
+    def replace_resource(self, namespace: 'str' = None):
+        """
+        Replaces the IngressClass in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'replace_namespaced_ingress_class',
+            'replace_ingress_class'
+        ]
+
+        _kube_api.execute(
+            action='replace',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def patch_resource(self, namespace: 'str' = None):
+        """
+        Patches the IngressClass in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            'patch_namespaced_ingress_class',
+            'patch_ingress_class'
+        ]
+
+        _kube_api.execute(
+            action='patch',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+        )
+
+    def get_resource_status(self, namespace: 'str' = None):
+        """This resource does not have a status."""
+        pass
+
+    def read_resource(
+            self,
+            namespace: str = None
+    ):
+        """
+        Reads the IngressClass from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            'read_namespaced_ingress_class',
+            'read_ingress_class'
+        ]
+        return _kube_api.execute(
+            action='read',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name}
+        )
+
+    def delete_resource(
+            self,
+            namespace: str = None,
+            propagation_policy: str = 'Foreground',
+            grace_period_seconds: int = 10
+    ):
+        """
+        Deletes the IngressClass from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            'delete_namespaced_ingress_class',
+            'delete_ingress_class'
+        ]
+
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds
+        )
+
+        _kube_api.execute(
+            action='delete',
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={'name': self.metadata.name, 'body': body}
+        )
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> 'client.NetworkingV1beta1Api':
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.NetworkingV1beta1Api(**kwargs)
+
+    def __enter__(self) -> 'IngressClass':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class IngressClassList(_kuber_definitions.Collection):
+    """
+    IngressClassList is a collection of IngressClasses.
+    """
+
+    def __init__(
+            self,
+            items: typing.List['IngressClass'] = None,
+            metadata: 'ListMeta' = None,
+    ):
+        """Create IngressClassList instance."""
+        super(IngressClassList, self).__init__(
+            api_version='networking/v1beta1',
+            kind='IngressClassList'
+        )
+        self._properties = {
+            'items': items if items is not None else [],
+            'metadata': metadata if metadata is not None else ListMeta(),
+
+        }
+        self._types = {
+            'apiVersion': (str, None),
+            'items': (list, IngressClass),
+            'kind': (str, None),
+            'metadata': (ListMeta, None),
+
+        }
+
+    @property
+    def items(self) -> typing.List['IngressClass']:
+        """
+        Items is the list of IngressClasses.
+        """
+        return self._properties.get('items')
+
+    @items.setter
+    def items(
+            self,
+            value: typing.Union[typing.List['IngressClass'], typing.List[dict]]
+    ):
+        """
+        Items is the list of IngressClasses.
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = IngressClass().from_dict(item)
+            cleaned.append(item)
+        self._properties['items'] = cleaned
+
+    @property
+    def metadata(self) -> 'ListMeta':
+        """
+        Standard list metadata.
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ListMeta', dict]):
+        """
+        Standard list metadata.
+        """
+        if isinstance(value, dict):
+            value = ListMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @staticmethod
+    def get_resource_api(
+            api_client: client.ApiClient = None,
+            **kwargs
+    ) -> 'client.NetworkingV1beta1Api':
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs['apl_client'] = api_client
+        return client.NetworkingV1beta1Api(**kwargs)
+
+    def __enter__(self) -> 'IngressClassList':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class IngressClassSpec(_kuber_definitions.Definition):
+    """
+    IngressClassSpec provides information about the class of an
+    Ingress.
+    """
+
+    def __init__(
+            self,
+            controller: str = None,
+            parameters: 'TypedLocalObjectReference' = None,
+    ):
+        """Create IngressClassSpec instance."""
+        super(IngressClassSpec, self).__init__(
+            api_version='networking/v1beta1',
+            kind='IngressClassSpec'
+        )
+        self._properties = {
+            'controller': controller if controller is not None else '',
+            'parameters': parameters if parameters is not None else TypedLocalObjectReference(),
+
+        }
+        self._types = {
+            'controller': (str, None),
+            'parameters': (TypedLocalObjectReference, None),
+
+        }
+
+    @property
+    def controller(self) -> str:
+        """
+        Controller refers to the name of the controller that should
+        handle this class. This allows for different "flavors" that
+        are controlled by the same controller. For example, you may
+        have different Parameters for the same implementing
+        controller. This should be specified as a domain-prefixed
+        path no more than 250 characters in length, e.g.
+        "acme.io/ingress-controller". This field is immutable.
+        """
+        return self._properties.get('controller')
+
+    @controller.setter
+    def controller(self, value: str):
+        """
+        Controller refers to the name of the controller that should
+        handle this class. This allows for different "flavors" that
+        are controlled by the same controller. For example, you may
+        have different Parameters for the same implementing
+        controller. This should be specified as a domain-prefixed
+        path no more than 250 characters in length, e.g.
+        "acme.io/ingress-controller". This field is immutable.
+        """
+        self._properties['controller'] = value
+
+    @property
+    def parameters(self) -> 'TypedLocalObjectReference':
+        """
+        Parameters is a link to a custom resource containing
+        additional configuration for the controller. This is
+        optional if the controller does not require extra
+        parameters.
+        """
+        return self._properties.get('parameters')
+
+    @parameters.setter
+    def parameters(self, value: typing.Union['TypedLocalObjectReference', dict]):
+        """
+        Parameters is a link to a custom resource containing
+        additional configuration for the controller. This is
+        optional if the controller does not require extra
+        parameters.
+        """
+        if isinstance(value, dict):
+            value = TypedLocalObjectReference().from_dict(value)
+        self._properties['parameters'] = value
+
+    def __enter__(self) -> 'IngressClassSpec':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -608,19 +1061,32 @@ class IngressRule(_kuber_definitions.Definition):
         """
         Host is the fully qualified domain name of a network host,
         as defined by RFC 3986. Note the following deviations from
-        the "host" part of the URI as defined in the RFC: 1. IPs are
-        not allowed. Currently an IngressRuleValue can only apply to
-        the
-        	  IP in the Spec of the parent Ingress.
-        2. The `:`
-        delimiter is not respected because ports are not allowed.
-        Currently the port of an Ingress is implicitly :80 for http
-        and
+        the "host" part of the URI as defined in RFC 3986: 1. IPs
+        are not allowed. Currently an IngressRuleValue can only
+        apply to
+           the IP in the Spec of the parent Ingress.
+        2. The `:` delimiter is not respected because ports are not
+        allowed.
+        	  Currently the port of an Ingress is implicitly :80 for
+        http and
         	  :443 for https.
-        Both these may change in the future.
-        Incoming requests are matched against the host before the
-        IngressRuleValue. If the host is unspecified, the Ingress
-        routes all traffic based on the specified IngressRuleValue.
+        Both these may change in the future. Incoming requests are
+        matched against the host before the IngressRuleValue. If the
+        host is unspecified, the Ingress routes all traffic based on
+        the specified IngressRuleValue.
+
+        Host can be "precise" which is a domain name without the
+        terminating dot of a network host (e.g. "foo.bar.com") or
+        "wildcard", which is a domain name prefixed with a single
+        wildcard label (e.g. "*.foo.com"). The wildcard character
+        '*' must appear by itself as the first DNS label and matches
+        only a single label. You cannot have a wildcard label by
+        itself (e.g. Host == "*"). Requests will be matched against
+        the Host field in the following way: 1. If Host is precise,
+        the request matches this rule if the http host header is
+        equal to Host. 2. If Host is a wildcard, then the request
+        matches this rule if the http host header is to equal to the
+        suffix (removing the first label) of the wildcard rule.
         """
         return self._properties.get('host')
 
@@ -629,19 +1095,32 @@ class IngressRule(_kuber_definitions.Definition):
         """
         Host is the fully qualified domain name of a network host,
         as defined by RFC 3986. Note the following deviations from
-        the "host" part of the URI as defined in the RFC: 1. IPs are
-        not allowed. Currently an IngressRuleValue can only apply to
-        the
-        	  IP in the Spec of the parent Ingress.
-        2. The `:`
-        delimiter is not respected because ports are not allowed.
-        Currently the port of an Ingress is implicitly :80 for http
-        and
+        the "host" part of the URI as defined in RFC 3986: 1. IPs
+        are not allowed. Currently an IngressRuleValue can only
+        apply to
+           the IP in the Spec of the parent Ingress.
+        2. The `:` delimiter is not respected because ports are not
+        allowed.
+        	  Currently the port of an Ingress is implicitly :80 for
+        http and
         	  :443 for https.
-        Both these may change in the future.
-        Incoming requests are matched against the host before the
-        IngressRuleValue. If the host is unspecified, the Ingress
-        routes all traffic based on the specified IngressRuleValue.
+        Both these may change in the future. Incoming requests are
+        matched against the host before the IngressRuleValue. If the
+        host is unspecified, the Ingress routes all traffic based on
+        the specified IngressRuleValue.
+
+        Host can be "precise" which is a domain name without the
+        terminating dot of a network host (e.g. "foo.bar.com") or
+        "wildcard", which is a domain name prefixed with a single
+        wildcard label (e.g. "*.foo.com"). The wildcard character
+        '*' must appear by itself as the first DNS label and matches
+        only a single label. You cannot have a wildcard label by
+        itself (e.g. Host == "*"). Requests will be matched against
+        the Host field in the following way: 1. If Host is precise,
+        the request matches this rule if the http host header is
+        equal to Host. 2. If Host is a wildcard, then the request
+        matches this rule if the http host header is to equal to the
+        suffix (removing the first label) of the wildcard rule.
         """
         self._properties['host'] = value
 
@@ -676,6 +1155,7 @@ class IngressSpec(_kuber_definitions.Definition):
     def __init__(
             self,
             backend: 'IngressBackend' = None,
+            ingress_class_name: str = None,
             rules: typing.List['IngressRule'] = None,
             tls: typing.List['IngressTLS'] = None,
     ):
@@ -686,12 +1166,14 @@ class IngressSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             'backend': backend if backend is not None else IngressBackend(),
+            'ingressClassName': ingress_class_name if ingress_class_name is not None else '',
             'rules': rules if rules is not None else [],
             'tls': tls if tls is not None else [],
 
         }
         self._types = {
             'backend': (IngressBackend, None),
+            'ingressClassName': (str, None),
             'rules': (list, IngressRule),
             'tls': (list, IngressTLS),
 
@@ -718,6 +1200,42 @@ class IngressSpec(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = IngressBackend().from_dict(value)
         self._properties['backend'] = value
+
+    @property
+    def ingress_class_name(self) -> str:
+        """
+        IngressClassName is the name of the IngressClass cluster
+        resource. The associated IngressClass defines which
+        controller will implement the resource. This replaces the
+        deprecated `kubernetes.io/ingress.class` annotation. For
+        backwards compatibility, when that annotation is set, it
+        must be given precedence over this field. The controller may
+        emit a warning if the field and annotation have different
+        values. Implementations of this API should ignore Ingresses
+        without a class specified. An IngressClass resource may be
+        marked as default, which can be used to set a default value
+        for this field. For more information, refer to the
+        IngressClass documentation.
+        """
+        return self._properties.get('ingressClassName')
+
+    @ingress_class_name.setter
+    def ingress_class_name(self, value: str):
+        """
+        IngressClassName is the name of the IngressClass cluster
+        resource. The associated IngressClass defines which
+        controller will implement the resource. This replaces the
+        deprecated `kubernetes.io/ingress.class` annotation. For
+        backwards compatibility, when that annotation is set, it
+        must be given precedence over this field. The controller may
+        emit a warning if the field and annotation have different
+        values. Implementations of this API should ignore Ingresses
+        without a class specified. An IngressClass resource may be
+        marked as default, which can be used to set a default value
+        for this field. For more information, refer to the
+        IngressClass documentation.
+        """
+        self._properties['ingressClassName'] = value
 
     @property
     def rules(self) -> typing.List['IngressRule']:
@@ -884,10 +1402,10 @@ class IngressTLS(_kuber_definitions.Definition):
     @property
     def secret_name(self) -> str:
         """
-        SecretName is the name of the secret used to terminate SSL
-        traffic on 443. Field is left optional to allow SSL routing
-        based on SNI hostname alone. If the SNI host in a listener
-        conflicts with the "Host" header field used by an
+        SecretName is the name of the secret used to terminate TLS
+        traffic on port 443. Field is left optional to allow TLS
+        routing based on SNI hostname alone. If the SNI host in a
+        listener conflicts with the "Host" header field used by an
         IngressRule, the SNI host is used for termination and value
         of the Host header is used for routing.
         """
@@ -896,10 +1414,10 @@ class IngressTLS(_kuber_definitions.Definition):
     @secret_name.setter
     def secret_name(self, value: str):
         """
-        SecretName is the name of the secret used to terminate SSL
-        traffic on 443. Field is left optional to allow SSL routing
-        based on SNI hostname alone. If the SNI host in a listener
-        conflicts with the "Host" header field used by an
+        SecretName is the name of the secret used to terminate TLS
+        traffic on port 443. Field is left optional to allow TLS
+        routing based on SNI hostname alone. If the SNI host in a
+        listener conflicts with the "Host" header field used by an
         IngressRule, the SNI host is used for termination and value
         of the Host header is used for routing.
         """

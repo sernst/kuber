@@ -231,6 +231,203 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
         return False
 
 
+class HPAScalingPolicy(_kuber_definitions.Definition):
+    """
+    HPAScalingPolicy is a single policy which must hold true for
+    a specified past interval.
+    """
+
+    def __init__(
+            self,
+            period_seconds: int = None,
+            type_: str = None,
+            value: int = None,
+    ):
+        """Create HPAScalingPolicy instance."""
+        super(HPAScalingPolicy, self).__init__(
+            api_version='autoscaling/v2beta2',
+            kind='HPAScalingPolicy'
+        )
+        self._properties = {
+            'periodSeconds': period_seconds if period_seconds is not None else None,
+            'type': type_ if type_ is not None else '',
+            'value': value if value is not None else None,
+
+        }
+        self._types = {
+            'periodSeconds': (int, None),
+            'type': (str, None),
+            'value': (int, None),
+
+        }
+
+    @property
+    def period_seconds(self) -> int:
+        """
+        PeriodSeconds specifies the window of time for which the
+        policy should hold true. PeriodSeconds must be greater than
+        zero and less than or equal to 1800 (30 min).
+        """
+        return self._properties.get('periodSeconds')
+
+    @period_seconds.setter
+    def period_seconds(self, value: int):
+        """
+        PeriodSeconds specifies the window of time for which the
+        policy should hold true. PeriodSeconds must be greater than
+        zero and less than or equal to 1800 (30 min).
+        """
+        self._properties['periodSeconds'] = value
+
+    @property
+    def type_(self) -> str:
+        """
+        Type is used to specify the scaling policy.
+        """
+        return self._properties.get('type')
+
+    @type_.setter
+    def type_(self, value: str):
+        """
+        Type is used to specify the scaling policy.
+        """
+        self._properties['type'] = value
+
+    @property
+    def value(self) -> int:
+        """
+        Value contains the amount of change which is permitted by
+        the policy. It must be greater than zero
+        """
+        return self._properties.get('value')
+
+    @value.setter
+    def value(self, value: int):
+        """
+        Value contains the amount of change which is permitted by
+        the policy. It must be greater than zero
+        """
+        self._properties['value'] = value
+
+    def __enter__(self) -> 'HPAScalingPolicy':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class HPAScalingRules(_kuber_definitions.Definition):
+    """
+    HPAScalingRules configures the scaling behavior for one
+    direction. These Rules are applied after calculating
+    DesiredReplicas from metrics for the HPA. They can limit the
+    scaling velocity by specifying scaling policies. They can
+    prevent flapping by specifying the stabilization window, so
+    that the number of replicas is not set instantly, instead,
+    the safest value from the stabilization window is chosen.
+    """
+
+    def __init__(
+            self,
+            policies: typing.List['HPAScalingPolicy'] = None,
+            select_policy: str = None,
+            stabilization_window_seconds: int = None,
+    ):
+        """Create HPAScalingRules instance."""
+        super(HPAScalingRules, self).__init__(
+            api_version='autoscaling/v2beta2',
+            kind='HPAScalingRules'
+        )
+        self._properties = {
+            'policies': policies if policies is not None else [],
+            'selectPolicy': select_policy if select_policy is not None else '',
+            'stabilizationWindowSeconds': stabilization_window_seconds if stabilization_window_seconds is not None else None,
+
+        }
+        self._types = {
+            'policies': (list, HPAScalingPolicy),
+            'selectPolicy': (str, None),
+            'stabilizationWindowSeconds': (int, None),
+
+        }
+
+    @property
+    def policies(self) -> typing.List['HPAScalingPolicy']:
+        """
+        policies is a list of potential scaling polices which can be
+        used during scaling. At least one policy must be specified,
+        otherwise the HPAScalingRules will be discarded as invalid
+        """
+        return self._properties.get('policies')
+
+    @policies.setter
+    def policies(
+            self,
+            value: typing.Union[typing.List['HPAScalingPolicy'], typing.List[dict]]
+    ):
+        """
+        policies is a list of potential scaling polices which can be
+        used during scaling. At least one policy must be specified,
+        otherwise the HPAScalingRules will be discarded as invalid
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = HPAScalingPolicy().from_dict(item)
+            cleaned.append(item)
+        self._properties['policies'] = cleaned
+
+    @property
+    def select_policy(self) -> str:
+        """
+        selectPolicy is used to specify which policy should be used.
+        If not set, the default value MaxPolicySelect is used.
+        """
+        return self._properties.get('selectPolicy')
+
+    @select_policy.setter
+    def select_policy(self, value: str):
+        """
+        selectPolicy is used to specify which policy should be used.
+        If not set, the default value MaxPolicySelect is used.
+        """
+        self._properties['selectPolicy'] = value
+
+    @property
+    def stabilization_window_seconds(self) -> int:
+        """
+        StabilizationWindowSeconds is the number of seconds for
+        which past recommendations should be considered while
+        scaling up or scaling down. StabilizationWindowSeconds must
+        be greater than or equal to zero and less than or equal to
+        3600 (one hour). If not set, use the default values: - For
+        scale up: 0 (i.e. no stabilization is done). - For scale
+        down: 300 (i.e. the stabilization window is 300 seconds
+        long).
+        """
+        return self._properties.get('stabilizationWindowSeconds')
+
+    @stabilization_window_seconds.setter
+    def stabilization_window_seconds(self, value: int):
+        """
+        StabilizationWindowSeconds is the number of seconds for
+        which past recommendations should be considered while
+        scaling up or scaling down. StabilizationWindowSeconds must
+        be greater than or equal to zero and less than or equal to
+        3600 (one hour). If not set, use the default values: - For
+        scale up: 0 (i.e. no stabilization is done). - For scale
+        down: 300 (i.e. the stabilization window is 300 seconds
+        long).
+        """
+        self._properties['stabilizationWindowSeconds'] = value
+
+    def __enter__(self) -> 'HPAScalingRules':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     """
     HorizontalPodAutoscaler is the configuration for a
@@ -499,6 +696,87 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         return False
 
 
+class HorizontalPodAutoscalerBehavior(_kuber_definitions.Definition):
+    """
+    HorizontalPodAutoscalerBehavior configures the scaling
+    behavior of the target in both Up and Down directions
+    (scaleUp and scaleDown fields respectively).
+    """
+
+    def __init__(
+            self,
+            scale_down: 'HPAScalingRules' = None,
+            scale_up: 'HPAScalingRules' = None,
+    ):
+        """Create HorizontalPodAutoscalerBehavior instance."""
+        super(HorizontalPodAutoscalerBehavior, self).__init__(
+            api_version='autoscaling/v2beta2',
+            kind='HorizontalPodAutoscalerBehavior'
+        )
+        self._properties = {
+            'scaleDown': scale_down if scale_down is not None else HPAScalingRules(),
+            'scaleUp': scale_up if scale_up is not None else HPAScalingRules(),
+
+        }
+        self._types = {
+            'scaleDown': (HPAScalingRules, None),
+            'scaleUp': (HPAScalingRules, None),
+
+        }
+
+    @property
+    def scale_down(self) -> 'HPAScalingRules':
+        """
+        scaleDown is scaling policy for scaling Down. If not set,
+        the default value is to allow to scale down to minReplicas
+        pods, with a 300 second stabilization window (i.e., the
+        highest recommendation for the last 300sec is used).
+        """
+        return self._properties.get('scaleDown')
+
+    @scale_down.setter
+    def scale_down(self, value: typing.Union['HPAScalingRules', dict]):
+        """
+        scaleDown is scaling policy for scaling Down. If not set,
+        the default value is to allow to scale down to minReplicas
+        pods, with a 300 second stabilization window (i.e., the
+        highest recommendation for the last 300sec is used).
+        """
+        if isinstance(value, dict):
+            value = HPAScalingRules().from_dict(value)
+        self._properties['scaleDown'] = value
+
+    @property
+    def scale_up(self) -> 'HPAScalingRules':
+        """
+        scaleUp is scaling policy for scaling Up. If not set, the
+        default value is the higher of:
+          * increase no more than 4 pods per 60 seconds
+          * double the number of pods per 60 seconds
+        No stabilization is used.
+        """
+        return self._properties.get('scaleUp')
+
+    @scale_up.setter
+    def scale_up(self, value: typing.Union['HPAScalingRules', dict]):
+        """
+        scaleUp is scaling policy for scaling Up. If not set, the
+        default value is the higher of:
+          * increase no more than 4 pods per 60 seconds
+          * double the number of pods per 60 seconds
+        No stabilization is used.
+        """
+        if isinstance(value, dict):
+            value = HPAScalingRules().from_dict(value)
+        self._properties['scaleUp'] = value
+
+    def __enter__(self) -> 'HorizontalPodAutoscalerBehavior':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
     """
     HorizontalPodAutoscalerCondition describes the state of a
@@ -718,6 +996,7 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            behavior: 'HorizontalPodAutoscalerBehavior' = None,
             max_replicas: int = None,
             metrics: typing.List['MetricSpec'] = None,
             min_replicas: int = None,
@@ -729,6 +1008,7 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
             kind='HorizontalPodAutoscalerSpec'
         )
         self._properties = {
+            'behavior': behavior if behavior is not None else HorizontalPodAutoscalerBehavior(),
             'maxReplicas': max_replicas if max_replicas is not None else None,
             'metrics': metrics if metrics is not None else [],
             'minReplicas': min_replicas if min_replicas is not None else None,
@@ -736,12 +1016,35 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'behavior': (HorizontalPodAutoscalerBehavior, None),
             'maxReplicas': (int, None),
             'metrics': (list, MetricSpec),
             'minReplicas': (int, None),
             'scaleTargetRef': (CrossVersionObjectReference, None),
 
         }
+
+    @property
+    def behavior(self) -> 'HorizontalPodAutoscalerBehavior':
+        """
+        behavior configures the scaling behavior of the target in
+        both Up and Down directions (scaleUp and scaleDown fields
+        respectively). If not set, the default HPAScalingRules for
+        scale up and scale down are used.
+        """
+        return self._properties.get('behavior')
+
+    @behavior.setter
+    def behavior(self, value: typing.Union['HorizontalPodAutoscalerBehavior', dict]):
+        """
+        behavior configures the scaling behavior of the target in
+        both Up and Down directions (scaleUp and scaleDown fields
+        respectively). If not set, the default HPAScalingRules for
+        scale up and scale down are used.
+        """
+        if isinstance(value, dict):
+            value = HorizontalPodAutoscalerBehavior().from_dict(value)
+        self._properties['behavior'] = value
 
     @property
     def max_replicas(self) -> int:

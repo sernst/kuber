@@ -399,7 +399,9 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
         "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
         ephemeral inline volume
-        defined by a CSIVolumeSource, otherwise "false"
+                                        defined by a
+        CSIVolumeSource, otherwise "false"
+
         "csi.storage.k8s.io/ephemeral" is a new feature in
         Kubernetes 1.16. It is only required for drivers which
         support both the "Persistent" and "Ephemeral"
@@ -431,7 +433,9 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
         "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
         ephemeral inline volume
-        defined by a CSIVolumeSource, otherwise "false"
+                                        defined by a
+        CSIVolumeSource, otherwise "false"
+
         "csi.storage.k8s.io/ephemeral" is a new feature in
         Kubernetes 1.16. It is only required for drivers which
         support both the "Persistent" and "Ephemeral"
@@ -986,6 +990,7 @@ class StorageClass(_kuber_definitions.Resource):
     """
     StorageClass describes the parameters for a class of storage
     for which PersistentVolumes can be dynamically provisioned.
+
     StorageClasses are non-namespaced; the name of the storage
     class according to etcd is in ObjectMeta.Name.
     """
@@ -1412,6 +1417,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
     """
     VolumeAttachment captures the intent to attach or detach the
     specified volume to/from the specified node.
+
     VolumeAttachment objects are non-namespaced.
     """
 

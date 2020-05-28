@@ -13,6 +13,7 @@ class StorageClass(_kuber_definitions.Resource):
     """
     StorageClass describes the parameters for a class of storage
     for which PersistentVolumes can be dynamically provisioned.
+
     StorageClasses are non-namespaced; the name of the storage
     class according to etcd is in ObjectMeta.Name.
     """

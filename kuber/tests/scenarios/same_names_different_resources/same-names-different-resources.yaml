@@ -1,0 +1,28 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: foo-bar
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: foo-bar
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: foo-bar
+subjects:
+- kind: ServiceAccount
+  name: foo-bar
+  namespace: foo
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: foo-bar

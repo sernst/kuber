@@ -631,11 +631,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all namespaces.
 
-        If PodSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects all Pods in the
-        Namespaces selected by NamespaceSelector.
+        If PodSelector is also set, then the NetworkPolicyPeer as a
+        whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects all Pods in the Namespaces selected by
+        NamespaceSelector.
         """
         return self._properties.get('namespaceSelector')
 
@@ -646,11 +646,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all namespaces.
 
-        If PodSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects all Pods in the
-        Namespaces selected by NamespaceSelector.
+        If PodSelector is also set, then the NetworkPolicyPeer as a
+        whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects all Pods in the Namespaces selected by
+        NamespaceSelector.
         """
         if isinstance(value, dict):
             value = LabelSelector().from_dict(value)
@@ -663,11 +663,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all pods.
 
-        If NamespaceSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects the Pods matching
-        PodSelector in the policy's own Namespace.
+        If NamespaceSelector is also set, then the NetworkPolicyPeer
+        as a whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects the Pods matching PodSelector in the policy's own
+        Namespace.
         """
         return self._properties.get('podSelector')
 
@@ -678,11 +678,11 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         follows standard label selector semantics; if present but
         empty, it selects all pods.
 
-        If NamespaceSelector is also
-        set, then the NetworkPolicyPeer as a whole selects the Pods
-        matching PodSelector in the Namespaces selected by
-        NamespaceSelector. Otherwise it selects the Pods matching
-        PodSelector in the policy's own Namespace.
+        If NamespaceSelector is also set, then the NetworkPolicyPeer
+        as a whole selects the Pods matching PodSelector in the
+        Namespaces selected by NamespaceSelector. Otherwise it
+        selects the Pods matching PodSelector in the policy's own
+        Namespace.
         """
         if isinstance(value, dict):
             value = LabelSelector().from_dict(value)

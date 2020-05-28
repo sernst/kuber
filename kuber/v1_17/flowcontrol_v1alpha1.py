@@ -871,7 +871,7 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
     requests that are subject to limits. It addresses two
     issues:
      * How are requests for this priority level limited?
-    * What should be done with requests that exceed the limit?
+     * What should be done with requests that exceed the limit?
     """
 
     def __init__(
@@ -908,13 +908,12 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         number of requests that may be executing at a time --- for
         each such priority level:
 
-                    ACV(l) = ceil( SCL *
-        ACS(l) / ( sum[priority levels k] ACS(k) ) )
+                    ACV(l) = ceil( SCL * ACS(l) / ( sum[priority
+        levels k] ACS(k) ) )
 
-        bigger numbers
-        of ACS mean more reserved concurrent requests (at the
-        expense of every other PL). This field has a default value
-        of 30.
+        bigger numbers of ACS mean more reserved concurrent requests
+        (at the expense of every other PL). This field has a default
+        value of 30.
         """
         return self._properties.get('assuredConcurrencyShares')
 
@@ -931,13 +930,12 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         number of requests that may be executing at a time --- for
         each such priority level:
 
-                    ACV(l) = ceil( SCL *
-        ACS(l) / ( sum[priority levels k] ACS(k) ) )
+                    ACV(l) = ceil( SCL * ACS(l) / ( sum[priority
+        levels k] ACS(k) ) )
 
-        bigger numbers
-        of ACS mean more reserved concurrent requests (at the
-        expense of every other PL). This field has a default value
-        of 30.
+        bigger numbers of ACS mean more reserved concurrent requests
+        (at the expense of every other PL). This field has a default
+        value of 30.
         """
         self._properties['assuredConcurrencyShares'] = value
 
@@ -1002,16 +1000,13 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         """
         `nonResourceURLs` is a set of url prefixes that a user
         should have access to and may not be empty. For example:
-          -
-        "/healthz" is legal
+          - "/healthz" is legal
           - "/hea*" is illegal
-          - "/hea" is
-        legal but matches nothing
+          - "/hea" is legal but matches nothing
           - "/hea/*" also matches nothing
-        - "/healthz/*" matches all per-component health checks.
-        "*"
-        matches all non-resource urls. if it is present, it must be
-        the only entry. Required.
+          - "/healthz/*" matches all per-component health checks.
+        "*" matches all non-resource urls. if it is present, it must
+        be the only entry. Required.
         """
         return self._properties.get('nonResourceURLs')
 
@@ -1020,16 +1015,13 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         """
         `nonResourceURLs` is a set of url prefixes that a user
         should have access to and may not be empty. For example:
-          -
-        "/healthz" is legal
+          - "/healthz" is legal
           - "/hea*" is illegal
-          - "/hea" is
-        legal but matches nothing
+          - "/hea" is legal but matches nothing
           - "/hea/*" also matches nothing
-        - "/healthz/*" matches all per-component health checks.
-        "*"
-        matches all non-resource urls. if it is present, it must be
-        the only entry. Required.
+          - "/healthz/*" matches all per-component health checks.
+        "*" matches all non-resource urls. if it is present, it must
+        be the only entry. Required.
         """
         self._properties['nonResourceURLs'] = value
 
