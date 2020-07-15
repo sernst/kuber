@@ -114,9 +114,8 @@ class PriorityClass(_kuber_definitions.Resource):
         """
         PreemptionPolicy is the Policy for preempting pods with
         lower priority. One of Never, PreemptLowerPriority. Defaults
-        to PreemptLowerPriority if unset. This field is alpha-level
-        and is only honored by servers that enable the
-        NonPreemptingPriority feature.
+        to PreemptLowerPriority if unset. This field is beta-level,
+        gated by the NonPreemptingPriority feature-gate.
         """
         return self._properties.get('preemptionPolicy')
 
@@ -125,9 +124,8 @@ class PriorityClass(_kuber_definitions.Resource):
         """
         PreemptionPolicy is the Policy for preempting pods with
         lower priority. One of Never, PreemptLowerPriority. Defaults
-        to PreemptLowerPriority if unset. This field is alpha-level
-        and is only honored by servers that enable the
-        NonPreemptingPriority feature.
+        to PreemptLowerPriority if unset. This field is beta-level,
+        gated by the NonPreemptingPriority feature-gate.
         """
         self._properties['preemptionPolicy'] = value
 

@@ -1194,6 +1194,8 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
     def __init__(
             self,
             additional_printer_columns: typing.List['CustomResourceColumnDefinition'] = None,
+            deprecated: bool = None,
+            deprecation_warning: str = None,
             name: str = None,
             schema: 'CustomResourceValidation' = None,
             served: bool = None,
@@ -1207,6 +1209,8 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
         )
         self._properties = {
             'additionalPrinterColumns': additional_printer_columns if additional_printer_columns is not None else [],
+            'deprecated': deprecated if deprecated is not None else None,
+            'deprecationWarning': deprecation_warning if deprecation_warning is not None else '',
             'name': name if name is not None else '',
             'schema': schema if schema is not None else CustomResourceValidation(),
             'served': served if served is not None else None,
@@ -1216,6 +1220,8 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
         }
         self._types = {
             'additionalPrinterColumns': (list, CustomResourceColumnDefinition),
+            'deprecated': (bool, None),
+            'deprecationWarning': (str, None),
             'name': (str, None),
             'schema': (CustomResourceValidation, None),
             'served': (bool, None),
@@ -1255,6 +1261,48 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
                 item = CustomResourceColumnDefinition().from_dict(item)
             cleaned.append(item)
         self._properties['additionalPrinterColumns'] = cleaned
+
+    @property
+    def deprecated(self) -> bool:
+        """
+        deprecated indicates this version of the custom resource API
+        is deprecated. When set to true, API requests to this
+        version receive a warning header in the server response.
+        Defaults to false.
+        """
+        return self._properties.get('deprecated')
+
+    @deprecated.setter
+    def deprecated(self, value: bool):
+        """
+        deprecated indicates this version of the custom resource API
+        is deprecated. When set to true, API requests to this
+        version receive a warning header in the server response.
+        Defaults to false.
+        """
+        self._properties['deprecated'] = value
+
+    @property
+    def deprecation_warning(self) -> str:
+        """
+        deprecationWarning overrides the default warning returned to
+        API clients. May only be set when `deprecated` is true. The
+        default warning indicates this version is deprecated and
+        recommends use of the newest served version of equal or
+        greater stability, if one exists.
+        """
+        return self._properties.get('deprecationWarning')
+
+    @deprecation_warning.setter
+    def deprecation_warning(self, value: str):
+        """
+        deprecationWarning overrides the default warning returned to
+        API clients. May only be set when `deprecated` is true. The
+        default warning indicates this version is deprecated and
+        recommends use of the newest served version of equal or
+        greater stability, if one exists.
+        """
+        self._properties['deprecationWarning'] = value
 
     @property
     def name(self) -> str:

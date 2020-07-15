@@ -7,8 +7,10 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   kuber.tests.arrays
    kuber.tests.interface
    kuber.tests.kube_api
+   kuber.tests.management
    kuber.tests.scenarios
 
 Submodules

@@ -76,14 +76,6 @@ kuber.v1\_19.apps\_v1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_19.auditregistration\_v1alpha1 module
------------------------------------------------
-
-.. automodule:: kuber.v1_19.auditregistration_v1alpha1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_19.authentication\_v1 module
 --------------------------------------
 
@@ -164,6 +156,14 @@ kuber.v1\_19.batch\_v2alpha1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.v1\_19.certificates\_v1 module
+------------------------------------
+
+.. automodule:: kuber.v1_19.certificates_v1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.v1\_19.certificates\_v1beta1 module
 -----------------------------------------
 
@@ -200,6 +200,14 @@ kuber.v1\_19.discovery\_v1beta1 module
 --------------------------------------
 
 .. automodule:: kuber.v1_19.discovery_v1beta1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kuber.v1\_19.events\_v1 module
+------------------------------
+
+.. automodule:: kuber.v1_19.events_v1
    :members:
    :undoc-members:
    :show-inheritance:

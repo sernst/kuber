@@ -324,6 +324,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             self,
             attach_required: bool = None,
             pod_info_on_mount: bool = None,
+            storage_capacity: bool = None,
             volume_lifecycle_modes: typing.List[str] = None,
     ):
         """Create CSIDriverSpec instance."""
@@ -334,12 +335,14 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._properties = {
             'attachRequired': attach_required if attach_required is not None else None,
             'podInfoOnMount': pod_info_on_mount if pod_info_on_mount is not None else None,
+            'storageCapacity': storage_capacity if storage_capacity is not None else None,
             'volumeLifecycleModes': volume_lifecycle_modes if volume_lifecycle_modes is not None else [],
 
         }
         self._types = {
             'attachRequired': (bool, None),
             'podInfoOnMount': (bool, None),
+            'storageCapacity': (bool, None),
             'volumeLifecycleModes': (list, str),
 
         }
@@ -447,6 +450,50 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         line parameter of the driver.
         """
         self._properties['podInfoOnMount'] = value
+
+    @property
+    def storage_capacity(self) -> bool:
+        """
+        If set to true, storageCapacity indicates that the CSI
+        volume driver wants pod scheduling to consider the storage
+        capacity that the driver deployment will report by creating
+        CSIStorageCapacity objects with capacity information.
+
+        The check can be enabled immediately when deploying a
+        driver. In that case, provisioning new volumes with late
+        binding will pause until the driver deployment has published
+        some suitable CSIStorageCapacity object.
+
+        Alternatively, the driver can be deployed with the field
+        unset or false and it can be flipped later when storage
+        capacity information has been published.
+
+        This is an alpha field and only available when the
+        CSIStorageCapacity feature is enabled. The default is false.
+        """
+        return self._properties.get('storageCapacity')
+
+    @storage_capacity.setter
+    def storage_capacity(self, value: bool):
+        """
+        If set to true, storageCapacity indicates that the CSI
+        volume driver wants pod scheduling to consider the storage
+        capacity that the driver deployment will report by creating
+        CSIStorageCapacity objects with capacity information.
+
+        The check can be enabled immediately when deploying a
+        driver. In that case, provisioning new volumes with late
+        binding will pause until the driver deployment has published
+        some suitable CSIStorageCapacity object.
+
+        Alternatively, the driver can be deployed with the field
+        unset or false and it can be flipped later when storage
+        capacity information has been published.
+
+        This is an alpha field and only available when the
+        CSIStorageCapacity feature is enabled. The default is false.
+        """
+        self._properties['storageCapacity'] = value
 
     @property
     def volume_lifecycle_modes(self) -> typing.List[str]:

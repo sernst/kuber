@@ -2101,11 +2101,11 @@ class ObjectMeta(_kuber_definitions.Definition):
     @property
     def namespace(self) -> str:
         """
-        Namespace defines the space within each name must be unique.
-        An empty namespace is equivalent to the "default" namespace,
-        but "default" is the canonical representation. Not all
-        objects are required to be scoped to a namespace - the value
-        of this field for those objects will be empty.
+        Namespace defines the space within which each name must be
+        unique. An empty namespace is equivalent to the "default"
+        namespace, but "default" is the canonical representation.
+        Not all objects are required to be scoped to a namespace -
+        the value of this field for those objects will be empty.
 
         Must be a DNS_LABEL. Cannot be updated. More info:
         http://kubernetes.io/docs/user-guide/namespaces
@@ -2115,11 +2115,11 @@ class ObjectMeta(_kuber_definitions.Definition):
     @namespace.setter
     def namespace(self, value: str):
         """
-        Namespace defines the space within each name must be unique.
-        An empty namespace is equivalent to the "default" namespace,
-        but "default" is the canonical representation. Not all
-        objects are required to be scoped to a namespace - the value
-        of this field for those objects will be empty.
+        Namespace defines the space within which each name must be
+        unique. An empty namespace is equivalent to the "default"
+        namespace, but "default" is the canonical representation.
+        Not all objects are required to be scoped to a namespace -
+        the value of this field for those objects will be empty.
 
         Must be a DNS_LABEL. Cannot be updated. More info:
         http://kubernetes.io/docs/user-guide/namespaces

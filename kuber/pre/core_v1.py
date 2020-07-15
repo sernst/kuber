@@ -16164,6 +16164,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
             run_as_non_root: bool = None,
             run_as_user: int = None,
             se_linux_options: 'SELinuxOptions' = None,
+            seccomp_profile: 'SeccompProfile' = None,
             supplemental_groups: typing.List[int] = None,
             sysctls: typing.List['Sysctl'] = None,
             windows_options: 'WindowsSecurityContextOptions' = None,
@@ -16180,6 +16181,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
             'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
             'runAsUser': run_as_user if run_as_user is not None else None,
             'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
+            'seccompProfile': seccomp_profile if seccomp_profile is not None else SeccompProfile(),
             'supplementalGroups': supplemental_groups if supplemental_groups is not None else [],
             'sysctls': sysctls if sysctls is not None else [],
             'windowsOptions': windows_options if windows_options is not None else WindowsSecurityContextOptions(),
@@ -16192,6 +16194,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
             'runAsNonRoot': (bool, None),
             'runAsUser': (int, None),
             'seLinuxOptions': (SELinuxOptions, None),
+            'seccompProfile': (SeccompProfile, None),
             'supplementalGroups': (list, int),
             'sysctls': (list, Sysctl),
             'windowsOptions': (WindowsSecurityContextOptions, None),
@@ -16355,6 +16358,22 @@ class PodSecurityContext(_kuber_definitions.Definition):
         self._properties['seLinuxOptions'] = value
 
     @property
+    def seccomp_profile(self) -> 'SeccompProfile':
+        """
+        The seccomp options to use by the containers in this pod.
+        """
+        return self._properties.get('seccompProfile')
+
+    @seccomp_profile.setter
+    def seccomp_profile(self, value: typing.Union['SeccompProfile', dict]):
+        """
+        The seccomp options to use by the containers in this pod.
+        """
+        if isinstance(value, dict):
+            value = SeccompProfile().from_dict(value)
+        self._properties['seccompProfile'] = value
+
+    @property
     def supplemental_groups(self) -> typing.List[int]:
         """
         A list of groups applied to the first process run in each
@@ -16464,6 +16483,7 @@ class PodSpec(_kuber_definitions.Definition):
             security_context: 'PodSecurityContext' = None,
             service_account: str = None,
             service_account_name: str = None,
+            set_hostname_as_fqdn: bool = None,
             share_process_namespace: bool = None,
             subdomain: str = None,
             termination_grace_period_seconds: int = None,
@@ -16505,6 +16525,7 @@ class PodSpec(_kuber_definitions.Definition):
             'securityContext': security_context if security_context is not None else PodSecurityContext(),
             'serviceAccount': service_account if service_account is not None else '',
             'serviceAccountName': service_account_name if service_account_name is not None else '',
+            'setHostnameAsFQDN': set_hostname_as_fqdn if set_hostname_as_fqdn is not None else None,
             'shareProcessNamespace': share_process_namespace if share_process_namespace is not None else None,
             'subdomain': subdomain if subdomain is not None else '',
             'terminationGracePeriodSeconds': termination_grace_period_seconds if termination_grace_period_seconds is not None else None,
@@ -16542,6 +16563,7 @@ class PodSpec(_kuber_definitions.Definition):
             'securityContext': (PodSecurityContext, None),
             'serviceAccount': (str, None),
             'serviceAccountName': (str, None),
+            'setHostnameAsFQDN': (bool, None),
             'shareProcessNamespace': (bool, None),
             'subdomain': (str, None),
             'terminationGracePeriodSeconds': (int, None),
@@ -16996,9 +17018,8 @@ class PodSpec(_kuber_definitions.Definition):
         """
         PreemptionPolicy is the Policy for preempting pods with
         lower priority. One of Never, PreemptLowerPriority. Defaults
-        to PreemptLowerPriority if unset. This field is alpha-level
-        and is only honored by servers that enable the
-        NonPreemptingPriority feature.
+        to PreemptLowerPriority if unset. This field is beta-level,
+        gated by the NonPreemptingPriority feature-gate.
         """
         return self._properties.get('preemptionPolicy')
 
@@ -17007,9 +17028,8 @@ class PodSpec(_kuber_definitions.Definition):
         """
         PreemptionPolicy is the Policy for preempting pods with
         lower priority. One of Never, PreemptLowerPriority. Defaults
-        to PreemptLowerPriority if unset. This field is alpha-level
-        and is only honored by servers that enable the
-        NonPreemptingPriority feature.
+        to PreemptLowerPriority if unset. This field is beta-level,
+        gated by the NonPreemptingPriority feature-gate.
         """
         self._properties['preemptionPolicy'] = value
 
@@ -17222,6 +17242,34 @@ class PodSpec(_kuber_definitions.Definition):
         self._properties['serviceAccountName'] = value
 
     @property
+    def set_hostname_as_fqdn(self) -> bool:
+        """
+        If true the pod's hostname will be configured as the pod's
+        FQDN, rather than the leaf name (the default). In Linux
+        containers, this means setting the FQDN in the hostname
+        field of the kernel (the nodename field of struct utsname).
+        In Windows containers, this means setting the registry value
+        of hostname for the registry key HKEY_LOCAL_MACHINE\SYSTEM\C
+        urrentControlSet\Services\Tcpip\Parameters to FQDN. If a pod
+        does not have FQDN, this has no effect. Default to false.
+        """
+        return self._properties.get('setHostnameAsFQDN')
+
+    @set_hostname_as_fqdn.setter
+    def set_hostname_as_fqdn(self, value: bool):
+        """
+        If true the pod's hostname will be configured as the pod's
+        FQDN, rather than the leaf name (the default). In Linux
+        containers, this means setting the FQDN in the hostname
+        field of the kernel (the nodename field of struct utsname).
+        In Windows containers, this means setting the registry value
+        of hostname for the registry key HKEY_LOCAL_MACHINE\SYSTEM\C
+        urrentControlSet\Services\Tcpip\Parameters to FQDN. If a pod
+        does not have FQDN, this has no effect. Default to false.
+        """
+        self._properties['setHostnameAsFQDN'] = value
+
+    @property
     def share_process_namespace(self) -> bool:
         """
         Share a single process namespace between all of the
@@ -17324,10 +17372,8 @@ class PodSpec(_kuber_definitions.Definition):
         """
         TopologySpreadConstraints describes how a group of pods
         ought to spread across topology domains. Scheduler will
-        schedule pods in a way which abides by the constraints. This
-        field is only honored by clusters that enable the
-        EvenPodsSpread feature. All topologySpreadConstraints are
-        ANDed.
+        schedule pods in a way which abides by the constraints. All
+        topologySpreadConstraints are ANDed.
         """
         return self._properties.get('topologySpreadConstraints')
 
@@ -17339,10 +17385,8 @@ class PodSpec(_kuber_definitions.Definition):
         """
         TopologySpreadConstraints describes how a group of pods
         ought to spread across topology domains. Scheduler will
-        schedule pods in a way which abides by the constraints. This
-        field is only honored by clusters that enable the
-        EvenPodsSpread feature. All topologySpreadConstraints are
-        ANDed.
+        schedule pods in a way which abides by the constraints. All
+        topologySpreadConstraints are ANDed.
         """
         cleaned = []
         for item in value:
@@ -21650,6 +21694,88 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
         return False
 
 
+class SeccompProfile(_kuber_definitions.Definition):
+    """
+    SeccompProfile defines a pod/container's seccomp profile
+    settings. Only one profile source may be set.
+    """
+
+    def __init__(
+            self,
+            localhost_profile: str = None,
+            type_: str = None,
+    ):
+        """Create SeccompProfile instance."""
+        super(SeccompProfile, self).__init__(
+            api_version='core/v1',
+            kind='SeccompProfile'
+        )
+        self._properties = {
+            'localhostProfile': localhost_profile if localhost_profile is not None else '',
+            'type': type_ if type_ is not None else '',
+
+        }
+        self._types = {
+            'localhostProfile': (str, None),
+            'type': (str, None),
+
+        }
+
+    @property
+    def localhost_profile(self) -> str:
+        """
+        localhostProfile indicates a profile defined in a file on
+        the node should be used. The profile must be preconfigured
+        on the node to work. Must be a descending path, relative to
+        the kubelet's configured seccomp profile location. Must only
+        be set if type is "Localhost".
+        """
+        return self._properties.get('localhostProfile')
+
+    @localhost_profile.setter
+    def localhost_profile(self, value: str):
+        """
+        localhostProfile indicates a profile defined in a file on
+        the node should be used. The profile must be preconfigured
+        on the node to work. Must be a descending path, relative to
+        the kubelet's configured seccomp profile location. Must only
+        be set if type is "Localhost".
+        """
+        self._properties['localhostProfile'] = value
+
+    @property
+    def type_(self) -> str:
+        """
+        type indicates which kind of seccomp profile will be
+        applied. Valid options are:
+
+        Localhost - a profile defined in a file on the node should
+        be used. RuntimeDefault - the container runtime default
+        profile should be used. Unconfined - no profile should be
+        applied.
+        """
+        return self._properties.get('type')
+
+    @type_.setter
+    def type_(self, value: str):
+        """
+        type indicates which kind of seccomp profile will be
+        applied. Valid options are:
+
+        Localhost - a profile defined in a file on the node should
+        be used. RuntimeDefault - the container runtime default
+        profile should be used. Unconfined - no profile should be
+        applied.
+        """
+        self._properties['type'] = value
+
+    def __enter__(self) -> 'SeccompProfile':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class Secret(_kuber_definitions.Resource):
     """
     Secret holds secret data of a certain type. The total bytes
@@ -22504,6 +22630,7 @@ class SecurityContext(_kuber_definitions.Definition):
             run_as_non_root: bool = None,
             run_as_user: int = None,
             se_linux_options: 'SELinuxOptions' = None,
+            seccomp_profile: 'SeccompProfile' = None,
             windows_options: 'WindowsSecurityContextOptions' = None,
     ):
         """Create SecurityContext instance."""
@@ -22521,6 +22648,7 @@ class SecurityContext(_kuber_definitions.Definition):
             'runAsNonRoot': run_as_non_root if run_as_non_root is not None else None,
             'runAsUser': run_as_user if run_as_user is not None else None,
             'seLinuxOptions': se_linux_options if se_linux_options is not None else SELinuxOptions(),
+            'seccompProfile': seccomp_profile if seccomp_profile is not None else SeccompProfile(),
             'windowsOptions': windows_options if windows_options is not None else WindowsSecurityContextOptions(),
 
         }
@@ -22534,6 +22662,7 @@ class SecurityContext(_kuber_definitions.Definition):
             'runAsNonRoot': (bool, None),
             'runAsUser': (int, None),
             'seLinuxOptions': (SELinuxOptions, None),
+            'seccompProfile': (SeccompProfile, None),
             'windowsOptions': (WindowsSecurityContextOptions, None),
 
         }
@@ -22735,6 +22864,26 @@ class SecurityContext(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = SELinuxOptions().from_dict(value)
         self._properties['seLinuxOptions'] = value
+
+    @property
+    def seccomp_profile(self) -> 'SeccompProfile':
+        """
+        The seccomp options to use by this container. If seccomp
+        options are provided at both the pod & container level, the
+        container options override the pod options.
+        """
+        return self._properties.get('seccompProfile')
+
+    @seccomp_profile.setter
+    def seccomp_profile(self, value: typing.Union['SeccompProfile', dict]):
+        """
+        The seccomp options to use by this container. If seccomp
+        options are provided at both the pod & container level, the
+        container options override the pod options.
+        """
+        if isinstance(value, dict):
+            value = SeccompProfile().from_dict(value)
+        self._properties['seccompProfile'] = value
 
     @property
     def windows_options(self) -> 'WindowsSecurityContextOptions':
@@ -23981,18 +24130,26 @@ class ServiceSpec(_kuber_definitions.Definition):
     def ip_family(self) -> str:
         """
         ipFamily specifies whether this Service has a preference for
-        a particular IP family (e.g. IPv4 vs. IPv6).  If a specific
-        IP family is requested, the clusterIP field will be
-        allocated from that family, if it is available in the
-        cluster.  If no IP family is requested, the cluster's
-        primary IP family will be used. Other IP fields
-        (loadBalancerIP, loadBalancerSourceRanges, externalIPs) and
-        controllers which allocate external load-balancers should
-        use the same IP family.  Endpoints for this Service will be
-        of this family.  This field is immutable after creation.
-        Assigning a ServiceIPFamily not available in the cluster
-        (e.g. IPv6 in IPv4 only cluster) is an error condition and
-        will fail during clusterIP assignment.
+        a particular IP family (e.g. IPv4 vs. IPv6) when the
+        IPv6DualStack feature gate is enabled. In a dual-stack
+        cluster, you can specify ipFamily when creating a ClusterIP
+        Service to determine whether the controller will allocate an
+        IPv4 or IPv6 IP for it, and you can specify ipFamily when
+        creating a headless Service to determine whether it will
+        have IPv4 or IPv6 Endpoints. In either case, if you do not
+        specify an ipFamily explicitly, it will default to the
+        cluster's primary IP family. This field is part of an alpha
+        feature, and you should not make any assumptions about its
+        semantics other than those described above. In particular,
+        you should not assume that it can (or cannot) be changed
+        after creation time; that it can only have the values "IPv4"
+        and "IPv6"; or that its current value on a given Service
+        correctly reflects the current state of that Service. (For
+        ClusterIP Services, look at clusterIP to see if the Service
+        is IPv4 or IPv6. For headless Services, look at the
+        endpoints, which may be dual-stack in the future. For
+        ExternalName Services, ipFamily has no meaning, but it may
+        be set to an irrelevant value anyway.)
         """
         return self._properties.get('ipFamily')
 
@@ -24000,18 +24157,26 @@ class ServiceSpec(_kuber_definitions.Definition):
     def ip_family(self, value: str):
         """
         ipFamily specifies whether this Service has a preference for
-        a particular IP family (e.g. IPv4 vs. IPv6).  If a specific
-        IP family is requested, the clusterIP field will be
-        allocated from that family, if it is available in the
-        cluster.  If no IP family is requested, the cluster's
-        primary IP family will be used. Other IP fields
-        (loadBalancerIP, loadBalancerSourceRanges, externalIPs) and
-        controllers which allocate external load-balancers should
-        use the same IP family.  Endpoints for this Service will be
-        of this family.  This field is immutable after creation.
-        Assigning a ServiceIPFamily not available in the cluster
-        (e.g. IPv6 in IPv4 only cluster) is an error condition and
-        will fail during clusterIP assignment.
+        a particular IP family (e.g. IPv4 vs. IPv6) when the
+        IPv6DualStack feature gate is enabled. In a dual-stack
+        cluster, you can specify ipFamily when creating a ClusterIP
+        Service to determine whether the controller will allocate an
+        IPv4 or IPv6 IP for it, and you can specify ipFamily when
+        creating a headless Service to determine whether it will
+        have IPv4 or IPv6 Endpoints. In either case, if you do not
+        specify an ipFamily explicitly, it will default to the
+        cluster's primary IP family. This field is part of an alpha
+        feature, and you should not make any assumptions about its
+        semantics other than those described above. In particular,
+        you should not assume that it can (or cannot) be changed
+        after creation time; that it can only have the values "IPv4"
+        and "IPv6"; or that its current value on a given Service
+        correctly reflects the current state of that Service. (For
+        ClusterIP Services, look at clusterIP to see if the Service
+        is IPv4 or IPv6. For headless Services, look at the
+        endpoints, which may be dual-stack in the future. For
+        ExternalName Services, ipFamily has no meaning, but it may
+        be set to an irrelevant value anyway.)
         """
         self._properties['ipFamily'] = value
 
@@ -24094,26 +24259,34 @@ class ServiceSpec(_kuber_definitions.Definition):
     @property
     def publish_not_ready_addresses(self) -> bool:
         """
-        publishNotReadyAddresses, when set to true, indicates that
-        DNS implementations must publish the notReadyAddresses of
-        subsets for the Endpoints associated with the Service. The
-        default value is false. The primary use case for setting
-        this field is to use a StatefulSet's Headless Service to
-        propagate SRV records for its Pods without respect to their
-        readiness for purpose of peer discovery.
+        publishNotReadyAddresses indicates that any agent which
+        deals with endpoints for this Service should disregard any
+        indications of ready/not-ready. The primary use case for
+        setting this field is for a StatefulSet's Headless Service
+        to propagate SRV DNS records for its Pods for the purpose of
+        peer discovery. The Kubernetes controllers that generate
+        Endpoints and EndpointSlice resources for Services interpret
+        this to mean that all endpoints are considered "ready" even
+        if the Pods themselves are not. Agents which consume only
+        Kubernetes generated endpoints through the Endpoints or
+        EndpointSlice resources can safely assume this behavior.
         """
         return self._properties.get('publishNotReadyAddresses')
 
     @publish_not_ready_addresses.setter
     def publish_not_ready_addresses(self, value: bool):
         """
-        publishNotReadyAddresses, when set to true, indicates that
-        DNS implementations must publish the notReadyAddresses of
-        subsets for the Endpoints associated with the Service. The
-        default value is false. The primary use case for setting
-        this field is to use a StatefulSet's Headless Service to
-        propagate SRV records for its Pods without respect to their
-        readiness for purpose of peer discovery.
+        publishNotReadyAddresses indicates that any agent which
+        deals with endpoints for this Service should disregard any
+        indications of ready/not-ready. The primary use case for
+        setting this field is for a StatefulSet's Headless Service
+        to propagate SRV DNS records for its Pods for the purpose of
+        peer discovery. The Kubernetes controllers that generate
+        Endpoints and EndpointSlice resources for Services interpret
+        this to mean that all endpoints are considered "ready" even
+        if the Pods themselves are not. Agents which consume only
+        Kubernetes generated endpoints through the Endpoints or
+        EndpointSlice resources can safely assume this behavior.
         """
         self._properties['publishNotReadyAddresses'] = value
 
@@ -25641,16 +25814,18 @@ class Volume(_kuber_definitions.Definition):
     @property
     def csi(self) -> 'CSIVolumeSource':
         """
-        CSI (Container Storage Interface) represents storage that is
-        handled by an external CSI driver (Alpha feature).
+        CSI (Container Storage Interface) represents ephemeral
+        storage that is handled by certain external CSI drivers
+        (Beta feature).
         """
         return self._properties.get('csi')
 
     @csi.setter
     def csi(self, value: typing.Union['CSIVolumeSource', dict]):
         """
-        CSI (Container Storage Interface) represents storage that is
-        handled by an external CSI driver (Alpha feature).
+        CSI (Container Storage Interface) represents ephemeral
+        storage that is handled by certain external CSI drivers
+        (Beta feature).
         """
         if isinstance(value, dict):
             value = CSIVolumeSource().from_dict(value)
