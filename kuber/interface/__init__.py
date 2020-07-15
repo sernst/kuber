@@ -2,7 +2,6 @@ import argparse
 import os
 import typing
 
-import kuber
 from kuber import execution
 from kuber import management
 from kuber.interface import _parsing
@@ -78,17 +77,11 @@ class ResourceBundleCli:
         return command_actions[command](action)
 
 
-def _is_target(action: CommandAction, resource: 'kuber.Resource') -> bool:
+def _filters(action: CommandAction) -> typing.List[str]:
     """
-    Determines whether or not the specified resource should be included
-    in the command line action.
+    Extracts filters from the action arguments.
     """
-    targets = [t.lower() for t in (vars(action.args).get('target') or [])]
-    if not targets:
-        return True
-
-    identifier = f'{resource.kind}/{resource.metadata.name}'.lower()
-    return identifier in targets
+    return vars(action.args).get('target') or []
 
 
 def do_render(action: CommandAction) -> CommandAction:
@@ -97,8 +90,7 @@ def do_render(action: CommandAction) -> CommandAction:
     """
     renders = [
         resource.to_yaml()
-        for resource in action.bundle.resources
-        if _is_target(action, resource)
+        for resource in action.bundle.resources.matching(*_filters(action))
     ]
     print('\n---\n\n'.join(renders))
     return action
@@ -116,8 +108,7 @@ def do_create(action: CommandAction) -> CommandAction:
             namespace=resource.metadata.namespace or default_namespace,
             echo=True
         )
-        for resource in action.bundle.resources
-        if _is_target(action, resource)
+        for resource in action.bundle.resources.matching(*_filters(action))
     ]
     has_error = any([r.symbol == '!!' for r in responses])
     if has_error:
@@ -139,8 +130,7 @@ def do_delete(action: CommandAction) -> CommandAction:
             namespace=resource.metadata.namespace or default_namespace,
             echo=True
         )
-        for resource in action.bundle.resources
-        if _is_target(action, resource)
+        for resource in action.bundle.resources.matching(*_filters(action))
     ]
     has_error = any([r.symbol == '!!' for r in responses])
     if has_error:
@@ -162,8 +152,7 @@ def do_status(action: CommandAction) -> CommandAction:
             namespace=resource.metadata.namespace or default_namespace,
             echo=True
         )
-        for resource in action.bundle.resources
-        if _is_target(action, resource)
+        for resource in action.bundle.resources.matching(*_filters(action))
     ]
     has_error = any([r.symbol == '!!' for r in responses])
     if has_error:

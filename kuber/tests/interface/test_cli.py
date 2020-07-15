@@ -37,7 +37,10 @@ def test_do_status(
     """Should get statuses of all resources and display them."""
     get_resource_status.return_value = response
     bundle = MagicMock()
-    bundle.resources = [MagicMock(), MagicMock()]
+    bundle.resources.matching.return_value = [
+        MagicMock(),
+        MagicMock()
+    ]
     action = interface.CommandAction(MagicMock(), [], bundle)
     interface.do_status(action)
     assert get_resource_status.call_count == 2
@@ -52,7 +55,10 @@ def test_do_delete(
     """Should execute a delete of all resources in the bundle."""
     delete_resource.return_value = response
     bundle = MagicMock()
-    bundle.resources = [MagicMock(), MagicMock()]
+    bundle.resources.matching.return_value = [
+        MagicMock(),
+        MagicMock()
+    ]
     action = interface.CommandAction(MagicMock(), [], bundle)
     interface.do_delete(action)
     assert delete_resource.call_count == 2
@@ -67,7 +73,10 @@ def test_do_create(
     """Should execute a creation for all resources in the bundle."""
     create_resource.return_value = response
     bundle = MagicMock()
-    bundle.resources = [MagicMock(), MagicMock()]
+    bundle.resources.matching.return_value = [
+        MagicMock(),
+        MagicMock()
+    ]
     action = interface.CommandAction(MagicMock(), [], bundle)
     interface.do_create(action)
     assert create_resource.call_count == 2
@@ -78,7 +87,10 @@ def test_do_render():
     bundle = MagicMock()
     resource = MagicMock()
     resource.to_yaml.return_value = ''
-    bundle.resources = [resource, resource]
+    bundle.resources.matching.return_value = [
+        resource,
+        resource
+    ]
     action = interface.CommandAction(MagicMock(), [], bundle)
     interface.do_render(action)
 

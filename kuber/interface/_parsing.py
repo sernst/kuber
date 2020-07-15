@@ -18,7 +18,9 @@ def _populate_create(subparsers):
             'Use this flag multiple times in the same call to target '
             'multiple resources. If omitted, the default behavior is '
             'to target all resources in the bundle. Targets are specified '
-            'as <KIND>/<NAME>, e.g. --target=Namespace/foo.'
+            'as <NAME> or <KIND>/<NAME> or <NAMESPACE>/<KIND>/<NAME>, '
+            'e.g. --target=Namespace/foo, and can contain shell-style '
+            'wildcard characters for fuzzy matching.'
         )
     )
     parser.add_argument('--namespace')
@@ -44,7 +46,9 @@ def _populate_status(subparsers):
             'Use this flag multiple times in the same call to target '
             'multiple resources. If omitted, the default behavior is '
             'to target all resources in the bundle. Targets are specified '
-            'as <KIND>/<NAME>, e.g. --target=Namespace/foo.'
+            'as <NAME> or <KIND>/<NAME> or <NAMESPACE>/<KIND>/<NAME>, '
+            'e.g. --target=Namespace/foo, and can contain shell-style '
+            'wildcard characters for fuzzy matching.'
         )
     )
 
@@ -64,7 +68,9 @@ def _populate_delete(subparsers):
             'Use this flag multiple times in the same call to target '
             'multiple resources. If omitted, the default behavior is '
             'to target all resources in the bundle. Targets are specified '
-            'as <KIND>/<NAME>, e.g. --target=Namespace/foo.'
+            'as <NAME> or <KIND>/<NAME> or <NAMESPACE>/<KIND>/<NAME>, '
+            'e.g. --target=Namespace/foo, and can contain shell-style '
+            'wildcard characters for fuzzy matching.'
         )
     )
 
@@ -90,7 +96,9 @@ def _populate_render(subparsers):
             'Use this flag multiple times in the same call to target '
             'multiple resources. If omitted, the default behavior is '
             'to target all resources in the bundle. Targets are specified '
-            'as <KIND>/<NAME>, e.g. --target=Namespace/foo.'
+            'as <NAME> or <KIND>/<NAME> or <NAMESPACE>/<KIND>/<NAME>, '
+            'e.g. --target=Namespace/foo, and can contain shell-style '
+            'wildcard characters for fuzzy matching.'
         )
     )
 

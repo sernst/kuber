@@ -110,7 +110,9 @@ def to_camel_case(source: str) -> str:
     return f'{prefix}{suffix}'
 
 
-def to_kuber_dict(kube_api_entity) -> dict:
+def to_kuber_dict(
+        kube_api_entity: typing.Union[typing.Any, typing.Dict]
+) -> dict:
     """
     Converts a Kubernetes client object, or serialized dictionary of
     configuration values to the kuber representation, which enforces
@@ -122,6 +124,7 @@ def to_kuber_dict(kube_api_entity) -> dict:
     """
     entity = kube_api_entity
     if hasattr(entity, 'to_dict'):
+        # noinspection PyCallingNonCallable
         entity = entity.to_dict()
 
     return {

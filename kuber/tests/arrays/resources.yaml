@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo-pod-first
+  namespace: first
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo-deployment-first
+  namespace: first
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo-pod-second
+  namespace: second
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: foo-job-second
+  namespace: second
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bar-pod-second
+  namespace: second
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bar-deployment-second
+  namespace: second
+
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bar-job-second
+  namespace: second

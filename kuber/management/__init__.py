@@ -413,7 +413,8 @@ class ResourceBundle:
     def create(
             self,
             namespace: str = None,
-            echo: bool = False
+            echo: bool = False,
+            filters: typing.List[str] = None,
     ) -> typing.List['execution.ResponseInfo']:
         """
         Create all resources in the bundle.
@@ -428,10 +429,15 @@ class ResourceBundle:
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
+        :param filters:
+            A list of resource matching filters to reduce the created
+            resources down to a subset of the total resources in the bundle.
+            This is useful for targeting changes to only specific resources
+            within the bundle.
         """
         default_namespace = namespace or self.namespace
         results = []
-        for r in self.resources:
+        for r in self.resources.matching(*list(filters or [])):
             ns = r.metadata.namespace or default_namespace
             results.append(execution.create_resource(r, ns, echo=echo))
         return results
@@ -439,7 +445,8 @@ class ResourceBundle:
     def replace(
             self,
             namespace: str = None,
-            echo: bool = False
+            echo: bool = False,
+            filters: typing.List[str] = None,
     ) -> typing.List['execution.ResponseInfo']:
         """
         Replace all resources in the bundle.
@@ -454,10 +461,15 @@ class ResourceBundle:
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
+        :param filters:
+            A list of resource matching filters to reduce the replaced
+            resources down to a subset of the total resources in the bundle.
+            This is useful for targeting changes to only specific resources
+            within the bundle.
         """
         default_namespace = namespace or self.namespace
         results = []
-        for r in self.resources:
+        for r in self.resources.matching(*list(filters or [])):
             ns = r.metadata.namespace or default_namespace
             results.append(execution.replace_resource(r, ns, echo=echo))
         return results
@@ -465,7 +477,8 @@ class ResourceBundle:
     def statuses(
             self,
             namespace: str = None,
-            echo: bool = False
+            echo: bool = False,
+            filters: typing.List[str] = None,
     ) -> typing.List['execution.ResponseInfo']:
         """
         Returns a list of statuses for all resources in the bundle.
@@ -480,10 +493,15 @@ class ResourceBundle:
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
+        :param filters:
+            A list of resource matching filters to reduce the status
+            resources down to a subset of the total resources in the bundle.
+            This is useful for targeting changes to only specific resources
+            within the bundle.
         """
         default_namespace = namespace or self.namespace
         results = []
-        for r in self.resources:
+        for r in self.resources.matching(*list(filters or [])):
             ns = r.metadata.namespace or default_namespace
             results.append(execution.get_resource_status(r, ns, echo=echo))
         return results
@@ -491,7 +509,8 @@ class ResourceBundle:
     def delete(
             self,
             namespace: str = None,
-            echo: bool = False
+            echo: bool = False,
+            filters: typing.List[str] = None,
     ) -> typing.List['execution.ResponseInfo']:
         """
         Delete all resources in the bundle.
@@ -505,10 +524,15 @@ class ResourceBundle:
         :param echo:
             Whether or not to pretty-print the response objects to stdout
             while creating resources.
+        :param filters:
+            A list of resource matching filters to reduce the deleted
+            resources down to a subset of the total resources in the bundle.
+            This is useful for targeting changes to only specific resources
+            within the bundle.
         """
         default_namespace = namespace or self.namespace
         results = []
-        for r in self.resources:
+        for r in self.resources.matching(*list(filters or [])):
             ns = r.metadata.namespace or default_namespace
             results.append(execution.delete_resource(r, ns, echo=echo))
         return results

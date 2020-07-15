@@ -1,7 +1,50 @@
 import typing
+import fnmatch
 
 from kuber import management
 from kuber.management import creation
+
+
+def _matcher(value: typing.Optional[str], pattern: str) -> bool:
+    """Returns the case insensitive matching parameter."""
+    return fnmatch.fnmatch((value or '').lower(), (pattern or '*').lower())
+
+
+def _matches_filter(
+        resource: 'creation.ResourceSubclass',
+        resource_filter: str,
+) -> bool:
+    """Returns whether or not the resource matches the filter."""
+    parts = resource_filter.split('/')
+
+    name_filter = parts[-1]
+    if not _matcher(resource.metadata.name, name_filter):
+        return False
+
+    kind_filter = parts[-2] if len(parts) > 1 else '*'
+    if not _matcher(resource.kind, kind_filter):
+        return False
+
+    namespace_filter = parts[-3] if len(parts) > 2 else '*'
+    if not _matcher(resource.metadata.namespace, namespace_filter):
+        return False
+
+    return True
+
+
+def _is_matching_resource(
+        resource: 'creation.ResourceSubclass',
+        filters: typing.List[str] = None
+) -> bool:
+    """
+    Determines whether or not a given resource matches the specified
+    filters. If filters is None or an empty list, all resources will
+    match.
+    """
+    return (
+        not filters
+        or any((_matches_filter(resource, f) for f in filters))
+    )
 
 
 class ResourceKindArray:
@@ -11,13 +54,19 @@ class ResourceKindArray:
     ResourceArray.
     """
 
-    def __init__(self, array: 'ResourceArray', kind: str):
+    def __init__(
+            self,
+            array: 'ResourceArray',
+            kind: str,
+            filters: typing.List[str] = None,
+    ):
         """
         Creates a ResourceKindArray instance that filters on the specified
         Kubernetes resource kind.
         """
         self._kind = _to_pascal_case(kind)
         self._array = array
+        self._filters = filters
 
     @property
     def _resources(self) -> typing.Tuple['creation.ResourceSubclass', ...]:
@@ -26,13 +75,17 @@ class ResourceKindArray:
             r
             for r in getattr(self._array, '_resources')
             if r.kind == self._kind
+            and _is_matching_resource(r, self._filters)
         ])
 
     def to_list(self) -> typing.List['creation.ResourceSubclass']:
         """Returns the resources in this object as a standard Python list."""
         return list(self._resources)
 
-    def _get_resources(self, name: str):
+    def _get_resources(
+            self,
+            name: str,
+    ) -> typing.List['creation.ResourceSubclass']:
         """Internal filtering function to retrieve matching resources."""
         value = _to_kebab_case(name)
         matches = [r for r in self._resources if r.metadata.name == value]
@@ -82,7 +135,8 @@ class ResourceArray:
     def __init__(
             self,
             bundle: 'management.ResourceBundle',
-            namespace: str = None
+            namespace: str = None,
+            filters: typing.List[str] = None,
     ):
         """
         Creates a ResourceArray for the given bundle and with an optional
@@ -90,6 +144,7 @@ class ResourceArray:
         """
         self._bundle = bundle
         self._namespace = namespace
+        self._filters = filters
 
     @property
     def _resources(self) -> typing.Tuple['creation.ResourceSubclass', ...]:
@@ -99,7 +154,8 @@ class ResourceArray:
         return tuple([
             r
             for r in resources
-            if not namespace or r.metadata.namespace == namespace
+            if (not namespace or r.metadata.namespace == namespace)
+            and _is_matching_resource(r, self._filters)
         ])
 
     def to_list(self) -> typing.List['creation.ResourceSubclass']:
@@ -111,7 +167,35 @@ class ResourceArray:
         Filters this array down to only include resources of the specified
         kind.
         """
-        return ResourceArray(self._bundle, namespace)
+        return ResourceArray(self._bundle, namespace, self._filters)
+
+    def matching(self, *args: str) -> 'ResourceArray':
+        """
+        Filters this array down to only include resources that match at
+        least one of the specified filter args. Filters are of the form
+
+        - ``<NAMESPACE>/<KIND>/<NAME>``
+        - ``<KIND>/<NAME>``
+        - ``<NAME>``
+
+        and can include shell-style wildcard characters. The filters are
+        also case-insensitive. For example, the filter ``deployment/foo-*``
+        would match all Deployments in the array that begin with the name
+        ``foo-`` but could be ``foo-bar`` or ``foo-spam`` or so on.
+
+        :param args:
+            One or more filters to specify that will be used to return a
+            ResourceArray containing only the resources that match at least
+            one of the specified filters.
+        :return:
+            A ResourceArray that contains the subset of resources
+            that match the specified filters from this source ResourceArray.
+        """
+        return ResourceArray(
+            bundle=self._bundle,
+            namespace=self._namespace,
+            filters=list(self._filters or []) + (list(args) or []),
+        )
 
     def __len__(self):
         """Number of resources in this array."""
@@ -126,11 +210,11 @@ class ResourceArray:
         if isinstance(item, int):
             return self._resources[item]
 
-        return ResourceKindArray(self, item)
+        return ResourceKindArray(self, item, self._filters)
 
     def __getattr__(self, item: str):
         """A filtered array of resources of the matching kind."""
-        return ResourceKindArray(self, item)
+        return ResourceKindArray(self, item, self._filters)
 
 
 def _to_pascal_case(value: str) -> str:
