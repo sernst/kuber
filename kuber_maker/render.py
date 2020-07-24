@@ -9,6 +9,7 @@ from jinja2 import Environment
 from jinja2 import FileSystemLoader
 
 import kuber_maker
+from kuber_maker import utils
 
 LINE_REGEX = re.compile(r'\n{4,}(?!\s+)')
 SINGLE_LINE_REGEX = re.compile(r'\n{3,}(?=\s+)')
@@ -149,7 +150,7 @@ def _containers_location(
         child = all_entities.packages[child_package].entities[child_target]
         result = _containers_location(child, all_entities, max_depth - 1)
         if result:
-            return [key, *result]
+            return [utils.to_snake_case(key), *result]
 
     return []
 

@@ -10,6 +10,7 @@ Subpackages
    kuber.tests.scenarios.cron_suspend
    kuber.tests.scenarios.custom_resource_definition
    kuber.tests.scenarios.empty_values
+   kuber.tests.scenarios.get_containers_from_job
    kuber.tests.scenarios.metadata_owner_reference
    kuber.tests.scenarios.odd_api_versions
    kuber.tests.scenarios.same_names_different_resources

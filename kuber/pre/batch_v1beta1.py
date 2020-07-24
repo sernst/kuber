@@ -166,7 +166,7 @@ class CronJob(_kuber_definitions.Resource):
             'volume_mounts': volume_mounts,
             'working_dir': working_dir,
         }
-        self.spec.jobTemplate.spec.template.spec.containers.append(Container(**{
+        self.spec.job_template.spec.template.spec.containers.append(Container(**{
             k: v
             for k, v in values.items()
             if v != _kuber_definitions.UNCHANGED_VALUE
@@ -179,14 +179,14 @@ class CronJob(_kuber_definitions.Resource):
         container definition exists. Return None if no container definition
         by that name exists.
         """
-        return next((c for c in self.spec.jobTemplate.spec.template.spec.containers if c.name == name), None)
+        return next((c for c in self.spec.job_template.spec.template.spec.containers if c.name == name), None)
 
     def get_containers(self) -> typing.List['Container']:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
-        return self.spec.jobTemplate.spec.template.spec.containers
+        return self.spec.job_template.spec.template.spec.containers
 
     def create_resource(
             self,
@@ -674,7 +674,7 @@ class CronJobSpec(_kuber_definitions.Definition):
             'volume_mounts': volume_mounts,
             'working_dir': working_dir,
         }
-        self.jobTemplate.spec.template.spec.containers.append(Container(**{
+        self.job_template.spec.template.spec.containers.append(Container(**{
             k: v
             for k, v in values.items()
             if v != _kuber_definitions.UNCHANGED_VALUE
@@ -687,14 +687,14 @@ class CronJobSpec(_kuber_definitions.Definition):
         container definition exists. Return None if no container definition
         by that name exists.
         """
-        return next((c for c in self.jobTemplate.spec.template.spec.containers if c.name == name), None)
+        return next((c for c in self.job_template.spec.template.spec.containers if c.name == name), None)
 
     def get_containers(self) -> typing.List['Container']:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
-        return self.jobTemplate.spec.template.spec.containers
+        return self.job_template.spec.template.spec.containers
 
     def __enter__(self) -> 'CronJobSpec':
         return self
