@@ -20,6 +20,7 @@ class Endpoint(_kuber_definitions.Definition):
             addresses: typing.List[str] = None,
             conditions: 'EndpointConditions' = None,
             hostname: str = None,
+            node_name: str = None,
             target_ref: 'ObjectReference' = None,
             topology: dict = None,
     ):
@@ -32,6 +33,7 @@ class Endpoint(_kuber_definitions.Definition):
             'addresses': addresses if addresses is not None else [],
             'conditions': conditions if conditions is not None else EndpointConditions(),
             'hostname': hostname if hostname is not None else '',
+            'nodeName': node_name if node_name is not None else '',
             'targetRef': target_ref if target_ref is not None else ObjectReference(),
             'topology': topology if topology is not None else {},
 
@@ -40,6 +42,7 @@ class Endpoint(_kuber_definitions.Definition):
             'addresses': (list, str),
             'conditions': (EndpointConditions, None),
             'hostname': (str, None),
+            'nodeName': (str, None),
             'targetRef': (ObjectReference, None),
             'topology': (dict, None),
 
@@ -92,7 +95,8 @@ class Endpoint(_kuber_definitions.Definition):
         consumers of endpoints to distinguish endpoints from each
         other (e.g. in DNS names). Multiple endpoints which use the
         same hostname should be considered fungible (e.g. multiple A
-        values in DNS). Must pass DNS Label (RFC 1123) validation.
+        values in DNS). Must be lowercase and pass DNS Label (RFC
+        1123) validation.
         """
         return self._properties.get('hostname')
 
@@ -103,9 +107,30 @@ class Endpoint(_kuber_definitions.Definition):
         consumers of endpoints to distinguish endpoints from each
         other (e.g. in DNS names). Multiple endpoints which use the
         same hostname should be considered fungible (e.g. multiple A
-        values in DNS). Must pass DNS Label (RFC 1123) validation.
+        values in DNS). Must be lowercase and pass DNS Label (RFC
+        1123) validation.
         """
         self._properties['hostname'] = value
+
+    @property
+    def node_name(self) -> str:
+        """
+        nodeName represents the name of the Node hosting this
+        endpoint. This can be used to determine endpoints local to a
+        Node. This field can be enabled with the
+        EndpointSliceNodeName feature gate.
+        """
+        return self._properties.get('nodeName')
+
+    @node_name.setter
+    def node_name(self, value: str):
+        """
+        nodeName represents the name of the Node hosting this
+        endpoint. This can be used to determine endpoints local to a
+        Node. This field can be enabled with the
+        EndpointSliceNodeName feature gate.
+        """
+        self._properties['nodeName'] = value
 
     @property
     def target_ref(self) -> 'ObjectReference':
@@ -147,6 +172,8 @@ class Endpoint(_kuber_definitions.Definition):
         region where the
           endpoint is located. This should match the corresponding
         node label.
+        This field is deprecated and will be removed in future api
+        versions.
         """
         return self._properties.get('topology')
 
@@ -172,6 +199,8 @@ class Endpoint(_kuber_definitions.Definition):
         region where the
           endpoint is located. This should match the corresponding
         node label.
+        This field is deprecated and will be removed in future api
+        versions.
         """
         self._properties['topology'] = value
 
@@ -191,6 +220,8 @@ class EndpointConditions(_kuber_definitions.Definition):
     def __init__(
             self,
             ready: bool = None,
+            serving: bool = None,
+            terminating: bool = None,
     ):
         """Create EndpointConditions instance."""
         super(EndpointConditions, self).__init__(
@@ -199,10 +230,14 @@ class EndpointConditions(_kuber_definitions.Definition):
         )
         self._properties = {
             'ready': ready if ready is not None else None,
+            'serving': serving if serving is not None else None,
+            'terminating': terminating if terminating is not None else None,
 
         }
         self._types = {
             'ready': (bool, None),
+            'serving': (bool, None),
+            'terminating': (bool, None),
 
         }
 
@@ -213,7 +248,8 @@ class EndpointConditions(_kuber_definitions.Definition):
         traffic, according to whatever system is managing the
         endpoint. A nil value indicates an unknown state. In most
         cases consumers should interpret this unknown state as
-        ready.
+        ready. For compatibility reasons, ready should never be
+        "true" for terminating endpoints.
         """
         return self._properties.get('ready')
 
@@ -224,9 +260,56 @@ class EndpointConditions(_kuber_definitions.Definition):
         traffic, according to whatever system is managing the
         endpoint. A nil value indicates an unknown state. In most
         cases consumers should interpret this unknown state as
-        ready.
+        ready. For compatibility reasons, ready should never be
+        "true" for terminating endpoints.
         """
         self._properties['ready'] = value
+
+    @property
+    def serving(self) -> bool:
+        """
+        serving is identical to ready except that it is set
+        regardless of the terminating state of endpoints. This
+        condition should be set to true for a ready endpoint that is
+        terminating. If nil, consumers should defer to the ready
+        condition. This field can be enabled with the
+        EndpointSliceTerminatingCondition feature gate.
+        """
+        return self._properties.get('serving')
+
+    @serving.setter
+    def serving(self, value: bool):
+        """
+        serving is identical to ready except that it is set
+        regardless of the terminating state of endpoints. This
+        condition should be set to true for a ready endpoint that is
+        terminating. If nil, consumers should defer to the ready
+        condition. This field can be enabled with the
+        EndpointSliceTerminatingCondition feature gate.
+        """
+        self._properties['serving'] = value
+
+    @property
+    def terminating(self) -> bool:
+        """
+        terminating indicates that this endpoint is terminating. A
+        nil value indicates an unknown state. Consumers should
+        interpret this unknown state to mean that the endpoint is
+        not terminating. This field can be enabled with the
+        EndpointSliceTerminatingCondition feature gate.
+        """
+        return self._properties.get('terminating')
+
+    @terminating.setter
+    def terminating(self, value: bool):
+        """
+        terminating indicates that this endpoint is terminating. A
+        nil value indicates an unknown state. Consumers should
+        interpret this unknown state to mean that the endpoint is
+        not terminating. This field can be enabled with the
+        EndpointSliceTerminatingCondition feature gate.
+        """
+        self._properties['terminating'] = value
 
     def __enter__(self) -> 'EndpointConditions':
         return self

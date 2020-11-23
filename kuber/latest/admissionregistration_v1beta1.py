@@ -871,8 +871,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
     def operations(self) -> typing.List[str]:
         """
         Operations is the operations the admission hook cares about
-        - CREATE, UPDATE, or * for all operations. If '*' is
-        present, the length of the slice must be one. Required.
+        - CREATE, UPDATE, DELETE, CONNECT or * for all of those
+        operations and any future admission operations that are
+        added. If '*' is present, the length of the slice must be
+        one. Required.
         """
         return self._properties.get('operations')
 
@@ -880,8 +882,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
     def operations(self, value: typing.List[str]):
         """
         Operations is the operations the admission hook cares about
-        - CREATE, UPDATE, or * for all operations. If '*' is
-        present, the length of the slice must be one. Required.
+        - CREATE, UPDATE, DELETE, CONNECT or * for all of those
+        operations and any future admission operations that are
+        added. If '*' is present, the length of the slice must be
+        one. Required.
         """
         self._properties['operations'] = value
 

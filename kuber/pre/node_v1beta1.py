@@ -109,8 +109,8 @@ class RuntimeClass(_kuber_definitions.Resource):
         equivalent on every node. For example, a handler called
         "runc" might specify that the runc OCI runtime (using native
         Linux containers) will be used to run the containers in a
-        pod. The Handler must conform to the DNS Label (RFC 1123)
-        requirements, and is immutable.
+        pod. The Handler must be lowercase, conform to the DNS Label
+        (RFC 1123) requirements, and is immutable.
         """
         return self._properties.get('handler')
 
@@ -125,8 +125,8 @@ class RuntimeClass(_kuber_definitions.Resource):
         equivalent on every node. For example, a handler called
         "runc" might specify that the runc OCI runtime (using native
         Linux containers) will be used to run the containers in a
-        pod. The Handler must conform to the DNS Label (RFC 1123)
-        requirements, and is immutable.
+        pod. The Handler must be lowercase, conform to the DNS Label
+        (RFC 1123) requirements, and is immutable.
         """
         self._properties['handler'] = value
 

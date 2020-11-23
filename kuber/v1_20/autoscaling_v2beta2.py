@@ -12,6 +12,184 @@ from kuber.v1_20.meta_v1 import Status
 from kuber.v1_20.meta_v1 import StatusDetails
 
 
+class ContainerResourceMetricSource(_kuber_definitions.Definition):
+    """
+    ContainerResourceMetricSource indicates how to scale on a
+    resource metric known to Kubernetes, as specified in
+    requests and limits, describing each pod in the current
+    scale target (e.g. CPU or memory).  The values will be
+    averaged together before being compared to the target.  Such
+    metrics are built in to Kubernetes, and have special scaling
+    options on top of those available to normal per-pod metrics
+    using the "pods" source.  Only one "target" type should be
+    set.
+    """
+
+    def __init__(
+            self,
+            container: str = None,
+            name: str = None,
+            target: 'MetricTarget' = None,
+    ):
+        """Create ContainerResourceMetricSource instance."""
+        super(ContainerResourceMetricSource, self).__init__(
+            api_version='autoscaling/v2beta2',
+            kind='ContainerResourceMetricSource'
+        )
+        self._properties = {
+            'container': container if container is not None else '',
+            'name': name if name is not None else '',
+            'target': target if target is not None else MetricTarget(),
+
+        }
+        self._types = {
+            'container': (str, None),
+            'name': (str, None),
+            'target': (MetricTarget, None),
+
+        }
+
+    @property
+    def container(self) -> str:
+        """
+        container is the name of the container in the pods of the
+        scaling target
+        """
+        return self._properties.get('container')
+
+    @container.setter
+    def container(self, value: str):
+        """
+        container is the name of the container in the pods of the
+        scaling target
+        """
+        self._properties['container'] = value
+
+    @property
+    def name(self) -> str:
+        """
+        name is the name of the resource in question.
+        """
+        return self._properties.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        """
+        name is the name of the resource in question.
+        """
+        self._properties['name'] = value
+
+    @property
+    def target(self) -> 'MetricTarget':
+        """
+        target specifies the target value for the given metric
+        """
+        return self._properties.get('target')
+
+    @target.setter
+    def target(self, value: typing.Union['MetricTarget', dict]):
+        """
+        target specifies the target value for the given metric
+        """
+        if isinstance(value, dict):
+            value = MetricTarget().from_dict(value)
+        self._properties['target'] = value
+
+    def __enter__(self) -> 'ContainerResourceMetricSource':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ContainerResourceMetricStatus(_kuber_definitions.Definition):
+    """
+    ContainerResourceMetricStatus indicates the current value of
+    a resource metric known to Kubernetes, as specified in
+    requests and limits, describing a single container in each
+    pod in the current scale target (e.g. CPU or memory).  Such
+    metrics are built in to Kubernetes, and have special scaling
+    options on top of those available to normal per-pod metrics
+    using the "pods" source.
+    """
+
+    def __init__(
+            self,
+            container: str = None,
+            current: 'MetricValueStatus' = None,
+            name: str = None,
+    ):
+        """Create ContainerResourceMetricStatus instance."""
+        super(ContainerResourceMetricStatus, self).__init__(
+            api_version='autoscaling/v2beta2',
+            kind='ContainerResourceMetricStatus'
+        )
+        self._properties = {
+            'container': container if container is not None else '',
+            'current': current if current is not None else MetricValueStatus(),
+            'name': name if name is not None else '',
+
+        }
+        self._types = {
+            'container': (str, None),
+            'current': (MetricValueStatus, None),
+            'name': (str, None),
+
+        }
+
+    @property
+    def container(self) -> str:
+        """
+        Container is the name of the container in the pods of the
+        scaling target
+        """
+        return self._properties.get('container')
+
+    @container.setter
+    def container(self, value: str):
+        """
+        Container is the name of the container in the pods of the
+        scaling target
+        """
+        self._properties['container'] = value
+
+    @property
+    def current(self) -> 'MetricValueStatus':
+        """
+        current contains the current value for the given metric
+        """
+        return self._properties.get('current')
+
+    @current.setter
+    def current(self, value: typing.Union['MetricValueStatus', dict]):
+        """
+        current contains the current value for the given metric
+        """
+        if isinstance(value, dict):
+            value = MetricValueStatus().from_dict(value)
+        self._properties['current'] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is the name of the resource in question.
+        """
+        return self._properties.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is the name of the resource in question.
+        """
+        self._properties['name'] = value
+
+    def __enter__(self) -> 'ContainerResourceMetricStatus':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class CrossVersionObjectReference(_kuber_definitions.Definition):
     """
     CrossVersionObjectReference contains enough information to
@@ -1407,6 +1585,7 @@ class MetricSpec(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            container_resource: 'ContainerResourceMetricSource' = None,
             external: 'ExternalMetricSource' = None,
             object_: 'ObjectMetricSource' = None,
             pods: 'PodsMetricSource' = None,
@@ -1419,6 +1598,7 @@ class MetricSpec(_kuber_definitions.Definition):
             kind='MetricSpec'
         )
         self._properties = {
+            'containerResource': container_resource if container_resource is not None else ContainerResourceMetricSource(),
             'external': external if external is not None else ExternalMetricSource(),
             'object': object_ if object_ is not None else ObjectMetricSource(),
             'pods': pods if pods is not None else PodsMetricSource(),
@@ -1427,6 +1607,7 @@ class MetricSpec(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'containerResource': (ContainerResourceMetricSource, None),
             'external': (ExternalMetricSource, None),
             'object': (ObjectMetricSource, None),
             'pods': (PodsMetricSource, None),
@@ -1434,6 +1615,36 @@ class MetricSpec(_kuber_definitions.Definition):
             'type': (str, None),
 
         }
+
+    @property
+    def container_resource(self) -> 'ContainerResourceMetricSource':
+        """
+        container resource refers to a resource metric (such as
+        those specified in requests and limits) known to Kubernetes
+        describing a single container in each pod of the current
+        scale target (e.g. CPU or memory). Such metrics are built in
+        to Kubernetes, and have special scaling options on top of
+        those available to normal per-pod metrics using the "pods"
+        source. This is an alpha feature and can be enabled by the
+        HPAContainerMetrics feature flag.
+        """
+        return self._properties.get('containerResource')
+
+    @container_resource.setter
+    def container_resource(self, value: typing.Union['ContainerResourceMetricSource', dict]):
+        """
+        container resource refers to a resource metric (such as
+        those specified in requests and limits) known to Kubernetes
+        describing a single container in each pod of the current
+        scale target (e.g. CPU or memory). Such metrics are built in
+        to Kubernetes, and have special scaling options on top of
+        those available to normal per-pod metrics using the "pods"
+        source. This is an alpha feature and can be enabled by the
+        HPAContainerMetrics feature flag.
+        """
+        if isinstance(value, dict):
+            value = ContainerResourceMetricSource().from_dict(value)
+        self._properties['containerResource'] = value
 
     @property
     def external(self) -> 'ExternalMetricSource':
@@ -1531,8 +1742,10 @@ class MetricSpec(_kuber_definitions.Definition):
     def type_(self) -> str:
         """
         type is the type of metric source.  It should be one of
-        "Object", "Pods" or "Resource", each mapping to a matching
-        field in the object.
+        "ContainerResource", "External", "Object", "Pods" or
+        "Resource", each mapping to a matching field in the object.
+        Note: "ContainerResource" type is available on when the
+        feature-gate HPAContainerMetrics is enabled
         """
         return self._properties.get('type')
 
@@ -1540,8 +1753,10 @@ class MetricSpec(_kuber_definitions.Definition):
     def type_(self, value: str):
         """
         type is the type of metric source.  It should be one of
-        "Object", "Pods" or "Resource", each mapping to a matching
-        field in the object.
+        "ContainerResource", "External", "Object", "Pods" or
+        "Resource", each mapping to a matching field in the object.
+        Note: "ContainerResource" type is available on when the
+        feature-gate HPAContainerMetrics is enabled
         """
         self._properties['type'] = value
 
@@ -1560,6 +1775,7 @@ class MetricStatus(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            container_resource: 'ContainerResourceMetricStatus' = None,
             external: 'ExternalMetricStatus' = None,
             object_: 'ObjectMetricStatus' = None,
             pods: 'PodsMetricStatus' = None,
@@ -1572,6 +1788,7 @@ class MetricStatus(_kuber_definitions.Definition):
             kind='MetricStatus'
         )
         self._properties = {
+            'containerResource': container_resource if container_resource is not None else ContainerResourceMetricStatus(),
             'external': external if external is not None else ExternalMetricStatus(),
             'object': object_ if object_ is not None else ObjectMetricStatus(),
             'pods': pods if pods is not None else PodsMetricStatus(),
@@ -1580,6 +1797,7 @@ class MetricStatus(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'containerResource': (ContainerResourceMetricStatus, None),
             'external': (ExternalMetricStatus, None),
             'object': (ObjectMetricStatus, None),
             'pods': (PodsMetricStatus, None),
@@ -1587,6 +1805,34 @@ class MetricStatus(_kuber_definitions.Definition):
             'type': (str, None),
 
         }
+
+    @property
+    def container_resource(self) -> 'ContainerResourceMetricStatus':
+        """
+        container resource refers to a resource metric (such as
+        those specified in requests and limits) known to Kubernetes
+        describing a single container in each pod in the current
+        scale target (e.g. CPU or memory). Such metrics are built in
+        to Kubernetes, and have special scaling options on top of
+        those available to normal per-pod metrics using the "pods"
+        source.
+        """
+        return self._properties.get('containerResource')
+
+    @container_resource.setter
+    def container_resource(self, value: typing.Union['ContainerResourceMetricStatus', dict]):
+        """
+        container resource refers to a resource metric (such as
+        those specified in requests and limits) known to Kubernetes
+        describing a single container in each pod in the current
+        scale target (e.g. CPU or memory). Such metrics are built in
+        to Kubernetes, and have special scaling options on top of
+        those available to normal per-pod metrics using the "pods"
+        source.
+        """
+        if isinstance(value, dict):
+            value = ContainerResourceMetricStatus().from_dict(value)
+        self._properties['containerResource'] = value
 
     @property
     def external(self) -> 'ExternalMetricStatus':
@@ -1684,8 +1930,10 @@ class MetricStatus(_kuber_definitions.Definition):
     def type_(self) -> str:
         """
         type is the type of metric source.  It will be one of
-        "Object", "Pods" or "Resource", each corresponds to a
-        matching field in the object.
+        "ContainerResource", "External", "Object", "Pods" or
+        "Resource", each corresponds to a matching field in the
+        object. Note: "ContainerResource" type is available on when
+        the feature-gate HPAContainerMetrics is enabled
         """
         return self._properties.get('type')
 
@@ -1693,8 +1941,10 @@ class MetricStatus(_kuber_definitions.Definition):
     def type_(self, value: str):
         """
         type is the type of metric source.  It will be one of
-        "Object", "Pods" or "Resource", each corresponds to a
-        matching field in the object.
+        "ContainerResource", "External", "Object", "Pods" or
+        "Resource", each corresponds to a matching field in the
+        object. Note: "ContainerResource" type is available on when
+        the feature-gate HPAContainerMetrics is enabled
         """
         self._properties['type'] = value
 

@@ -68,6 +68,14 @@ kuber.pre.apiregistration\_v1beta1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.pre.apiserverinternal\_v1alpha1 module
+--------------------------------------------
+
+.. automodule:: kuber.pre.apiserverinternal_v1alpha1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.pre.apps\_v1 module
 -------------------------
 
@@ -236,6 +244,14 @@ kuber.pre.flowcontrol\_v1alpha1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.pre.flowcontrol\_v1beta1 module
+-------------------------------------
+
+.. automodule:: kuber.pre.flowcontrol_v1beta1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.pre.meta\_v1 module
 -------------------------
 
@@ -256,6 +272,14 @@ kuber.pre.networking\_v1beta1 module
 ------------------------------------
 
 .. automodule:: kuber.pre.networking_v1beta1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kuber.pre.node\_v1 module
+-------------------------
+
+.. automodule:: kuber.pre.node_v1
    :members:
    :undoc-members:
    :show-inheritance:
@@ -328,14 +352,6 @@ kuber.pre.scheduling\_v1beta1 module
 ------------------------------------
 
 .. automodule:: kuber.pre.scheduling_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.pre.settings\_v1alpha1 module
------------------------------------
-
-.. automodule:: kuber.pre.settings_v1alpha1
    :members:
    :undoc-members:
    :show-inheritance:

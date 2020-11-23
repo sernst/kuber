@@ -1977,7 +1977,8 @@ class ComponentCondition(_kuber_definitions.Definition):
 class ComponentStatus(_kuber_definitions.Resource):
     """
     ComponentStatus (and ComponentStatusList) holds the cluster
-    validation info.
+    validation info. Deprecated: This API is deprecated in
+    v1.19+
     """
 
     def __init__(
@@ -2179,7 +2180,8 @@ class ComponentStatus(_kuber_definitions.Resource):
 class ComponentStatusList(_kuber_definitions.Collection):
     """
     Status of all the conditions for the component as a list of
-    ComponentStatus objects.
+    ComponentStatus objects. Deprecated: This API is deprecated
+    in v1.19+
     """
 
     def __init__(

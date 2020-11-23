@@ -83,40 +83,42 @@ class Event(_kuber_definitions.Resource):
     @property
     def action(self) -> str:
         """
-        What action was taken/failed regarding to the regarding
-        object.
+        action is what action was taken/failed regarding to the
+        regarding object. It is machine-readable. This field can
+        have at most 128 characters.
         """
         return self._properties.get('action')
 
     @action.setter
     def action(self, value: str):
         """
-        What action was taken/failed regarding to the regarding
-        object.
+        action is what action was taken/failed regarding to the
+        regarding object. It is machine-readable. This field can
+        have at most 128 characters.
         """
         self._properties['action'] = value
 
     @property
     def deprecated_count(self) -> int:
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedCount is the deprecated field assuring backward
+        compatibility with core.v1 Event type.
         """
         return self._properties.get('deprecatedCount')
 
     @deprecated_count.setter
     def deprecated_count(self, value: int):
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedCount is the deprecated field assuring backward
+        compatibility with core.v1 Event type.
         """
         self._properties['deprecatedCount'] = value
 
     @property
     def deprecated_first_timestamp(self) -> str:
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedFirstTimestamp is the deprecated field assuring
+        backward compatibility with core.v1 Event type.
         """
         return self._properties.get('deprecatedFirstTimestamp')
 
@@ -126,8 +128,8 @@ class Event(_kuber_definitions.Resource):
             value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedFirstTimestamp is the deprecated field assuring
+        backward compatibility with core.v1 Event type.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -138,8 +140,8 @@ class Event(_kuber_definitions.Resource):
     @property
     def deprecated_last_timestamp(self) -> str:
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedLastTimestamp is the deprecated field assuring
+        backward compatibility with core.v1 Event type.
         """
         return self._properties.get('deprecatedLastTimestamp')
 
@@ -149,8 +151,8 @@ class Event(_kuber_definitions.Resource):
             value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedLastTimestamp is the deprecated field assuring
+        backward compatibility with core.v1 Event type.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -161,16 +163,16 @@ class Event(_kuber_definitions.Resource):
     @property
     def deprecated_source(self) -> 'EventSource':
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedSource is the deprecated field assuring backward
+        compatibility with core.v1 Event type.
         """
         return self._properties.get('deprecatedSource')
 
     @deprecated_source.setter
     def deprecated_source(self, value: typing.Union['EventSource', dict]):
         """
-        Deprecated field assuring backward compatibility with
-        core.v1 Event type
+        deprecatedSource is the deprecated field assuring backward
+        compatibility with core.v1 Event type.
         """
         if isinstance(value, dict):
             value = EventSource().from_dict(value)
@@ -179,14 +181,16 @@ class Event(_kuber_definitions.Resource):
     @property
     def event_time(self) -> 'MicroTime':
         """
-        Required. Time when this Event was first observed.
+        eventTime is the time when this Event was first observed. It
+        is required.
         """
         return self._properties.get('eventTime')
 
     @event_time.setter
     def event_time(self, value: typing.Union['MicroTime', dict]):
         """
-        Required. Time when this Event was first observed.
+        eventTime is the time when this Event was first observed. It
+        is required.
         """
         if isinstance(value, dict):
             value = MicroTime().from_dict(value)
@@ -211,7 +215,7 @@ class Event(_kuber_definitions.Resource):
     @property
     def note(self) -> str:
         """
-        Optional. A human-readable description of the status of this
+        note is a human-readable description of the status of this
         operation. Maximal length of the note is 1kB, but libraries
         should be prepared to handle values up to 64kB.
         """
@@ -220,7 +224,7 @@ class Event(_kuber_definitions.Resource):
     @note.setter
     def note(self, value: str):
         """
-        Optional. A human-readable description of the status of this
+        note is a human-readable description of the status of this
         operation. Maximal length of the note is 1kB, but libraries
         should be prepared to handle values up to 64kB.
         """
@@ -229,34 +233,38 @@ class Event(_kuber_definitions.Resource):
     @property
     def reason(self) -> str:
         """
-        Why the action was taken.
+        reason is why the action was taken. It is human-readable.
+        This field can have at most 128 characters.
         """
         return self._properties.get('reason')
 
     @reason.setter
     def reason(self, value: str):
         """
-        Why the action was taken.
+        reason is why the action was taken. It is human-readable.
+        This field can have at most 128 characters.
         """
         self._properties['reason'] = value
 
     @property
     def regarding(self) -> 'ObjectReference':
         """
-        The object this Event is about. In most cases it's an Object
-        reporting controller implements. E.g. ReplicaSetController
-        implements ReplicaSets and this event is emitted because it
-        acts on some changes in a ReplicaSet object.
+        regarding contains the object this Event is about. In most
+        cases it's an Object reporting controller implements, e.g.
+        ReplicaSetController implements ReplicaSets and this event
+        is emitted because it acts on some changes in a ReplicaSet
+        object.
         """
         return self._properties.get('regarding')
 
     @regarding.setter
     def regarding(self, value: typing.Union['ObjectReference', dict]):
         """
-        The object this Event is about. In most cases it's an Object
-        reporting controller implements. E.g. ReplicaSetController
-        implements ReplicaSets and this event is emitted because it
-        acts on some changes in a ReplicaSet object.
+        regarding contains the object this Event is about. In most
+        cases it's an Object reporting controller implements, e.g.
+        ReplicaSetController implements ReplicaSets and this event
+        is emitted because it acts on some changes in a ReplicaSet
+        object.
         """
         if isinstance(value, dict):
             value = ObjectReference().from_dict(value)
@@ -265,18 +273,18 @@ class Event(_kuber_definitions.Resource):
     @property
     def related(self) -> 'ObjectReference':
         """
-        Optional secondary object for more complex actions. E.g.
-        when regarding object triggers a creation or deletion of
-        related object.
+        related is the optional secondary object for more complex
+        actions. E.g. when regarding object triggers a creation or
+        deletion of related object.
         """
         return self._properties.get('related')
 
     @related.setter
     def related(self, value: typing.Union['ObjectReference', dict]):
         """
-        Optional secondary object for more complex actions. E.g.
-        when regarding object triggers a creation or deletion of
-        related object.
+        related is the optional secondary object for more complex
+        actions. E.g. when regarding object triggers a creation or
+        deletion of related object.
         """
         if isinstance(value, dict):
             value = ObjectReference().from_dict(value)
@@ -285,46 +293,52 @@ class Event(_kuber_definitions.Resource):
     @property
     def reporting_controller(self) -> str:
         """
-        Name of the controller that emitted this Event, e.g.
-        `kubernetes.io/kubelet`.
+        reportingController is the name of the controller that
+        emitted this Event, e.g. `kubernetes.io/kubelet`. This field
+        cannot be empty for new Events.
         """
         return self._properties.get('reportingController')
 
     @reporting_controller.setter
     def reporting_controller(self, value: str):
         """
-        Name of the controller that emitted this Event, e.g.
-        `kubernetes.io/kubelet`.
+        reportingController is the name of the controller that
+        emitted this Event, e.g. `kubernetes.io/kubelet`. This field
+        cannot be empty for new Events.
         """
         self._properties['reportingController'] = value
 
     @property
     def reporting_instance(self) -> str:
         """
-        ID of the controller instance, e.g. `kubelet-xyzf`.
+        reportingInstance is the ID of the controller instance, e.g.
+        `kubelet-xyzf`. This field cannot be empty for new Events
+        and it can have at most 128 characters.
         """
         return self._properties.get('reportingInstance')
 
     @reporting_instance.setter
     def reporting_instance(self, value: str):
         """
-        ID of the controller instance, e.g. `kubelet-xyzf`.
+        reportingInstance is the ID of the controller instance, e.g.
+        `kubelet-xyzf`. This field cannot be empty for new Events
+        and it can have at most 128 characters.
         """
         self._properties['reportingInstance'] = value
 
     @property
     def series(self) -> 'EventSeries':
         """
-        Data about the Event series this event represents or nil if
-        it's a singleton Event.
+        series is data about the Event series this event represents
+        or nil if it's a singleton Event.
         """
         return self._properties.get('series')
 
     @series.setter
     def series(self, value: typing.Union['EventSeries', dict]):
         """
-        Data about the Event series this event represents or nil if
-        it's a singleton Event.
+        series is data about the Event series this event represents
+        or nil if it's a singleton Event.
         """
         if isinstance(value, dict):
             value = EventSeries().from_dict(value)
@@ -333,16 +347,16 @@ class Event(_kuber_definitions.Resource):
     @property
     def type_(self) -> str:
         """
-        Type of this event (Normal, Warning), new types could be
-        added in the future.
+        type is the type of this event (Normal, Warning), new types
+        could be added in the future. It is machine-readable.
         """
         return self._properties.get('type')
 
     @type_.setter
     def type_(self, value: str):
         """
-        Type of this event (Normal, Warning), new types could be
-        added in the future.
+        type is the type of this event (Normal, Warning), new types
+        could be added in the future. It is machine-readable.
         """
         self._properties['type'] = value
 
@@ -508,7 +522,7 @@ class EventList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List['Event']:
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         return self._properties.get('items')
 
@@ -518,7 +532,7 @@ class EventList(_kuber_definitions.Collection):
             value: typing.Union[typing.List['Event'], typing.List[dict]]
     ):
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         cleaned = []
         for item in value:
@@ -577,7 +591,6 @@ class EventSeries(_kuber_definitions.Definition):
             self,
             count: int = None,
             last_observed_time: 'MicroTime' = None,
-            state: str = None,
     ):
         """Create EventSeries instance."""
         super(EventSeries, self).__init__(
@@ -587,65 +600,47 @@ class EventSeries(_kuber_definitions.Definition):
         self._properties = {
             'count': count if count is not None else None,
             'lastObservedTime': last_observed_time if last_observed_time is not None else MicroTime(),
-            'state': state if state is not None else '',
 
         }
         self._types = {
             'count': (int, None),
             'lastObservedTime': (MicroTime, None),
-            'state': (str, None),
 
         }
 
     @property
     def count(self) -> int:
         """
-        Number of occurrences in this series up to the last
-        heartbeat time
+        count is the number of occurrences in this series up to the
+        last heartbeat time.
         """
         return self._properties.get('count')
 
     @count.setter
     def count(self, value: int):
         """
-        Number of occurrences in this series up to the last
-        heartbeat time
+        count is the number of occurrences in this series up to the
+        last heartbeat time.
         """
         self._properties['count'] = value
 
     @property
     def last_observed_time(self) -> 'MicroTime':
         """
-        Time when last Event from the series was seen before last
-        heartbeat.
+        lastObservedTime is the time when last Event from the series
+        was seen before last heartbeat.
         """
         return self._properties.get('lastObservedTime')
 
     @last_observed_time.setter
     def last_observed_time(self, value: typing.Union['MicroTime', dict]):
         """
-        Time when last Event from the series was seen before last
-        heartbeat.
+        lastObservedTime is the time when last Event from the series
+        was seen before last heartbeat.
         """
         if isinstance(value, dict):
             value = MicroTime().from_dict(value)
         self._properties['lastObservedTime'] = value
-
-    @property
-    def state(self) -> str:
-        """
-        Information whether this series is ongoing or finished.
-        Deprecated. Planned removal for 1.18
-        """
-        return self._properties.get('state')
-
-    @state.setter
-    def state(self, value: str):
-        """
-        Information whether this series is ongoing or finished.
-        Deprecated. Planned removal for 1.18
-        """
-        self._properties['state'] = value
 
     def __enter__(self) -> 'EventSeries':
         return self

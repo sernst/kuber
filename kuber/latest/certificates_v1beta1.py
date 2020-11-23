@@ -275,9 +275,11 @@ class CertificateSigningRequestCondition(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            last_transition_time: str = None,
             last_update_time: str = None,
             message: str = None,
             reason: str = None,
+            status: str = None,
             type_: str = None,
     ):
         """Create CertificateSigningRequestCondition instance."""
@@ -286,19 +288,52 @@ class CertificateSigningRequestCondition(_kuber_definitions.Definition):
             kind='CertificateSigningRequestCondition'
         )
         self._properties = {
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
             'lastUpdateTime': last_update_time if last_update_time is not None else None,
             'message': message if message is not None else '',
             'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
             'type': type_ if type_ is not None else '',
 
         }
         self._types = {
+            'lastTransitionTime': (str, None),
             'lastUpdateTime': (str, None),
             'message': (str, None),
             'reason': (str, None),
+            'status': (str, None),
             'type': (str, None),
 
         }
+
+    @property
+    def last_transition_time(self) -> str:
+        """
+        lastTransitionTime is the time the condition last
+        transitioned from one status to another. If unset, when a
+        new condition type is added or an existing condition's
+        status is changed, the server defaults this to the current
+        time.
+        """
+        return self._properties.get('lastTransitionTime')
+
+    @last_transition_time.setter
+    def last_transition_time(
+            self,
+            value: typing.Union[str, _datetime.datetime, _datetime.date]
+    ):
+        """
+        lastTransitionTime is the time the condition last
+        transitioned from one status to another. If unset, when a
+        new condition type is added or an existing condition's
+        status is changed, the server defaults this to the current
+        time.
+        """
+        if isinstance(value, _datetime.datetime):
+            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+        elif isinstance(value, _datetime.date):
+            value = value.strftime('%Y-%m-%dT00:00:00Z')
+        self._properties['lastTransitionTime'] = value
 
     @property
     def last_update_time(self) -> str:
@@ -350,16 +385,38 @@ class CertificateSigningRequestCondition(_kuber_definitions.Definition):
         self._properties['reason'] = value
 
     @property
+    def status(self) -> str:
+        """
+        Status of the condition, one of True, False, Unknown.
+        Approved, Denied, and Failed conditions may not be "False"
+        or "Unknown". Defaults to "True". If unset, should be
+        treated as "True".
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: str):
+        """
+        Status of the condition, one of True, False, Unknown.
+        Approved, Denied, and Failed conditions may not be "False"
+        or "Unknown". Defaults to "True". If unset, should be
+        treated as "True".
+        """
+        self._properties['status'] = value
+
+    @property
     def type_(self) -> str:
         """
-        request approval state, currently Approved or Denied.
+        type of the condition. Known conditions include "Approved",
+        "Denied", and "Failed".
         """
         return self._properties.get('type')
 
     @type_.setter
     def type_(self, value: str):
         """
-        request approval state, currently Approved or Denied.
+        type of the condition. Known conditions include "Approved",
+        "Denied", and "Failed".
         """
         self._properties['type'] = value
 
@@ -603,6 +660,30 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
         be valid for. See:
         https://tools.ietf.org/html/rfc5280#section-4.2.1.3
              https://tools.ietf.org/html/rfc5280#section-4.2.1.12
+        Valid values are:
+         "signing",
+         "digital signature",
+         "content commitment",
+         "key encipherment",
+         "key agreement",
+         "data encipherment",
+         "cert sign",
+         "crl sign",
+         "encipher only",
+         "decipher only",
+         "any",
+         "server auth",
+         "client auth",
+         "code signing",
+         "email protection",
+         "s/mime",
+         "ipsec end system",
+         "ipsec tunnel",
+         "ipsec user",
+         "timestamping",
+         "ocsp signing",
+         "microsoft sgc",
+         "netscape sgc"
         """
         return self._properties.get('usages')
 
@@ -613,6 +694,30 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
         be valid for. See:
         https://tools.ietf.org/html/rfc5280#section-4.2.1.3
              https://tools.ietf.org/html/rfc5280#section-4.2.1.12
+        Valid values are:
+         "signing",
+         "digital signature",
+         "content commitment",
+         "key encipherment",
+         "key agreement",
+         "data encipherment",
+         "cert sign",
+         "crl sign",
+         "encipher only",
+         "decipher only",
+         "any",
+         "server auth",
+         "client auth",
+         "code signing",
+         "email protection",
+         "s/mime",
+         "ipsec end system",
+         "ipsec tunnel",
+         "ipsec user",
+         "timestamping",
+         "ocsp signing",
+         "microsoft sgc",
+         "netscape sgc"
         """
         self._properties['usages'] = value
 

@@ -5,6 +5,7 @@ from kubernetes import client
 from kuber import kube_api as _kube_api
 
 from kuber import definitions as _kuber_definitions
+from kuber.v1_20.meta_v1 import Condition
 from kuber.v1_20.meta_v1 import LabelSelector
 from kuber.v1_20.meta_v1 import ListMeta
 from kuber.v1_20.meta_v1 import MicroTime
@@ -1977,7 +1978,8 @@ class ComponentCondition(_kuber_definitions.Definition):
 class ComponentStatus(_kuber_definitions.Resource):
     """
     ComponentStatus (and ComponentStatusList) holds the cluster
-    validation info.
+    validation info. Deprecated: This API is deprecated in
+    v1.19+
     """
 
     def __init__(
@@ -2179,7 +2181,8 @@ class ComponentStatus(_kuber_definitions.Resource):
 class ComponentStatusList(_kuber_definitions.Collection):
     """
     Status of all the conditions for the component as a list of
-    ComponentStatus objects.
+    ComponentStatus objects. Deprecated: This API is deprecated
+    in v1.19+
     """
 
     def __init__(
@@ -3576,8 +3579,7 @@ class Container(_kuber_definitions.Definition):
         This can be used to provide different probe parameters at
         the beginning of a Pod's lifecycle, when it might take a
         long time to load data or warm a cache, than during steady-
-        state operation. This cannot be updated. This is a beta
-        feature enabled by the StartupProbe feature flag. More info:
+        state operation. This cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#container-probes
         """
@@ -3593,8 +3595,7 @@ class Container(_kuber_definitions.Definition):
         This can be used to provide different probe parameters at
         the beginning of a Pod's lifecycle, when it might take a
         long time to load data or warm a cache, than during steady-
-        state operation. This cannot be updated. This is a beta
-        feature enabled by the StartupProbe feature flag. More info:
+        state operation. This cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#container-probes
         """
@@ -6539,9 +6540,123 @@ class EphemeralContainer(_kuber_definitions.Definition):
         return False
 
 
+class EphemeralVolumeSource(_kuber_definitions.Definition):
+    """
+    Represents an ephemeral volume that is handled by a normal
+    storage driver.
+    """
+
+    def __init__(
+            self,
+            read_only: bool = None,
+            volume_claim_template: 'PersistentVolumeClaimTemplate' = None,
+    ):
+        """Create EphemeralVolumeSource instance."""
+        super(EphemeralVolumeSource, self).__init__(
+            api_version='core/v1',
+            kind='EphemeralVolumeSource'
+        )
+        self._properties = {
+            'readOnly': read_only if read_only is not None else None,
+            'volumeClaimTemplate': volume_claim_template if volume_claim_template is not None else PersistentVolumeClaimTemplate(),
+
+        }
+        self._types = {
+            'readOnly': (bool, None),
+            'volumeClaimTemplate': (PersistentVolumeClaimTemplate, None),
+
+        }
+
+    @property
+    def read_only(self) -> bool:
+        """
+        Specifies a read-only configuration for the volume. Defaults
+        to false (read/write).
+        """
+        return self._properties.get('readOnly')
+
+    @read_only.setter
+    def read_only(self, value: bool):
+        """
+        Specifies a read-only configuration for the volume. Defaults
+        to false (read/write).
+        """
+        self._properties['readOnly'] = value
+
+    @property
+    def volume_claim_template(self) -> 'PersistentVolumeClaimTemplate':
+        """
+        Will be used to create a stand-alone PVC to provision the
+        volume. The pod in which this EphemeralVolumeSource is
+        embedded will be the owner of the PVC, i.e. the PVC will be
+        deleted together with the pod.  The name of the PVC will be
+        `<pod name>-<volume name>` where `<volume name>` is the name
+        from the `PodSpec.Volumes` array entry. Pod validation will
+        reject the pod if the concatenated name is not valid for a
+        PVC (for example, too long).
+
+        An existing PVC with that name that is not owned by the pod
+        will *not* be used for the pod to avoid using an unrelated
+        volume by mistake. Starting the pod is then blocked until
+        the unrelated PVC is removed. If such a pre-created PVC is
+        meant to be used by the pod, the PVC has to updated with an
+        owner reference to the pod once the pod exists. Normally
+        this should not be necessary, but it may be useful when
+        manually reconstructing a broken cluster.
+
+        This field is read-only and no changes will be made by
+        Kubernetes to the PVC after it has been created.
+
+        Required, must not be nil.
+        """
+        return self._properties.get('volumeClaimTemplate')
+
+    @volume_claim_template.setter
+    def volume_claim_template(self, value: typing.Union['PersistentVolumeClaimTemplate', dict]):
+        """
+        Will be used to create a stand-alone PVC to provision the
+        volume. The pod in which this EphemeralVolumeSource is
+        embedded will be the owner of the PVC, i.e. the PVC will be
+        deleted together with the pod.  The name of the PVC will be
+        `<pod name>-<volume name>` where `<volume name>` is the name
+        from the `PodSpec.Volumes` array entry. Pod validation will
+        reject the pod if the concatenated name is not valid for a
+        PVC (for example, too long).
+
+        An existing PVC with that name that is not owned by the pod
+        will *not* be used for the pod to avoid using an unrelated
+        volume by mistake. Starting the pod is then blocked until
+        the unrelated PVC is removed. If such a pre-created PVC is
+        meant to be used by the pod, the PVC has to updated with an
+        owner reference to the pod once the pod exists. Normally
+        this should not be necessary, but it may be useful when
+        manually reconstructing a broken cluster.
+
+        This field is read-only and no changes will be made by
+        Kubernetes to the PVC after it has been created.
+
+        Required, must not be nil.
+        """
+        if isinstance(value, dict):
+            value = PersistentVolumeClaimTemplate().from_dict(value)
+        self._properties['volumeClaimTemplate'] = value
+
+    def __enter__(self) -> 'EphemeralVolumeSource':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class Event(_kuber_definitions.Resource):
     """
     Event is a report of an event somewhere in the cluster.
+    Events have a limited retention time and triggers and
+    messages may evolve with time.  Event consumers should not
+    rely on the timing of an event with a given Reason
+    reflecting a consistent underlying trigger, or the continued
+    existence of events with that Reason.  Events should be
+    treated as informative, best-effort, supplemental data.
     """
 
     def __init__(
@@ -9762,6 +9877,7 @@ class LoadBalancerIngress(_kuber_definitions.Definition):
             self,
             hostname: str = None,
             ip: str = None,
+            ports: typing.List['PortStatus'] = None,
     ):
         """Create LoadBalancerIngress instance."""
         super(LoadBalancerIngress, self).__init__(
@@ -9771,11 +9887,13 @@ class LoadBalancerIngress(_kuber_definitions.Definition):
         self._properties = {
             'hostname': hostname if hostname is not None else '',
             'ip': ip if ip is not None else '',
+            'ports': ports if ports is not None else [],
 
         }
         self._types = {
             'hostname': (str, None),
             'ip': (str, None),
+            'ports': (list, PortStatus),
 
         }
 
@@ -9810,6 +9928,30 @@ class LoadBalancerIngress(_kuber_definitions.Definition):
         (typically GCE or OpenStack load-balancers)
         """
         self._properties['ip'] = value
+
+    @property
+    def ports(self) -> typing.List['PortStatus']:
+        """
+        Ports is a list of records of service ports If used, every
+        port defined in the service should have an entry in it
+        """
+        return self._properties.get('ports')
+
+    @ports.setter
+    def ports(
+            self,
+            value: typing.Union[typing.List['PortStatus'], typing.List[dict]]
+    ):
+        """
+        Ports is a list of records of service ports If used, every
+        port defined in the service should have an entry in it
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = PortStatus().from_dict(item)
+            cleaned.append(item)
+        self._properties['ports'] = cleaned
 
     def __enter__(self) -> 'LoadBalancerIngress':
         return self
@@ -13677,19 +13819,14 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         """
         This field can be used to specify either: * An existing
         VolumeSnapshot object
-        (snapshot.storage.k8s.io/VolumeSnapshot - Beta) * An
-        existing PVC (PersistentVolumeClaim) * An existing custom
-        resource/object that implements data population (Alpha) In
-        order to use VolumeSnapshot object types, the appropriate
-        feature gate must be enabled (VolumeSnapshotDataSource or
-        AnyVolumeDataSource) If the provisioner or an external
-        controller can support the specified data source, it will
-        create a new volume based on the contents of the specified
-        data source. If the specified data source is not supported,
-        the volume will not be created and the failure will be
-        reported as an event. In the future, we plan to support more
-        data source types and the behavior of the provisioner may
-        change.
+        (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC
+        (PersistentVolumeClaim) * An existing custom resource that
+        implements data population (Alpha) In order to use custom
+        resource types that implement data population, the
+        AnyVolumeDataSource feature gate must be enabled. If the
+        provisioner or an external controller can support the
+        specified data source, it will create a new volume based on
+        the contents of the specified data source.
         """
         return self._properties.get('dataSource')
 
@@ -13698,19 +13835,14 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         """
         This field can be used to specify either: * An existing
         VolumeSnapshot object
-        (snapshot.storage.k8s.io/VolumeSnapshot - Beta) * An
-        existing PVC (PersistentVolumeClaim) * An existing custom
-        resource/object that implements data population (Alpha) In
-        order to use VolumeSnapshot object types, the appropriate
-        feature gate must be enabled (VolumeSnapshotDataSource or
-        AnyVolumeDataSource) If the provisioner or an external
-        controller can support the specified data source, it will
-        create a new volume based on the contents of the specified
-        data source. If the specified data source is not supported,
-        the volume will not be created and the failure will be
-        reported as an event. In the future, we plan to support more
-        data source types and the behavior of the provisioner may
-        change.
+        (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC
+        (PersistentVolumeClaim) * An existing custom resource that
+        implements data population (Alpha) In order to use custom
+        resource types that implement data population, the
+        AnyVolumeDataSource feature gate must be enabled. If the
+        provisioner or an external controller can support the
+        specified data source, it will create a new volume based on
+        the contents of the specified data source.
         """
         if isinstance(value, dict):
             value = TypedLocalObjectReference().from_dict(value)
@@ -13921,6 +14053,83 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         self._properties['phase'] = value
 
     def __enter__(self) -> 'PersistentVolumeClaimStatus':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class PersistentVolumeClaimTemplate(_kuber_definitions.Definition):
+    """
+    PersistentVolumeClaimTemplate is used to produce
+    PersistentVolumeClaim objects as part of an
+    EphemeralVolumeSource.
+    """
+
+    def __init__(
+            self,
+            metadata: 'ObjectMeta' = None,
+            spec: 'PersistentVolumeClaimSpec' = None,
+    ):
+        """Create PersistentVolumeClaimTemplate instance."""
+        super(PersistentVolumeClaimTemplate, self).__init__(
+            api_version='core/v1',
+            kind='PersistentVolumeClaimTemplate'
+        )
+        self._properties = {
+            'metadata': metadata if metadata is not None else ObjectMeta(),
+            'spec': spec if spec is not None else PersistentVolumeClaimSpec(),
+
+        }
+        self._types = {
+            'metadata': (ObjectMeta, None),
+            'spec': (PersistentVolumeClaimSpec, None),
+
+        }
+
+    @property
+    def metadata(self) -> 'ObjectMeta':
+        """
+        May contain labels and annotations that will be copied into
+        the PVC when creating it. No other fields are allowed and
+        will be rejected during validation.
+        """
+        return self._properties.get('metadata')
+
+    @metadata.setter
+    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+        """
+        May contain labels and annotations that will be copied into
+        the PVC when creating it. No other fields are allowed and
+        will be rejected during validation.
+        """
+        if isinstance(value, dict):
+            value = ObjectMeta().from_dict(value)
+        self._properties['metadata'] = value
+
+    @property
+    def spec(self) -> 'PersistentVolumeClaimSpec':
+        """
+        The specification for the PersistentVolumeClaim. The entire
+        content is copied unchanged into the PVC that gets created
+        from this template. The same fields as in a
+        PersistentVolumeClaim are also valid here.
+        """
+        return self._properties.get('spec')
+
+    @spec.setter
+    def spec(self, value: typing.Union['PersistentVolumeClaimSpec', dict]):
+        """
+        The specification for the PersistentVolumeClaim. The entire
+        content is copied unchanged into the PVC that gets created
+        from this template. The same fields as in a
+        PersistentVolumeClaim are also valid here.
+        """
+        if isinstance(value, dict):
+            value = PersistentVolumeClaimSpec().from_dict(value)
+        self._properties['spec'] = value
+
+    def __enter__(self) -> 'PersistentVolumeClaimTemplate':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -16242,7 +16451,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
         support fsGroup based ownership(and permissions). It will
         have no effect on ephemeral volume types such as: secret,
         configmaps and emptydir. Valid values are "OnRootMismatch"
-        and "Always". If not specified defaults to "Always".
+        and "Always". If not specified, "Always" is used.
         """
         return self._properties.get('fsGroupChangePolicy')
 
@@ -16255,7 +16464,7 @@ class PodSecurityContext(_kuber_definitions.Definition):
         support fsGroup based ownership(and permissions). It will
         have no effect on ephemeral volume types such as: secret,
         configmaps and emptydir. Valid values are "OnRootMismatch"
-        and "Always". If not specified defaults to "Always".
+        and "Always". If not specified, "Always" is used.
         """
         self._properties['fsGroupChangePolicy'] = value
 
@@ -18422,6 +18631,104 @@ class PodTemplateSpec(_kuber_definitions.Definition):
         return self.spec.containers
 
     def __enter__(self) -> 'PodTemplateSpec':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class PortStatus(_kuber_definitions.Definition):
+    """
+
+    """
+
+    def __init__(
+            self,
+            error: str = None,
+            port: int = None,
+            protocol: str = None,
+    ):
+        """Create PortStatus instance."""
+        super(PortStatus, self).__init__(
+            api_version='core/v1',
+            kind='PortStatus'
+        )
+        self._properties = {
+            'error': error if error is not None else '',
+            'port': port if port is not None else None,
+            'protocol': protocol if protocol is not None else '',
+
+        }
+        self._types = {
+            'error': (str, None),
+            'port': (int, None),
+            'protocol': (str, None),
+
+        }
+
+    @property
+    def error(self) -> str:
+        """
+        Error is to record the problem with the service port The
+        format of the error shall comply with the following rules: -
+        built-in error values shall be specified in this file and
+        those shall use
+          CamelCase names
+        - cloud provider specific error values must have names that
+        comply with the
+          format foo.example.com/CamelCase.
+        """
+        return self._properties.get('error')
+
+    @error.setter
+    def error(self, value: str):
+        """
+        Error is to record the problem with the service port The
+        format of the error shall comply with the following rules: -
+        built-in error values shall be specified in this file and
+        those shall use
+          CamelCase names
+        - cloud provider specific error values must have names that
+        comply with the
+          format foo.example.com/CamelCase.
+        """
+        self._properties['error'] = value
+
+    @property
+    def port(self) -> int:
+        """
+        Port is the port number of the service port of which status
+        is recorded here
+        """
+        return self._properties.get('port')
+
+    @port.setter
+    def port(self, value: int):
+        """
+        Port is the port number of the service port of which status
+        is recorded here
+        """
+        self._properties['port'] = value
+
+    @property
+    def protocol(self) -> str:
+        """
+        Protocol is the protocol of the service port of which status
+        is recorded here The supported values are: "TCP", "UDP",
+        "SCTP"
+        """
+        return self._properties.get('protocol')
+
+    @protocol.setter
+    def protocol(self, value: str):
+        """
+        Protocol is the protocol of the service port of which status
+        is recorded here The supported values are: "TCP", "UDP",
+        "SCTP"
+        """
+        self._properties['protocol'] = value
+
+    def __enter__(self) -> 'PortStatus':
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -23831,11 +24138,14 @@ class ServicePort(_kuber_definitions.Definition):
     def node_port(self) -> int:
         """
         The port on each node on which this service is exposed when
-        type=NodePort or LoadBalancer. Usually assigned by the
-        system. If specified, it will be allocated to the service if
-        unused or else creation of the service will fail. Default is
-        to auto-allocate a port if the ServiceType of this Service
-        requires one. More info:
+        type is NodePort or LoadBalancer.  Usually assigned by the
+        system. If a value is specified, in-range, and not in use it
+        will be used, otherwise the operation will fail.  If not
+        specified, a port will be allocated if this Service requires
+        one.  If this field is specified when creating a Service
+        which does not need it, creation will fail. This field will
+        be wiped when updating a Service to no longer need it (e.g.
+        changing type from NodePort to ClusterIP). More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#type-nodeport
         """
@@ -23845,11 +24155,14 @@ class ServicePort(_kuber_definitions.Definition):
     def node_port(self, value: int):
         """
         The port on each node on which this service is exposed when
-        type=NodePort or LoadBalancer. Usually assigned by the
-        system. If specified, it will be allocated to the service if
-        unused or else creation of the service will fail. Default is
-        to auto-allocate a port if the ServiceType of this Service
-        requires one. More info:
+        type is NodePort or LoadBalancer.  Usually assigned by the
+        system. If a value is specified, in-range, and not in use it
+        will be used, otherwise the operation will fail.  If not
+        specified, a port will be allocated if this Service requires
+        one.  If this field is specified when creating a Service
+        which does not need it, creation will fail. This field will
+        be wiped when updating a Service to no longer need it (e.g.
+        changing type from NodePort to ClusterIP). More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#type-nodeport
         """
@@ -23936,12 +24249,15 @@ class ServiceSpec(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            allocate_load_balancer_node_ports: bool = None,
             cluster_ip: str = None,
+            cluster_ips: typing.List[str] = None,
             external_ips: typing.List[str] = None,
             external_name: str = None,
             external_traffic_policy: str = None,
             health_check_node_port: int = None,
-            ip_family: str = None,
+            ip_families: typing.List[str] = None,
+            ip_family_policy: str = None,
             load_balancer_ip: str = None,
             load_balancer_source_ranges: typing.List[str] = None,
             ports: typing.List['ServicePort'] = None,
@@ -23958,12 +24274,15 @@ class ServiceSpec(_kuber_definitions.Definition):
             kind='ServiceSpec'
         )
         self._properties = {
+            'allocateLoadBalancerNodePorts': allocate_load_balancer_node_ports if allocate_load_balancer_node_ports is not None else None,
             'clusterIP': cluster_ip if cluster_ip is not None else '',
+            'clusterIPs': cluster_ips if cluster_ips is not None else [],
             'externalIPs': external_ips if external_ips is not None else [],
             'externalName': external_name if external_name is not None else '',
             'externalTrafficPolicy': external_traffic_policy if external_traffic_policy is not None else '',
             'healthCheckNodePort': health_check_node_port if health_check_node_port is not None else None,
-            'ipFamily': ip_family if ip_family is not None else '',
+            'ipFamilies': ip_families if ip_families is not None else [],
+            'ipFamilyPolicy': ip_family_policy if ip_family_policy is not None else '',
             'loadBalancerIP': load_balancer_ip if load_balancer_ip is not None else '',
             'loadBalancerSourceRanges': load_balancer_source_ranges if load_balancer_source_ranges is not None else [],
             'ports': ports if ports is not None else [],
@@ -23976,12 +24295,15 @@ class ServiceSpec(_kuber_definitions.Definition):
 
         }
         self._types = {
+            'allocateLoadBalancerNodePorts': (bool, None),
             'clusterIP': (str, None),
+            'clusterIPs': (list, str),
             'externalIPs': (list, str),
             'externalName': (str, None),
             'externalTrafficPolicy': (str, None),
             'healthCheckNodePort': (int, None),
-            'ipFamily': (str, None),
+            'ipFamilies': (list, str),
+            'ipFamilyPolicy': (str, None),
             'loadBalancerIP': (str, None),
             'loadBalancerSourceRanges': (list, str),
             'ports': (list, ServicePort),
@@ -23995,18 +24317,56 @@ class ServiceSpec(_kuber_definitions.Definition):
         }
 
     @property
+    def allocate_load_balancer_node_ports(self) -> bool:
+        """
+        allocateLoadBalancerNodePorts defines if NodePorts will be
+        automatically allocated for services with type LoadBalancer.
+        Default is "true". It may be set to "false" if the cluster
+        load-balancer does not rely on NodePorts.
+        allocateLoadBalancerNodePorts may only be set for services
+        with type LoadBalancer and will be cleared if the type is
+        changed to any other type. This field is alpha-level and is
+        only honored by servers that enable the
+        ServiceLBNodePortControl feature.
+        """
+        return self._properties.get('allocateLoadBalancerNodePorts')
+
+    @allocate_load_balancer_node_ports.setter
+    def allocate_load_balancer_node_ports(self, value: bool):
+        """
+        allocateLoadBalancerNodePorts defines if NodePorts will be
+        automatically allocated for services with type LoadBalancer.
+        Default is "true". It may be set to "false" if the cluster
+        load-balancer does not rely on NodePorts.
+        allocateLoadBalancerNodePorts may only be set for services
+        with type LoadBalancer and will be cleared if the type is
+        changed to any other type. This field is alpha-level and is
+        only honored by servers that enable the
+        ServiceLBNodePortControl feature.
+        """
+        self._properties['allocateLoadBalancerNodePorts'] = value
+
+    @property
     def cluster_ip(self) -> str:
         """
         clusterIP is the IP address of the service and is usually
-        assigned randomly by the master. If an address is specified
-        manually and is not in use by others, it will be allocated
-        to the service; otherwise, creation of the service will
-        fail. This field can not be changed through updates. Valid
-        values are "None", empty string (""), or a valid IP address.
-        "None" can be specified for headless services when proxying
-        is not required. Only applies to types ClusterIP, NodePort,
-        and LoadBalancer. Ignored if type is ExternalName. More
-        info: https://kubernetes.io/docs/concepts/services-
+        assigned randomly. If an address is specified manually, is
+        in-range (as per system configuration), and is not in use,
+        it will be allocated to the service; otherwise creation of
+        the service will fail. This field may not be changed through
+        updates unless the type field is also being changed to
+        ExternalName (which requires this field to be blank) or the
+        type field is being changed from ExternalName (in which case
+        this field may optionally be specified, as describe above).
+        Valid values are "None", empty string (""), or a valid IP
+        address. Setting this to "None" makes a "headless service"
+        (no virtual IP), which is useful when direct endpoint
+        connections are preferred and proxying is not required.
+        Only applies to types ClusterIP, NodePort, and LoadBalancer.
+        If this field is specified when creating a Service of type
+        ExternalName, creation will fail. This field will be wiped
+        when updating a Service to type ExternalName. More info:
+        https://kubernetes.io/docs/concepts/services-
         networking/service/#virtual-ips-and-service-proxies
         """
         return self._properties.get('clusterIP')
@@ -24015,18 +24375,100 @@ class ServiceSpec(_kuber_definitions.Definition):
     def cluster_ip(self, value: str):
         """
         clusterIP is the IP address of the service and is usually
-        assigned randomly by the master. If an address is specified
-        manually and is not in use by others, it will be allocated
-        to the service; otherwise, creation of the service will
-        fail. This field can not be changed through updates. Valid
-        values are "None", empty string (""), or a valid IP address.
-        "None" can be specified for headless services when proxying
-        is not required. Only applies to types ClusterIP, NodePort,
-        and LoadBalancer. Ignored if type is ExternalName. More
-        info: https://kubernetes.io/docs/concepts/services-
+        assigned randomly. If an address is specified manually, is
+        in-range (as per system configuration), and is not in use,
+        it will be allocated to the service; otherwise creation of
+        the service will fail. This field may not be changed through
+        updates unless the type field is also being changed to
+        ExternalName (which requires this field to be blank) or the
+        type field is being changed from ExternalName (in which case
+        this field may optionally be specified, as describe above).
+        Valid values are "None", empty string (""), or a valid IP
+        address. Setting this to "None" makes a "headless service"
+        (no virtual IP), which is useful when direct endpoint
+        connections are preferred and proxying is not required.
+        Only applies to types ClusterIP, NodePort, and LoadBalancer.
+        If this field is specified when creating a Service of type
+        ExternalName, creation will fail. This field will be wiped
+        when updating a Service to type ExternalName. More info:
+        https://kubernetes.io/docs/concepts/services-
         networking/service/#virtual-ips-and-service-proxies
         """
         self._properties['clusterIP'] = value
+
+    @property
+    def cluster_ips(self) -> typing.List[str]:
+        """
+        ClusterIPs is a list of IP addresses assigned to this
+        service, and are usually assigned randomly.  If an address
+        is specified manually, is in-range (as per system
+        configuration), and is not in use, it will be allocated to
+        the service; otherwise creation of the service will fail.
+        This field may not be changed through updates unless the
+        type field is also being changed to ExternalName (which
+        requires this field to be empty) or the type field is being
+        changed from ExternalName (in which case this field may
+        optionally be specified, as describe above).  Valid values
+        are "None", empty string (""), or a valid IP address.
+        Setting this to "None" makes a "headless service" (no
+        virtual IP), which is useful when direct endpoint
+        connections are preferred and proxying is not required.
+        Only applies to types ClusterIP, NodePort, and LoadBalancer.
+        If this field is specified when creating a Service of type
+        ExternalName, creation will fail. This field will be wiped
+        when updating a Service to type ExternalName.  If this field
+        is not specified, it will be initialized from the clusterIP
+        field.  If this field is specified, clients must ensure that
+        clusterIPs[0] and clusterIP have the same value.
+
+        Unless the "IPv6DualStack" feature gate is enabled, this
+        field is limited to one value, which must be the same as the
+        clusterIP field.  If the feature gate is enabled, this field
+        may hold a maximum of two entries (dual-stack IPs, in either
+        order).  These IPs must correspond to the values of the
+        ipFamilies field. Both clusterIPs and ipFamilies are
+        governed by the ipFamilyPolicy field. More info:
+        https://kubernetes.io/docs/concepts/services-
+        networking/service/#virtual-ips-and-service-proxies
+        """
+        return self._properties.get('clusterIPs')
+
+    @cluster_ips.setter
+    def cluster_ips(self, value: typing.List[str]):
+        """
+        ClusterIPs is a list of IP addresses assigned to this
+        service, and are usually assigned randomly.  If an address
+        is specified manually, is in-range (as per system
+        configuration), and is not in use, it will be allocated to
+        the service; otherwise creation of the service will fail.
+        This field may not be changed through updates unless the
+        type field is also being changed to ExternalName (which
+        requires this field to be empty) or the type field is being
+        changed from ExternalName (in which case this field may
+        optionally be specified, as describe above).  Valid values
+        are "None", empty string (""), or a valid IP address.
+        Setting this to "None" makes a "headless service" (no
+        virtual IP), which is useful when direct endpoint
+        connections are preferred and proxying is not required.
+        Only applies to types ClusterIP, NodePort, and LoadBalancer.
+        If this field is specified when creating a Service of type
+        ExternalName, creation will fail. This field will be wiped
+        when updating a Service to type ExternalName.  If this field
+        is not specified, it will be initialized from the clusterIP
+        field.  If this field is specified, clients must ensure that
+        clusterIPs[0] and clusterIP have the same value.
+
+        Unless the "IPv6DualStack" feature gate is enabled, this
+        field is limited to one value, which must be the same as the
+        clusterIP field.  If the feature gate is enabled, this field
+        may hold a maximum of two entries (dual-stack IPs, in either
+        order).  These IPs must correspond to the values of the
+        ipFamilies field. Both clusterIPs and ipFamilies are
+        governed by the ipFamilyPolicy field. More info:
+        https://kubernetes.io/docs/concepts/services-
+        networking/service/#virtual-ips-and-service-proxies
+        """
+        self._properties['clusterIPs'] = value
 
     @property
     def external_ips(self) -> typing.List[str]:
@@ -24055,22 +24497,24 @@ class ServiceSpec(_kuber_definitions.Definition):
     @property
     def external_name(self) -> str:
         """
-        externalName is the external reference that kubedns or
-        equivalent will return as a CNAME record for this service.
-        No proxying will be involved. Must be a valid RFC-1123
-        hostname (https://tools.ietf.org/html/rfc1123) and requires
-        Type to be ExternalName.
+        externalName is the external reference that discovery
+        mechanisms will return as an alias for this service (e.g. a
+        DNS CNAME record). No proxying will be involved.  Must be a
+        lowercase RFC-1123 hostname
+        (https://tools.ietf.org/html/rfc1123) and requires Type to
+        be
         """
         return self._properties.get('externalName')
 
     @external_name.setter
     def external_name(self, value: str):
         """
-        externalName is the external reference that kubedns or
-        equivalent will return as a CNAME record for this service.
-        No proxying will be involved. Must be a valid RFC-1123
-        hostname (https://tools.ietf.org/html/rfc1123) and requires
-        Type to be ExternalName.
+        externalName is the external reference that discovery
+        mechanisms will return as an alias for this service (e.g. a
+        DNS CNAME record). No proxying will be involved.  Must be a
+        lowercase RFC-1123 hostname
+        (https://tools.ietf.org/html/rfc1123) and requires Type to
+        be
         """
         self._properties['externalName'] = value
 
@@ -24106,11 +24550,16 @@ class ServiceSpec(_kuber_definitions.Definition):
     def health_check_node_port(self) -> int:
         """
         healthCheckNodePort specifies the healthcheck nodePort for
-        the service. If not specified, HealthCheckNodePort is
-        created by the service api backend with the allocated
-        nodePort. Will use user-specified nodePort value if
-        specified by the client. Only effects when Type is set to
-        LoadBalancer and ExternalTrafficPolicy is set to Local.
+        the service. This only applies when type is set to
+        LoadBalancer and externalTrafficPolicy is set to Local. If a
+        value is specified, is in-range, and is not in use, it will
+        be used.  If not specified, a value will be automatically
+        allocated.  External systems (e.g. load-balancers) can use
+        this port to determine if a given node holds endpoints for
+        this service or not.  If this field is specified when
+        creating a Service which does not need it, creation will
+        fail. This field will be wiped when updating a Service to no
+        longer need it (e.g. changing type).
         """
         return self._properties.get('healthCheckNodePort')
 
@@ -24118,67 +24567,106 @@ class ServiceSpec(_kuber_definitions.Definition):
     def health_check_node_port(self, value: int):
         """
         healthCheckNodePort specifies the healthcheck nodePort for
-        the service. If not specified, HealthCheckNodePort is
-        created by the service api backend with the allocated
-        nodePort. Will use user-specified nodePort value if
-        specified by the client. Only effects when Type is set to
-        LoadBalancer and ExternalTrafficPolicy is set to Local.
+        the service. This only applies when type is set to
+        LoadBalancer and externalTrafficPolicy is set to Local. If a
+        value is specified, is in-range, and is not in use, it will
+        be used.  If not specified, a value will be automatically
+        allocated.  External systems (e.g. load-balancers) can use
+        this port to determine if a given node holds endpoints for
+        this service or not.  If this field is specified when
+        creating a Service which does not need it, creation will
+        fail. This field will be wiped when updating a Service to no
+        longer need it (e.g. changing type).
         """
         self._properties['healthCheckNodePort'] = value
 
     @property
-    def ip_family(self) -> str:
+    def ip_families(self) -> typing.List[str]:
         """
-        ipFamily specifies whether this Service has a preference for
-        a particular IP family (e.g. IPv4 vs. IPv6) when the
-        IPv6DualStack feature gate is enabled. In a dual-stack
-        cluster, you can specify ipFamily when creating a ClusterIP
-        Service to determine whether the controller will allocate an
-        IPv4 or IPv6 IP for it, and you can specify ipFamily when
-        creating a headless Service to determine whether it will
-        have IPv4 or IPv6 Endpoints. In either case, if you do not
-        specify an ipFamily explicitly, it will default to the
-        cluster's primary IP family. This field is part of an alpha
-        feature, and you should not make any assumptions about its
-        semantics other than those described above. In particular,
-        you should not assume that it can (or cannot) be changed
-        after creation time; that it can only have the values "IPv4"
-        and "IPv6"; or that its current value on a given Service
-        correctly reflects the current state of that Service. (For
-        ClusterIP Services, look at clusterIP to see if the Service
-        is IPv4 or IPv6. For headless Services, look at the
-        endpoints, which may be dual-stack in the future. For
-        ExternalName Services, ipFamily has no meaning, but it may
-        be set to an irrelevant value anyway.)
-        """
-        return self._properties.get('ipFamily')
+        IPFamilies is a list of IP families (e.g. IPv4, IPv6)
+        assigned to this service, and is gated by the
+        "IPv6DualStack" feature gate.  This field is usually
+        assigned automatically based on cluster configuration and
+        the ipFamilyPolicy field. If this field is specified
+        manually, the requested family is available in the cluster,
+        and ipFamilyPolicy allows it, it will be used; otherwise
+        creation of the service will fail.  This field is
+        conditionally mutable: it allows for adding or removing a
+        secondary IP family, but it does not allow changing the
+        primary IP family of the Service.  Valid values are "IPv4"
+        and "IPv6".  This field only applies to Services of types
+        ClusterIP, NodePort, and LoadBalancer, and does apply to
+        "headless" services.  This field will be wiped when updating
+        a Service to type ExternalName.
 
-    @ip_family.setter
-    def ip_family(self, value: str):
+        This field may hold a maximum of two entries (dual-stack
+        families, in either order).  These families must correspond
+        to the values of the clusterIPs field, if specified. Both
+        clusterIPs and ipFamilies are governed by the ipFamilyPolicy
+        field.
         """
-        ipFamily specifies whether this Service has a preference for
-        a particular IP family (e.g. IPv4 vs. IPv6) when the
-        IPv6DualStack feature gate is enabled. In a dual-stack
-        cluster, you can specify ipFamily when creating a ClusterIP
-        Service to determine whether the controller will allocate an
-        IPv4 or IPv6 IP for it, and you can specify ipFamily when
-        creating a headless Service to determine whether it will
-        have IPv4 or IPv6 Endpoints. In either case, if you do not
-        specify an ipFamily explicitly, it will default to the
-        cluster's primary IP family. This field is part of an alpha
-        feature, and you should not make any assumptions about its
-        semantics other than those described above. In particular,
-        you should not assume that it can (or cannot) be changed
-        after creation time; that it can only have the values "IPv4"
-        and "IPv6"; or that its current value on a given Service
-        correctly reflects the current state of that Service. (For
-        ClusterIP Services, look at clusterIP to see if the Service
-        is IPv4 or IPv6. For headless Services, look at the
-        endpoints, which may be dual-stack in the future. For
-        ExternalName Services, ipFamily has no meaning, but it may
-        be set to an irrelevant value anyway.)
+        return self._properties.get('ipFamilies')
+
+    @ip_families.setter
+    def ip_families(self, value: typing.List[str]):
         """
-        self._properties['ipFamily'] = value
+        IPFamilies is a list of IP families (e.g. IPv4, IPv6)
+        assigned to this service, and is gated by the
+        "IPv6DualStack" feature gate.  This field is usually
+        assigned automatically based on cluster configuration and
+        the ipFamilyPolicy field. If this field is specified
+        manually, the requested family is available in the cluster,
+        and ipFamilyPolicy allows it, it will be used; otherwise
+        creation of the service will fail.  This field is
+        conditionally mutable: it allows for adding or removing a
+        secondary IP family, but it does not allow changing the
+        primary IP family of the Service.  Valid values are "IPv4"
+        and "IPv6".  This field only applies to Services of types
+        ClusterIP, NodePort, and LoadBalancer, and does apply to
+        "headless" services.  This field will be wiped when updating
+        a Service to type ExternalName.
+
+        This field may hold a maximum of two entries (dual-stack
+        families, in either order).  These families must correspond
+        to the values of the clusterIPs field, if specified. Both
+        clusterIPs and ipFamilies are governed by the ipFamilyPolicy
+        field.
+        """
+        self._properties['ipFamilies'] = value
+
+    @property
+    def ip_family_policy(self) -> str:
+        """
+        IPFamilyPolicy represents the dual-stack-ness requested or
+        required by this Service, and is gated by the
+        "IPv6DualStack" feature gate.  If there is no value
+        provided, then this field will be set to SingleStack.
+        Services can be "SingleStack" (a single IP family),
+        "PreferDualStack" (two IP families on dual-stack configured
+        clusters or a single IP family on single-stack clusters), or
+        "RequireDualStack" (two IP families on dual-stack configured
+        clusters, otherwise fail). The ipFamilies and clusterIPs
+        fields depend on the value of this field.  This field will
+        be wiped when updating a service to type ExternalName.
+        """
+        return self._properties.get('ipFamilyPolicy')
+
+    @ip_family_policy.setter
+    def ip_family_policy(self, value: str):
+        """
+        IPFamilyPolicy represents the dual-stack-ness requested or
+        required by this Service, and is gated by the
+        "IPv6DualStack" feature gate.  If there is no value
+        provided, then this field will be set to SingleStack.
+        Services can be "SingleStack" (a single IP family),
+        "PreferDualStack" (two IP families on dual-stack configured
+        clusters or a single IP family on single-stack clusters), or
+        "RequireDualStack" (two IP families on dual-stack configured
+        clusters, otherwise fail). The ipFamilies and clusterIPs
+        fields depend on the value of this field.  This field will
+        be wiped when updating a service to type ExternalName.
+        """
+        self._properties['ipFamilyPolicy'] = value
 
     @property
     def load_balancer_ip(self) -> str:
@@ -24374,7 +24862,9 @@ class ServiceSpec(_kuber_definitions.Definition):
         The special value "*" may be used to mean "any topology".
         This catch-all value, if used, only makes sense as the last
         value in the list. If this is not specified or empty, no
-        topology constraints will be applied.
+        topology constraints will be applied. This field is alpha-
+        level and is only honored by servers that enable the
+        ServiceTopology feature.
         """
         return self._properties.get('topologyKeys')
 
@@ -24394,7 +24884,9 @@ class ServiceSpec(_kuber_definitions.Definition):
         The special value "*" may be used to mean "any topology".
         This catch-all value, if used, only makes sense as the last
         value in the list. If this is not specified or empty, no
-        topology constraints will be applied.
+        topology constraints will be applied. This field is alpha-
+        level and is only honored by servers that enable the
+        ServiceTopology feature.
         """
         self._properties['topologyKeys'] = value
 
@@ -24403,18 +24895,20 @@ class ServiceSpec(_kuber_definitions.Definition):
         """
         type determines how the Service is exposed. Defaults to
         ClusterIP. Valid options are ExternalName, ClusterIP,
-        NodePort, and LoadBalancer. "ExternalName" maps to the
-        specified externalName. "ClusterIP" allocates a cluster-
+        NodePort, and LoadBalancer. "ClusterIP" allocates a cluster-
         internal IP address for load-balancing to endpoints.
         Endpoints are determined by the selector or if that is not
-        specified, by manual construction of an Endpoints object. If
-        clusterIP is "None", no virtual IP is allocated and the
-        endpoints are published as a set of endpoints rather than a
-        stable IP. "NodePort" builds on ClusterIP and allocates a
-        port on every node which routes to the clusterIP.
-        "LoadBalancer" builds on NodePort and creates an external
-        load-balancer (if supported in the current cloud) which
-        routes to the clusterIP. More info:
+        specified, by manual construction of an Endpoints object or
+        EndpointSlice objects. If clusterIP is "None", no virtual IP
+        is allocated and the endpoints are published as a set of
+        endpoints rather than a virtual IP. "NodePort" builds on
+        ClusterIP and allocates a port on every node which routes to
+        the same endpoints as the clusterIP. "LoadBalancer" builds
+        on NodePort and creates an external load-balancer (if
+        supported in the current cloud) which routes to the same
+        endpoints as the clusterIP. "ExternalName" aliases this
+        service to the specified externalName. Several other fields
+        do not apply to ExternalName services. More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#publishing-services-service-types
         """
@@ -24425,18 +24919,20 @@ class ServiceSpec(_kuber_definitions.Definition):
         """
         type determines how the Service is exposed. Defaults to
         ClusterIP. Valid options are ExternalName, ClusterIP,
-        NodePort, and LoadBalancer. "ExternalName" maps to the
-        specified externalName. "ClusterIP" allocates a cluster-
+        NodePort, and LoadBalancer. "ClusterIP" allocates a cluster-
         internal IP address for load-balancing to endpoints.
         Endpoints are determined by the selector or if that is not
-        specified, by manual construction of an Endpoints object. If
-        clusterIP is "None", no virtual IP is allocated and the
-        endpoints are published as a set of endpoints rather than a
-        stable IP. "NodePort" builds on ClusterIP and allocates a
-        port on every node which routes to the clusterIP.
-        "LoadBalancer" builds on NodePort and creates an external
-        load-balancer (if supported in the current cloud) which
-        routes to the clusterIP. More info:
+        specified, by manual construction of an Endpoints object or
+        EndpointSlice objects. If clusterIP is "None", no virtual IP
+        is allocated and the endpoints are published as a set of
+        endpoints rather than a virtual IP. "NodePort" builds on
+        ClusterIP and allocates a port on every node which routes to
+        the same endpoints as the clusterIP. "LoadBalancer" builds
+        on NodePort and creates an external load-balancer (if
+        supported in the current cloud) which routes to the same
+        endpoints as the clusterIP. "ExternalName" aliases this
+        service to the specified externalName. Several other fields
+        do not apply to ExternalName services. More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#publishing-services-service-types
         """
@@ -24456,6 +24952,7 @@ class ServiceStatus(_kuber_definitions.Definition):
 
     def __init__(
             self,
+            conditions: typing.List['Condition'] = None,
             load_balancer: 'LoadBalancerStatus' = None,
     ):
         """Create ServiceStatus instance."""
@@ -24464,13 +24961,37 @@ class ServiceStatus(_kuber_definitions.Definition):
             kind='ServiceStatus'
         )
         self._properties = {
+            'conditions': conditions if conditions is not None else [],
             'loadBalancer': load_balancer if load_balancer is not None else LoadBalancerStatus(),
 
         }
         self._types = {
+            'conditions': (list, Condition),
             'loadBalancer': (LoadBalancerStatus, None),
 
         }
+
+    @property
+    def conditions(self) -> typing.List['Condition']:
+        """
+        Current service state
+        """
+        return self._properties.get('conditions')
+
+    @conditions.setter
+    def conditions(
+            self,
+            value: typing.Union[typing.List['Condition'], typing.List[dict]]
+    ):
+        """
+        Current service state
+        """
+        cleaned = []
+        for item in value:
+            if isinstance(item, dict):
+                item = Condition().from_dict(item)
+            cleaned.append(item)
+        self._properties['conditions'] = cleaned
 
     @property
     def load_balancer(self) -> 'LoadBalancerStatus':
@@ -25606,6 +26127,7 @@ class Volume(_kuber_definitions.Definition):
             csi: 'CSIVolumeSource' = None,
             downward_api: 'DownwardAPIVolumeSource' = None,
             empty_dir: 'EmptyDirVolumeSource' = None,
+            ephemeral: 'EphemeralVolumeSource' = None,
             fc: 'FCVolumeSource' = None,
             flex_volume: 'FlexVolumeSource' = None,
             flocker: 'FlockerVolumeSource' = None,
@@ -25642,6 +26164,7 @@ class Volume(_kuber_definitions.Definition):
             'csi': csi if csi is not None else CSIVolumeSource(),
             'downwardAPI': downward_api if downward_api is not None else DownwardAPIVolumeSource(),
             'emptyDir': empty_dir if empty_dir is not None else EmptyDirVolumeSource(),
+            'ephemeral': ephemeral if ephemeral is not None else EphemeralVolumeSource(),
             'fc': fc if fc is not None else FCVolumeSource(),
             'flexVolume': flex_volume if flex_volume is not None else FlexVolumeSource(),
             'flocker': flocker if flocker is not None else FlockerVolumeSource(),
@@ -25674,6 +26197,7 @@ class Volume(_kuber_definitions.Definition):
             'csi': (CSIVolumeSource, None),
             'downwardAPI': (DownwardAPIVolumeSource, None),
             'emptyDir': (EmptyDirVolumeSource, None),
+            'ephemeral': (EphemeralVolumeSource, None),
             'fc': (FCVolumeSource, None),
             'flexVolume': (FlexVolumeSource, None),
             'flocker': (FlockerVolumeSource, None),
@@ -25868,6 +26392,74 @@ class Volume(_kuber_definitions.Definition):
         if isinstance(value, dict):
             value = EmptyDirVolumeSource().from_dict(value)
         self._properties['emptyDir'] = value
+
+    @property
+    def ephemeral(self) -> 'EphemeralVolumeSource':
+        """
+        Ephemeral represents a volume that is handled by a cluster
+        storage driver (Alpha feature). The volume's lifecycle is
+        tied to the pod that defines it - it will be created before
+        the pod starts, and deleted when the pod is removed.
+
+        Use this if: a) the volume is only needed while the pod
+        runs, b) features of normal volumes like restoring from
+        snapshot or capacity
+           tracking are needed,
+        c) the storage driver is specified through a storage class,
+        and d) the storage driver supports dynamic volume
+        provisioning through
+           a PersistentVolumeClaim (see EphemeralVolumeSource for
+        more
+           information on the connection between this volume type
+           and PersistentVolumeClaim).
+
+        Use PersistentVolumeClaim or one of the vendor-specific APIs
+        for volumes that persist for longer than the lifecycle of an
+        individual pod.
+
+        Use CSI for light-weight local ephemeral volumes if the CSI
+        driver is meant to be used that way - see the documentation
+        of the driver for more information.
+
+        A pod can use both types of ephemeral volumes and persistent
+        volumes at the same time.
+        """
+        return self._properties.get('ephemeral')
+
+    @ephemeral.setter
+    def ephemeral(self, value: typing.Union['EphemeralVolumeSource', dict]):
+        """
+        Ephemeral represents a volume that is handled by a cluster
+        storage driver (Alpha feature). The volume's lifecycle is
+        tied to the pod that defines it - it will be created before
+        the pod starts, and deleted when the pod is removed.
+
+        Use this if: a) the volume is only needed while the pod
+        runs, b) features of normal volumes like restoring from
+        snapshot or capacity
+           tracking are needed,
+        c) the storage driver is specified through a storage class,
+        and d) the storage driver supports dynamic volume
+        provisioning through
+           a PersistentVolumeClaim (see EphemeralVolumeSource for
+        more
+           information on the connection between this volume type
+           and PersistentVolumeClaim).
+
+        Use PersistentVolumeClaim or one of the vendor-specific APIs
+        for volumes that persist for longer than the lifecycle of an
+        individual pod.
+
+        Use CSI for light-weight local ephemeral volumes if the CSI
+        driver is meant to be used that way - see the documentation
+        of the driver for more information.
+
+        A pod can use both types of ephemeral volumes and persistent
+        volumes at the same time.
+        """
+        if isinstance(value, dict):
+            value = EphemeralVolumeSource().from_dict(value)
+        self._properties['ephemeral'] = value
 
     @property
     def fc(self) -> 'FCVolumeSource':

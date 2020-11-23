@@ -820,6 +820,175 @@ class APIVersions(_kuber_definitions.Definition):
         return False
 
 
+class Condition(_kuber_definitions.Definition):
+    """
+    Condition contains details for one aspect of the current
+    state of this API Resource.
+    """
+
+    def __init__(
+            self,
+            last_transition_time: str = None,
+            message: str = None,
+            observed_generation: int = None,
+            reason: str = None,
+            status: str = None,
+            type_: str = None,
+    ):
+        """Create Condition instance."""
+        super(Condition, self).__init__(
+            api_version='meta/v1',
+            kind='Condition'
+        )
+        self._properties = {
+            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
+            'message': message if message is not None else '',
+            'observedGeneration': observed_generation if observed_generation is not None else None,
+            'reason': reason if reason is not None else '',
+            'status': status if status is not None else '',
+            'type': type_ if type_ is not None else '',
+
+        }
+        self._types = {
+            'lastTransitionTime': (str, None),
+            'message': (str, None),
+            'observedGeneration': (int, None),
+            'reason': (str, None),
+            'status': (str, None),
+            'type': (str, None),
+
+        }
+
+    @property
+    def last_transition_time(self) -> str:
+        """
+        lastTransitionTime is the last time the condition
+        transitioned from one status to another. This should be when
+        the underlying condition changed.  If that is not known,
+        then using the time when the API field changed is
+        acceptable.
+        """
+        return self._properties.get('lastTransitionTime')
+
+    @last_transition_time.setter
+    def last_transition_time(
+            self,
+            value: typing.Union[str, _datetime.datetime, _datetime.date]
+    ):
+        """
+        lastTransitionTime is the last time the condition
+        transitioned from one status to another. This should be when
+        the underlying condition changed.  If that is not known,
+        then using the time when the API field changed is
+        acceptable.
+        """
+        if isinstance(value, _datetime.datetime):
+            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+        elif isinstance(value, _datetime.date):
+            value = value.strftime('%Y-%m-%dT00:00:00Z')
+        self._properties['lastTransitionTime'] = value
+
+    @property
+    def message(self) -> str:
+        """
+        message is a human readable message indicating details about
+        the transition. This may be an empty string.
+        """
+        return self._properties.get('message')
+
+    @message.setter
+    def message(self, value: str):
+        """
+        message is a human readable message indicating details about
+        the transition. This may be an empty string.
+        """
+        self._properties['message'] = value
+
+    @property
+    def observed_generation(self) -> int:
+        """
+        observedGeneration represents the .metadata.generation that
+        the condition was set based upon. For instance, if
+        .metadata.generation is currently 12, but the
+        .status.conditions[x].observedGeneration is 9, the condition
+        is out of date with respect to the current state of the
+        instance.
+        """
+        return self._properties.get('observedGeneration')
+
+    @observed_generation.setter
+    def observed_generation(self, value: int):
+        """
+        observedGeneration represents the .metadata.generation that
+        the condition was set based upon. For instance, if
+        .metadata.generation is currently 12, but the
+        .status.conditions[x].observedGeneration is 9, the condition
+        is out of date with respect to the current state of the
+        instance.
+        """
+        self._properties['observedGeneration'] = value
+
+    @property
+    def reason(self) -> str:
+        """
+        reason contains a programmatic identifier indicating the
+        reason for the condition's last transition. Producers of
+        specific condition types may define expected values and
+        meanings for this field, and whether the values are
+        considered a guaranteed API. The value should be a CamelCase
+        string. This field may not be empty.
+        """
+        return self._properties.get('reason')
+
+    @reason.setter
+    def reason(self, value: str):
+        """
+        reason contains a programmatic identifier indicating the
+        reason for the condition's last transition. Producers of
+        specific condition types may define expected values and
+        meanings for this field, and whether the values are
+        considered a guaranteed API. The value should be a CamelCase
+        string. This field may not be empty.
+        """
+        self._properties['reason'] = value
+
+    @property
+    def status(self) -> str:
+        """
+        status of the condition, one of True, False, Unknown.
+        """
+        return self._properties.get('status')
+
+    @status.setter
+    def status(self, value: str):
+        """
+        status of the condition, one of True, False, Unknown.
+        """
+        self._properties['status'] = value
+
+    @property
+    def type_(self) -> str:
+        """
+        type of condition in CamelCase or in
+        foo.example.com/CamelCase.
+        """
+        return self._properties.get('type')
+
+    @type_.setter
+    def type_(self, value: str):
+        """
+        type of condition in CamelCase or in
+        foo.example.com/CamelCase.
+        """
+        self._properties['type'] = value
+
+    def __enter__(self) -> 'Condition':
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class DeleteOptions(_kuber_definitions.Definition):
     """
     DeleteOptions may be provided when deleting an API object.

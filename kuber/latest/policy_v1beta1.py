@@ -1590,11 +1590,11 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     @property
     def allowed_csidrivers(self) -> typing.List['AllowedCSIDriver']:
         """
-        AllowedCSIDrivers is a whitelist of inline CSI drivers that
+        AllowedCSIDrivers is an allowlist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
         empty value indicates that any CSI driver can be used for
-        inline ephemeral volumes. This is an alpha field, and is
-        only honored if the API server enables the CSIInlineVolume
+        inline ephemeral volumes. This is a beta field, and is only
+        honored if the API server enables the CSIInlineVolume
         feature gate.
         """
         return self._properties.get('allowedCSIDrivers')
@@ -1605,11 +1605,11 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             value: typing.Union[typing.List['AllowedCSIDriver'], typing.List[dict]]
     ):
         """
-        AllowedCSIDrivers is a whitelist of inline CSI drivers that
+        AllowedCSIDrivers is an allowlist of inline CSI drivers that
         must be explicitly set to be embedded within a pod spec. An
         empty value indicates that any CSI driver can be used for
-        inline ephemeral volumes. This is an alpha field, and is
-        only honored if the API server enables the CSIInlineVolume
+        inline ephemeral volumes. This is a beta field, and is only
+        honored if the API server enables the CSIInlineVolume
         feature gate.
         """
         cleaned = []
@@ -1644,9 +1644,9 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     @property
     def allowed_flex_volumes(self) -> typing.List['AllowedFlexVolume']:
         """
-        allowedFlexVolumes is a whitelist of allowed Flexvolumes.
-        Empty or nil indicates that all Flexvolumes may be used.
-        This parameter is effective only when the usage of the
+        allowedFlexVolumes is an allowlist of Flexvolumes.  Empty or
+        nil indicates that all Flexvolumes may be used.  This
+        parameter is effective only when the usage of the
         Flexvolumes is allowed in the "volumes" field.
         """
         return self._properties.get('allowedFlexVolumes')
@@ -1657,9 +1657,9 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             value: typing.Union[typing.List['AllowedFlexVolume'], typing.List[dict]]
     ):
         """
-        allowedFlexVolumes is a whitelist of allowed Flexvolumes.
-        Empty or nil indicates that all Flexvolumes may be used.
-        This parameter is effective only when the usage of the
+        allowedFlexVolumes is an allowlist of Flexvolumes.  Empty or
+        nil indicates that all Flexvolumes may be used.  This
+        parameter is effective only when the usage of the
         Flexvolumes is allowed in the "volumes" field.
         """
         cleaned = []
@@ -1672,8 +1672,8 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     @property
     def allowed_host_paths(self) -> typing.List['AllowedHostPath']:
         """
-        allowedHostPaths is a white list of allowed host paths.
-        Empty indicates that all host paths may be used.
+        allowedHostPaths is an allowlist of host paths. Empty
+        indicates that all host paths may be used.
         """
         return self._properties.get('allowedHostPaths')
 
@@ -1683,8 +1683,8 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             value: typing.Union[typing.List['AllowedHostPath'], typing.List[dict]]
     ):
         """
-        allowedHostPaths is a white list of allowed host paths.
-        Empty indicates that all host paths may be used.
+        allowedHostPaths is an allowlist of host paths. Empty
+        indicates that all host paths may be used.
         """
         cleaned = []
         for item in value:
@@ -1696,7 +1696,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     @property
     def allowed_proc_mount_types(self) -> typing.List[str]:
         """
-        AllowedProcMountTypes is a whitelist of allowed
+        AllowedProcMountTypes is an allowlist of allowed
         ProcMountTypes. Empty or nil indicates that only the
         DefaultProcMountType may be used. This requires the
         ProcMountType feature flag to be enabled.
@@ -1706,7 +1706,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     @allowed_proc_mount_types.setter
     def allowed_proc_mount_types(self, value: typing.List[str]):
         """
-        AllowedProcMountTypes is a whitelist of allowed
+        AllowedProcMountTypes is an allowlist of allowed
         ProcMountTypes. Empty or nil indicates that only the
         DefaultProcMountType may be used. This requires the
         ProcMountType feature flag to be enabled.
@@ -1720,7 +1720,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         sysctls, defaults to none. Each entry is either a plain
         sysctl name or ends in "*" in which case it is considered as
         a prefix of allowed sysctls. Single * means all unsafe
-        sysctls are allowed. Kubelet has to whitelist all allowed
+        sysctls are allowed. Kubelet has to allowlist all allowed
         unsafe sysctls explicitly to avoid rejection.
 
         Examples: e.g. "foo/*" allows "foo/bar", "foo/baz", etc.
@@ -1735,7 +1735,7 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
         sysctls, defaults to none. Each entry is either a plain
         sysctl name or ends in "*" in which case it is considered as
         a prefix of allowed sysctls. Single * means all unsafe
-        sysctls are allowed. Kubelet has to whitelist all allowed
+        sysctls are allowed. Kubelet has to allowlist all allowed
         unsafe sysctls explicitly to avoid rejection.
 
         Examples: e.g. "foo/*" allows "foo/bar", "foo/baz", etc.
@@ -2064,18 +2064,18 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
     @property
     def volumes(self) -> typing.List[str]:
         """
-        volumes is a white list of allowed volume plugins. Empty
-        indicates that no volumes may be used. To allow all volumes
-        you may use '*'.
+        volumes is an allowlist of volume plugins. Empty indicates
+        that no volumes may be used. To allow all volumes you may
+        use '*'.
         """
         return self._properties.get('volumes')
 
     @volumes.setter
     def volumes(self, value: typing.List[str]):
         """
-        volumes is a white list of allowed volume plugins. Empty
-        indicates that no volumes may be used. To allow all volumes
-        you may use '*'.
+        volumes is an allowlist of volume plugins. Empty indicates
+        that no volumes may be used. To allow all volumes you may
+        use '*'.
         """
         self._properties['volumes'] = value
 
@@ -2268,7 +2268,7 @@ class RuntimeClassStrategyOptions(_kuber_definitions.Definition):
     @property
     def allowed_runtime_class_names(self) -> typing.List[str]:
         """
-        allowedRuntimeClassNames is a whitelist of RuntimeClass
+        allowedRuntimeClassNames is an allowlist of RuntimeClass
         names that may be specified on a pod. A value of "*" means
         that any RuntimeClass name is allowed, and must be the only
         item in the list. An empty list requires the
@@ -2279,7 +2279,7 @@ class RuntimeClassStrategyOptions(_kuber_definitions.Definition):
     @allowed_runtime_class_names.setter
     def allowed_runtime_class_names(self, value: typing.List[str]):
         """
-        allowedRuntimeClassNames is a whitelist of RuntimeClass
+        allowedRuntimeClassNames is an allowlist of RuntimeClass
         names that may be specified on a pod. A value of "*" means
         that any RuntimeClass name is allowed, and must be the only
         item in the list. An empty list requires the
