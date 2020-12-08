@@ -12,7 +12,6 @@ kuber.tests.scenarios.odd\_api\_versions.test\_odd\_api\_versions module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

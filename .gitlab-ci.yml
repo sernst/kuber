@@ -1,24 +1,111 @@
 stages:
   - check
-  
+
+black-lint:
+  image: python:3.9
+  stage: check
+  script:
+  - pip install black
+  - black --check .
+
+flake8-lint:
+  image: python:3.9
+  stage: check
+  script:
+  - pip install flake8 flake8-black
+  - flake8 .
+
+mypy-lint:
+  image: python:3.9
+  stage: check
+  script:
+  - pip install mypy
+  - mypy ./kuber/ --ignore-missing-imports
+
 pytest-py36:
   image: python:3.6
   stage: check
   script:
-    - pip install -r requirements.txt
-    - py.test --cov-report=term --cov=$(pwd) $(pwd)
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov=.
+      .
+  artifacts:
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
 
 pytest-py37:
   image: python:3.7
   stage: check
-  coverage: '/^TOTAL.*\s+\d+\s+\d+\s+(\d+)%/'
   script:
-    - pip install -r requirements.txt
-    - py.test --cov-report=term --cov=$(pwd) $(pwd)
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov=.
+      .
+  artifacts:
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
 
-sphinx-build:
-  image: python:3.7
+pytest-py38:
+  image: python:3.8
   stage: check
   script:
-    - pip install -r requirements.txt
-    - python manager.py docs
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov=.
+      .
+  artifacts:
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
+
+pytest-py39:
+  image: python:3.9
+  stage: check
+  coverage: '/^TOTAL.*\s+\d+\s+\d+\s+(\d+)%/'
+  script:
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov-report xml
+      --cov=.
+      .
+  artifacts:
+    reports:
+      cobertura: coverage.xml
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
+
+sphinx-build:
+  image: python:3.8
+  stage: check
+  script:
+    - pip install poetry
+    - poetry install
+    - poetry run task manager docs

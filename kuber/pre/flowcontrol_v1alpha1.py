@@ -18,21 +18,18 @@ class FlowDistinguisherMethod(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            type_: str = None,
+        self,
+        type_: str = None,
     ):
         """Create FlowDistinguisherMethod instance."""
         super(FlowDistinguisherMethod, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='FlowDistinguisherMethod'
+            api_version="flowcontrol/v1alpha1", kind="FlowDistinguisherMethod"
         )
         self._properties = {
-            'type': type_ if type_ is not None else '',
-
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'type': (str, None),
-
+            "type": (str, None),
         }
 
     @property
@@ -41,7 +38,10 @@ class FlowDistinguisherMethod(_kuber_definitions.Definition):
         `type` is the type of flow distinguisher method The
         supported types are "ByUser" and "ByNamespace". Required.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -49,9 +49,9 @@ class FlowDistinguisherMethod(_kuber_definitions.Definition):
         `type` is the type of flow distinguisher method The
         supported types are "ByUser" and "ByNamespace". Required.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'FlowDistinguisherMethod':
+    def __enter__(self) -> "FlowDistinguisherMethod":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -67,63 +67,69 @@ class FlowSchema(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'FlowSchemaSpec' = None,
-            status: 'FlowSchemaStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "FlowSchemaSpec" = None,
+        status: "FlowSchemaStatus" = None,
     ):
         """Create FlowSchema instance."""
         super(FlowSchema, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='FlowSchema'
+            api_version="flowcontrol/v1alpha1", kind="FlowSchema"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else FlowSchemaSpec(),
-            'status': status if status is not None else FlowSchemaStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else FlowSchemaSpec(),
+            "status": status if status is not None else FlowSchemaStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (FlowSchemaSpec, None),
-            'status': (FlowSchemaStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (FlowSchemaSpec, None),
+            "status": (FlowSchemaStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         `metadata` is the standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         `metadata` is the standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'FlowSchemaSpec':
+    def spec(self) -> "FlowSchemaSpec":
         """
         `spec` is the specification of the desired behavior of a
         FlowSchema. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "FlowSchemaSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['FlowSchemaSpec', dict]):
+    def spec(self, value: typing.Union["FlowSchemaSpec", dict]):
         """
         `spec` is the specification of the desired behavior of a
         FlowSchema. More info:
@@ -131,199 +137,184 @@ class FlowSchema(_kuber_definitions.Resource):
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = FlowSchemaSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                FlowSchemaSpec,
+                FlowSchemaSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'FlowSchemaStatus':
+    def status(self) -> "FlowSchemaStatus":
         """
         `status` is the current status of a FlowSchema. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "FlowSchemaStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['FlowSchemaStatus', dict]):
+    def status(self, value: typing.Union["FlowSchemaStatus", dict]):
         """
         `status` is the current status of a FlowSchema. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = FlowSchemaStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                FlowSchemaStatus,
+                FlowSchemaStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
-    def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'FlowSchemaStatus':
+    def create_resource(self, namespace: "str" = None) -> "FlowSchemaStatus":
         """
         Creates the FlowSchema in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        names = [
-            'create_namespaced_flow_schema',
-            'create_flow_schema'
-        ]
+        names = ["create_namespaced_flow_schema", "create_flow_schema"]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            FlowSchemaStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'FlowSchemaStatus':
+        output = FlowSchemaStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(self, namespace: "str" = None) -> "FlowSchemaStatus":
         """
         Replaces the FlowSchema in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'replace_namespaced_flow_schema',
-            'replace_flow_schema'
-        ]
+        names = ["replace_namespaced_flow_schema", "replace_flow_schema"]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            FlowSchemaStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'FlowSchemaStatus':
+        output = FlowSchemaStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(self, namespace: "str" = None) -> "FlowSchemaStatus":
         """
         Patches the FlowSchema in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'patch_namespaced_flow_schema',
-            'patch_flow_schema'
-        ]
+        names = ["patch_namespaced_flow_schema", "patch_flow_schema"]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            FlowSchemaStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'FlowSchemaStatus':
+        output = FlowSchemaStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def get_resource_status(self, namespace: "str" = None) -> "FlowSchemaStatus":
         """
         Returns status information about the given resource within the cluster.
         """
-        names = [
-            'read_namespaced_flow_schema',
-            'read_flow_schema'
-        ]
+        names = ["read_namespaced_flow_schema", "read_flow_schema"]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            FlowSchemaStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = FlowSchemaStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the FlowSchema from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_flow_schema',
-            'read_flow_schema'
+            "read_namespaced_flow_schema",
+            "read_flow_schema",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the FlowSchema from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_flow_schema',
-            'delete_flow_schema'
+            "delete_namespaced_flow_schema",
+            "delete_flow_schema",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.FlowcontrolV1alpha1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.FlowcontrolV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.FlowcontrolV1alpha1Api(**kwargs)
 
-    def __enter__(self) -> 'FlowSchema':
+    def __enter__(self) -> "FlowSchema":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -336,33 +327,32 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            last_transition_time: str = None,
-            message: str = None,
-            reason: str = None,
-            status: str = None,
-            type_: str = None,
+        self,
+        last_transition_time: str = None,
+        message: str = None,
+        reason: str = None,
+        status: str = None,
+        type_: str = None,
     ):
         """Create FlowSchemaCondition instance."""
         super(FlowSchemaCondition, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='FlowSchemaCondition'
+            api_version="flowcontrol/v1alpha1", kind="FlowSchemaCondition"
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-            'type': type_ if type_ is not None else '',
-
+            "lastTransitionTime": last_transition_time
+            if last_transition_time is not None
+            else None,
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'lastTransitionTime': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-            'status': (str, None),
-            'type': (str, None),
-
+            "lastTransitionTime": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
+            "status": (str, None),
+            "type": (str, None),
         }
 
     @property
@@ -371,22 +361,24 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
         `lastTransitionTime` is the last time the condition
         transitioned from one status to another.
         """
-        return self._properties.get('lastTransitionTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastTransitionTime"),
+        )
 
     @last_transition_time.setter
     def last_transition_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         `lastTransitionTime` is the last time the condition
         transitioned from one status to another.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastTransitionTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastTransitionTime"] = value
 
     @property
     def message(self) -> str:
@@ -394,7 +386,10 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
         `message` is a human-readable message indicating details
         about last transition.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -402,7 +397,7 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
         `message` is a human-readable message indicating details
         about last transition.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
@@ -410,7 +405,10 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
         `reason` is a unique, one-word, CamelCase reason for the
         condition's last transition.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
@@ -418,7 +416,7 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
         `reason` is a unique, one-word, CamelCase reason for the
         condition's last transition.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
@@ -426,7 +424,10 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
         `status` is the status of the condition. Can be True, False,
         Unknown. Required.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
@@ -434,23 +435,26 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
         `status` is the status of the condition. Can be True, False,
         Unknown. Required.
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
     @property
     def type_(self) -> str:
         """
         `type` is the type of the condition. Required.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         `type` is the type of the condition. Required.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'FlowSchemaCondition':
+    def __enter__(self) -> "FlowSchemaCondition":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -463,84 +467,89 @@ class FlowSchemaList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['FlowSchema'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["FlowSchema"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create FlowSchemaList instance."""
         super(FlowSchemaList, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='FlowSchemaList'
+            api_version="flowcontrol/v1alpha1", kind="FlowSchemaList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, FlowSchema),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, FlowSchema),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['FlowSchema']:
+    def items(self) -> typing.List["FlowSchema"]:
         """
         `items` is a list of FlowSchemas.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["FlowSchema"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['FlowSchema'], typing.List[dict]]
-    ):
+    def items(self, value: typing.Union[typing.List["FlowSchema"], typing.List[dict]]):
         """
         `items` is a list of FlowSchemas.
         """
-        cleaned = []
+        cleaned: typing.List[FlowSchema] = []
         for item in value:
             if isinstance(item, dict):
-                item = FlowSchema().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    FlowSchema,
+                    FlowSchema().from_dict(item),
+                )
+            cleaned.append(typing.cast(FlowSchema, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         `metadata` is the standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         `metadata` is the standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.FlowcontrolV1alpha1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.FlowcontrolV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.FlowcontrolV1alpha1Api(**kwargs)
 
-    def __enter__(self) -> 'FlowSchemaList':
+    def __enter__(self) -> "FlowSchemaList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -554,44 +563,52 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            distinguisher_method: 'FlowDistinguisherMethod' = None,
-            matching_precedence: int = None,
-            priority_level_configuration: 'PriorityLevelConfigurationReference' = None,
-            rules: typing.List['PolicyRulesWithSubjects'] = None,
+        self,
+        distinguisher_method: "FlowDistinguisherMethod" = None,
+        matching_precedence: int = None,
+        priority_level_configuration: "PriorityLevelConfigurationReference" = None,
+        rules: typing.List["PolicyRulesWithSubjects"] = None,
     ):
         """Create FlowSchemaSpec instance."""
         super(FlowSchemaSpec, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='FlowSchemaSpec'
+            api_version="flowcontrol/v1alpha1", kind="FlowSchemaSpec"
         )
         self._properties = {
-            'distinguisherMethod': distinguisher_method if distinguisher_method is not None else FlowDistinguisherMethod(),
-            'matchingPrecedence': matching_precedence if matching_precedence is not None else None,
-            'priorityLevelConfiguration': priority_level_configuration if priority_level_configuration is not None else PriorityLevelConfigurationReference(),
-            'rules': rules if rules is not None else [],
-
+            "distinguisherMethod": distinguisher_method
+            if distinguisher_method is not None
+            else FlowDistinguisherMethod(),
+            "matchingPrecedence": matching_precedence
+            if matching_precedence is not None
+            else None,
+            "priorityLevelConfiguration": priority_level_configuration
+            if priority_level_configuration is not None
+            else PriorityLevelConfigurationReference(),
+            "rules": rules if rules is not None else [],
         }
         self._types = {
-            'distinguisherMethod': (FlowDistinguisherMethod, None),
-            'matchingPrecedence': (int, None),
-            'priorityLevelConfiguration': (PriorityLevelConfigurationReference, None),
-            'rules': (list, PolicyRulesWithSubjects),
-
+            "distinguisherMethod": (FlowDistinguisherMethod, None),
+            "matchingPrecedence": (int, None),
+            "priorityLevelConfiguration": (PriorityLevelConfigurationReference, None),
+            "rules": (list, PolicyRulesWithSubjects),
         }
 
     @property
-    def distinguisher_method(self) -> 'FlowDistinguisherMethod':
+    def distinguisher_method(self) -> "FlowDistinguisherMethod":
         """
         `distinguisherMethod` defines how to compute the flow
         distinguisher for requests that match this schema. `nil`
         specifies that the distinguisher is disabled and thus will
         always be the empty string.
         """
-        return self._properties.get('distinguisherMethod')
+        return typing.cast(
+            "FlowDistinguisherMethod",
+            self._properties.get("distinguisherMethod"),
+        )
 
     @distinguisher_method.setter
-    def distinguisher_method(self, value: typing.Union['FlowDistinguisherMethod', dict]):
+    def distinguisher_method(
+        self, value: typing.Union["FlowDistinguisherMethod", dict]
+    ):
         """
         `distinguisherMethod` defines how to compute the flow
         distinguisher for requests that match this schema. `nil`
@@ -599,8 +616,11 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
         always be the empty string.
         """
         if isinstance(value, dict):
-            value = FlowDistinguisherMethod().from_dict(value)
-        self._properties['distinguisherMethod'] = value
+            value = typing.cast(
+                FlowDistinguisherMethod,
+                FlowDistinguisherMethod().from_dict(value),
+            )
+        self._properties["distinguisherMethod"] = value
 
     @property
     def matching_precedence(self) -> int:
@@ -613,7 +633,10 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
         that if the precedence is not specified, it will be set to
         1000 as default.
         """
-        return self._properties.get('matchingPrecedence')
+        return typing.cast(
+            int,
+            self._properties.get("matchingPrecedence"),
+        )
 
     @matching_precedence.setter
     def matching_precedence(self, value: int):
@@ -626,20 +649,25 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
         that if the precedence is not specified, it will be set to
         1000 as default.
         """
-        self._properties['matchingPrecedence'] = value
+        self._properties["matchingPrecedence"] = value
 
     @property
-    def priority_level_configuration(self) -> 'PriorityLevelConfigurationReference':
+    def priority_level_configuration(self) -> "PriorityLevelConfigurationReference":
         """
         `priorityLevelConfiguration` should reference a
         PriorityLevelConfiguration in the cluster. If the reference
         cannot be resolved, the FlowSchema will be ignored and
         marked as invalid in its status. Required.
         """
-        return self._properties.get('priorityLevelConfiguration')
+        return typing.cast(
+            "PriorityLevelConfigurationReference",
+            self._properties.get("priorityLevelConfiguration"),
+        )
 
     @priority_level_configuration.setter
-    def priority_level_configuration(self, value: typing.Union['PriorityLevelConfigurationReference', dict]):
+    def priority_level_configuration(
+        self, value: typing.Union["PriorityLevelConfigurationReference", dict]
+    ):
         """
         `priorityLevelConfiguration` should reference a
         PriorityLevelConfiguration in the cluster. If the reference
@@ -647,11 +675,14 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
         marked as invalid in its status. Required.
         """
         if isinstance(value, dict):
-            value = PriorityLevelConfigurationReference().from_dict(value)
-        self._properties['priorityLevelConfiguration'] = value
+            value = typing.cast(
+                PriorityLevelConfigurationReference,
+                PriorityLevelConfigurationReference().from_dict(value),
+            )
+        self._properties["priorityLevelConfiguration"] = value
 
     @property
-    def rules(self) -> typing.List['PolicyRulesWithSubjects']:
+    def rules(self) -> typing.List["PolicyRulesWithSubjects"]:
         """
         `rules` describes which requests will match this flow
         schema. This FlowSchema matches a request if and only if at
@@ -659,12 +690,15 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
         empty slice, there will be no requests matching the
         FlowSchema.
         """
-        return self._properties.get('rules')
+        return typing.cast(
+            typing.List["PolicyRulesWithSubjects"],
+            self._properties.get("rules"),
+        )
 
     @rules.setter
     def rules(
-            self,
-            value: typing.Union[typing.List['PolicyRulesWithSubjects'], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["PolicyRulesWithSubjects"], typing.List[dict]],
     ):
         """
         `rules` describes which requests will match this flow
@@ -673,14 +707,17 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
         empty slice, there will be no requests matching the
         FlowSchema.
         """
-        cleaned = []
+        cleaned: typing.List[PolicyRulesWithSubjects] = []
         for item in value:
             if isinstance(item, dict):
-                item = PolicyRulesWithSubjects().from_dict(item)
-            cleaned.append(item)
-        self._properties['rules'] = cleaned
+                item = typing.cast(
+                    PolicyRulesWithSubjects,
+                    PolicyRulesWithSubjects().from_dict(item),
+                )
+            cleaned.append(typing.cast(PolicyRulesWithSubjects, item))
+        self._properties["rules"] = cleaned
 
-    def __enter__(self) -> 'FlowSchemaSpec':
+    def __enter__(self) -> "FlowSchemaSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -694,46 +731,48 @@ class FlowSchemaStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            conditions: typing.List['FlowSchemaCondition'] = None,
+        self,
+        conditions: typing.List["FlowSchemaCondition"] = None,
     ):
         """Create FlowSchemaStatus instance."""
         super(FlowSchemaStatus, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='FlowSchemaStatus'
+            api_version="flowcontrol/v1alpha1", kind="FlowSchemaStatus"
         )
         self._properties = {
-            'conditions': conditions if conditions is not None else [],
-
+            "conditions": conditions if conditions is not None else [],
         }
         self._types = {
-            'conditions': (list, FlowSchemaCondition),
-
+            "conditions": (list, FlowSchemaCondition),
         }
 
     @property
-    def conditions(self) -> typing.List['FlowSchemaCondition']:
+    def conditions(self) -> typing.List["FlowSchemaCondition"]:
         """
         `conditions` is a list of the current states of FlowSchema.
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            typing.List["FlowSchemaCondition"],
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
     def conditions(
-            self,
-            value: typing.Union[typing.List['FlowSchemaCondition'], typing.List[dict]]
+        self, value: typing.Union[typing.List["FlowSchemaCondition"], typing.List[dict]]
     ):
         """
         `conditions` is a list of the current states of FlowSchema.
         """
-        cleaned = []
+        cleaned: typing.List[FlowSchemaCondition] = []
         for item in value:
             if isinstance(item, dict):
-                item = FlowSchemaCondition().from_dict(item)
-            cleaned.append(item)
-        self._properties['conditions'] = cleaned
+                item = typing.cast(
+                    FlowSchemaCondition,
+                    FlowSchemaCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(FlowSchemaCondition, item))
+        self._properties["conditions"] = cleaned
 
-    def __enter__(self) -> 'FlowSchemaStatus':
+    def __enter__(self) -> "FlowSchemaStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -747,21 +786,18 @@ class GroupSubject(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
+        self,
+        name: str = None,
     ):
         """Create GroupSubject instance."""
         super(GroupSubject, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='GroupSubject'
+            api_version="flowcontrol/v1alpha1", kind="GroupSubject"
         )
         self._properties = {
-            'name': name if name is not None else '',
-
+            "name": name if name is not None else "",
         }
         self._types = {
-            'name': (str, None),
-
+            "name": (str, None),
         }
 
     @property
@@ -772,7 +808,10 @@ class GroupSubject(_kuber_definitions.Definition):
         b/master/pkg/authentication/user/user.go for some well-known
         group names. Required.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -782,9 +821,9 @@ class GroupSubject(_kuber_definitions.Definition):
         b/master/pkg/authentication/user/user.go for some well-known
         group names. Required.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'GroupSubject':
+    def __enter__(self) -> "GroupSubject":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -798,43 +837,46 @@ class LimitResponse(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            queuing: 'QueuingConfiguration' = None,
-            type_: str = None,
+        self,
+        queuing: "QueuingConfiguration" = None,
+        type_: str = None,
     ):
         """Create LimitResponse instance."""
         super(LimitResponse, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='LimitResponse'
+            api_version="flowcontrol/v1alpha1", kind="LimitResponse"
         )
         self._properties = {
-            'queuing': queuing if queuing is not None else QueuingConfiguration(),
-            'type': type_ if type_ is not None else '',
-
+            "queuing": queuing if queuing is not None else QueuingConfiguration(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'queuing': (QueuingConfiguration, None),
-            'type': (str, None),
-
+            "queuing": (QueuingConfiguration, None),
+            "type": (str, None),
         }
 
     @property
-    def queuing(self) -> 'QueuingConfiguration':
+    def queuing(self) -> "QueuingConfiguration":
         """
         `queuing` holds the configuration parameters for queuing.
         This field may be non-empty only if `type` is `"Queue"`.
         """
-        return self._properties.get('queuing')
+        return typing.cast(
+            "QueuingConfiguration",
+            self._properties.get("queuing"),
+        )
 
     @queuing.setter
-    def queuing(self, value: typing.Union['QueuingConfiguration', dict]):
+    def queuing(self, value: typing.Union["QueuingConfiguration", dict]):
         """
         `queuing` holds the configuration parameters for queuing.
         This field may be non-empty only if `type` is `"Queue"`.
         """
         if isinstance(value, dict):
-            value = QueuingConfiguration().from_dict(value)
-        self._properties['queuing'] = value
+            value = typing.cast(
+                QueuingConfiguration,
+                QueuingConfiguration().from_dict(value),
+            )
+        self._properties["queuing"] = value
 
     @property
     def type_(self) -> str:
@@ -845,7 +887,10 @@ class LimitResponse(_kuber_definitions.Definition):
         "Reject" means that requests that can not be executed upon
         arrival are rejected. Required.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -856,9 +901,9 @@ class LimitResponse(_kuber_definitions.Definition):
         "Reject" means that requests that can not be executed upon
         arrival are rejected. Required.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'LimitResponse':
+    def __enter__(self) -> "LimitResponse":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -875,24 +920,25 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            assured_concurrency_shares: int = None,
-            limit_response: 'LimitResponse' = None,
+        self,
+        assured_concurrency_shares: int = None,
+        limit_response: "LimitResponse" = None,
     ):
         """Create LimitedPriorityLevelConfiguration instance."""
         super(LimitedPriorityLevelConfiguration, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='LimitedPriorityLevelConfiguration'
+            api_version="flowcontrol/v1alpha1", kind="LimitedPriorityLevelConfiguration"
         )
         self._properties = {
-            'assuredConcurrencyShares': assured_concurrency_shares if assured_concurrency_shares is not None else None,
-            'limitResponse': limit_response if limit_response is not None else LimitResponse(),
-
+            "assuredConcurrencyShares": assured_concurrency_shares
+            if assured_concurrency_shares is not None
+            else None,
+            "limitResponse": limit_response
+            if limit_response is not None
+            else LimitResponse(),
         }
         self._types = {
-            'assuredConcurrencyShares': (int, None),
-            'limitResponse': (LimitResponse, None),
-
+            "assuredConcurrencyShares": (int, None),
+            "limitResponse": (LimitResponse, None),
         }
 
     @property
@@ -915,7 +961,10 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         (at the expense of every other PL). This field has a default
         value of 30.
         """
-        return self._properties.get('assuredConcurrencyShares')
+        return typing.cast(
+            int,
+            self._properties.get("assuredConcurrencyShares"),
+        )
 
     @assured_concurrency_shares.setter
     def assured_concurrency_shares(self, value: int):
@@ -937,27 +986,33 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         (at the expense of every other PL). This field has a default
         value of 30.
         """
-        self._properties['assuredConcurrencyShares'] = value
+        self._properties["assuredConcurrencyShares"] = value
 
     @property
-    def limit_response(self) -> 'LimitResponse':
+    def limit_response(self) -> "LimitResponse":
         """
         `limitResponse` indicates what to do with requests that can
         not be executed right now
         """
-        return self._properties.get('limitResponse')
+        return typing.cast(
+            "LimitResponse",
+            self._properties.get("limitResponse"),
+        )
 
     @limit_response.setter
-    def limit_response(self, value: typing.Union['LimitResponse', dict]):
+    def limit_response(self, value: typing.Union["LimitResponse", dict]):
         """
         `limitResponse` indicates what to do with requests that can
         not be executed right now
         """
         if isinstance(value, dict):
-            value = LimitResponse().from_dict(value)
-        self._properties['limitResponse'] = value
+            value = typing.cast(
+                LimitResponse,
+                LimitResponse().from_dict(value),
+            )
+        self._properties["limitResponse"] = value
 
-    def __enter__(self) -> 'LimitedPriorityLevelConfiguration':
+    def __enter__(self) -> "LimitedPriorityLevelConfiguration":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -975,24 +1030,23 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            non_resource_urls: typing.List[str] = None,
-            verbs: typing.List[str] = None,
+        self,
+        non_resource_urls: typing.List[str] = None,
+        verbs: typing.List[str] = None,
     ):
         """Create NonResourcePolicyRule instance."""
         super(NonResourcePolicyRule, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='NonResourcePolicyRule'
+            api_version="flowcontrol/v1alpha1", kind="NonResourcePolicyRule"
         )
         self._properties = {
-            'nonResourceURLs': non_resource_urls if non_resource_urls is not None else [],
-            'verbs': verbs if verbs is not None else [],
-
+            "nonResourceURLs": non_resource_urls
+            if non_resource_urls is not None
+            else [],
+            "verbs": verbs if verbs is not None else [],
         }
         self._types = {
-            'nonResourceURLs': (list, str),
-            'verbs': (list, str),
-
+            "nonResourceURLs": (list, str),
+            "verbs": (list, str),
         }
 
     @property
@@ -1008,7 +1062,10 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all non-resource urls. if it is present, it must
         be the only entry. Required.
         """
-        return self._properties.get('nonResourceURLs')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("nonResourceURLs"),
+        )
 
     @non_resource_urls.setter
     def non_resource_urls(self, value: typing.List[str]):
@@ -1023,7 +1080,7 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all non-resource urls. if it is present, it must
         be the only entry. Required.
         """
-        self._properties['nonResourceURLs'] = value
+        self._properties["nonResourceURLs"] = value
 
     @property
     def verbs(self) -> typing.List[str]:
@@ -1032,7 +1089,10 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all verbs. If it is present, it must be the only
         entry. Required.
         """
-        return self._properties.get('verbs')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("verbs"),
+        )
 
     @verbs.setter
     def verbs(self, value: typing.List[str]):
@@ -1041,9 +1101,9 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all verbs. If it is present, it must be the only
         entry. Required.
         """
-        self._properties['verbs'] = value
+        self._properties["verbs"] = value
 
-    def __enter__(self) -> 'NonResourcePolicyRule':
+    def __enter__(self) -> "NonResourcePolicyRule":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1063,69 +1123,76 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            non_resource_rules: typing.List['NonResourcePolicyRule'] = None,
-            resource_rules: typing.List['ResourcePolicyRule'] = None,
-            subjects: typing.List['Subject'] = None,
+        self,
+        non_resource_rules: typing.List["NonResourcePolicyRule"] = None,
+        resource_rules: typing.List["ResourcePolicyRule"] = None,
+        subjects: typing.List["Subject"] = None,
     ):
         """Create PolicyRulesWithSubjects instance."""
         super(PolicyRulesWithSubjects, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='PolicyRulesWithSubjects'
+            api_version="flowcontrol/v1alpha1", kind="PolicyRulesWithSubjects"
         )
         self._properties = {
-            'nonResourceRules': non_resource_rules if non_resource_rules is not None else [],
-            'resourceRules': resource_rules if resource_rules is not None else [],
-            'subjects': subjects if subjects is not None else [],
-
+            "nonResourceRules": non_resource_rules
+            if non_resource_rules is not None
+            else [],
+            "resourceRules": resource_rules if resource_rules is not None else [],
+            "subjects": subjects if subjects is not None else [],
         }
         self._types = {
-            'nonResourceRules': (list, NonResourcePolicyRule),
-            'resourceRules': (list, ResourcePolicyRule),
-            'subjects': (list, Subject),
-
+            "nonResourceRules": (list, NonResourcePolicyRule),
+            "resourceRules": (list, ResourcePolicyRule),
+            "subjects": (list, Subject),
         }
 
     @property
-    def non_resource_rules(self) -> typing.List['NonResourcePolicyRule']:
+    def non_resource_rules(self) -> typing.List["NonResourcePolicyRule"]:
         """
         `nonResourceRules` is a list of NonResourcePolicyRules that
         identify matching requests according to their verb and the
         target non-resource URL.
         """
-        return self._properties.get('nonResourceRules')
+        return typing.cast(
+            typing.List["NonResourcePolicyRule"],
+            self._properties.get("nonResourceRules"),
+        )
 
     @non_resource_rules.setter
     def non_resource_rules(
-            self,
-            value: typing.Union[typing.List['NonResourcePolicyRule'], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["NonResourcePolicyRule"], typing.List[dict]],
     ):
         """
         `nonResourceRules` is a list of NonResourcePolicyRules that
         identify matching requests according to their verb and the
         target non-resource URL.
         """
-        cleaned = []
+        cleaned: typing.List[NonResourcePolicyRule] = []
         for item in value:
             if isinstance(item, dict):
-                item = NonResourcePolicyRule().from_dict(item)
-            cleaned.append(item)
-        self._properties['nonResourceRules'] = cleaned
+                item = typing.cast(
+                    NonResourcePolicyRule,
+                    NonResourcePolicyRule().from_dict(item),
+                )
+            cleaned.append(typing.cast(NonResourcePolicyRule, item))
+        self._properties["nonResourceRules"] = cleaned
 
     @property
-    def resource_rules(self) -> typing.List['ResourcePolicyRule']:
+    def resource_rules(self) -> typing.List["ResourcePolicyRule"]:
         """
         `resourceRules` is a slice of ResourcePolicyRules that
         identify matching requests according to their verb and the
         target resource. At least one of `resourceRules` and
         `nonResourceRules` has to be non-empty.
         """
-        return self._properties.get('resourceRules')
+        return typing.cast(
+            typing.List["ResourcePolicyRule"],
+            self._properties.get("resourceRules"),
+        )
 
     @resource_rules.setter
     def resource_rules(
-            self,
-            value: typing.Union[typing.List['ResourcePolicyRule'], typing.List[dict]]
+        self, value: typing.Union[typing.List["ResourcePolicyRule"], typing.List[dict]]
     ):
         """
         `resourceRules` is a slice of ResourcePolicyRules that
@@ -1133,15 +1200,18 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
         target resource. At least one of `resourceRules` and
         `nonResourceRules` has to be non-empty.
         """
-        cleaned = []
+        cleaned: typing.List[ResourcePolicyRule] = []
         for item in value:
             if isinstance(item, dict):
-                item = ResourcePolicyRule().from_dict(item)
-            cleaned.append(item)
-        self._properties['resourceRules'] = cleaned
+                item = typing.cast(
+                    ResourcePolicyRule,
+                    ResourcePolicyRule().from_dict(item),
+                )
+            cleaned.append(typing.cast(ResourcePolicyRule, item))
+        self._properties["resourceRules"] = cleaned
 
     @property
-    def subjects(self) -> typing.List['Subject']:
+    def subjects(self) -> typing.List["Subject"]:
         """
         subjects is the list of normal user, serviceaccount, or
         group that this rule cares about. There must be at least one
@@ -1149,13 +1219,13 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
         system:authenticated and system:unauthenticated user groups
         matches every request. Required.
         """
-        return self._properties.get('subjects')
+        return typing.cast(
+            typing.List["Subject"],
+            self._properties.get("subjects"),
+        )
 
     @subjects.setter
-    def subjects(
-            self,
-            value: typing.Union[typing.List['Subject'], typing.List[dict]]
-    ):
+    def subjects(self, value: typing.Union[typing.List["Subject"], typing.List[dict]]):
         """
         subjects is the list of normal user, serviceaccount, or
         group that this rule cares about. There must be at least one
@@ -1163,14 +1233,17 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
         system:authenticated and system:unauthenticated user groups
         matches every request. Required.
         """
-        cleaned = []
+        cleaned: typing.List[Subject] = []
         for item in value:
             if isinstance(item, dict):
-                item = Subject().from_dict(item)
-            cleaned.append(item)
-        self._properties['subjects'] = cleaned
+                item = typing.cast(
+                    Subject,
+                    Subject().from_dict(item),
+                )
+            cleaned.append(typing.cast(Subject, item))
+        self._properties["subjects"] = cleaned
 
-    def __enter__(self) -> 'PolicyRulesWithSubjects':
+    def __enter__(self) -> "PolicyRulesWithSubjects":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1184,63 +1257,71 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'PriorityLevelConfigurationSpec' = None,
-            status: 'PriorityLevelConfigurationStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "PriorityLevelConfigurationSpec" = None,
+        status: "PriorityLevelConfigurationStatus" = None,
     ):
         """Create PriorityLevelConfiguration instance."""
         super(PriorityLevelConfiguration, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='PriorityLevelConfiguration'
+            api_version="flowcontrol/v1alpha1", kind="PriorityLevelConfiguration"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else PriorityLevelConfigurationSpec(),
-            'status': status if status is not None else PriorityLevelConfigurationStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else PriorityLevelConfigurationSpec(),
+            "status": status
+            if status is not None
+            else PriorityLevelConfigurationStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (PriorityLevelConfigurationSpec, None),
-            'status': (PriorityLevelConfigurationStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (PriorityLevelConfigurationSpec, None),
+            "status": (PriorityLevelConfigurationStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         `metadata` is the standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         `metadata` is the standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'PriorityLevelConfigurationSpec':
+    def spec(self) -> "PriorityLevelConfigurationSpec":
         """
         `spec` is the specification of the desired behavior of a
         "request-priority". More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "PriorityLevelConfigurationSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['PriorityLevelConfigurationSpec', dict]):
+    def spec(self, value: typing.Union["PriorityLevelConfigurationSpec", dict]):
         """
         `spec` is the specification of the desired behavior of a
         "request-priority". More info:
@@ -1248,199 +1329,204 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = PriorityLevelConfigurationSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                PriorityLevelConfigurationSpec,
+                PriorityLevelConfigurationSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'PriorityLevelConfigurationStatus':
+    def status(self) -> "PriorityLevelConfigurationStatus":
         """
         `status` is the current status of a "request-priority". More
         info: https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "PriorityLevelConfigurationStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['PriorityLevelConfigurationStatus', dict]):
+    def status(self, value: typing.Union["PriorityLevelConfigurationStatus", dict]):
         """
         `status` is the current status of a "request-priority". More
         info: https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = PriorityLevelConfigurationStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                PriorityLevelConfigurationStatus,
+                PriorityLevelConfigurationStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
     def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'PriorityLevelConfigurationStatus':
+        self, namespace: "str" = None
+    ) -> "PriorityLevelConfigurationStatus":
         """
         Creates the PriorityLevelConfiguration in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
         names = [
-            'create_namespaced_priority_level_configuration',
-            'create_priority_level_configuration'
+            "create_namespaced_priority_level_configuration",
+            "create_priority_level_configuration",
         ]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            PriorityLevelConfigurationStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
+        output = PriorityLevelConfigurationStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
     def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'PriorityLevelConfigurationStatus':
+        self, namespace: "str" = None
+    ) -> "PriorityLevelConfigurationStatus":
         """
         Replaces the PriorityLevelConfiguration in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
         names = [
-            'replace_namespaced_priority_level_configuration',
-            'replace_priority_level_configuration'
+            "replace_namespaced_priority_level_configuration",
+            "replace_priority_level_configuration",
         ]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            PriorityLevelConfigurationStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
+        output = PriorityLevelConfigurationStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
     def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'PriorityLevelConfigurationStatus':
+        self, namespace: "str" = None
+    ) -> "PriorityLevelConfigurationStatus":
         """
         Patches the PriorityLevelConfiguration in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
         names = [
-            'patch_namespaced_priority_level_configuration',
-            'patch_priority_level_configuration'
+            "patch_namespaced_priority_level_configuration",
+            "patch_priority_level_configuration",
         ]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            PriorityLevelConfigurationStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
+        output = PriorityLevelConfigurationStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
     def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'PriorityLevelConfigurationStatus':
+        self, namespace: "str" = None
+    ) -> "PriorityLevelConfigurationStatus":
         """
         Returns status information about the given resource within the cluster.
         """
         names = [
-            'read_namespaced_priority_level_configuration',
-            'read_priority_level_configuration'
+            "read_namespaced_priority_level_configuration",
+            "read_priority_level_configuration",
         ]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            PriorityLevelConfigurationStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = PriorityLevelConfigurationStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the PriorityLevelConfiguration from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_priority_level_configuration',
-            'read_priority_level_configuration'
+            "read_namespaced_priority_level_configuration",
+            "read_priority_level_configuration",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the PriorityLevelConfiguration from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_priority_level_configuration',
-            'delete_priority_level_configuration'
+            "delete_namespaced_priority_level_configuration",
+            "delete_priority_level_configuration",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.FlowcontrolV1alpha1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.FlowcontrolV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.FlowcontrolV1alpha1Api(**kwargs)
 
-    def __enter__(self) -> 'PriorityLevelConfiguration':
+    def __enter__(self) -> "PriorityLevelConfiguration":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1454,33 +1540,33 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            last_transition_time: str = None,
-            message: str = None,
-            reason: str = None,
-            status: str = None,
-            type_: str = None,
+        self,
+        last_transition_time: str = None,
+        message: str = None,
+        reason: str = None,
+        status: str = None,
+        type_: str = None,
     ):
         """Create PriorityLevelConfigurationCondition instance."""
         super(PriorityLevelConfigurationCondition, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='PriorityLevelConfigurationCondition'
+            api_version="flowcontrol/v1alpha1",
+            kind="PriorityLevelConfigurationCondition",
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-            'type': type_ if type_ is not None else '',
-
+            "lastTransitionTime": last_transition_time
+            if last_transition_time is not None
+            else None,
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'lastTransitionTime': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-            'status': (str, None),
-            'type': (str, None),
-
+            "lastTransitionTime": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
+            "status": (str, None),
+            "type": (str, None),
         }
 
     @property
@@ -1489,22 +1575,24 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
         `lastTransitionTime` is the last time the condition
         transitioned from one status to another.
         """
-        return self._properties.get('lastTransitionTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastTransitionTime"),
+        )
 
     @last_transition_time.setter
     def last_transition_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         `lastTransitionTime` is the last time the condition
         transitioned from one status to another.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastTransitionTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastTransitionTime"] = value
 
     @property
     def message(self) -> str:
@@ -1512,7 +1600,10 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
         `message` is a human-readable message indicating details
         about last transition.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -1520,7 +1611,7 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
         `message` is a human-readable message indicating details
         about last transition.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
@@ -1528,7 +1619,10 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
         `reason` is a unique, one-word, CamelCase reason for the
         condition's last transition.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
@@ -1536,7 +1630,7 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
         `reason` is a unique, one-word, CamelCase reason for the
         condition's last transition.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
@@ -1544,7 +1638,10 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
         `status` is the status of the condition. Can be True, False,
         Unknown. Required.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
@@ -1552,23 +1649,26 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
         `status` is the status of the condition. Can be True, False,
         Unknown. Required.
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
     @property
     def type_(self) -> str:
         """
         `type` is the type of the condition. Required.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         `type` is the type of the condition. Required.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'PriorityLevelConfigurationCondition':
+    def __enter__(self) -> "PriorityLevelConfigurationCondition":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1582,84 +1682,94 @@ class PriorityLevelConfigurationList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['PriorityLevelConfiguration'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["PriorityLevelConfiguration"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create PriorityLevelConfigurationList instance."""
         super(PriorityLevelConfigurationList, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='PriorityLevelConfigurationList'
+            api_version="flowcontrol/v1alpha1", kind="PriorityLevelConfigurationList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, PriorityLevelConfiguration),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, PriorityLevelConfiguration),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['PriorityLevelConfiguration']:
+    def items(self) -> typing.List["PriorityLevelConfiguration"]:
         """
         `items` is a list of request-priorities.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["PriorityLevelConfiguration"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['PriorityLevelConfiguration'], typing.List[dict]]
+        self,
+        value: typing.Union[
+            typing.List["PriorityLevelConfiguration"], typing.List[dict]
+        ],
     ):
         """
         `items` is a list of request-priorities.
         """
-        cleaned = []
+        cleaned: typing.List[PriorityLevelConfiguration] = []
         for item in value:
             if isinstance(item, dict):
-                item = PriorityLevelConfiguration().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    PriorityLevelConfiguration,
+                    PriorityLevelConfiguration().from_dict(item),
+                )
+            cleaned.append(typing.cast(PriorityLevelConfiguration, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         `metadata` is the standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         `metadata` is the standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.FlowcontrolV1alpha1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.FlowcontrolV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.FlowcontrolV1alpha1Api(**kwargs)
 
-    def __enter__(self) -> 'PriorityLevelConfigurationList':
+    def __enter__(self) -> "PriorityLevelConfigurationList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1673,21 +1783,19 @@ class PriorityLevelConfigurationReference(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
+        self,
+        name: str = None,
     ):
         """Create PriorityLevelConfigurationReference instance."""
         super(PriorityLevelConfigurationReference, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='PriorityLevelConfigurationReference'
+            api_version="flowcontrol/v1alpha1",
+            kind="PriorityLevelConfigurationReference",
         )
         self._properties = {
-            'name': name if name is not None else '',
-
+            "name": name if name is not None else "",
         }
         self._types = {
-            'name': (str, None),
-
+            "name": (str, None),
         }
 
     @property
@@ -1696,7 +1804,10 @@ class PriorityLevelConfigurationReference(_kuber_definitions.Definition):
         `name` is the name of the priority level configuration being
         referenced Required.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -1704,9 +1815,9 @@ class PriorityLevelConfigurationReference(_kuber_definitions.Definition):
         `name` is the name of the priority level configuration being
         referenced Required.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'PriorityLevelConfigurationReference':
+    def __enter__(self) -> "PriorityLevelConfigurationReference":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1720,45 +1831,50 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            limited: 'LimitedPriorityLevelConfiguration' = None,
-            type_: str = None,
+        self,
+        limited: "LimitedPriorityLevelConfiguration" = None,
+        type_: str = None,
     ):
         """Create PriorityLevelConfigurationSpec instance."""
         super(PriorityLevelConfigurationSpec, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='PriorityLevelConfigurationSpec'
+            api_version="flowcontrol/v1alpha1", kind="PriorityLevelConfigurationSpec"
         )
         self._properties = {
-            'limited': limited if limited is not None else LimitedPriorityLevelConfiguration(),
-            'type': type_ if type_ is not None else '',
-
+            "limited": limited
+            if limited is not None
+            else LimitedPriorityLevelConfiguration(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'limited': (LimitedPriorityLevelConfiguration, None),
-            'type': (str, None),
-
+            "limited": (LimitedPriorityLevelConfiguration, None),
+            "type": (str, None),
         }
 
     @property
-    def limited(self) -> 'LimitedPriorityLevelConfiguration':
+    def limited(self) -> "LimitedPriorityLevelConfiguration":
         """
         `limited` specifies how requests are handled for a Limited
         priority level. This field must be non-empty if and only if
         `type` is `"Limited"`.
         """
-        return self._properties.get('limited')
+        return typing.cast(
+            "LimitedPriorityLevelConfiguration",
+            self._properties.get("limited"),
+        )
 
     @limited.setter
-    def limited(self, value: typing.Union['LimitedPriorityLevelConfiguration', dict]):
+    def limited(self, value: typing.Union["LimitedPriorityLevelConfiguration", dict]):
         """
         `limited` specifies how requests are handled for a Limited
         priority level. This field must be non-empty if and only if
         `type` is `"Limited"`.
         """
         if isinstance(value, dict):
-            value = LimitedPriorityLevelConfiguration().from_dict(value)
-        self._properties['limited'] = value
+            value = typing.cast(
+                LimitedPriorityLevelConfiguration,
+                LimitedPriorityLevelConfiguration().from_dict(value),
+            )
+        self._properties["limited"] = value
 
     @property
     def type_(self) -> str:
@@ -1773,7 +1889,10 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
         server's limited capacity is made available exclusively to
         this priority level. Required.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -1788,9 +1907,9 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
         server's limited capacity is made available exclusively to
         this priority level. Required.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'PriorityLevelConfigurationSpec':
+    def __enter__(self) -> "PriorityLevelConfigurationSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1804,46 +1923,51 @@ class PriorityLevelConfigurationStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            conditions: typing.List['PriorityLevelConfigurationCondition'] = None,
+        self,
+        conditions: typing.List["PriorityLevelConfigurationCondition"] = None,
     ):
         """Create PriorityLevelConfigurationStatus instance."""
         super(PriorityLevelConfigurationStatus, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='PriorityLevelConfigurationStatus'
+            api_version="flowcontrol/v1alpha1", kind="PriorityLevelConfigurationStatus"
         )
         self._properties = {
-            'conditions': conditions if conditions is not None else [],
-
+            "conditions": conditions if conditions is not None else [],
         }
         self._types = {
-            'conditions': (list, PriorityLevelConfigurationCondition),
-
+            "conditions": (list, PriorityLevelConfigurationCondition),
         }
 
     @property
-    def conditions(self) -> typing.List['PriorityLevelConfigurationCondition']:
+    def conditions(self) -> typing.List["PriorityLevelConfigurationCondition"]:
         """
         `conditions` is the current state of "request-priority".
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            typing.List["PriorityLevelConfigurationCondition"],
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
     def conditions(
-            self,
-            value: typing.Union[typing.List['PriorityLevelConfigurationCondition'], typing.List[dict]]
+        self,
+        value: typing.Union[
+            typing.List["PriorityLevelConfigurationCondition"], typing.List[dict]
+        ],
     ):
         """
         `conditions` is the current state of "request-priority".
         """
-        cleaned = []
+        cleaned: typing.List[PriorityLevelConfigurationCondition] = []
         for item in value:
             if isinstance(item, dict):
-                item = PriorityLevelConfigurationCondition().from_dict(item)
-            cleaned.append(item)
-        self._properties['conditions'] = cleaned
+                item = typing.cast(
+                    PriorityLevelConfigurationCondition,
+                    PriorityLevelConfigurationCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(PriorityLevelConfigurationCondition, item))
+        self._properties["conditions"] = cleaned
 
-    def __enter__(self) -> 'PriorityLevelConfigurationStatus':
+    def __enter__(self) -> "PriorityLevelConfigurationStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1857,27 +1981,26 @@ class QueuingConfiguration(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            hand_size: int = None,
-            queue_length_limit: int = None,
-            queues: int = None,
+        self,
+        hand_size: int = None,
+        queue_length_limit: int = None,
+        queues: int = None,
     ):
         """Create QueuingConfiguration instance."""
         super(QueuingConfiguration, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='QueuingConfiguration'
+            api_version="flowcontrol/v1alpha1", kind="QueuingConfiguration"
         )
         self._properties = {
-            'handSize': hand_size if hand_size is not None else None,
-            'queueLengthLimit': queue_length_limit if queue_length_limit is not None else None,
-            'queues': queues if queues is not None else None,
-
+            "handSize": hand_size if hand_size is not None else None,
+            "queueLengthLimit": queue_length_limit
+            if queue_length_limit is not None
+            else None,
+            "queues": queues if queues is not None else None,
         }
         self._types = {
-            'handSize': (int, None),
-            'queueLengthLimit': (int, None),
-            'queues': (int, None),
-
+            "handSize": (int, None),
+            "queueLengthLimit": (int, None),
+            "queues": (int, None),
         }
 
     @property
@@ -1895,7 +2018,10 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         user-facing documentation for more extensive guidance on
         setting this field.  This field has a default value of 8.
         """
-        return self._properties.get('handSize')
+        return typing.cast(
+            int,
+            self._properties.get("handSize"),
+        )
 
     @hand_size.setter
     def hand_size(self, value: int):
@@ -1912,7 +2038,7 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         user-facing documentation for more extensive guidance on
         setting this field.  This field has a default value of 8.
         """
-        self._properties['handSize'] = value
+        self._properties["handSize"] = value
 
     @property
     def queue_length_limit(self) -> int:
@@ -1922,7 +2048,10 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         time; excess requests are rejected.  This value must be
         positive.  If not specified, it will be defaulted to 50.
         """
-        return self._properties.get('queueLengthLimit')
+        return typing.cast(
+            int,
+            self._properties.get("queueLengthLimit"),
+        )
 
     @queue_length_limit.setter
     def queue_length_limit(self, value: int):
@@ -1932,7 +2061,7 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         time; excess requests are rejected.  This value must be
         positive.  If not specified, it will be defaulted to 50.
         """
-        self._properties['queueLengthLimit'] = value
+        self._properties["queueLengthLimit"] = value
 
     @property
     def queues(self) -> int:
@@ -1944,7 +2073,10 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         associated flow schemas irrelevant.  This field has a
         default value of 64.
         """
-        return self._properties.get('queues')
+        return typing.cast(
+            int,
+            self._properties.get("queues"),
+        )
 
     @queues.setter
     def queues(self, value: int):
@@ -1956,9 +2088,9 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         associated flow schemas irrelevant.  This field has a
         default value of 64.
         """
-        self._properties['queues'] = value
+        self._properties["queues"] = value
 
-    def __enter__(self) -> 'QueuingConfiguration':
+    def __enter__(self) -> "QueuingConfiguration":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1978,33 +2110,30 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_groups: typing.List[str] = None,
-            cluster_scope: bool = None,
-            namespaces: typing.List[str] = None,
-            resources: typing.List[str] = None,
-            verbs: typing.List[str] = None,
+        self,
+        api_groups: typing.List[str] = None,
+        cluster_scope: bool = None,
+        namespaces: typing.List[str] = None,
+        resources: typing.List[str] = None,
+        verbs: typing.List[str] = None,
     ):
         """Create ResourcePolicyRule instance."""
         super(ResourcePolicyRule, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='ResourcePolicyRule'
+            api_version="flowcontrol/v1alpha1", kind="ResourcePolicyRule"
         )
         self._properties = {
-            'apiGroups': api_groups if api_groups is not None else [],
-            'clusterScope': cluster_scope if cluster_scope is not None else None,
-            'namespaces': namespaces if namespaces is not None else [],
-            'resources': resources if resources is not None else [],
-            'verbs': verbs if verbs is not None else [],
-
+            "apiGroups": api_groups if api_groups is not None else [],
+            "clusterScope": cluster_scope if cluster_scope is not None else None,
+            "namespaces": namespaces if namespaces is not None else [],
+            "resources": resources if resources is not None else [],
+            "verbs": verbs if verbs is not None else [],
         }
         self._types = {
-            'apiGroups': (list, str),
-            'clusterScope': (bool, None),
-            'namespaces': (list, str),
-            'resources': (list, str),
-            'verbs': (list, str),
-
+            "apiGroups": (list, str),
+            "clusterScope": (bool, None),
+            "namespaces": (list, str),
+            "resources": (list, str),
+            "verbs": (list, str),
         }
 
     @property
@@ -2014,7 +2143,10 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         empty. "*" matches all API groups and, if present, must be
         the only entry. Required.
         """
-        return self._properties.get('apiGroups')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("apiGroups"),
+        )
 
     @api_groups.setter
     def api_groups(self, value: typing.List[str]):
@@ -2023,7 +2155,7 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         empty. "*" matches all API groups and, if present, must be
         the only entry. Required.
         """
-        self._properties['apiGroups'] = value
+        self._properties["apiGroups"] = value
 
     @property
     def cluster_scope(self) -> bool:
@@ -2034,7 +2166,10 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         namespaces). If this field is omitted or false then the
         `namespaces` field must contain a non-empty list.
         """
-        return self._properties.get('clusterScope')
+        return typing.cast(
+            bool,
+            self._properties.get("clusterScope"),
+        )
 
     @cluster_scope.setter
     def cluster_scope(self, value: bool):
@@ -2045,7 +2180,7 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         namespaces). If this field is omitted or false then the
         `namespaces` field must contain a non-empty list.
         """
-        self._properties['clusterScope'] = value
+        self._properties["clusterScope"] = value
 
     @property
     def namespaces(self) -> typing.List[str]:
@@ -2059,7 +2194,10 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         field for that). This list may be empty, but only if
         `clusterScope` is true.
         """
-        return self._properties.get('namespaces')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("namespaces"),
+        )
 
     @namespaces.setter
     def namespaces(self, value: typing.List[str]):
@@ -2073,7 +2211,7 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         field for that). This list may be empty, but only if
         `clusterScope` is true.
         """
-        self._properties['namespaces'] = value
+        self._properties["namespaces"] = value
 
     @property
     def resources(self) -> typing.List[str]:
@@ -2084,7 +2222,10 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all resources and, if present, must be the only
         entry. Required.
         """
-        return self._properties.get('resources')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("resources"),
+        )
 
     @resources.setter
     def resources(self, value: typing.List[str]):
@@ -2095,7 +2236,7 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all resources and, if present, must be the only
         entry. Required.
         """
-        self._properties['resources'] = value
+        self._properties["resources"] = value
 
     @property
     def verbs(self) -> typing.List[str]:
@@ -2104,7 +2245,10 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all verbs and, if present, must be the only
         entry. Required.
         """
-        return self._properties.get('verbs')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("verbs"),
+        )
 
     @verbs.setter
     def verbs(self, value: typing.List[str]):
@@ -2113,9 +2257,9 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
         "*" matches all verbs and, if present, must be the only
         entry. Required.
         """
-        self._properties['verbs'] = value
+        self._properties["verbs"] = value
 
-    def __enter__(self) -> 'ResourcePolicyRule':
+    def __enter__(self) -> "ResourcePolicyRule":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2129,24 +2273,21 @@ class ServiceAccountSubject(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
-            namespace: str = None,
+        self,
+        name: str = None,
+        namespace: str = None,
     ):
         """Create ServiceAccountSubject instance."""
         super(ServiceAccountSubject, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='ServiceAccountSubject'
+            api_version="flowcontrol/v1alpha1", kind="ServiceAccountSubject"
         )
         self._properties = {
-            'name': name if name is not None else '',
-            'namespace': namespace if namespace is not None else '',
-
+            "name": name if name is not None else "",
+            "namespace": namespace if namespace is not None else "",
         }
         self._types = {
-            'name': (str, None),
-            'namespace': (str, None),
-
+            "name": (str, None),
+            "namespace": (str, None),
         }
 
     @property
@@ -2155,7 +2296,10 @@ class ServiceAccountSubject(_kuber_definitions.Definition):
         `name` is the name of matching ServiceAccount objects, or
         "*" to match regardless of name. Required.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -2163,7 +2307,7 @@ class ServiceAccountSubject(_kuber_definitions.Definition):
         `name` is the name of matching ServiceAccount objects, or
         "*" to match regardless of name. Required.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def namespace(self) -> str:
@@ -2171,7 +2315,10 @@ class ServiceAccountSubject(_kuber_definitions.Definition):
         `namespace` is the namespace of matching ServiceAccount
         objects. Required.
         """
-        return self._properties.get('namespace')
+        return typing.cast(
+            str,
+            self._properties.get("namespace"),
+        )
 
     @namespace.setter
     def namespace(self, value: str):
@@ -2179,9 +2326,9 @@ class ServiceAccountSubject(_kuber_definitions.Definition):
         `namespace` is the namespace of matching ServiceAccount
         objects. Required.
         """
-        self._properties['namespace'] = value
+        self._properties["namespace"] = value
 
-    def __enter__(self) -> 'ServiceAccountSubject':
+    def __enter__(self) -> "ServiceAccountSubject":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2197,95 +2344,103 @@ class Subject(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            group: 'GroupSubject' = None,
-            kind: str = None,
-            service_account: 'ServiceAccountSubject' = None,
-            user: 'UserSubject' = None,
+        self,
+        group: "GroupSubject" = None,
+        kind: str = None,
+        service_account: "ServiceAccountSubject" = None,
+        user: "UserSubject" = None,
     ):
         """Create Subject instance."""
         super(Subject, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='Subject'
+            api_version="flowcontrol/v1alpha1", kind="Subject"
         )
         self._properties = {
-            'group': group if group is not None else GroupSubject(),
-            'kind': kind if kind is not None else '',
-            'serviceAccount': service_account if service_account is not None else ServiceAccountSubject(),
-            'user': user if user is not None else UserSubject(),
-
+            "group": group if group is not None else GroupSubject(),
+            "kind": kind if kind is not None else "",
+            "serviceAccount": service_account
+            if service_account is not None
+            else ServiceAccountSubject(),
+            "user": user if user is not None else UserSubject(),
         }
         self._types = {
-            'group': (GroupSubject, None),
-            'kind': (str, None),
-            'serviceAccount': (ServiceAccountSubject, None),
-            'user': (UserSubject, None),
-
+            "group": (GroupSubject, None),
+            "kind": (str, None),
+            "serviceAccount": (ServiceAccountSubject, None),
+            "user": (UserSubject, None),
         }
 
     @property
-    def group(self) -> 'GroupSubject':
-        """
-
-        """
-        return self._properties.get('group')
+    def group(self) -> "GroupSubject":
+        """"""
+        return typing.cast(
+            "GroupSubject",
+            self._properties.get("group"),
+        )
 
     @group.setter
-    def group(self, value: typing.Union['GroupSubject', dict]):
-        """
-
-        """
+    def group(self, value: typing.Union["GroupSubject", dict]):
+        """"""
         if isinstance(value, dict):
-            value = GroupSubject().from_dict(value)
-        self._properties['group'] = value
+            value = typing.cast(
+                GroupSubject,
+                GroupSubject().from_dict(value),
+            )
+        self._properties["group"] = value
 
     @property
     def kind(self) -> str:
         """
         Required
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
         """
         Required
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
-    def service_account(self) -> 'ServiceAccountSubject':
-        """
-
-        """
-        return self._properties.get('serviceAccount')
+    def service_account(self) -> "ServiceAccountSubject":
+        """"""
+        return typing.cast(
+            "ServiceAccountSubject",
+            self._properties.get("serviceAccount"),
+        )
 
     @service_account.setter
-    def service_account(self, value: typing.Union['ServiceAccountSubject', dict]):
-        """
-
-        """
+    def service_account(self, value: typing.Union["ServiceAccountSubject", dict]):
+        """"""
         if isinstance(value, dict):
-            value = ServiceAccountSubject().from_dict(value)
-        self._properties['serviceAccount'] = value
+            value = typing.cast(
+                ServiceAccountSubject,
+                ServiceAccountSubject().from_dict(value),
+            )
+        self._properties["serviceAccount"] = value
 
     @property
-    def user(self) -> 'UserSubject':
-        """
-
-        """
-        return self._properties.get('user')
+    def user(self) -> "UserSubject":
+        """"""
+        return typing.cast(
+            "UserSubject",
+            self._properties.get("user"),
+        )
 
     @user.setter
-    def user(self, value: typing.Union['UserSubject', dict]):
-        """
-
-        """
+    def user(self, value: typing.Union["UserSubject", dict]):
+        """"""
         if isinstance(value, dict):
-            value = UserSubject().from_dict(value)
-        self._properties['user'] = value
+            value = typing.cast(
+                UserSubject,
+                UserSubject().from_dict(value),
+            )
+        self._properties["user"] = value
 
-    def __enter__(self) -> 'Subject':
+    def __enter__(self) -> "Subject":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2299,21 +2454,18 @@ class UserSubject(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
+        self,
+        name: str = None,
     ):
         """Create UserSubject instance."""
         super(UserSubject, self).__init__(
-            api_version='flowcontrol/v1alpha1',
-            kind='UserSubject'
+            api_version="flowcontrol/v1alpha1", kind="UserSubject"
         )
         self._properties = {
-            'name': name if name is not None else '',
-
+            "name": name if name is not None else "",
         }
         self._types = {
-            'name': (str, None),
-
+            "name": (str, None),
         }
 
     @property
@@ -2322,7 +2474,10 @@ class UserSubject(_kuber_definitions.Definition):
         `name` is the username that matches, or "*" to match all
         usernames. Required.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -2330,9 +2485,9 @@ class UserSubject(_kuber_definitions.Definition):
         `name` is the username that matches, or "*" to match all
         usernames. Required.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'UserSubject':
+    def __enter__(self) -> "UserSubject":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

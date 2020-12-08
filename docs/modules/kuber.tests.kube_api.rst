@@ -28,7 +28,6 @@ kuber.tests.kube\_api.test\_to\_kuber\_dict module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

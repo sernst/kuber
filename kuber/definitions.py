@@ -2,13 +2,28 @@ import abc
 import json
 import typing
 import uuid
+import pathlib
 
 import yaml
 from kubernetes import client
 
-API_VERSION_REMAPS = {
-    'core/v1': 'v1'
-}
+PathLike = typing.Union[str, pathlib.Path]
+OptionalPathLike = typing.Optional[PathLike]
+
+API_VERSION_REMAPS = {"core/v1": "v1"}
+
+
+# Protocol was added in 3.8 and needs to be gracefully handled for now
+# without the Protocol class for static duck-typing. Eventually this
+# should be replaced by:
+# class ExecutionResponse(typing.Protocol):
+class ExecutionResponse:
+    """Structural type for kubernetes execution responses."""
+
+    @property
+    def status(self) -> "Definition":
+        """Status from an execution response."""
+        pass
 
 
 class InternalValue(typing.NamedTuple):
@@ -27,8 +42,7 @@ class InternalValue(typing.NamedTuple):
 #: user has not modified the value. Useful in cases where `None` could
 #: represent a significant change.
 UNCHANGED_VALUE = InternalValue(
-    name='UnchangedValue',
-    description='No change is being made to this value.'
+    name="UnchangedValue", description="No change is being made to this value."
 )
 
 
@@ -39,8 +53,8 @@ class Definition:
         """Initialize basic common properties"""
         self._api_version = api_version
         self._kind = kind
-        self._properties = {}
-        self._types = {}
+        self._properties: typing.Dict[str, typing.Any] = {}
+        self._types: typing.Dict[str, typing.Any] = {}
         self._kuber_uid = str(uuid.uuid4())
 
     @property
@@ -59,15 +73,11 @@ class Definition:
             if p in self._types
         }
         results = {
-            p: v
-            for p, v in results.items()
-            if v
-            or isinstance(v, bool)
-            or v == 0
+            p: v for p, v in results.items() if v or isinstance(v, bool) or v == 0
         }
         return results if results else None
 
-    def from_dict(self, source: dict) -> 'Definition':
+    def from_dict(self, source: dict) -> "Definition":
         """Populates the resource from the source dictionary definition."""
         lower_keys = {k.lower(): k for k in self._types.keys()}
         for key, value in source.items():
@@ -82,8 +92,7 @@ class Definition:
                 continue
 
             self._properties[prop_key] = deserialize_property(
-                value=value,
-                data_type=self._types[prop_key]
+                value=value, data_type=self._types[prop_key]
             )
 
         return self
@@ -100,16 +109,14 @@ class Collection(Definition):
         super(Collection, self).__init__(api_version, kind)
 
     @property
-    @abc.abstractmethod
     def metadata(self):
         """Must be implemented by subclasses"""
-        return None  # pragma: no cover
+        return
 
     @metadata.setter
-    @abc.abstractmethod
     def metadata(self, value):
         """Must be implemented by subclasses"""
-        pass  # pragma: no cover
+        pass
 
     @property
     def api_version(self) -> str:
@@ -128,7 +135,7 @@ class Collection(Definition):
         """
         results = super(Collection, self).to_dict() or {}
         version = API_VERSION_REMAPS.get(self.api_version, self.api_version)
-        return {'apiVersion': version, 'kind': self.kind, **results}
+        return {"apiVersion": version, "kind": self.kind, **results}
 
     def to_json(self) -> str:
         """
@@ -148,15 +155,12 @@ class Collection(Definition):
 
     @staticmethod
     @abc.abstractmethod
-    def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> typing.Any:
+    def get_resource_api(api_client: client.ApiClient = None, **kwargs) -> typing.Any:
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
-        pass  # pragma: no cover
+        ...  # pragma: no cover
 
 
 class Resource(Definition):
@@ -172,16 +176,14 @@ class Resource(Definition):
         super(Resource, self).__init__(api_version, kind)
 
     @property
-    @abc.abstractmethod
     def metadata(self):
         """Must be implemented by subclasses"""
-        return None  # pragma: no cover
+        return
 
     @metadata.setter
-    @abc.abstractmethod
     def metadata(self, value):
         """Must be implemented by subclasses"""
-        pass  # pragma: no cover
+        pass
 
     @property
     def api_version(self) -> str:
@@ -200,7 +202,7 @@ class Resource(Definition):
         """
         results = super(Resource, self).to_dict() or {}
         version = API_VERSION_REMAPS.get(self.api_version, self.api_version)
-        return {'apiVersion': version, 'kind': self.kind, **results}
+        return {"apiVersion": version, "kind": self.kind, **results}
 
     def to_json(self) -> str:
         """
@@ -224,12 +226,12 @@ class Resource(Definition):
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
@@ -250,10 +252,7 @@ class Resource(Definition):
 
     @staticmethod
     @abc.abstractmethod
-    def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> typing.Any:
+    def get_resource_api(api_client: client.ApiClient = None, **kwargs) -> typing.Any:
         """
         Returns an instance of the kubernetes API client associated with
         this object.
@@ -275,18 +274,18 @@ def serialize_property(value: typing.Any) -> typing.Any:
         Serialized version of the supplied value.
     """
     # Some falsy cases are meaningful and should be preserved.
-    nulls = (None, {}, [])
+    nulls: typing.Tuple[None, dict, list] = (None, {}, [])
 
-    if hasattr(value, 'to_dict'):
+    if hasattr(value, "to_dict"):
         return value.to_dict() or None
 
     if isinstance(value, (list, tuple)):
-        results = [serialize_property(v) for v in value]
-        return [r for r in results if r not in nulls] or None
+        raw_values = [serialize_property(v) for v in value]
+        return [v for v in raw_values if v not in nulls] or None
 
     if isinstance(value, dict):
-        results = {k: serialize_property(v) for k, v in value.items()}
-        return {k: v for k, v in results.items() if v not in nulls} or None
+        raw_items = {k: serialize_property(v) for k, v in value.items()}
+        return {k: v for k, v in raw_items.items() if v not in nulls} or None
 
     return None if value in nulls else value
 
@@ -320,5 +319,5 @@ def deserialize_property(value: typing.Any, data_type: tuple) -> typing.Any:
 
 def to_camel_case(source: str) -> str:
     """Converts kebab-case or snake_case to camelCase."""
-    parts = source.replace('-', '_').split('_')
-    return ''.join([parts[0], *[p.capitalize() for p in parts[1:]]])
+    parts = source.replace("-", "_").split("_")
+    return "".join([parts[0], *[p.capitalize() for p in parts[1:]]])

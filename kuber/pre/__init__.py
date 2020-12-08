@@ -6,13 +6,13 @@ from kuber import versioning
 # package and kuber metadata around its creation and labeling within the
 # kuber library.
 KUBERNETES_VERSION = versioning.KubernetesVersion(
-    label='pre',
-    version='v1.20.0-beta.2',
-    major='1',
-    minor='20',
-    patch='0',
-    pre_release='beta.2',
-    build='',
-    created_at=_datetime.datetime(2020, 11, 23),
-    commit_sha='3af376d3ad5009fa82c94c1ef1fed17dc1f8c29a'
+    label="pre",
+    version="v1.21.0-alpha.0",
+    major="1",
+    minor="21",
+    patch="0",
+    pre_release="alpha.0",
+    build="",
+    created_at=_datetime.datetime(2020, 12, 8),
+    commit_sha="98bc258bf5516b6c60860e06845b899eab29825d",
 )

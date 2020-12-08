@@ -34,13 +34,13 @@ Single Resource Operations
   d = apps_v1.Deployment()
 
   with d.metadata as md:
-      md.name = 'my-deployment'
-      md.namespace = 'default'
-      md.labels.update(app='foo', component='application')
+      md.name = "my-deployment"
+      md.namespace = "default"
+      md.labels.update(app="foo", component="application")
 
-  d.spec.selector.match_labels.update(app='foo')
-  d.spec.template.metadata.labels.update(app='foo')
-  d.append_container(name='app', image='my-app:1.0')
+  d.spec.selector.match_labels.update(app="foo")
+  d.spec.template.metadata.labels.update(app="foo")
+  d.append_container(name="app", image="my-app:1.0")
   d.spec.replicas = 2
 
   # Create the Deployment resource in the cluster.
@@ -76,7 +76,7 @@ that operate on all resources within the bundle collectively.
 
   kuber.load_access_config()
 
-  bundle = kuber.from_directory('./some-directory')
+  bundle = kuber.from_directory("./some-directory")
 
   # Create resources within the currently configured cluster.
   bundle.create(echo=True)
@@ -109,9 +109,9 @@ above could be rewritten for command line invocation as:
 
   import kuber
 
-  if __name__ == '__main__':
+  if __name__ == "__main__":
       kuber.load_access_config()
-      bundle = kuber.from_directory('./some-directory')
+      bundle = kuber.from_directory("./some-directory")
       bundle.cli()
 
 The ``bundle.cli()`` command here will parse arguments from the command line

@@ -12,7 +12,6 @@ kuber.tests.scenarios.same\_names\_different\_resources.test\_same\_names\_diffe
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

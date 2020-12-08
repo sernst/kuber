@@ -12,7 +12,6 @@ kuber.tests.scenarios.get\_containers\_from\_job.test\_get\_containers\_from\_jo
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

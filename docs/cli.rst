@@ -12,19 +12,19 @@ of how this would work looks like this:
 
   import kuber
 
-  if __name__ == '__main__':
+  if __name__ == "__main__":
       # Load the current cluster configuration from `kubeconfig`
       # into kuber for access to operate on the cluster.
       kuber.load_access_config()
 
       # Load bundle resources from the configuration files
       # stored in the local *./some/directory* directory.
-      bundle = kuber.from_directory('./some/directory')
+      bundle = kuber.from_directory("./some/directory")
 
       # Add environment labels to all of the loaded resources.
       for resource in bundle.resources:
           resource.metadata.labels.update(
-              environment='production'
+              environment="production"
           )
 
       # Expose the bundle CRUD operations as a command
@@ -63,7 +63,7 @@ bundle is managed. In these cases, a callback can be used that will
 allow for additional configuration of the bundle prior to the
 command line action being carried out.
 
-Consider the previous example where `environment='production'` was
+Consider the previous example where `environment="production"` was
 essentially hard-coded into the bundle. If we wanted to make defining
 the *environment* value part of the CLI, we could refactor the above
 example like this:
@@ -80,7 +80,7 @@ example like this:
       Configure the bundle based on additional command line flags.
       """
       parser = argparse.ArgumentParser()
-      parser.add_argument('--environment', default='development')
+      parser.add_argument("--environment", default="development")
 
       args = parser.parse_args(action.custom_args)
 
@@ -91,14 +91,14 @@ example like this:
           )
 
 
-  if __name__ == '__main__':
+  if __name__ == "__main__":
       # Load the current cluster configuration from `kubeconfig`
       # into kuber for access to operate on the cluster.
       kuber.load_access_config()
 
       # Load bundle resources from the configuration files
       # stored in the local *./some/directory* directory.
-      bundle = kuber.from_directory('./some/directory')
+      bundle = kuber.from_directory("./some/directory")
 
       # Expose the bundle CRUD operations as a command
       # line interface, but invoke the CLI with the
@@ -156,7 +156,7 @@ Refactoring the example from above would look like this:
       bundle = action.bundle
 
       parser = argparse.ArgumentParser()
-      parser.add_argument('--environment', default='development')
+      parser.add_argument("--environment", default="development")
       args = parser.parse_args(action.custom_args)
 
       # Load the current cluster configuration from `kubeconfig`
@@ -165,7 +165,7 @@ Refactoring the example from above would look like this:
 
       # Load bundle resources from the configuration files
       # stored in the local *./some/directory* directory.
-      bundle.add_directory('./some/directory')
+      bundle.add_directory("./some/directory")
 
       for resource in bundle.resources:
           resource.metadata.labels.update(
@@ -173,7 +173,7 @@ Refactoring the example from above would look like this:
           )
 
 
-  if __name__ == '__main__':
+  if __name__ == "__main__":
       # Expose the bundle CRUD operations as a command
       # line interface, but invoke the CLI with the
       # specified callback before executing the action

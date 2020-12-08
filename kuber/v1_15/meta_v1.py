@@ -14,36 +14,35 @@ class APIGroup(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            kind: str = None,
-            name: str = None,
-            preferred_version: 'GroupVersionForDiscovery' = None,
-            server_address_by_client_cidrs: typing.List['ServerAddressByClientCIDR'] = None,
-            versions: typing.List['GroupVersionForDiscovery'] = None,
+        self,
+        api_version: str = None,
+        kind: str = None,
+        name: str = None,
+        preferred_version: "GroupVersionForDiscovery" = None,
+        server_address_by_client_cidrs: typing.List["ServerAddressByClientCIDR"] = None,
+        versions: typing.List["GroupVersionForDiscovery"] = None,
     ):
         """Create APIGroup instance."""
-        super(APIGroup, self).__init__(
-            api_version='meta/v1',
-            kind='APIGroup'
-        )
+        super(APIGroup, self).__init__(api_version="meta/v1", kind="APIGroup")
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'kind': kind if kind is not None else '',
-            'name': name if name is not None else '',
-            'preferredVersion': preferred_version if preferred_version is not None else GroupVersionForDiscovery(),
-            'serverAddressByClientCIDRs': server_address_by_client_cidrs if server_address_by_client_cidrs is not None else [],
-            'versions': versions if versions is not None else [],
-
+            "apiVersion": api_version if api_version is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
+            "preferredVersion": preferred_version
+            if preferred_version is not None
+            else GroupVersionForDiscovery(),
+            "serverAddressByClientCIDRs": server_address_by_client_cidrs
+            if server_address_by_client_cidrs is not None
+            else [],
+            "versions": versions if versions is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'name': (str, None),
-            'preferredVersion': (GroupVersionForDiscovery, None),
-            'serverAddressByClientCIDRs': (list, ServerAddressByClientCIDR),
-            'versions': (list, GroupVersionForDiscovery),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
+            "preferredVersion": (GroupVersionForDiscovery, None),
+            "serverAddressByClientCIDRs": (list, ServerAddressByClientCIDR),
+            "versions": (list, GroupVersionForDiscovery),
         }
 
     @property
@@ -56,7 +55,10 @@ class APIGroup(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
@@ -68,7 +70,7 @@ class APIGroup(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
     def kind(self) -> str:
@@ -80,7 +82,10 @@ class APIGroup(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -92,42 +97,53 @@ class APIGroup(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def name(self) -> str:
         """
         name is the name of the group.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         name is the name of the group.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
-    def preferred_version(self) -> 'GroupVersionForDiscovery':
+    def preferred_version(self) -> "GroupVersionForDiscovery":
         """
         preferredVersion is the version preferred by the API server,
         which probably is the storage version.
         """
-        return self._properties.get('preferredVersion')
+        return typing.cast(
+            "GroupVersionForDiscovery",
+            self._properties.get("preferredVersion"),
+        )
 
     @preferred_version.setter
-    def preferred_version(self, value: typing.Union['GroupVersionForDiscovery', dict]):
+    def preferred_version(self, value: typing.Union["GroupVersionForDiscovery", dict]):
         """
         preferredVersion is the version preferred by the API server,
         which probably is the storage version.
         """
         if isinstance(value, dict):
-            value = GroupVersionForDiscovery().from_dict(value)
-        self._properties['preferredVersion'] = value
+            value = typing.cast(
+                GroupVersionForDiscovery,
+                GroupVersionForDiscovery().from_dict(value),
+            )
+        self._properties["preferredVersion"] = value
 
     @property
-    def server_address_by_client_cidrs(self) -> typing.List['ServerAddressByClientCIDR']:
+    def server_address_by_client_cidrs(
+        self,
+    ) -> typing.List["ServerAddressByClientCIDR"]:
         """
         a map of client CIDR to server address that is serving this
         group. This is to help clients reach servers in the most
@@ -141,12 +157,17 @@ class APIGroup(_kuber_definitions.Definition):
         X-Forwarded-For header or X-Real-Ip header or
         request.RemoteAddr (in that order) to get the client IP.
         """
-        return self._properties.get('serverAddressByClientCIDRs')
+        return typing.cast(
+            typing.List["ServerAddressByClientCIDR"],
+            self._properties.get("serverAddressByClientCIDRs"),
+        )
 
     @server_address_by_client_cidrs.setter
     def server_address_by_client_cidrs(
-            self,
-            value: typing.Union[typing.List['ServerAddressByClientCIDR'], typing.List[dict]]
+        self,
+        value: typing.Union[
+            typing.List["ServerAddressByClientCIDR"], typing.List[dict]
+        ],
     ):
         """
         a map of client CIDR to server address that is serving this
@@ -161,36 +182,45 @@ class APIGroup(_kuber_definitions.Definition):
         X-Forwarded-For header or X-Real-Ip header or
         request.RemoteAddr (in that order) to get the client IP.
         """
-        cleaned = []
+        cleaned: typing.List[ServerAddressByClientCIDR] = []
         for item in value:
             if isinstance(item, dict):
-                item = ServerAddressByClientCIDR().from_dict(item)
-            cleaned.append(item)
-        self._properties['serverAddressByClientCIDRs'] = cleaned
+                item = typing.cast(
+                    ServerAddressByClientCIDR,
+                    ServerAddressByClientCIDR().from_dict(item),
+                )
+            cleaned.append(typing.cast(ServerAddressByClientCIDR, item))
+        self._properties["serverAddressByClientCIDRs"] = cleaned
 
     @property
-    def versions(self) -> typing.List['GroupVersionForDiscovery']:
+    def versions(self) -> typing.List["GroupVersionForDiscovery"]:
         """
         versions are the versions supported in this group.
         """
-        return self._properties.get('versions')
+        return typing.cast(
+            typing.List["GroupVersionForDiscovery"],
+            self._properties.get("versions"),
+        )
 
     @versions.setter
     def versions(
-            self,
-            value: typing.Union[typing.List['GroupVersionForDiscovery'], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["GroupVersionForDiscovery"], typing.List[dict]],
     ):
         """
         versions are the versions supported in this group.
         """
-        cleaned = []
+        cleaned: typing.List[GroupVersionForDiscovery] = []
         for item in value:
             if isinstance(item, dict):
-                item = GroupVersionForDiscovery().from_dict(item)
-            cleaned.append(item)
-        self._properties['versions'] = cleaned
+                item = typing.cast(
+                    GroupVersionForDiscovery,
+                    GroupVersionForDiscovery().from_dict(item),
+                )
+            cleaned.append(typing.cast(GroupVersionForDiscovery, item))
+        self._properties["versions"] = cleaned
 
-    def __enter__(self) -> 'APIGroup':
+    def __enter__(self) -> "APIGroup":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -204,27 +234,22 @@ class APIGroupList(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            groups: typing.List['APIGroup'] = None,
-            kind: str = None,
+        self,
+        api_version: str = None,
+        groups: typing.List["APIGroup"] = None,
+        kind: str = None,
     ):
         """Create APIGroupList instance."""
-        super(APIGroupList, self).__init__(
-            api_version='meta/v1',
-            kind='APIGroupList'
-        )
+        super(APIGroupList, self).__init__(api_version="meta/v1", kind="APIGroupList")
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'groups': groups if groups is not None else [],
-            'kind': kind if kind is not None else '',
-
+            "apiVersion": api_version if api_version is not None else "",
+            "groups": groups if groups is not None else [],
+            "kind": kind if kind is not None else "",
         }
         self._types = {
-            'apiVersion': (str, None),
-            'groups': (list, APIGroup),
-            'kind': (str, None),
-
+            "apiVersion": (str, None),
+            "groups": (list, APIGroup),
+            "kind": (str, None),
         }
 
     @property
@@ -237,7 +262,10 @@ class APIGroupList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
@@ -249,29 +277,32 @@ class APIGroupList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
-    def groups(self) -> typing.List['APIGroup']:
+    def groups(self) -> typing.List["APIGroup"]:
         """
         groups is a list of APIGroup.
         """
-        return self._properties.get('groups')
+        return typing.cast(
+            typing.List["APIGroup"],
+            self._properties.get("groups"),
+        )
 
     @groups.setter
-    def groups(
-            self,
-            value: typing.Union[typing.List['APIGroup'], typing.List[dict]]
-    ):
+    def groups(self, value: typing.Union[typing.List["APIGroup"], typing.List[dict]]):
         """
         groups is a list of APIGroup.
         """
-        cleaned = []
+        cleaned: typing.List[APIGroup] = []
         for item in value:
             if isinstance(item, dict):
-                item = APIGroup().from_dict(item)
-            cleaned.append(item)
-        self._properties['groups'] = cleaned
+                item = typing.cast(
+                    APIGroup,
+                    APIGroup().from_dict(item),
+                )
+            cleaned.append(typing.cast(APIGroup, item))
+        self._properties["groups"] = cleaned
 
     @property
     def kind(self) -> str:
@@ -283,7 +314,10 @@ class APIGroupList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -295,9 +329,9 @@ class APIGroupList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
-    def __enter__(self) -> 'APIGroupList':
+    def __enter__(self) -> "APIGroupList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -311,48 +345,45 @@ class APIResource(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            categories: typing.List[str] = None,
-            group: str = None,
-            kind: str = None,
-            name: str = None,
-            namespaced: bool = None,
-            short_names: typing.List[str] = None,
-            singular_name: str = None,
-            storage_version_hash: str = None,
-            verbs: typing.List[str] = None,
-            version: str = None,
+        self,
+        categories: typing.List[str] = None,
+        group: str = None,
+        kind: str = None,
+        name: str = None,
+        namespaced: bool = None,
+        short_names: typing.List[str] = None,
+        singular_name: str = None,
+        storage_version_hash: str = None,
+        verbs: typing.List[str] = None,
+        version: str = None,
     ):
         """Create APIResource instance."""
-        super(APIResource, self).__init__(
-            api_version='meta/v1',
-            kind='APIResource'
-        )
+        super(APIResource, self).__init__(api_version="meta/v1", kind="APIResource")
         self._properties = {
-            'categories': categories if categories is not None else [],
-            'group': group if group is not None else '',
-            'kind': kind if kind is not None else '',
-            'name': name if name is not None else '',
-            'namespaced': namespaced if namespaced is not None else None,
-            'shortNames': short_names if short_names is not None else [],
-            'singularName': singular_name if singular_name is not None else '',
-            'storageVersionHash': storage_version_hash if storage_version_hash is not None else '',
-            'verbs': verbs if verbs is not None else [],
-            'version': version if version is not None else '',
-
+            "categories": categories if categories is not None else [],
+            "group": group if group is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
+            "namespaced": namespaced if namespaced is not None else None,
+            "shortNames": short_names if short_names is not None else [],
+            "singularName": singular_name if singular_name is not None else "",
+            "storageVersionHash": storage_version_hash
+            if storage_version_hash is not None
+            else "",
+            "verbs": verbs if verbs is not None else [],
+            "version": version if version is not None else "",
         }
         self._types = {
-            'categories': (list, str),
-            'group': (str, None),
-            'kind': (str, None),
-            'name': (str, None),
-            'namespaced': (bool, None),
-            'shortNames': (list, str),
-            'singularName': (str, None),
-            'storageVersionHash': (str, None),
-            'verbs': (list, str),
-            'version': (str, None),
-
+            "categories": (list, str),
+            "group": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
+            "namespaced": (bool, None),
+            "shortNames": (list, str),
+            "singularName": (str, None),
+            "storageVersionHash": (str, None),
+            "verbs": (list, str),
+            "version": (str, None),
         }
 
     @property
@@ -361,7 +392,10 @@ class APIResource(_kuber_definitions.Definition):
         categories is a list of the grouped resources this resource
         belongs to (e.g. 'all')
         """
-        return self._properties.get('categories')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("categories"),
+        )
 
     @categories.setter
     def categories(self, value: typing.List[str]):
@@ -369,7 +403,7 @@ class APIResource(_kuber_definitions.Definition):
         categories is a list of the grouped resources this resource
         belongs to (e.g. 'all')
         """
-        self._properties['categories'] = value
+        self._properties["categories"] = value
 
     @property
     def group(self) -> str:
@@ -378,7 +412,10 @@ class APIResource(_kuber_definitions.Definition):
         the group of the containing resource list. For subresources,
         this may have a different value, for example: Scale".
         """
-        return self._properties.get('group')
+        return typing.cast(
+            str,
+            self._properties.get("group"),
+        )
 
     @group.setter
     def group(self, value: str):
@@ -387,7 +424,7 @@ class APIResource(_kuber_definitions.Definition):
         the group of the containing resource list. For subresources,
         this may have a different value, for example: Scale".
         """
-        self._properties['group'] = value
+        self._properties["group"] = value
 
     @property
     def kind(self) -> str:
@@ -395,7 +432,10 @@ class APIResource(_kuber_definitions.Definition):
         kind is the kind for the resource (e.g. 'Foo' is the kind
         for a resource 'foo')
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -403,35 +443,41 @@ class APIResource(_kuber_definitions.Definition):
         kind is the kind for the resource (e.g. 'Foo' is the kind
         for a resource 'foo')
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def name(self) -> str:
         """
         name is the plural name of the resource.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         name is the plural name of the resource.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def namespaced(self) -> bool:
         """
         namespaced indicates if a resource is namespaced or not.
         """
-        return self._properties.get('namespaced')
+        return typing.cast(
+            bool,
+            self._properties.get("namespaced"),
+        )
 
     @namespaced.setter
     def namespaced(self, value: bool):
         """
         namespaced indicates if a resource is namespaced or not.
         """
-        self._properties['namespaced'] = value
+        self._properties["namespaced"] = value
 
     @property
     def short_names(self) -> typing.List[str]:
@@ -439,7 +485,10 @@ class APIResource(_kuber_definitions.Definition):
         shortNames is a list of suggested short names of the
         resource.
         """
-        return self._properties.get('shortNames')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("shortNames"),
+        )
 
     @short_names.setter
     def short_names(self, value: typing.List[str]):
@@ -447,7 +496,7 @@ class APIResource(_kuber_definitions.Definition):
         shortNames is a list of suggested short names of the
         resource.
         """
-        self._properties['shortNames'] = value
+        self._properties["shortNames"] = value
 
     @property
     def singular_name(self) -> str:
@@ -458,7 +507,10 @@ class APIResource(_kuber_definitions.Definition):
         single item and both singular and plural are allowed from
         the kubectl CLI interface.
         """
-        return self._properties.get('singularName')
+        return typing.cast(
+            str,
+            self._properties.get("singularName"),
+        )
 
     @singular_name.setter
     def singular_name(self, value: str):
@@ -469,7 +521,7 @@ class APIResource(_kuber_definitions.Definition):
         single item and both singular and plural are allowed from
         the kubectl CLI interface.
         """
-        self._properties['singularName'] = value
+        self._properties["singularName"] = value
 
     @property
     def storage_version_hash(self) -> str:
@@ -483,7 +535,10 @@ class APIResource(_kuber_definitions.Definition):
         feature gate is enabled. This field will remain optional
         even if it graduates.
         """
-        return self._properties.get('storageVersionHash')
+        return typing.cast(
+            str,
+            self._properties.get("storageVersionHash"),
+        )
 
     @storage_version_hash.setter
     def storage_version_hash(self, value: str):
@@ -497,7 +552,7 @@ class APIResource(_kuber_definitions.Definition):
         feature gate is enabled. This field will remain optional
         even if it graduates.
         """
-        self._properties['storageVersionHash'] = value
+        self._properties["storageVersionHash"] = value
 
     @property
     def verbs(self) -> typing.List[str]:
@@ -506,7 +561,10 @@ class APIResource(_kuber_definitions.Definition):
         list, watch, create, update, patch, delete,
         deletecollection, and proxy)
         """
-        return self._properties.get('verbs')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("verbs"),
+        )
 
     @verbs.setter
     def verbs(self, value: typing.List[str]):
@@ -515,7 +573,7 @@ class APIResource(_kuber_definitions.Definition):
         list, watch, create, update, patch, delete,
         deletecollection, and proxy)
         """
-        self._properties['verbs'] = value
+        self._properties["verbs"] = value
 
     @property
     def version(self) -> str:
@@ -526,7 +584,10 @@ class APIResource(_kuber_definitions.Definition):
         v1 (while inside a v1beta1 version of the core resource's
         group)".
         """
-        return self._properties.get('version')
+        return typing.cast(
+            str,
+            self._properties.get("version"),
+        )
 
     @version.setter
     def version(self, value: str):
@@ -537,9 +598,9 @@ class APIResource(_kuber_definitions.Definition):
         v1 (while inside a v1beta1 version of the core resource's
         group)".
         """
-        self._properties['version'] = value
+        self._properties["version"] = value
 
-    def __enter__(self) -> 'APIResource':
+    def __enter__(self) -> "APIResource":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -554,30 +615,27 @@ class APIResourceList(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            group_version: str = None,
-            kind: str = None,
-            resources: typing.List['APIResource'] = None,
+        self,
+        api_version: str = None,
+        group_version: str = None,
+        kind: str = None,
+        resources: typing.List["APIResource"] = None,
     ):
         """Create APIResourceList instance."""
         super(APIResourceList, self).__init__(
-            api_version='meta/v1',
-            kind='APIResourceList'
+            api_version="meta/v1", kind="APIResourceList"
         )
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'groupVersion': group_version if group_version is not None else '',
-            'kind': kind if kind is not None else '',
-            'resources': resources if resources is not None else [],
-
+            "apiVersion": api_version if api_version is not None else "",
+            "groupVersion": group_version if group_version is not None else "",
+            "kind": kind if kind is not None else "",
+            "resources": resources if resources is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'groupVersion': (str, None),
-            'kind': (str, None),
-            'resources': (list, APIResource),
-
+            "apiVersion": (str, None),
+            "groupVersion": (str, None),
+            "kind": (str, None),
+            "resources": (list, APIResource),
         }
 
     @property
@@ -590,7 +648,10 @@ class APIResourceList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
@@ -602,7 +663,7 @@ class APIResourceList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
     def group_version(self) -> str:
@@ -610,7 +671,10 @@ class APIResourceList(_kuber_definitions.Definition):
         groupVersion is the group and version this APIResourceList
         is for.
         """
-        return self._properties.get('groupVersion')
+        return typing.cast(
+            str,
+            self._properties.get("groupVersion"),
+        )
 
     @group_version.setter
     def group_version(self, value: str):
@@ -618,7 +682,7 @@ class APIResourceList(_kuber_definitions.Definition):
         groupVersion is the group and version this APIResourceList
         is for.
         """
-        self._properties['groupVersion'] = value
+        self._properties["groupVersion"] = value
 
     @property
     def kind(self) -> str:
@@ -630,7 +694,10 @@ class APIResourceList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -642,33 +709,38 @@ class APIResourceList(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
-    def resources(self) -> typing.List['APIResource']:
+    def resources(self) -> typing.List["APIResource"]:
         """
         resources contains the name of the resources and if they are
         namespaced.
         """
-        return self._properties.get('resources')
+        return typing.cast(
+            typing.List["APIResource"],
+            self._properties.get("resources"),
+        )
 
     @resources.setter
     def resources(
-            self,
-            value: typing.Union[typing.List['APIResource'], typing.List[dict]]
+        self, value: typing.Union[typing.List["APIResource"], typing.List[dict]]
     ):
         """
         resources contains the name of the resources and if they are
         namespaced.
         """
-        cleaned = []
+        cleaned: typing.List[APIResource] = []
         for item in value:
             if isinstance(item, dict):
-                item = APIResource().from_dict(item)
-            cleaned.append(item)
-        self._properties['resources'] = cleaned
+                item = typing.cast(
+                    APIResource,
+                    APIResource().from_dict(item),
+                )
+            cleaned.append(typing.cast(APIResource, item))
+        self._properties["resources"] = cleaned
 
-    def __enter__(self) -> 'APIResourceList':
+    def __enter__(self) -> "APIResourceList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -683,30 +755,27 @@ class APIVersions(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            kind: str = None,
-            server_address_by_client_cidrs: typing.List['ServerAddressByClientCIDR'] = None,
-            versions: typing.List[str] = None,
+        self,
+        api_version: str = None,
+        kind: str = None,
+        server_address_by_client_cidrs: typing.List["ServerAddressByClientCIDR"] = None,
+        versions: typing.List[str] = None,
     ):
         """Create APIVersions instance."""
-        super(APIVersions, self).__init__(
-            api_version='meta/v1',
-            kind='APIVersions'
-        )
+        super(APIVersions, self).__init__(api_version="meta/v1", kind="APIVersions")
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'kind': kind if kind is not None else '',
-            'serverAddressByClientCIDRs': server_address_by_client_cidrs if server_address_by_client_cidrs is not None else [],
-            'versions': versions if versions is not None else [],
-
+            "apiVersion": api_version if api_version is not None else "",
+            "kind": kind if kind is not None else "",
+            "serverAddressByClientCIDRs": server_address_by_client_cidrs
+            if server_address_by_client_cidrs is not None
+            else [],
+            "versions": versions if versions is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'serverAddressByClientCIDRs': (list, ServerAddressByClientCIDR),
-            'versions': (list, str),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "serverAddressByClientCIDRs": (list, ServerAddressByClientCIDR),
+            "versions": (list, str),
         }
 
     @property
@@ -719,7 +788,10 @@ class APIVersions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
@@ -731,7 +803,7 @@ class APIVersions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
     def kind(self) -> str:
@@ -743,7 +815,10 @@ class APIVersions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -755,10 +830,12 @@ class APIVersions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
-    def server_address_by_client_cidrs(self) -> typing.List['ServerAddressByClientCIDR']:
+    def server_address_by_client_cidrs(
+        self,
+    ) -> typing.List["ServerAddressByClientCIDR"]:
         """
         a map of client CIDR to server address that is serving this
         group. This is to help clients reach servers in the most
@@ -772,12 +849,17 @@ class APIVersions(_kuber_definitions.Definition):
         X-Forwarded-For header or X-Real-Ip header or
         request.RemoteAddr (in that order) to get the client IP.
         """
-        return self._properties.get('serverAddressByClientCIDRs')
+        return typing.cast(
+            typing.List["ServerAddressByClientCIDR"],
+            self._properties.get("serverAddressByClientCIDRs"),
+        )
 
     @server_address_by_client_cidrs.setter
     def server_address_by_client_cidrs(
-            self,
-            value: typing.Union[typing.List['ServerAddressByClientCIDR'], typing.List[dict]]
+        self,
+        value: typing.Union[
+            typing.List["ServerAddressByClientCIDR"], typing.List[dict]
+        ],
     ):
         """
         a map of client CIDR to server address that is serving this
@@ -792,28 +874,34 @@ class APIVersions(_kuber_definitions.Definition):
         X-Forwarded-For header or X-Real-Ip header or
         request.RemoteAddr (in that order) to get the client IP.
         """
-        cleaned = []
+        cleaned: typing.List[ServerAddressByClientCIDR] = []
         for item in value:
             if isinstance(item, dict):
-                item = ServerAddressByClientCIDR().from_dict(item)
-            cleaned.append(item)
-        self._properties['serverAddressByClientCIDRs'] = cleaned
+                item = typing.cast(
+                    ServerAddressByClientCIDR,
+                    ServerAddressByClientCIDR().from_dict(item),
+                )
+            cleaned.append(typing.cast(ServerAddressByClientCIDR, item))
+        self._properties["serverAddressByClientCIDRs"] = cleaned
 
     @property
     def versions(self) -> typing.List[str]:
         """
         versions are the api versions that are available.
         """
-        return self._properties.get('versions')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("versions"),
+        )
 
     @versions.setter
     def versions(self, value: typing.List[str]):
         """
         versions are the api versions that are available.
         """
-        self._properties['versions'] = value
+        self._properties["versions"] = value
 
-    def __enter__(self) -> 'APIVersions':
+    def __enter__(self) -> "APIVersions":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -826,39 +914,42 @@ class DeleteOptions(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            dry_run: typing.List[str] = None,
-            grace_period_seconds: int = None,
-            kind: str = None,
-            orphan_dependents: bool = None,
-            preconditions: 'Preconditions' = None,
-            propagation_policy: str = None,
+        self,
+        api_version: str = None,
+        dry_run: typing.List[str] = None,
+        grace_period_seconds: int = None,
+        kind: str = None,
+        orphan_dependents: bool = None,
+        preconditions: "Preconditions" = None,
+        propagation_policy: str = None,
     ):
         """Create DeleteOptions instance."""
-        super(DeleteOptions, self).__init__(
-            api_version='meta/v1',
-            kind='DeleteOptions'
-        )
+        super(DeleteOptions, self).__init__(api_version="meta/v1", kind="DeleteOptions")
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'dryRun': dry_run if dry_run is not None else [],
-            'gracePeriodSeconds': grace_period_seconds if grace_period_seconds is not None else None,
-            'kind': kind if kind is not None else '',
-            'orphanDependents': orphan_dependents if orphan_dependents is not None else None,
-            'preconditions': preconditions if preconditions is not None else Preconditions(),
-            'propagationPolicy': propagation_policy if propagation_policy is not None else '',
-
+            "apiVersion": api_version if api_version is not None else "",
+            "dryRun": dry_run if dry_run is not None else [],
+            "gracePeriodSeconds": grace_period_seconds
+            if grace_period_seconds is not None
+            else None,
+            "kind": kind if kind is not None else "",
+            "orphanDependents": orphan_dependents
+            if orphan_dependents is not None
+            else None,
+            "preconditions": preconditions
+            if preconditions is not None
+            else Preconditions(),
+            "propagationPolicy": propagation_policy
+            if propagation_policy is not None
+            else "",
         }
         self._types = {
-            'apiVersion': (str, None),
-            'dryRun': (list, str),
-            'gracePeriodSeconds': (int, None),
-            'kind': (str, None),
-            'orphanDependents': (bool, None),
-            'preconditions': (Preconditions, None),
-            'propagationPolicy': (str, None),
-
+            "apiVersion": (str, None),
+            "dryRun": (list, str),
+            "gracePeriodSeconds": (int, None),
+            "kind": (str, None),
+            "orphanDependents": (bool, None),
+            "preconditions": (Preconditions, None),
+            "propagationPolicy": (str, None),
         }
 
     @property
@@ -871,7 +962,10 @@ class DeleteOptions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
@@ -883,7 +977,7 @@ class DeleteOptions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
     def dry_run(self) -> typing.List[str]:
@@ -894,7 +988,10 @@ class DeleteOptions(_kuber_definitions.Definition):
         request. Valid values are: - All: all dry run stages will be
         processed
         """
-        return self._properties.get('dryRun')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("dryRun"),
+        )
 
     @dry_run.setter
     def dry_run(self, value: typing.List[str]):
@@ -905,7 +1002,7 @@ class DeleteOptions(_kuber_definitions.Definition):
         request. Valid values are: - All: all dry run stages will be
         processed
         """
-        self._properties['dryRun'] = value
+        self._properties["dryRun"] = value
 
     @property
     def grace_period_seconds(self) -> int:
@@ -917,7 +1014,10 @@ class DeleteOptions(_kuber_definitions.Definition):
         per object value if not specified. zero means delete
         immediately.
         """
-        return self._properties.get('gracePeriodSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("gracePeriodSeconds"),
+        )
 
     @grace_period_seconds.setter
     def grace_period_seconds(self, value: int):
@@ -929,7 +1029,7 @@ class DeleteOptions(_kuber_definitions.Definition):
         per object value if not specified. zero means delete
         immediately.
         """
-        self._properties['gracePeriodSeconds'] = value
+        self._properties["gracePeriodSeconds"] = value
 
     @property
     def kind(self) -> str:
@@ -941,7 +1041,10 @@ class DeleteOptions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -953,7 +1056,7 @@ class DeleteOptions(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def orphan_dependents(self) -> bool:
@@ -964,7 +1067,10 @@ class DeleteOptions(_kuber_definitions.Definition):
         added to/removed from the object's finalizers list. Either
         this field or PropagationPolicy may be set, but not both.
         """
-        return self._properties.get('orphanDependents')
+        return typing.cast(
+            bool,
+            self._properties.get("orphanDependents"),
+        )
 
     @orphan_dependents.setter
     def orphan_dependents(self, value: bool):
@@ -975,25 +1081,31 @@ class DeleteOptions(_kuber_definitions.Definition):
         added to/removed from the object's finalizers list. Either
         this field or PropagationPolicy may be set, but not both.
         """
-        self._properties['orphanDependents'] = value
+        self._properties["orphanDependents"] = value
 
     @property
-    def preconditions(self) -> 'Preconditions':
+    def preconditions(self) -> "Preconditions":
         """
         Must be fulfilled before a deletion is carried out. If not
         possible, a 409 Conflict status will be returned.
         """
-        return self._properties.get('preconditions')
+        return typing.cast(
+            "Preconditions",
+            self._properties.get("preconditions"),
+        )
 
     @preconditions.setter
-    def preconditions(self, value: typing.Union['Preconditions', dict]):
+    def preconditions(self, value: typing.Union["Preconditions", dict]):
         """
         Must be fulfilled before a deletion is carried out. If not
         possible, a 409 Conflict status will be returned.
         """
         if isinstance(value, dict):
-            value = Preconditions().from_dict(value)
-        self._properties['preconditions'] = value
+            value = typing.cast(
+                Preconditions,
+                Preconditions().from_dict(value),
+            )
+        self._properties["preconditions"] = value
 
     @property
     def propagation_policy(self) -> str:
@@ -1008,7 +1120,10 @@ class DeleteOptions(_kuber_definitions.Definition):
         cascading policy that deletes all dependents in the
         foreground.
         """
-        return self._properties.get('propagationPolicy')
+        return typing.cast(
+            str,
+            self._properties.get("propagationPolicy"),
+        )
 
     @propagation_policy.setter
     def propagation_policy(self, value: str):
@@ -1023,9 +1138,9 @@ class DeleteOptions(_kuber_definitions.Definition):
         cascading policy that deletes all dependents in the
         foreground.
         """
-        self._properties['propagationPolicy'] = value
+        self._properties["propagationPolicy"] = value
 
-    def __enter__(self) -> 'DeleteOptions':
+    def __enter__(self) -> "DeleteOptions":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1040,21 +1155,14 @@ class Fields(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
+        self,
     ):
         """Create Fields instance."""
-        super(Fields, self).__init__(
-            api_version='meta/v1',
-            kind='Fields'
-        )
-        self._properties = {
+        super(Fields, self).__init__(api_version="meta/v1", kind="Fields")
+        self._properties = {}
+        self._types = {}
 
-        }
-        self._types = {
-
-        }
-
-    def __enter__(self) -> 'Fields':
+    def __enter__(self) -> "Fields":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1069,24 +1177,21 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            group_version: str = None,
-            version: str = None,
+        self,
+        group_version: str = None,
+        version: str = None,
     ):
         """Create GroupVersionForDiscovery instance."""
         super(GroupVersionForDiscovery, self).__init__(
-            api_version='meta/v1',
-            kind='GroupVersionForDiscovery'
+            api_version="meta/v1", kind="GroupVersionForDiscovery"
         )
         self._properties = {
-            'groupVersion': group_version if group_version is not None else '',
-            'version': version if version is not None else '',
-
+            "groupVersion": group_version if group_version is not None else "",
+            "version": version if version is not None else "",
         }
         self._types = {
-            'groupVersion': (str, None),
-            'version': (str, None),
-
+            "groupVersion": (str, None),
+            "version": (str, None),
         }
 
     @property
@@ -1095,7 +1200,10 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
         groupVersion specifies the API group and version in the form
         "group/version"
         """
-        return self._properties.get('groupVersion')
+        return typing.cast(
+            str,
+            self._properties.get("groupVersion"),
+        )
 
     @group_version.setter
     def group_version(self, value: str):
@@ -1103,7 +1211,7 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
         groupVersion specifies the API group and version in the form
         "group/version"
         """
-        self._properties['groupVersion'] = value
+        self._properties["groupVersion"] = value
 
     @property
     def version(self) -> str:
@@ -1112,7 +1220,10 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
         is to save the clients the trouble of splitting the
         GroupVersion.
         """
-        return self._properties.get('version')
+        return typing.cast(
+            str,
+            self._properties.get("version"),
+        )
 
     @version.setter
     def version(self, value: str):
@@ -1121,9 +1232,9 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
         is to save the clients the trouble of splitting the
         GroupVersion.
         """
-        self._properties['version'] = value
+        self._properties["version"] = value
 
-    def __enter__(self) -> 'GroupVersionForDiscovery':
+    def __enter__(self) -> "GroupVersionForDiscovery":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1137,21 +1248,16 @@ class Initializer(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
+        self,
+        name: str = None,
     ):
         """Create Initializer instance."""
-        super(Initializer, self).__init__(
-            api_version='meta/v1',
-            kind='Initializer'
-        )
+        super(Initializer, self).__init__(api_version="meta/v1", kind="Initializer")
         self._properties = {
-            'name': name if name is not None else '',
-
+            "name": name if name is not None else "",
         }
         self._types = {
-            'name': (str, None),
-
+            "name": (str, None),
         }
 
     @property
@@ -1160,7 +1266,10 @@ class Initializer(_kuber_definitions.Definition):
         name of the process that is responsible for initializing
         this object.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -1168,9 +1277,9 @@ class Initializer(_kuber_definitions.Definition):
         name of the process that is responsible for initializing
         this object.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'Initializer':
+    def __enter__(self) -> "Initializer":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1183,28 +1292,23 @@ class Initializers(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            pending: typing.List['Initializer'] = None,
-            result: 'Status' = None,
+        self,
+        pending: typing.List["Initializer"] = None,
+        result: "Status" = None,
     ):
         """Create Initializers instance."""
-        super(Initializers, self).__init__(
-            api_version='meta/v1',
-            kind='Initializers'
-        )
+        super(Initializers, self).__init__(api_version="meta/v1", kind="Initializers")
         self._properties = {
-            'pending': pending if pending is not None else [],
-            'result': result if result is not None else Status(),
-
+            "pending": pending if pending is not None else [],
+            "result": result if result is not None else Status(),
         }
         self._types = {
-            'pending': (list, Initializer),
-            'result': (Status, None),
-
+            "pending": (list, Initializer),
+            "result": (Status, None),
         }
 
     @property
-    def pending(self) -> typing.List['Initializer']:
+    def pending(self) -> typing.List["Initializer"]:
         """
         Pending is a list of initializers that must execute in order
         before this object is visible. When the last pending
@@ -1212,12 +1316,14 @@ class Initializers(_kuber_definitions.Definition):
         initializers struct will be set to nil and the object is
         considered as initialized and visible to all clients.
         """
-        return self._properties.get('pending')
+        return typing.cast(
+            typing.List["Initializer"],
+            self._properties.get("pending"),
+        )
 
     @pending.setter
     def pending(
-            self,
-            value: typing.Union[typing.List['Initializer'], typing.List[dict]]
+        self, value: typing.Union[typing.List["Initializer"], typing.List[dict]]
     ):
         """
         Pending is a list of initializers that must execute in order
@@ -1226,34 +1332,43 @@ class Initializers(_kuber_definitions.Definition):
         initializers struct will be set to nil and the object is
         considered as initialized and visible to all clients.
         """
-        cleaned = []
+        cleaned: typing.List[Initializer] = []
         for item in value:
             if isinstance(item, dict):
-                item = Initializer().from_dict(item)
-            cleaned.append(item)
-        self._properties['pending'] = cleaned
+                item = typing.cast(
+                    Initializer,
+                    Initializer().from_dict(item),
+                )
+            cleaned.append(typing.cast(Initializer, item))
+        self._properties["pending"] = cleaned
 
     @property
-    def result(self) -> 'Status':
+    def result(self) -> "Status":
         """
         If result is set with the Failure field, the object will be
         persisted to storage and then deleted, ensuring that other
         clients can observe the deletion.
         """
-        return self._properties.get('result')
+        return typing.cast(
+            "Status",
+            self._properties.get("result"),
+        )
 
     @result.setter
-    def result(self, value: typing.Union['Status', dict]):
+    def result(self, value: typing.Union["Status", dict]):
         """
         If result is set with the Failure field, the object will be
         persisted to storage and then deleted, ensuring that other
         clients can observe the deletion.
         """
         if isinstance(value, dict):
-            value = Status().from_dict(value)
-        self._properties['result'] = value
+            value = typing.cast(
+                Status,
+                Status().from_dict(value),
+            )
+        self._properties["result"] = value
 
-    def __enter__(self) -> 'Initializers':
+    def __enter__(self) -> "Initializers":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1269,49 +1384,52 @@ class LabelSelector(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            match_expressions: typing.List['LabelSelectorRequirement'] = None,
-            match_labels: dict = None,
+        self,
+        match_expressions: typing.List["LabelSelectorRequirement"] = None,
+        match_labels: dict = None,
     ):
         """Create LabelSelector instance."""
-        super(LabelSelector, self).__init__(
-            api_version='meta/v1',
-            kind='LabelSelector'
-        )
+        super(LabelSelector, self).__init__(api_version="meta/v1", kind="LabelSelector")
         self._properties = {
-            'matchExpressions': match_expressions if match_expressions is not None else [],
-            'matchLabels': match_labels if match_labels is not None else {},
-
+            "matchExpressions": match_expressions
+            if match_expressions is not None
+            else [],
+            "matchLabels": match_labels if match_labels is not None else {},
         }
         self._types = {
-            'matchExpressions': (list, LabelSelectorRequirement),
-            'matchLabels': (dict, None),
-
+            "matchExpressions": (list, LabelSelectorRequirement),
+            "matchLabels": (dict, None),
         }
 
     @property
-    def match_expressions(self) -> typing.List['LabelSelectorRequirement']:
+    def match_expressions(self) -> typing.List["LabelSelectorRequirement"]:
         """
         matchExpressions is a list of label selector requirements.
         The requirements are ANDed.
         """
-        return self._properties.get('matchExpressions')
+        return typing.cast(
+            typing.List["LabelSelectorRequirement"],
+            self._properties.get("matchExpressions"),
+        )
 
     @match_expressions.setter
     def match_expressions(
-            self,
-            value: typing.Union[typing.List['LabelSelectorRequirement'], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["LabelSelectorRequirement"], typing.List[dict]],
     ):
         """
         matchExpressions is a list of label selector requirements.
         The requirements are ANDed.
         """
-        cleaned = []
+        cleaned: typing.List[LabelSelectorRequirement] = []
         for item in value:
             if isinstance(item, dict):
-                item = LabelSelectorRequirement().from_dict(item)
-            cleaned.append(item)
-        self._properties['matchExpressions'] = cleaned
+                item = typing.cast(
+                    LabelSelectorRequirement,
+                    LabelSelectorRequirement().from_dict(item),
+                )
+            cleaned.append(typing.cast(LabelSelectorRequirement, item))
+        self._properties["matchExpressions"] = cleaned
 
     @property
     def match_labels(self) -> dict:
@@ -1322,7 +1440,10 @@ class LabelSelector(_kuber_definitions.Definition):
         operator is "In", and the values array contains only
         "value". The requirements are ANDed.
         """
-        return self._properties.get('matchLabels')
+        return typing.cast(
+            dict,
+            self._properties.get("matchLabels"),
+        )
 
     @match_labels.setter
     def match_labels(self, value: dict):
@@ -1333,9 +1454,9 @@ class LabelSelector(_kuber_definitions.Definition):
         operator is "In", and the values array contains only
         "value". The requirements are ANDed.
         """
-        self._properties['matchLabels'] = value
+        self._properties["matchLabels"] = value
 
-    def __enter__(self) -> 'LabelSelector':
+    def __enter__(self) -> "LabelSelector":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1350,27 +1471,24 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            key: str = None,
-            operator: str = None,
-            values: typing.List[str] = None,
+        self,
+        key: str = None,
+        operator: str = None,
+        values: typing.List[str] = None,
     ):
         """Create LabelSelectorRequirement instance."""
         super(LabelSelectorRequirement, self).__init__(
-            api_version='meta/v1',
-            kind='LabelSelectorRequirement'
+            api_version="meta/v1", kind="LabelSelectorRequirement"
         )
         self._properties = {
-            'key': key if key is not None else '',
-            'operator': operator if operator is not None else '',
-            'values': values if values is not None else [],
-
+            "key": key if key is not None else "",
+            "operator": operator if operator is not None else "",
+            "values": values if values is not None else [],
         }
         self._types = {
-            'key': (str, None),
-            'operator': (str, None),
-            'values': (list, str),
-
+            "key": (str, None),
+            "operator": (str, None),
+            "values": (list, str),
         }
 
     @property
@@ -1378,14 +1496,17 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
         """
         key is the label key that the selector applies to.
         """
-        return self._properties.get('key')
+        return typing.cast(
+            str,
+            self._properties.get("key"),
+        )
 
     @key.setter
     def key(self, value: str):
         """
         key is the label key that the selector applies to.
         """
-        self._properties['key'] = value
+        self._properties["key"] = value
 
     @property
     def operator(self) -> str:
@@ -1393,7 +1514,10 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
         operator represents a key's relationship to a set of values.
         Valid operators are In, NotIn, Exists and DoesNotExist.
         """
-        return self._properties.get('operator')
+        return typing.cast(
+            str,
+            self._properties.get("operator"),
+        )
 
     @operator.setter
     def operator(self, value: str):
@@ -1401,7 +1525,7 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
         operator represents a key's relationship to a set of values.
         Valid operators are In, NotIn, Exists and DoesNotExist.
         """
-        self._properties['operator'] = value
+        self._properties["operator"] = value
 
     @property
     def values(self) -> typing.List[str]:
@@ -1412,7 +1536,10 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
         empty. This array is replaced during a strategic merge
         patch.
         """
-        return self._properties.get('values')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("values"),
+        )
 
     @values.setter
     def values(self, value: typing.List[str]):
@@ -1423,9 +1550,9 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
         empty. This array is replaced during a strategic merge
         patch.
         """
-        self._properties['values'] = value
+        self._properties["values"] = value
 
-    def __enter__(self) -> 'LabelSelectorRequirement':
+    def __enter__(self) -> "LabelSelectorRequirement":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1440,30 +1567,27 @@ class ListMeta(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            continue_: str = None,
-            remaining_item_count: int = None,
-            resource_version: str = None,
-            self_link: str = None,
+        self,
+        continue_: str = None,
+        remaining_item_count: int = None,
+        resource_version: str = None,
+        self_link: str = None,
     ):
         """Create ListMeta instance."""
-        super(ListMeta, self).__init__(
-            api_version='meta/v1',
-            kind='ListMeta'
-        )
+        super(ListMeta, self).__init__(api_version="meta/v1", kind="ListMeta")
         self._properties = {
-            'continue': continue_ if continue_ is not None else '',
-            'remainingItemCount': remaining_item_count if remaining_item_count is not None else None,
-            'resourceVersion': resource_version if resource_version is not None else '',
-            'selfLink': self_link if self_link is not None else '',
-
+            "continue": continue_ if continue_ is not None else "",
+            "remainingItemCount": remaining_item_count
+            if remaining_item_count is not None
+            else None,
+            "resourceVersion": resource_version if resource_version is not None else "",
+            "selfLink": self_link if self_link is not None else "",
         }
         self._types = {
-            'continue': (str, None),
-            'remainingItemCount': (int, None),
-            'resourceVersion': (str, None),
-            'selfLink': (str, None),
-
+            "continue": (str, None),
+            "remainingItemCount": (int, None),
+            "resourceVersion": (str, None),
+            "selfLink": (str, None),
         }
 
     @property
@@ -1481,7 +1605,10 @@ class ListMeta(_kuber_definitions.Definition):
         response, unless you have received this token from an error
         message.
         """
-        return self._properties.get('continue')
+        return typing.cast(
+            str,
+            self._properties.get("continue"),
+        )
 
     @continue_.setter
     def continue_(self, value: str):
@@ -1498,7 +1625,7 @@ class ListMeta(_kuber_definitions.Definition):
         response, unless you have received this token from an error
         message.
         """
-        self._properties['continue'] = value
+        self._properties["continue"] = value
 
     @property
     def remaining_item_count(self) -> int:
@@ -1519,7 +1646,10 @@ class ListMeta(_kuber_definitions.Definition):
         This field is alpha and can be changed or removed without
         notice.
         """
-        return self._properties.get('remainingItemCount')
+        return typing.cast(
+            int,
+            self._properties.get("remainingItemCount"),
+        )
 
     @remaining_item_count.setter
     def remaining_item_count(self, value: int):
@@ -1540,7 +1670,7 @@ class ListMeta(_kuber_definitions.Definition):
         This field is alpha and can be changed or removed without
         notice.
         """
-        self._properties['remainingItemCount'] = value
+        self._properties["remainingItemCount"] = value
 
     @property
     def resource_version(self) -> str:
@@ -1553,7 +1683,10 @@ class ListMeta(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#concurrency-control-and-consistency
         """
-        return self._properties.get('resourceVersion')
+        return typing.cast(
+            str,
+            self._properties.get("resourceVersion"),
+        )
 
     @resource_version.setter
     def resource_version(self, value: str):
@@ -1566,7 +1699,7 @@ class ListMeta(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#concurrency-control-and-consistency
         """
-        self._properties['resourceVersion'] = value
+        self._properties["resourceVersion"] = value
 
     @property
     def self_link(self) -> str:
@@ -1574,7 +1707,10 @@ class ListMeta(_kuber_definitions.Definition):
         selfLink is a URL representing this object. Populated by the
         system. Read-only.
         """
-        return self._properties.get('selfLink')
+        return typing.cast(
+            str,
+            self._properties.get("selfLink"),
+        )
 
     @self_link.setter
     def self_link(self, value: str):
@@ -1582,9 +1718,9 @@ class ListMeta(_kuber_definitions.Definition):
         selfLink is a URL representing this object. Populated by the
         system. Read-only.
         """
-        self._properties['selfLink'] = value
+        self._properties["selfLink"] = value
 
-    def __enter__(self) -> 'ListMeta':
+    def __enter__(self) -> "ListMeta":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1598,33 +1734,30 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            fields: 'Fields' = None,
-            manager: str = None,
-            operation: str = None,
-            time: str = None,
+        self,
+        api_version: str = None,
+        fields: "Fields" = None,
+        manager: str = None,
+        operation: str = None,
+        time: str = None,
     ):
         """Create ManagedFieldsEntry instance."""
         super(ManagedFieldsEntry, self).__init__(
-            api_version='meta/v1',
-            kind='ManagedFieldsEntry'
+            api_version="meta/v1", kind="ManagedFieldsEntry"
         )
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'fields': fields if fields is not None else Fields(),
-            'manager': manager if manager is not None else '',
-            'operation': operation if operation is not None else '',
-            'time': time if time is not None else None,
-
+            "apiVersion": api_version if api_version is not None else "",
+            "fields": fields if fields is not None else Fields(),
+            "manager": manager if manager is not None else "",
+            "operation": operation if operation is not None else "",
+            "time": time if time is not None else None,
         }
         self._types = {
-            'apiVersion': (str, None),
-            'fields': (Fields, None),
-            'manager': (str, None),
-            'operation': (str, None),
-            'time': (str, None),
-
+            "apiVersion": (str, None),
+            "fields": (Fields, None),
+            "manager": (str, None),
+            "operation": (str, None),
+            "time": (str, None),
         }
 
     @property
@@ -1636,7 +1769,10 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         track the version of a field set because it cannot be
         automatically converted.
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
@@ -1647,23 +1783,29 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         track the version of a field set because it cannot be
         automatically converted.
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
-    def fields(self) -> 'Fields':
+    def fields(self) -> "Fields":
         """
         Fields identifies a set of fields.
         """
-        return self._properties.get('fields')
+        return typing.cast(
+            "Fields",
+            self._properties.get("fields"),
+        )
 
     @fields.setter
-    def fields(self, value: typing.Union['Fields', dict]):
+    def fields(self, value: typing.Union["Fields", dict]):
         """
         Fields identifies a set of fields.
         """
         if isinstance(value, dict):
-            value = Fields().from_dict(value)
-        self._properties['fields'] = value
+            value = typing.cast(
+                Fields,
+                Fields().from_dict(value),
+            )
+        self._properties["fields"] = value
 
     @property
     def manager(self) -> str:
@@ -1671,7 +1813,10 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         Manager is an identifier of the workflow managing these
         fields.
         """
-        return self._properties.get('manager')
+        return typing.cast(
+            str,
+            self._properties.get("manager"),
+        )
 
     @manager.setter
     def manager(self, value: str):
@@ -1679,7 +1824,7 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         Manager is an identifier of the workflow managing these
         fields.
         """
-        self._properties['manager'] = value
+        self._properties["manager"] = value
 
     @property
     def operation(self) -> str:
@@ -1688,7 +1833,10 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         ManagedFieldsEntry being created. The only valid values for
         this field are 'Apply' and 'Update'.
         """
-        return self._properties.get('operation')
+        return typing.cast(
+            str,
+            self._properties.get("operation"),
+        )
 
     @operation.setter
     def operation(self, value: str):
@@ -1697,7 +1845,7 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         ManagedFieldsEntry being created. The only valid values for
         this field are 'Apply' and 'Update'.
         """
-        self._properties['operation'] = value
+        self._properties["operation"] = value
 
     @property
     def time(self) -> str:
@@ -1705,24 +1853,24 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         Time is timestamp of when these fields were set. It should
         always be empty if Operation is 'Apply'
         """
-        return self._properties.get('time')
+        return typing.cast(
+            str,
+            self._properties.get("time"),
+        )
 
     @time.setter
-    def time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
-    ):
+    def time(self, value: typing.Union[str, _datetime.datetime, _datetime.date]):
         """
         Time is timestamp of when these fields were set. It should
         always be empty if Operation is 'Apply'
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['time'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["time"] = value
 
-    def __enter__(self) -> 'ManagedFieldsEntry':
+    def __enter__(self) -> "ManagedFieldsEntry":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1736,21 +1884,14 @@ class MicroTime(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
+        self,
     ):
         """Create MicroTime instance."""
-        super(MicroTime, self).__init__(
-            api_version='meta/v1',
-            kind='MicroTime'
-        )
-        self._properties = {
+        super(MicroTime, self).__init__(api_version="meta/v1", kind="MicroTime")
+        self._properties = {}
+        self._types = {}
 
-        }
-        self._types = {
-
-        }
-
-    def __enter__(self) -> 'MicroTime':
+    def __enter__(self) -> "MicroTime":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1764,69 +1905,72 @@ class ObjectMeta(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            annotations: dict = None,
-            cluster_name: str = None,
-            creation_timestamp: str = None,
-            deletion_grace_period_seconds: int = None,
-            deletion_timestamp: str = None,
-            finalizers: typing.List[str] = None,
-            generate_name: str = None,
-            generation: int = None,
-            initializers: 'Initializers' = None,
-            labels: dict = None,
-            managed_fields: typing.List['ManagedFieldsEntry'] = None,
-            name: str = None,
-            namespace: str = None,
-            owner_references: typing.List['OwnerReference'] = None,
-            resource_version: str = None,
-            self_link: str = None,
-            uid: str = None,
+        self,
+        annotations: dict = None,
+        cluster_name: str = None,
+        creation_timestamp: str = None,
+        deletion_grace_period_seconds: int = None,
+        deletion_timestamp: str = None,
+        finalizers: typing.List[str] = None,
+        generate_name: str = None,
+        generation: int = None,
+        initializers: "Initializers" = None,
+        labels: dict = None,
+        managed_fields: typing.List["ManagedFieldsEntry"] = None,
+        name: str = None,
+        namespace: str = None,
+        owner_references: typing.List["OwnerReference"] = None,
+        resource_version: str = None,
+        self_link: str = None,
+        uid: str = None,
     ):
         """Create ObjectMeta instance."""
-        super(ObjectMeta, self).__init__(
-            api_version='meta/v1',
-            kind='ObjectMeta'
-        )
+        super(ObjectMeta, self).__init__(api_version="meta/v1", kind="ObjectMeta")
         self._properties = {
-            'annotations': annotations if annotations is not None else {},
-            'clusterName': cluster_name if cluster_name is not None else '',
-            'creationTimestamp': creation_timestamp if creation_timestamp is not None else None,
-            'deletionGracePeriodSeconds': deletion_grace_period_seconds if deletion_grace_period_seconds is not None else None,
-            'deletionTimestamp': deletion_timestamp if deletion_timestamp is not None else None,
-            'finalizers': finalizers if finalizers is not None else [],
-            'generateName': generate_name if generate_name is not None else '',
-            'generation': generation if generation is not None else None,
-            'initializers': initializers if initializers is not None else Initializers(),
-            'labels': labels if labels is not None else {},
-            'managedFields': managed_fields if managed_fields is not None else [],
-            'name': name if name is not None else '',
-            'namespace': namespace if namespace is not None else '',
-            'ownerReferences': owner_references if owner_references is not None else [],
-            'resourceVersion': resource_version if resource_version is not None else '',
-            'selfLink': self_link if self_link is not None else '',
-            'uid': uid if uid is not None else '',
-
+            "annotations": annotations if annotations is not None else {},
+            "clusterName": cluster_name if cluster_name is not None else "",
+            "creationTimestamp": creation_timestamp
+            if creation_timestamp is not None
+            else None,
+            "deletionGracePeriodSeconds": deletion_grace_period_seconds
+            if deletion_grace_period_seconds is not None
+            else None,
+            "deletionTimestamp": deletion_timestamp
+            if deletion_timestamp is not None
+            else None,
+            "finalizers": finalizers if finalizers is not None else [],
+            "generateName": generate_name if generate_name is not None else "",
+            "generation": generation if generation is not None else None,
+            "initializers": initializers
+            if initializers is not None
+            else Initializers(),
+            "labels": labels if labels is not None else {},
+            "managedFields": managed_fields if managed_fields is not None else [],
+            "name": name if name is not None else "",
+            "namespace": namespace if namespace is not None else "",
+            "ownerReferences": owner_references if owner_references is not None else [],
+            "resourceVersion": resource_version if resource_version is not None else "",
+            "selfLink": self_link if self_link is not None else "",
+            "uid": uid if uid is not None else "",
         }
         self._types = {
-            'annotations': (dict, None),
-            'clusterName': (str, None),
-            'creationTimestamp': (str, None),
-            'deletionGracePeriodSeconds': (int, None),
-            'deletionTimestamp': (str, None),
-            'finalizers': (list, str),
-            'generateName': (str, None),
-            'generation': (int, None),
-            'initializers': (Initializers, None),
-            'labels': (dict, None),
-            'managedFields': (list, ManagedFieldsEntry),
-            'name': (str, None),
-            'namespace': (str, None),
-            'ownerReferences': (list, OwnerReference),
-            'resourceVersion': (str, None),
-            'selfLink': (str, None),
-            'uid': (str, None),
-
+            "annotations": (dict, None),
+            "clusterName": (str, None),
+            "creationTimestamp": (str, None),
+            "deletionGracePeriodSeconds": (int, None),
+            "deletionTimestamp": (str, None),
+            "finalizers": (list, str),
+            "generateName": (str, None),
+            "generation": (int, None),
+            "initializers": (Initializers, None),
+            "labels": (dict, None),
+            "managedFields": (list, ManagedFieldsEntry),
+            "name": (str, None),
+            "namespace": (str, None),
+            "ownerReferences": (list, OwnerReference),
+            "resourceVersion": (str, None),
+            "selfLink": (str, None),
+            "uid": (str, None),
         }
 
     @property
@@ -1838,7 +1982,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         should be preserved when modifying objects. More info:
         http://kubernetes.io/docs/user-guide/annotations
         """
-        return self._properties.get('annotations')
+        return typing.cast(
+            dict,
+            self._properties.get("annotations"),
+        )
 
     @annotations.setter
     def annotations(self, value: dict):
@@ -1849,7 +1996,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         should be preserved when modifying objects. More info:
         http://kubernetes.io/docs/user-guide/annotations
         """
-        self._properties['annotations'] = value
+        self._properties["annotations"] = value
 
     @property
     def cluster_name(self) -> str:
@@ -1860,7 +2007,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         now and apiserver is going to ignore it if set in create or
         update request.
         """
-        return self._properties.get('clusterName')
+        return typing.cast(
+            str,
+            self._properties.get("clusterName"),
+        )
 
     @cluster_name.setter
     def cluster_name(self, value: str):
@@ -1871,7 +2021,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         now and apiserver is going to ignore it if set in create or
         update request.
         """
-        self._properties['clusterName'] = value
+        self._properties["clusterName"] = value
 
     @property
     def creation_timestamp(self) -> str:
@@ -1886,12 +2036,14 @@ class ObjectMeta(_kuber_definitions.Definition):
         info: https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
-        return self._properties.get('creationTimestamp')
+        return typing.cast(
+            str,
+            self._properties.get("creationTimestamp"),
+        )
 
     @creation_timestamp.setter
     def creation_timestamp(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         CreationTimestamp is a timestamp representing the server
@@ -1905,10 +2057,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         conventions.md#metadata
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['creationTimestamp'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["creationTimestamp"] = value
 
     @property
     def deletion_grace_period_seconds(self) -> int:
@@ -1918,7 +2070,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         set when deletionTimestamp is also set. May only be
         shortened. Read-only.
         """
-        return self._properties.get('deletionGracePeriodSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("deletionGracePeriodSeconds"),
+        )
 
     @deletion_grace_period_seconds.setter
     def deletion_grace_period_seconds(self, value: int):
@@ -1928,7 +2083,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         set when deletionTimestamp is also set. May only be
         shortened. Read-only.
         """
-        self._properties['deletionGracePeriodSeconds'] = value
+        self._properties["deletionGracePeriodSeconds"] = value
 
     @property
     def deletion_timestamp(self) -> str:
@@ -1960,12 +2115,14 @@ class ObjectMeta(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
-        return self._properties.get('deletionTimestamp')
+        return typing.cast(
+            str,
+            self._properties.get("deletionTimestamp"),
+        )
 
     @deletion_timestamp.setter
     def deletion_timestamp(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         DeletionTimestamp is RFC 3339 date and time at which this
@@ -1996,10 +2153,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         conventions.md#metadata
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['deletionTimestamp'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["deletionTimestamp"] = value
 
     @property
     def finalizers(self) -> typing.List[str]:
@@ -2010,7 +2167,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         deletionTimestamp of the object is non-nil, entries in this
         list can only be removed.
         """
-        return self._properties.get('finalizers')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("finalizers"),
+        )
 
     @finalizers.setter
     def finalizers(self, value: typing.List[str]):
@@ -2021,7 +2181,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         deletionTimestamp of the object is non-nil, entries in this
         list can only be removed.
         """
-        self._properties['finalizers'] = value
+        self._properties["finalizers"] = value
 
     @property
     def generate_name(self) -> str:
@@ -2046,7 +2206,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#idempotency
         """
-        return self._properties.get('generateName')
+        return typing.cast(
+            str,
+            self._properties.get("generateName"),
+        )
 
     @generate_name.setter
     def generate_name(self, value: str):
@@ -2071,7 +2234,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#idempotency
         """
-        self._properties['generateName'] = value
+        self._properties["generateName"] = value
 
     @property
     def generation(self) -> int:
@@ -2079,7 +2242,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         A sequence number representing a specific generation of the
         desired state. Populated by the system. Read-only.
         """
-        return self._properties.get('generation')
+        return typing.cast(
+            int,
+            self._properties.get("generation"),
+        )
 
     @generation.setter
     def generation(self, value: int):
@@ -2087,10 +2253,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         A sequence number representing a specific generation of the
         desired state. Populated by the system. Read-only.
         """
-        self._properties['generation'] = value
+        self._properties["generation"] = value
 
     @property
-    def initializers(self) -> 'Initializers':
+    def initializers(self) -> "Initializers":
         """
         An initializer is a controller which enforces some system
         invariant at object creation time. This field is a list of
@@ -2108,10 +2274,13 @@ class ObjectMeta(_kuber_definitions.Definition):
         DEPRECATED - initializers are an alpha field and will be
         removed in v1.15.
         """
-        return self._properties.get('initializers')
+        return typing.cast(
+            "Initializers",
+            self._properties.get("initializers"),
+        )
 
     @initializers.setter
-    def initializers(self, value: typing.Union['Initializers', dict]):
+    def initializers(self, value: typing.Union["Initializers", dict]):
         """
         An initializer is a controller which enforces some system
         invariant at object creation time. This field is a list of
@@ -2130,8 +2299,11 @@ class ObjectMeta(_kuber_definitions.Definition):
         removed in v1.15.
         """
         if isinstance(value, dict):
-            value = Initializers().from_dict(value)
-        self._properties['initializers'] = value
+            value = typing.cast(
+                Initializers,
+                Initializers().from_dict(value),
+            )
+        self._properties["initializers"] = value
 
     @property
     def labels(self) -> dict:
@@ -2141,7 +2313,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         selectors of replication controllers and services. More
         info: http://kubernetes.io/docs/user-guide/labels
         """
-        return self._properties.get('labels')
+        return typing.cast(
+            dict,
+            self._properties.get("labels"),
+        )
 
     @labels.setter
     def labels(self, value: dict):
@@ -2151,10 +2326,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         selectors of replication controllers and services. More
         info: http://kubernetes.io/docs/user-guide/labels
         """
-        self._properties['labels'] = value
+        self._properties["labels"] = value
 
     @property
-    def managed_fields(self) -> typing.List['ManagedFieldsEntry']:
+    def managed_fields(self) -> typing.List["ManagedFieldsEntry"]:
         """
         ManagedFields maps workflow-id and version to the set of
         fields that are managed by that workflow. This is mostly for
@@ -2167,12 +2342,14 @@ class ObjectMeta(_kuber_definitions.Definition):
         This field is alpha and can be changed or removed without
         notice.
         """
-        return self._properties.get('managedFields')
+        return typing.cast(
+            typing.List["ManagedFieldsEntry"],
+            self._properties.get("managedFields"),
+        )
 
     @managed_fields.setter
     def managed_fields(
-            self,
-            value: typing.Union[typing.List['ManagedFieldsEntry'], typing.List[dict]]
+        self, value: typing.Union[typing.List["ManagedFieldsEntry"], typing.List[dict]]
     ):
         """
         ManagedFields maps workflow-id and version to the set of
@@ -2186,12 +2363,15 @@ class ObjectMeta(_kuber_definitions.Definition):
         This field is alpha and can be changed or removed without
         notice.
         """
-        cleaned = []
+        cleaned: typing.List[ManagedFieldsEntry] = []
         for item in value:
             if isinstance(item, dict):
-                item = ManagedFieldsEntry().from_dict(item)
-            cleaned.append(item)
-        self._properties['managedFields'] = cleaned
+                item = typing.cast(
+                    ManagedFieldsEntry,
+                    ManagedFieldsEntry().from_dict(item),
+                )
+            cleaned.append(typing.cast(ManagedFieldsEntry, item))
+        self._properties["managedFields"] = cleaned
 
     @property
     def name(self) -> str:
@@ -2204,7 +2384,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         More info: http://kubernetes.io/docs/user-
         guide/identifiers#names
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -2217,7 +2400,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         More info: http://kubernetes.io/docs/user-
         guide/identifiers#names
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def namespace(self) -> str:
@@ -2231,7 +2414,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         Must be a DNS_LABEL. Cannot be updated. More info:
         http://kubernetes.io/docs/user-guide/namespaces
         """
-        return self._properties.get('namespace')
+        return typing.cast(
+            str,
+            self._properties.get("namespace"),
+        )
 
     @namespace.setter
     def namespace(self, value: str):
@@ -2245,10 +2431,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         Must be a DNS_LABEL. Cannot be updated. More info:
         http://kubernetes.io/docs/user-guide/namespaces
         """
-        self._properties['namespace'] = value
+        self._properties["namespace"] = value
 
     @property
-    def owner_references(self) -> typing.List['OwnerReference']:
+    def owner_references(self) -> typing.List["OwnerReference"]:
         """
         List of objects depended by this object. If ALL objects in
         the list have been deleted, this object will be garbage
@@ -2257,12 +2443,14 @@ class ObjectMeta(_kuber_definitions.Definition):
         the controller field set to true. There cannot be more than
         one managing controller.
         """
-        return self._properties.get('ownerReferences')
+        return typing.cast(
+            typing.List["OwnerReference"],
+            self._properties.get("ownerReferences"),
+        )
 
     @owner_references.setter
     def owner_references(
-            self,
-            value: typing.Union[typing.List['OwnerReference'], typing.List[dict]]
+        self, value: typing.Union[typing.List["OwnerReference"], typing.List[dict]]
     ):
         """
         List of objects depended by this object. If ALL objects in
@@ -2272,12 +2460,15 @@ class ObjectMeta(_kuber_definitions.Definition):
         the controller field set to true. There cannot be more than
         one managing controller.
         """
-        cleaned = []
+        cleaned: typing.List[OwnerReference] = []
         for item in value:
             if isinstance(item, dict):
-                item = OwnerReference().from_dict(item)
-            cleaned.append(item)
-        self._properties['ownerReferences'] = cleaned
+                item = typing.cast(
+                    OwnerReference,
+                    OwnerReference().from_dict(item),
+                )
+            cleaned.append(typing.cast(OwnerReference, item))
+        self._properties["ownerReferences"] = cleaned
 
     @property
     def resource_version(self) -> str:
@@ -2295,7 +2486,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#concurrency-control-and-consistency
         """
-        return self._properties.get('resourceVersion')
+        return typing.cast(
+            str,
+            self._properties.get("resourceVersion"),
+        )
 
     @resource_version.setter
     def resource_version(self, value: str):
@@ -2313,7 +2507,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#concurrency-control-and-consistency
         """
-        self._properties['resourceVersion'] = value
+        self._properties["resourceVersion"] = value
 
     @property
     def self_link(self) -> str:
@@ -2321,7 +2515,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         SelfLink is a URL representing this object. Populated by the
         system. Read-only.
         """
-        return self._properties.get('selfLink')
+        return typing.cast(
+            str,
+            self._properties.get("selfLink"),
+        )
 
     @self_link.setter
     def self_link(self, value: str):
@@ -2329,7 +2526,7 @@ class ObjectMeta(_kuber_definitions.Definition):
         SelfLink is a URL representing this object. Populated by the
         system. Read-only.
         """
-        self._properties['selfLink'] = value
+        self._properties["selfLink"] = value
 
     @property
     def uid(self) -> str:
@@ -2342,7 +2539,10 @@ class ObjectMeta(_kuber_definitions.Definition):
         Populated by the system. Read-only. More info:
         http://kubernetes.io/docs/user-guide/identifiers#uids
         """
-        return self._properties.get('uid')
+        return typing.cast(
+            str,
+            self._properties.get("uid"),
+        )
 
     @uid.setter
     def uid(self, value: str):
@@ -2355,9 +2555,9 @@ class ObjectMeta(_kuber_definitions.Definition):
         Populated by the system. Read-only. More info:
         http://kubernetes.io/docs/user-guide/identifiers#uids
         """
-        self._properties['uid'] = value
+        self._properties["uid"] = value
 
-    def __enter__(self) -> 'ObjectMeta':
+    def __enter__(self) -> "ObjectMeta":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2373,36 +2573,35 @@ class OwnerReference(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            block_owner_deletion: bool = None,
-            controller: bool = None,
-            kind: str = None,
-            name: str = None,
-            uid: str = None,
+        self,
+        api_version: str = None,
+        block_owner_deletion: bool = None,
+        controller: bool = None,
+        kind: str = None,
+        name: str = None,
+        uid: str = None,
     ):
         """Create OwnerReference instance."""
         super(OwnerReference, self).__init__(
-            api_version='meta/v1',
-            kind='OwnerReference'
+            api_version="meta/v1", kind="OwnerReference"
         )
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'blockOwnerDeletion': block_owner_deletion if block_owner_deletion is not None else None,
-            'controller': controller if controller is not None else None,
-            'kind': kind if kind is not None else '',
-            'name': name if name is not None else '',
-            'uid': uid if uid is not None else '',
-
+            "apiVersion": api_version if api_version is not None else "",
+            "blockOwnerDeletion": block_owner_deletion
+            if block_owner_deletion is not None
+            else None,
+            "controller": controller if controller is not None else None,
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
+            "uid": uid if uid is not None else "",
         }
         self._types = {
-            'apiVersion': (str, None),
-            'blockOwnerDeletion': (bool, None),
-            'controller': (bool, None),
-            'kind': (str, None),
-            'name': (str, None),
-            'uid': (str, None),
-
+            "apiVersion": (str, None),
+            "blockOwnerDeletion": (bool, None),
+            "controller": (bool, None),
+            "kind": (str, None),
+            "name": (str, None),
+            "uid": (str, None),
         }
 
     @property
@@ -2410,14 +2609,17 @@ class OwnerReference(_kuber_definitions.Definition):
         """
         API version of the referent.
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
         """
         API version of the referent.
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
     def block_owner_deletion(self) -> bool:
@@ -2429,7 +2631,10 @@ class OwnerReference(_kuber_definitions.Definition):
         of the owner, otherwise 422 (Unprocessable Entity) will be
         returned.
         """
-        return self._properties.get('blockOwnerDeletion')
+        return typing.cast(
+            bool,
+            self._properties.get("blockOwnerDeletion"),
+        )
 
     @block_owner_deletion.setter
     def block_owner_deletion(self, value: bool):
@@ -2441,21 +2646,24 @@ class OwnerReference(_kuber_definitions.Definition):
         of the owner, otherwise 422 (Unprocessable Entity) will be
         returned.
         """
-        self._properties['blockOwnerDeletion'] = value
+        self._properties["blockOwnerDeletion"] = value
 
     @property
     def controller(self) -> bool:
         """
         If true, this reference points to the managing controller.
         """
-        return self._properties.get('controller')
+        return typing.cast(
+            bool,
+            self._properties.get("controller"),
+        )
 
     @controller.setter
     def controller(self, value: bool):
         """
         If true, this reference points to the managing controller.
         """
-        self._properties['controller'] = value
+        self._properties["controller"] = value
 
     @property
     def kind(self) -> str:
@@ -2464,7 +2672,10 @@ class OwnerReference(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -2473,7 +2684,7 @@ class OwnerReference(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def name(self) -> str:
@@ -2481,7 +2692,10 @@ class OwnerReference(_kuber_definitions.Definition):
         Name of the referent. More info:
         http://kubernetes.io/docs/user-guide/identifiers#names
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -2489,7 +2703,7 @@ class OwnerReference(_kuber_definitions.Definition):
         Name of the referent. More info:
         http://kubernetes.io/docs/user-guide/identifiers#names
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def uid(self) -> str:
@@ -2497,7 +2711,10 @@ class OwnerReference(_kuber_definitions.Definition):
         UID of the referent. More info:
         http://kubernetes.io/docs/user-guide/identifiers#uids
         """
-        return self._properties.get('uid')
+        return typing.cast(
+            str,
+            self._properties.get("uid"),
+        )
 
     @uid.setter
     def uid(self, value: str):
@@ -2505,9 +2722,9 @@ class OwnerReference(_kuber_definitions.Definition):
         UID of the referent. More info:
         http://kubernetes.io/docs/user-guide/identifiers#uids
         """
-        self._properties['uid'] = value
+        self._properties["uid"] = value
 
-    def __enter__(self) -> 'OwnerReference':
+    def __enter__(self) -> "OwnerReference":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2521,21 +2738,14 @@ class Patch(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
+        self,
     ):
         """Create Patch instance."""
-        super(Patch, self).__init__(
-            api_version='meta/v1',
-            kind='Patch'
-        )
-        self._properties = {
+        super(Patch, self).__init__(api_version="meta/v1", kind="Patch")
+        self._properties = {}
+        self._types = {}
 
-        }
-        self._types = {
-
-        }
-
-    def __enter__(self) -> 'Patch':
+    def __enter__(self) -> "Patch":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2549,24 +2759,19 @@ class Preconditions(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            resource_version: str = None,
-            uid: str = None,
+        self,
+        resource_version: str = None,
+        uid: str = None,
     ):
         """Create Preconditions instance."""
-        super(Preconditions, self).__init__(
-            api_version='meta/v1',
-            kind='Preconditions'
-        )
+        super(Preconditions, self).__init__(api_version="meta/v1", kind="Preconditions")
         self._properties = {
-            'resourceVersion': resource_version if resource_version is not None else '',
-            'uid': uid if uid is not None else '',
-
+            "resourceVersion": resource_version if resource_version is not None else "",
+            "uid": uid if uid is not None else "",
         }
         self._types = {
-            'resourceVersion': (str, None),
-            'uid': (str, None),
-
+            "resourceVersion": (str, None),
+            "uid": (str, None),
         }
 
     @property
@@ -2574,30 +2779,36 @@ class Preconditions(_kuber_definitions.Definition):
         """
         Specifies the target ResourceVersion
         """
-        return self._properties.get('resourceVersion')
+        return typing.cast(
+            str,
+            self._properties.get("resourceVersion"),
+        )
 
     @resource_version.setter
     def resource_version(self, value: str):
         """
         Specifies the target ResourceVersion
         """
-        self._properties['resourceVersion'] = value
+        self._properties["resourceVersion"] = value
 
     @property
     def uid(self) -> str:
         """
         Specifies the target UID.
         """
-        return self._properties.get('uid')
+        return typing.cast(
+            str,
+            self._properties.get("uid"),
+        )
 
     @uid.setter
     def uid(self, value: str):
         """
         Specifies the target UID.
         """
-        self._properties['uid'] = value
+        self._properties["uid"] = value
 
-    def __enter__(self) -> 'Preconditions':
+    def __enter__(self) -> "Preconditions":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2612,24 +2823,21 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            client_cidr: str = None,
-            server_address: str = None,
+        self,
+        client_cidr: str = None,
+        server_address: str = None,
     ):
         """Create ServerAddressByClientCIDR instance."""
         super(ServerAddressByClientCIDR, self).__init__(
-            api_version='meta/v1',
-            kind='ServerAddressByClientCIDR'
+            api_version="meta/v1", kind="ServerAddressByClientCIDR"
         )
         self._properties = {
-            'clientCIDR': client_cidr if client_cidr is not None else '',
-            'serverAddress': server_address if server_address is not None else '',
-
+            "clientCIDR": client_cidr if client_cidr is not None else "",
+            "serverAddress": server_address if server_address is not None else "",
         }
         self._types = {
-            'clientCIDR': (str, None),
-            'serverAddress': (str, None),
-
+            "clientCIDR": (str, None),
+            "serverAddress": (str, None),
         }
 
     @property
@@ -2638,7 +2846,10 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
         The CIDR with which clients can match their IP to figure out
         the server address that they should use.
         """
-        return self._properties.get('clientCIDR')
+        return typing.cast(
+            str,
+            self._properties.get("clientCIDR"),
+        )
 
     @client_cidr.setter
     def client_cidr(self, value: str):
@@ -2646,7 +2857,7 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
         The CIDR with which clients can match their IP to figure out
         the server address that they should use.
         """
-        self._properties['clientCIDR'] = value
+        self._properties["clientCIDR"] = value
 
     @property
     def server_address(self) -> str:
@@ -2655,7 +2866,10 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
         the above CIDR. This can be a hostname, hostname:port, IP or
         IP:port.
         """
-        return self._properties.get('serverAddress')
+        return typing.cast(
+            str,
+            self._properties.get("serverAddress"),
+        )
 
     @server_address.setter
     def server_address(self, value: str):
@@ -2664,9 +2878,9 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
         the above CIDR. This can be a hostname, hostname:port, IP or
         IP:port.
         """
-        self._properties['serverAddress'] = value
+        self._properties["serverAddress"] = value
 
-    def __enter__(self) -> 'ServerAddressByClientCIDR':
+    def __enter__(self) -> "ServerAddressByClientCIDR":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2680,42 +2894,37 @@ class Status(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            code: int = None,
-            details: 'StatusDetails' = None,
-            kind: str = None,
-            message: str = None,
-            metadata: 'ListMeta' = None,
-            reason: str = None,
-            status: str = None,
+        self,
+        api_version: str = None,
+        code: int = None,
+        details: "StatusDetails" = None,
+        kind: str = None,
+        message: str = None,
+        metadata: "ListMeta" = None,
+        reason: str = None,
+        status: str = None,
     ):
         """Create Status instance."""
-        super(Status, self).__init__(
-            api_version='meta/v1',
-            kind='Status'
-        )
+        super(Status, self).__init__(api_version="meta/v1", kind="Status")
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'code': code if code is not None else None,
-            'details': details if details is not None else StatusDetails(),
-            'kind': kind if kind is not None else '',
-            'message': message if message is not None else '',
-            'metadata': metadata if metadata is not None else ListMeta(),
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-
+            "apiVersion": api_version if api_version is not None else "",
+            "code": code if code is not None else None,
+            "details": details if details is not None else StatusDetails(),
+            "kind": kind if kind is not None else "",
+            "message": message if message is not None else "",
+            "metadata": metadata if metadata is not None else ListMeta(),
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
         }
         self._types = {
-            'apiVersion': (str, None),
-            'code': (int, None),
-            'details': (StatusDetails, None),
-            'kind': (str, None),
-            'message': (str, None),
-            'metadata': (ListMeta, None),
-            'reason': (str, None),
-            'status': (str, None),
-
+            "apiVersion": (str, None),
+            "code": (int, None),
+            "details": (StatusDetails, None),
+            "kind": (str, None),
+            "message": (str, None),
+            "metadata": (ListMeta, None),
+            "reason": (str, None),
+            "status": (str, None),
         }
 
     @property
@@ -2728,7 +2937,10 @@ class Status(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
@@ -2740,34 +2952,40 @@ class Status(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#resources
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
     def code(self) -> int:
         """
         Suggested HTTP return code for this status, 0 if not set.
         """
-        return self._properties.get('code')
+        return typing.cast(
+            int,
+            self._properties.get("code"),
+        )
 
     @code.setter
     def code(self, value: int):
         """
         Suggested HTTP return code for this status, 0 if not set.
         """
-        self._properties['code'] = value
+        self._properties["code"] = value
 
     @property
-    def details(self) -> 'StatusDetails':
+    def details(self) -> "StatusDetails":
         """
         Extended data associated with the reason.  Each reason may
         define its own extended details. This field is optional and
         the data returned is not guaranteed to conform to any schema
         except that defined by the reason type.
         """
-        return self._properties.get('details')
+        return typing.cast(
+            "StatusDetails",
+            self._properties.get("details"),
+        )
 
     @details.setter
-    def details(self, value: typing.Union['StatusDetails', dict]):
+    def details(self, value: typing.Union["StatusDetails", dict]):
         """
         Extended data associated with the reason.  Each reason may
         define its own extended details. This field is optional and
@@ -2775,8 +2993,11 @@ class Status(_kuber_definitions.Definition):
         except that defined by the reason type.
         """
         if isinstance(value, dict):
-            value = StatusDetails().from_dict(value)
-        self._properties['details'] = value
+            value = typing.cast(
+                StatusDetails,
+                StatusDetails().from_dict(value),
+            )
+        self._properties["details"] = value
 
     @property
     def kind(self) -> str:
@@ -2788,7 +3009,10 @@ class Status(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -2800,7 +3024,7 @@ class Status(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def message(self) -> str:
@@ -2808,7 +3032,10 @@ class Status(_kuber_definitions.Definition):
         A human-readable description of the status of this
         operation.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -2816,27 +3043,33 @@ class Status(_kuber_definitions.Definition):
         A human-readable description of the status of this
         operation.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
     def reason(self) -> str:
@@ -2846,7 +3079,10 @@ class Status(_kuber_definitions.Definition):
         information available. A Reason clarifies an HTTP status
         code but does not override it.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
@@ -2856,7 +3092,7 @@ class Status(_kuber_definitions.Definition):
         information available. A Reason clarifies an HTTP status
         code but does not override it.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
@@ -2866,7 +3102,10 @@ class Status(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#spec-and-status
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
@@ -2876,9 +3115,9 @@ class Status(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#spec-and-status
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
-    def __enter__(self) -> 'Status':
+    def __enter__(self) -> "Status":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2893,27 +3132,22 @@ class StatusCause(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            field: str = None,
-            message: str = None,
-            reason: str = None,
+        self,
+        field: str = None,
+        message: str = None,
+        reason: str = None,
     ):
         """Create StatusCause instance."""
-        super(StatusCause, self).__init__(
-            api_version='meta/v1',
-            kind='StatusCause'
-        )
+        super(StatusCause, self).__init__(api_version="meta/v1", kind="StatusCause")
         self._properties = {
-            'field': field if field is not None else '',
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-
+            "field": field if field is not None else "",
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
         }
         self._types = {
-            'field': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-
+            "field": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
         }
 
     @property
@@ -2930,7 +3164,10 @@ class StatusCause(_kuber_definitions.Definition):
           "items[0].name" - the field "name" on the first array
         entry in "items"
         """
-        return self._properties.get('field')
+        return typing.cast(
+            str,
+            self._properties.get("field"),
+        )
 
     @field.setter
     def field(self, value: str):
@@ -2946,7 +3183,7 @@ class StatusCause(_kuber_definitions.Definition):
           "items[0].name" - the field "name" on the first array
         entry in "items"
         """
-        self._properties['field'] = value
+        self._properties["field"] = value
 
     @property
     def message(self) -> str:
@@ -2954,7 +3191,10 @@ class StatusCause(_kuber_definitions.Definition):
         A human-readable description of the cause of the error.
         This field may be presented as-is to a reader.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -2962,7 +3202,7 @@ class StatusCause(_kuber_definitions.Definition):
         A human-readable description of the cause of the error.
         This field may be presented as-is to a reader.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
@@ -2970,7 +3210,10 @@ class StatusCause(_kuber_definitions.Definition):
         A machine-readable description of the cause of the error. If
         this value is empty there is no information available.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
@@ -2978,9 +3221,9 @@ class StatusCause(_kuber_definitions.Definition):
         A machine-readable description of the cause of the error. If
         this value is empty there is no information available.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
-    def __enter__(self) -> 'StatusCause':
+    def __enter__(self) -> "StatusCause":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2999,63 +3242,65 @@ class StatusDetails(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            causes: typing.List['StatusCause'] = None,
-            group: str = None,
-            kind: str = None,
-            name: str = None,
-            retry_after_seconds: int = None,
-            uid: str = None,
+        self,
+        causes: typing.List["StatusCause"] = None,
+        group: str = None,
+        kind: str = None,
+        name: str = None,
+        retry_after_seconds: int = None,
+        uid: str = None,
     ):
         """Create StatusDetails instance."""
-        super(StatusDetails, self).__init__(
-            api_version='meta/v1',
-            kind='StatusDetails'
-        )
+        super(StatusDetails, self).__init__(api_version="meta/v1", kind="StatusDetails")
         self._properties = {
-            'causes': causes if causes is not None else [],
-            'group': group if group is not None else '',
-            'kind': kind if kind is not None else '',
-            'name': name if name is not None else '',
-            'retryAfterSeconds': retry_after_seconds if retry_after_seconds is not None else None,
-            'uid': uid if uid is not None else '',
-
+            "causes": causes if causes is not None else [],
+            "group": group if group is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
+            "retryAfterSeconds": retry_after_seconds
+            if retry_after_seconds is not None
+            else None,
+            "uid": uid if uid is not None else "",
         }
         self._types = {
-            'causes': (list, StatusCause),
-            'group': (str, None),
-            'kind': (str, None),
-            'name': (str, None),
-            'retryAfterSeconds': (int, None),
-            'uid': (str, None),
-
+            "causes": (list, StatusCause),
+            "group": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
+            "retryAfterSeconds": (int, None),
+            "uid": (str, None),
         }
 
     @property
-    def causes(self) -> typing.List['StatusCause']:
+    def causes(self) -> typing.List["StatusCause"]:
         """
         The Causes array includes more details associated with the
         StatusReason failure. Not all StatusReasons may provide
         detailed causes.
         """
-        return self._properties.get('causes')
+        return typing.cast(
+            typing.List["StatusCause"],
+            self._properties.get("causes"),
+        )
 
     @causes.setter
     def causes(
-            self,
-            value: typing.Union[typing.List['StatusCause'], typing.List[dict]]
+        self, value: typing.Union[typing.List["StatusCause"], typing.List[dict]]
     ):
         """
         The Causes array includes more details associated with the
         StatusReason failure. Not all StatusReasons may provide
         detailed causes.
         """
-        cleaned = []
+        cleaned: typing.List[StatusCause] = []
         for item in value:
             if isinstance(item, dict):
-                item = StatusCause().from_dict(item)
-            cleaned.append(item)
-        self._properties['causes'] = cleaned
+                item = typing.cast(
+                    StatusCause,
+                    StatusCause().from_dict(item),
+                )
+            cleaned.append(typing.cast(StatusCause, item))
+        self._properties["causes"] = cleaned
 
     @property
     def group(self) -> str:
@@ -3063,7 +3308,10 @@ class StatusDetails(_kuber_definitions.Definition):
         The group attribute of the resource associated with the
         status StatusReason.
         """
-        return self._properties.get('group')
+        return typing.cast(
+            str,
+            self._properties.get("group"),
+        )
 
     @group.setter
     def group(self, value: str):
@@ -3071,7 +3319,7 @@ class StatusDetails(_kuber_definitions.Definition):
         The group attribute of the resource associated with the
         status StatusReason.
         """
-        self._properties['group'] = value
+        self._properties["group"] = value
 
     @property
     def kind(self) -> str:
@@ -3082,7 +3330,10 @@ class StatusDetails(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -3093,7 +3344,7 @@ class StatusDetails(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#types-kinds
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def name(self) -> str:
@@ -3102,7 +3353,10 @@ class StatusDetails(_kuber_definitions.Definition):
         status StatusReason (when there is a single name which can
         be described).
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -3111,7 +3365,7 @@ class StatusDetails(_kuber_definitions.Definition):
         status StatusReason (when there is a single name which can
         be described).
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def retry_after_seconds(self) -> int:
@@ -3122,7 +3376,10 @@ class StatusDetails(_kuber_definitions.Definition):
         indicate how long to wait before taking the alternate
         action.
         """
-        return self._properties.get('retryAfterSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("retryAfterSeconds"),
+        )
 
     @retry_after_seconds.setter
     def retry_after_seconds(self, value: int):
@@ -3133,7 +3390,7 @@ class StatusDetails(_kuber_definitions.Definition):
         indicate how long to wait before taking the alternate
         action.
         """
-        self._properties['retryAfterSeconds'] = value
+        self._properties["retryAfterSeconds"] = value
 
     @property
     def uid(self) -> str:
@@ -3142,7 +3399,10 @@ class StatusDetails(_kuber_definitions.Definition):
         can be described). More info:
         http://kubernetes.io/docs/user-guide/identifiers#uids
         """
-        return self._properties.get('uid')
+        return typing.cast(
+            str,
+            self._properties.get("uid"),
+        )
 
     @uid.setter
     def uid(self, value: str):
@@ -3151,9 +3411,9 @@ class StatusDetails(_kuber_definitions.Definition):
         can be described). More info:
         http://kubernetes.io/docs/user-guide/identifiers#uids
         """
-        self._properties['uid'] = value
+        self._properties["uid"] = value
 
-    def __enter__(self) -> 'StatusDetails':
+    def __enter__(self) -> "StatusDetails":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3168,21 +3428,14 @@ class Time(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
+        self,
     ):
         """Create Time instance."""
-        super(Time, self).__init__(
-            api_version='meta/v1',
-            kind='Time'
-        )
-        self._properties = {
+        super(Time, self).__init__(api_version="meta/v1", kind="Time")
+        self._properties = {}
+        self._types = {}
 
-        }
-        self._types = {
-
-        }
-
-    def __enter__(self) -> 'Time':
+    def __enter__(self) -> "Time":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3195,28 +3448,23 @@ class WatchEvent(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            object_: 'RawExtension' = None,
-            type_: str = None,
+        self,
+        object_: "RawExtension" = None,
+        type_: str = None,
     ):
         """Create WatchEvent instance."""
-        super(WatchEvent, self).__init__(
-            api_version='meta/v1',
-            kind='WatchEvent'
-        )
+        super(WatchEvent, self).__init__(api_version="meta/v1", kind="WatchEvent")
         self._properties = {
-            'object': object_ if object_ is not None else RawExtension(),
-            'type': type_ if type_ is not None else '',
-
+            "object": object_ if object_ is not None else RawExtension(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'object': (RawExtension, None),
-            'type': (str, None),
-
+            "object": (RawExtension, None),
+            "type": (str, None),
         }
 
     @property
-    def object_(self) -> 'RawExtension':
+    def object_(self) -> "RawExtension":
         """
         Object is:
          * If Type is Added or Modified: the new state of the
@@ -3227,10 +3475,13 @@ class WatchEvent(_kuber_definitions.Definition):
         make sense
            depending on context.
         """
-        return self._properties.get('object')
+        return typing.cast(
+            "RawExtension",
+            self._properties.get("object"),
+        )
 
     @object_.setter
-    def object_(self, value: typing.Union['RawExtension', dict]):
+    def object_(self, value: typing.Union["RawExtension", dict]):
         """
         Object is:
          * If Type is Added or Modified: the new state of the
@@ -3242,24 +3493,26 @@ class WatchEvent(_kuber_definitions.Definition):
            depending on context.
         """
         if isinstance(value, dict):
-            value = RawExtension().from_dict(value)
-        self._properties['object'] = value
+            value = typing.cast(
+                RawExtension,
+                RawExtension().from_dict(value),
+            )
+        self._properties["object"] = value
 
     @property
     def type_(self) -> str:
-        """
-
-        """
-        return self._properties.get('type')
+        """"""
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
-        """
+        """"""
+        self._properties["type"] = value
 
-        """
-        self._properties['type'] = value
-
-    def __enter__(self) -> 'WatchEvent':
+    def __enter__(self) -> "WatchEvent":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

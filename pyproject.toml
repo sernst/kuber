@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "kuber"
+version = "1.13.0"
+description = "Accelerated Kubernetes configuration and package management with Python."
+authors = ["Scott Ernst <swernst@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/sernst/kuber"
+repository = "https://github.com/sernst/kuber"
+documentation = "https://kuber.readthedocs.io/en/latest/"
+keywords = ["kubernetes"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: System :: Systems Administration",
+  "Topic :: Utilities",
+  "Typing :: Typed"
+]
+exclude = ["kuber/tests"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+PyYAML = "^5.3.1"
+kubernetes = "^12.0.1"
+requests = "^2.25.0"
+semver = "^2.13.0"
+
+[tool.poetry.dev-dependencies]
+Sphinx = "^3.3.1"
+recommonmark = "^0.6.0"
+pytest = "^6.1.2"
+coverage = "^5.3"
+black = { version = "*", allow-prereleases = true }
+pytest-cov = "^2.10.1"
+flake8 = "^3.8.4"
+flake8-black = "^0.2.1"
+mypy = "^0.790"
+taskipy = "^1.4.0"
+
+[tool.taskipy.tasks]
+# https://github.com/illBeRoy/taskipy
+black = "black ."
+mypy = "poetry run mypy ./kuber/ --ignore-missing-imports"
+flake8 = "flake8 ."
+test = "pytest . --cov-report=term-missing --cov=."
+lint = "task black && task flake8 && task mypy"
+check = "task black && task flake8 && task mypy && task test"
+manager = "python manager.py"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

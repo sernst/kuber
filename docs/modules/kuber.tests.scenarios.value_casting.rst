@@ -12,7 +12,6 @@ kuber.tests.scenarios.value\_casting.test\_value\_casting module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

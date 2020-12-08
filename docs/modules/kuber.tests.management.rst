@@ -20,6 +20,22 @@ kuber.tests.management.test\_arrays module
    :undoc-members:
    :show-inheritance:
 
+kuber.tests.management.test\_from\_helm module
+----------------------------------------------
+
+.. automodule:: kuber.tests.management.test_from_helm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kuber.tests.management.test\_from\_url module
+---------------------------------------------
+
+.. automodule:: kuber.tests.management.test_from_url
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.tests.management.test\_get module
 ---------------------------------------
 
@@ -43,7 +59,6 @@ kuber.tests.management.test\_settings module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------

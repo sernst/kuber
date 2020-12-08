@@ -45,66 +45,75 @@ class ControllerRevision(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            data: 'RawExtension' = None,
-            metadata: 'ObjectMeta' = None,
-            revision: int = None,
+        self,
+        data: "RawExtension" = None,
+        metadata: "ObjectMeta" = None,
+        revision: int = None,
     ):
         """Create ControllerRevision instance."""
         super(ControllerRevision, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ControllerRevision'
+            api_version="apps/v1beta2", kind="ControllerRevision"
         )
         self._properties = {
-            'data': data if data is not None else RawExtension(),
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'revision': revision if revision is not None else None,
-
+            "data": data if data is not None else RawExtension(),
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "revision": revision if revision is not None else None,
         }
         self._types = {
-            'apiVersion': (str, None),
-            'data': (RawExtension, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'revision': (int, None),
-
+            "apiVersion": (str, None),
+            "data": (RawExtension, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "revision": (int, None),
         }
 
     @property
-    def data(self) -> 'RawExtension':
+    def data(self) -> "RawExtension":
         """
         Data is the serialized representation of the state.
         """
-        return self._properties.get('data')
+        return typing.cast(
+            "RawExtension",
+            self._properties.get("data"),
+        )
 
     @data.setter
-    def data(self, value: typing.Union['RawExtension', dict]):
+    def data(self, value: typing.Union["RawExtension", dict]):
         """
         Data is the serialized representation of the state.
         """
         if isinstance(value, dict):
-            value = RawExtension().from_dict(value)
-        self._properties['data'] = value
+            value = typing.cast(
+                RawExtension,
+                RawExtension().from_dict(value),
+            )
+        self._properties["data"] = value
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
     def revision(self) -> int:
@@ -112,7 +121,10 @@ class ControllerRevision(_kuber_definitions.Resource):
         Revision indicates the revision of the state represented by
         Data.
         """
-        return self._properties.get('revision')
+        return typing.cast(
+            int,
+            self._properties.get("revision"),
+        )
 
     @revision.setter
     def revision(self, value: int):
@@ -120,133 +132,123 @@ class ControllerRevision(_kuber_definitions.Resource):
         Revision indicates the revision of the state represented by
         Data.
         """
-        self._properties['revision'] = value
+        self._properties["revision"] = value
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the ControllerRevision in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'create_namespaced_controller_revision',
-            'create_controller_revision'
-        ]
+        names = ["create_namespaced_controller_revision", "create_controller_revision"]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the ControllerRevision in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'replace_namespaced_controller_revision',
-            'replace_controller_revision'
+            "replace_namespaced_controller_revision",
+            "replace_controller_revision",
         ]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the ControllerRevision in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'patch_namespaced_controller_revision',
-            'patch_controller_revision'
-        ]
+        names = ["patch_namespaced_controller_revision", "patch_controller_revision"]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the ControllerRevision from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_controller_revision',
-            'read_controller_revision'
+            "read_namespaced_controller_revision",
+            "read_controller_revision",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the ControllerRevision from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_controller_revision',
-            'delete_controller_revision'
+            "delete_namespaced_controller_revision",
+            "delete_controller_revision",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'ControllerRevision':
+    def __enter__(self) -> "ControllerRevision":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -260,84 +262,91 @@ class ControllerRevisionList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['ControllerRevision'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["ControllerRevision"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create ControllerRevisionList instance."""
         super(ControllerRevisionList, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ControllerRevisionList'
+            api_version="apps/v1beta2", kind="ControllerRevisionList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, ControllerRevision),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, ControllerRevision),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['ControllerRevision']:
+    def items(self) -> typing.List["ControllerRevision"]:
         """
         Items is the list of ControllerRevisions
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["ControllerRevision"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['ControllerRevision'], typing.List[dict]]
+        self, value: typing.Union[typing.List["ControllerRevision"], typing.List[dict]]
     ):
         """
         Items is the list of ControllerRevisions
         """
-        cleaned = []
+        cleaned: typing.List[ControllerRevision] = []
         for item in value:
             if isinstance(item, dict):
-                item = ControllerRevision().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    ControllerRevision,
+                    ControllerRevision().from_dict(item),
+                )
+            cleaned.append(typing.cast(ControllerRevision, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'ControllerRevisionList':
+    def __enter__(self) -> "ControllerRevisionList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -353,73 +362,80 @@ class DaemonSet(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'DaemonSetSpec' = None,
-            status: 'DaemonSetStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "DaemonSetSpec" = None,
+        status: "DaemonSetStatus" = None,
     ):
         """Create DaemonSet instance."""
-        super(DaemonSet, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DaemonSet'
-        )
+        super(DaemonSet, self).__init__(api_version="apps/v1beta2", kind="DaemonSet")
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else DaemonSetSpec(),
-            'status': status if status is not None else DaemonSetStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else DaemonSetSpec(),
+            "status": status if status is not None else DaemonSetStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (DaemonSetSpec, None),
-            'status': (DaemonSetStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (DaemonSetSpec, None),
+            "status": (DaemonSetStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'DaemonSetSpec':
+    def spec(self) -> "DaemonSetSpec":
         """
         The desired behavior of this daemon set. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "DaemonSetSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['DaemonSetSpec', dict]):
+    def spec(self, value: typing.Union["DaemonSetSpec", dict]):
         """
         The desired behavior of this daemon set. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = DaemonSetSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                DaemonSetSpec,
+                DaemonSetSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'DaemonSetStatus':
+    def status(self) -> "DaemonSetStatus":
         """
         The current status of this daemon set. This data may be out
         of date by some window of time. Populated by the system.
@@ -427,10 +443,13 @@ class DaemonSet(_kuber_definitions.Resource):
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "DaemonSetStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['DaemonSetStatus', dict]):
+    def status(self, value: typing.Union["DaemonSetStatus", dict]):
         """
         The current status of this daemon set. This data may be out
         of date by some window of time. Populated by the system.
@@ -439,249 +458,297 @@ class DaemonSet(_kuber_definitions.Resource):
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = DaemonSetStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                DaemonSetStatus,
+                DaemonSetStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'DaemonSet':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "DaemonSet":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.spec.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.spec.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
         by that name exists.
         """
-        return next((c for c in self.spec.template.spec.containers if c.name == name), None)
+        return next(
+            (c for c in self.spec.template.spec.containers if c.name == name), None
+        )
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.spec.template.spec.containers
 
-    def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'DaemonSetStatus':
+    def create_resource(self, namespace: "str" = None) -> "DaemonSetStatus":
         """
         Creates the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        names = [
-            'create_namespaced_daemon_set',
-            'create_daemon_set'
-        ]
+        names = ["create_namespaced_daemon_set", "create_daemon_set"]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            DaemonSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'DaemonSetStatus':
+        output = DaemonSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(self, namespace: "str" = None) -> "DaemonSetStatus":
         """
         Replaces the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'replace_namespaced_daemon_set',
-            'replace_daemon_set'
-        ]
+        names = ["replace_namespaced_daemon_set", "replace_daemon_set"]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            DaemonSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'DaemonSetStatus':
+        output = DaemonSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(self, namespace: "str" = None) -> "DaemonSetStatus":
         """
         Patches the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'patch_namespaced_daemon_set',
-            'patch_daemon_set'
-        ]
+        names = ["patch_namespaced_daemon_set", "patch_daemon_set"]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            DaemonSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'DaemonSetStatus':
+        output = DaemonSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def get_resource_status(self, namespace: "str" = None) -> "DaemonSetStatus":
         """
         Returns status information about the given resource within the cluster.
         """
-        names = [
-            'read_namespaced_daemon_set',
-            'read_daemon_set'
-        ]
+        names = ["read_namespaced_daemon_set", "read_daemon_set"]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            DaemonSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = DaemonSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the DaemonSet from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_daemon_set',
-            'read_daemon_set'
+            "read_namespaced_daemon_set",
+            "read_daemon_set",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the DaemonSet from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_daemon_set',
-            'delete_daemon_set'
+            "delete_namespaced_daemon_set",
+            "delete_daemon_set",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'DaemonSet':
+    def __enter__(self) -> "DaemonSet":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -695,33 +762,32 @@ class DaemonSetCondition(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            last_transition_time: str = None,
-            message: str = None,
-            reason: str = None,
-            status: str = None,
-            type_: str = None,
+        self,
+        last_transition_time: str = None,
+        message: str = None,
+        reason: str = None,
+        status: str = None,
+        type_: str = None,
     ):
         """Create DaemonSetCondition instance."""
         super(DaemonSetCondition, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DaemonSetCondition'
+            api_version="apps/v1beta2", kind="DaemonSetCondition"
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-            'type': type_ if type_ is not None else '',
-
+            "lastTransitionTime": last_transition_time
+            if last_transition_time is not None
+            else None,
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'lastTransitionTime': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-            'status': (str, None),
-            'type': (str, None),
-
+            "lastTransitionTime": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
+            "status": (str, None),
+            "type": (str, None),
         }
 
     @property
@@ -730,22 +796,24 @@ class DaemonSetCondition(_kuber_definitions.Definition):
         Last time the condition transitioned from one status to
         another.
         """
-        return self._properties.get('lastTransitionTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastTransitionTime"),
+        )
 
     @last_transition_time.setter
     def last_transition_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         Last time the condition transitioned from one status to
         another.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastTransitionTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastTransitionTime"] = value
 
     @property
     def message(self) -> str:
@@ -753,7 +821,10 @@ class DaemonSetCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -761,51 +832,60 @@ class DaemonSetCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
         """
         The reason for the condition's last transition.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
         """
         The reason for the condition's last transition.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
         """
         Status of the condition, one of True, False, Unknown.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
         """
         Status of the condition, one of True, False, Unknown.
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
     @property
     def type_(self) -> str:
         """
         Type of DaemonSet condition.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         Type of DaemonSet condition.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'DaemonSetCondition':
+    def __enter__(self) -> "DaemonSetCondition":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -818,84 +898,89 @@ class DaemonSetList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['DaemonSet'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["DaemonSet"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create DaemonSetList instance."""
         super(DaemonSetList, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DaemonSetList'
+            api_version="apps/v1beta2", kind="DaemonSetList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, DaemonSet),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, DaemonSet),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['DaemonSet']:
+    def items(self) -> typing.List["DaemonSet"]:
         """
         A list of daemon sets.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["DaemonSet"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['DaemonSet'], typing.List[dict]]
-    ):
+    def items(self, value: typing.Union[typing.List["DaemonSet"], typing.List[dict]]):
         """
         A list of daemon sets.
         """
-        cleaned = []
+        cleaned: typing.List[DaemonSet] = []
         for item in value:
             if isinstance(item, dict):
-                item = DaemonSet().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    DaemonSet,
+                    DaemonSet().from_dict(item),
+                )
+            cleaned.append(typing.cast(DaemonSet, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'DaemonSetList':
+    def __enter__(self) -> "DaemonSetList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -908,33 +993,36 @@ class DaemonSetSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            min_ready_seconds: int = None,
-            revision_history_limit: int = None,
-            selector: 'LabelSelector' = None,
-            template: 'PodTemplateSpec' = None,
-            update_strategy: 'DaemonSetUpdateStrategy' = None,
+        self,
+        min_ready_seconds: int = None,
+        revision_history_limit: int = None,
+        selector: "LabelSelector" = None,
+        template: "PodTemplateSpec" = None,
+        update_strategy: "DaemonSetUpdateStrategy" = None,
     ):
         """Create DaemonSetSpec instance."""
         super(DaemonSetSpec, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DaemonSetSpec'
+            api_version="apps/v1beta2", kind="DaemonSetSpec"
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
-            'revisionHistoryLimit': revision_history_limit if revision_history_limit is not None else None,
-            'selector': selector if selector is not None else LabelSelector(),
-            'template': template if template is not None else PodTemplateSpec(),
-            'updateStrategy': update_strategy if update_strategy is not None else DaemonSetUpdateStrategy(),
-
+            "minReadySeconds": min_ready_seconds
+            if min_ready_seconds is not None
+            else None,
+            "revisionHistoryLimit": revision_history_limit
+            if revision_history_limit is not None
+            else None,
+            "selector": selector if selector is not None else LabelSelector(),
+            "template": template if template is not None else PodTemplateSpec(),
+            "updateStrategy": update_strategy
+            if update_strategy is not None
+            else DaemonSetUpdateStrategy(),
         }
         self._types = {
-            'minReadySeconds': (int, None),
-            'revisionHistoryLimit': (int, None),
-            'selector': (LabelSelector, None),
-            'template': (PodTemplateSpec, None),
-            'updateStrategy': (DaemonSetUpdateStrategy, None),
-
+            "minReadySeconds": (int, None),
+            "revisionHistoryLimit": (int, None),
+            "selector": (LabelSelector, None),
+            "template": (PodTemplateSpec, None),
+            "updateStrategy": (DaemonSetUpdateStrategy, None),
         }
 
     @property
@@ -945,7 +1033,10 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         crashing, for it to be considered available. Defaults to 0
         (pod will be considered available as soon as it is ready).
         """
-        return self._properties.get('minReadySeconds')
+        return typing.cast(
+            int,
+            self._properties.get("minReadySeconds"),
+        )
 
     @min_ready_seconds.setter
     def min_ready_seconds(self, value: int):
@@ -955,7 +1046,7 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         crashing, for it to be considered available. Defaults to 0
         (pod will be considered available as soon as it is ready).
         """
-        self._properties['minReadySeconds'] = value
+        self._properties["minReadySeconds"] = value
 
     @property
     def revision_history_limit(self) -> int:
@@ -964,7 +1055,10 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         is a pointer to distinguish between explicit zero and not
         specified. Defaults to 10.
         """
-        return self._properties.get('revisionHistoryLimit')
+        return typing.cast(
+            int,
+            self._properties.get("revisionHistoryLimit"),
+        )
 
     @revision_history_limit.setter
     def revision_history_limit(self, value: int):
@@ -973,10 +1067,10 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         is a pointer to distinguish between explicit zero and not
         specified. Defaults to 10.
         """
-        self._properties['revisionHistoryLimit'] = value
+        self._properties["revisionHistoryLimit"] = value
 
     @property
-    def selector(self) -> 'LabelSelector':
+    def selector(self) -> "LabelSelector":
         """
         A label query over pods that are managed by the daemon set.
         Must match in order to be controlled. It must match the pod
@@ -984,10 +1078,13 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/labels/#label-selectors
         """
-        return self._properties.get('selector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("selector"),
+        )
 
     @selector.setter
-    def selector(self, value: typing.Union['LabelSelector', dict]):
+    def selector(self, value: typing.Union["LabelSelector", dict]):
         """
         A label query over pods that are managed by the daemon set.
         Must match in order to be controlled. It must match the pod
@@ -996,11 +1093,14 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         objects/labels/#label-selectors
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['selector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["selector"] = value
 
     @property
-    def template(self) -> 'PodTemplateSpec':
+    def template(self) -> "PodTemplateSpec":
         """
         An object that describes the pod that will be created. The
         DaemonSet will create exactly one copy of this pod on every
@@ -1009,10 +1109,13 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         ubernetes.io/docs/concepts/workloads/controllers/replication
         controller#pod-template
         """
-        return self._properties.get('template')
+        return typing.cast(
+            "PodTemplateSpec",
+            self._properties.get("template"),
+        )
 
     @template.setter
-    def template(self, value: typing.Union['PodTemplateSpec', dict]):
+    def template(self, value: typing.Union["PodTemplateSpec", dict]):
         """
         An object that describes the pod that will be created. The
         DaemonSet will create exactly one copy of this pod on every
@@ -1022,83 +1125,159 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         controller#pod-template
         """
         if isinstance(value, dict):
-            value = PodTemplateSpec().from_dict(value)
-        self._properties['template'] = value
+            value = typing.cast(
+                PodTemplateSpec,
+                PodTemplateSpec().from_dict(value),
+            )
+        self._properties["template"] = value
 
     @property
-    def update_strategy(self) -> 'DaemonSetUpdateStrategy':
+    def update_strategy(self) -> "DaemonSetUpdateStrategy":
         """
         An update strategy to replace existing DaemonSet pods with
         new pods.
         """
-        return self._properties.get('updateStrategy')
+        return typing.cast(
+            "DaemonSetUpdateStrategy",
+            self._properties.get("updateStrategy"),
+        )
 
     @update_strategy.setter
-    def update_strategy(self, value: typing.Union['DaemonSetUpdateStrategy', dict]):
+    def update_strategy(self, value: typing.Union["DaemonSetUpdateStrategy", dict]):
         """
         An update strategy to replace existing DaemonSet pods with
         new pods.
         """
         if isinstance(value, dict):
-            value = DaemonSetUpdateStrategy().from_dict(value)
-        self._properties['updateStrategy'] = value
+            value = typing.cast(
+                DaemonSetUpdateStrategy,
+                DaemonSetUpdateStrategy().from_dict(value),
+            )
+        self._properties["updateStrategy"] = value
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'DaemonSetSpec':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "DaemonSetSpec":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
@@ -1106,14 +1285,14 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.template.spec.containers
 
-    def __enter__(self) -> 'DaemonSetSpec':
+    def __enter__(self) -> "DaemonSetSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1127,48 +1306,59 @@ class DaemonSetStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            collision_count: int = None,
-            conditions: typing.List['DaemonSetCondition'] = None,
-            current_number_scheduled: int = None,
-            desired_number_scheduled: int = None,
-            number_available: int = None,
-            number_misscheduled: int = None,
-            number_ready: int = None,
-            number_unavailable: int = None,
-            observed_generation: int = None,
-            updated_number_scheduled: int = None,
+        self,
+        collision_count: int = None,
+        conditions: typing.List["DaemonSetCondition"] = None,
+        current_number_scheduled: int = None,
+        desired_number_scheduled: int = None,
+        number_available: int = None,
+        number_misscheduled: int = None,
+        number_ready: int = None,
+        number_unavailable: int = None,
+        observed_generation: int = None,
+        updated_number_scheduled: int = None,
     ):
         """Create DaemonSetStatus instance."""
         super(DaemonSetStatus, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DaemonSetStatus'
+            api_version="apps/v1beta2", kind="DaemonSetStatus"
         )
         self._properties = {
-            'collisionCount': collision_count if collision_count is not None else None,
-            'conditions': conditions if conditions is not None else [],
-            'currentNumberScheduled': current_number_scheduled if current_number_scheduled is not None else None,
-            'desiredNumberScheduled': desired_number_scheduled if desired_number_scheduled is not None else None,
-            'numberAvailable': number_available if number_available is not None else None,
-            'numberMisscheduled': number_misscheduled if number_misscheduled is not None else None,
-            'numberReady': number_ready if number_ready is not None else None,
-            'numberUnavailable': number_unavailable if number_unavailable is not None else None,
-            'observedGeneration': observed_generation if observed_generation is not None else None,
-            'updatedNumberScheduled': updated_number_scheduled if updated_number_scheduled is not None else None,
-
+            "collisionCount": collision_count if collision_count is not None else None,
+            "conditions": conditions if conditions is not None else [],
+            "currentNumberScheduled": current_number_scheduled
+            if current_number_scheduled is not None
+            else None,
+            "desiredNumberScheduled": desired_number_scheduled
+            if desired_number_scheduled is not None
+            else None,
+            "numberAvailable": number_available
+            if number_available is not None
+            else None,
+            "numberMisscheduled": number_misscheduled
+            if number_misscheduled is not None
+            else None,
+            "numberReady": number_ready if number_ready is not None else None,
+            "numberUnavailable": number_unavailable
+            if number_unavailable is not None
+            else None,
+            "observedGeneration": observed_generation
+            if observed_generation is not None
+            else None,
+            "updatedNumberScheduled": updated_number_scheduled
+            if updated_number_scheduled is not None
+            else None,
         }
         self._types = {
-            'collisionCount': (int, None),
-            'conditions': (list, DaemonSetCondition),
-            'currentNumberScheduled': (int, None),
-            'desiredNumberScheduled': (int, None),
-            'numberAvailable': (int, None),
-            'numberMisscheduled': (int, None),
-            'numberReady': (int, None),
-            'numberUnavailable': (int, None),
-            'observedGeneration': (int, None),
-            'updatedNumberScheduled': (int, None),
-
+            "collisionCount": (int, None),
+            "conditions": (list, DaemonSetCondition),
+            "currentNumberScheduled": (int, None),
+            "desiredNumberScheduled": (int, None),
+            "numberAvailable": (int, None),
+            "numberMisscheduled": (int, None),
+            "numberReady": (int, None),
+            "numberUnavailable": (int, None),
+            "observedGeneration": (int, None),
+            "updatedNumberScheduled": (int, None),
         }
 
     @property
@@ -1179,7 +1369,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         mechanism when it needs to create the name for the newest
         ControllerRevision.
         """
-        return self._properties.get('collisionCount')
+        return typing.cast(
+            int,
+            self._properties.get("collisionCount"),
+        )
 
     @collision_count.setter
     def collision_count(self, value: int):
@@ -1189,31 +1382,36 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         mechanism when it needs to create the name for the newest
         ControllerRevision.
         """
-        self._properties['collisionCount'] = value
+        self._properties["collisionCount"] = value
 
     @property
-    def conditions(self) -> typing.List['DaemonSetCondition']:
+    def conditions(self) -> typing.List["DaemonSetCondition"]:
         """
         Represents the latest available observations of a
         DaemonSet's current state.
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            typing.List["DaemonSetCondition"],
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
     def conditions(
-            self,
-            value: typing.Union[typing.List['DaemonSetCondition'], typing.List[dict]]
+        self, value: typing.Union[typing.List["DaemonSetCondition"], typing.List[dict]]
     ):
         """
         Represents the latest available observations of a
         DaemonSet's current state.
         """
-        cleaned = []
+        cleaned: typing.List[DaemonSetCondition] = []
         for item in value:
             if isinstance(item, dict):
-                item = DaemonSetCondition().from_dict(item)
-            cleaned.append(item)
-        self._properties['conditions'] = cleaned
+                item = typing.cast(
+                    DaemonSetCondition,
+                    DaemonSetCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(DaemonSetCondition, item))
+        self._properties["conditions"] = cleaned
 
     @property
     def current_number_scheduled(self) -> int:
@@ -1222,7 +1420,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         and are supposed to run the daemon pod. More info: https://k
         ubernetes.io/docs/concepts/workloads/controllers/daemonset/
         """
-        return self._properties.get('currentNumberScheduled')
+        return typing.cast(
+            int,
+            self._properties.get("currentNumberScheduled"),
+        )
 
     @current_number_scheduled.setter
     def current_number_scheduled(self, value: int):
@@ -1231,7 +1432,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         and are supposed to run the daemon pod. More info: https://k
         ubernetes.io/docs/concepts/workloads/controllers/daemonset/
         """
-        self._properties['currentNumberScheduled'] = value
+        self._properties["currentNumberScheduled"] = value
 
     @property
     def desired_number_scheduled(self) -> int:
@@ -1241,7 +1442,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         info: https://kubernetes.io/docs/concepts/workloads/controll
         ers/daemonset/
         """
-        return self._properties.get('desiredNumberScheduled')
+        return typing.cast(
+            int,
+            self._properties.get("desiredNumberScheduled"),
+        )
 
     @desired_number_scheduled.setter
     def desired_number_scheduled(self, value: int):
@@ -1251,7 +1455,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         info: https://kubernetes.io/docs/concepts/workloads/controll
         ers/daemonset/
         """
-        self._properties['desiredNumberScheduled'] = value
+        self._properties["desiredNumberScheduled"] = value
 
     @property
     def number_available(self) -> int:
@@ -1260,7 +1464,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         and have one or more of the daemon pod running and available
         (ready for at least spec.minReadySeconds)
         """
-        return self._properties.get('numberAvailable')
+        return typing.cast(
+            int,
+            self._properties.get("numberAvailable"),
+        )
 
     @number_available.setter
     def number_available(self, value: int):
@@ -1269,7 +1476,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         and have one or more of the daemon pod running and available
         (ready for at least spec.minReadySeconds)
         """
-        self._properties['numberAvailable'] = value
+        self._properties["numberAvailable"] = value
 
     @property
     def number_misscheduled(self) -> int:
@@ -1278,7 +1485,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         not supposed to run the daemon pod. More info: https://kuber
         netes.io/docs/concepts/workloads/controllers/daemonset/
         """
-        return self._properties.get('numberMisscheduled')
+        return typing.cast(
+            int,
+            self._properties.get("numberMisscheduled"),
+        )
 
     @number_misscheduled.setter
     def number_misscheduled(self, value: int):
@@ -1287,7 +1497,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         not supposed to run the daemon pod. More info: https://kuber
         netes.io/docs/concepts/workloads/controllers/daemonset/
         """
-        self._properties['numberMisscheduled'] = value
+        self._properties["numberMisscheduled"] = value
 
     @property
     def number_ready(self) -> int:
@@ -1295,7 +1505,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         The number of nodes that should be running the daemon pod
         and have one or more of the daemon pod running and ready.
         """
-        return self._properties.get('numberReady')
+        return typing.cast(
+            int,
+            self._properties.get("numberReady"),
+        )
 
     @number_ready.setter
     def number_ready(self, value: int):
@@ -1303,7 +1516,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         The number of nodes that should be running the daemon pod
         and have one or more of the daemon pod running and ready.
         """
-        self._properties['numberReady'] = value
+        self._properties["numberReady"] = value
 
     @property
     def number_unavailable(self) -> int:
@@ -1312,7 +1525,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         and have none of the daemon pod running and available (ready
         for at least spec.minReadySeconds)
         """
-        return self._properties.get('numberUnavailable')
+        return typing.cast(
+            int,
+            self._properties.get("numberUnavailable"),
+        )
 
     @number_unavailable.setter
     def number_unavailable(self, value: int):
@@ -1321,7 +1537,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         and have none of the daemon pod running and available (ready
         for at least spec.minReadySeconds)
         """
-        self._properties['numberUnavailable'] = value
+        self._properties["numberUnavailable"] = value
 
     @property
     def observed_generation(self) -> int:
@@ -1329,7 +1545,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         The most recent generation observed by the daemon set
         controller.
         """
-        return self._properties.get('observedGeneration')
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
 
     @observed_generation.setter
     def observed_generation(self, value: int):
@@ -1337,7 +1556,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         The most recent generation observed by the daemon set
         controller.
         """
-        self._properties['observedGeneration'] = value
+        self._properties["observedGeneration"] = value
 
     @property
     def updated_number_scheduled(self) -> int:
@@ -1345,7 +1564,10 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         The total number of nodes that are running updated daemon
         pod
         """
-        return self._properties.get('updatedNumberScheduled')
+        return typing.cast(
+            int,
+            self._properties.get("updatedNumberScheduled"),
+        )
 
     @updated_number_scheduled.setter
     def updated_number_scheduled(self, value: int):
@@ -1353,9 +1575,9 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         The total number of nodes that are running updated daemon
         pod
         """
-        self._properties['updatedNumberScheduled'] = value
+        self._properties["updatedNumberScheduled"] = value
 
-    def __enter__(self) -> 'DaemonSetStatus':
+    def __enter__(self) -> "DaemonSetStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1369,43 +1591,48 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            rolling_update: 'RollingUpdateDaemonSet' = None,
-            type_: str = None,
+        self,
+        rolling_update: "RollingUpdateDaemonSet" = None,
+        type_: str = None,
     ):
         """Create DaemonSetUpdateStrategy instance."""
         super(DaemonSetUpdateStrategy, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DaemonSetUpdateStrategy'
+            api_version="apps/v1beta2", kind="DaemonSetUpdateStrategy"
         )
         self._properties = {
-            'rollingUpdate': rolling_update if rolling_update is not None else RollingUpdateDaemonSet(),
-            'type': type_ if type_ is not None else '',
-
+            "rollingUpdate": rolling_update
+            if rolling_update is not None
+            else RollingUpdateDaemonSet(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'rollingUpdate': (RollingUpdateDaemonSet, None),
-            'type': (str, None),
-
+            "rollingUpdate": (RollingUpdateDaemonSet, None),
+            "type": (str, None),
         }
 
     @property
-    def rolling_update(self) -> 'RollingUpdateDaemonSet':
+    def rolling_update(self) -> "RollingUpdateDaemonSet":
         """
         Rolling update config params. Present only if type =
         "RollingUpdate".
         """
-        return self._properties.get('rollingUpdate')
+        return typing.cast(
+            "RollingUpdateDaemonSet",
+            self._properties.get("rollingUpdate"),
+        )
 
     @rolling_update.setter
-    def rolling_update(self, value: typing.Union['RollingUpdateDaemonSet', dict]):
+    def rolling_update(self, value: typing.Union["RollingUpdateDaemonSet", dict]):
         """
         Rolling update config params. Present only if type =
         "RollingUpdate".
         """
         if isinstance(value, dict):
-            value = RollingUpdateDaemonSet().from_dict(value)
-        self._properties['rollingUpdate'] = value
+            value = typing.cast(
+                RollingUpdateDaemonSet,
+                RollingUpdateDaemonSet().from_dict(value),
+            )
+        self._properties["rollingUpdate"] = value
 
     @property
     def type_(self) -> str:
@@ -1413,7 +1640,10 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
         Type of daemon set update. Can be "RollingUpdate" or
         "OnDelete". Default is RollingUpdate.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -1421,9 +1651,9 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
         Type of daemon set update. Can be "RollingUpdate" or
         "OnDelete". Default is RollingUpdate.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'DaemonSetUpdateStrategy':
+    def __enter__(self) -> "DaemonSetUpdateStrategy":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1439,319 +1669,377 @@ class Deployment(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'DeploymentSpec' = None,
-            status: 'DeploymentStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "DeploymentSpec" = None,
+        status: "DeploymentStatus" = None,
     ):
         """Create Deployment instance."""
-        super(Deployment, self).__init__(
-            api_version='apps/v1beta2',
-            kind='Deployment'
-        )
+        super(Deployment, self).__init__(api_version="apps/v1beta2", kind="Deployment")
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else DeploymentSpec(),
-            'status': status if status is not None else DeploymentStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else DeploymentSpec(),
+            "status": status if status is not None else DeploymentStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (DeploymentSpec, None),
-            'status': (DeploymentStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (DeploymentSpec, None),
+            "status": (DeploymentStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'DeploymentSpec':
+    def spec(self) -> "DeploymentSpec":
         """
         Specification of the desired behavior of the Deployment.
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "DeploymentSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['DeploymentSpec', dict]):
+    def spec(self, value: typing.Union["DeploymentSpec", dict]):
         """
         Specification of the desired behavior of the Deployment.
         """
         if isinstance(value, dict):
-            value = DeploymentSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                DeploymentSpec,
+                DeploymentSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'DeploymentStatus':
+    def status(self) -> "DeploymentStatus":
         """
         Most recently observed status of the Deployment.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "DeploymentStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['DeploymentStatus', dict]):
+    def status(self, value: typing.Union["DeploymentStatus", dict]):
         """
         Most recently observed status of the Deployment.
         """
         if isinstance(value, dict):
-            value = DeploymentStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                DeploymentStatus,
+                DeploymentStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'Deployment':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "Deployment":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.spec.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.spec.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
         by that name exists.
         """
-        return next((c for c in self.spec.template.spec.containers if c.name == name), None)
+        return next(
+            (c for c in self.spec.template.spec.containers if c.name == name), None
+        )
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.spec.template.spec.containers
 
-    def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'DeploymentStatus':
+    def create_resource(self, namespace: "str" = None) -> "DeploymentStatus":
         """
         Creates the Deployment in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        names = [
-            'create_namespaced_deployment',
-            'create_deployment'
-        ]
+        names = ["create_namespaced_deployment", "create_deployment"]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            DeploymentStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'DeploymentStatus':
+        output = DeploymentStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(self, namespace: "str" = None) -> "DeploymentStatus":
         """
         Replaces the Deployment in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'replace_namespaced_deployment',
-            'replace_deployment'
-        ]
+        names = ["replace_namespaced_deployment", "replace_deployment"]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            DeploymentStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'DeploymentStatus':
+        output = DeploymentStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(self, namespace: "str" = None) -> "DeploymentStatus":
         """
         Patches the Deployment in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'patch_namespaced_deployment',
-            'patch_deployment'
-        ]
+        names = ["patch_namespaced_deployment", "patch_deployment"]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            DeploymentStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'DeploymentStatus':
+        output = DeploymentStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def get_resource_status(self, namespace: "str" = None) -> "DeploymentStatus":
         """
         Returns status information about the given resource within the cluster.
         """
-        names = [
-            'read_namespaced_deployment',
-            'read_deployment'
-        ]
+        names = ["read_namespaced_deployment", "read_deployment"]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            DeploymentStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = DeploymentStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the Deployment from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_deployment',
-            'read_deployment'
+            "read_namespaced_deployment",
+            "read_deployment",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the Deployment from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_deployment',
-            'delete_deployment'
+            "delete_namespaced_deployment",
+            "delete_deployment",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'Deployment':
+    def __enter__(self) -> "Deployment":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1765,36 +2053,37 @@ class DeploymentCondition(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            last_transition_time: str = None,
-            last_update_time: str = None,
-            message: str = None,
-            reason: str = None,
-            status: str = None,
-            type_: str = None,
+        self,
+        last_transition_time: str = None,
+        last_update_time: str = None,
+        message: str = None,
+        reason: str = None,
+        status: str = None,
+        type_: str = None,
     ):
         """Create DeploymentCondition instance."""
         super(DeploymentCondition, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DeploymentCondition'
+            api_version="apps/v1beta2", kind="DeploymentCondition"
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
-            'lastUpdateTime': last_update_time if last_update_time is not None else None,
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-            'type': type_ if type_ is not None else '',
-
+            "lastTransitionTime": last_transition_time
+            if last_transition_time is not None
+            else None,
+            "lastUpdateTime": last_update_time
+            if last_update_time is not None
+            else None,
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'lastTransitionTime': (str, None),
-            'lastUpdateTime': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-            'status': (str, None),
-            'type': (str, None),
-
+            "lastTransitionTime": (str, None),
+            "lastUpdateTime": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
+            "status": (str, None),
+            "type": (str, None),
         }
 
     @property
@@ -1803,43 +2092,47 @@ class DeploymentCondition(_kuber_definitions.Definition):
         Last time the condition transitioned from one status to
         another.
         """
-        return self._properties.get('lastTransitionTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastTransitionTime"),
+        )
 
     @last_transition_time.setter
     def last_transition_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         Last time the condition transitioned from one status to
         another.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastTransitionTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastTransitionTime"] = value
 
     @property
     def last_update_time(self) -> str:
         """
         The last time this condition was updated.
         """
-        return self._properties.get('lastUpdateTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastUpdateTime"),
+        )
 
     @last_update_time.setter
     def last_update_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         The last time this condition was updated.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastUpdateTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastUpdateTime"] = value
 
     @property
     def message(self) -> str:
@@ -1847,7 +2140,10 @@ class DeploymentCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -1855,51 +2151,60 @@ class DeploymentCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
         """
         The reason for the condition's last transition.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
         """
         The reason for the condition's last transition.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
         """
         Status of the condition, one of True, False, Unknown.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
         """
         Status of the condition, one of True, False, Unknown.
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
     @property
     def type_(self) -> str:
         """
         Type of deployment condition.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         Type of deployment condition.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'DeploymentCondition':
+    def __enter__(self) -> "DeploymentCondition":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1912,80 +2217,85 @@ class DeploymentList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['Deployment'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["Deployment"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create DeploymentList instance."""
         super(DeploymentList, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DeploymentList'
+            api_version="apps/v1beta2", kind="DeploymentList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, Deployment),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, Deployment),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['Deployment']:
+    def items(self) -> typing.List["Deployment"]:
         """
         Items is the list of Deployments.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["Deployment"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['Deployment'], typing.List[dict]]
-    ):
+    def items(self, value: typing.Union[typing.List["Deployment"], typing.List[dict]]):
         """
         Items is the list of Deployments.
         """
-        cleaned = []
+        cleaned: typing.List[Deployment] = []
         for item in value:
             if isinstance(item, dict):
-                item = Deployment().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    Deployment,
+                    Deployment().from_dict(item),
+                )
+            cleaned.append(typing.cast(Deployment, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata.
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'DeploymentList':
+    def __enter__(self) -> "DeploymentList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1999,42 +2309,45 @@ class DeploymentSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            min_ready_seconds: int = None,
-            paused: bool = None,
-            progress_deadline_seconds: int = None,
-            replicas: int = None,
-            revision_history_limit: int = None,
-            selector: 'LabelSelector' = None,
-            strategy: 'DeploymentStrategy' = None,
-            template: 'PodTemplateSpec' = None,
+        self,
+        min_ready_seconds: int = None,
+        paused: bool = None,
+        progress_deadline_seconds: int = None,
+        replicas: int = None,
+        revision_history_limit: int = None,
+        selector: "LabelSelector" = None,
+        strategy: "DeploymentStrategy" = None,
+        template: "PodTemplateSpec" = None,
     ):
         """Create DeploymentSpec instance."""
         super(DeploymentSpec, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DeploymentSpec'
+            api_version="apps/v1beta2", kind="DeploymentSpec"
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
-            'paused': paused if paused is not None else None,
-            'progressDeadlineSeconds': progress_deadline_seconds if progress_deadline_seconds is not None else None,
-            'replicas': replicas if replicas is not None else None,
-            'revisionHistoryLimit': revision_history_limit if revision_history_limit is not None else None,
-            'selector': selector if selector is not None else LabelSelector(),
-            'strategy': strategy if strategy is not None else DeploymentStrategy(),
-            'template': template if template is not None else PodTemplateSpec(),
-
+            "minReadySeconds": min_ready_seconds
+            if min_ready_seconds is not None
+            else None,
+            "paused": paused if paused is not None else None,
+            "progressDeadlineSeconds": progress_deadline_seconds
+            if progress_deadline_seconds is not None
+            else None,
+            "replicas": replicas if replicas is not None else None,
+            "revisionHistoryLimit": revision_history_limit
+            if revision_history_limit is not None
+            else None,
+            "selector": selector if selector is not None else LabelSelector(),
+            "strategy": strategy if strategy is not None else DeploymentStrategy(),
+            "template": template if template is not None else PodTemplateSpec(),
         }
         self._types = {
-            'minReadySeconds': (int, None),
-            'paused': (bool, None),
-            'progressDeadlineSeconds': (int, None),
-            'replicas': (int, None),
-            'revisionHistoryLimit': (int, None),
-            'selector': (LabelSelector, None),
-            'strategy': (DeploymentStrategy, None),
-            'template': (PodTemplateSpec, None),
-
+            "minReadySeconds": (int, None),
+            "paused": (bool, None),
+            "progressDeadlineSeconds": (int, None),
+            "replicas": (int, None),
+            "revisionHistoryLimit": (int, None),
+            "selector": (LabelSelector, None),
+            "strategy": (DeploymentStrategy, None),
+            "template": (PodTemplateSpec, None),
         }
 
     @property
@@ -2045,7 +2358,10 @@ class DeploymentSpec(_kuber_definitions.Definition):
         it to be considered available. Defaults to 0 (pod will be
         considered available as soon as it is ready)
         """
-        return self._properties.get('minReadySeconds')
+        return typing.cast(
+            int,
+            self._properties.get("minReadySeconds"),
+        )
 
     @min_ready_seconds.setter
     def min_ready_seconds(self, value: int):
@@ -2055,21 +2371,24 @@ class DeploymentSpec(_kuber_definitions.Definition):
         it to be considered available. Defaults to 0 (pod will be
         considered available as soon as it is ready)
         """
-        self._properties['minReadySeconds'] = value
+        self._properties["minReadySeconds"] = value
 
     @property
     def paused(self) -> bool:
         """
         Indicates that the deployment is paused.
         """
-        return self._properties.get('paused')
+        return typing.cast(
+            bool,
+            self._properties.get("paused"),
+        )
 
     @paused.setter
     def paused(self, value: bool):
         """
         Indicates that the deployment is paused.
         """
-        self._properties['paused'] = value
+        self._properties["paused"] = value
 
     @property
     def progress_deadline_seconds(self) -> int:
@@ -2082,7 +2401,10 @@ class DeploymentSpec(_kuber_definitions.Definition):
         progress will not be estimated during the time a deployment
         is paused. Defaults to 600s.
         """
-        return self._properties.get('progressDeadlineSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("progressDeadlineSeconds"),
+        )
 
     @progress_deadline_seconds.setter
     def progress_deadline_seconds(self, value: int):
@@ -2095,7 +2417,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
         progress will not be estimated during the time a deployment
         is paused. Defaults to 600s.
         """
-        self._properties['progressDeadlineSeconds'] = value
+        self._properties["progressDeadlineSeconds"] = value
 
     @property
     def replicas(self) -> int:
@@ -2103,7 +2425,10 @@ class DeploymentSpec(_kuber_definitions.Definition):
         Number of desired pods. This is a pointer to distinguish
         between explicit zero and not specified. Defaults to 1.
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
@@ -2111,7 +2436,7 @@ class DeploymentSpec(_kuber_definitions.Definition):
         Number of desired pods. This is a pointer to distinguish
         between explicit zero and not specified. Defaults to 1.
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
     @property
     def revision_history_limit(self) -> int:
@@ -2120,7 +2445,10 @@ class DeploymentSpec(_kuber_definitions.Definition):
         This is a pointer to distinguish between explicit zero and
         not specified. Defaults to 10.
         """
-        return self._properties.get('revisionHistoryLimit')
+        return typing.cast(
+            int,
+            self._properties.get("revisionHistoryLimit"),
+        )
 
     @revision_history_limit.setter
     def revision_history_limit(self, value: int):
@@ -2129,118 +2457,203 @@ class DeploymentSpec(_kuber_definitions.Definition):
         This is a pointer to distinguish between explicit zero and
         not specified. Defaults to 10.
         """
-        self._properties['revisionHistoryLimit'] = value
+        self._properties["revisionHistoryLimit"] = value
 
     @property
-    def selector(self) -> 'LabelSelector':
+    def selector(self) -> "LabelSelector":
         """
         Label selector for pods. Existing ReplicaSets whose pods are
         selected by this will be the ones affected by this
         deployment. It must match the pod template's labels.
         """
-        return self._properties.get('selector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("selector"),
+        )
 
     @selector.setter
-    def selector(self, value: typing.Union['LabelSelector', dict]):
+    def selector(self, value: typing.Union["LabelSelector", dict]):
         """
         Label selector for pods. Existing ReplicaSets whose pods are
         selected by this will be the ones affected by this
         deployment. It must match the pod template's labels.
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['selector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["selector"] = value
 
     @property
-    def strategy(self) -> 'DeploymentStrategy':
+    def strategy(self) -> "DeploymentStrategy":
         """
         The deployment strategy to use to replace existing pods with
         new ones.
         """
-        return self._properties.get('strategy')
+        return typing.cast(
+            "DeploymentStrategy",
+            self._properties.get("strategy"),
+        )
 
     @strategy.setter
-    def strategy(self, value: typing.Union['DeploymentStrategy', dict]):
+    def strategy(self, value: typing.Union["DeploymentStrategy", dict]):
         """
         The deployment strategy to use to replace existing pods with
         new ones.
         """
         if isinstance(value, dict):
-            value = DeploymentStrategy().from_dict(value)
-        self._properties['strategy'] = value
+            value = typing.cast(
+                DeploymentStrategy,
+                DeploymentStrategy().from_dict(value),
+            )
+        self._properties["strategy"] = value
 
     @property
-    def template(self) -> 'PodTemplateSpec':
+    def template(self) -> "PodTemplateSpec":
         """
         Template describes the pods that will be created.
         """
-        return self._properties.get('template')
+        return typing.cast(
+            "PodTemplateSpec",
+            self._properties.get("template"),
+        )
 
     @template.setter
-    def template(self, value: typing.Union['PodTemplateSpec', dict]):
+    def template(self, value: typing.Union["PodTemplateSpec", dict]):
         """
         Template describes the pods that will be created.
         """
         if isinstance(value, dict):
-            value = PodTemplateSpec().from_dict(value)
-        self._properties['template'] = value
+            value = typing.cast(
+                PodTemplateSpec,
+                PodTemplateSpec().from_dict(value),
+            )
+        self._properties["template"] = value
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'DeploymentSpec':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "DeploymentSpec":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
@@ -2248,14 +2661,14 @@ class DeploymentSpec(_kuber_definitions.Definition):
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.template.spec.containers
 
-    def __enter__(self) -> 'DeploymentSpec':
+    def __enter__(self) -> "DeploymentSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2269,42 +2682,47 @@ class DeploymentStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            available_replicas: int = None,
-            collision_count: int = None,
-            conditions: typing.List['DeploymentCondition'] = None,
-            observed_generation: int = None,
-            ready_replicas: int = None,
-            replicas: int = None,
-            unavailable_replicas: int = None,
-            updated_replicas: int = None,
+        self,
+        available_replicas: int = None,
+        collision_count: int = None,
+        conditions: typing.List["DeploymentCondition"] = None,
+        observed_generation: int = None,
+        ready_replicas: int = None,
+        replicas: int = None,
+        unavailable_replicas: int = None,
+        updated_replicas: int = None,
     ):
         """Create DeploymentStatus instance."""
         super(DeploymentStatus, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DeploymentStatus'
+            api_version="apps/v1beta2", kind="DeploymentStatus"
         )
         self._properties = {
-            'availableReplicas': available_replicas if available_replicas is not None else None,
-            'collisionCount': collision_count if collision_count is not None else None,
-            'conditions': conditions if conditions is not None else [],
-            'observedGeneration': observed_generation if observed_generation is not None else None,
-            'readyReplicas': ready_replicas if ready_replicas is not None else None,
-            'replicas': replicas if replicas is not None else None,
-            'unavailableReplicas': unavailable_replicas if unavailable_replicas is not None else None,
-            'updatedReplicas': updated_replicas if updated_replicas is not None else None,
-
+            "availableReplicas": available_replicas
+            if available_replicas is not None
+            else None,
+            "collisionCount": collision_count if collision_count is not None else None,
+            "conditions": conditions if conditions is not None else [],
+            "observedGeneration": observed_generation
+            if observed_generation is not None
+            else None,
+            "readyReplicas": ready_replicas if ready_replicas is not None else None,
+            "replicas": replicas if replicas is not None else None,
+            "unavailableReplicas": unavailable_replicas
+            if unavailable_replicas is not None
+            else None,
+            "updatedReplicas": updated_replicas
+            if updated_replicas is not None
+            else None,
         }
         self._types = {
-            'availableReplicas': (int, None),
-            'collisionCount': (int, None),
-            'conditions': (list, DeploymentCondition),
-            'observedGeneration': (int, None),
-            'readyReplicas': (int, None),
-            'replicas': (int, None),
-            'unavailableReplicas': (int, None),
-            'updatedReplicas': (int, None),
-
+            "availableReplicas": (int, None),
+            "collisionCount": (int, None),
+            "conditions": (list, DeploymentCondition),
+            "observedGeneration": (int, None),
+            "readyReplicas": (int, None),
+            "replicas": (int, None),
+            "unavailableReplicas": (int, None),
+            "updatedReplicas": (int, None),
         }
 
     @property
@@ -2313,7 +2731,10 @@ class DeploymentStatus(_kuber_definitions.Definition):
         Total number of available pods (ready for at least
         minReadySeconds) targeted by this deployment.
         """
-        return self._properties.get('availableReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("availableReplicas"),
+        )
 
     @available_replicas.setter
     def available_replicas(self, value: int):
@@ -2321,7 +2742,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
         Total number of available pods (ready for at least
         minReadySeconds) targeted by this deployment.
         """
-        self._properties['availableReplicas'] = value
+        self._properties["availableReplicas"] = value
 
     @property
     def collision_count(self) -> int:
@@ -2331,7 +2752,10 @@ class DeploymentStatus(_kuber_definitions.Definition):
         mechanism when it needs to create the name for the newest
         ReplicaSet.
         """
-        return self._properties.get('collisionCount')
+        return typing.cast(
+            int,
+            self._properties.get("collisionCount"),
+        )
 
     @collision_count.setter
     def collision_count(self, value: int):
@@ -2341,59 +2765,70 @@ class DeploymentStatus(_kuber_definitions.Definition):
         mechanism when it needs to create the name for the newest
         ReplicaSet.
         """
-        self._properties['collisionCount'] = value
+        self._properties["collisionCount"] = value
 
     @property
-    def conditions(self) -> typing.List['DeploymentCondition']:
+    def conditions(self) -> typing.List["DeploymentCondition"]:
         """
         Represents the latest available observations of a
         deployment's current state.
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            typing.List["DeploymentCondition"],
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
     def conditions(
-            self,
-            value: typing.Union[typing.List['DeploymentCondition'], typing.List[dict]]
+        self, value: typing.Union[typing.List["DeploymentCondition"], typing.List[dict]]
     ):
         """
         Represents the latest available observations of a
         deployment's current state.
         """
-        cleaned = []
+        cleaned: typing.List[DeploymentCondition] = []
         for item in value:
             if isinstance(item, dict):
-                item = DeploymentCondition().from_dict(item)
-            cleaned.append(item)
-        self._properties['conditions'] = cleaned
+                item = typing.cast(
+                    DeploymentCondition,
+                    DeploymentCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(DeploymentCondition, item))
+        self._properties["conditions"] = cleaned
 
     @property
     def observed_generation(self) -> int:
         """
         The generation observed by the deployment controller.
         """
-        return self._properties.get('observedGeneration')
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
 
     @observed_generation.setter
     def observed_generation(self, value: int):
         """
         The generation observed by the deployment controller.
         """
-        self._properties['observedGeneration'] = value
+        self._properties["observedGeneration"] = value
 
     @property
     def ready_replicas(self) -> int:
         """
         Total number of ready pods targeted by this deployment.
         """
-        return self._properties.get('readyReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("readyReplicas"),
+        )
 
     @ready_replicas.setter
     def ready_replicas(self, value: int):
         """
         Total number of ready pods targeted by this deployment.
         """
-        self._properties['readyReplicas'] = value
+        self._properties["readyReplicas"] = value
 
     @property
     def replicas(self) -> int:
@@ -2401,7 +2836,10 @@ class DeploymentStatus(_kuber_definitions.Definition):
         Total number of non-terminated pods targeted by this
         deployment (their labels match the selector).
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
@@ -2409,7 +2847,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
         Total number of non-terminated pods targeted by this
         deployment (their labels match the selector).
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
     @property
     def unavailable_replicas(self) -> int:
@@ -2420,7 +2858,10 @@ class DeploymentStatus(_kuber_definitions.Definition):
         They may either be pods that are running but not yet
         available or pods that still have not been created.
         """
-        return self._properties.get('unavailableReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("unavailableReplicas"),
+        )
 
     @unavailable_replicas.setter
     def unavailable_replicas(self, value: int):
@@ -2431,7 +2872,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
         They may either be pods that are running but not yet
         available or pods that still have not been created.
         """
-        self._properties['unavailableReplicas'] = value
+        self._properties["unavailableReplicas"] = value
 
     @property
     def updated_replicas(self) -> int:
@@ -2439,7 +2880,10 @@ class DeploymentStatus(_kuber_definitions.Definition):
         Total number of non-terminated pods targeted by this
         deployment that have the desired template spec.
         """
-        return self._properties.get('updatedReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("updatedReplicas"),
+        )
 
     @updated_replicas.setter
     def updated_replicas(self, value: int):
@@ -2447,9 +2891,9 @@ class DeploymentStatus(_kuber_definitions.Definition):
         Total number of non-terminated pods targeted by this
         deployment that have the desired template spec.
         """
-        self._properties['updatedReplicas'] = value
+        self._properties["updatedReplicas"] = value
 
-    def __enter__(self) -> 'DeploymentStatus':
+    def __enter__(self) -> "DeploymentStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2463,43 +2907,48 @@ class DeploymentStrategy(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            rolling_update: 'RollingUpdateDeployment' = None,
-            type_: str = None,
+        self,
+        rolling_update: "RollingUpdateDeployment" = None,
+        type_: str = None,
     ):
         """Create DeploymentStrategy instance."""
         super(DeploymentStrategy, self).__init__(
-            api_version='apps/v1beta2',
-            kind='DeploymentStrategy'
+            api_version="apps/v1beta2", kind="DeploymentStrategy"
         )
         self._properties = {
-            'rollingUpdate': rolling_update if rolling_update is not None else RollingUpdateDeployment(),
-            'type': type_ if type_ is not None else '',
-
+            "rollingUpdate": rolling_update
+            if rolling_update is not None
+            else RollingUpdateDeployment(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'rollingUpdate': (RollingUpdateDeployment, None),
-            'type': (str, None),
-
+            "rollingUpdate": (RollingUpdateDeployment, None),
+            "type": (str, None),
         }
 
     @property
-    def rolling_update(self) -> 'RollingUpdateDeployment':
+    def rolling_update(self) -> "RollingUpdateDeployment":
         """
         Rolling update config params. Present only if
         DeploymentStrategyType = RollingUpdate.
         """
-        return self._properties.get('rollingUpdate')
+        return typing.cast(
+            "RollingUpdateDeployment",
+            self._properties.get("rollingUpdate"),
+        )
 
     @rolling_update.setter
-    def rolling_update(self, value: typing.Union['RollingUpdateDeployment', dict]):
+    def rolling_update(self, value: typing.Union["RollingUpdateDeployment", dict]):
         """
         Rolling update config params. Present only if
         DeploymentStrategyType = RollingUpdate.
         """
         if isinstance(value, dict):
-            value = RollingUpdateDeployment().from_dict(value)
-        self._properties['rollingUpdate'] = value
+            value = typing.cast(
+                RollingUpdateDeployment,
+                RollingUpdateDeployment().from_dict(value),
+            )
+        self._properties["rollingUpdate"] = value
 
     @property
     def type_(self) -> str:
@@ -2507,7 +2956,10 @@ class DeploymentStrategy(_kuber_definitions.Definition):
         Type of deployment. Can be "Recreate" or "RollingUpdate".
         Default is RollingUpdate.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -2515,9 +2967,9 @@ class DeploymentStrategy(_kuber_definitions.Definition):
         Type of deployment. Can be "Recreate" or "RollingUpdate".
         Default is RollingUpdate.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'DeploymentStrategy':
+    def __enter__(self) -> "DeploymentStrategy":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2533,33 +2985,28 @@ class ReplicaSet(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'ReplicaSetSpec' = None,
-            status: 'ReplicaSetStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "ReplicaSetSpec" = None,
+        status: "ReplicaSetStatus" = None,
     ):
         """Create ReplicaSet instance."""
-        super(ReplicaSet, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ReplicaSet'
-        )
+        super(ReplicaSet, self).__init__(api_version="apps/v1beta2", kind="ReplicaSet")
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else ReplicaSetSpec(),
-            'status': status if status is not None else ReplicaSetStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else ReplicaSetSpec(),
+            "status": status if status is not None else ReplicaSetStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (ReplicaSetSpec, None),
-            'status': (ReplicaSetStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (ReplicaSetSpec, None),
+            "status": (ReplicaSetStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         If the Labels of a ReplicaSet are empty, they are defaulted
         to be the same as the Pod(s) that the ReplicaSet manages.
@@ -2567,10 +3014,13 @@ class ReplicaSet(_kuber_definitions.Resource):
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         If the Labels of a ReplicaSet are empty, they are defaulted
         to be the same as the Pod(s) that the ReplicaSet manages.
@@ -2579,21 +3029,27 @@ class ReplicaSet(_kuber_definitions.Resource):
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'ReplicaSetSpec':
+    def spec(self) -> "ReplicaSetSpec":
         """
         Spec defines the specification of the desired behavior of
         the ReplicaSet. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "ReplicaSetSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['ReplicaSetSpec', dict]):
+    def spec(self, value: typing.Union["ReplicaSetSpec", dict]):
         """
         Spec defines the specification of the desired behavior of
         the ReplicaSet. More info:
@@ -2601,11 +3057,14 @@ class ReplicaSet(_kuber_definitions.Resource):
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = ReplicaSetSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                ReplicaSetSpec,
+                ReplicaSetSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'ReplicaSetStatus':
+    def status(self) -> "ReplicaSetStatus":
         """
         Status is the most recently observed status of the
         ReplicaSet. This data may be out of date by some window of
@@ -2613,10 +3072,13 @@ class ReplicaSet(_kuber_definitions.Resource):
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "ReplicaSetStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['ReplicaSetStatus', dict]):
+    def status(self, value: typing.Union["ReplicaSetStatus", dict]):
         """
         Status is the most recently observed status of the
         ReplicaSet. This data may be out of date by some window of
@@ -2625,249 +3087,297 @@ class ReplicaSet(_kuber_definitions.Resource):
         architecture/api-conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = ReplicaSetStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                ReplicaSetStatus,
+                ReplicaSetStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'ReplicaSet':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "ReplicaSet":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.spec.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.spec.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
         by that name exists.
         """
-        return next((c for c in self.spec.template.spec.containers if c.name == name), None)
+        return next(
+            (c for c in self.spec.template.spec.containers if c.name == name), None
+        )
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.spec.template.spec.containers
 
-    def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'ReplicaSetStatus':
+    def create_resource(self, namespace: "str" = None) -> "ReplicaSetStatus":
         """
         Creates the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        names = [
-            'create_namespaced_replica_set',
-            'create_replica_set'
-        ]
+        names = ["create_namespaced_replica_set", "create_replica_set"]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            ReplicaSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'ReplicaSetStatus':
+        output = ReplicaSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(self, namespace: "str" = None) -> "ReplicaSetStatus":
         """
         Replaces the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'replace_namespaced_replica_set',
-            'replace_replica_set'
-        ]
+        names = ["replace_namespaced_replica_set", "replace_replica_set"]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            ReplicaSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'ReplicaSetStatus':
+        output = ReplicaSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(self, namespace: "str" = None) -> "ReplicaSetStatus":
         """
         Patches the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'patch_namespaced_replica_set',
-            'patch_replica_set'
-        ]
+        names = ["patch_namespaced_replica_set", "patch_replica_set"]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            ReplicaSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'ReplicaSetStatus':
+        output = ReplicaSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def get_resource_status(self, namespace: "str" = None) -> "ReplicaSetStatus":
         """
         Returns status information about the given resource within the cluster.
         """
-        names = [
-            'read_namespaced_replica_set',
-            'read_replica_set'
-        ]
+        names = ["read_namespaced_replica_set", "read_replica_set"]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            ReplicaSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = ReplicaSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the ReplicaSet from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_replica_set',
-            'read_replica_set'
+            "read_namespaced_replica_set",
+            "read_replica_set",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the ReplicaSet from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_replica_set',
-            'delete_replica_set'
+            "delete_namespaced_replica_set",
+            "delete_replica_set",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'ReplicaSet':
+    def __enter__(self) -> "ReplicaSet":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2881,33 +3391,32 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            last_transition_time: str = None,
-            message: str = None,
-            reason: str = None,
-            status: str = None,
-            type_: str = None,
+        self,
+        last_transition_time: str = None,
+        message: str = None,
+        reason: str = None,
+        status: str = None,
+        type_: str = None,
     ):
         """Create ReplicaSetCondition instance."""
         super(ReplicaSetCondition, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ReplicaSetCondition'
+            api_version="apps/v1beta2", kind="ReplicaSetCondition"
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-            'type': type_ if type_ is not None else '',
-
+            "lastTransitionTime": last_transition_time
+            if last_transition_time is not None
+            else None,
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'lastTransitionTime': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-            'status': (str, None),
-            'type': (str, None),
-
+            "lastTransitionTime": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
+            "status": (str, None),
+            "type": (str, None),
         }
 
     @property
@@ -2916,22 +3425,24 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
         The last time the condition transitioned from one status to
         another.
         """
-        return self._properties.get('lastTransitionTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastTransitionTime"),
+        )
 
     @last_transition_time.setter
     def last_transition_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         The last time the condition transitioned from one status to
         another.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastTransitionTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastTransitionTime"] = value
 
     @property
     def message(self) -> str:
@@ -2939,7 +3450,10 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -2947,51 +3461,60 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
         """
         The reason for the condition's last transition.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
         """
         The reason for the condition's last transition.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
         """
         Status of the condition, one of True, False, Unknown.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
         """
         Status of the condition, one of True, False, Unknown.
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
     @property
     def type_(self) -> str:
         """
         Type of replica set condition.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         Type of replica set condition.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'ReplicaSetCondition':
+    def __enter__(self) -> "ReplicaSetCondition":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3004,86 +3527,91 @@ class ReplicaSetList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['ReplicaSet'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["ReplicaSet"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create ReplicaSetList instance."""
         super(ReplicaSetList, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ReplicaSetList'
+            api_version="apps/v1beta2", kind="ReplicaSetList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, ReplicaSet),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, ReplicaSet),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['ReplicaSet']:
+    def items(self) -> typing.List["ReplicaSet"]:
         """
         List of ReplicaSets. More info: https://kubernetes.io/docs/c
         oncepts/workloads/controllers/replicationcontroller
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["ReplicaSet"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['ReplicaSet'], typing.List[dict]]
-    ):
+    def items(self, value: typing.Union[typing.List["ReplicaSet"], typing.List[dict]]):
         """
         List of ReplicaSets. More info: https://kubernetes.io/docs/c
         oncepts/workloads/controllers/replicationcontroller
         """
-        cleaned = []
+        cleaned: typing.List[ReplicaSet] = []
         for item in value:
             if isinstance(item, dict):
-                item = ReplicaSet().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    ReplicaSet,
+                    ReplicaSet().from_dict(item),
+                )
+            cleaned.append(typing.cast(ReplicaSet, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'ReplicaSetList':
+    def __enter__(self) -> "ReplicaSetList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3096,30 +3624,29 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            min_ready_seconds: int = None,
-            replicas: int = None,
-            selector: 'LabelSelector' = None,
-            template: 'PodTemplateSpec' = None,
+        self,
+        min_ready_seconds: int = None,
+        replicas: int = None,
+        selector: "LabelSelector" = None,
+        template: "PodTemplateSpec" = None,
     ):
         """Create ReplicaSetSpec instance."""
         super(ReplicaSetSpec, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ReplicaSetSpec'
+            api_version="apps/v1beta2", kind="ReplicaSetSpec"
         )
         self._properties = {
-            'minReadySeconds': min_ready_seconds if min_ready_seconds is not None else None,
-            'replicas': replicas if replicas is not None else None,
-            'selector': selector if selector is not None else LabelSelector(),
-            'template': template if template is not None else PodTemplateSpec(),
-
+            "minReadySeconds": min_ready_seconds
+            if min_ready_seconds is not None
+            else None,
+            "replicas": replicas if replicas is not None else None,
+            "selector": selector if selector is not None else LabelSelector(),
+            "template": template if template is not None else PodTemplateSpec(),
         }
         self._types = {
-            'minReadySeconds': (int, None),
-            'replicas': (int, None),
-            'selector': (LabelSelector, None),
-            'template': (PodTemplateSpec, None),
-
+            "minReadySeconds": (int, None),
+            "replicas": (int, None),
+            "selector": (LabelSelector, None),
+            "template": (PodTemplateSpec, None),
         }
 
     @property
@@ -3130,7 +3657,10 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         it to be considered available. Defaults to 0 (pod will be
         considered available as soon as it is ready)
         """
-        return self._properties.get('minReadySeconds')
+        return typing.cast(
+            int,
+            self._properties.get("minReadySeconds"),
+        )
 
     @min_ready_seconds.setter
     def min_ready_seconds(self, value: int):
@@ -3140,7 +3670,7 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         it to be considered available. Defaults to 0 (pod will be
         considered available as soon as it is ready)
         """
-        self._properties['minReadySeconds'] = value
+        self._properties["minReadySeconds"] = value
 
     @property
     def replicas(self) -> int:
@@ -3151,7 +3681,10 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         /docs/concepts/workloads/controllers/replicationcontroller/#
         what-is-a-replicationcontroller
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
@@ -3162,10 +3695,10 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         /docs/concepts/workloads/controllers/replicationcontroller/#
         what-is-a-replicationcontroller
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
     @property
-    def selector(self) -> 'LabelSelector':
+    def selector(self) -> "LabelSelector":
         """
         Selector is a label query over pods that should match the
         replica count. Label keys and values that must match in
@@ -3174,10 +3707,13 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/labels/#label-selectors
         """
-        return self._properties.get('selector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("selector"),
+        )
 
     @selector.setter
-    def selector(self, value: typing.Union['LabelSelector', dict]):
+    def selector(self, value: typing.Union["LabelSelector", dict]):
         """
         Selector is a label query over pods that should match the
         replica count. Label keys and values that must match in
@@ -3187,21 +3723,27 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         objects/labels/#label-selectors
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['selector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["selector"] = value
 
     @property
-    def template(self) -> 'PodTemplateSpec':
+    def template(self) -> "PodTemplateSpec":
         """
         Template is the object that describes the pod that will be
         created if insufficient replicas are detected. More info: ht
         tps://kubernetes.io/docs/concepts/workloads/controllers/repl
         icationcontroller#pod-template
         """
-        return self._properties.get('template')
+        return typing.cast(
+            "PodTemplateSpec",
+            self._properties.get("template"),
+        )
 
     @template.setter
-    def template(self, value: typing.Union['PodTemplateSpec', dict]):
+    def template(self, value: typing.Union["PodTemplateSpec", dict]):
         """
         Template is the object that describes the pod that will be
         created if insufficient replicas are detected. More info: ht
@@ -3209,65 +3751,135 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         icationcontroller#pod-template
         """
         if isinstance(value, dict):
-            value = PodTemplateSpec().from_dict(value)
-        self._properties['template'] = value
+            value = typing.cast(
+                PodTemplateSpec,
+                PodTemplateSpec().from_dict(value),
+            )
+        self._properties["template"] = value
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'ReplicaSetSpec':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "ReplicaSetSpec":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
@@ -3275,14 +3887,14 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.template.spec.containers
 
-    def __enter__(self) -> 'ReplicaSetSpec':
+    def __enter__(self) -> "ReplicaSetSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3296,36 +3908,39 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            available_replicas: int = None,
-            conditions: typing.List['ReplicaSetCondition'] = None,
-            fully_labeled_replicas: int = None,
-            observed_generation: int = None,
-            ready_replicas: int = None,
-            replicas: int = None,
+        self,
+        available_replicas: int = None,
+        conditions: typing.List["ReplicaSetCondition"] = None,
+        fully_labeled_replicas: int = None,
+        observed_generation: int = None,
+        ready_replicas: int = None,
+        replicas: int = None,
     ):
         """Create ReplicaSetStatus instance."""
         super(ReplicaSetStatus, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ReplicaSetStatus'
+            api_version="apps/v1beta2", kind="ReplicaSetStatus"
         )
         self._properties = {
-            'availableReplicas': available_replicas if available_replicas is not None else None,
-            'conditions': conditions if conditions is not None else [],
-            'fullyLabeledReplicas': fully_labeled_replicas if fully_labeled_replicas is not None else None,
-            'observedGeneration': observed_generation if observed_generation is not None else None,
-            'readyReplicas': ready_replicas if ready_replicas is not None else None,
-            'replicas': replicas if replicas is not None else None,
-
+            "availableReplicas": available_replicas
+            if available_replicas is not None
+            else None,
+            "conditions": conditions if conditions is not None else [],
+            "fullyLabeledReplicas": fully_labeled_replicas
+            if fully_labeled_replicas is not None
+            else None,
+            "observedGeneration": observed_generation
+            if observed_generation is not None
+            else None,
+            "readyReplicas": ready_replicas if ready_replicas is not None else None,
+            "replicas": replicas if replicas is not None else None,
         }
         self._types = {
-            'availableReplicas': (int, None),
-            'conditions': (list, ReplicaSetCondition),
-            'fullyLabeledReplicas': (int, None),
-            'observedGeneration': (int, None),
-            'readyReplicas': (int, None),
-            'replicas': (int, None),
-
+            "availableReplicas": (int, None),
+            "conditions": (list, ReplicaSetCondition),
+            "fullyLabeledReplicas": (int, None),
+            "observedGeneration": (int, None),
+            "readyReplicas": (int, None),
+            "replicas": (int, None),
         }
 
     @property
@@ -3334,7 +3949,10 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         The number of available replicas (ready for at least
         minReadySeconds) for this replica set.
         """
-        return self._properties.get('availableReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("availableReplicas"),
+        )
 
     @available_replicas.setter
     def available_replicas(self, value: int):
@@ -3342,31 +3960,36 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         The number of available replicas (ready for at least
         minReadySeconds) for this replica set.
         """
-        self._properties['availableReplicas'] = value
+        self._properties["availableReplicas"] = value
 
     @property
-    def conditions(self) -> typing.List['ReplicaSetCondition']:
+    def conditions(self) -> typing.List["ReplicaSetCondition"]:
         """
         Represents the latest available observations of a replica
         set's current state.
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            typing.List["ReplicaSetCondition"],
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
     def conditions(
-            self,
-            value: typing.Union[typing.List['ReplicaSetCondition'], typing.List[dict]]
+        self, value: typing.Union[typing.List["ReplicaSetCondition"], typing.List[dict]]
     ):
         """
         Represents the latest available observations of a replica
         set's current state.
         """
-        cleaned = []
+        cleaned: typing.List[ReplicaSetCondition] = []
         for item in value:
             if isinstance(item, dict):
-                item = ReplicaSetCondition().from_dict(item)
-            cleaned.append(item)
-        self._properties['conditions'] = cleaned
+                item = typing.cast(
+                    ReplicaSetCondition,
+                    ReplicaSetCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(ReplicaSetCondition, item))
+        self._properties["conditions"] = cleaned
 
     @property
     def fully_labeled_replicas(self) -> int:
@@ -3374,7 +3997,10 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         The number of pods that have labels matching the labels of
         the pod template of the replicaset.
         """
-        return self._properties.get('fullyLabeledReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("fullyLabeledReplicas"),
+        )
 
     @fully_labeled_replicas.setter
     def fully_labeled_replicas(self, value: int):
@@ -3382,7 +4008,7 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         The number of pods that have labels matching the labels of
         the pod template of the replicaset.
         """
-        self._properties['fullyLabeledReplicas'] = value
+        self._properties["fullyLabeledReplicas"] = value
 
     @property
     def observed_generation(self) -> int:
@@ -3390,7 +4016,10 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         ObservedGeneration reflects the generation of the most
         recently observed ReplicaSet.
         """
-        return self._properties.get('observedGeneration')
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
 
     @observed_generation.setter
     def observed_generation(self, value: int):
@@ -3398,21 +4027,24 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         ObservedGeneration reflects the generation of the most
         recently observed ReplicaSet.
         """
-        self._properties['observedGeneration'] = value
+        self._properties["observedGeneration"] = value
 
     @property
     def ready_replicas(self) -> int:
         """
         The number of ready replicas for this replica set.
         """
-        return self._properties.get('readyReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("readyReplicas"),
+        )
 
     @ready_replicas.setter
     def ready_replicas(self, value: int):
         """
         The number of ready replicas for this replica set.
         """
-        self._properties['readyReplicas'] = value
+        self._properties["readyReplicas"] = value
 
     @property
     def replicas(self) -> int:
@@ -3422,7 +4054,10 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         trollers/replicationcontroller/#what-is-a-
         replicationcontroller
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
@@ -3432,9 +4067,9 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         trollers/replicationcontroller/#what-is-a-
         replicationcontroller
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
-    def __enter__(self) -> 'ReplicaSetStatus':
+    def __enter__(self) -> "ReplicaSetStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3448,21 +4083,18 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            max_unavailable: typing.Union[str, int, None] = None,
+        self,
+        max_unavailable: typing.Union[str, int, None] = None,
     ):
         """Create RollingUpdateDaemonSet instance."""
         super(RollingUpdateDaemonSet, self).__init__(
-            api_version='apps/v1beta2',
-            kind='RollingUpdateDaemonSet'
+            api_version="apps/v1beta2", kind="RollingUpdateDaemonSet"
         )
         self._properties = {
-            'maxUnavailable': max_unavailable if max_unavailable is not None else None,
-
+            "maxUnavailable": max_unavailable if max_unavailable is not None else None,
         }
         self._types = {
-            'maxUnavailable': (int, None),
-
+            "maxUnavailable": (int, None),
         }
 
     @property
@@ -3483,14 +4115,11 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        value = self._properties.get('maxUnavailable')
+        value = self._properties.get("maxUnavailable")
         return int(value) if value is not None else None
 
     @max_unavailable.setter
-    def max_unavailable(
-            self,
-            value: typing.Union[str, int, None]
-    ):
+    def max_unavailable(self, value: typing.Union[str, int, None]):
         """
         The maximum number of DaemonSet pods that can be unavailable
         during the update. Value can be an absolute number (ex: 5)
@@ -3507,9 +4136,9 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        self._properties['maxUnavailable'] = None if value is None else f'{value}'
+        self._properties["maxUnavailable"] = None if value is None else f"{value}"
 
-    def __enter__(self) -> 'RollingUpdateDaemonSet':
+    def __enter__(self) -> "RollingUpdateDaemonSet":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3522,24 +4151,21 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            max_surge: typing.Union[str, int, None] = None,
-            max_unavailable: typing.Union[str, int, None] = None,
+        self,
+        max_surge: typing.Union[str, int, None] = None,
+        max_unavailable: typing.Union[str, int, None] = None,
     ):
         """Create RollingUpdateDeployment instance."""
         super(RollingUpdateDeployment, self).__init__(
-            api_version='apps/v1beta2',
-            kind='RollingUpdateDeployment'
+            api_version="apps/v1beta2", kind="RollingUpdateDeployment"
         )
         self._properties = {
-            'maxSurge': max_surge if max_surge is not None else None,
-            'maxUnavailable': max_unavailable if max_unavailable is not None else None,
-
+            "maxSurge": max_surge if max_surge is not None else None,
+            "maxUnavailable": max_unavailable if max_unavailable is not None else None,
         }
         self._types = {
-            'maxSurge': (int, None),
-            'maxUnavailable': (int, None),
-
+            "maxSurge": (int, None),
+            "maxUnavailable": (int, None),
         }
 
     @property
@@ -3558,14 +4184,11 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is at most 130% of
         desired pods.
         """
-        value = self._properties.get('maxSurge')
+        value = self._properties.get("maxSurge")
         return int(value) if value is not None else None
 
     @max_surge.setter
-    def max_surge(
-            self,
-            value: typing.Union[str, int, None]
-    ):
+    def max_surge(self, value: typing.Union[str, int, None]):
         """
         The maximum number of pods that can be scheduled above the
         desired number of pods. Value can be an absolute number (ex:
@@ -3580,7 +4203,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is at most 130% of
         desired pods.
         """
-        self._properties['maxSurge'] = None if value is None else f'{value}'
+        self._properties["maxSurge"] = None if value is None else f"{value}"
 
     @property
     def max_unavailable(self) -> typing.Optional[int]:
@@ -3597,14 +4220,11 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        value = self._properties.get('maxUnavailable')
+        value = self._properties.get("maxUnavailable")
         return int(value) if value is not None else None
 
     @max_unavailable.setter
-    def max_unavailable(
-            self,
-            value: typing.Union[str, int, None]
-    ):
+    def max_unavailable(self, value: typing.Union[str, int, None]):
         """
         The maximum number of pods that can be unavailable during
         the update. Value can be an absolute number (ex: 5) or a
@@ -3618,9 +4238,9 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        self._properties['maxUnavailable'] = None if value is None else f'{value}'
+        self._properties["maxUnavailable"] = None if value is None else f"{value}"
 
-    def __enter__(self) -> 'RollingUpdateDeployment':
+    def __enter__(self) -> "RollingUpdateDeployment":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3634,21 +4254,18 @@ class RollingUpdateStatefulSetStrategy(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            partition: int = None,
+        self,
+        partition: int = None,
     ):
         """Create RollingUpdateStatefulSetStrategy instance."""
         super(RollingUpdateStatefulSetStrategy, self).__init__(
-            api_version='apps/v1beta2',
-            kind='RollingUpdateStatefulSetStrategy'
+            api_version="apps/v1beta2", kind="RollingUpdateStatefulSetStrategy"
         )
         self._properties = {
-            'partition': partition if partition is not None else None,
-
+            "partition": partition if partition is not None else None,
         }
         self._types = {
-            'partition': (int, None),
-
+            "partition": (int, None),
         }
 
     @property
@@ -3657,7 +4274,10 @@ class RollingUpdateStatefulSetStrategy(_kuber_definitions.Definition):
         Partition indicates the ordinal at which the StatefulSet
         should be partitioned. Default value is 0.
         """
-        return self._properties.get('partition')
+        return typing.cast(
+            int,
+            self._properties.get("partition"),
+        )
 
     @partition.setter
     def partition(self, value: int):
@@ -3665,9 +4285,9 @@ class RollingUpdateStatefulSetStrategy(_kuber_definitions.Definition):
         Partition indicates the ordinal at which the StatefulSet
         should be partitioned. Default value is 0.
         """
-        self._properties['partition'] = value
+        self._properties["partition"] = value
 
-    def __enter__(self) -> 'RollingUpdateStatefulSetStrategy':
+    def __enter__(self) -> "RollingUpdateStatefulSetStrategy":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3680,261 +4300,250 @@ class Scale(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'ScaleSpec' = None,
-            status: 'ScaleStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "ScaleSpec" = None,
+        status: "ScaleStatus" = None,
     ):
         """Create Scale instance."""
-        super(Scale, self).__init__(
-            api_version='apps/v1beta2',
-            kind='Scale'
-        )
+        super(Scale, self).__init__(api_version="apps/v1beta2", kind="Scale")
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else ScaleSpec(),
-            'status': status if status is not None else ScaleStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else ScaleSpec(),
+            "status": status if status is not None else ScaleStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (ScaleSpec, None),
-            'status': (ScaleStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (ScaleSpec, None),
+            "status": (ScaleStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object metadata; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object metadata; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'ScaleSpec':
+    def spec(self) -> "ScaleSpec":
         """
         defines the behavior of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status.
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "ScaleSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['ScaleSpec', dict]):
+    def spec(self, value: typing.Union["ScaleSpec", dict]):
         """
         defines the behavior of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
-            value = ScaleSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                ScaleSpec,
+                ScaleSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'ScaleStatus':
+    def status(self) -> "ScaleStatus":
         """
         current status of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status. Read-only.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "ScaleStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['ScaleStatus', dict]):
+    def status(self, value: typing.Union["ScaleStatus", dict]):
         """
         current status of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status. Read-only.
         """
         if isinstance(value, dict):
-            value = ScaleStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                ScaleStatus,
+                ScaleStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
-    def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'ScaleStatus':
+    def create_resource(self, namespace: "str" = None) -> "ScaleStatus":
         """
         Creates the Scale in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        names = [
-            'create_namespaced_scale',
-            'create_scale'
-        ]
+        names = ["create_namespaced_scale", "create_scale"]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            ScaleStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'ScaleStatus':
+        output = ScaleStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(self, namespace: "str" = None) -> "ScaleStatus":
         """
         Replaces the Scale in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'replace_namespaced_scale',
-            'replace_scale'
-        ]
+        names = ["replace_namespaced_scale", "replace_scale"]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            ScaleStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'ScaleStatus':
+        output = ScaleStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(self, namespace: "str" = None) -> "ScaleStatus":
         """
         Patches the Scale in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'patch_namespaced_scale',
-            'patch_scale'
-        ]
+        names = ["patch_namespaced_scale", "patch_scale"]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            ScaleStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'ScaleStatus':
+        output = ScaleStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def get_resource_status(self, namespace: "str" = None) -> "ScaleStatus":
         """
         Returns status information about the given resource within the cluster.
         """
-        names = [
-            'read_namespaced_scale',
-            'read_scale'
-        ]
+        names = ["read_namespaced_scale", "read_scale"]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            ScaleStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = ScaleStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the Scale from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_scale',
-            'read_scale'
+            "read_namespaced_scale",
+            "read_scale",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the Scale from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_scale',
-            'delete_scale'
+            "delete_namespaced_scale",
+            "delete_scale",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'Scale':
+    def __enter__(self) -> "Scale":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3947,21 +4556,16 @@ class ScaleSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            replicas: int = None,
+        self,
+        replicas: int = None,
     ):
         """Create ScaleSpec instance."""
-        super(ScaleSpec, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ScaleSpec'
-        )
+        super(ScaleSpec, self).__init__(api_version="apps/v1beta2", kind="ScaleSpec")
         self._properties = {
-            'replicas': replicas if replicas is not None else None,
-
+            "replicas": replicas if replicas is not None else None,
         }
         self._types = {
-            'replicas': (int, None),
-
+            "replicas": (int, None),
         }
 
     @property
@@ -3969,16 +4573,19 @@ class ScaleSpec(_kuber_definitions.Definition):
         """
         desired number of instances for the scaled object.
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
         """
         desired number of instances for the scaled object.
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
-    def __enter__(self) -> 'ScaleSpec':
+    def __enter__(self) -> "ScaleSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -3992,27 +4599,24 @@ class ScaleStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            replicas: int = None,
-            selector: dict = None,
-            target_selector: str = None,
+        self,
+        replicas: int = None,
+        selector: dict = None,
+        target_selector: str = None,
     ):
         """Create ScaleStatus instance."""
         super(ScaleStatus, self).__init__(
-            api_version='apps/v1beta2',
-            kind='ScaleStatus'
+            api_version="apps/v1beta2", kind="ScaleStatus"
         )
         self._properties = {
-            'replicas': replicas if replicas is not None else None,
-            'selector': selector if selector is not None else {},
-            'targetSelector': target_selector if target_selector is not None else '',
-
+            "replicas": replicas if replicas is not None else None,
+            "selector": selector if selector is not None else {},
+            "targetSelector": target_selector if target_selector is not None else "",
         }
         self._types = {
-            'replicas': (int, None),
-            'selector': (dict, None),
-            'targetSelector': (str, None),
-
+            "replicas": (int, None),
+            "selector": (dict, None),
+            "targetSelector": (str, None),
         }
 
     @property
@@ -4020,14 +4624,17 @@ class ScaleStatus(_kuber_definitions.Definition):
         """
         actual number of observed instances of the scaled object.
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
         """
         actual number of observed instances of the scaled object.
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
     @property
     def selector(self) -> dict:
@@ -4036,7 +4643,10 @@ class ScaleStatus(_kuber_definitions.Definition):
         More info: http://kubernetes.io/docs/user-
         guide/labels#label-selectors
         """
-        return self._properties.get('selector')
+        return typing.cast(
+            dict,
+            self._properties.get("selector"),
+        )
 
     @selector.setter
     def selector(self, value: dict):
@@ -4045,7 +4655,7 @@ class ScaleStatus(_kuber_definitions.Definition):
         More info: http://kubernetes.io/docs/user-
         guide/labels#label-selectors
         """
-        self._properties['selector'] = value
+        self._properties["selector"] = value
 
     @property
     def target_selector(self) -> str:
@@ -4060,7 +4670,10 @@ class ScaleStatus(_kuber_definitions.Definition):
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/labels/#label-selectors
         """
-        return self._properties.get('targetSelector')
+        return typing.cast(
+            str,
+            self._properties.get("targetSelector"),
+        )
 
     @target_selector.setter
     def target_selector(self, value: str):
@@ -4075,9 +4688,9 @@ class ScaleStatus(_kuber_definitions.Definition):
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/labels/#label-selectors
         """
-        self._properties['targetSelector'] = value
+        self._properties["targetSelector"] = value
 
-    def __enter__(self) -> 'ScaleStatus':
+    def __enter__(self) -> "ScaleStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -4097,321 +4710,377 @@ class StatefulSet(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'StatefulSetSpec' = None,
-            status: 'StatefulSetStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "StatefulSetSpec" = None,
+        status: "StatefulSetStatus" = None,
     ):
         """Create StatefulSet instance."""
         super(StatefulSet, self).__init__(
-            api_version='apps/v1beta2',
-            kind='StatefulSet'
+            api_version="apps/v1beta2", kind="StatefulSet"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else StatefulSetSpec(),
-            'status': status if status is not None else StatefulSetStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else StatefulSetSpec(),
+            "status": status if status is not None else StatefulSetStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (StatefulSetSpec, None),
-            'status': (StatefulSetStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (StatefulSetSpec, None),
+            "status": (StatefulSetStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
-        """
-
-        """
-        return self._properties.get('metadata')
+    def metadata(self) -> "ObjectMeta":
+        """"""
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
-        """
-
-        """
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
+        """"""
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'StatefulSetSpec':
+    def spec(self) -> "StatefulSetSpec":
         """
         Spec defines the desired identities of pods in this set.
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "StatefulSetSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['StatefulSetSpec', dict]):
+    def spec(self, value: typing.Union["StatefulSetSpec", dict]):
         """
         Spec defines the desired identities of pods in this set.
         """
         if isinstance(value, dict):
-            value = StatefulSetSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                StatefulSetSpec,
+                StatefulSetSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'StatefulSetStatus':
+    def status(self) -> "StatefulSetStatus":
         """
         Status is the current status of Pods in this StatefulSet.
         This data may be out of date by some window of time.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "StatefulSetStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['StatefulSetStatus', dict]):
+    def status(self, value: typing.Union["StatefulSetStatus", dict]):
         """
         Status is the current status of Pods in this StatefulSet.
         This data may be out of date by some window of time.
         """
         if isinstance(value, dict):
-            value = StatefulSetStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                StatefulSetStatus,
+                StatefulSetStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'StatefulSet':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "StatefulSet":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.spec.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.spec.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
         by that name exists.
         """
-        return next((c for c in self.spec.template.spec.containers if c.name == name), None)
+        return next(
+            (c for c in self.spec.template.spec.containers if c.name == name), None
+        )
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.spec.template.spec.containers
 
-    def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'StatefulSetStatus':
+    def create_resource(self, namespace: "str" = None) -> "StatefulSetStatus":
         """
         Creates the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        names = [
-            'create_namespaced_stateful_set',
-            'create_stateful_set'
-        ]
+        names = ["create_namespaced_stateful_set", "create_stateful_set"]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            StatefulSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'StatefulSetStatus':
+        output = StatefulSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(self, namespace: "str" = None) -> "StatefulSetStatus":
         """
         Replaces the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'replace_namespaced_stateful_set',
-            'replace_stateful_set'
-        ]
+        names = ["replace_namespaced_stateful_set", "replace_stateful_set"]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            StatefulSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'StatefulSetStatus':
+        output = StatefulSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(self, namespace: "str" = None) -> "StatefulSetStatus":
         """
         Patches the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = [
-            'patch_namespaced_stateful_set',
-            'patch_stateful_set'
-        ]
+        names = ["patch_namespaced_stateful_set", "patch_stateful_set"]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            StatefulSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'StatefulSetStatus':
+        output = StatefulSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def get_resource_status(self, namespace: "str" = None) -> "StatefulSetStatus":
         """
         Returns status information about the given resource within the cluster.
         """
-        names = [
-            'read_namespaced_stateful_set',
-            'read_stateful_set'
-        ]
+        names = ["read_namespaced_stateful_set", "read_stateful_set"]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            StatefulSetStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = StatefulSetStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the StatefulSet from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_stateful_set',
-            'read_stateful_set'
+            "read_namespaced_stateful_set",
+            "read_stateful_set",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the StatefulSet from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_stateful_set',
-            'delete_stateful_set'
+            "delete_namespaced_stateful_set",
+            "delete_stateful_set",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'StatefulSet':
+    def __enter__(self) -> "StatefulSet":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -4425,33 +5094,32 @@ class StatefulSetCondition(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            last_transition_time: str = None,
-            message: str = None,
-            reason: str = None,
-            status: str = None,
-            type_: str = None,
+        self,
+        last_transition_time: str = None,
+        message: str = None,
+        reason: str = None,
+        status: str = None,
+        type_: str = None,
     ):
         """Create StatefulSetCondition instance."""
         super(StatefulSetCondition, self).__init__(
-            api_version='apps/v1beta2',
-            kind='StatefulSetCondition'
+            api_version="apps/v1beta2", kind="StatefulSetCondition"
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-            'type': type_ if type_ is not None else '',
-
+            "lastTransitionTime": last_transition_time
+            if last_transition_time is not None
+            else None,
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'lastTransitionTime': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-            'status': (str, None),
-            'type': (str, None),
-
+            "lastTransitionTime": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
+            "status": (str, None),
+            "type": (str, None),
         }
 
     @property
@@ -4460,22 +5128,24 @@ class StatefulSetCondition(_kuber_definitions.Definition):
         Last time the condition transitioned from one status to
         another.
         """
-        return self._properties.get('lastTransitionTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastTransitionTime"),
+        )
 
     @last_transition_time.setter
     def last_transition_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         Last time the condition transitioned from one status to
         another.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastTransitionTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastTransitionTime"] = value
 
     @property
     def message(self) -> str:
@@ -4483,7 +5153,10 @@ class StatefulSetCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -4491,51 +5164,60 @@ class StatefulSetCondition(_kuber_definitions.Definition):
         A human readable message indicating details about the
         transition.
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
         """
         The reason for the condition's last transition.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
         """
         The reason for the condition's last transition.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
         """
         Status of the condition, one of True, False, Unknown.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
         """
         Status of the condition, one of True, False, Unknown.
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
     @property
     def type_(self) -> str:
         """
         Type of statefulset condition.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         Type of statefulset condition.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'StatefulSetCondition':
+    def __enter__(self) -> "StatefulSetCondition":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -4548,80 +5230,77 @@ class StatefulSetList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['StatefulSet'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["StatefulSet"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create StatefulSetList instance."""
         super(StatefulSetList, self).__init__(
-            api_version='apps/v1beta2',
-            kind='StatefulSetList'
+            api_version="apps/v1beta2", kind="StatefulSetList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, StatefulSet),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, StatefulSet),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['StatefulSet']:
-        """
-
-        """
-        return self._properties.get('items')
+    def items(self) -> typing.List["StatefulSet"]:
+        """"""
+        return typing.cast(
+            typing.List["StatefulSet"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['StatefulSet'], typing.List[dict]]
-    ):
-        """
-
-        """
-        cleaned = []
+    def items(self, value: typing.Union[typing.List["StatefulSet"], typing.List[dict]]):
+        """"""
+        cleaned: typing.List[StatefulSet] = []
         for item in value:
             if isinstance(item, dict):
-                item = StatefulSet().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    StatefulSet,
+                    StatefulSet().from_dict(item),
+                )
+            cleaned.append(typing.cast(StatefulSet, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
-        """
-
-        """
-        return self._properties.get('metadata')
+    def metadata(self) -> "ListMeta":
+        """"""
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
-        """
-
-        """
+    def metadata(self, value: typing.Union["ListMeta", dict]):
+        """"""
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AppsV1beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AppsV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AppsV1beta2Api(**kwargs)
 
-    def __enter__(self) -> 'StatefulSetList':
+    def __enter__(self) -> "StatefulSetList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -4634,42 +5313,47 @@ class StatefulSetSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            pod_management_policy: str = None,
-            replicas: int = None,
-            revision_history_limit: int = None,
-            selector: 'LabelSelector' = None,
-            service_name: str = None,
-            template: 'PodTemplateSpec' = None,
-            update_strategy: 'StatefulSetUpdateStrategy' = None,
-            volume_claim_templates: typing.List['PersistentVolumeClaim'] = None,
+        self,
+        pod_management_policy: str = None,
+        replicas: int = None,
+        revision_history_limit: int = None,
+        selector: "LabelSelector" = None,
+        service_name: str = None,
+        template: "PodTemplateSpec" = None,
+        update_strategy: "StatefulSetUpdateStrategy" = None,
+        volume_claim_templates: typing.List["PersistentVolumeClaim"] = None,
     ):
         """Create StatefulSetSpec instance."""
         super(StatefulSetSpec, self).__init__(
-            api_version='apps/v1beta2',
-            kind='StatefulSetSpec'
+            api_version="apps/v1beta2", kind="StatefulSetSpec"
         )
         self._properties = {
-            'podManagementPolicy': pod_management_policy if pod_management_policy is not None else '',
-            'replicas': replicas if replicas is not None else None,
-            'revisionHistoryLimit': revision_history_limit if revision_history_limit is not None else None,
-            'selector': selector if selector is not None else LabelSelector(),
-            'serviceName': service_name if service_name is not None else '',
-            'template': template if template is not None else PodTemplateSpec(),
-            'updateStrategy': update_strategy if update_strategy is not None else StatefulSetUpdateStrategy(),
-            'volumeClaimTemplates': volume_claim_templates if volume_claim_templates is not None else [],
-
+            "podManagementPolicy": pod_management_policy
+            if pod_management_policy is not None
+            else "",
+            "replicas": replicas if replicas is not None else None,
+            "revisionHistoryLimit": revision_history_limit
+            if revision_history_limit is not None
+            else None,
+            "selector": selector if selector is not None else LabelSelector(),
+            "serviceName": service_name if service_name is not None else "",
+            "template": template if template is not None else PodTemplateSpec(),
+            "updateStrategy": update_strategy
+            if update_strategy is not None
+            else StatefulSetUpdateStrategy(),
+            "volumeClaimTemplates": volume_claim_templates
+            if volume_claim_templates is not None
+            else [],
         }
         self._types = {
-            'podManagementPolicy': (str, None),
-            'replicas': (int, None),
-            'revisionHistoryLimit': (int, None),
-            'selector': (LabelSelector, None),
-            'serviceName': (str, None),
-            'template': (PodTemplateSpec, None),
-            'updateStrategy': (StatefulSetUpdateStrategy, None),
-            'volumeClaimTemplates': (list, PersistentVolumeClaim),
-
+            "podManagementPolicy": (str, None),
+            "replicas": (int, None),
+            "revisionHistoryLimit": (int, None),
+            "selector": (LabelSelector, None),
+            "serviceName": (str, None),
+            "template": (PodTemplateSpec, None),
+            "updateStrategy": (StatefulSetUpdateStrategy, None),
+            "volumeClaimTemplates": (list, PersistentVolumeClaim),
         }
 
     @property
@@ -4686,7 +5370,10 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         scale without waiting, and on scale down will delete all
         pods at once.
         """
-        return self._properties.get('podManagementPolicy')
+        return typing.cast(
+            str,
+            self._properties.get("podManagementPolicy"),
+        )
 
     @pod_management_policy.setter
     def pod_management_policy(self, value: str):
@@ -4702,7 +5389,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         scale without waiting, and on scale down will delete all
         pods at once.
         """
-        self._properties['podManagementPolicy'] = value
+        self._properties["podManagementPolicy"] = value
 
     @property
     def replicas(self) -> int:
@@ -4713,7 +5400,10 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         also have a consistent identity. If unspecified, defaults to
         1.
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
@@ -4724,7 +5414,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         also have a consistent identity. If unspecified, defaults to
         1.
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
     @property
     def revision_history_limit(self) -> int:
@@ -4735,7 +5425,10 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         represented by a currently applied StatefulSetSpec version.
         The default value is 10.
         """
-        return self._properties.get('revisionHistoryLimit')
+        return typing.cast(
+            int,
+            self._properties.get("revisionHistoryLimit"),
+        )
 
     @revision_history_limit.setter
     def revision_history_limit(self, value: int):
@@ -4746,20 +5439,23 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         represented by a currently applied StatefulSetSpec version.
         The default value is 10.
         """
-        self._properties['revisionHistoryLimit'] = value
+        self._properties["revisionHistoryLimit"] = value
 
     @property
-    def selector(self) -> 'LabelSelector':
+    def selector(self) -> "LabelSelector":
         """
         selector is a label query over pods that should match the
         replica count. It must match the pod template's labels. More
         info: https://kubernetes.io/docs/concepts/overview/working-
         with-objects/labels/#label-selectors
         """
-        return self._properties.get('selector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("selector"),
+        )
 
     @selector.setter
-    def selector(self, value: typing.Union['LabelSelector', dict]):
+    def selector(self, value: typing.Union["LabelSelector", dict]):
         """
         selector is a label query over pods that should match the
         replica count. It must match the pod template's labels. More
@@ -4767,8 +5463,11 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         with-objects/labels/#label-selectors
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['selector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["selector"] = value
 
     @property
     def service_name(self) -> str:
@@ -4780,7 +5479,10 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         string.serviceName.default.svc.cluster.local where "pod-
         specific-string" is managed by the StatefulSet controller.
         """
-        return self._properties.get('serviceName')
+        return typing.cast(
+            str,
+            self._properties.get("serviceName"),
+        )
 
     @service_name.setter
     def service_name(self, value: str):
@@ -4792,20 +5494,23 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         string.serviceName.default.svc.cluster.local where "pod-
         specific-string" is managed by the StatefulSet controller.
         """
-        self._properties['serviceName'] = value
+        self._properties["serviceName"] = value
 
     @property
-    def template(self) -> 'PodTemplateSpec':
+    def template(self) -> "PodTemplateSpec":
         """
         template is the object that describes the pod that will be
         created if insufficient replicas are detected. Each pod
         stamped out by the StatefulSet will fulfill this Template,
         but have a unique identity from the rest of the StatefulSet.
         """
-        return self._properties.get('template')
+        return typing.cast(
+            "PodTemplateSpec",
+            self._properties.get("template"),
+        )
 
     @template.setter
-    def template(self, value: typing.Union['PodTemplateSpec', dict]):
+    def template(self, value: typing.Union["PodTemplateSpec", dict]):
         """
         template is the object that describes the pod that will be
         created if insufficient replicas are detected. Each pod
@@ -4813,31 +5518,40 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         but have a unique identity from the rest of the StatefulSet.
         """
         if isinstance(value, dict):
-            value = PodTemplateSpec().from_dict(value)
-        self._properties['template'] = value
+            value = typing.cast(
+                PodTemplateSpec,
+                PodTemplateSpec().from_dict(value),
+            )
+        self._properties["template"] = value
 
     @property
-    def update_strategy(self) -> 'StatefulSetUpdateStrategy':
+    def update_strategy(self) -> "StatefulSetUpdateStrategy":
         """
         updateStrategy indicates the StatefulSetUpdateStrategy that
         will be employed to update Pods in the StatefulSet when a
         revision is made to Template.
         """
-        return self._properties.get('updateStrategy')
+        return typing.cast(
+            "StatefulSetUpdateStrategy",
+            self._properties.get("updateStrategy"),
+        )
 
     @update_strategy.setter
-    def update_strategy(self, value: typing.Union['StatefulSetUpdateStrategy', dict]):
+    def update_strategy(self, value: typing.Union["StatefulSetUpdateStrategy", dict]):
         """
         updateStrategy indicates the StatefulSetUpdateStrategy that
         will be employed to update Pods in the StatefulSet when a
         revision is made to Template.
         """
         if isinstance(value, dict):
-            value = StatefulSetUpdateStrategy().from_dict(value)
-        self._properties['updateStrategy'] = value
+            value = typing.cast(
+                StatefulSetUpdateStrategy,
+                StatefulSetUpdateStrategy().from_dict(value),
+            )
+        self._properties["updateStrategy"] = value
 
     @property
-    def volume_claim_templates(self) -> typing.List['PersistentVolumeClaim']:
+    def volume_claim_templates(self) -> typing.List["PersistentVolumeClaim"]:
         """
         volumeClaimTemplates is a list of claims that pods are
         allowed to reference. The StatefulSet controller is
@@ -4848,12 +5562,15 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         this list takes precedence over any volumes in the template,
         with the same name.
         """
-        return self._properties.get('volumeClaimTemplates')
+        return typing.cast(
+            typing.List["PersistentVolumeClaim"],
+            self._properties.get("volumeClaimTemplates"),
+        )
 
     @volume_claim_templates.setter
     def volume_claim_templates(
-            self,
-            value: typing.Union[typing.List['PersistentVolumeClaim'], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["PersistentVolumeClaim"], typing.List[dict]],
     ):
         """
         volumeClaimTemplates is a list of claims that pods are
@@ -4865,69 +5582,139 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         this list takes precedence over any volumes in the template,
         with the same name.
         """
-        cleaned = []
+        cleaned: typing.List[PersistentVolumeClaim] = []
         for item in value:
             if isinstance(item, dict):
-                item = PersistentVolumeClaim().from_dict(item)
-            cleaned.append(item)
-        self._properties['volumeClaimTemplates'] = cleaned
+                item = typing.cast(
+                    PersistentVolumeClaim,
+                    PersistentVolumeClaim().from_dict(item),
+                )
+            cleaned.append(typing.cast(PersistentVolumeClaim, item))
+        self._properties["volumeClaimTemplates"] = cleaned
 
     def append_container(
         self,
-        args: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        command: typing.List[str] = _kuber_definitions.UNCHANGED_VALUE,
-        env: typing.List['EnvVar'] = _kuber_definitions.UNCHANGED_VALUE,
-        env_from: typing.List['EnvFromSource'] = _kuber_definitions.UNCHANGED_VALUE,
-        image: str = _kuber_definitions.UNCHANGED_VALUE,
-        image_pull_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        lifecycle: 'Lifecycle' = _kuber_definitions.UNCHANGED_VALUE,
-        liveness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        name: str = _kuber_definitions.UNCHANGED_VALUE,
-        ports: typing.List['ContainerPort'] = _kuber_definitions.UNCHANGED_VALUE,
-        readiness_probe: 'Probe' = _kuber_definitions.UNCHANGED_VALUE,
-        resources: 'ResourceRequirements' = _kuber_definitions.UNCHANGED_VALUE,
-        security_context: 'SecurityContext' = _kuber_definitions.UNCHANGED_VALUE,
-        stdin: bool = _kuber_definitions.UNCHANGED_VALUE,
-        stdin_once: bool = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_path: str = _kuber_definitions.UNCHANGED_VALUE,
-        termination_message_policy: str = _kuber_definitions.UNCHANGED_VALUE,
-        tty: bool = _kuber_definitions.UNCHANGED_VALUE,
-        volume_devices: typing.List['VolumeDevice'] = _kuber_definitions.UNCHANGED_VALUE,
-        volume_mounts: typing.List['VolumeMount'] = _kuber_definitions.UNCHANGED_VALUE,
-        working_dir: str = _kuber_definitions.UNCHANGED_VALUE,
-    ) -> 'StatefulSetSpec':
+        args: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        command: typing.Union[
+            typing.List[str],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env: typing.Union[
+            typing.List["EnvVar"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        env_from: typing.Union[
+            typing.List["EnvFromSource"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        image_pull_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        lifecycle: typing.Union[
+            "Lifecycle",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        liveness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        name: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        ports: typing.Union[
+            typing.List["ContainerPort"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        readiness_probe: typing.Union[
+            "Probe",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        resources: typing.Union[
+            "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        security_context: typing.Union[
+            "SecurityContext",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        stdin_once: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_path: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        termination_message_policy: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        tty: typing.Union[
+            bool,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_devices: typing.Union[
+            typing.List["VolumeDevice"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        volume_mounts: typing.Union[
+            typing.List["VolumeMount"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        working_dir: typing.Union[
+            str,
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+    ) -> "StatefulSetSpec":
         """Adds a container object within the specified resource."""
-        values = {
-            'args': args,
-            'command': command,
-            'env': env,
-            'env_from': env_from,
-            'image': image,
-            'image_pull_policy': image_pull_policy,
-            'lifecycle': lifecycle,
-            'liveness_probe': liveness_probe,
-            'name': name,
-            'ports': ports,
-            'readiness_probe': readiness_probe,
-            'resources': resources,
-            'security_context': security_context,
-            'stdin': stdin,
-            'stdin_once': stdin_once,
-            'termination_message_path': termination_message_path,
-            'termination_message_policy': termination_message_policy,
-            'tty': tty,
-            'volume_devices': volume_devices,
-            'volume_mounts': volume_mounts,
-            'working_dir': working_dir,
+        values: typing.Dict[str, typing.Any] = {
+            "args": args,
+            "command": command,
+            "env": env,
+            "env_from": env_from,
+            "image": image,
+            "image_pull_policy": image_pull_policy,
+            "lifecycle": lifecycle,
+            "liveness_probe": liveness_probe,
+            "name": name,
+            "ports": ports,
+            "readiness_probe": readiness_probe,
+            "resources": resources,
+            "security_context": security_context,
+            "stdin": stdin,
+            "stdin_once": stdin_once,
+            "termination_message_path": termination_message_path,
+            "termination_message_policy": termination_message_policy,
+            "tty": tty,
+            "volume_devices": volume_devices,
+            "volume_mounts": volume_mounts,
+            "working_dir": working_dir,
         }
-        self.template.spec.containers.append(Container(**{
-            k: v
-            for k, v in values.items()
-            if v != _kuber_definitions.UNCHANGED_VALUE
-        }))
+        self.template.spec.containers.append(
+            Container(
+                **{
+                    k: v
+                    for k, v in values.items()
+                    if v != _kuber_definitions.UNCHANGED_VALUE
+                }
+            )
+        )
         return self
 
-    def get_container(self, name: str) -> typing.Optional['Container']:
+    def get_container(self, name: str) -> typing.Optional["Container"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
@@ -4935,14 +5722,14 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         """
         return next((c for c in self.template.spec.containers if c.name == name), None)
 
-    def get_containers(self) -> typing.List['Container']:
+    def get_containers(self) -> typing.List["Container"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.
         """
         return self.template.spec.containers
 
-    def __enter__(self) -> 'StatefulSetSpec':
+    def __enter__(self) -> "StatefulSetSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -4956,45 +5743,48 @@ class StatefulSetStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            collision_count: int = None,
-            conditions: typing.List['StatefulSetCondition'] = None,
-            current_replicas: int = None,
-            current_revision: str = None,
-            observed_generation: int = None,
-            ready_replicas: int = None,
-            replicas: int = None,
-            update_revision: str = None,
-            updated_replicas: int = None,
+        self,
+        collision_count: int = None,
+        conditions: typing.List["StatefulSetCondition"] = None,
+        current_replicas: int = None,
+        current_revision: str = None,
+        observed_generation: int = None,
+        ready_replicas: int = None,
+        replicas: int = None,
+        update_revision: str = None,
+        updated_replicas: int = None,
     ):
         """Create StatefulSetStatus instance."""
         super(StatefulSetStatus, self).__init__(
-            api_version='apps/v1beta2',
-            kind='StatefulSetStatus'
+            api_version="apps/v1beta2", kind="StatefulSetStatus"
         )
         self._properties = {
-            'collisionCount': collision_count if collision_count is not None else None,
-            'conditions': conditions if conditions is not None else [],
-            'currentReplicas': current_replicas if current_replicas is not None else None,
-            'currentRevision': current_revision if current_revision is not None else '',
-            'observedGeneration': observed_generation if observed_generation is not None else None,
-            'readyReplicas': ready_replicas if ready_replicas is not None else None,
-            'replicas': replicas if replicas is not None else None,
-            'updateRevision': update_revision if update_revision is not None else '',
-            'updatedReplicas': updated_replicas if updated_replicas is not None else None,
-
+            "collisionCount": collision_count if collision_count is not None else None,
+            "conditions": conditions if conditions is not None else [],
+            "currentReplicas": current_replicas
+            if current_replicas is not None
+            else None,
+            "currentRevision": current_revision if current_revision is not None else "",
+            "observedGeneration": observed_generation
+            if observed_generation is not None
+            else None,
+            "readyReplicas": ready_replicas if ready_replicas is not None else None,
+            "replicas": replicas if replicas is not None else None,
+            "updateRevision": update_revision if update_revision is not None else "",
+            "updatedReplicas": updated_replicas
+            if updated_replicas is not None
+            else None,
         }
         self._types = {
-            'collisionCount': (int, None),
-            'conditions': (list, StatefulSetCondition),
-            'currentReplicas': (int, None),
-            'currentRevision': (str, None),
-            'observedGeneration': (int, None),
-            'readyReplicas': (int, None),
-            'replicas': (int, None),
-            'updateRevision': (str, None),
-            'updatedReplicas': (int, None),
-
+            "collisionCount": (int, None),
+            "conditions": (list, StatefulSetCondition),
+            "currentReplicas": (int, None),
+            "currentRevision": (str, None),
+            "observedGeneration": (int, None),
+            "readyReplicas": (int, None),
+            "replicas": (int, None),
+            "updateRevision": (str, None),
+            "updatedReplicas": (int, None),
         }
 
     @property
@@ -5005,7 +5795,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         collision avoidance mechanism when it needs to create the
         name for the newest ControllerRevision.
         """
-        return self._properties.get('collisionCount')
+        return typing.cast(
+            int,
+            self._properties.get("collisionCount"),
+        )
 
     @collision_count.setter
     def collision_count(self, value: int):
@@ -5015,31 +5808,37 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         collision avoidance mechanism when it needs to create the
         name for the newest ControllerRevision.
         """
-        self._properties['collisionCount'] = value
+        self._properties["collisionCount"] = value
 
     @property
-    def conditions(self) -> typing.List['StatefulSetCondition']:
+    def conditions(self) -> typing.List["StatefulSetCondition"]:
         """
         Represents the latest available observations of a
         statefulset's current state.
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            typing.List["StatefulSetCondition"],
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
     def conditions(
-            self,
-            value: typing.Union[typing.List['StatefulSetCondition'], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["StatefulSetCondition"], typing.List[dict]],
     ):
         """
         Represents the latest available observations of a
         statefulset's current state.
         """
-        cleaned = []
+        cleaned: typing.List[StatefulSetCondition] = []
         for item in value:
             if isinstance(item, dict):
-                item = StatefulSetCondition().from_dict(item)
-            cleaned.append(item)
-        self._properties['conditions'] = cleaned
+                item = typing.cast(
+                    StatefulSetCondition,
+                    StatefulSetCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(StatefulSetCondition, item))
+        self._properties["conditions"] = cleaned
 
     @property
     def current_replicas(self) -> int:
@@ -5048,7 +5847,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet controller from the StatefulSet version
         indicated by currentRevision.
         """
-        return self._properties.get('currentReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("currentReplicas"),
+        )
 
     @current_replicas.setter
     def current_replicas(self, value: int):
@@ -5057,7 +5859,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet controller from the StatefulSet version
         indicated by currentRevision.
         """
-        self._properties['currentReplicas'] = value
+        self._properties["currentReplicas"] = value
 
     @property
     def current_revision(self) -> str:
@@ -5066,7 +5868,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet used to generate Pods in the sequence
         [0,currentReplicas).
         """
-        return self._properties.get('currentRevision')
+        return typing.cast(
+            str,
+            self._properties.get("currentRevision"),
+        )
 
     @current_revision.setter
     def current_revision(self, value: str):
@@ -5075,7 +5880,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet used to generate Pods in the sequence
         [0,currentReplicas).
         """
-        self._properties['currentRevision'] = value
+        self._properties["currentRevision"] = value
 
     @property
     def observed_generation(self) -> int:
@@ -5084,7 +5889,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         for this StatefulSet. It corresponds to the StatefulSet's
         generation, which is updated on mutation by the API Server.
         """
-        return self._properties.get('observedGeneration')
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
 
     @observed_generation.setter
     def observed_generation(self, value: int):
@@ -5093,7 +5901,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         for this StatefulSet. It corresponds to the StatefulSet's
         generation, which is updated on mutation by the API Server.
         """
-        self._properties['observedGeneration'] = value
+        self._properties["observedGeneration"] = value
 
     @property
     def ready_replicas(self) -> int:
@@ -5101,7 +5909,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         readyReplicas is the number of Pods created by the
         StatefulSet controller that have a Ready Condition.
         """
-        return self._properties.get('readyReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("readyReplicas"),
+        )
 
     @ready_replicas.setter
     def ready_replicas(self, value: int):
@@ -5109,7 +5920,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         readyReplicas is the number of Pods created by the
         StatefulSet controller that have a Ready Condition.
         """
-        self._properties['readyReplicas'] = value
+        self._properties["readyReplicas"] = value
 
     @property
     def replicas(self) -> int:
@@ -5117,7 +5928,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         replicas is the number of Pods created by the StatefulSet
         controller.
         """
-        return self._properties.get('replicas')
+        return typing.cast(
+            int,
+            self._properties.get("replicas"),
+        )
 
     @replicas.setter
     def replicas(self, value: int):
@@ -5125,7 +5939,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         replicas is the number of Pods created by the StatefulSet
         controller.
         """
-        self._properties['replicas'] = value
+        self._properties["replicas"] = value
 
     @property
     def update_revision(self) -> str:
@@ -5134,7 +5948,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet used to generate Pods in the sequence [replicas-
         updatedReplicas,replicas)
         """
-        return self._properties.get('updateRevision')
+        return typing.cast(
+            str,
+            self._properties.get("updateRevision"),
+        )
 
     @update_revision.setter
     def update_revision(self, value: str):
@@ -5143,7 +5960,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet used to generate Pods in the sequence [replicas-
         updatedReplicas,replicas)
         """
-        self._properties['updateRevision'] = value
+        self._properties["updateRevision"] = value
 
     @property
     def updated_replicas(self) -> int:
@@ -5152,7 +5969,10 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet controller from the StatefulSet version
         indicated by updateRevision.
         """
-        return self._properties.get('updatedReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("updatedReplicas"),
+        )
 
     @updated_replicas.setter
     def updated_replicas(self, value: int):
@@ -5161,9 +5981,9 @@ class StatefulSetStatus(_kuber_definitions.Definition):
         StatefulSet controller from the StatefulSet version
         indicated by updateRevision.
         """
-        self._properties['updatedReplicas'] = value
+        self._properties["updatedReplicas"] = value
 
-    def __enter__(self) -> 'StatefulSetStatus':
+    def __enter__(self) -> "StatefulSetStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -5179,43 +5999,50 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            rolling_update: 'RollingUpdateStatefulSetStrategy' = None,
-            type_: str = None,
+        self,
+        rolling_update: "RollingUpdateStatefulSetStrategy" = None,
+        type_: str = None,
     ):
         """Create StatefulSetUpdateStrategy instance."""
         super(StatefulSetUpdateStrategy, self).__init__(
-            api_version='apps/v1beta2',
-            kind='StatefulSetUpdateStrategy'
+            api_version="apps/v1beta2", kind="StatefulSetUpdateStrategy"
         )
         self._properties = {
-            'rollingUpdate': rolling_update if rolling_update is not None else RollingUpdateStatefulSetStrategy(),
-            'type': type_ if type_ is not None else '',
-
+            "rollingUpdate": rolling_update
+            if rolling_update is not None
+            else RollingUpdateStatefulSetStrategy(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'rollingUpdate': (RollingUpdateStatefulSetStrategy, None),
-            'type': (str, None),
-
+            "rollingUpdate": (RollingUpdateStatefulSetStrategy, None),
+            "type": (str, None),
         }
 
     @property
-    def rolling_update(self) -> 'RollingUpdateStatefulSetStrategy':
+    def rolling_update(self) -> "RollingUpdateStatefulSetStrategy":
         """
         RollingUpdate is used to communicate parameters when Type is
         RollingUpdateStatefulSetStrategyType.
         """
-        return self._properties.get('rollingUpdate')
+        return typing.cast(
+            "RollingUpdateStatefulSetStrategy",
+            self._properties.get("rollingUpdate"),
+        )
 
     @rolling_update.setter
-    def rolling_update(self, value: typing.Union['RollingUpdateStatefulSetStrategy', dict]):
+    def rolling_update(
+        self, value: typing.Union["RollingUpdateStatefulSetStrategy", dict]
+    ):
         """
         RollingUpdate is used to communicate parameters when Type is
         RollingUpdateStatefulSetStrategyType.
         """
         if isinstance(value, dict):
-            value = RollingUpdateStatefulSetStrategy().from_dict(value)
-        self._properties['rollingUpdate'] = value
+            value = typing.cast(
+                RollingUpdateStatefulSetStrategy,
+                RollingUpdateStatefulSetStrategy().from_dict(value),
+            )
+        self._properties["rollingUpdate"] = value
 
     @property
     def type_(self) -> str:
@@ -5223,7 +6050,10 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
         Type indicates the type of the StatefulSetUpdateStrategy.
         Default is RollingUpdate.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -5231,9 +6061,9 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
         Type indicates the type of the StatefulSetUpdateStrategy.
         Default is RollingUpdate.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'StatefulSetUpdateStrategy':
+    def __enter__(self) -> "StatefulSetUpdateStrategy":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

@@ -12,7 +12,6 @@ kuber.tests.scenarios.metadata\_owner\_reference.test\_metadata\_owner\_referenc
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

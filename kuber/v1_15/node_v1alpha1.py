@@ -22,193 +22,189 @@ class RuntimeClass(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'RuntimeClassSpec' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "RuntimeClassSpec" = None,
     ):
         """Create RuntimeClass instance."""
         super(RuntimeClass, self).__init__(
-            api_version='node/v1alpha1',
-            kind='RuntimeClass'
+            api_version="node/v1alpha1", kind="RuntimeClass"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else RuntimeClassSpec(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else RuntimeClassSpec(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (RuntimeClassSpec, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (RuntimeClassSpec, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'RuntimeClassSpec':
+    def spec(self) -> "RuntimeClassSpec":
         """
         Specification of the RuntimeClass More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#spec-and-status
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "RuntimeClassSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['RuntimeClassSpec', dict]):
+    def spec(self, value: typing.Union["RuntimeClassSpec", dict]):
         """
         Specification of the RuntimeClass More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#spec-and-status
         """
         if isinstance(value, dict):
-            value = RuntimeClassSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                RuntimeClassSpec,
+                RuntimeClassSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the RuntimeClass in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'create_namespaced_runtime_class',
-            'create_runtime_class'
-        ]
+        names = ["create_namespaced_runtime_class", "create_runtime_class"]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the RuntimeClass in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'replace_namespaced_runtime_class',
-            'replace_runtime_class'
-        ]
+        names = ["replace_namespaced_runtime_class", "replace_runtime_class"]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the RuntimeClass in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'patch_namespaced_runtime_class',
-            'patch_runtime_class'
-        ]
+        names = ["patch_namespaced_runtime_class", "patch_runtime_class"]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the RuntimeClass from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_runtime_class',
-            'read_runtime_class'
+            "read_namespaced_runtime_class",
+            "read_runtime_class",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the RuntimeClass from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_runtime_class',
-            'delete_runtime_class'
+            "delete_namespaced_runtime_class",
+            "delete_runtime_class",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.NodeV1alpha1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.NodeV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.NodeV1alpha1Api(**kwargs)
 
-    def __enter__(self) -> 'RuntimeClass':
+    def __enter__(self) -> "RuntimeClass":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -221,84 +217,91 @@ class RuntimeClassList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['RuntimeClass'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["RuntimeClass"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create RuntimeClassList instance."""
         super(RuntimeClassList, self).__init__(
-            api_version='node/v1alpha1',
-            kind='RuntimeClassList'
+            api_version="node/v1alpha1", kind="RuntimeClassList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, RuntimeClass),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, RuntimeClass),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['RuntimeClass']:
+    def items(self) -> typing.List["RuntimeClass"]:
         """
         Items is a list of schema objects.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["RuntimeClass"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['RuntimeClass'], typing.List[dict]]
+        self, value: typing.Union[typing.List["RuntimeClass"], typing.List[dict]]
     ):
         """
         Items is a list of schema objects.
         """
-        cleaned = []
+        cleaned: typing.List[RuntimeClass] = []
         for item in value:
             if isinstance(item, dict):
-                item = RuntimeClass().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    RuntimeClass,
+                    RuntimeClass().from_dict(item),
+                )
+            cleaned.append(typing.cast(RuntimeClass, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/api-
         conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.NodeV1alpha1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.NodeV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.NodeV1alpha1Api(**kwargs)
 
-    def __enter__(self) -> 'RuntimeClassList':
+    def __enter__(self) -> "RuntimeClassList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -316,21 +319,18 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            runtime_handler: str = None,
+        self,
+        runtime_handler: str = None,
     ):
         """Create RuntimeClassSpec instance."""
         super(RuntimeClassSpec, self).__init__(
-            api_version='node/v1alpha1',
-            kind='RuntimeClassSpec'
+            api_version="node/v1alpha1", kind="RuntimeClassSpec"
         )
         self._properties = {
-            'runtimeHandler': runtime_handler if runtime_handler is not None else '',
-
+            "runtimeHandler": runtime_handler if runtime_handler is not None else "",
         }
         self._types = {
-            'runtimeHandler': (str, None),
-
+            "runtimeHandler": (str, None),
         }
 
     @property
@@ -347,7 +347,10 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
         pod. The RuntimeHandler must conform to the DNS Label (RFC
         1123) requirements and is immutable.
         """
-        return self._properties.get('runtimeHandler')
+        return typing.cast(
+            str,
+            self._properties.get("runtimeHandler"),
+        )
 
     @runtime_handler.setter
     def runtime_handler(self, value: str):
@@ -363,9 +366,9 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
         pod. The RuntimeHandler must conform to the DNS Label (RFC
         1123) requirements and is immutable.
         """
-        self._properties['runtimeHandler'] = value
+        self._properties["runtimeHandler"] = value
 
-    def __enter__(self) -> 'RuntimeClassSpec':
+    def __enter__(self) -> "RuntimeClassSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

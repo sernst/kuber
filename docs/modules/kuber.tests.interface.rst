@@ -20,7 +20,6 @@ kuber.tests.interface.test\_configuration module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

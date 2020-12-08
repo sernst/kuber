@@ -16,37 +16,38 @@ class AggregationRule(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            cluster_role_selectors: typing.List['LabelSelector'] = None,
+        self,
+        cluster_role_selectors: typing.List["LabelSelector"] = None,
     ):
         """Create AggregationRule instance."""
         super(AggregationRule, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='AggregationRule'
+            api_version="rbac.authorization.k8s.io/v1", kind="AggregationRule"
         )
         self._properties = {
-            'clusterRoleSelectors': cluster_role_selectors if cluster_role_selectors is not None else [],
-
+            "clusterRoleSelectors": cluster_role_selectors
+            if cluster_role_selectors is not None
+            else [],
         }
         self._types = {
-            'clusterRoleSelectors': (list, LabelSelector),
-
+            "clusterRoleSelectors": (list, LabelSelector),
         }
 
     @property
-    def cluster_role_selectors(self) -> typing.List['LabelSelector']:
+    def cluster_role_selectors(self) -> typing.List["LabelSelector"]:
         """
         ClusterRoleSelectors holds a list of selectors which will be
         used to find ClusterRoles and create the rules. If any of
         the selectors match, then the ClusterRole's permissions will
         be added
         """
-        return self._properties.get('clusterRoleSelectors')
+        return typing.cast(
+            typing.List["LabelSelector"],
+            self._properties.get("clusterRoleSelectors"),
+        )
 
     @cluster_role_selectors.setter
     def cluster_role_selectors(
-            self,
-            value: typing.Union[typing.List['LabelSelector'], typing.List[dict]]
+        self, value: typing.Union[typing.List["LabelSelector"], typing.List[dict]]
     ):
         """
         ClusterRoleSelectors holds a list of selectors which will be
@@ -54,14 +55,17 @@ class AggregationRule(_kuber_definitions.Definition):
         the selectors match, then the ClusterRole's permissions will
         be added
         """
-        cleaned = []
+        cleaned: typing.List[LabelSelector] = []
         for item in value:
             if isinstance(item, dict):
-                item = LabelSelector().from_dict(item)
-            cleaned.append(item)
-        self._properties['clusterRoleSelectors'] = cleaned
+                item = typing.cast(
+                    LabelSelector,
+                    LabelSelector().from_dict(item),
+                )
+            cleaned.append(typing.cast(LabelSelector, item))
+        self._properties["clusterRoleSelectors"] = cleaned
 
-    def __enter__(self) -> 'AggregationRule':
+    def __enter__(self) -> "AggregationRule":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -76,43 +80,45 @@ class ClusterRole(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            aggregation_rule: 'AggregationRule' = None,
-            metadata: 'ObjectMeta' = None,
-            rules: typing.List['PolicyRule'] = None,
+        self,
+        aggregation_rule: "AggregationRule" = None,
+        metadata: "ObjectMeta" = None,
+        rules: typing.List["PolicyRule"] = None,
     ):
         """Create ClusterRole instance."""
         super(ClusterRole, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='ClusterRole'
+            api_version="rbac.authorization.k8s.io/v1", kind="ClusterRole"
         )
         self._properties = {
-            'aggregationRule': aggregation_rule if aggregation_rule is not None else AggregationRule(),
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'rules': rules if rules is not None else [],
-
+            "aggregationRule": aggregation_rule
+            if aggregation_rule is not None
+            else AggregationRule(),
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "rules": rules if rules is not None else [],
         }
         self._types = {
-            'aggregationRule': (AggregationRule, None),
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'rules': (list, PolicyRule),
-
+            "aggregationRule": (AggregationRule, None),
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "rules": (list, PolicyRule),
         }
 
     @property
-    def aggregation_rule(self) -> 'AggregationRule':
+    def aggregation_rule(self) -> "AggregationRule":
         """
         AggregationRule is an optional field that describes how to
         build the Rules for this ClusterRole. If AggregationRule is
         set, then the Rules are controller managed and direct
         changes to Rules will be stomped by the controller.
         """
-        return self._properties.get('aggregationRule')
+        return typing.cast(
+            "AggregationRule",
+            self._properties.get("aggregationRule"),
+        )
 
     @aggregation_rule.setter
-    def aggregation_rule(self, value: typing.Union['AggregationRule', dict]):
+    def aggregation_rule(self, value: typing.Union["AggregationRule", dict]):
         """
         AggregationRule is an optional field that describes how to
         build the Rules for this ClusterRole. If AggregationRule is
@@ -120,172 +126,171 @@ class ClusterRole(_kuber_definitions.Resource):
         changes to Rules will be stomped by the controller.
         """
         if isinstance(value, dict):
-            value = AggregationRule().from_dict(value)
-        self._properties['aggregationRule'] = value
+            value = typing.cast(
+                AggregationRule,
+                AggregationRule().from_dict(value),
+            )
+        self._properties["aggregationRule"] = value
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def rules(self) -> typing.List['PolicyRule']:
+    def rules(self) -> typing.List["PolicyRule"]:
         """
         Rules holds all the PolicyRules for this ClusterRole
         """
-        return self._properties.get('rules')
+        return typing.cast(
+            typing.List["PolicyRule"],
+            self._properties.get("rules"),
+        )
 
     @rules.setter
-    def rules(
-            self,
-            value: typing.Union[typing.List['PolicyRule'], typing.List[dict]]
-    ):
+    def rules(self, value: typing.Union[typing.List["PolicyRule"], typing.List[dict]]):
         """
         Rules holds all the PolicyRules for this ClusterRole
         """
-        cleaned = []
+        cleaned: typing.List[PolicyRule] = []
         for item in value:
             if isinstance(item, dict):
-                item = PolicyRule().from_dict(item)
-            cleaned.append(item)
-        self._properties['rules'] = cleaned
+                item = typing.cast(
+                    PolicyRule,
+                    PolicyRule().from_dict(item),
+                )
+            cleaned.append(typing.cast(PolicyRule, item))
+        self._properties["rules"] = cleaned
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the ClusterRole in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'create_namespaced_cluster_role',
-            'create_cluster_role'
-        ]
+        names = ["create_namespaced_cluster_role", "create_cluster_role"]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the ClusterRole in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'replace_namespaced_cluster_role',
-            'replace_cluster_role'
-        ]
+        names = ["replace_namespaced_cluster_role", "replace_cluster_role"]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the ClusterRole in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'patch_namespaced_cluster_role',
-            'patch_cluster_role'
-        ]
+        names = ["patch_namespaced_cluster_role", "patch_cluster_role"]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the ClusterRole from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_cluster_role',
-            'read_cluster_role'
+            "read_namespaced_cluster_role",
+            "read_cluster_role",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the ClusterRole from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_cluster_role',
-            'delete_cluster_role'
+            "delete_namespaced_cluster_role",
+            "delete_cluster_role",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'ClusterRole':
+    def __enter__(self) -> "ClusterRole":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -300,216 +305,221 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            role_ref: 'RoleRef' = None,
-            subjects: typing.List['Subject'] = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        role_ref: "RoleRef" = None,
+        subjects: typing.List["Subject"] = None,
     ):
         """Create ClusterRoleBinding instance."""
         super(ClusterRoleBinding, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='ClusterRoleBinding'
+            api_version="rbac.authorization.k8s.io/v1", kind="ClusterRoleBinding"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'roleRef': role_ref if role_ref is not None else RoleRef(),
-            'subjects': subjects if subjects is not None else [],
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "roleRef": role_ref if role_ref is not None else RoleRef(),
+            "subjects": subjects if subjects is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'roleRef': (RoleRef, None),
-            'subjects': (list, Subject),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "roleRef": (RoleRef, None),
+            "subjects": (list, Subject),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def role_ref(self) -> 'RoleRef':
+    def role_ref(self) -> "RoleRef":
         """
         RoleRef can only reference a ClusterRole in the global
         namespace. If the RoleRef cannot be resolved, the Authorizer
         must return an error.
         """
-        return self._properties.get('roleRef')
+        return typing.cast(
+            "RoleRef",
+            self._properties.get("roleRef"),
+        )
 
     @role_ref.setter
-    def role_ref(self, value: typing.Union['RoleRef', dict]):
+    def role_ref(self, value: typing.Union["RoleRef", dict]):
         """
         RoleRef can only reference a ClusterRole in the global
         namespace. If the RoleRef cannot be resolved, the Authorizer
         must return an error.
         """
         if isinstance(value, dict):
-            value = RoleRef().from_dict(value)
-        self._properties['roleRef'] = value
+            value = typing.cast(
+                RoleRef,
+                RoleRef().from_dict(value),
+            )
+        self._properties["roleRef"] = value
 
     @property
-    def subjects(self) -> typing.List['Subject']:
+    def subjects(self) -> typing.List["Subject"]:
         """
         Subjects holds references to the objects the role applies
         to.
         """
-        return self._properties.get('subjects')
+        return typing.cast(
+            typing.List["Subject"],
+            self._properties.get("subjects"),
+        )
 
     @subjects.setter
-    def subjects(
-            self,
-            value: typing.Union[typing.List['Subject'], typing.List[dict]]
-    ):
+    def subjects(self, value: typing.Union[typing.List["Subject"], typing.List[dict]]):
         """
         Subjects holds references to the objects the role applies
         to.
         """
-        cleaned = []
+        cleaned: typing.List[Subject] = []
         for item in value:
             if isinstance(item, dict):
-                item = Subject().from_dict(item)
-            cleaned.append(item)
-        self._properties['subjects'] = cleaned
+                item = typing.cast(
+                    Subject,
+                    Subject().from_dict(item),
+                )
+            cleaned.append(typing.cast(Subject, item))
+        self._properties["subjects"] = cleaned
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the ClusterRoleBinding in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'create_namespaced_cluster_role_binding',
-            'create_cluster_role_binding'
+            "create_namespaced_cluster_role_binding",
+            "create_cluster_role_binding",
         ]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the ClusterRoleBinding in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'replace_namespaced_cluster_role_binding',
-            'replace_cluster_role_binding'
+            "replace_namespaced_cluster_role_binding",
+            "replace_cluster_role_binding",
         ]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the ClusterRoleBinding in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'patch_namespaced_cluster_role_binding',
-            'patch_cluster_role_binding'
-        ]
+        names = ["patch_namespaced_cluster_role_binding", "patch_cluster_role_binding"]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the ClusterRoleBinding from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_cluster_role_binding',
-            'read_cluster_role_binding'
+            "read_namespaced_cluster_role_binding",
+            "read_cluster_role_binding",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the ClusterRoleBinding from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_cluster_role_binding',
-            'delete_cluster_role_binding'
+            "delete_namespaced_cluster_role_binding",
+            "delete_cluster_role_binding",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'ClusterRoleBinding':
+    def __enter__(self) -> "ClusterRoleBinding":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -523,80 +533,87 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['ClusterRoleBinding'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["ClusterRoleBinding"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create ClusterRoleBindingList instance."""
         super(ClusterRoleBindingList, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='ClusterRoleBindingList'
+            api_version="rbac.authorization.k8s.io/v1", kind="ClusterRoleBindingList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, ClusterRoleBinding),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, ClusterRoleBinding),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['ClusterRoleBinding']:
+    def items(self) -> typing.List["ClusterRoleBinding"]:
         """
         Items is a list of ClusterRoleBindings
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["ClusterRoleBinding"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['ClusterRoleBinding'], typing.List[dict]]
+        self, value: typing.Union[typing.List["ClusterRoleBinding"], typing.List[dict]]
     ):
         """
         Items is a list of ClusterRoleBindings
         """
-        cleaned = []
+        cleaned: typing.List[ClusterRoleBinding] = []
         for item in value:
             if isinstance(item, dict):
-                item = ClusterRoleBinding().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    ClusterRoleBinding,
+                    ClusterRoleBinding().from_dict(item),
+                )
+            cleaned.append(typing.cast(ClusterRoleBinding, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'ClusterRoleBindingList':
+    def __enter__(self) -> "ClusterRoleBindingList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -609,80 +626,85 @@ class ClusterRoleList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['ClusterRole'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["ClusterRole"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create ClusterRoleList instance."""
         super(ClusterRoleList, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='ClusterRoleList'
+            api_version="rbac.authorization.k8s.io/v1", kind="ClusterRoleList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, ClusterRole),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, ClusterRole),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['ClusterRole']:
+    def items(self) -> typing.List["ClusterRole"]:
         """
         Items is a list of ClusterRoles
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["ClusterRole"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['ClusterRole'], typing.List[dict]]
-    ):
+    def items(self, value: typing.Union[typing.List["ClusterRole"], typing.List[dict]]):
         """
         Items is a list of ClusterRoles
         """
-        cleaned = []
+        cleaned: typing.List[ClusterRole] = []
         for item in value:
             if isinstance(item, dict):
-                item = ClusterRole().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    ClusterRole,
+                    ClusterRole().from_dict(item),
+                )
+            cleaned.append(typing.cast(ClusterRole, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'ClusterRoleList':
+    def __enter__(self) -> "ClusterRoleList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -697,33 +719,32 @@ class PolicyRule(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_groups: typing.List[str] = None,
-            non_resource_urls: typing.List[str] = None,
-            resource_names: typing.List[str] = None,
-            resources: typing.List[str] = None,
-            verbs: typing.List[str] = None,
+        self,
+        api_groups: typing.List[str] = None,
+        non_resource_urls: typing.List[str] = None,
+        resource_names: typing.List[str] = None,
+        resources: typing.List[str] = None,
+        verbs: typing.List[str] = None,
     ):
         """Create PolicyRule instance."""
         super(PolicyRule, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='PolicyRule'
+            api_version="rbac.authorization.k8s.io/v1", kind="PolicyRule"
         )
         self._properties = {
-            'apiGroups': api_groups if api_groups is not None else [],
-            'nonResourceURLs': non_resource_urls if non_resource_urls is not None else [],
-            'resourceNames': resource_names if resource_names is not None else [],
-            'resources': resources if resources is not None else [],
-            'verbs': verbs if verbs is not None else [],
-
+            "apiGroups": api_groups if api_groups is not None else [],
+            "nonResourceURLs": non_resource_urls
+            if non_resource_urls is not None
+            else [],
+            "resourceNames": resource_names if resource_names is not None else [],
+            "resources": resources if resources is not None else [],
+            "verbs": verbs if verbs is not None else [],
         }
         self._types = {
-            'apiGroups': (list, str),
-            'nonResourceURLs': (list, str),
-            'resourceNames': (list, str),
-            'resources': (list, str),
-            'verbs': (list, str),
-
+            "apiGroups": (list, str),
+            "nonResourceURLs": (list, str),
+            "resourceNames": (list, str),
+            "resources": (list, str),
+            "verbs": (list, str),
         }
 
     @property
@@ -734,7 +755,10 @@ class PolicyRule(_kuber_definitions.Definition):
         requested against one of the enumerated resources in any API
         group will be allowed.
         """
-        return self._properties.get('apiGroups')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("apiGroups"),
+        )
 
     @api_groups.setter
     def api_groups(self, value: typing.List[str]):
@@ -744,7 +768,7 @@ class PolicyRule(_kuber_definitions.Definition):
         requested against one of the enumerated resources in any API
         group will be allowed.
         """
-        self._properties['apiGroups'] = value
+        self._properties["apiGroups"] = value
 
     @property
     def non_resource_urls(self) -> typing.List[str]:
@@ -757,7 +781,10 @@ class PolicyRule(_kuber_definitions.Definition):
         resources (such as "pods" or "secrets") or non-resource URL
         paths (such as "/api"),  but not both.
         """
-        return self._properties.get('nonResourceURLs')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("nonResourceURLs"),
+        )
 
     @non_resource_urls.setter
     def non_resource_urls(self, value: typing.List[str]):
@@ -770,7 +797,7 @@ class PolicyRule(_kuber_definitions.Definition):
         resources (such as "pods" or "secrets") or non-resource URL
         paths (such as "/api"),  but not both.
         """
-        self._properties['nonResourceURLs'] = value
+        self._properties["nonResourceURLs"] = value
 
     @property
     def resource_names(self) -> typing.List[str]:
@@ -779,7 +806,10 @@ class PolicyRule(_kuber_definitions.Definition):
         rule applies to.  An empty set means that everything is
         allowed.
         """
-        return self._properties.get('resourceNames')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("resourceNames"),
+        )
 
     @resource_names.setter
     def resource_names(self, value: typing.List[str]):
@@ -788,7 +818,7 @@ class PolicyRule(_kuber_definitions.Definition):
         rule applies to.  An empty set means that everything is
         allowed.
         """
-        self._properties['resourceNames'] = value
+        self._properties["resourceNames"] = value
 
     @property
     def resources(self) -> typing.List[str]:
@@ -796,7 +826,10 @@ class PolicyRule(_kuber_definitions.Definition):
         Resources is a list of resources this rule applies to.
         ResourceAll represents all resources.
         """
-        return self._properties.get('resources')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("resources"),
+        )
 
     @resources.setter
     def resources(self, value: typing.List[str]):
@@ -804,7 +837,7 @@ class PolicyRule(_kuber_definitions.Definition):
         Resources is a list of resources this rule applies to.
         ResourceAll represents all resources.
         """
-        self._properties['resources'] = value
+        self._properties["resources"] = value
 
     @property
     def verbs(self) -> typing.List[str]:
@@ -813,7 +846,10 @@ class PolicyRule(_kuber_definitions.Definition):
         and AttributeRestrictions contained in this rule.  VerbAll
         represents all kinds.
         """
-        return self._properties.get('verbs')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("verbs"),
+        )
 
     @verbs.setter
     def verbs(self, value: typing.List[str]):
@@ -822,9 +858,9 @@ class PolicyRule(_kuber_definitions.Definition):
         and AttributeRestrictions contained in this rule.  VerbAll
         represents all kinds.
         """
-        self._properties['verbs'] = value
+        self._properties["verbs"] = value
 
-    def __enter__(self) -> 'PolicyRule':
+    def __enter__(self) -> "PolicyRule":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -838,191 +874,184 @@ class Role(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            rules: typing.List['PolicyRule'] = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        rules: typing.List["PolicyRule"] = None,
     ):
         """Create Role instance."""
         super(Role, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='Role'
+            api_version="rbac.authorization.k8s.io/v1", kind="Role"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'rules': rules if rules is not None else [],
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "rules": rules if rules is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'rules': (list, PolicyRule),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "rules": (list, PolicyRule),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def rules(self) -> typing.List['PolicyRule']:
+    def rules(self) -> typing.List["PolicyRule"]:
         """
         Rules holds all the PolicyRules for this Role
         """
-        return self._properties.get('rules')
+        return typing.cast(
+            typing.List["PolicyRule"],
+            self._properties.get("rules"),
+        )
 
     @rules.setter
-    def rules(
-            self,
-            value: typing.Union[typing.List['PolicyRule'], typing.List[dict]]
-    ):
+    def rules(self, value: typing.Union[typing.List["PolicyRule"], typing.List[dict]]):
         """
         Rules holds all the PolicyRules for this Role
         """
-        cleaned = []
+        cleaned: typing.List[PolicyRule] = []
         for item in value:
             if isinstance(item, dict):
-                item = PolicyRule().from_dict(item)
-            cleaned.append(item)
-        self._properties['rules'] = cleaned
+                item = typing.cast(
+                    PolicyRule,
+                    PolicyRule().from_dict(item),
+                )
+            cleaned.append(typing.cast(PolicyRule, item))
+        self._properties["rules"] = cleaned
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the Role in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'create_namespaced_role',
-            'create_role'
-        ]
+        names = ["create_namespaced_role", "create_role"]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the Role in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'replace_namespaced_role',
-            'replace_role'
-        ]
+        names = ["replace_namespaced_role", "replace_role"]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the Role in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'patch_namespaced_role',
-            'patch_role'
-        ]
+        names = ["patch_namespaced_role", "patch_role"]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the Role from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_role',
-            'read_role'
+            "read_namespaced_role",
+            "read_role",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the Role from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_role',
-            'delete_role'
+            "delete_namespaced_role",
+            "delete_role",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'Role':
+    def __enter__(self) -> "Role":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1040,216 +1069,215 @@ class RoleBinding(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            role_ref: 'RoleRef' = None,
-            subjects: typing.List['Subject'] = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        role_ref: "RoleRef" = None,
+        subjects: typing.List["Subject"] = None,
     ):
         """Create RoleBinding instance."""
         super(RoleBinding, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='RoleBinding'
+            api_version="rbac.authorization.k8s.io/v1", kind="RoleBinding"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'roleRef': role_ref if role_ref is not None else RoleRef(),
-            'subjects': subjects if subjects is not None else [],
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "roleRef": role_ref if role_ref is not None else RoleRef(),
+            "subjects": subjects if subjects is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'roleRef': (RoleRef, None),
-            'subjects': (list, Subject),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "roleRef": (RoleRef, None),
+            "subjects": (list, Subject),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def role_ref(self) -> 'RoleRef':
+    def role_ref(self) -> "RoleRef":
         """
         RoleRef can reference a Role in the current namespace or a
         ClusterRole in the global namespace. If the RoleRef cannot
         be resolved, the Authorizer must return an error.
         """
-        return self._properties.get('roleRef')
+        return typing.cast(
+            "RoleRef",
+            self._properties.get("roleRef"),
+        )
 
     @role_ref.setter
-    def role_ref(self, value: typing.Union['RoleRef', dict]):
+    def role_ref(self, value: typing.Union["RoleRef", dict]):
         """
         RoleRef can reference a Role in the current namespace or a
         ClusterRole in the global namespace. If the RoleRef cannot
         be resolved, the Authorizer must return an error.
         """
         if isinstance(value, dict):
-            value = RoleRef().from_dict(value)
-        self._properties['roleRef'] = value
+            value = typing.cast(
+                RoleRef,
+                RoleRef().from_dict(value),
+            )
+        self._properties["roleRef"] = value
 
     @property
-    def subjects(self) -> typing.List['Subject']:
+    def subjects(self) -> typing.List["Subject"]:
         """
         Subjects holds references to the objects the role applies
         to.
         """
-        return self._properties.get('subjects')
+        return typing.cast(
+            typing.List["Subject"],
+            self._properties.get("subjects"),
+        )
 
     @subjects.setter
-    def subjects(
-            self,
-            value: typing.Union[typing.List['Subject'], typing.List[dict]]
-    ):
+    def subjects(self, value: typing.Union[typing.List["Subject"], typing.List[dict]]):
         """
         Subjects holds references to the objects the role applies
         to.
         """
-        cleaned = []
+        cleaned: typing.List[Subject] = []
         for item in value:
             if isinstance(item, dict):
-                item = Subject().from_dict(item)
-            cleaned.append(item)
-        self._properties['subjects'] = cleaned
+                item = typing.cast(
+                    Subject,
+                    Subject().from_dict(item),
+                )
+            cleaned.append(typing.cast(Subject, item))
+        self._properties["subjects"] = cleaned
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the RoleBinding in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'create_namespaced_role_binding',
-            'create_role_binding'
-        ]
+        names = ["create_namespaced_role_binding", "create_role_binding"]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the RoleBinding in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'replace_namespaced_role_binding',
-            'replace_role_binding'
-        ]
+        names = ["replace_namespaced_role_binding", "replace_role_binding"]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the RoleBinding in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'patch_namespaced_role_binding',
-            'patch_role_binding'
-        ]
+        names = ["patch_namespaced_role_binding", "patch_role_binding"]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the RoleBinding from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_role_binding',
-            'read_role_binding'
+            "read_namespaced_role_binding",
+            "read_role_binding",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the RoleBinding from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_role_binding',
-            'delete_role_binding'
+            "delete_namespaced_role_binding",
+            "delete_role_binding",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'RoleBinding':
+    def __enter__(self) -> "RoleBinding":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1262,80 +1290,85 @@ class RoleBindingList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['RoleBinding'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["RoleBinding"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create RoleBindingList instance."""
         super(RoleBindingList, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='RoleBindingList'
+            api_version="rbac.authorization.k8s.io/v1", kind="RoleBindingList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, RoleBinding),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, RoleBinding),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['RoleBinding']:
+    def items(self) -> typing.List["RoleBinding"]:
         """
         Items is a list of RoleBindings
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["RoleBinding"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['RoleBinding'], typing.List[dict]]
-    ):
+    def items(self, value: typing.Union[typing.List["RoleBinding"], typing.List[dict]]):
         """
         Items is a list of RoleBindings
         """
-        cleaned = []
+        cleaned: typing.List[RoleBinding] = []
         for item in value:
             if isinstance(item, dict):
-                item = RoleBinding().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    RoleBinding,
+                    RoleBinding().from_dict(item),
+                )
+            cleaned.append(typing.cast(RoleBinding, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'RoleBindingList':
+    def __enter__(self) -> "RoleBindingList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1348,80 +1381,85 @@ class RoleList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['Role'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["Role"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create RoleList instance."""
         super(RoleList, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='RoleList'
+            api_version="rbac.authorization.k8s.io/v1", kind="RoleList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, Role),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, Role),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['Role']:
+    def items(self) -> typing.List["Role"]:
         """
         Items is a list of Roles
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["Role"],
+            self._properties.get("items"),
+        )
 
     @items.setter
-    def items(
-            self,
-            value: typing.Union[typing.List['Role'], typing.List[dict]]
-    ):
+    def items(self, value: typing.Union[typing.List["Role"], typing.List[dict]]):
         """
         Items is a list of Roles
         """
-        cleaned = []
+        cleaned: typing.List[Role] = []
         for item in value:
             if isinstance(item, dict):
-                item = Role().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    Role,
+                    Role().from_dict(item),
+                )
+            cleaned.append(typing.cast(Role, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.RbacAuthorizationV1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.RbacAuthorizationV1Api(**kwargs)
 
-    def __enter__(self) -> 'RoleList':
+    def __enter__(self) -> "RoleList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1435,27 +1473,24 @@ class RoleRef(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_group: str = None,
-            kind: str = None,
-            name: str = None,
+        self,
+        api_group: str = None,
+        kind: str = None,
+        name: str = None,
     ):
         """Create RoleRef instance."""
         super(RoleRef, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='RoleRef'
+            api_version="rbac.authorization.k8s.io/v1", kind="RoleRef"
         )
         self._properties = {
-            'apiGroup': api_group if api_group is not None else '',
-            'kind': kind if kind is not None else '',
-            'name': name if name is not None else '',
-
+            "apiGroup": api_group if api_group is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
         }
         self._types = {
-            'apiGroup': (str, None),
-            'kind': (str, None),
-            'name': (str, None),
-
+            "apiGroup": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
         }
 
     @property
@@ -1463,44 +1498,53 @@ class RoleRef(_kuber_definitions.Definition):
         """
         APIGroup is the group for the resource being referenced
         """
-        return self._properties.get('apiGroup')
+        return typing.cast(
+            str,
+            self._properties.get("apiGroup"),
+        )
 
     @api_group.setter
     def api_group(self, value: str):
         """
         APIGroup is the group for the resource being referenced
         """
-        self._properties['apiGroup'] = value
+        self._properties["apiGroup"] = value
 
     @property
     def kind(self) -> str:
         """
         Kind is the type of resource being referenced
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
         """
         Kind is the type of resource being referenced
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def name(self) -> str:
         """
         Name is the name of resource being referenced
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         Name is the name of resource being referenced
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'RoleRef':
+    def __enter__(self) -> "RoleRef":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1516,30 +1560,27 @@ class Subject(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_group: str = None,
-            kind: str = None,
-            name: str = None,
-            namespace: str = None,
+        self,
+        api_group: str = None,
+        kind: str = None,
+        name: str = None,
+        namespace: str = None,
     ):
         """Create Subject instance."""
         super(Subject, self).__init__(
-            api_version='rbac.authorization.k8s.io/v1',
-            kind='Subject'
+            api_version="rbac.authorization.k8s.io/v1", kind="Subject"
         )
         self._properties = {
-            'apiGroup': api_group if api_group is not None else '',
-            'kind': kind if kind is not None else '',
-            'name': name if name is not None else '',
-            'namespace': namespace if namespace is not None else '',
-
+            "apiGroup": api_group if api_group is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
+            "namespace": namespace if namespace is not None else "",
         }
         self._types = {
-            'apiGroup': (str, None),
-            'kind': (str, None),
-            'name': (str, None),
-            'namespace': (str, None),
-
+            "apiGroup": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
+            "namespace": (str, None),
         }
 
     @property
@@ -1549,7 +1590,10 @@ class Subject(_kuber_definitions.Definition):
         Defaults to "" for ServiceAccount subjects. Defaults to
         "rbac.authorization.k8s.io" for User and Group subjects.
         """
-        return self._properties.get('apiGroup')
+        return typing.cast(
+            str,
+            self._properties.get("apiGroup"),
+        )
 
     @api_group.setter
     def api_group(self, value: str):
@@ -1558,7 +1602,7 @@ class Subject(_kuber_definitions.Definition):
         Defaults to "" for ServiceAccount subjects. Defaults to
         "rbac.authorization.k8s.io" for User and Group subjects.
         """
-        self._properties['apiGroup'] = value
+        self._properties["apiGroup"] = value
 
     @property
     def kind(self) -> str:
@@ -1568,7 +1612,10 @@ class Subject(_kuber_definitions.Definition):
         Authorizer does not recognized the kind value, the
         Authorizer should report an error.
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -1578,21 +1625,24 @@ class Subject(_kuber_definitions.Definition):
         Authorizer does not recognized the kind value, the
         Authorizer should report an error.
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def name(self) -> str:
         """
         Name of the object being referenced.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         Name of the object being referenced.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def namespace(self) -> str:
@@ -1601,7 +1651,10 @@ class Subject(_kuber_definitions.Definition):
         non-namespace, such as "User" or "Group", and this value is
         not empty the Authorizer should report an error.
         """
-        return self._properties.get('namespace')
+        return typing.cast(
+            str,
+            self._properties.get("namespace"),
+        )
 
     @namespace.setter
     def namespace(self, value: str):
@@ -1610,9 +1663,9 @@ class Subject(_kuber_definitions.Definition):
         non-namespace, such as "User" or "Group", and this value is
         not empty the Authorizer should report an error.
         """
-        self._properties['namespace'] = value
+        self._properties["namespace"] = value
 
-    def __enter__(self) -> 'Subject':
+    def __enter__(self) -> "Subject":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

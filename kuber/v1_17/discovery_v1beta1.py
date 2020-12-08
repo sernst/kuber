@@ -16,33 +16,30 @@ class Endpoint(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            addresses: typing.List[str] = None,
-            conditions: 'EndpointConditions' = None,
-            hostname: str = None,
-            target_ref: 'ObjectReference' = None,
-            topology: dict = None,
+        self,
+        addresses: typing.List[str] = None,
+        conditions: "EndpointConditions" = None,
+        hostname: str = None,
+        target_ref: "ObjectReference" = None,
+        topology: dict = None,
     ):
         """Create Endpoint instance."""
-        super(Endpoint, self).__init__(
-            api_version='discovery/v1beta1',
-            kind='Endpoint'
-        )
+        super(Endpoint, self).__init__(api_version="discovery/v1beta1", kind="Endpoint")
         self._properties = {
-            'addresses': addresses if addresses is not None else [],
-            'conditions': conditions if conditions is not None else EndpointConditions(),
-            'hostname': hostname if hostname is not None else '',
-            'targetRef': target_ref if target_ref is not None else ObjectReference(),
-            'topology': topology if topology is not None else {},
-
+            "addresses": addresses if addresses is not None else [],
+            "conditions": conditions
+            if conditions is not None
+            else EndpointConditions(),
+            "hostname": hostname if hostname is not None else "",
+            "targetRef": target_ref if target_ref is not None else ObjectReference(),
+            "topology": topology if topology is not None else {},
         }
         self._types = {
-            'addresses': (list, str),
-            'conditions': (EndpointConditions, None),
-            'hostname': (str, None),
-            'targetRef': (ObjectReference, None),
-            'topology': (dict, None),
-
+            "addresses": (list, str),
+            "conditions": (EndpointConditions, None),
+            "hostname": (str, None),
+            "targetRef": (ObjectReference, None),
+            "topology": (dict, None),
         }
 
     @property
@@ -54,7 +51,10 @@ class Endpoint(_kuber_definitions.Definition):
         addresses in the context of their own capabilities. This
         must contain at least one address but no more than 100.
         """
-        return self._properties.get('addresses')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("addresses"),
+        )
 
     @addresses.setter
     def addresses(self, value: typing.List[str]):
@@ -65,25 +65,31 @@ class Endpoint(_kuber_definitions.Definition):
         addresses in the context of their own capabilities. This
         must contain at least one address but no more than 100.
         """
-        self._properties['addresses'] = value
+        self._properties["addresses"] = value
 
     @property
-    def conditions(self) -> 'EndpointConditions':
+    def conditions(self) -> "EndpointConditions":
         """
         conditions contains information about the current status of
         the endpoint.
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            "EndpointConditions",
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
-    def conditions(self, value: typing.Union['EndpointConditions', dict]):
+    def conditions(self, value: typing.Union["EndpointConditions", dict]):
         """
         conditions contains information about the current status of
         the endpoint.
         """
         if isinstance(value, dict):
-            value = EndpointConditions().from_dict(value)
-        self._properties['conditions'] = value
+            value = typing.cast(
+                EndpointConditions,
+                EndpointConditions().from_dict(value),
+            )
+        self._properties["conditions"] = value
 
     @property
     def hostname(self) -> str:
@@ -94,7 +100,10 @@ class Endpoint(_kuber_definitions.Definition):
         same hostname should be considered fungible (e.g. multiple A
         values in DNS). Must pass DNS Label (RFC 1123) validation.
         """
-        return self._properties.get('hostname')
+        return typing.cast(
+            str,
+            self._properties.get("hostname"),
+        )
 
     @hostname.setter
     def hostname(self, value: str):
@@ -105,25 +114,31 @@ class Endpoint(_kuber_definitions.Definition):
         same hostname should be considered fungible (e.g. multiple A
         values in DNS). Must pass DNS Label (RFC 1123) validation.
         """
-        self._properties['hostname'] = value
+        self._properties["hostname"] = value
 
     @property
-    def target_ref(self) -> 'ObjectReference':
+    def target_ref(self) -> "ObjectReference":
         """
         targetRef is a reference to a Kubernetes object that
         represents this endpoint.
         """
-        return self._properties.get('targetRef')
+        return typing.cast(
+            "ObjectReference",
+            self._properties.get("targetRef"),
+        )
 
     @target_ref.setter
-    def target_ref(self, value: typing.Union['ObjectReference', dict]):
+    def target_ref(self, value: typing.Union["ObjectReference", dict]):
         """
         targetRef is a reference to a Kubernetes object that
         represents this endpoint.
         """
         if isinstance(value, dict):
-            value = ObjectReference().from_dict(value)
-        self._properties['targetRef'] = value
+            value = typing.cast(
+                ObjectReference,
+                ObjectReference().from_dict(value),
+            )
+        self._properties["targetRef"] = value
 
     @property
     def topology(self) -> dict:
@@ -148,7 +163,10 @@ class Endpoint(_kuber_definitions.Definition):
           endpoint is located. This should match the corresponding
         node label.
         """
-        return self._properties.get('topology')
+        return typing.cast(
+            dict,
+            self._properties.get("topology"),
+        )
 
     @topology.setter
     def topology(self, value: dict):
@@ -173,9 +191,9 @@ class Endpoint(_kuber_definitions.Definition):
           endpoint is located. This should match the corresponding
         node label.
         """
-        self._properties['topology'] = value
+        self._properties["topology"] = value
 
-    def __enter__(self) -> 'Endpoint':
+    def __enter__(self) -> "Endpoint":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -189,21 +207,18 @@ class EndpointConditions(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            ready: bool = None,
+        self,
+        ready: bool = None,
     ):
         """Create EndpointConditions instance."""
         super(EndpointConditions, self).__init__(
-            api_version='discovery/v1beta1',
-            kind='EndpointConditions'
+            api_version="discovery/v1beta1", kind="EndpointConditions"
         )
         self._properties = {
-            'ready': ready if ready is not None else None,
-
+            "ready": ready if ready is not None else None,
         }
         self._types = {
-            'ready': (bool, None),
-
+            "ready": (bool, None),
         }
 
     @property
@@ -215,7 +230,10 @@ class EndpointConditions(_kuber_definitions.Definition):
         cases consumers should interpret this unknown state as
         ready.
         """
-        return self._properties.get('ready')
+        return typing.cast(
+            bool,
+            self._properties.get("ready"),
+        )
 
     @ready.setter
     def ready(self, value: bool):
@@ -226,9 +244,9 @@ class EndpointConditions(_kuber_definitions.Definition):
         cases consumers should interpret this unknown state as
         ready.
         """
-        self._properties['ready'] = value
+        self._properties["ready"] = value
 
-    def __enter__(self) -> 'EndpointConditions':
+    def __enter__(self) -> "EndpointConditions":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -241,30 +259,27 @@ class EndpointPort(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            app_protocol: str = None,
-            name: str = None,
-            port: int = None,
-            protocol: str = None,
+        self,
+        app_protocol: str = None,
+        name: str = None,
+        port: int = None,
+        protocol: str = None,
     ):
         """Create EndpointPort instance."""
         super(EndpointPort, self).__init__(
-            api_version='discovery/v1beta1',
-            kind='EndpointPort'
+            api_version="discovery/v1beta1", kind="EndpointPort"
         )
         self._properties = {
-            'appProtocol': app_protocol if app_protocol is not None else '',
-            'name': name if name is not None else '',
-            'port': port if port is not None else None,
-            'protocol': protocol if protocol is not None else '',
-
+            "appProtocol": app_protocol if app_protocol is not None else "",
+            "name": name if name is not None else "",
+            "port": port if port is not None else None,
+            "protocol": protocol if protocol is not None else "",
         }
         self._types = {
-            'appProtocol': (str, None),
-            'name': (str, None),
-            'port': (int, None),
-            'protocol': (str, None),
-
+            "appProtocol": (str, None),
+            "name": (str, None),
+            "port": (int, None),
+            "protocol": (str, None),
         }
 
     @property
@@ -277,7 +292,10 @@ class EndpointPort(_kuber_definitions.Definition):
         standard protocols should use prefixed names. Default is
         empty string.
         """
-        return self._properties.get('appProtocol')
+        return typing.cast(
+            str,
+            self._properties.get("appProtocol"),
+        )
 
     @app_protocol.setter
     def app_protocol(self, value: str):
@@ -289,7 +307,7 @@ class EndpointPort(_kuber_definitions.Definition):
         standard protocols should use prefixed names. Default is
         empty string.
         """
-        self._properties['appProtocol'] = value
+        self._properties["appProtocol"] = value
 
     @property
     def name(self) -> str:
@@ -303,7 +321,10 @@ class EndpointPort(_kuber_definitions.Definition):
         characters or '-'. * must start and end with an alphanumeric
         character. Default is empty string.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -317,7 +338,7 @@ class EndpointPort(_kuber_definitions.Definition):
         characters or '-'. * must start and end with an alphanumeric
         character. Default is empty string.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def port(self) -> int:
@@ -326,7 +347,10 @@ class EndpointPort(_kuber_definitions.Definition):
         ports are not restricted and must be interpreted in the
         context of the specific consumer.
         """
-        return self._properties.get('port')
+        return typing.cast(
+            int,
+            self._properties.get("port"),
+        )
 
     @port.setter
     def port(self, value: int):
@@ -335,7 +359,7 @@ class EndpointPort(_kuber_definitions.Definition):
         ports are not restricted and must be interpreted in the
         context of the specific consumer.
         """
-        self._properties['port'] = value
+        self._properties["port"] = value
 
     @property
     def protocol(self) -> str:
@@ -343,7 +367,10 @@ class EndpointPort(_kuber_definitions.Definition):
         The IP protocol for this port. Must be UDP, TCP, or SCTP.
         Default is TCP.
         """
-        return self._properties.get('protocol')
+        return typing.cast(
+            str,
+            self._properties.get("protocol"),
+        )
 
     @protocol.setter
     def protocol(self, value: str):
@@ -351,9 +378,9 @@ class EndpointPort(_kuber_definitions.Definition):
         The IP protocol for this port. Must be UDP, TCP, or SCTP.
         Default is TCP.
         """
-        self._properties['protocol'] = value
+        self._properties["protocol"] = value
 
-    def __enter__(self) -> 'EndpointPort':
+    def __enter__(self) -> "EndpointPort":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -369,32 +396,29 @@ class EndpointSlice(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            address_type: str = None,
-            endpoints: typing.List['Endpoint'] = None,
-            metadata: 'ObjectMeta' = None,
-            ports: typing.List['EndpointPort'] = None,
+        self,
+        address_type: str = None,
+        endpoints: typing.List["Endpoint"] = None,
+        metadata: "ObjectMeta" = None,
+        ports: typing.List["EndpointPort"] = None,
     ):
         """Create EndpointSlice instance."""
         super(EndpointSlice, self).__init__(
-            api_version='discovery/v1beta1',
-            kind='EndpointSlice'
+            api_version="discovery/v1beta1", kind="EndpointSlice"
         )
         self._properties = {
-            'addressType': address_type if address_type is not None else '',
-            'endpoints': endpoints if endpoints is not None else [],
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'ports': ports if ports is not None else [],
-
+            "addressType": address_type if address_type is not None else "",
+            "endpoints": endpoints if endpoints is not None else [],
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "ports": ports if ports is not None else [],
         }
         self._types = {
-            'addressType': (str, None),
-            'apiVersion': (str, None),
-            'endpoints': (list, Endpoint),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'ports': (list, EndpointPort),
-
+            "addressType": (str, None),
+            "apiVersion": (str, None),
+            "endpoints": (list, Endpoint),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "ports": (list, EndpointPort),
         }
 
     @property
@@ -407,7 +431,10 @@ class EndpointSlice(_kuber_definitions.Resource):
         IPv4 Address. * IPv6: Represents an IPv6 Address. * FQDN:
         Represents a Fully Qualified Domain Name.
         """
-        return self._properties.get('addressType')
+        return typing.cast(
+            str,
+            self._properties.get("addressType"),
+        )
 
     @address_type.setter
     def address_type(self, value: str):
@@ -419,50 +446,61 @@ class EndpointSlice(_kuber_definitions.Resource):
         IPv4 Address. * IPv6: Represents an IPv6 Address. * FQDN:
         Represents a Fully Qualified Domain Name.
         """
-        self._properties['addressType'] = value
+        self._properties["addressType"] = value
 
     @property
-    def endpoints(self) -> typing.List['Endpoint']:
+    def endpoints(self) -> typing.List["Endpoint"]:
         """
         endpoints is a list of unique endpoints in this slice. Each
         slice may include a maximum of 1000 endpoints.
         """
-        return self._properties.get('endpoints')
+        return typing.cast(
+            typing.List["Endpoint"],
+            self._properties.get("endpoints"),
+        )
 
     @endpoints.setter
     def endpoints(
-            self,
-            value: typing.Union[typing.List['Endpoint'], typing.List[dict]]
+        self, value: typing.Union[typing.List["Endpoint"], typing.List[dict]]
     ):
         """
         endpoints is a list of unique endpoints in this slice. Each
         slice may include a maximum of 1000 endpoints.
         """
-        cleaned = []
+        cleaned: typing.List[Endpoint] = []
         for item in value:
             if isinstance(item, dict):
-                item = Endpoint().from_dict(item)
-            cleaned.append(item)
-        self._properties['endpoints'] = cleaned
+                item = typing.cast(
+                    Endpoint,
+                    Endpoint().from_dict(item),
+                )
+            cleaned.append(typing.cast(Endpoint, item))
+        self._properties["endpoints"] = cleaned
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def ports(self) -> typing.List['EndpointPort']:
+    def ports(self) -> typing.List["EndpointPort"]:
         """
         ports specifies the list of network ports exposed by each
         endpoint in this slice. Each port must have a unique name.
@@ -471,12 +509,14 @@ class EndpointSlice(_kuber_definitions.Resource):
         indicates "all ports". Each slice may include a maximum of
         100 ports.
         """
-        return self._properties.get('ports')
+        return typing.cast(
+            typing.List["EndpointPort"],
+            self._properties.get("ports"),
+        )
 
     @ports.setter
     def ports(
-            self,
-            value: typing.Union[typing.List['EndpointPort'], typing.List[dict]]
+        self, value: typing.Union[typing.List["EndpointPort"], typing.List[dict]]
     ):
         """
         ports specifies the list of network ports exposed by each
@@ -486,138 +526,128 @@ class EndpointSlice(_kuber_definitions.Resource):
         indicates "all ports". Each slice may include a maximum of
         100 ports.
         """
-        cleaned = []
+        cleaned: typing.List[EndpointPort] = []
         for item in value:
             if isinstance(item, dict):
-                item = EndpointPort().from_dict(item)
-            cleaned.append(item)
-        self._properties['ports'] = cleaned
+                item = typing.cast(
+                    EndpointPort,
+                    EndpointPort().from_dict(item),
+                )
+            cleaned.append(typing.cast(EndpointPort, item))
+        self._properties["ports"] = cleaned
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the EndpointSlice in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'create_namespaced_endpoint_slice',
-            'create_endpoint_slice'
-        ]
+        names = ["create_namespaced_endpoint_slice", "create_endpoint_slice"]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the EndpointSlice in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'replace_namespaced_endpoint_slice',
-            'replace_endpoint_slice'
-        ]
+        names = ["replace_namespaced_endpoint_slice", "replace_endpoint_slice"]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the EndpointSlice in the currently
         configured Kubernetes cluster.
         """
-        names = [
-            'patch_namespaced_endpoint_slice',
-            'patch_endpoint_slice'
-        ]
+        names = ["patch_namespaced_endpoint_slice", "patch_endpoint_slice"]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the EndpointSlice from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_endpoint_slice',
-            'read_endpoint_slice'
+            "read_namespaced_endpoint_slice",
+            "read_endpoint_slice",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the EndpointSlice from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_endpoint_slice',
-            'delete_endpoint_slice'
+            "delete_namespaced_endpoint_slice",
+            "delete_endpoint_slice",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.DiscoveryV1beta1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.DiscoveryV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.DiscoveryV1beta1Api(**kwargs)
 
-    def __enter__(self) -> 'EndpointSlice':
+    def __enter__(self) -> "EndpointSlice":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -630,80 +660,87 @@ class EndpointSliceList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['EndpointSlice'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["EndpointSlice"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create EndpointSliceList instance."""
         super(EndpointSliceList, self).__init__(
-            api_version='discovery/v1beta1',
-            kind='EndpointSliceList'
+            api_version="discovery/v1beta1", kind="EndpointSliceList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, EndpointSlice),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, EndpointSlice),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['EndpointSlice']:
+    def items(self) -> typing.List["EndpointSlice"]:
         """
         List of endpoint slices
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["EndpointSlice"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['EndpointSlice'], typing.List[dict]]
+        self, value: typing.Union[typing.List["EndpointSlice"], typing.List[dict]]
     ):
         """
         List of endpoint slices
         """
-        cleaned = []
+        cleaned: typing.List[EndpointSlice] = []
         for item in value:
             if isinstance(item, dict):
-                item = EndpointSlice().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    EndpointSlice,
+                    EndpointSlice().from_dict(item),
+                )
+            cleaned.append(typing.cast(EndpointSlice, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata.
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.DiscoveryV1beta1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.DiscoveryV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.DiscoveryV1beta1Api(**kwargs)
 
-    def __enter__(self) -> 'EndpointSliceList':
+    def __enter__(self) -> "EndpointSliceList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

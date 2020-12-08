@@ -12,7 +12,6 @@ kuber.tests.scenarios.empty\_values.test\_empty\_values module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

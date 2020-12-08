@@ -24,9 +24,9 @@ from the top-level package.
   from kuber.latest import apps_v1
 
   d: apps_v1.Deployment = kuber.new_resource(
-      api_version='apps/v1',
-      kind='Deployment',
-      name='my-deployment'
+      api_version="apps/v1",
+      kind="Deployment",
+      name="my-deployment"
   )
 
 
@@ -38,7 +38,7 @@ same way:
   from kuber.latest import batch_v1
 
   j = batch_v1.Job()
-  j.metadata.name = 'my-job`
+  j.metadata.name = "my-job`
 
 Both approaches end up producing the same result, an instance of the desired
 Kubernetes resource on which to operate.
@@ -53,8 +53,8 @@ data in JSON or YAML format.
   import kuber
   from kuber.latest import batch_v1
 
-  job: batch_v1.Job = kuber.from_yaml_file('my-job.yaml')
-  job.metadata.labels.update(component='app')
+  job: batch_v1.Job = kuber.from_yaml_file("my-job.yaml")
+  job.metadata.labels.update(component="app")
 
 .. autofunction:: kuber.from_yaml
 
@@ -75,7 +75,7 @@ data in JSON or YAML format.
           - image: python:3.8
       """
   )
-  pod.spec.containers[0].name = 'python'
+  pod.spec.containers[0].name = "python"
 
 .. autofunction:: kuber.from_json_file
 
@@ -84,8 +84,8 @@ data in JSON or YAML format.
   import kuber
   from kuber.latest import core_v1
 
-  service: core_v1.Service = kuber.from_yaml_file('my-service.yaml')
-  service.spec.selector.update(environment='production')
+  service: core_v1.Service = kuber.from_yaml_file("my-service.yaml")
+  service.spec.selector.update(environment="production")
 
 .. autofunction:: kuber.from_dict
 
@@ -95,14 +95,14 @@ data in JSON or YAML format.
   from kuber.latest import batch_v1
 
   pod: core_v1.Pod = kuber.from_yaml({
-      'apiVersion': 'core/v1',
-      'kind': 'Pod',
-      'metadata': {'name': 'my-pod'},
-      'spec': {
-          'containers': [{'image': 'python:3.8'}]
+      "apiVersion": "core/v1",
+      "kind": "Pod",
+      "metadata": {"name": "my-pod"},
+      "spec": {
+          "containers": [{"image": "python:3.8"}]
       }
   })
-  pod.spec.containers[0].name = 'python'
+  pod.spec.containers[0].name = "python"
 
 
 Multiple Resources

@@ -16,7 +16,7 @@ def create_subpackages(version: str, definitions: dict):
         module_path = kuber_maker.to_kuber_path(version, api_path)
         path = os.path.dirname(module_path)
 
-        if os.path.basename(path) in ('kubernetes', 'apimachinery'):
+        if os.path.basename(path) in ("kubernetes", "apimachinery"):
             # These sub-packages are empty because the resources
             # here have been moved and the only items remaining are
             # the type definitions that will be skipped Time, Quantity,
@@ -34,11 +34,10 @@ def create_subpackages(version: str, definitions: dict):
 
 def _populate_package_inits(path: str):
     """..."""
-    init_path = os.path.join(path, '__init__.py')
+    init_path = os.path.join(path, "__init__.py")
     while not os.path.exists(init_path):
-        with open(init_path, 'w') as f:
-            f.write('')
+        with open(init_path, "w") as f:
+            f.write("")
         init_path = os.path.join(
-            os.path.dirname(os.path.dirname(init_path)),
-            '__init__.py'
+            os.path.dirname(os.path.dirname(init_path)), "__init__.py"
         )

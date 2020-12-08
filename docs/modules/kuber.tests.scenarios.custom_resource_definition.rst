@@ -12,7 +12,6 @@ kuber.tests.scenarios.custom\_resource\_definition.test\_custom\_resource\_defin
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

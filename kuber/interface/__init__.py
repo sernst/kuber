@@ -16,17 +16,17 @@ class CommandAction(typing.NamedTuple):
     #: further customize the bundle.
     custom_args: typing.List[str]
     #: The resource bundle on which to operate.
-    bundle: 'management.ResourceBundle'
+    bundle: "management.ResourceBundle"
 
 
 class ResourceBundleCli:
     """Manages command line interface actions for ResourceBundles."""
 
-    def __init__(self, bundle: 'management.ResourceBundle'):
+    def __init__(self, bundle: "management.ResourceBundle"):
         """Creates a ResourceBundleCli for the given ResourceBundle."""
         self._bundle = bundle
 
-    def __call__(self, arguments: typing.Sequence[str] = None):
+    def __call__(self, arguments: typing.Iterable[str] = None):
         """
         Invokes the command line interface for the bundle.
 
@@ -38,9 +38,9 @@ class ResourceBundleCli:
         return self.invoke(arguments=arguments)
 
     def invoke(
-            self,
-            callback: typing.Callable[[CommandAction], typing.Any] = None,
-            arguments: typing.List[str] = None
+        self,
+        callback: typing.Callable[[CommandAction], typing.Any] = None,
+        arguments: typing.Iterable[str] = None,
     ):
         """
         Invokes the command line interface for the bundle, but calls the given
@@ -60,17 +60,13 @@ class ResourceBundleCli:
         """
         args, remains = _parsing.parse_args(self._bundle, arguments)
         command_actions = {
-            'create': do_create,
-            'delete': do_delete,
-            'render': do_render,
-            'status': do_status
+            "create": do_create,
+            "delete": do_delete,
+            "render": do_render,
+            "status": do_status,
         }
-        command = args.command or 'render'
-        action = CommandAction(
-            args=args,
-            custom_args=remains,
-            bundle=self._bundle
-        )
+        command = args.command or "render"
+        action = CommandAction(args=args, custom_args=remains, bundle=self._bundle)
         _populate_settings(action)
         if callback is not None:
             callback(action)
@@ -81,7 +77,7 @@ def _filters(action: CommandAction) -> typing.List[str]:
     """
     Extracts filters from the action arguments.
     """
-    return vars(action.args).get('target') or []
+    return vars(action.args).get("target") or []
 
 
 def do_render(action: CommandAction) -> CommandAction:
@@ -92,7 +88,7 @@ def do_render(action: CommandAction) -> CommandAction:
         resource.to_yaml()
         for resource in action.bundle.resources.matching(*_filters(action))
     ]
-    print('\n---\n\n'.join(renders))
+    print("\n---\n\n".join(renders))
     return action
 
 
@@ -101,20 +97,20 @@ def do_create(action: CommandAction) -> CommandAction:
     Carries out a create action for the command line interaction.
     """
     default_namespace = action.args.namespace or action.bundle.namespace
-    print(f'\n=== CREATING BUNDLE {action.bundle.name} ===')
+    print(f"\n=== CREATING BUNDLE {action.bundle.name} ===")
     responses = [
         execution.create_resource(
             resource=resource,
             namespace=resource.metadata.namespace or default_namespace,
-            echo=True
+            echo=True,
         )
         for resource in action.bundle.resources.matching(*_filters(action))
     ]
-    has_error = any([r.symbol == '!!' for r in responses])
+    has_error = any([r.symbol == "!!" for r in responses])
     if has_error:
-        print('\nWARNING: One or more resources errored during creation.\n\n')
+        print("\nWARNING: One or more resources errored during creation.\n\n")
     else:
-        print('\nSUCCESS: The creation is complete.\n\n')
+        print("\nSUCCESS: The creation is complete.\n\n")
     return action
 
 
@@ -123,20 +119,20 @@ def do_delete(action: CommandAction) -> CommandAction:
     Carries out a delete action for the command line interaction.
     """
     default_namespace = action.args.namespace or action.bundle.namespace
-    print(f'\n=== DELETING BUNDLE {action.bundle.name} ===')
+    print(f"\n=== DELETING BUNDLE {action.bundle.name} ===")
     responses = [
         execution.delete_resource(
             resource=resource,
             namespace=resource.metadata.namespace or default_namespace,
-            echo=True
+            echo=True,
         )
         for resource in action.bundle.resources.matching(*_filters(action))
     ]
-    has_error = any([r.symbol == '!!' for r in responses])
+    has_error = any([r.symbol == "!!" for r in responses])
     if has_error:
-        print('\nWARNING: One or more resources errored during deletion.\n\n')
+        print("\nWARNING: One or more resources errored during deletion.\n\n")
     else:
-        print('\nSUCCESS: The deletion is complete.\n\n')
+        print("\nSUCCESS: The deletion is complete.\n\n")
     return action
 
 
@@ -145,18 +141,18 @@ def do_status(action: CommandAction) -> CommandAction:
     Carries out a status display action for the command line interaction.
     """
     default_namespace = action.args.namespace or action.bundle.namespace
-    print(f'\n=== BUNDLE STATUS {action.bundle.name} ===')
+    print(f"\n=== BUNDLE STATUS {action.bundle.name} ===")
     responses = [
         execution.get_resource_status(
             resource=resource,
             namespace=resource.metadata.namespace or default_namespace,
-            echo=True
+            echo=True,
         )
         for resource in action.bundle.resources.matching(*_filters(action))
     ]
-    has_error = any([r.symbol == '!!' for r in responses])
+    has_error = any([r.symbol == "!!" for r in responses])
     if has_error:
-        print('\nWARNING: Unable to get status of all resources.\n\n')
+        print("\nWARNING: Unable to get status of all resources.\n\n")
     return action
 
 
@@ -177,6 +173,5 @@ def _populate_settings(action: CommandAction):
             action.bundle.settings.add_from_file(path)
         else:
             raise ValueError(
-                f'The settings "{path}" path is invalid or could not '
-                'be found.'
+                f'The settings "{path}" path is invalid or could not ' "be found."
             )

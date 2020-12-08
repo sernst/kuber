@@ -1,13 +1,18 @@
 import datetime
 import glob
 import os
+import subprocess
 import typing
 import uuid
+import pathlib
+
+import requests
 
 import kuber
 from kuber import execution
 from kuber import interface
 from kuber import versioning as _versioning
+from kuber import definitions
 from kuber.definitions import Resource
 from kuber.management import arrays
 from kuber.management import configuration
@@ -18,10 +23,10 @@ class ResourceBundle:
     """Contains one or more related Kubernetes `Resource` objects."""
 
     def __init__(
-            self,
-            bundle_name: str = None,
-            kubernetes_version: 'kuber.VersionLabel' = 'latest',
-            namespace: str = None
+        self,
+        bundle_name: str = None,
+        kubernetes_version: "kuber.VersionLabel" = None,
+        namespace: str = None,
     ):
         """
         Initializes the bundle.
@@ -38,24 +43,24 @@ class ResourceBundle:
         """
         self.name = bundle_name or str(uuid.uuid4())
         self.namespace = namespace
-        self._version = kubernetes_version
-        self._resources: typing.List['creation.ResourceSubclass'] = []
+        self._version = kubernetes_version or "latest"
+        self._resources: typing.List["creation.ResourceSubclass"] = []
         self._cli = interface.ResourceBundleCli(self)
         self._settings = configuration.ResourceBundleSettings(self)
         self._array = arrays.ResourceArray(self)
 
     @property
-    def kubernetes_version(self) -> '_versioning.KubernetesVersion':
+    def kubernetes_version(self) -> "_versioning.KubernetesVersion":
         """
         Version of the kubernetes library to use when creating resources
         inside this bundle.
         """
         if isinstance(self._version, _versioning.KubernetesVersion):
             return self._version
-        return _versioning.get_version_data(self._version or 'latest')
+        return _versioning.get_version_data(self._version or "latest")
 
     @property
-    def settings(self) -> 'configuration.ResourceBundleSettings':
+    def settings(self) -> "configuration.ResourceBundleSettings":
         """
         Contextual settings object for this bundle that contains any loaded
         settings data to be used in the dynamic configuration of the resources
@@ -64,22 +69,18 @@ class ResourceBundle:
         return self._settings
 
     @property
-    def cli(self) -> 'interface.ResourceBundleCli':
+    def cli(self) -> "interface.ResourceBundleCli":
         """Command line interface for the bundle."""
         return self._cli
 
     @property
-    def resources(self) -> 'arrays.ResourceArray':
+    def resources(self) -> "arrays.ResourceArray":
         """Resources stored within the bundle."""
         return self._array
 
     def get(
-            self,
-            name: str = None,
-            kind: str = None,
-            namespace: str = None,
-            **kwargs
-    ) -> typing.Optional['creation.ResourceSubclass']:
+        self, name: str = None, kind: str = None, namespace: str = None, **kwargs
+    ) -> typing.Optional["creation.ResourceSubclass"]:
         """
         Fetches the resource in the bundle that best and first matches the
         given properties using name, kind and optional labels to select the
@@ -103,7 +104,7 @@ class ResourceBundle:
             )
             labels = {
                 key: value
-                for key, value in getattr(r, 'metadata').labels.items()
+                for key, value in getattr(r, "metadata").labels.items()
                 if key in kwargs and kwargs[key] == value
             }
             if match and len(kwargs) == len(labels):
@@ -111,12 +112,8 @@ class ResourceBundle:
         return None
 
     def get_many(
-            self,
-            name: str = None,
-            kind: str = None,
-            namespace: str = None,
-            **kwargs
-    ) -> typing.List['creation.ResourceSubclass']:
+        self, name: str = None, kind: str = None, namespace: str = None, **kwargs
+    ) -> typing.List["creation.ResourceSubclass"]:
         """
         Fetches the resources in the bundle that matches the given properties
         using name, kind and optional labels to select the desired resources.
@@ -140,7 +137,7 @@ class ResourceBundle:
             )
             labels = {
                 key: value
-                for key, value in getattr(r, 'metadata').labels.items()
+                for key, value in getattr(r, "metadata").labels.items()
                 if key in kwargs and kwargs[key] == value
             }
             if match and len(kwargs) == len(labels):
@@ -148,11 +145,8 @@ class ResourceBundle:
         return results
 
     def pop(
-            self,
-            name: str = None,
-            kind: str = None,
-            **kwargs
-    ) -> typing.Optional['creation.ResourceSubclass']:
+        self, name: str = None, kind: str = None, **kwargs
+    ) -> typing.Optional["creation.ResourceSubclass"]:
         """
         Removes the resource matching the specified arguments from the bundle
         if it exists and returns it.
@@ -166,14 +160,11 @@ class ResourceBundle:
             resource to remove from the bundle.
         """
         resource = self.get(name, kind, **kwargs)
-        self.remove(resource)
+        if resource is not None:
+            self.remove(resource)
         return resource
 
-    def remove(
-            self,
-            resource: 'Resource',
-            *args: 'Resource'
-    ) -> 'ResourceBundle':
+    def remove(self, resource: "Resource", *args: "Resource") -> "ResourceBundle":
         """
         Removes the specified resource object (or resource objects) from
         the bundle if they are currently in the bundle.
@@ -191,7 +182,7 @@ class ResourceBundle:
                 self._resources.remove(r)
         return self
 
-    def push(self, resource: 'Resource', *args: 'Resource') -> 'ResourceBundle':
+    def push(self, resource: "Resource", *args: "Resource") -> "ResourceBundle":
         """
         Adds the specified resource to the end of the bundle's
         resource list.
@@ -209,7 +200,7 @@ class ResourceBundle:
                 self._resources.append(self._conform_resource(r))
         return self
 
-    def unshift(self, resource: 'Resource') -> 'ResourceBundle':
+    def unshift(self, resource: "Resource") -> "ResourceBundle":
         """
         Adds the specified resource to the beginning of the bundle's
         resource list.
@@ -223,12 +214,8 @@ class ResourceBundle:
         return self
 
     def add(
-            self,
-            api_version: str,
-            kind: str,
-            name: str,
-            **kwargs: str
-    ) -> 'ResourceBundle':
+        self, api_version: str, kind: str, name: str, **kwargs: str
+    ) -> "ResourceBundle":
         """
         Adds an empty resource of the specified type as the last entry
         to the bundle's resources list.
@@ -242,21 +229,18 @@ class ResourceBundle:
         :param kwargs:
             Labels to assign to the metadata of the new resource.
         """
-        return self.push(creation.new_resource(
+        resource = creation.new_resource(
             api_version=api_version,
             kind=kind,
             name=name,
             kubernetes_version=self.kubernetes_version,
-            **kwargs
-        ))
+            **kwargs,
+        )
+        if resource is None:
+            raise ValueError(f"Unknown resource type {api_version}/{kind}.")
+        return self.push(resource)
 
-    def new(
-            self,
-            api_version: str,
-            kind: str,
-            name: str,
-            **kwargs: str
-    ) -> 'Resource':
+    def new(self, api_version: str, kind: str, name: str, **kwargs: str) -> "Resource":
         """
         Adds an empty resource of the specified type as the last entry
         to the bundle's resources list and returns that new Resource
@@ -276,12 +260,14 @@ class ResourceBundle:
             kind=kind,
             name=name,
             kubernetes_version=self.kubernetes_version,
-            **kwargs
+            **kwargs,
         )
+        if resource is None:
+            raise ValueError(f"Unknown resource type {api_version}/{kind}.")
         self.push(resource)
         return resource
 
-    def add_from_yaml(self, resource_definition: str) -> 'ResourceBundle':
+    def add_from_yaml(self, resource_definition: str) -> "ResourceBundle":
         """
         Adds one or more Resources objects to the bundle from the YAML
         definition string, which may contain more than one YAML document.
@@ -289,12 +275,11 @@ class ResourceBundle:
         :param resource_definition:
             A string containing a valid Kubernetes resource configuration.
         """
-        return self.push(*creation.from_yaml_multiple(
-            resource_definition,
-            self.kubernetes_version
-        ))
+        return self.push(
+            *creation.from_yaml_multiple(resource_definition, self.kubernetes_version)
+        )
 
-    def add_file(self, path: str) -> 'ResourceBundle':
+    def add_file(self, path: str) -> "ResourceBundle":
         """
         Loads, parses and adds the Resource object from the given
         configuration file path.
@@ -304,26 +289,25 @@ class ResourceBundle:
             bundle.
         """
         version = self.kubernetes_version
-        if path.endswith(('.yml', '.yaml')):
-            self.push(*creation.from_yaml_file_multiple(
-                os.path.realpath(path),
-                version
-            ))
-        elif path.endswith('.json'):
-            self.push(creation.from_json_file(os.path.realpath(path), version))
+        if path.endswith((".yml", ".yaml")):
+            self.push(
+                *creation.from_yaml_file_multiple(os.path.realpath(path), version)
+            )
+        elif path.endswith(".json"):
+            created = creation.from_json_file(os.path.realpath(path), version)
+            if created is None:
+                raise ValueError(f"Unable to create resource from {path}")
+            self.push(created)
         else:
             raise IOError(
                 f'Unrecognized file format for path "{path}". '
-                'Filenames should end with .yml, .yaml or .json.'
+                "Filenames should end with .yml, .yaml or .json."
             )
         return self
 
     def add_directory(
-            self,
-            directory: str,
-            recursive: bool = False,
-            ignores: typing.List[str] = None
-    ) -> 'ResourceBundle':
+        self, directory: str, recursive: bool = False, ignores: typing.List[str] = None
+    ) -> "ResourceBundle":
         """
         Adds all configuration files (YAML and JSON) in the specified
         directory.
@@ -336,26 +320,26 @@ class ResourceBundle:
         :param ignores:
             Filenames to ignore when loading configuration files.
         """
-        extensions = ('.yml', '.yaml', '.json')
-        parts = [directory, '**' if recursive else None, '*']
+        extensions = (".yml", ".yaml", ".json")
+        parts = [directory, "**" if recursive else None, "*"]
         glob_path = os.path.realpath(os.path.join(*[p for p in parts if p]))
-        paths = sorted([
-            path
-            for path in glob.iglob(glob_path, recursive=recursive)
-            if path.endswith(extensions)
-            and os.path.isfile(path)
-            and os.path.basename(path) not in (ignores or [])
-        ])
+        paths = sorted(
+            [
+                path
+                for path in glob.iglob(glob_path, recursive=recursive)
+                if path.endswith(extensions)
+                and os.path.isfile(path)
+                and os.path.basename(path) not in (ignores or [])
+            ]
+        )
 
         for path in paths:
             self.add_file(path)
         return self
 
     def add_directory_files(
-            self,
-            directory: str,
-            filenames: typing.Iterable = None
-    ) -> 'ResourceBundle':
+        self, directory: str, filenames: typing.Iterable = None
+    ) -> "ResourceBundle":
         """
         Adds all of the resource configuration filenames listed in the
         ``filenames`` argument from within the specified directory in the
@@ -368,8 +352,77 @@ class ResourceBundle:
             A list of filenames in the given directory and the order in
             which they should be added.
         """
-        for name in (filenames or []):
+        for name in filenames or []:
             self.add_file(os.path.realpath(os.path.join(directory, name)))
+        return self
+
+    def add_from_url(self, url: str) -> "ResourceBundle":
+        """
+        Adds all of the resource configurations defined in the remote URL
+        YAML file downloaded from the specified URL.
+
+        :param url:
+            A URL to a YAML file that will be downloaded and loaded into the
+            bundle.
+        """
+        return self.add_from_yaml(requests.get(url).text)
+
+    def add_from_helm(
+        self,
+        chart_name: str,
+        values_path: typing.Union[
+            None,
+            "definitions.OptionalPathLike",
+            typing.Iterable["definitions.OptionalPathLike"],
+        ] = None,
+        repos: typing.Optional[typing.Dict[str, str]] = None,
+        update: bool = True,
+        namespace: str = None,
+    ) -> "ResourceBundle":
+        """
+        Adds all of the resource configuration render by the specified helm
+        template.
+
+        :param chart_name:
+            Name of the helm chart to add to the bundle.
+        :param values_path:
+            An optional path to a values.yaml file or list of values.yaml files
+            to load as part of rendering the helm chart as a template into the bundle.
+        :param repos:
+            The repos to add to helm in order to properly render this chart as
+            a dictionary that maps names to urls.
+        :param update:
+            Whether or not to update the helm chart before rendering it.
+        :param namespace:
+            Optionally specify the namespace to include in the template. If not
+            specified the namespace of the bundle will be used by default.
+        """
+        release_name = self.name
+        arguments = ["helm", "template", release_name, chart_name]
+
+        if isinstance(values_path, (str, pathlib.Path)):
+            # Make non-iterable values into iterables.
+            paths = [values_path]
+        elif values_path is not None:
+            paths = [v for v in values_path if v is not None]
+        else:
+            paths = []
+
+        arguments += [
+            f"--values={pathlib.Path(p).expanduser().absolute()}" for p in paths
+        ]
+
+        if namespace or self.namespace:
+            arguments.append(f"--namespace={namespace or self.namespace}")
+
+        for name, url in (repos or {}).items():
+            subprocess.run(["helm", "repo", "add", name, url], check=True)
+
+        if update:
+            subprocess.run(["helm", "update"])
+
+        response = subprocess.run(arguments, check=True, stdout=subprocess.PIPE)
+        self.add_from_yaml(response.stdout.decode())
         return self
 
     def render_yaml(self) -> typing.List[str]:
@@ -378,16 +431,13 @@ class ResourceBundle:
 
     def render_yaml_bundle(self) -> str:
         """Serializes the bundle resources to a single YAML config."""
-        return '\n---\n\n'.join(self.render_yaml())
+        return "\n---\n\n".join(self.render_yaml())
 
     def render_json(self) -> typing.List[str]:
         """Serializes the bundle to a list of JSON configurations."""
         return [self._conform_resource(r).to_json() for r in self.resources]
 
-    def _conform_resource(
-            self,
-            resource: 'Resource'
-    ) -> 'creation.ResourceSubclass':
+    def _conform_resource(self, resource: "Resource") -> "creation.ResourceSubclass":
         """
         A method that allows for modifying resources when they are added to
         the bundle or serialized to confirm that they adhere to the
@@ -404,18 +454,17 @@ class ResourceBundle:
             kuber_kube_version=version.version,
             kuber_bundle_name=self.name,
             kuber_timestamp=(
-                f'{datetime.datetime.utcnow().isoformat()}Z'
-                .replace(':', '-')
-            )
+                f"{datetime.datetime.utcnow().isoformat()}Z".replace(":", "-")
+            ),
         )
         return resource
 
     def create(
-            self,
-            namespace: str = None,
-            echo: bool = False,
-            filters: typing.List[str] = None,
-    ) -> typing.List['execution.ResponseInfo']:
+        self,
+        namespace: str = None,
+        echo: bool = False,
+        filters: typing.List[str] = None,
+    ) -> typing.List["execution.ResponseInfo"]:
         """
         Create all resources in the bundle.
 
@@ -443,11 +492,11 @@ class ResourceBundle:
         return results
 
     def replace(
-            self,
-            namespace: str = None,
-            echo: bool = False,
-            filters: typing.List[str] = None,
-    ) -> typing.List['execution.ResponseInfo']:
+        self,
+        namespace: str = None,
+        echo: bool = False,
+        filters: typing.List[str] = None,
+    ) -> typing.List["execution.ResponseInfo"]:
         """
         Replace all resources in the bundle.
 
@@ -475,11 +524,11 @@ class ResourceBundle:
         return results
 
     def statuses(
-            self,
-            namespace: str = None,
-            echo: bool = False,
-            filters: typing.List[str] = None,
-    ) -> typing.List['execution.ResponseInfo']:
+        self,
+        namespace: str = None,
+        echo: bool = False,
+        filters: typing.List[str] = None,
+    ) -> typing.List["execution.ResponseInfo"]:
         """
         Returns a list of statuses for all resources in the bundle.
 
@@ -507,11 +556,11 @@ class ResourceBundle:
         return results
 
     def delete(
-            self,
-            namespace: str = None,
-            echo: bool = False,
-            filters: typing.List[str] = None,
-    ) -> typing.List['execution.ResponseInfo']:
+        self,
+        namespace: str = None,
+        echo: bool = False,
+        filters: typing.List[str] = None,
+    ) -> typing.List["execution.ResponseInfo"]:
         """
         Delete all resources in the bundle.
 

@@ -12,7 +12,6 @@ kuber.tests.arrays.test\_array\_filtering module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

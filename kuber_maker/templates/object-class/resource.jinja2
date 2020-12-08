@@ -1,7 +1,7 @@
-{% if 'status' in entity.properties %}
-{% include 'object-class/resource-status.jinja2' %}
+{% if "status" in entity.properties %}
+{% include "object-class/resource-status.jinja2" %}
 {% else %}
-{% include 'object-class/resource-statusless.jinja2' %}
+{% include "object-class/resource-statusless.jinja2" %}
 {% endif %}
     def read_resource(
             self,
@@ -12,22 +12,22 @@
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_{{ entity.class_name | snake_case }}',
-            'read_{{ entity.class_name | snake_case }}'
+            "read_namespaced_{{ entity.class_name | snake_case }}",
+            "read_{{ entity.class_name | snake_case }}",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
             self,
             namespace: str = None,
-            propagation_policy: str = 'Foreground',
+            propagation_policy: str = "Foreground",
             grace_period_seconds: int = 10
     ):
         """
@@ -35,8 +35,8 @@
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_{{ entity.class_name | snake_case }}',
-            'delete_{{ entity.class_name | snake_case }}'
+            "delete_namespaced_{{ entity.class_name | snake_case }}",
+            "delete_{{ entity.class_name | snake_case }}",
         ]
 
         body = client.V1DeleteOptions(
@@ -45,23 +45,23 @@
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body}
         )
 
     @staticmethod
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> 'client.{{ kubernetes_api_class_name }}':
+    ) -> "client.{{ kubernetes_api_class_name }}":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.{{ kubernetes_api_class_name }}(**kwargs)

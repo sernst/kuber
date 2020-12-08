@@ -57,7 +57,7 @@ we could retrieve the *web-configs* resource as:
 
 .. code-block:: python
 
-  config_map = bundle.get(name='web-configs', kind='ConfigMap')
+  config_map = bundle.get(name="web-configs", kind="ConfigMap")
 
 but another way to access this resource would be to use the dynamic accessors
 on the ``resources`` object:
@@ -70,13 +70,13 @@ Here the ``resources`` object can be filtered dynamically by *kind*, which
 returns a filtered ``resources`` object that can be filtered by *name*.
 
 In the case above where we want to get the *settings* resource in the *charlie*
-namespace, we can add a ``.within('charlie')`` filter to the resources object:
+namespace, we can add a ``.within("charlie")`` filter to the resources object:
 
 .. code-block:: python
 
-  settings = bundle.resources.within('charlie').config_map.settings
+  settings = bundle.resources.within("charlie").config_map.settings
 
-If the ``.within('charlie')`` namespace filter is omitted, the ``resources``
+If the ``.within("charlie")`` namespace filter is omitted, the ``resources``
 object will recognize that there are multiple resources that match the
 *kind* = ConfigMap and *name* = settings and instead return a tuple of all
 of those resources instead of just a single resource:
@@ -103,7 +103,7 @@ accessors can be used instead:
 
 .. code-block:: python
 
-  job = bundle.resources.job['my.job-name']
+  job = bundle.resources.job["my.job-name"]
 
 The dictionary-style accessors will also accept PascalCase for *kind* values.
 Therefore, the *web-configs* from the earlier example can be accessed in any
@@ -112,13 +112,13 @@ of the following ways:
 .. code-block:: python
 
   web_configs = bundle.resources.config_map.web_configs
-  web_configs = bundle.resources['ConfigMap'].web_configs
-  web_configs = bundle.resources['ConfigMap']['web-configs']
+  web_configs = bundle.resources["ConfigMap"].web_configs
+  web_configs = bundle.resources["ConfigMap"]["web-configs"]
 
   # This one works because order is preserved when loading resources and
   # the web-configs resource was the first one defined. However, it is usually
   # preferred to reference by name instead of relying on order preservation.
-  web_configs = bundle.resources['ConfigMap'][0]
+  web_configs = bundle.resources["ConfigMap"][0]
 
 Advanced Filtering
 ------------------
