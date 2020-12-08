@@ -90,17 +90,15 @@ class AllEntities(typing.NamedTuple):
 
 def get_package(version, *args) -> str:
     """..."""
-    v = version.replace('.', '_')
-    return '.'.join(['kuber', f'{v}', *args])
+    v = version.replace(".", "_")
+    return ".".join(["kuber", f"{v}", *args])
 
 
 def directory_of_package(package: str) -> str:
     """..."""
-    return os.path.realpath(os.path.join(
-        os.path.dirname(__file__),
-        '..',
-        *package.split('.')
-    ))
+    return os.path.realpath(
+        os.path.join(os.path.dirname(__file__), "..", *package.split("."))
+    )
 
 
 def to_kuber_package(version: str, kubernetes_api_path: str) -> str:
@@ -110,11 +108,10 @@ def to_kuber_package(version: str, kubernetes_api_path: str) -> str:
 
 def get_path(version, *args) -> str:
     """..."""
-    v = version.replace('.', '_')
-    return os.path.realpath(os.path.join(
-        os.path.dirname(__file__),
-        '..', 'kuber', f'{v}', *args
-    ))
+    v = version.replace(".", "_")
+    return os.path.realpath(
+        os.path.join(os.path.dirname(__file__), "..", "kuber", f"{v}", *args)
+    )
 
 
 def to_kuber_path(version: str, kubernetes_api_path: str) -> str:
@@ -124,54 +121,52 @@ def to_kuber_path(version: str, kubernetes_api_path: str) -> str:
 
 def import_from_reference(version: str, reference_path: str) -> Import:
     """..."""
-    path = reference_path.replace('#/definitions/', '')
+    path = reference_path.replace("#/definitions/", "")
     package = to_kuber_package(version, path)
     return Import(
-        target=reference_path.rsplit('.', 1)[-1],
+        target=reference_path.rsplit(".", 1)[-1],
         package=package,
         api_path=path,
-        reference=reference_path
+        reference=reference_path,
     )
 
 
 def load_spec(version: str) -> ApiSpec:
     """..."""
-    path = os.path.realpath(os.path.join(
-        os.path.dirname(__file__),
-        '..', 'specs', f'{version}.json'
-    ))
-    with open(path, 'rb') as f:
+    path = os.path.realpath(
+        os.path.join(os.path.dirname(__file__), "..", "specs", f"{version}.json")
+    )
+    with open(path, "rb") as f:
         contents = f.read()
     raw = json.loads(contents)
     return ApiSpec(
-        title=raw['info']['title'],
-        info_version=raw['info']['version'],
-        version=raw['kuber']['name'],
-        version_info=semver.parse_version_info(raw['kuber']['version']),
-        api_paths=raw['paths'],
-        definitions=raw['definitions'],
-        commit_sha=raw['kuber']['commit_sha']
+        title=raw["info"]["title"],
+        info_version=raw["info"]["version"],
+        version=raw["kuber"]["name"],
+        version_info=semver.parse_version_info(raw["kuber"]["version"]),
+        api_paths=raw["paths"],
+        definitions=raw["definitions"],
+        commit_sha=raw["kuber"]["commit_sha"],
     )
 
 
 def _to_kuber_hierarchy(kubernetes_api_path: str) -> typing.List[str]:
     """..."""
     path = (
-        kubernetes_api_path
-        .replace('-', '_')
-        .replace('io.k8s.api.', '')
-        .replace('io.k8s.', '')
-        .replace('kube_aggregator.pkg.apis.', '')
-        .replace('apimachinery.pkg.apis.', '')
-        .replace('apiextensions_apiserver.pkg.apis.', '')
-        .replace('pkg.apis.', '')
-        .replace('pkg.', '')
+        kubernetes_api_path.replace("-", "_")
+        .replace("io.k8s.api.", "")
+        .replace("io.k8s.", "")
+        .replace("kube_aggregator.pkg.apis.", "")
+        .replace("apimachinery.pkg.apis.", "")
+        .replace("apiextensions_apiserver.pkg.apis.", "")
+        .replace("pkg.apis.", "")
+        .replace("pkg.", "")
     )
 
     # Remove file extension and split into hierarchy list.
-    parts = path.rsplit('.')[:-1]
+    parts = path.rsplit(".")[:-1]
 
     # Combine the api versions, `apps, v1` into `apps_v1`.
-    combined = '_'.join(parts[-2:])
+    combined = "_".join(parts[-2:])
 
     return parts[:-2] + [combined]

@@ -11,8 +11,7 @@ ResourceSubclass = typing.Union[Resource, typing.Any]
 
 
 def from_yaml_file(
-        file_path: str,
-        kubernetes_version: 'kuber.VersionLabel' = 'latest'
+    file_path: str, kubernetes_version: "kuber.VersionLabel" = "latest"
 ) -> typing.Optional[ResourceSubclass]:
     """
     Creates a Resource object from a YAML configuration file.
@@ -30,9 +29,8 @@ def from_yaml_file(
 
 
 def from_yaml_file_multiple(
-        file_path: str,
-        kubernetes_version: 'kuber.VersionLabel' = 'latest'
-) -> typing.Optional[ResourceSubclass]:
+    file_path: str, kubernetes_version: "kuber.VersionLabel" = "latest"
+) -> typing.List[ResourceSubclass]:
     """
     Creates Resource objects for each document found in the YAML file.
     Empty documents will be ignored.
@@ -50,8 +48,7 @@ def from_yaml_file_multiple(
 
 
 def from_yaml_multiple(
-        resources_definitions: str,
-        kubernetes_version: 'kuber.VersionLabel' = 'latest'
+    resources_definitions: str, kubernetes_version: "kuber.VersionLabel" = "latest"
 ) -> typing.List[ResourceSubclass]:
     """
     Creates Resource objects for each document found in the YAML string.
@@ -66,15 +63,13 @@ def from_yaml_multiple(
         either a string version label of a KubernetesVersion object.
     """
     resources = [
-        from_yaml(d, kubernetes_version)
-        for d in resources_definitions.split('\n---')
+        from_yaml(d, kubernetes_version) for d in resources_definitions.split("\n---")
     ]
     return [r for r in resources if r is not None]
 
 
 def from_yaml(
-        resource_definition: str,
-        kubernetes_version: 'kuber.VersionLabel' = 'latest'
+    resource_definition: str, kubernetes_version: "kuber.VersionLabel" = "latest"
 ) -> typing.Optional[ResourceSubclass]:
     """
     Creates a Resource object from a YAML string.
@@ -94,8 +89,8 @@ def new_resource(
     api_version: str,
     kind: str,
     name: str = None,
-    kubernetes_version: 'kuber.VersionLabel' = None,
-    **kwargs: str
+    kubernetes_version: "kuber.VersionLabel" = None,
+    **kwargs: str,
 ) -> typing.Optional[ResourceSubclass]:
     """
     Creates an empty Kubernetes resource object of the specified type for
@@ -117,16 +112,15 @@ def new_resource(
         Labels to assign to the metadata of the new resource.
     """
     definition = {
-        'apiVersion': api_version,
-        'kind': kind,
-        'metadata': {'name': name, 'labels': kwargs}
+        "apiVersion": api_version,
+        "kind": kind,
+        "metadata": {"name": name, "labels": kwargs},
     }
-    return from_dict(definition, kubernetes_version)
+    return from_dict(definition, kubernetes_version or "latest")
 
 
 def from_dict(
-        resource_definition: dict,
-        kubernetes_version: 'kuber.VersionLabel' = 'latest'
+    resource_definition: dict, kubernetes_version: "kuber.VersionLabel" = "latest"
 ) -> typing.Optional[ResourceSubclass]:
     """
     Converts a dictionary into a Resource object.
@@ -141,22 +135,21 @@ def from_dict(
     if not resource_definition:
         return None
 
-    version = kubernetes_version or 'latest'
-    version: str = getattr(version, 'label', version)
-    if version.find('.') > 0 and not version.startswith('v'):
-        version = f'v{version}'
-    version = version.replace('.', '_')
+    version: str = getattr(kubernetes_version, "label", kubernetes_version or "latest")
+    if version.find(".") > 0 and not version.startswith("v"):
+        version = f"v{version}"
+    version = version.replace(".", "_")
 
     parts = (
-        resource_definition['apiVersion']
-        .replace('rbac.authorization.k8s.io/', 'rbac/')
-        .replace('apiregistration.k8s.io/', 'apiregistration/')
-        .replace('storage.k8s.io/', 'storage/')
-        .split('/')[:2]
+        resource_definition["apiVersion"]
+        .replace("rbac.authorization.k8s.io/", "rbac/")
+        .replace("apiregistration.k8s.io/", "apiregistration/")
+        .replace("storage.k8s.io/", "storage/")
+        .split("/")[:2]
     )
     area = parts[-1]
-    group = parts[0] if len(parts) > 1 else 'core'
-    package = '.'.join(['kuber', f'{version}', f'{group}_{area}'])
+    group = parts[0] if len(parts) > 1 else "core"
+    package = ".".join(["kuber", f"{version}", f"{group}_{area}"])
 
     try:
         loaded_module = importlib.import_module(package)
@@ -167,14 +160,13 @@ def from_dict(
         )
         raise error
 
-    resource_class = getattr(loaded_module, resource_definition['kind'])
+    resource_class = getattr(loaded_module, resource_definition["kind"])
     resource: Resource = resource_class()
     return resource.from_dict(resource_definition)
 
 
 def from_json_file(
-        file_path: str,
-        kubernetes_version: 'kuber.VersionLabel' = 'latest'
+    file_path: str, kubernetes_version: "kuber.VersionLabel" = "latest"
 ) -> typing.Optional[ResourceSubclass]:
     """
     Creates a Resource object from a configuration file.

@@ -16,11 +16,11 @@ class ResourceBundleSettings:
     data that can be used in configuring the bundle.
     """
 
-    def __init__(self, bundle: 'management.ResourceBundle'):
-        self._data = {}
+    def __init__(self, bundle: "management.ResourceBundle"):
+        self._data: typing.Dict[typing.Any, typing.Any] = {}
         self._bundle = bundle
 
-    def add(self, **kwargs) -> 'ResourceBundleSettings':
+    def add(self, **kwargs) -> "ResourceBundleSettings":
         """
         Adds one or more variables to the settings object.
 
@@ -42,7 +42,7 @@ class ResourceBundleSettings:
                 self._data[key] = value
         return self
 
-    def add_from_file(self, path: str) -> 'ResourceBundleSettings':
+    def add_from_file(self, path: str) -> "ResourceBundleSettings":
         """
         Loads, parses and adds the values from the given file path to
         the settings object.
@@ -53,23 +53,20 @@ class ResourceBundleSettings:
         with open(path) as f:
             contents = f.read()
 
-        if path.endswith(('.yml', '.yaml')):
+        if path.endswith((".yml", ".yaml")):
             return self.add(**yaml.load(contents, Loader=kuber.yaml_loader))
 
-        if path.endswith('.json'):
+        if path.endswith(".json"):
             return self.add(**json.loads(contents))
 
         raise IOError(
             f'Unrecognized file format for path "{path}". '
-            'Filenames should end with .yml, .yaml or .json.'
+            "Filenames should end with .yml, .yaml or .json."
         )
 
     def add_from_directory(
-            self,
-            directory: str,
-            recursive: bool = False,
-            ignores: typing.List[str] = None
-    ) -> 'ResourceBundleSettings':
+        self, directory: str, recursive: bool = False, ignores: typing.List[str] = None
+    ) -> "ResourceBundleSettings":
         """
         Adds all settings files (YAML and JSON) from the specified
         directory.
@@ -82,8 +79,8 @@ class ResourceBundleSettings:
         :param ignores:
             Filenames to ignore when loading settings files.
         """
-        extensions = ('.yml', '.yaml', '.json')
-        parts = [directory, '**' if recursive else None, '*']
+        extensions = (".yml", ".yaml", ".json")
+        parts = [directory, "**" if recursive else None, "*"]
         glob_path = os.path.realpath(os.path.join(*[p for p in parts if p]))
         paths = [
             path
@@ -162,7 +159,7 @@ class ResourceBundleSettings:
         self._data[key] = value
 
     def __setattr__(self, key, value):
-        if key.startswith('_'):
+        if key.startswith("_"):
             super(ResourceBundleSettings, self).__setattr__(key, value)
         else:
             self._data[key] = value

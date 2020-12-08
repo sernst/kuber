@@ -364,7 +364,6 @@ kuber.v1\_19.storage\_v1beta1 module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

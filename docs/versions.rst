@@ -13,7 +13,7 @@ Specifying Versions
 
 Kubernetes versions in kuber can be specified in two interchangeable ways:
 
-- **Version Labels**: Versions can be specified as strings, e.g. ``'1.14'``, or
+- **Version Labels**: Versions can be specified as strings, e.g. ``"1.20"``, or
 - **KubernetesVersion**: an object that contains the version label string
   along with other version related information.
 
@@ -27,17 +27,17 @@ Explicit Versions
 -----------------
 
 Explicit Kubernetes versions in kuber are represented by the ``Major_Minor``
-version syntax and prefixed with a ``v``, e.g. ``v1_14`` for version
-``1.14.x``. The latest available patch level for each Kubernetes version will
+version syntax and prefixed with a ``v``, e.g. ``v1.20`` for version
+``1.20.x``. The latest available patch level for each Kubernetes version will
 always be used when generating the configuration subpackages in kuber. Patch
 level distinctions are ignored by kuber because the configuration API is
 consistent across patch versions.
 
-For example, to using Kubernetes version ``1.14`` in kuber would look like:
+For example, to using Kubernetes version ``1.20`` in kuber would look like:
 
 .. code-block:: python
 
-  from kuber.v1_14 import core_v1
+  from kuber.v1.20 import core_v1
 
   service = core_v1.Service()
   config_map = core_v1.ConfigMap()
@@ -51,8 +51,8 @@ by that bundle:
   import kuber
 
   bundle = kuber.from_directory(
-      './foo/',
-      kubernetes_version='1.14'
+      "./foo/",
+      kubernetes_version="1.20"
   )
 
 Floating Versions
@@ -77,7 +77,7 @@ versions within kuber:
   service = core_v1.Service()
   config_map = core_v1.ConfigMap()
 
-  bundle = kuber.create_bundle('latest')
+  bundle = kuber.create_bundle("latest")
   bundle.add(service, config_map)
 
 or for the pre-release version:
@@ -89,7 +89,7 @@ or for the pre-release version:
   service = core_v1.Service()
   config_map = core_v1.ConfigMap()
 
-  bundle = kuber.create_bundle('pre')
+  bundle = kuber.create_bundle("pre")
   bundle.add(service, config_map)
 
 To find out the specific version information for any versions, explicit or
@@ -126,14 +126,14 @@ In the f
   kuber.load_access_config()
 
   # Get the version of the connected cluster or
-  # default to version 1.14 if unable to fetch
+  # default to version 1.20 if unable to fetch
   # version data from the cluster.
-  cluster_version = kuber.get_version_from_cluster('1.14')
+  cluster_version = kuber.get_version_from_cluster("1.20")
 
   # Use the returned `KubernetesVersion` object
   # as the version for the cluster.
   bundle = kuber.from_directory(
-      './foo/',
+      "./foo/",
       kubernetes_version=cluster_version
   )
 

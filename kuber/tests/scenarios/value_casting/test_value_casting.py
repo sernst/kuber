@@ -14,6 +14,6 @@ def test_target_port():
     see the issue:
         - https://github.com/kubernetes-client/python/issues/322
     """
-    path = os.path.join(MY_DIRECTORY, 'target-port.yaml')
+    path = os.path.join(MY_DIRECTORY, "target-port.yaml")
     service: core_v1.Service = kuber.from_yaml_file(path)
     assert isinstance(service.spec.ports[0].target_port, int)

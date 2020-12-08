@@ -16,26 +16,26 @@ class RawExtension(_kuber_definitions.Definition):
     plugin types.
 
     // Internal package: type MyAPIObject struct {
-    	runtime.TypeMeta `json:",inline"`
-    	MyPlugin runtime.Object `json:"myPlugin"`
+        runtime.TypeMeta `json:",inline"`
+        MyPlugin runtime.Object `json:"myPlugin"`
     } type PluginA struct {
-    	AOption string `json:"aOption"`
+        AOption string `json:"aOption"`
     }
 
     // External package: type MyAPIObject struct {
-    	runtime.TypeMeta `json:",inline"`
-    	MyPlugin runtime.RawExtension `json:"myPlugin"`
+        runtime.TypeMeta `json:",inline"`
+        MyPlugin runtime.RawExtension `json:"myPlugin"`
     } type PluginA struct {
-    	AOption string `json:"aOption"`
+        AOption string `json:"aOption"`
     }
 
     // On the wire, the JSON will look something like this: {
-    	"kind":"MyAPIObject",
-    	"apiVersion":"v1",
-    	"myPlugin": {
-    		"kind":"PluginA",
-    		"aOption":"foo",
-    	},
+        "kind":"MyAPIObject",
+        "apiVersion":"v1",
+        "myPlugin": {
+                "kind":"PluginA",
+                "aOption":"foo",
+        },
     }
 
     So what happens? Decode first uses json or yaml to unmarshal
@@ -51,21 +51,18 @@ class RawExtension(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            raw: str = None,
+        self,
+        raw: str = None,
     ):
         """Create RawExtension instance."""
         super(RawExtension, self).__init__(
-            api_version='apimachinery/runtime',
-            kind='RawExtension'
+            api_version="apimachinery/runtime", kind="RawExtension"
         )
         self._properties = {
-            'Raw': raw if raw is not None else '',
-
+            "Raw": raw if raw is not None else "",
         }
         self._types = {
-            'Raw': (str, None),
-
+            "Raw": (str, None),
         }
 
     @property
@@ -73,16 +70,19 @@ class RawExtension(_kuber_definitions.Definition):
         """
         Raw is the underlying serialization of this object.
         """
-        return self._properties.get('Raw')
+        return typing.cast(
+            str,
+            self._properties.get("Raw"),
+        )
 
     @raw.setter
     def raw(self, value: str):
         """
         Raw is the underlying serialization of this object.
         """
-        self._properties['Raw'] = value
+        self._properties["Raw"] = value
 
-    def __enter__(self) -> 'RawExtension':
+    def __enter__(self) -> "RawExtension":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

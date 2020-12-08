@@ -12,7 +12,6 @@ kuber.tests.scenarios.cron\_suspend.test\_cron\_suspend module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

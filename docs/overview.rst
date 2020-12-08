@@ -32,22 +32,22 @@ Here's an example of how a Deployment can be created with kuber:
   d = apps_v1.Deployment()
 
   with d.metadata as md:
-      md.name = 'my-deployment'
-      md.namespace = 'my-app'
-      md.labels.update(app='foo', component='application')
+      md.name = "my-deployment"
+      md.namespace = "my-app"
+      md.labels.update(app="foo", component="application")
 
-  d.spec.selector.match_labels.update(app='foo')
-  d.spec.template.metadata.labels.update(app='foo')
+  d.spec.selector.match_labels.update(app="foo")
+  d.spec.template.metadata.labels.update(app="foo")
 
   d.append_container(
-      name='app',
-      image='my-app:1.0',
+      name="app",
+      image="my-app:1.0",
       ports=[apps_v1.ContainerPort(container_port=8080, host_port=80)],
       tty=True,
-      image_pull_policy='Always',
+      image_pull_policy="Always",
       resources=apps_v1.ResourceRequirements(
-          limits={'cpu': '1.5', 'memory': '1Gi'},
-          requests={'cpu': '1.5', 'memory': '800Mi'},
+          limits={"cpu": "1.5", "memory": "1Gi"},
+          requests={"cpu": "1.5", "memory": "800Mi"},
       )
   )
 
@@ -78,10 +78,10 @@ The printed output of executing this would be:
             hostPort: 80
           resources:
             limits:
-              cpu: '1'
+              cpu: "1"
               memory: 1Gi
             requests:
-              cpu: '1'
+              cpu: "1"
               memory: 800Mi
           tty: true
 
@@ -130,13 +130,13 @@ section. That would look like this:
   from kuber.latest import apps_v1
 
   # Load YAML configuration file into a Deployment object.
-  d: apps_v1.Deployment = kuber.from_yaml_file('./my-deployment.yaml')
+  d: apps_v1.Deployment = kuber.from_yaml_file("./my-deployment.yaml")
 
-  d.metadata.labels.update(app='foo')
+  d.metadata.labels.update(app="foo")
 
-  with d.get_container('app') as c:
-      c.resources.limits.update(cpu='1.5', memory='1Gi')
-      c.resources.requests.update(cpu='1.5', memory='800Mi')
+  with d.get_container("app") as c:
+      c.resources.limits.update(cpu="1.5", memory="1Gi")
+      c.resources.requests.update(cpu="1.5", memory="800Mi")
       c.ports.append(apps_v1.ContainerPort(container_port=8080, host_port=80))
 
   # Render the results to YAML.
@@ -164,27 +164,27 @@ but without having to rely on templating.
   # Load all YAML and/or JSON configuration files in the specified directory
   # and return a kuber ResourceBundle object that contains those loaded
   # resources.
-  bundle = kuber.from_directory('../my-application')
+  bundle = kuber.from_directory("../my-application")
 
   # Add environment label to all loaded resources.
   for r in bundle.resources:
-      r.metadata.labels.update(environment='production')
+      r.metadata.labels.update(environment="production")
 
   # Change the number of replicas in the deployment named "my-app" that has
   # the label `component=web`.
   d: apps_v1.Deployment = bundle.get(
-      name='my-app',
-      kind='Deployment',
-      component='web'
+      name="my-app",
+      kind="Deployment",
+      component="web"
   )
   d.spec.replicas = 20
 
   # Change the service port to 443 for the service named "my-app" that has the
   # label `component=web`.
   s: core_v1.Service = bundle.get(
-      name='my-app',
-      kind='Service',
-      component='web'
+      name="my-app",
+      kind="Service",
+      component="web"
   )
   s.spec.ports = [core_v1.ServicePort(port=443, target_port=8080)]
 

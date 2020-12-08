@@ -1,13 +1,16 @@
     def append_container(
         self,
         {%-  for p, v in container_entity.properties.items() if p not in property_ignores %}
-        {{ p | snake_case }}: {{ v.data_type.type_hint }} = _kuber_definitions.UNCHANGED_VALUE,
+        {{ p | snake_case }}: typing.Union[
+          {{ v.data_type.type_hint }},
+          _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         {%-  endfor %}
-    ) -> '{{ entity.class_name }}':
+    ) -> "{{ entity.class_name }}":
         """Adds a container object within the specified resource."""
-        values = {
+        values: typing.Dict[str, typing.Any] = {
             {%-  for p, v in container_entity.properties.items() if p not in property_ignores %}
-            '{{ p | snake_case }}': {{ p | snake_case }},
+            "{{ p | snake_case }}": {{ p | snake_case }},
             {%-  endfor %}
         }
         self.{{ containers }}.append({{ container_entity.class_name }}(**{
@@ -17,7 +20,7 @@
         }))
         return self
 
-    def get_container(self, name: str) -> typing.Optional['{{ container_entity.class_name }}']:
+    def get_container(self, name: str) -> typing.Optional["{{ container_entity.class_name }}"]:
         """
         Fetch a container definition within this resource by name if such a
         container definition exists. Return None if no container definition
@@ -25,7 +28,7 @@
         """
         return next((c for c in self.{{ containers }} if c.name == name), None)
 
-    def get_containers(self) -> typing.List['{{ container_entity.class_name }}']:
+    def get_containers(self) -> typing.List["{{ container_entity.class_name }}"]:
         """
         Returns the list of containers stored in this resource if any such
         containers exist.

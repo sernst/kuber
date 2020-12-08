@@ -26,27 +26,24 @@ class ContainerResourceMetricSource(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            container: str = None,
-            name: str = None,
-            target: 'MetricTarget' = None,
+        self,
+        container: str = None,
+        name: str = None,
+        target: "MetricTarget" = None,
     ):
         """Create ContainerResourceMetricSource instance."""
         super(ContainerResourceMetricSource, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ContainerResourceMetricSource'
+            api_version="autoscaling/v2beta2", kind="ContainerResourceMetricSource"
         )
         self._properties = {
-            'container': container if container is not None else '',
-            'name': name if name is not None else '',
-            'target': target if target is not None else MetricTarget(),
-
+            "container": container if container is not None else "",
+            "name": name if name is not None else "",
+            "target": target if target is not None else MetricTarget(),
         }
         self._types = {
-            'container': (str, None),
-            'name': (str, None),
-            'target': (MetricTarget, None),
-
+            "container": (str, None),
+            "name": (str, None),
+            "target": (MetricTarget, None),
         }
 
     @property
@@ -55,7 +52,10 @@ class ContainerResourceMetricSource(_kuber_definitions.Definition):
         container is the name of the container in the pods of the
         scaling target
         """
-        return self._properties.get('container')
+        return typing.cast(
+            str,
+            self._properties.get("container"),
+        )
 
     @container.setter
     def container(self, value: str):
@@ -63,39 +63,48 @@ class ContainerResourceMetricSource(_kuber_definitions.Definition):
         container is the name of the container in the pods of the
         scaling target
         """
-        self._properties['container'] = value
+        self._properties["container"] = value
 
     @property
     def name(self) -> str:
         """
         name is the name of the resource in question.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         name is the name of the resource in question.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
-    def target(self) -> 'MetricTarget':
+    def target(self) -> "MetricTarget":
         """
         target specifies the target value for the given metric
         """
-        return self._properties.get('target')
+        return typing.cast(
+            "MetricTarget",
+            self._properties.get("target"),
+        )
 
     @target.setter
-    def target(self, value: typing.Union['MetricTarget', dict]):
+    def target(self, value: typing.Union["MetricTarget", dict]):
         """
         target specifies the target value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricTarget().from_dict(value)
-        self._properties['target'] = value
+            value = typing.cast(
+                MetricTarget,
+                MetricTarget().from_dict(value),
+            )
+        self._properties["target"] = value
 
-    def __enter__(self) -> 'ContainerResourceMetricSource':
+    def __enter__(self) -> "ContainerResourceMetricSource":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -114,27 +123,24 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            container: str = None,
-            current: 'MetricValueStatus' = None,
-            name: str = None,
+        self,
+        container: str = None,
+        current: "MetricValueStatus" = None,
+        name: str = None,
     ):
         """Create ContainerResourceMetricStatus instance."""
         super(ContainerResourceMetricStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ContainerResourceMetricStatus'
+            api_version="autoscaling/v2beta2", kind="ContainerResourceMetricStatus"
         )
         self._properties = {
-            'container': container if container is not None else '',
-            'current': current if current is not None else MetricValueStatus(),
-            'name': name if name is not None else '',
-
+            "container": container if container is not None else "",
+            "current": current if current is not None else MetricValueStatus(),
+            "name": name if name is not None else "",
         }
         self._types = {
-            'container': (str, None),
-            'current': (MetricValueStatus, None),
-            'name': (str, None),
-
+            "container": (str, None),
+            "current": (MetricValueStatus, None),
+            "name": (str, None),
         }
 
     @property
@@ -143,7 +149,10 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
         Container is the name of the container in the pods of the
         scaling target
         """
-        return self._properties.get('container')
+        return typing.cast(
+            str,
+            self._properties.get("container"),
+        )
 
     @container.setter
     def container(self, value: str):
@@ -151,39 +160,48 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
         Container is the name of the container in the pods of the
         scaling target
         """
-        self._properties['container'] = value
+        self._properties["container"] = value
 
     @property
-    def current(self) -> 'MetricValueStatus':
+    def current(self) -> "MetricValueStatus":
         """
         current contains the current value for the given metric
         """
-        return self._properties.get('current')
+        return typing.cast(
+            "MetricValueStatus",
+            self._properties.get("current"),
+        )
 
     @current.setter
-    def current(self, value: typing.Union['MetricValueStatus', dict]):
+    def current(self, value: typing.Union["MetricValueStatus", dict]):
         """
         current contains the current value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricValueStatus().from_dict(value)
-        self._properties['current'] = value
+            value = typing.cast(
+                MetricValueStatus,
+                MetricValueStatus().from_dict(value),
+            )
+        self._properties["current"] = value
 
     @property
     def name(self) -> str:
         """
         Name is the name of the resource in question.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         Name is the name of the resource in question.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'ContainerResourceMetricStatus':
+    def __enter__(self) -> "ContainerResourceMetricStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -197,27 +215,24 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_version: str = None,
-            kind: str = None,
-            name: str = None,
+        self,
+        api_version: str = None,
+        kind: str = None,
+        name: str = None,
     ):
         """Create CrossVersionObjectReference instance."""
         super(CrossVersionObjectReference, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='CrossVersionObjectReference'
+            api_version="autoscaling/v2beta2", kind="CrossVersionObjectReference"
         )
         self._properties = {
-            'apiVersion': api_version if api_version is not None else '',
-            'kind': kind if kind is not None else '',
-            'name': name if name is not None else '',
-
+            "apiVersion": api_version if api_version is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'name': (str, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
         }
 
     @property
@@ -225,14 +240,17 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
         """
         API version of the referent
         """
-        return self._properties.get('apiVersion')
+        return typing.cast(
+            str,
+            self._properties.get("apiVersion"),
+        )
 
     @api_version.setter
     def api_version(self, value: str):
         """
         API version of the referent
         """
-        self._properties['apiVersion'] = value
+        self._properties["apiVersion"] = value
 
     @property
     def kind(self) -> str:
@@ -241,7 +259,10 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds"
         """
-        return self._properties.get('kind')
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
 
     @kind.setter
     def kind(self, value: str):
@@ -250,7 +271,7 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds"
         """
-        self._properties['kind'] = value
+        self._properties["kind"] = value
 
     @property
     def name(self) -> str:
@@ -258,7 +279,10 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
         Name of the referent; More info:
         http://kubernetes.io/docs/user-guide/identifiers#names
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -266,9 +290,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
         Name of the referent; More info:
         http://kubernetes.io/docs/user-guide/identifiers#names
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'CrossVersionObjectReference':
+    def __enter__(self) -> "CrossVersionObjectReference":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -284,59 +308,68 @@ class ExternalMetricSource(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            metric: 'MetricIdentifier' = None,
-            target: 'MetricTarget' = None,
+        self,
+        metric: "MetricIdentifier" = None,
+        target: "MetricTarget" = None,
     ):
         """Create ExternalMetricSource instance."""
         super(ExternalMetricSource, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ExternalMetricSource'
+            api_version="autoscaling/v2beta2", kind="ExternalMetricSource"
         )
         self._properties = {
-            'metric': metric if metric is not None else MetricIdentifier(),
-            'target': target if target is not None else MetricTarget(),
-
+            "metric": metric if metric is not None else MetricIdentifier(),
+            "target": target if target is not None else MetricTarget(),
         }
         self._types = {
-            'metric': (MetricIdentifier, None),
-            'target': (MetricTarget, None),
-
+            "metric": (MetricIdentifier, None),
+            "target": (MetricTarget, None),
         }
 
     @property
-    def metric(self) -> 'MetricIdentifier':
+    def metric(self) -> "MetricIdentifier":
         """
         metric identifies the target metric by name and selector
         """
-        return self._properties.get('metric')
+        return typing.cast(
+            "MetricIdentifier",
+            self._properties.get("metric"),
+        )
 
     @metric.setter
-    def metric(self, value: typing.Union['MetricIdentifier', dict]):
+    def metric(self, value: typing.Union["MetricIdentifier", dict]):
         """
         metric identifies the target metric by name and selector
         """
         if isinstance(value, dict):
-            value = MetricIdentifier().from_dict(value)
-        self._properties['metric'] = value
+            value = typing.cast(
+                MetricIdentifier,
+                MetricIdentifier().from_dict(value),
+            )
+        self._properties["metric"] = value
 
     @property
-    def target(self) -> 'MetricTarget':
+    def target(self) -> "MetricTarget":
         """
         target specifies the target value for the given metric
         """
-        return self._properties.get('target')
+        return typing.cast(
+            "MetricTarget",
+            self._properties.get("target"),
+        )
 
     @target.setter
-    def target(self, value: typing.Union['MetricTarget', dict]):
+    def target(self, value: typing.Union["MetricTarget", dict]):
         """
         target specifies the target value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricTarget().from_dict(value)
-        self._properties['target'] = value
+            value = typing.cast(
+                MetricTarget,
+                MetricTarget().from_dict(value),
+            )
+        self._properties["target"] = value
 
-    def __enter__(self) -> 'ExternalMetricSource':
+    def __enter__(self) -> "ExternalMetricSource":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -350,59 +383,68 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            current: 'MetricValueStatus' = None,
-            metric: 'MetricIdentifier' = None,
+        self,
+        current: "MetricValueStatus" = None,
+        metric: "MetricIdentifier" = None,
     ):
         """Create ExternalMetricStatus instance."""
         super(ExternalMetricStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ExternalMetricStatus'
+            api_version="autoscaling/v2beta2", kind="ExternalMetricStatus"
         )
         self._properties = {
-            'current': current if current is not None else MetricValueStatus(),
-            'metric': metric if metric is not None else MetricIdentifier(),
-
+            "current": current if current is not None else MetricValueStatus(),
+            "metric": metric if metric is not None else MetricIdentifier(),
         }
         self._types = {
-            'current': (MetricValueStatus, None),
-            'metric': (MetricIdentifier, None),
-
+            "current": (MetricValueStatus, None),
+            "metric": (MetricIdentifier, None),
         }
 
     @property
-    def current(self) -> 'MetricValueStatus':
+    def current(self) -> "MetricValueStatus":
         """
         current contains the current value for the given metric
         """
-        return self._properties.get('current')
+        return typing.cast(
+            "MetricValueStatus",
+            self._properties.get("current"),
+        )
 
     @current.setter
-    def current(self, value: typing.Union['MetricValueStatus', dict]):
+    def current(self, value: typing.Union["MetricValueStatus", dict]):
         """
         current contains the current value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricValueStatus().from_dict(value)
-        self._properties['current'] = value
+            value = typing.cast(
+                MetricValueStatus,
+                MetricValueStatus().from_dict(value),
+            )
+        self._properties["current"] = value
 
     @property
-    def metric(self) -> 'MetricIdentifier':
+    def metric(self) -> "MetricIdentifier":
         """
         metric identifies the target metric by name and selector
         """
-        return self._properties.get('metric')
+        return typing.cast(
+            "MetricIdentifier",
+            self._properties.get("metric"),
+        )
 
     @metric.setter
-    def metric(self, value: typing.Union['MetricIdentifier', dict]):
+    def metric(self, value: typing.Union["MetricIdentifier", dict]):
         """
         metric identifies the target metric by name and selector
         """
         if isinstance(value, dict):
-            value = MetricIdentifier().from_dict(value)
-        self._properties['metric'] = value
+            value = typing.cast(
+                MetricIdentifier,
+                MetricIdentifier().from_dict(value),
+            )
+        self._properties["metric"] = value
 
-    def __enter__(self) -> 'ExternalMetricStatus':
+    def __enter__(self) -> "ExternalMetricStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -416,27 +458,24 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            period_seconds: int = None,
-            type_: str = None,
-            value: int = None,
+        self,
+        period_seconds: int = None,
+        type_: str = None,
+        value: int = None,
     ):
         """Create HPAScalingPolicy instance."""
         super(HPAScalingPolicy, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HPAScalingPolicy'
+            api_version="autoscaling/v2beta2", kind="HPAScalingPolicy"
         )
         self._properties = {
-            'periodSeconds': period_seconds if period_seconds is not None else None,
-            'type': type_ if type_ is not None else '',
-            'value': value if value is not None else None,
-
+            "periodSeconds": period_seconds if period_seconds is not None else None,
+            "type": type_ if type_ is not None else "",
+            "value": value if value is not None else None,
         }
         self._types = {
-            'periodSeconds': (int, None),
-            'type': (str, None),
-            'value': (int, None),
-
+            "periodSeconds": (int, None),
+            "type": (str, None),
+            "value": (int, None),
         }
 
     @property
@@ -446,7 +485,10 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
         policy should hold true. PeriodSeconds must be greater than
         zero and less than or equal to 1800 (30 min).
         """
-        return self._properties.get('periodSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("periodSeconds"),
+        )
 
     @period_seconds.setter
     def period_seconds(self, value: int):
@@ -455,21 +497,24 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
         policy should hold true. PeriodSeconds must be greater than
         zero and less than or equal to 1800 (30 min).
         """
-        self._properties['periodSeconds'] = value
+        self._properties["periodSeconds"] = value
 
     @property
     def type_(self) -> str:
         """
         Type is used to specify the scaling policy.
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         Type is used to specify the scaling policy.
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
     @property
     def value(self) -> int:
@@ -477,7 +522,10 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
         Value contains the amount of change which is permitted by
         the policy. It must be greater than zero
         """
-        return self._properties.get('value')
+        return typing.cast(
+            int,
+            self._properties.get("value"),
+        )
 
     @value.setter
     def value(self, value: int):
@@ -485,9 +533,9 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
         Value contains the amount of change which is permitted by
         the policy. It must be greater than zero
         """
-        self._properties['value'] = value
+        self._properties["value"] = value
 
-    def __enter__(self) -> 'HPAScalingPolicy':
+    def __enter__(self) -> "HPAScalingPolicy":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -506,54 +554,58 @@ class HPAScalingRules(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            policies: typing.List['HPAScalingPolicy'] = None,
-            select_policy: str = None,
-            stabilization_window_seconds: int = None,
+        self,
+        policies: typing.List["HPAScalingPolicy"] = None,
+        select_policy: str = None,
+        stabilization_window_seconds: int = None,
     ):
         """Create HPAScalingRules instance."""
         super(HPAScalingRules, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HPAScalingRules'
+            api_version="autoscaling/v2beta2", kind="HPAScalingRules"
         )
         self._properties = {
-            'policies': policies if policies is not None else [],
-            'selectPolicy': select_policy if select_policy is not None else '',
-            'stabilizationWindowSeconds': stabilization_window_seconds if stabilization_window_seconds is not None else None,
-
+            "policies": policies if policies is not None else [],
+            "selectPolicy": select_policy if select_policy is not None else "",
+            "stabilizationWindowSeconds": stabilization_window_seconds
+            if stabilization_window_seconds is not None
+            else None,
         }
         self._types = {
-            'policies': (list, HPAScalingPolicy),
-            'selectPolicy': (str, None),
-            'stabilizationWindowSeconds': (int, None),
-
+            "policies": (list, HPAScalingPolicy),
+            "selectPolicy": (str, None),
+            "stabilizationWindowSeconds": (int, None),
         }
 
     @property
-    def policies(self) -> typing.List['HPAScalingPolicy']:
+    def policies(self) -> typing.List["HPAScalingPolicy"]:
         """
         policies is a list of potential scaling polices which can be
         used during scaling. At least one policy must be specified,
         otherwise the HPAScalingRules will be discarded as invalid
         """
-        return self._properties.get('policies')
+        return typing.cast(
+            typing.List["HPAScalingPolicy"],
+            self._properties.get("policies"),
+        )
 
     @policies.setter
     def policies(
-            self,
-            value: typing.Union[typing.List['HPAScalingPolicy'], typing.List[dict]]
+        self, value: typing.Union[typing.List["HPAScalingPolicy"], typing.List[dict]]
     ):
         """
         policies is a list of potential scaling polices which can be
         used during scaling. At least one policy must be specified,
         otherwise the HPAScalingRules will be discarded as invalid
         """
-        cleaned = []
+        cleaned: typing.List[HPAScalingPolicy] = []
         for item in value:
             if isinstance(item, dict):
-                item = HPAScalingPolicy().from_dict(item)
-            cleaned.append(item)
-        self._properties['policies'] = cleaned
+                item = typing.cast(
+                    HPAScalingPolicy,
+                    HPAScalingPolicy().from_dict(item),
+                )
+            cleaned.append(typing.cast(HPAScalingPolicy, item))
+        self._properties["policies"] = cleaned
 
     @property
     def select_policy(self) -> str:
@@ -561,7 +613,10 @@ class HPAScalingRules(_kuber_definitions.Definition):
         selectPolicy is used to specify which policy should be used.
         If not set, the default value MaxPolicySelect is used.
         """
-        return self._properties.get('selectPolicy')
+        return typing.cast(
+            str,
+            self._properties.get("selectPolicy"),
+        )
 
     @select_policy.setter
     def select_policy(self, value: str):
@@ -569,7 +624,7 @@ class HPAScalingRules(_kuber_definitions.Definition):
         selectPolicy is used to specify which policy should be used.
         If not set, the default value MaxPolicySelect is used.
         """
-        self._properties['selectPolicy'] = value
+        self._properties["selectPolicy"] = value
 
     @property
     def stabilization_window_seconds(self) -> int:
@@ -583,7 +638,10 @@ class HPAScalingRules(_kuber_definitions.Definition):
         down: 300 (i.e. the stabilization window is 300 seconds
         long).
         """
-        return self._properties.get('stabilizationWindowSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("stabilizationWindowSeconds"),
+        )
 
     @stabilization_window_seconds.setter
     def stabilization_window_seconds(self, value: int):
@@ -597,9 +655,9 @@ class HPAScalingRules(_kuber_definitions.Definition):
         down: 300 (i.e. the stabilization window is 300 seconds
         long).
         """
-        self._properties['stabilizationWindowSeconds'] = value
+        self._properties["stabilizationWindowSeconds"] = value
 
-    def __enter__(self) -> 'HPAScalingRules':
+    def __enter__(self) -> "HPAScalingRules":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -615,63 +673,69 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            spec: 'HorizontalPodAutoscalerSpec' = None,
-            status: 'HorizontalPodAutoscalerStatus' = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        spec: "HorizontalPodAutoscalerSpec" = None,
+        status: "HorizontalPodAutoscalerStatus" = None,
     ):
         """Create HorizontalPodAutoscaler instance."""
         super(HorizontalPodAutoscaler, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HorizontalPodAutoscaler'
+            api_version="autoscaling/v2beta2", kind="HorizontalPodAutoscaler"
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'spec': spec if spec is not None else HorizontalPodAutoscalerSpec(),
-            'status': status if status is not None else HorizontalPodAutoscalerStatus(),
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "spec": spec if spec is not None else HorizontalPodAutoscalerSpec(),
+            "status": status if status is not None else HorizontalPodAutoscalerStatus(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'spec': (HorizontalPodAutoscalerSpec, None),
-            'status': (HorizontalPodAutoscalerStatus, None),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "spec": (HorizontalPodAutoscalerSpec, None),
+            "status": (HorizontalPodAutoscalerStatus, None),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         metadata is the standard object metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         metadata is the standard object metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def spec(self) -> 'HorizontalPodAutoscalerSpec':
+    def spec(self) -> "HorizontalPodAutoscalerSpec":
         """
         spec is the specification for the behaviour of the
         autoscaler. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status.
         """
-        return self._properties.get('spec')
+        return typing.cast(
+            "HorizontalPodAutoscalerSpec",
+            self._properties.get("spec"),
+        )
 
     @spec.setter
-    def spec(self, value: typing.Union['HorizontalPodAutoscalerSpec', dict]):
+    def spec(self, value: typing.Union["HorizontalPodAutoscalerSpec", dict]):
         """
         spec is the specification for the behaviour of the
         autoscaler. More info:
@@ -679,195 +743,200 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         architecture/api-conventions.md#spec-and-status.
         """
         if isinstance(value, dict):
-            value = HorizontalPodAutoscalerSpec().from_dict(value)
-        self._properties['spec'] = value
+            value = typing.cast(
+                HorizontalPodAutoscalerSpec,
+                HorizontalPodAutoscalerSpec().from_dict(value),
+            )
+        self._properties["spec"] = value
 
     @property
-    def status(self) -> 'HorizontalPodAutoscalerStatus':
+    def status(self) -> "HorizontalPodAutoscalerStatus":
         """
         status is the current information about the autoscaler.
         """
-        return self._properties.get('status')
+        return typing.cast(
+            "HorizontalPodAutoscalerStatus",
+            self._properties.get("status"),
+        )
 
     @status.setter
-    def status(self, value: typing.Union['HorizontalPodAutoscalerStatus', dict]):
+    def status(self, value: typing.Union["HorizontalPodAutoscalerStatus", dict]):
         """
         status is the current information about the autoscaler.
         """
         if isinstance(value, dict):
-            value = HorizontalPodAutoscalerStatus().from_dict(value)
-        self._properties['status'] = value
+            value = typing.cast(
+                HorizontalPodAutoscalerStatus,
+                HorizontalPodAutoscalerStatus().from_dict(value),
+            )
+        self._properties["status"] = value
 
     def create_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'HorizontalPodAutoscalerStatus':
+        self, namespace: "str" = None
+    ) -> "HorizontalPodAutoscalerStatus":
         """
         Creates the HorizontalPodAutoscaler in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
         names = [
-            'create_namespaced_horizontal_pod_autoscaler',
-            'create_horizontal_pod_autoscaler'
+            "create_namespaced_horizontal_pod_autoscaler",
+            "create_horizontal_pod_autoscaler",
         ]
 
         response = _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
-        )
-        return (
-            HorizontalPodAutoscalerStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict()},
         )
 
+        output = HorizontalPodAutoscalerStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
     def replace_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'HorizontalPodAutoscalerStatus':
+        self, namespace: "str" = None
+    ) -> "HorizontalPodAutoscalerStatus":
         """
         Replaces the HorizontalPodAutoscaler in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
         names = [
-            'replace_namespaced_horizontal_pod_autoscaler',
-            'replace_horizontal_pod_autoscaler'
+            "replace_namespaced_horizontal_pod_autoscaler",
+            "replace_horizontal_pod_autoscaler",
         ]
 
         response = _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            HorizontalPodAutoscalerStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
+        output = HorizontalPodAutoscalerStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
     def patch_resource(
-            self,
-            namespace: 'str' = None
-    ) -> 'HorizontalPodAutoscalerStatus':
+        self, namespace: "str" = None
+    ) -> "HorizontalPodAutoscalerStatus":
         """
         Patches the HorizontalPodAutoscaler in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
         names = [
-            'patch_namespaced_horizontal_pod_autoscaler',
-            'patch_horizontal_pod_autoscaler'
+            "patch_namespaced_horizontal_pod_autoscaler",
+            "patch_horizontal_pod_autoscaler",
         ]
 
         response = _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
-        )
-        return (
-            HorizontalPodAutoscalerStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
+        output = HorizontalPodAutoscalerStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
     def get_resource_status(
-            self,
-            namespace: 'str' = None
-    ) -> 'HorizontalPodAutoscalerStatus':
+        self, namespace: "str" = None
+    ) -> "HorizontalPodAutoscalerStatus":
         """
         Returns status information about the given resource within the cluster.
         """
         names = [
-            'read_namespaced_horizontal_pod_autoscaler',
-            'read_horizontal_pod_autoscaler'
+            "read_namespaced_horizontal_pod_autoscaler",
+            "read_horizontal_pod_autoscaler",
         ]
 
         response = _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
-        )
-        return (
-            HorizontalPodAutoscalerStatus()
-            .from_dict(_kube_api.to_kuber_dict(response.status))
+            api_args={"name": self.metadata.name},
         )
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+        output = HorizontalPodAutoscalerStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: str = None):
         """
         Reads the HorizontalPodAutoscaler from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_horizontal_pod_autoscaler',
-            'read_horizontal_pod_autoscaler'
+            "read_namespaced_horizontal_pod_autoscaler",
+            "read_horizontal_pod_autoscaler",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the HorizontalPodAutoscaler from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_horizontal_pod_autoscaler',
-            'delete_horizontal_pod_autoscaler'
+            "delete_namespaced_horizontal_pod_autoscaler",
+            "delete_horizontal_pod_autoscaler",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AutoscalingV2beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AutoscalingV2beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AutoscalingV2beta2Api(**kwargs)
 
-    def __enter__(self) -> 'HorizontalPodAutoscaler':
+    def __enter__(self) -> "HorizontalPodAutoscaler":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -882,38 +951,38 @@ class HorizontalPodAutoscalerBehavior(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            scale_down: 'HPAScalingRules' = None,
-            scale_up: 'HPAScalingRules' = None,
+        self,
+        scale_down: "HPAScalingRules" = None,
+        scale_up: "HPAScalingRules" = None,
     ):
         """Create HorizontalPodAutoscalerBehavior instance."""
         super(HorizontalPodAutoscalerBehavior, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HorizontalPodAutoscalerBehavior'
+            api_version="autoscaling/v2beta2", kind="HorizontalPodAutoscalerBehavior"
         )
         self._properties = {
-            'scaleDown': scale_down if scale_down is not None else HPAScalingRules(),
-            'scaleUp': scale_up if scale_up is not None else HPAScalingRules(),
-
+            "scaleDown": scale_down if scale_down is not None else HPAScalingRules(),
+            "scaleUp": scale_up if scale_up is not None else HPAScalingRules(),
         }
         self._types = {
-            'scaleDown': (HPAScalingRules, None),
-            'scaleUp': (HPAScalingRules, None),
-
+            "scaleDown": (HPAScalingRules, None),
+            "scaleUp": (HPAScalingRules, None),
         }
 
     @property
-    def scale_down(self) -> 'HPAScalingRules':
+    def scale_down(self) -> "HPAScalingRules":
         """
         scaleDown is scaling policy for scaling Down. If not set,
         the default value is to allow to scale down to minReplicas
         pods, with a 300 second stabilization window (i.e., the
         highest recommendation for the last 300sec is used).
         """
-        return self._properties.get('scaleDown')
+        return typing.cast(
+            "HPAScalingRules",
+            self._properties.get("scaleDown"),
+        )
 
     @scale_down.setter
-    def scale_down(self, value: typing.Union['HPAScalingRules', dict]):
+    def scale_down(self, value: typing.Union["HPAScalingRules", dict]):
         """
         scaleDown is scaling policy for scaling Down. If not set,
         the default value is to allow to scale down to minReplicas
@@ -921,11 +990,14 @@ class HorizontalPodAutoscalerBehavior(_kuber_definitions.Definition):
         highest recommendation for the last 300sec is used).
         """
         if isinstance(value, dict):
-            value = HPAScalingRules().from_dict(value)
-        self._properties['scaleDown'] = value
+            value = typing.cast(
+                HPAScalingRules,
+                HPAScalingRules().from_dict(value),
+            )
+        self._properties["scaleDown"] = value
 
     @property
-    def scale_up(self) -> 'HPAScalingRules':
+    def scale_up(self) -> "HPAScalingRules":
         """
         scaleUp is scaling policy for scaling Up. If not set, the
         default value is the higher of:
@@ -933,10 +1005,13 @@ class HorizontalPodAutoscalerBehavior(_kuber_definitions.Definition):
           * double the number of pods per 60 seconds
         No stabilization is used.
         """
-        return self._properties.get('scaleUp')
+        return typing.cast(
+            "HPAScalingRules",
+            self._properties.get("scaleUp"),
+        )
 
     @scale_up.setter
-    def scale_up(self, value: typing.Union['HPAScalingRules', dict]):
+    def scale_up(self, value: typing.Union["HPAScalingRules", dict]):
         """
         scaleUp is scaling policy for scaling Up. If not set, the
         default value is the higher of:
@@ -945,10 +1020,13 @@ class HorizontalPodAutoscalerBehavior(_kuber_definitions.Definition):
         No stabilization is used.
         """
         if isinstance(value, dict):
-            value = HPAScalingRules().from_dict(value)
-        self._properties['scaleUp'] = value
+            value = typing.cast(
+                HPAScalingRules,
+                HPAScalingRules().from_dict(value),
+            )
+        self._properties["scaleUp"] = value
 
-    def __enter__(self) -> 'HorizontalPodAutoscalerBehavior':
+    def __enter__(self) -> "HorizontalPodAutoscalerBehavior":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -962,33 +1040,32 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            last_transition_time: str = None,
-            message: str = None,
-            reason: str = None,
-            status: str = None,
-            type_: str = None,
+        self,
+        last_transition_time: str = None,
+        message: str = None,
+        reason: str = None,
+        status: str = None,
+        type_: str = None,
     ):
         """Create HorizontalPodAutoscalerCondition instance."""
         super(HorizontalPodAutoscalerCondition, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HorizontalPodAutoscalerCondition'
+            api_version="autoscaling/v2beta2", kind="HorizontalPodAutoscalerCondition"
         )
         self._properties = {
-            'lastTransitionTime': last_transition_time if last_transition_time is not None else None,
-            'message': message if message is not None else '',
-            'reason': reason if reason is not None else '',
-            'status': status if status is not None else '',
-            'type': type_ if type_ is not None else '',
-
+            "lastTransitionTime": last_transition_time
+            if last_transition_time is not None
+            else None,
+            "message": message if message is not None else "",
+            "reason": reason if reason is not None else "",
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'lastTransitionTime': (str, None),
-            'message': (str, None),
-            'reason': (str, None),
-            'status': (str, None),
-            'type': (str, None),
-
+            "lastTransitionTime": (str, None),
+            "message": (str, None),
+            "reason": (str, None),
+            "status": (str, None),
+            "type": (str, None),
         }
 
     @property
@@ -997,22 +1074,24 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
         lastTransitionTime is the last time the condition
         transitioned from one status to another
         """
-        return self._properties.get('lastTransitionTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastTransitionTime"),
+        )
 
     @last_transition_time.setter
     def last_transition_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         lastTransitionTime is the last time the condition
         transitioned from one status to another
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastTransitionTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastTransitionTime"] = value
 
     @property
     def message(self) -> str:
@@ -1020,7 +1099,10 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
         message is a human-readable explanation containing details
         about the transition
         """
-        return self._properties.get('message')
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
 
     @message.setter
     def message(self, value: str):
@@ -1028,51 +1110,60 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
         message is a human-readable explanation containing details
         about the transition
         """
-        self._properties['message'] = value
+        self._properties["message"] = value
 
     @property
     def reason(self) -> str:
         """
         reason is the reason for the condition's last transition.
         """
-        return self._properties.get('reason')
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
 
     @reason.setter
     def reason(self, value: str):
         """
         reason is the reason for the condition's last transition.
         """
-        self._properties['reason'] = value
+        self._properties["reason"] = value
 
     @property
     def status(self) -> str:
         """
         status is the status of the condition (True, False, Unknown)
         """
-        return self._properties.get('status')
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
 
     @status.setter
     def status(self, value: str):
         """
         status is the status of the condition (True, False, Unknown)
         """
-        self._properties['status'] = value
+        self._properties["status"] = value
 
     @property
     def type_(self) -> str:
         """
         type describes the current condition
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
         """
         type describes the current condition
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'HorizontalPodAutoscalerCondition':
+    def __enter__(self) -> "HorizontalPodAutoscalerCondition":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1086,80 +1177,88 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['HorizontalPodAutoscaler'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["HorizontalPodAutoscaler"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create HorizontalPodAutoscalerList instance."""
         super(HorizontalPodAutoscalerList, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HorizontalPodAutoscalerList'
+            api_version="autoscaling/v2beta2", kind="HorizontalPodAutoscalerList"
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, HorizontalPodAutoscaler),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, HorizontalPodAutoscaler),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['HorizontalPodAutoscaler']:
+    def items(self) -> typing.List["HorizontalPodAutoscaler"]:
         """
         items is the list of horizontal pod autoscaler objects.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["HorizontalPodAutoscaler"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['HorizontalPodAutoscaler'], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["HorizontalPodAutoscaler"], typing.List[dict]],
     ):
         """
         items is the list of horizontal pod autoscaler objects.
         """
-        cleaned = []
+        cleaned: typing.List[HorizontalPodAutoscaler] = []
         for item in value:
             if isinstance(item, dict):
-                item = HorizontalPodAutoscaler().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    HorizontalPodAutoscaler,
+                    HorizontalPodAutoscaler().from_dict(item),
+                )
+            cleaned.append(typing.cast(HorizontalPodAutoscaler, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         metadata is the standard list metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         metadata is the standard list metadata.
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AutoscalingV2beta2Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AutoscalingV2beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AutoscalingV2beta2Api(**kwargs)
 
-    def __enter__(self) -> 'HorizontalPodAutoscalerList':
+    def __enter__(self) -> "HorizontalPodAutoscalerList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1173,47 +1272,51 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            behavior: 'HorizontalPodAutoscalerBehavior' = None,
-            max_replicas: int = None,
-            metrics: typing.List['MetricSpec'] = None,
-            min_replicas: int = None,
-            scale_target_ref: 'CrossVersionObjectReference' = None,
+        self,
+        behavior: "HorizontalPodAutoscalerBehavior" = None,
+        max_replicas: int = None,
+        metrics: typing.List["MetricSpec"] = None,
+        min_replicas: int = None,
+        scale_target_ref: "CrossVersionObjectReference" = None,
     ):
         """Create HorizontalPodAutoscalerSpec instance."""
         super(HorizontalPodAutoscalerSpec, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HorizontalPodAutoscalerSpec'
+            api_version="autoscaling/v2beta2", kind="HorizontalPodAutoscalerSpec"
         )
         self._properties = {
-            'behavior': behavior if behavior is not None else HorizontalPodAutoscalerBehavior(),
-            'maxReplicas': max_replicas if max_replicas is not None else None,
-            'metrics': metrics if metrics is not None else [],
-            'minReplicas': min_replicas if min_replicas is not None else None,
-            'scaleTargetRef': scale_target_ref if scale_target_ref is not None else CrossVersionObjectReference(),
-
+            "behavior": behavior
+            if behavior is not None
+            else HorizontalPodAutoscalerBehavior(),
+            "maxReplicas": max_replicas if max_replicas is not None else None,
+            "metrics": metrics if metrics is not None else [],
+            "minReplicas": min_replicas if min_replicas is not None else None,
+            "scaleTargetRef": scale_target_ref
+            if scale_target_ref is not None
+            else CrossVersionObjectReference(),
         }
         self._types = {
-            'behavior': (HorizontalPodAutoscalerBehavior, None),
-            'maxReplicas': (int, None),
-            'metrics': (list, MetricSpec),
-            'minReplicas': (int, None),
-            'scaleTargetRef': (CrossVersionObjectReference, None),
-
+            "behavior": (HorizontalPodAutoscalerBehavior, None),
+            "maxReplicas": (int, None),
+            "metrics": (list, MetricSpec),
+            "minReplicas": (int, None),
+            "scaleTargetRef": (CrossVersionObjectReference, None),
         }
 
     @property
-    def behavior(self) -> 'HorizontalPodAutoscalerBehavior':
+    def behavior(self) -> "HorizontalPodAutoscalerBehavior":
         """
         behavior configures the scaling behavior of the target in
         both Up and Down directions (scaleUp and scaleDown fields
         respectively). If not set, the default HPAScalingRules for
         scale up and scale down are used.
         """
-        return self._properties.get('behavior')
+        return typing.cast(
+            "HorizontalPodAutoscalerBehavior",
+            self._properties.get("behavior"),
+        )
 
     @behavior.setter
-    def behavior(self, value: typing.Union['HorizontalPodAutoscalerBehavior', dict]):
+    def behavior(self, value: typing.Union["HorizontalPodAutoscalerBehavior", dict]):
         """
         behavior configures the scaling behavior of the target in
         both Up and Down directions (scaleUp and scaleDown fields
@@ -1221,8 +1324,11 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         scale up and scale down are used.
         """
         if isinstance(value, dict):
-            value = HorizontalPodAutoscalerBehavior().from_dict(value)
-        self._properties['behavior'] = value
+            value = typing.cast(
+                HorizontalPodAutoscalerBehavior,
+                HorizontalPodAutoscalerBehavior().from_dict(value),
+            )
+        self._properties["behavior"] = value
 
     @property
     def max_replicas(self) -> int:
@@ -1231,7 +1337,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         which the autoscaler can scale up. It cannot be less that
         minReplicas.
         """
-        return self._properties.get('maxReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("maxReplicas"),
+        )
 
     @max_replicas.setter
     def max_replicas(self, value: int):
@@ -1240,10 +1349,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         which the autoscaler can scale up. It cannot be less that
         minReplicas.
         """
-        self._properties['maxReplicas'] = value
+        self._properties["maxReplicas"] = value
 
     @property
-    def metrics(self) -> typing.List['MetricSpec']:
+    def metrics(self) -> typing.List["MetricSpec"]:
         """
         metrics contains the specifications for which to use to
         calculate the desired replica count (the maximum replica
@@ -1256,12 +1365,14 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         must respond. If not set, the default metric will be set to
         80% average CPU utilization.
         """
-        return self._properties.get('metrics')
+        return typing.cast(
+            typing.List["MetricSpec"],
+            self._properties.get("metrics"),
+        )
 
     @metrics.setter
     def metrics(
-            self,
-            value: typing.Union[typing.List['MetricSpec'], typing.List[dict]]
+        self, value: typing.Union[typing.List["MetricSpec"], typing.List[dict]]
     ):
         """
         metrics contains the specifications for which to use to
@@ -1275,12 +1386,15 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         must respond. If not set, the default metric will be set to
         80% average CPU utilization.
         """
-        cleaned = []
+        cleaned: typing.List[MetricSpec] = []
         for item in value:
             if isinstance(item, dict):
-                item = MetricSpec().from_dict(item)
-            cleaned.append(item)
-        self._properties['metrics'] = cleaned
+                item = typing.cast(
+                    MetricSpec,
+                    MetricSpec().from_dict(item),
+                )
+            cleaned.append(typing.cast(MetricSpec, item))
+        self._properties["metrics"] = cleaned
 
     @property
     def min_replicas(self) -> int:
@@ -1292,7 +1406,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         External metric is configured.  Scaling is active as long as
         at least one metric value is available.
         """
-        return self._properties.get('minReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("minReplicas"),
+        )
 
     @min_replicas.setter
     def min_replicas(self, value: int):
@@ -1304,29 +1421,37 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         External metric is configured.  Scaling is active as long as
         at least one metric value is available.
         """
-        self._properties['minReplicas'] = value
+        self._properties["minReplicas"] = value
 
     @property
-    def scale_target_ref(self) -> 'CrossVersionObjectReference':
+    def scale_target_ref(self) -> "CrossVersionObjectReference":
         """
         scaleTargetRef points to the target resource to scale, and
         is used to the pods for which metrics should be collected,
         as well as to actually change the replica count.
         """
-        return self._properties.get('scaleTargetRef')
+        return typing.cast(
+            "CrossVersionObjectReference",
+            self._properties.get("scaleTargetRef"),
+        )
 
     @scale_target_ref.setter
-    def scale_target_ref(self, value: typing.Union['CrossVersionObjectReference', dict]):
+    def scale_target_ref(
+        self, value: typing.Union["CrossVersionObjectReference", dict]
+    ):
         """
         scaleTargetRef points to the target resource to scale, and
         is used to the pods for which metrics should be collected,
         as well as to actually change the replica count.
         """
         if isinstance(value, dict):
-            value = CrossVersionObjectReference().from_dict(value)
-        self._properties['scaleTargetRef'] = value
+            value = typing.cast(
+                CrossVersionObjectReference,
+                CrossVersionObjectReference().from_dict(value),
+            )
+        self._properties["scaleTargetRef"] = value
 
-    def __enter__(self) -> 'HorizontalPodAutoscalerSpec':
+    def __enter__(self) -> "HorizontalPodAutoscalerSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1340,87 +1465,103 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            conditions: typing.List['HorizontalPodAutoscalerCondition'] = None,
-            current_metrics: typing.List['MetricStatus'] = None,
-            current_replicas: int = None,
-            desired_replicas: int = None,
-            last_scale_time: str = None,
-            observed_generation: int = None,
+        self,
+        conditions: typing.List["HorizontalPodAutoscalerCondition"] = None,
+        current_metrics: typing.List["MetricStatus"] = None,
+        current_replicas: int = None,
+        desired_replicas: int = None,
+        last_scale_time: str = None,
+        observed_generation: int = None,
     ):
         """Create HorizontalPodAutoscalerStatus instance."""
         super(HorizontalPodAutoscalerStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='HorizontalPodAutoscalerStatus'
+            api_version="autoscaling/v2beta2", kind="HorizontalPodAutoscalerStatus"
         )
         self._properties = {
-            'conditions': conditions if conditions is not None else [],
-            'currentMetrics': current_metrics if current_metrics is not None else [],
-            'currentReplicas': current_replicas if current_replicas is not None else None,
-            'desiredReplicas': desired_replicas if desired_replicas is not None else None,
-            'lastScaleTime': last_scale_time if last_scale_time is not None else None,
-            'observedGeneration': observed_generation if observed_generation is not None else None,
-
+            "conditions": conditions if conditions is not None else [],
+            "currentMetrics": current_metrics if current_metrics is not None else [],
+            "currentReplicas": current_replicas
+            if current_replicas is not None
+            else None,
+            "desiredReplicas": desired_replicas
+            if desired_replicas is not None
+            else None,
+            "lastScaleTime": last_scale_time if last_scale_time is not None else None,
+            "observedGeneration": observed_generation
+            if observed_generation is not None
+            else None,
         }
         self._types = {
-            'conditions': (list, HorizontalPodAutoscalerCondition),
-            'currentMetrics': (list, MetricStatus),
-            'currentReplicas': (int, None),
-            'desiredReplicas': (int, None),
-            'lastScaleTime': (str, None),
-            'observedGeneration': (int, None),
-
+            "conditions": (list, HorizontalPodAutoscalerCondition),
+            "currentMetrics": (list, MetricStatus),
+            "currentReplicas": (int, None),
+            "desiredReplicas": (int, None),
+            "lastScaleTime": (str, None),
+            "observedGeneration": (int, None),
         }
 
     @property
-    def conditions(self) -> typing.List['HorizontalPodAutoscalerCondition']:
+    def conditions(self) -> typing.List["HorizontalPodAutoscalerCondition"]:
         """
         conditions is the set of conditions required for this
         autoscaler to scale its target, and indicates whether or not
         those conditions are met.
         """
-        return self._properties.get('conditions')
+        return typing.cast(
+            typing.List["HorizontalPodAutoscalerCondition"],
+            self._properties.get("conditions"),
+        )
 
     @conditions.setter
     def conditions(
-            self,
-            value: typing.Union[typing.List['HorizontalPodAutoscalerCondition'], typing.List[dict]]
+        self,
+        value: typing.Union[
+            typing.List["HorizontalPodAutoscalerCondition"], typing.List[dict]
+        ],
     ):
         """
         conditions is the set of conditions required for this
         autoscaler to scale its target, and indicates whether or not
         those conditions are met.
         """
-        cleaned = []
+        cleaned: typing.List[HorizontalPodAutoscalerCondition] = []
         for item in value:
             if isinstance(item, dict):
-                item = HorizontalPodAutoscalerCondition().from_dict(item)
-            cleaned.append(item)
-        self._properties['conditions'] = cleaned
+                item = typing.cast(
+                    HorizontalPodAutoscalerCondition,
+                    HorizontalPodAutoscalerCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(HorizontalPodAutoscalerCondition, item))
+        self._properties["conditions"] = cleaned
 
     @property
-    def current_metrics(self) -> typing.List['MetricStatus']:
+    def current_metrics(self) -> typing.List["MetricStatus"]:
         """
         currentMetrics is the last read state of the metrics used by
         this autoscaler.
         """
-        return self._properties.get('currentMetrics')
+        return typing.cast(
+            typing.List["MetricStatus"],
+            self._properties.get("currentMetrics"),
+        )
 
     @current_metrics.setter
     def current_metrics(
-            self,
-            value: typing.Union[typing.List['MetricStatus'], typing.List[dict]]
+        self, value: typing.Union[typing.List["MetricStatus"], typing.List[dict]]
     ):
         """
         currentMetrics is the last read state of the metrics used by
         this autoscaler.
         """
-        cleaned = []
+        cleaned: typing.List[MetricStatus] = []
         for item in value:
             if isinstance(item, dict):
-                item = MetricStatus().from_dict(item)
-            cleaned.append(item)
-        self._properties['currentMetrics'] = cleaned
+                item = typing.cast(
+                    MetricStatus,
+                    MetricStatus().from_dict(item),
+                )
+            cleaned.append(typing.cast(MetricStatus, item))
+        self._properties["currentMetrics"] = cleaned
 
     @property
     def current_replicas(self) -> int:
@@ -1428,7 +1569,10 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         currentReplicas is current number of replicas of pods
         managed by this autoscaler, as last seen by the autoscaler.
         """
-        return self._properties.get('currentReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("currentReplicas"),
+        )
 
     @current_replicas.setter
     def current_replicas(self, value: int):
@@ -1436,7 +1580,7 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         currentReplicas is current number of replicas of pods
         managed by this autoscaler, as last seen by the autoscaler.
         """
-        self._properties['currentReplicas'] = value
+        self._properties["currentReplicas"] = value
 
     @property
     def desired_replicas(self) -> int:
@@ -1445,7 +1589,10 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         managed by this autoscaler, as last calculated by the
         autoscaler.
         """
-        return self._properties.get('desiredReplicas')
+        return typing.cast(
+            int,
+            self._properties.get("desiredReplicas"),
+        )
 
     @desired_replicas.setter
     def desired_replicas(self, value: int):
@@ -1454,7 +1601,7 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         managed by this autoscaler, as last calculated by the
         autoscaler.
         """
-        self._properties['desiredReplicas'] = value
+        self._properties["desiredReplicas"] = value
 
     @property
     def last_scale_time(self) -> str:
@@ -1463,12 +1610,14 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         scaled the number of pods, used by the autoscaler to control
         how often the number of pods is changed.
         """
-        return self._properties.get('lastScaleTime')
+        return typing.cast(
+            str,
+            self._properties.get("lastScaleTime"),
+        )
 
     @last_scale_time.setter
     def last_scale_time(
-            self,
-            value: typing.Union[str, _datetime.datetime, _datetime.date]
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
         lastScaleTime is the last time the HorizontalPodAutoscaler
@@ -1476,10 +1625,10 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         how often the number of pods is changed.
         """
         if isinstance(value, _datetime.datetime):
-            value = value.strftime('%Y-%m-%dT%H:%M:%SZ')
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
-            value = value.strftime('%Y-%m-%dT00:00:00Z')
-        self._properties['lastScaleTime'] = value
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastScaleTime"] = value
 
     @property
     def observed_generation(self) -> int:
@@ -1487,7 +1636,10 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         observedGeneration is the most recent generation observed by
         this autoscaler.
         """
-        return self._properties.get('observedGeneration')
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
 
     @observed_generation.setter
     def observed_generation(self, value: int):
@@ -1495,9 +1647,9 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         observedGeneration is the most recent generation observed by
         this autoscaler.
         """
-        self._properties['observedGeneration'] = value
+        self._properties["observedGeneration"] = value
 
-    def __enter__(self) -> 'HorizontalPodAutoscalerStatus':
+    def __enter__(self) -> "HorizontalPodAutoscalerStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1511,24 +1663,21 @@ class MetricIdentifier(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
-            selector: 'LabelSelector' = None,
+        self,
+        name: str = None,
+        selector: "LabelSelector" = None,
     ):
         """Create MetricIdentifier instance."""
         super(MetricIdentifier, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='MetricIdentifier'
+            api_version="autoscaling/v2beta2", kind="MetricIdentifier"
         )
         self._properties = {
-            'name': name if name is not None else '',
-            'selector': selector if selector is not None else LabelSelector(),
-
+            "name": name if name is not None else "",
+            "selector": selector if selector is not None else LabelSelector(),
         }
         self._types = {
-            'name': (str, None),
-            'selector': (LabelSelector, None),
-
+            "name": (str, None),
+            "selector": (LabelSelector, None),
         }
 
     @property
@@ -1536,17 +1685,20 @@ class MetricIdentifier(_kuber_definitions.Definition):
         """
         name is the name of the given metric
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         name is the name of the given metric
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
-    def selector(self) -> 'LabelSelector':
+    def selector(self) -> "LabelSelector":
         """
         selector is the string-encoded form of a standard kubernetes
         label selector for the given metric When set, it is passed
@@ -1554,10 +1706,13 @@ class MetricIdentifier(_kuber_definitions.Definition):
         specific metrics scoping. When unset, just the metricName
         will be used to gather metrics.
         """
-        return self._properties.get('selector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("selector"),
+        )
 
     @selector.setter
-    def selector(self, value: typing.Union['LabelSelector', dict]):
+    def selector(self, value: typing.Union["LabelSelector", dict]):
         """
         selector is the string-encoded form of a standard kubernetes
         label selector for the given metric When set, it is passed
@@ -1566,10 +1721,13 @@ class MetricIdentifier(_kuber_definitions.Definition):
         will be used to gather metrics.
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['selector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["selector"] = value
 
-    def __enter__(self) -> 'MetricIdentifier':
+    def __enter__(self) -> "MetricIdentifier":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1584,40 +1742,39 @@ class MetricSpec(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            container_resource: 'ContainerResourceMetricSource' = None,
-            external: 'ExternalMetricSource' = None,
-            object_: 'ObjectMetricSource' = None,
-            pods: 'PodsMetricSource' = None,
-            resource: 'ResourceMetricSource' = None,
-            type_: str = None,
+        self,
+        container_resource: "ContainerResourceMetricSource" = None,
+        external: "ExternalMetricSource" = None,
+        object_: "ObjectMetricSource" = None,
+        pods: "PodsMetricSource" = None,
+        resource: "ResourceMetricSource" = None,
+        type_: str = None,
     ):
         """Create MetricSpec instance."""
         super(MetricSpec, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='MetricSpec'
+            api_version="autoscaling/v2beta2", kind="MetricSpec"
         )
         self._properties = {
-            'containerResource': container_resource if container_resource is not None else ContainerResourceMetricSource(),
-            'external': external if external is not None else ExternalMetricSource(),
-            'object': object_ if object_ is not None else ObjectMetricSource(),
-            'pods': pods if pods is not None else PodsMetricSource(),
-            'resource': resource if resource is not None else ResourceMetricSource(),
-            'type': type_ if type_ is not None else '',
-
+            "containerResource": container_resource
+            if container_resource is not None
+            else ContainerResourceMetricSource(),
+            "external": external if external is not None else ExternalMetricSource(),
+            "object": object_ if object_ is not None else ObjectMetricSource(),
+            "pods": pods if pods is not None else PodsMetricSource(),
+            "resource": resource if resource is not None else ResourceMetricSource(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'containerResource': (ContainerResourceMetricSource, None),
-            'external': (ExternalMetricSource, None),
-            'object': (ObjectMetricSource, None),
-            'pods': (PodsMetricSource, None),
-            'resource': (ResourceMetricSource, None),
-            'type': (str, None),
-
+            "containerResource": (ContainerResourceMetricSource, None),
+            "external": (ExternalMetricSource, None),
+            "object": (ObjectMetricSource, None),
+            "pods": (PodsMetricSource, None),
+            "resource": (ResourceMetricSource, None),
+            "type": (str, None),
         }
 
     @property
-    def container_resource(self) -> 'ContainerResourceMetricSource':
+    def container_resource(self) -> "ContainerResourceMetricSource":
         """
         container resource refers to a resource metric (such as
         those specified in requests and limits) known to Kubernetes
@@ -1628,10 +1785,15 @@ class MetricSpec(_kuber_definitions.Definition):
         source. This is an alpha feature and can be enabled by the
         HPAContainerMetrics feature flag.
         """
-        return self._properties.get('containerResource')
+        return typing.cast(
+            "ContainerResourceMetricSource",
+            self._properties.get("containerResource"),
+        )
 
     @container_resource.setter
-    def container_resource(self, value: typing.Union['ContainerResourceMetricSource', dict]):
+    def container_resource(
+        self, value: typing.Union["ContainerResourceMetricSource", dict]
+    ):
         """
         container resource refers to a resource metric (such as
         those specified in requests and limits) known to Kubernetes
@@ -1643,11 +1805,14 @@ class MetricSpec(_kuber_definitions.Definition):
         HPAContainerMetrics feature flag.
         """
         if isinstance(value, dict):
-            value = ContainerResourceMetricSource().from_dict(value)
-        self._properties['containerResource'] = value
+            value = typing.cast(
+                ContainerResourceMetricSource,
+                ContainerResourceMetricSource().from_dict(value),
+            )
+        self._properties["containerResource"] = value
 
     @property
-    def external(self) -> 'ExternalMetricSource':
+    def external(self) -> "ExternalMetricSource":
         """
         external refers to a global metric that is not associated
         with any Kubernetes object. It allows autoscaling based on
@@ -1656,10 +1821,13 @@ class MetricSpec(_kuber_definitions.Definition):
         service, or QPS from loadbalancer running outside of
         cluster).
         """
-        return self._properties.get('external')
+        return typing.cast(
+            "ExternalMetricSource",
+            self._properties.get("external"),
+        )
 
     @external.setter
-    def external(self, value: typing.Union['ExternalMetricSource', dict]):
+    def external(self, value: typing.Union["ExternalMetricSource", dict]):
         """
         external refers to a global metric that is not associated
         with any Kubernetes object. It allows autoscaling based on
@@ -1669,39 +1837,51 @@ class MetricSpec(_kuber_definitions.Definition):
         cluster).
         """
         if isinstance(value, dict):
-            value = ExternalMetricSource().from_dict(value)
-        self._properties['external'] = value
+            value = typing.cast(
+                ExternalMetricSource,
+                ExternalMetricSource().from_dict(value),
+            )
+        self._properties["external"] = value
 
     @property
-    def object_(self) -> 'ObjectMetricSource':
+    def object_(self) -> "ObjectMetricSource":
         """
         object refers to a metric describing a single kubernetes
         object (for example, hits-per-second on an Ingress object).
         """
-        return self._properties.get('object')
+        return typing.cast(
+            "ObjectMetricSource",
+            self._properties.get("object"),
+        )
 
     @object_.setter
-    def object_(self, value: typing.Union['ObjectMetricSource', dict]):
+    def object_(self, value: typing.Union["ObjectMetricSource", dict]):
         """
         object refers to a metric describing a single kubernetes
         object (for example, hits-per-second on an Ingress object).
         """
         if isinstance(value, dict):
-            value = ObjectMetricSource().from_dict(value)
-        self._properties['object'] = value
+            value = typing.cast(
+                ObjectMetricSource,
+                ObjectMetricSource().from_dict(value),
+            )
+        self._properties["object"] = value
 
     @property
-    def pods(self) -> 'PodsMetricSource':
+    def pods(self) -> "PodsMetricSource":
         """
         pods refers to a metric describing each pod in the current
         scale target (for example, transactions-processed-per-
         second).  The values will be averaged together before being
         compared to the target value.
         """
-        return self._properties.get('pods')
+        return typing.cast(
+            "PodsMetricSource",
+            self._properties.get("pods"),
+        )
 
     @pods.setter
-    def pods(self, value: typing.Union['PodsMetricSource', dict]):
+    def pods(self, value: typing.Union["PodsMetricSource", dict]):
         """
         pods refers to a metric describing each pod in the current
         scale target (for example, transactions-processed-per-
@@ -1709,11 +1889,14 @@ class MetricSpec(_kuber_definitions.Definition):
         compared to the target value.
         """
         if isinstance(value, dict):
-            value = PodsMetricSource().from_dict(value)
-        self._properties['pods'] = value
+            value = typing.cast(
+                PodsMetricSource,
+                PodsMetricSource().from_dict(value),
+            )
+        self._properties["pods"] = value
 
     @property
-    def resource(self) -> 'ResourceMetricSource':
+    def resource(self) -> "ResourceMetricSource":
         """
         resource refers to a resource metric (such as those
         specified in requests and limits) known to Kubernetes
@@ -1722,10 +1905,13 @@ class MetricSpec(_kuber_definitions.Definition):
         special scaling options on top of those available to normal
         per-pod metrics using the "pods" source.
         """
-        return self._properties.get('resource')
+        return typing.cast(
+            "ResourceMetricSource",
+            self._properties.get("resource"),
+        )
 
     @resource.setter
-    def resource(self, value: typing.Union['ResourceMetricSource', dict]):
+    def resource(self, value: typing.Union["ResourceMetricSource", dict]):
         """
         resource refers to a resource metric (such as those
         specified in requests and limits) known to Kubernetes
@@ -1735,8 +1921,11 @@ class MetricSpec(_kuber_definitions.Definition):
         per-pod metrics using the "pods" source.
         """
         if isinstance(value, dict):
-            value = ResourceMetricSource().from_dict(value)
-        self._properties['resource'] = value
+            value = typing.cast(
+                ResourceMetricSource,
+                ResourceMetricSource().from_dict(value),
+            )
+        self._properties["resource"] = value
 
     @property
     def type_(self) -> str:
@@ -1747,7 +1936,10 @@ class MetricSpec(_kuber_definitions.Definition):
         Note: "ContainerResource" type is available on when the
         feature-gate HPAContainerMetrics is enabled
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -1758,9 +1950,9 @@ class MetricSpec(_kuber_definitions.Definition):
         Note: "ContainerResource" type is available on when the
         feature-gate HPAContainerMetrics is enabled
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'MetricSpec':
+    def __enter__(self) -> "MetricSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1774,40 +1966,39 @@ class MetricStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            container_resource: 'ContainerResourceMetricStatus' = None,
-            external: 'ExternalMetricStatus' = None,
-            object_: 'ObjectMetricStatus' = None,
-            pods: 'PodsMetricStatus' = None,
-            resource: 'ResourceMetricStatus' = None,
-            type_: str = None,
+        self,
+        container_resource: "ContainerResourceMetricStatus" = None,
+        external: "ExternalMetricStatus" = None,
+        object_: "ObjectMetricStatus" = None,
+        pods: "PodsMetricStatus" = None,
+        resource: "ResourceMetricStatus" = None,
+        type_: str = None,
     ):
         """Create MetricStatus instance."""
         super(MetricStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='MetricStatus'
+            api_version="autoscaling/v2beta2", kind="MetricStatus"
         )
         self._properties = {
-            'containerResource': container_resource if container_resource is not None else ContainerResourceMetricStatus(),
-            'external': external if external is not None else ExternalMetricStatus(),
-            'object': object_ if object_ is not None else ObjectMetricStatus(),
-            'pods': pods if pods is not None else PodsMetricStatus(),
-            'resource': resource if resource is not None else ResourceMetricStatus(),
-            'type': type_ if type_ is not None else '',
-
+            "containerResource": container_resource
+            if container_resource is not None
+            else ContainerResourceMetricStatus(),
+            "external": external if external is not None else ExternalMetricStatus(),
+            "object": object_ if object_ is not None else ObjectMetricStatus(),
+            "pods": pods if pods is not None else PodsMetricStatus(),
+            "resource": resource if resource is not None else ResourceMetricStatus(),
+            "type": type_ if type_ is not None else "",
         }
         self._types = {
-            'containerResource': (ContainerResourceMetricStatus, None),
-            'external': (ExternalMetricStatus, None),
-            'object': (ObjectMetricStatus, None),
-            'pods': (PodsMetricStatus, None),
-            'resource': (ResourceMetricStatus, None),
-            'type': (str, None),
-
+            "containerResource": (ContainerResourceMetricStatus, None),
+            "external": (ExternalMetricStatus, None),
+            "object": (ObjectMetricStatus, None),
+            "pods": (PodsMetricStatus, None),
+            "resource": (ResourceMetricStatus, None),
+            "type": (str, None),
         }
 
     @property
-    def container_resource(self) -> 'ContainerResourceMetricStatus':
+    def container_resource(self) -> "ContainerResourceMetricStatus":
         """
         container resource refers to a resource metric (such as
         those specified in requests and limits) known to Kubernetes
@@ -1817,10 +2008,15 @@ class MetricStatus(_kuber_definitions.Definition):
         those available to normal per-pod metrics using the "pods"
         source.
         """
-        return self._properties.get('containerResource')
+        return typing.cast(
+            "ContainerResourceMetricStatus",
+            self._properties.get("containerResource"),
+        )
 
     @container_resource.setter
-    def container_resource(self, value: typing.Union['ContainerResourceMetricStatus', dict]):
+    def container_resource(
+        self, value: typing.Union["ContainerResourceMetricStatus", dict]
+    ):
         """
         container resource refers to a resource metric (such as
         those specified in requests and limits) known to Kubernetes
@@ -1831,11 +2027,14 @@ class MetricStatus(_kuber_definitions.Definition):
         source.
         """
         if isinstance(value, dict):
-            value = ContainerResourceMetricStatus().from_dict(value)
-        self._properties['containerResource'] = value
+            value = typing.cast(
+                ContainerResourceMetricStatus,
+                ContainerResourceMetricStatus().from_dict(value),
+            )
+        self._properties["containerResource"] = value
 
     @property
-    def external(self) -> 'ExternalMetricStatus':
+    def external(self) -> "ExternalMetricStatus":
         """
         external refers to a global metric that is not associated
         with any Kubernetes object. It allows autoscaling based on
@@ -1844,10 +2043,13 @@ class MetricStatus(_kuber_definitions.Definition):
         service, or QPS from loadbalancer running outside of
         cluster).
         """
-        return self._properties.get('external')
+        return typing.cast(
+            "ExternalMetricStatus",
+            self._properties.get("external"),
+        )
 
     @external.setter
-    def external(self, value: typing.Union['ExternalMetricStatus', dict]):
+    def external(self, value: typing.Union["ExternalMetricStatus", dict]):
         """
         external refers to a global metric that is not associated
         with any Kubernetes object. It allows autoscaling based on
@@ -1857,39 +2059,51 @@ class MetricStatus(_kuber_definitions.Definition):
         cluster).
         """
         if isinstance(value, dict):
-            value = ExternalMetricStatus().from_dict(value)
-        self._properties['external'] = value
+            value = typing.cast(
+                ExternalMetricStatus,
+                ExternalMetricStatus().from_dict(value),
+            )
+        self._properties["external"] = value
 
     @property
-    def object_(self) -> 'ObjectMetricStatus':
+    def object_(self) -> "ObjectMetricStatus":
         """
         object refers to a metric describing a single kubernetes
         object (for example, hits-per-second on an Ingress object).
         """
-        return self._properties.get('object')
+        return typing.cast(
+            "ObjectMetricStatus",
+            self._properties.get("object"),
+        )
 
     @object_.setter
-    def object_(self, value: typing.Union['ObjectMetricStatus', dict]):
+    def object_(self, value: typing.Union["ObjectMetricStatus", dict]):
         """
         object refers to a metric describing a single kubernetes
         object (for example, hits-per-second on an Ingress object).
         """
         if isinstance(value, dict):
-            value = ObjectMetricStatus().from_dict(value)
-        self._properties['object'] = value
+            value = typing.cast(
+                ObjectMetricStatus,
+                ObjectMetricStatus().from_dict(value),
+            )
+        self._properties["object"] = value
 
     @property
-    def pods(self) -> 'PodsMetricStatus':
+    def pods(self) -> "PodsMetricStatus":
         """
         pods refers to a metric describing each pod in the current
         scale target (for example, transactions-processed-per-
         second).  The values will be averaged together before being
         compared to the target value.
         """
-        return self._properties.get('pods')
+        return typing.cast(
+            "PodsMetricStatus",
+            self._properties.get("pods"),
+        )
 
     @pods.setter
-    def pods(self, value: typing.Union['PodsMetricStatus', dict]):
+    def pods(self, value: typing.Union["PodsMetricStatus", dict]):
         """
         pods refers to a metric describing each pod in the current
         scale target (for example, transactions-processed-per-
@@ -1897,11 +2111,14 @@ class MetricStatus(_kuber_definitions.Definition):
         compared to the target value.
         """
         if isinstance(value, dict):
-            value = PodsMetricStatus().from_dict(value)
-        self._properties['pods'] = value
+            value = typing.cast(
+                PodsMetricStatus,
+                PodsMetricStatus().from_dict(value),
+            )
+        self._properties["pods"] = value
 
     @property
-    def resource(self) -> 'ResourceMetricStatus':
+    def resource(self) -> "ResourceMetricStatus":
         """
         resource refers to a resource metric (such as those
         specified in requests and limits) known to Kubernetes
@@ -1910,10 +2127,13 @@ class MetricStatus(_kuber_definitions.Definition):
         special scaling options on top of those available to normal
         per-pod metrics using the "pods" source.
         """
-        return self._properties.get('resource')
+        return typing.cast(
+            "ResourceMetricStatus",
+            self._properties.get("resource"),
+        )
 
     @resource.setter
-    def resource(self, value: typing.Union['ResourceMetricStatus', dict]):
+    def resource(self, value: typing.Union["ResourceMetricStatus", dict]):
         """
         resource refers to a resource metric (such as those
         specified in requests and limits) known to Kubernetes
@@ -1923,8 +2143,11 @@ class MetricStatus(_kuber_definitions.Definition):
         per-pod metrics using the "pods" source.
         """
         if isinstance(value, dict):
-            value = ResourceMetricStatus().from_dict(value)
-        self._properties['resource'] = value
+            value = typing.cast(
+                ResourceMetricStatus,
+                ResourceMetricStatus().from_dict(value),
+            )
+        self._properties["resource"] = value
 
     @property
     def type_(self) -> str:
@@ -1935,7 +2158,10 @@ class MetricStatus(_kuber_definitions.Definition):
         object. Note: "ContainerResource" type is available on when
         the feature-gate HPAContainerMetrics is enabled
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -1946,9 +2172,9 @@ class MetricStatus(_kuber_definitions.Definition):
         object. Note: "ContainerResource" type is available on when
         the feature-gate HPAContainerMetrics is enabled
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
-    def __enter__(self) -> 'MetricStatus':
+    def __enter__(self) -> "MetricStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1962,30 +2188,29 @@ class MetricTarget(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            average_utilization: int = None,
-            average_value: typing.Union[str, int, None] = None,
-            type_: str = None,
-            value: typing.Union[str, int, None] = None,
+        self,
+        average_utilization: int = None,
+        average_value: typing.Union[str, int, None] = None,
+        type_: str = None,
+        value: typing.Union[str, int, None] = None,
     ):
         """Create MetricTarget instance."""
         super(MetricTarget, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='MetricTarget'
+            api_version="autoscaling/v2beta2", kind="MetricTarget"
         )
         self._properties = {
-            'averageUtilization': average_utilization if average_utilization is not None else None,
-            'averageValue': average_value if average_value is not None else None,
-            'type': type_ if type_ is not None else '',
-            'value': value if value is not None else None,
-
+            "averageUtilization": average_utilization
+            if average_utilization is not None
+            else None,
+            "averageValue": average_value if average_value is not None else None,
+            "type": type_ if type_ is not None else "",
+            "value": value if value is not None else None,
         }
         self._types = {
-            'averageUtilization': (int, None),
-            'averageValue': (str, None),
-            'type': (str, None),
-            'value': (str, None),
-
+            "averageUtilization": (int, None),
+            "averageValue": (str, None),
+            "type": (str, None),
+            "value": (str, None),
         }
 
     @property
@@ -1996,7 +2221,10 @@ class MetricTarget(_kuber_definitions.Definition):
         percentage of the requested value of the resource for the
         pods. Currently only valid for Resource metric source type
         """
-        return self._properties.get('averageUtilization')
+        return typing.cast(
+            int,
+            self._properties.get("averageUtilization"),
+        )
 
     @average_utilization.setter
     def average_utilization(self, value: int):
@@ -2006,7 +2234,7 @@ class MetricTarget(_kuber_definitions.Definition):
         percentage of the requested value of the resource for the
         pods. Currently only valid for Resource metric source type
         """
-        self._properties['averageUtilization'] = value
+        self._properties["averageUtilization"] = value
 
     @property
     def average_value(self) -> typing.Optional[str]:
@@ -2014,19 +2242,16 @@ class MetricTarget(_kuber_definitions.Definition):
         averageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        value = self._properties.get('averageValue')
-        return f'{value}' if value is not None else None
+        value = self._properties.get("averageValue")
+        return f"{value}" if value is not None else None
 
     @average_value.setter
-    def average_value(
-            self,
-            value: typing.Union[str, int, None]
-    ):
+    def average_value(self, value: typing.Union[str, int, None]):
         """
         averageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        self._properties['averageValue'] = None if value is None else f'{value}'
+        self._properties["averageValue"] = None if value is None else f"{value}"
 
     @property
     def type_(self) -> str:
@@ -2034,7 +2259,10 @@ class MetricTarget(_kuber_definitions.Definition):
         type represents whether the metric type is Utilization,
         Value, or AverageValue
         """
-        return self._properties.get('type')
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
 
     @type_.setter
     def type_(self, value: str):
@@ -2042,27 +2270,24 @@ class MetricTarget(_kuber_definitions.Definition):
         type represents whether the metric type is Utilization,
         Value, or AverageValue
         """
-        self._properties['type'] = value
+        self._properties["type"] = value
 
     @property
     def value(self) -> typing.Optional[str]:
         """
         value is the target value of the metric (as a quantity).
         """
-        value = self._properties.get('value')
-        return f'{value}' if value is not None else None
+        value = self._properties.get("value")
+        return f"{value}" if value is not None else None
 
     @value.setter
-    def value(
-            self,
-            value: typing.Union[str, int, None]
-    ):
+    def value(self, value: typing.Union[str, int, None]):
         """
         value is the target value of the metric (as a quantity).
         """
-        self._properties['value'] = None if value is None else f'{value}'
+        self._properties["value"] = None if value is None else f"{value}"
 
-    def __enter__(self) -> 'MetricTarget':
+    def __enter__(self) -> "MetricTarget":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2075,27 +2300,26 @@ class MetricValueStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            average_utilization: int = None,
-            average_value: typing.Union[str, int, None] = None,
-            value: typing.Union[str, int, None] = None,
+        self,
+        average_utilization: int = None,
+        average_value: typing.Union[str, int, None] = None,
+        value: typing.Union[str, int, None] = None,
     ):
         """Create MetricValueStatus instance."""
         super(MetricValueStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='MetricValueStatus'
+            api_version="autoscaling/v2beta2", kind="MetricValueStatus"
         )
         self._properties = {
-            'averageUtilization': average_utilization if average_utilization is not None else None,
-            'averageValue': average_value if average_value is not None else None,
-            'value': value if value is not None else None,
-
+            "averageUtilization": average_utilization
+            if average_utilization is not None
+            else None,
+            "averageValue": average_value if average_value is not None else None,
+            "value": value if value is not None else None,
         }
         self._types = {
-            'averageUtilization': (int, None),
-            'averageValue': (str, None),
-            'value': (str, None),
-
+            "averageUtilization": (int, None),
+            "averageValue": (str, None),
+            "value": (str, None),
         }
 
     @property
@@ -2106,7 +2330,10 @@ class MetricValueStatus(_kuber_definitions.Definition):
         represented as a percentage of the requested value of the
         resource for the pods.
         """
-        return self._properties.get('averageUtilization')
+        return typing.cast(
+            int,
+            self._properties.get("averageUtilization"),
+        )
 
     @average_utilization.setter
     def average_utilization(self, value: int):
@@ -2116,7 +2343,7 @@ class MetricValueStatus(_kuber_definitions.Definition):
         represented as a percentage of the requested value of the
         resource for the pods.
         """
-        self._properties['averageUtilization'] = value
+        self._properties["averageUtilization"] = value
 
     @property
     def average_value(self) -> typing.Optional[str]:
@@ -2124,39 +2351,33 @@ class MetricValueStatus(_kuber_definitions.Definition):
         averageValue is the current value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        value = self._properties.get('averageValue')
-        return f'{value}' if value is not None else None
+        value = self._properties.get("averageValue")
+        return f"{value}" if value is not None else None
 
     @average_value.setter
-    def average_value(
-            self,
-            value: typing.Union[str, int, None]
-    ):
+    def average_value(self, value: typing.Union[str, int, None]):
         """
         averageValue is the current value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        self._properties['averageValue'] = None if value is None else f'{value}'
+        self._properties["averageValue"] = None if value is None else f"{value}"
 
     @property
     def value(self) -> typing.Optional[str]:
         """
         value is the current value of the metric (as a quantity).
         """
-        value = self._properties.get('value')
-        return f'{value}' if value is not None else None
+        value = self._properties.get("value")
+        return f"{value}" if value is not None else None
 
     @value.setter
-    def value(
-            self,
-            value: typing.Union[str, int, None]
-    ):
+    def value(self, value: typing.Union[str, int, None]):
         """
         value is the current value of the metric (as a quantity).
         """
-        self._properties['value'] = None if value is None else f'{value}'
+        self._properties["value"] = None if value is None else f"{value}"
 
-    def __enter__(self) -> 'MetricValueStatus':
+    def __enter__(self) -> "MetricValueStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2171,78 +2392,93 @@ class ObjectMetricSource(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            described_object: 'CrossVersionObjectReference' = None,
-            metric: 'MetricIdentifier' = None,
-            target: 'MetricTarget' = None,
+        self,
+        described_object: "CrossVersionObjectReference" = None,
+        metric: "MetricIdentifier" = None,
+        target: "MetricTarget" = None,
     ):
         """Create ObjectMetricSource instance."""
         super(ObjectMetricSource, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ObjectMetricSource'
+            api_version="autoscaling/v2beta2", kind="ObjectMetricSource"
         )
         self._properties = {
-            'describedObject': described_object if described_object is not None else CrossVersionObjectReference(),
-            'metric': metric if metric is not None else MetricIdentifier(),
-            'target': target if target is not None else MetricTarget(),
-
+            "describedObject": described_object
+            if described_object is not None
+            else CrossVersionObjectReference(),
+            "metric": metric if metric is not None else MetricIdentifier(),
+            "target": target if target is not None else MetricTarget(),
         }
         self._types = {
-            'describedObject': (CrossVersionObjectReference, None),
-            'metric': (MetricIdentifier, None),
-            'target': (MetricTarget, None),
-
+            "describedObject": (CrossVersionObjectReference, None),
+            "metric": (MetricIdentifier, None),
+            "target": (MetricTarget, None),
         }
 
     @property
-    def described_object(self) -> 'CrossVersionObjectReference':
-        """
-
-        """
-        return self._properties.get('describedObject')
+    def described_object(self) -> "CrossVersionObjectReference":
+        """"""
+        return typing.cast(
+            "CrossVersionObjectReference",
+            self._properties.get("describedObject"),
+        )
 
     @described_object.setter
-    def described_object(self, value: typing.Union['CrossVersionObjectReference', dict]):
-        """
-
-        """
+    def described_object(
+        self, value: typing.Union["CrossVersionObjectReference", dict]
+    ):
+        """"""
         if isinstance(value, dict):
-            value = CrossVersionObjectReference().from_dict(value)
-        self._properties['describedObject'] = value
+            value = typing.cast(
+                CrossVersionObjectReference,
+                CrossVersionObjectReference().from_dict(value),
+            )
+        self._properties["describedObject"] = value
 
     @property
-    def metric(self) -> 'MetricIdentifier':
+    def metric(self) -> "MetricIdentifier":
         """
         metric identifies the target metric by name and selector
         """
-        return self._properties.get('metric')
+        return typing.cast(
+            "MetricIdentifier",
+            self._properties.get("metric"),
+        )
 
     @metric.setter
-    def metric(self, value: typing.Union['MetricIdentifier', dict]):
+    def metric(self, value: typing.Union["MetricIdentifier", dict]):
         """
         metric identifies the target metric by name and selector
         """
         if isinstance(value, dict):
-            value = MetricIdentifier().from_dict(value)
-        self._properties['metric'] = value
+            value = typing.cast(
+                MetricIdentifier,
+                MetricIdentifier().from_dict(value),
+            )
+        self._properties["metric"] = value
 
     @property
-    def target(self) -> 'MetricTarget':
+    def target(self) -> "MetricTarget":
         """
         target specifies the target value for the given metric
         """
-        return self._properties.get('target')
+        return typing.cast(
+            "MetricTarget",
+            self._properties.get("target"),
+        )
 
     @target.setter
-    def target(self, value: typing.Union['MetricTarget', dict]):
+    def target(self, value: typing.Union["MetricTarget", dict]):
         """
         target specifies the target value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricTarget().from_dict(value)
-        self._properties['target'] = value
+            value = typing.cast(
+                MetricTarget,
+                MetricTarget().from_dict(value),
+            )
+        self._properties["target"] = value
 
-    def __enter__(self) -> 'ObjectMetricSource':
+    def __enter__(self) -> "ObjectMetricSource":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2257,78 +2493,93 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            current: 'MetricValueStatus' = None,
-            described_object: 'CrossVersionObjectReference' = None,
-            metric: 'MetricIdentifier' = None,
+        self,
+        current: "MetricValueStatus" = None,
+        described_object: "CrossVersionObjectReference" = None,
+        metric: "MetricIdentifier" = None,
     ):
         """Create ObjectMetricStatus instance."""
         super(ObjectMetricStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ObjectMetricStatus'
+            api_version="autoscaling/v2beta2", kind="ObjectMetricStatus"
         )
         self._properties = {
-            'current': current if current is not None else MetricValueStatus(),
-            'describedObject': described_object if described_object is not None else CrossVersionObjectReference(),
-            'metric': metric if metric is not None else MetricIdentifier(),
-
+            "current": current if current is not None else MetricValueStatus(),
+            "describedObject": described_object
+            if described_object is not None
+            else CrossVersionObjectReference(),
+            "metric": metric if metric is not None else MetricIdentifier(),
         }
         self._types = {
-            'current': (MetricValueStatus, None),
-            'describedObject': (CrossVersionObjectReference, None),
-            'metric': (MetricIdentifier, None),
-
+            "current": (MetricValueStatus, None),
+            "describedObject": (CrossVersionObjectReference, None),
+            "metric": (MetricIdentifier, None),
         }
 
     @property
-    def current(self) -> 'MetricValueStatus':
+    def current(self) -> "MetricValueStatus":
         """
         current contains the current value for the given metric
         """
-        return self._properties.get('current')
+        return typing.cast(
+            "MetricValueStatus",
+            self._properties.get("current"),
+        )
 
     @current.setter
-    def current(self, value: typing.Union['MetricValueStatus', dict]):
+    def current(self, value: typing.Union["MetricValueStatus", dict]):
         """
         current contains the current value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricValueStatus().from_dict(value)
-        self._properties['current'] = value
+            value = typing.cast(
+                MetricValueStatus,
+                MetricValueStatus().from_dict(value),
+            )
+        self._properties["current"] = value
 
     @property
-    def described_object(self) -> 'CrossVersionObjectReference':
-        """
-
-        """
-        return self._properties.get('describedObject')
+    def described_object(self) -> "CrossVersionObjectReference":
+        """"""
+        return typing.cast(
+            "CrossVersionObjectReference",
+            self._properties.get("describedObject"),
+        )
 
     @described_object.setter
-    def described_object(self, value: typing.Union['CrossVersionObjectReference', dict]):
-        """
-
-        """
+    def described_object(
+        self, value: typing.Union["CrossVersionObjectReference", dict]
+    ):
+        """"""
         if isinstance(value, dict):
-            value = CrossVersionObjectReference().from_dict(value)
-        self._properties['describedObject'] = value
+            value = typing.cast(
+                CrossVersionObjectReference,
+                CrossVersionObjectReference().from_dict(value),
+            )
+        self._properties["describedObject"] = value
 
     @property
-    def metric(self) -> 'MetricIdentifier':
+    def metric(self) -> "MetricIdentifier":
         """
         metric identifies the target metric by name and selector
         """
-        return self._properties.get('metric')
+        return typing.cast(
+            "MetricIdentifier",
+            self._properties.get("metric"),
+        )
 
     @metric.setter
-    def metric(self, value: typing.Union['MetricIdentifier', dict]):
+    def metric(self, value: typing.Union["MetricIdentifier", dict]):
         """
         metric identifies the target metric by name and selector
         """
         if isinstance(value, dict):
-            value = MetricIdentifier().from_dict(value)
-        self._properties['metric'] = value
+            value = typing.cast(
+                MetricIdentifier,
+                MetricIdentifier().from_dict(value),
+            )
+        self._properties["metric"] = value
 
-    def __enter__(self) -> 'ObjectMetricStatus':
+    def __enter__(self) -> "ObjectMetricStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2345,59 +2596,68 @@ class PodsMetricSource(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            metric: 'MetricIdentifier' = None,
-            target: 'MetricTarget' = None,
+        self,
+        metric: "MetricIdentifier" = None,
+        target: "MetricTarget" = None,
     ):
         """Create PodsMetricSource instance."""
         super(PodsMetricSource, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='PodsMetricSource'
+            api_version="autoscaling/v2beta2", kind="PodsMetricSource"
         )
         self._properties = {
-            'metric': metric if metric is not None else MetricIdentifier(),
-            'target': target if target is not None else MetricTarget(),
-
+            "metric": metric if metric is not None else MetricIdentifier(),
+            "target": target if target is not None else MetricTarget(),
         }
         self._types = {
-            'metric': (MetricIdentifier, None),
-            'target': (MetricTarget, None),
-
+            "metric": (MetricIdentifier, None),
+            "target": (MetricTarget, None),
         }
 
     @property
-    def metric(self) -> 'MetricIdentifier':
+    def metric(self) -> "MetricIdentifier":
         """
         metric identifies the target metric by name and selector
         """
-        return self._properties.get('metric')
+        return typing.cast(
+            "MetricIdentifier",
+            self._properties.get("metric"),
+        )
 
     @metric.setter
-    def metric(self, value: typing.Union['MetricIdentifier', dict]):
+    def metric(self, value: typing.Union["MetricIdentifier", dict]):
         """
         metric identifies the target metric by name and selector
         """
         if isinstance(value, dict):
-            value = MetricIdentifier().from_dict(value)
-        self._properties['metric'] = value
+            value = typing.cast(
+                MetricIdentifier,
+                MetricIdentifier().from_dict(value),
+            )
+        self._properties["metric"] = value
 
     @property
-    def target(self) -> 'MetricTarget':
+    def target(self) -> "MetricTarget":
         """
         target specifies the target value for the given metric
         """
-        return self._properties.get('target')
+        return typing.cast(
+            "MetricTarget",
+            self._properties.get("target"),
+        )
 
     @target.setter
-    def target(self, value: typing.Union['MetricTarget', dict]):
+    def target(self, value: typing.Union["MetricTarget", dict]):
         """
         target specifies the target value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricTarget().from_dict(value)
-        self._properties['target'] = value
+            value = typing.cast(
+                MetricTarget,
+                MetricTarget().from_dict(value),
+            )
+        self._properties["target"] = value
 
-    def __enter__(self) -> 'PodsMetricSource':
+    def __enter__(self) -> "PodsMetricSource":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2412,59 +2672,68 @@ class PodsMetricStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            current: 'MetricValueStatus' = None,
-            metric: 'MetricIdentifier' = None,
+        self,
+        current: "MetricValueStatus" = None,
+        metric: "MetricIdentifier" = None,
     ):
         """Create PodsMetricStatus instance."""
         super(PodsMetricStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='PodsMetricStatus'
+            api_version="autoscaling/v2beta2", kind="PodsMetricStatus"
         )
         self._properties = {
-            'current': current if current is not None else MetricValueStatus(),
-            'metric': metric if metric is not None else MetricIdentifier(),
-
+            "current": current if current is not None else MetricValueStatus(),
+            "metric": metric if metric is not None else MetricIdentifier(),
         }
         self._types = {
-            'current': (MetricValueStatus, None),
-            'metric': (MetricIdentifier, None),
-
+            "current": (MetricValueStatus, None),
+            "metric": (MetricIdentifier, None),
         }
 
     @property
-    def current(self) -> 'MetricValueStatus':
+    def current(self) -> "MetricValueStatus":
         """
         current contains the current value for the given metric
         """
-        return self._properties.get('current')
+        return typing.cast(
+            "MetricValueStatus",
+            self._properties.get("current"),
+        )
 
     @current.setter
-    def current(self, value: typing.Union['MetricValueStatus', dict]):
+    def current(self, value: typing.Union["MetricValueStatus", dict]):
         """
         current contains the current value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricValueStatus().from_dict(value)
-        self._properties['current'] = value
+            value = typing.cast(
+                MetricValueStatus,
+                MetricValueStatus().from_dict(value),
+            )
+        self._properties["current"] = value
 
     @property
-    def metric(self) -> 'MetricIdentifier':
+    def metric(self) -> "MetricIdentifier":
         """
         metric identifies the target metric by name and selector
         """
-        return self._properties.get('metric')
+        return typing.cast(
+            "MetricIdentifier",
+            self._properties.get("metric"),
+        )
 
     @metric.setter
-    def metric(self, value: typing.Union['MetricIdentifier', dict]):
+    def metric(self, value: typing.Union["MetricIdentifier", dict]):
         """
         metric identifies the target metric by name and selector
         """
         if isinstance(value, dict):
-            value = MetricIdentifier().from_dict(value)
-        self._properties['metric'] = value
+            value = typing.cast(
+                MetricIdentifier,
+                MetricIdentifier().from_dict(value),
+            )
+        self._properties["metric"] = value
 
-    def __enter__(self) -> 'PodsMetricStatus':
+    def __enter__(self) -> "PodsMetricStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2484,24 +2753,21 @@ class ResourceMetricSource(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
-            target: 'MetricTarget' = None,
+        self,
+        name: str = None,
+        target: "MetricTarget" = None,
     ):
         """Create ResourceMetricSource instance."""
         super(ResourceMetricSource, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ResourceMetricSource'
+            api_version="autoscaling/v2beta2", kind="ResourceMetricSource"
         )
         self._properties = {
-            'name': name if name is not None else '',
-            'target': target if target is not None else MetricTarget(),
-
+            "name": name if name is not None else "",
+            "target": target if target is not None else MetricTarget(),
         }
         self._types = {
-            'name': (str, None),
-            'target': (MetricTarget, None),
-
+            "name": (str, None),
+            "target": (MetricTarget, None),
         }
 
     @property
@@ -2509,32 +2775,41 @@ class ResourceMetricSource(_kuber_definitions.Definition):
         """
         name is the name of the resource in question.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         name is the name of the resource in question.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
-    def target(self) -> 'MetricTarget':
+    def target(self) -> "MetricTarget":
         """
         target specifies the target value for the given metric
         """
-        return self._properties.get('target')
+        return typing.cast(
+            "MetricTarget",
+            self._properties.get("target"),
+        )
 
     @target.setter
-    def target(self, value: typing.Union['MetricTarget', dict]):
+    def target(self, value: typing.Union["MetricTarget", dict]):
         """
         target specifies the target value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricTarget().from_dict(value)
-        self._properties['target'] = value
+            value = typing.cast(
+                MetricTarget,
+                MetricTarget().from_dict(value),
+            )
+        self._properties["target"] = value
 
-    def __enter__(self) -> 'ResourceMetricSource':
+    def __enter__(self) -> "ResourceMetricSource":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2553,57 +2828,63 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            current: 'MetricValueStatus' = None,
-            name: str = None,
+        self,
+        current: "MetricValueStatus" = None,
+        name: str = None,
     ):
         """Create ResourceMetricStatus instance."""
         super(ResourceMetricStatus, self).__init__(
-            api_version='autoscaling/v2beta2',
-            kind='ResourceMetricStatus'
+            api_version="autoscaling/v2beta2", kind="ResourceMetricStatus"
         )
         self._properties = {
-            'current': current if current is not None else MetricValueStatus(),
-            'name': name if name is not None else '',
-
+            "current": current if current is not None else MetricValueStatus(),
+            "name": name if name is not None else "",
         }
         self._types = {
-            'current': (MetricValueStatus, None),
-            'name': (str, None),
-
+            "current": (MetricValueStatus, None),
+            "name": (str, None),
         }
 
     @property
-    def current(self) -> 'MetricValueStatus':
+    def current(self) -> "MetricValueStatus":
         """
         current contains the current value for the given metric
         """
-        return self._properties.get('current')
+        return typing.cast(
+            "MetricValueStatus",
+            self._properties.get("current"),
+        )
 
     @current.setter
-    def current(self, value: typing.Union['MetricValueStatus', dict]):
+    def current(self, value: typing.Union["MetricValueStatus", dict]):
         """
         current contains the current value for the given metric
         """
         if isinstance(value, dict):
-            value = MetricValueStatus().from_dict(value)
-        self._properties['current'] = value
+            value = typing.cast(
+                MetricValueStatus,
+                MetricValueStatus().from_dict(value),
+            )
+        self._properties["current"] = value
 
     @property
     def name(self) -> str:
         """
         Name is the name of the resource in question.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         Name is the name of the resource in question.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
-    def __enter__(self) -> 'ResourceMetricStatus':
+    def __enter__(self) -> "ResourceMetricStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

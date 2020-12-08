@@ -11,28 +11,21 @@ def populate(action: kuber.CommandAction):
     information about the command line execution.
     """
     bundle = action.bundle
-    bundle.namespace = 'prometheus'
-    bundle.add_file('./resources.yaml')
+    bundle.namespace = "prometheus"
+    bundle.add_file("./resources.yaml")
 
     # Get the server container from the server
     # deployment for modification.
     deployment: apps_v1.Deployment = bundle.get(
-        name='prometheus-server',
-        kind='Deployment'
+        name="prometheus-server", kind="Deployment"
     )
-    server: core_v1.Container = deployment.get_container(
-        'prometheus-server'
-    )
+    server: core_v1.Container = deployment.get_container("prometheus-server")
 
     # Override default retention time to be 7 days.
-    server.args.append(f'--storage.tsdb.retention.time=7d')
+    server.args.append("--storage.tsdb.retention.time=7d")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     kuber.load_access_config()
-    version = kuber.get_version_from_cluster('latest')
-    kuber.cli(
-        callback=populate,
-        kubernetes_version=version,
-        bundle_name='prometheus'
-    )
+    version = kuber.get_version_from_cluster("latest")
+    kuber.cli(callback=populate, kubernetes_version=version, bundle_name="prometheus")

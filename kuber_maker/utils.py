@@ -1,5 +1,3 @@
-
-
 def to_snake_case(value: str) -> str:
     if not value:
         return value
@@ -10,9 +8,9 @@ def to_snake_case(value: str) -> str:
         was_lowercase = previous_character.lower() == previous_character
         is_lowercase = character.lower() == character
         characters.append(
-            f'_{character.lower()}'
-            if was_lowercase and not is_lowercase else
-            character.lower()
+            f"_{character.lower()}"
+            if was_lowercase and not is_lowercase
+            else character.lower()
         )
 
-    return ''.join(characters)
+    return "".join(characters)

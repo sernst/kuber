@@ -12,12 +12,12 @@ def test_assignments():
     settings = kuber.create_bundle().settings
     settings.add(a=1, b=2)
     settings.add(b=None)
-    settings.c = 'hello'
-    settings['d'] = 'goodbye'
+    settings.c = "hello"
+    settings["d"] = "goodbye"
 
     assert settings.a == 1
-    assert settings['a'] == 1
-    assert settings.grab('a', 'b', 'c', 'd') == (1, None, 'hello', 'goodbye')
+    assert settings["a"] == 1
+    assert settings.grab("a", "b", "c", "d") == (1, None, "hello", "goodbye")
 
 
 def test_file_error():

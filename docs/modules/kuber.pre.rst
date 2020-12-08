@@ -380,7 +380,6 @@ kuber.pre.storage\_v1beta1 module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

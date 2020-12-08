@@ -8,12 +8,12 @@ def test_settings():
     """
     s = kuber.create_bundle().settings
     s.add(a=42)
-    assert s.fetch('a') == 42
-    assert s.grab('a')[0] == 42
-    assert s['a'] == 42
+    assert s.fetch("a") == 42
+    assert s.grab("a")[0] == 42
+    assert s["a"] == 42
     assert s.a == 42
-    assert s.to_dict() == {'a': 42}
-    assert s.to_yaml().find('42') > 0
+    assert s.to_dict() == {"a": 42}
+    assert s.to_yaml().find("42") > 0
     assert list(s.values()) == [42]
-    assert list(s.keys()) == ['a']
-    assert list(s.items()) == [('a', 42)]
+    assert list(s.keys()) == ["a"]
+    assert list(s.items()) == [("a", 42)]

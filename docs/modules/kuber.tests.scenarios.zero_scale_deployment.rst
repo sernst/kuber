@@ -12,7 +12,6 @@ kuber.tests.scenarios.zero\_scale\_deployment.test\_zero\_scale\_deployment modu
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

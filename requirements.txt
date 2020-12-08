@@ -1,8 +1,0 @@
-pyyaml
-kubernetes
-sphinx
-recommonmark
-requests
-semver
-pytest
-pytest-cover

@@ -40,25 +40,27 @@ class KubernetesVersion(typing.NamedTuple):
 
     def __repr__(self):
         name = self.__class__.__name__
-        return f'<{name} {self.label} ({self.version})>'
+        return f"<{name} {self.label} ({self.version})>"
 
 
-def get_version_data(version_label: str) -> KubernetesVersion:
+def get_version_data(
+    version_label: typing.Union[str, KubernetesVersion, None] = None
+) -> KubernetesVersion:
     """
     Returns the KubernetesVersion object specified in the root subpackage
     of the specified Kubernetes library version.
     """
-    version = f'{version_label}'.replace('.', '_')
-    needs_prefix = (
-        version not in ['pre', 'latest']
-        and not version.startswith('v')
-    )
-    if needs_prefix:
-        version = f'v{version}'
+    if isinstance(version_label, KubernetesVersion):
+        return version_label
 
-    package = '.'.join(['kuber', version])
+    version = "{}".format(version_label or "latest").replace(".", "_")
+    needs_prefix = version not in ["pre", "latest"] and not version.startswith("v")
+    if needs_prefix:
+        version = f"v{version}"
+
+    package = ".".join(["kuber", version])
     loaded_module = importlib.import_module(package)
-    return getattr(loaded_module, 'KUBERNETES_VERSION')
+    return getattr(loaded_module, "KUBERNETES_VERSION")
 
 
 def get_all_versions(stable: bool = False) -> typing.List[KubernetesVersion]:
@@ -70,18 +72,22 @@ def get_all_versions(stable: bool = False) -> typing.List[KubernetesVersion]:
         Whether or not to restrict returned versions to stable releases,
         i.e. not pre-releases like alpha and beta versions.
     """
-    alternatives = ['latest', 'pre']
-    versions: typing.List[KubernetesVersion] = list(set([
-        get_version_data(name)
-        for name in os.listdir(_root_directory)
-        if os.path.isdir(os.path.join(_root_directory, name))
-        and (name.startswith('v') or name in alternatives)
-    ]))
-    versions.sort(key=lambda v: '{}.{}.{}'.format(
-        v.major.zfill(3),
-        v.minor.zfill(3),
-        v.patch.zfill(3)
-    ))
+    alternatives = ["latest", "pre"]
+    versions: typing.List[KubernetesVersion] = list(
+        set(
+            [
+                get_version_data(name)
+                for name in os.listdir(_root_directory)
+                if os.path.isdir(os.path.join(_root_directory, name))
+                and (name.startswith("v") or name in alternatives)
+            ]
+        )
+    )
+    versions.sort(
+        key=lambda v: "{}.{}.{}".format(
+            v.major.zfill(3), v.minor.zfill(3), v.patch.zfill(3)
+        )
+    )
     return [v for v in versions if not stable or not v.pre_release]
 
 

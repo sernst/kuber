@@ -2,7 +2,9 @@
 [![Documentation Status](https://readthedocs.org/projects/kuber/badge/?version=latest)](https://kuber.readthedocs.io/en/latest/?badge=latest)
 [![build status](https://gitlab.com/swernst/kuber/badges/master/build.svg)](https://gitlab.com/swernst/kuber/commits/master)
 [![coverage report](https://gitlab.com/swernst/kuber/badges/master/coverage.svg)](https://gitlab.com/swernst/kuber/commits/master)
-
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Code style: flake8](https://img.shields.io/badge/code%20style-flake8-white)](https://gitlab.com/pycqa/flake8)
+[![Code style: mypy](https://img.shields.io/badge/code%20style-mypy-white)](http://mypy-lang.org/)
 
 # Kuber
 
@@ -61,19 +63,19 @@ from kuber.latest import apps_v1
 # configuration file from the local `secrets` directory.
 resource_bundle = (
     kuber.create_bundle()
-    .add_directory('app_configs')
-    .add_file('secrets/app-secret.yaml')
+    .add_directory("app_configs")
+    .add_file("secrets/app-secret.yaml")
 )
 
 # Modify the metadata labels on all resources in the bundle.
 for resource in resource_bundle.resources:
-    resource.metadata.labels.update(environment='production')
+    resource.metadata.labels.update(environment="production")
 
 # Update the replica count of the loaded deployment named
 # "my-app" to the desired initial count.
 d: apps_v1.Deployment = resource_bundle.get(
-    name='my-app',
-    kind='Deployment'
+    name="my-app",
+    kind="Deployment"
 )
 d.spec.replicas = 20
 
@@ -98,19 +100,19 @@ job = batch_v1.Job()
 
 # Populate metadata using context manager syntax for brevity.
 with job.metadata as md:
-    md.name = 'my-job'
-    md.namespace = 'jobs'
+    md.name = "my-job"
+    md.namespace = "jobs"
     md.labels.update(
-        component='backend-tasks',
-        environment='production'
+        component="backend-tasks",
+        environment="production"
     )
 
 # Add a container to the job spec.
 job.spec.append_container(
-    name='main',
-    image='my-registry.com/projects/my-job:1.0.1',
-    image_pull_policy='Always',
-    env=[batch_v1.EnvVar('ENVIRONMENT', 'production')]
+    name="main",
+    image="my-registry.com/projects/my-job:1.0.1",
+    image_pull_policy="Always",
+    env=[batch_v1.EnvVar("ENVIRONMENT", "production")]
 )
 
 # Print the resulting YAML configuration for display. This

@@ -16,51 +16,58 @@ class MutatingWebhook(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            admission_review_versions: typing.List[str] = None,
-            client_config: 'WebhookClientConfig' = None,
-            failure_policy: str = None,
-            match_policy: str = None,
-            name: str = None,
-            namespace_selector: 'LabelSelector' = None,
-            object_selector: 'LabelSelector' = None,
-            reinvocation_policy: str = None,
-            rules: typing.List['RuleWithOperations'] = None,
-            side_effects: str = None,
-            timeout_seconds: int = None,
+        self,
+        admission_review_versions: typing.List[str] = None,
+        client_config: "WebhookClientConfig" = None,
+        failure_policy: str = None,
+        match_policy: str = None,
+        name: str = None,
+        namespace_selector: "LabelSelector" = None,
+        object_selector: "LabelSelector" = None,
+        reinvocation_policy: str = None,
+        rules: typing.List["RuleWithOperations"] = None,
+        side_effects: str = None,
+        timeout_seconds: int = None,
     ):
         """Create MutatingWebhook instance."""
         super(MutatingWebhook, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='MutatingWebhook'
+            api_version="admissionregistration/v1beta1", kind="MutatingWebhook"
         )
         self._properties = {
-            'admissionReviewVersions': admission_review_versions if admission_review_versions is not None else [],
-            'clientConfig': client_config if client_config is not None else WebhookClientConfig(),
-            'failurePolicy': failure_policy if failure_policy is not None else '',
-            'matchPolicy': match_policy if match_policy is not None else '',
-            'name': name if name is not None else '',
-            'namespaceSelector': namespace_selector if namespace_selector is not None else LabelSelector(),
-            'objectSelector': object_selector if object_selector is not None else LabelSelector(),
-            'reinvocationPolicy': reinvocation_policy if reinvocation_policy is not None else '',
-            'rules': rules if rules is not None else [],
-            'sideEffects': side_effects if side_effects is not None else '',
-            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
-
+            "admissionReviewVersions": admission_review_versions
+            if admission_review_versions is not None
+            else [],
+            "clientConfig": client_config
+            if client_config is not None
+            else WebhookClientConfig(),
+            "failurePolicy": failure_policy if failure_policy is not None else "",
+            "matchPolicy": match_policy if match_policy is not None else "",
+            "name": name if name is not None else "",
+            "namespaceSelector": namespace_selector
+            if namespace_selector is not None
+            else LabelSelector(),
+            "objectSelector": object_selector
+            if object_selector is not None
+            else LabelSelector(),
+            "reinvocationPolicy": reinvocation_policy
+            if reinvocation_policy is not None
+            else "",
+            "rules": rules if rules is not None else [],
+            "sideEffects": side_effects if side_effects is not None else "",
+            "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,
         }
         self._types = {
-            'admissionReviewVersions': (list, str),
-            'clientConfig': (WebhookClientConfig, None),
-            'failurePolicy': (str, None),
-            'matchPolicy': (str, None),
-            'name': (str, None),
-            'namespaceSelector': (LabelSelector, None),
-            'objectSelector': (LabelSelector, None),
-            'reinvocationPolicy': (str, None),
-            'rules': (list, RuleWithOperations),
-            'sideEffects': (str, None),
-            'timeoutSeconds': (int, None),
-
+            "admissionReviewVersions": (list, str),
+            "clientConfig": (WebhookClientConfig, None),
+            "failurePolicy": (str, None),
+            "matchPolicy": (str, None),
+            "name": (str, None),
+            "namespaceSelector": (LabelSelector, None),
+            "objectSelector": (LabelSelector, None),
+            "reinvocationPolicy": (str, None),
+            "rules": (list, RuleWithOperations),
+            "sideEffects": (str, None),
+            "timeoutSeconds": (int, None),
         }
 
     @property
@@ -76,7 +83,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
         calls to the webhook will fail and be subject to the failure
         policy. Default to `['v1beta1']`.
         """
-        return self._properties.get('admissionReviewVersions')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("admissionReviewVersions"),
+        )
 
     @admission_review_versions.setter
     def admission_review_versions(self, value: typing.List[str]):
@@ -91,25 +101,31 @@ class MutatingWebhook(_kuber_definitions.Definition):
         calls to the webhook will fail and be subject to the failure
         policy. Default to `['v1beta1']`.
         """
-        self._properties['admissionReviewVersions'] = value
+        self._properties["admissionReviewVersions"] = value
 
     @property
-    def client_config(self) -> 'WebhookClientConfig':
+    def client_config(self) -> "WebhookClientConfig":
         """
         ClientConfig defines how to communicate with the hook.
         Required
         """
-        return self._properties.get('clientConfig')
+        return typing.cast(
+            "WebhookClientConfig",
+            self._properties.get("clientConfig"),
+        )
 
     @client_config.setter
-    def client_config(self, value: typing.Union['WebhookClientConfig', dict]):
+    def client_config(self, value: typing.Union["WebhookClientConfig", dict]):
         """
         ClientConfig defines how to communicate with the hook.
         Required
         """
         if isinstance(value, dict):
-            value = WebhookClientConfig().from_dict(value)
-        self._properties['clientConfig'] = value
+            value = typing.cast(
+                WebhookClientConfig,
+                WebhookClientConfig().from_dict(value),
+            )
+        self._properties["clientConfig"] = value
 
     @property
     def failure_policy(self) -> str:
@@ -118,7 +134,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
         admission endpoint are handled - allowed values are Ignore
         or Fail. Defaults to Ignore.
         """
-        return self._properties.get('failurePolicy')
+        return typing.cast(
+            str,
+            self._properties.get("failurePolicy"),
+        )
 
     @failure_policy.setter
     def failure_policy(self, value: str):
@@ -127,7 +146,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
         admission endpoint are handled - allowed values are Ignore
         or Fail. Defaults to Ignore.
         """
-        self._properties['failurePolicy'] = value
+        self._properties["failurePolicy"] = value
 
     @property
     def match_policy(self) -> str:
@@ -155,7 +174,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
 
         Defaults to "Exact"
         """
-        return self._properties.get('matchPolicy')
+        return typing.cast(
+            str,
+            self._properties.get("matchPolicy"),
+        )
 
     @match_policy.setter
     def match_policy(self, value: str):
@@ -183,7 +205,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
 
         Defaults to "Exact"
         """
-        self._properties['matchPolicy'] = value
+        self._properties["matchPolicy"] = value
 
     @property
     def name(self) -> str:
@@ -193,7 +215,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
         "imagepolicy" is the name of the webhook, and kubernetes.io
         is the name of the organization. Required.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -203,10 +228,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
         "imagepolicy" is the name of the webhook, and kubernetes.io
         is the name of the organization. Required.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
-    def namespace_selector(self) -> 'LabelSelector':
+    def namespace_selector(self) -> "LabelSelector":
         """
         NamespaceSelector decides whether to run the webhook on an
         object based on whether the namespace for that object
@@ -252,10 +277,13 @@ class MutatingWebhook(_kuber_definitions.Definition):
         Default to the empty LabelSelector, which matches
         everything.
         """
-        return self._properties.get('namespaceSelector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("namespaceSelector"),
+        )
 
     @namespace_selector.setter
-    def namespace_selector(self, value: typing.Union['LabelSelector', dict]):
+    def namespace_selector(self, value: typing.Union["LabelSelector", dict]):
         """
         NamespaceSelector decides whether to run the webhook on an
         object based on whether the namespace for that object
@@ -302,11 +330,14 @@ class MutatingWebhook(_kuber_definitions.Definition):
         everything.
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['namespaceSelector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["namespaceSelector"] = value
 
     @property
-    def object_selector(self) -> 'LabelSelector':
+    def object_selector(self) -> "LabelSelector":
         """
         ObjectSelector decides whether to run the webhook based on
         if the object has matching labels. objectSelector is
@@ -321,10 +352,13 @@ class MutatingWebhook(_kuber_definitions.Definition):
         webhook by setting the labels. Default to the empty
         LabelSelector, which matches everything.
         """
-        return self._properties.get('objectSelector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("objectSelector"),
+        )
 
     @object_selector.setter
-    def object_selector(self, value: typing.Union['LabelSelector', dict]):
+    def object_selector(self, value: typing.Union["LabelSelector", dict]):
         """
         ObjectSelector decides whether to run the webhook based on
         if the object has matching labels. objectSelector is
@@ -340,8 +374,11 @@ class MutatingWebhook(_kuber_definitions.Definition):
         LabelSelector, which matches everything.
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['objectSelector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["objectSelector"] = value
 
     @property
     def reinvocation_policy(self) -> str:
@@ -369,7 +406,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
 
         Defaults to "Never".
         """
-        return self._properties.get('reinvocationPolicy')
+        return typing.cast(
+            str,
+            self._properties.get("reinvocationPolicy"),
+        )
 
     @reinvocation_policy.setter
     def reinvocation_policy(self, value: str):
@@ -397,10 +437,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
 
         Defaults to "Never".
         """
-        self._properties['reinvocationPolicy'] = value
+        self._properties["reinvocationPolicy"] = value
 
     @property
-    def rules(self) -> typing.List['RuleWithOperations']:
+    def rules(self) -> typing.List["RuleWithOperations"]:
         """
         Rules describes what operations on what
         resources/subresources the webhook cares about. The webhook
@@ -413,12 +453,14 @@ class MutatingWebhook(_kuber_definitions.Definition):
         requests for ValidatingWebhookConfiguration and
         MutatingWebhookConfiguration objects.
         """
-        return self._properties.get('rules')
+        return typing.cast(
+            typing.List["RuleWithOperations"],
+            self._properties.get("rules"),
+        )
 
     @rules.setter
     def rules(
-            self,
-            value: typing.Union[typing.List['RuleWithOperations'], typing.List[dict]]
+        self, value: typing.Union[typing.List["RuleWithOperations"], typing.List[dict]]
     ):
         """
         Rules describes what operations on what
@@ -432,12 +474,15 @@ class MutatingWebhook(_kuber_definitions.Definition):
         requests for ValidatingWebhookConfiguration and
         MutatingWebhookConfiguration objects.
         """
-        cleaned = []
+        cleaned: typing.List[RuleWithOperations] = []
         for item in value:
             if isinstance(item, dict):
-                item = RuleWithOperations().from_dict(item)
-            cleaned.append(item)
-        self._properties['rules'] = cleaned
+                item = typing.cast(
+                    RuleWithOperations,
+                    RuleWithOperations().from_dict(item),
+                )
+            cleaned.append(typing.cast(RuleWithOperations, item))
+        self._properties["rules"] = cleaned
 
     @property
     def side_effects(self) -> str:
@@ -451,7 +496,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.
         """
-        return self._properties.get('sideEffects')
+        return typing.cast(
+            str,
+            self._properties.get("sideEffects"),
+        )
 
     @side_effects.setter
     def side_effects(self, value: str):
@@ -465,7 +513,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.
         """
-        self._properties['sideEffects'] = value
+        self._properties["sideEffects"] = value
 
     @property
     def timeout_seconds(self) -> int:
@@ -476,7 +524,10 @@ class MutatingWebhook(_kuber_definitions.Definition):
         value must be between 1 and 30 seconds. Default to 30
         seconds.
         """
-        return self._properties.get('timeoutSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("timeoutSeconds"),
+        )
 
     @timeout_seconds.setter
     def timeout_seconds(self, value: int):
@@ -487,9 +538,9 @@ class MutatingWebhook(_kuber_definitions.Definition):
         value must be between 1 and 30 seconds. Default to 30
         seconds.
         """
-        self._properties['timeoutSeconds'] = value
+        self._properties["timeoutSeconds"] = value
 
-    def __enter__(self) -> 'MutatingWebhook':
+    def __enter__(self) -> "MutatingWebhook":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -506,197 +557,202 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            webhooks: typing.List['MutatingWebhook'] = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        webhooks: typing.List["MutatingWebhook"] = None,
     ):
         """Create MutatingWebhookConfiguration instance."""
         super(MutatingWebhookConfiguration, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='MutatingWebhookConfiguration'
+            api_version="admissionregistration/v1beta1",
+            kind="MutatingWebhookConfiguration",
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'webhooks': webhooks if webhooks is not None else [],
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "webhooks": webhooks if webhooks is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'webhooks': (list, MutatingWebhook),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "webhooks": (list, MutatingWebhook),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object metadata; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object metadata; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def webhooks(self) -> typing.List['MutatingWebhook']:
+    def webhooks(self) -> typing.List["MutatingWebhook"]:
         """
         Webhooks is a list of webhooks and the affected resources
         and operations.
         """
-        return self._properties.get('webhooks')
+        return typing.cast(
+            typing.List["MutatingWebhook"],
+            self._properties.get("webhooks"),
+        )
 
     @webhooks.setter
     def webhooks(
-            self,
-            value: typing.Union[typing.List['MutatingWebhook'], typing.List[dict]]
+        self, value: typing.Union[typing.List["MutatingWebhook"], typing.List[dict]]
     ):
         """
         Webhooks is a list of webhooks and the affected resources
         and operations.
         """
-        cleaned = []
+        cleaned: typing.List[MutatingWebhook] = []
         for item in value:
             if isinstance(item, dict):
-                item = MutatingWebhook().from_dict(item)
-            cleaned.append(item)
-        self._properties['webhooks'] = cleaned
+                item = typing.cast(
+                    MutatingWebhook,
+                    MutatingWebhook().from_dict(item),
+                )
+            cleaned.append(typing.cast(MutatingWebhook, item))
+        self._properties["webhooks"] = cleaned
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the MutatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'create_namespaced_mutating_webhook_configuration',
-            'create_mutating_webhook_configuration'
+            "create_namespaced_mutating_webhook_configuration",
+            "create_mutating_webhook_configuration",
         ]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the MutatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'replace_namespaced_mutating_webhook_configuration',
-            'replace_mutating_webhook_configuration'
+            "replace_namespaced_mutating_webhook_configuration",
+            "replace_mutating_webhook_configuration",
         ]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the MutatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'patch_namespaced_mutating_webhook_configuration',
-            'patch_mutating_webhook_configuration'
+            "patch_namespaced_mutating_webhook_configuration",
+            "patch_mutating_webhook_configuration",
         ]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the MutatingWebhookConfiguration from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_mutating_webhook_configuration',
-            'read_mutating_webhook_configuration'
+            "read_namespaced_mutating_webhook_configuration",
+            "read_mutating_webhook_configuration",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the MutatingWebhookConfiguration from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_mutating_webhook_configuration',
-            'delete_mutating_webhook_configuration'
+            "delete_namespaced_mutating_webhook_configuration",
+            "delete_mutating_webhook_configuration",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AdmissionregistrationV1beta1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AdmissionregistrationV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AdmissionregistrationV1beta1Api(**kwargs)
 
-    def __enter__(self) -> 'MutatingWebhookConfiguration':
+    def __enter__(self) -> "MutatingWebhookConfiguration":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -710,84 +766,95 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['MutatingWebhookConfiguration'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["MutatingWebhookConfiguration"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create MutatingWebhookConfigurationList instance."""
         super(MutatingWebhookConfigurationList, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='MutatingWebhookConfigurationList'
+            api_version="admissionregistration/v1beta1",
+            kind="MutatingWebhookConfigurationList",
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, MutatingWebhookConfiguration),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, MutatingWebhookConfiguration),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['MutatingWebhookConfiguration']:
+    def items(self) -> typing.List["MutatingWebhookConfiguration"]:
         """
         List of MutatingWebhookConfiguration.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["MutatingWebhookConfiguration"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['MutatingWebhookConfiguration'], typing.List[dict]]
+        self,
+        value: typing.Union[
+            typing.List["MutatingWebhookConfiguration"], typing.List[dict]
+        ],
     ):
         """
         List of MutatingWebhookConfiguration.
         """
-        cleaned = []
+        cleaned: typing.List[MutatingWebhookConfiguration] = []
         for item in value:
             if isinstance(item, dict):
-                item = MutatingWebhookConfiguration().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    MutatingWebhookConfiguration,
+                    MutatingWebhookConfiguration().from_dict(item),
+                )
+            cleaned.append(typing.cast(MutatingWebhookConfiguration, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AdmissionregistrationV1beta1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AdmissionregistrationV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AdmissionregistrationV1beta1Api(**kwargs)
 
-    def __enter__(self) -> 'MutatingWebhookConfigurationList':
+    def __enter__(self) -> "MutatingWebhookConfigurationList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -802,33 +869,30 @@ class RuleWithOperations(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            api_groups: typing.List[str] = None,
-            api_versions: typing.List[str] = None,
-            operations: typing.List[str] = None,
-            resources: typing.List[str] = None,
-            scope: str = None,
+        self,
+        api_groups: typing.List[str] = None,
+        api_versions: typing.List[str] = None,
+        operations: typing.List[str] = None,
+        resources: typing.List[str] = None,
+        scope: str = None,
     ):
         """Create RuleWithOperations instance."""
         super(RuleWithOperations, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='RuleWithOperations'
+            api_version="admissionregistration/v1beta1", kind="RuleWithOperations"
         )
         self._properties = {
-            'apiGroups': api_groups if api_groups is not None else [],
-            'apiVersions': api_versions if api_versions is not None else [],
-            'operations': operations if operations is not None else [],
-            'resources': resources if resources is not None else [],
-            'scope': scope if scope is not None else '',
-
+            "apiGroups": api_groups if api_groups is not None else [],
+            "apiVersions": api_versions if api_versions is not None else [],
+            "operations": operations if operations is not None else [],
+            "resources": resources if resources is not None else [],
+            "scope": scope if scope is not None else "",
         }
         self._types = {
-            'apiGroups': (list, str),
-            'apiVersions': (list, str),
-            'operations': (list, str),
-            'resources': (list, str),
-            'scope': (str, None),
-
+            "apiGroups": (list, str),
+            "apiVersions": (list, str),
+            "operations": (list, str),
+            "resources": (list, str),
+            "scope": (str, None),
         }
 
     @property
@@ -838,7 +902,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
         all groups. If '*' is present, the length of the slice must
         be one. Required.
         """
-        return self._properties.get('apiGroups')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("apiGroups"),
+        )
 
     @api_groups.setter
     def api_groups(self, value: typing.List[str]):
@@ -847,7 +914,7 @@ class RuleWithOperations(_kuber_definitions.Definition):
         all groups. If '*' is present, the length of the slice must
         be one. Required.
         """
-        self._properties['apiGroups'] = value
+        self._properties["apiGroups"] = value
 
     @property
     def api_versions(self) -> typing.List[str]:
@@ -856,7 +923,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
         is all versions. If '*' is present, the length of the slice
         must be one. Required.
         """
-        return self._properties.get('apiVersions')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("apiVersions"),
+        )
 
     @api_versions.setter
     def api_versions(self, value: typing.List[str]):
@@ -865,7 +935,7 @@ class RuleWithOperations(_kuber_definitions.Definition):
         is all versions. If '*' is present, the length of the slice
         must be one. Required.
         """
-        self._properties['apiVersions'] = value
+        self._properties["apiVersions"] = value
 
     @property
     def operations(self) -> typing.List[str]:
@@ -874,7 +944,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
         - CREATE, UPDATE, or * for all operations. If '*' is
         present, the length of the slice must be one. Required.
         """
-        return self._properties.get('operations')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("operations"),
+        )
 
     @operations.setter
     def operations(self, value: typing.List[str]):
@@ -883,7 +956,7 @@ class RuleWithOperations(_kuber_definitions.Definition):
         - CREATE, UPDATE, or * for all operations. If '*' is
         present, the length of the slice must be one. Required.
         """
-        self._properties['operations'] = value
+        self._properties["operations"] = value
 
     @property
     def resources(self) -> typing.List[str]:
@@ -902,7 +975,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
         Depending on the enclosing object, subresources might not be
         allowed. Required.
         """
-        return self._properties.get('resources')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("resources"),
+        )
 
     @resources.setter
     def resources(self, value: typing.List[str]):
@@ -921,7 +997,7 @@ class RuleWithOperations(_kuber_definitions.Definition):
         Depending on the enclosing object, subresources might not be
         allowed. Required.
         """
-        self._properties['resources'] = value
+        self._properties["resources"] = value
 
     @property
     def scope(self) -> str:
@@ -934,7 +1010,10 @@ class RuleWithOperations(_kuber_definitions.Definition):
         there are no scope restrictions. Subresources match the
         scope of their parent resource. Default is "*".
         """
-        return self._properties.get('scope')
+        return typing.cast(
+            str,
+            self._properties.get("scope"),
+        )
 
     @scope.setter
     def scope(self, value: str):
@@ -947,9 +1026,9 @@ class RuleWithOperations(_kuber_definitions.Definition):
         there are no scope restrictions. Subresources match the
         scope of their parent resource. Default is "*".
         """
-        self._properties['scope'] = value
+        self._properties["scope"] = value
 
-    def __enter__(self) -> 'RuleWithOperations':
+    def __enter__(self) -> "RuleWithOperations":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -962,30 +1041,27 @@ class ServiceReference(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            name: str = None,
-            namespace: str = None,
-            path: str = None,
-            port: int = None,
+        self,
+        name: str = None,
+        namespace: str = None,
+        path: str = None,
+        port: int = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='ServiceReference'
+            api_version="admissionregistration/v1beta1", kind="ServiceReference"
         )
         self._properties = {
-            'name': name if name is not None else '',
-            'namespace': namespace if namespace is not None else '',
-            'path': path if path is not None else '',
-            'port': port if port is not None else None,
-
+            "name": name if name is not None else "",
+            "namespace": namespace if namespace is not None else "",
+            "path": path if path is not None else "",
+            "port": port if port is not None else None,
         }
         self._types = {
-            'name': (str, None),
-            'namespace': (str, None),
-            'path': (str, None),
-            'port': (int, None),
-
+            "name": (str, None),
+            "namespace": (str, None),
+            "path": (str, None),
+            "port": (int, None),
         }
 
     @property
@@ -993,28 +1069,34 @@ class ServiceReference(_kuber_definitions.Definition):
         """
         `name` is the name of the service. Required
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
         """
         `name` is the name of the service. Required
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
     def namespace(self) -> str:
         """
         `namespace` is the namespace of the service. Required
         """
-        return self._properties.get('namespace')
+        return typing.cast(
+            str,
+            self._properties.get("namespace"),
+        )
 
     @namespace.setter
     def namespace(self, value: str):
         """
         `namespace` is the namespace of the service. Required
         """
-        self._properties['namespace'] = value
+        self._properties["namespace"] = value
 
     @property
     def path(self) -> str:
@@ -1022,7 +1104,10 @@ class ServiceReference(_kuber_definitions.Definition):
         `path` is an optional URL path which will be sent in any
         request to this service.
         """
-        return self._properties.get('path')
+        return typing.cast(
+            str,
+            self._properties.get("path"),
+        )
 
     @path.setter
     def path(self, value: str):
@@ -1030,7 +1115,7 @@ class ServiceReference(_kuber_definitions.Definition):
         `path` is an optional URL path which will be sent in any
         request to this service.
         """
-        self._properties['path'] = value
+        self._properties["path"] = value
 
     @property
     def port(self) -> int:
@@ -1039,7 +1124,10 @@ class ServiceReference(_kuber_definitions.Definition):
         Default to 443 for backward compatibility. `port` should be
         a valid port number (1-65535, inclusive).
         """
-        return self._properties.get('port')
+        return typing.cast(
+            int,
+            self._properties.get("port"),
+        )
 
     @port.setter
     def port(self, value: int):
@@ -1048,9 +1136,9 @@ class ServiceReference(_kuber_definitions.Definition):
         Default to 443 for backward compatibility. `port` should be
         a valid port number (1-65535, inclusive).
         """
-        self._properties['port'] = value
+        self._properties["port"] = value
 
-    def __enter__(self) -> 'ServiceReference':
+    def __enter__(self) -> "ServiceReference":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1064,48 +1152,53 @@ class ValidatingWebhook(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            admission_review_versions: typing.List[str] = None,
-            client_config: 'WebhookClientConfig' = None,
-            failure_policy: str = None,
-            match_policy: str = None,
-            name: str = None,
-            namespace_selector: 'LabelSelector' = None,
-            object_selector: 'LabelSelector' = None,
-            rules: typing.List['RuleWithOperations'] = None,
-            side_effects: str = None,
-            timeout_seconds: int = None,
+        self,
+        admission_review_versions: typing.List[str] = None,
+        client_config: "WebhookClientConfig" = None,
+        failure_policy: str = None,
+        match_policy: str = None,
+        name: str = None,
+        namespace_selector: "LabelSelector" = None,
+        object_selector: "LabelSelector" = None,
+        rules: typing.List["RuleWithOperations"] = None,
+        side_effects: str = None,
+        timeout_seconds: int = None,
     ):
         """Create ValidatingWebhook instance."""
         super(ValidatingWebhook, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='ValidatingWebhook'
+            api_version="admissionregistration/v1beta1", kind="ValidatingWebhook"
         )
         self._properties = {
-            'admissionReviewVersions': admission_review_versions if admission_review_versions is not None else [],
-            'clientConfig': client_config if client_config is not None else WebhookClientConfig(),
-            'failurePolicy': failure_policy if failure_policy is not None else '',
-            'matchPolicy': match_policy if match_policy is not None else '',
-            'name': name if name is not None else '',
-            'namespaceSelector': namespace_selector if namespace_selector is not None else LabelSelector(),
-            'objectSelector': object_selector if object_selector is not None else LabelSelector(),
-            'rules': rules if rules is not None else [],
-            'sideEffects': side_effects if side_effects is not None else '',
-            'timeoutSeconds': timeout_seconds if timeout_seconds is not None else None,
-
+            "admissionReviewVersions": admission_review_versions
+            if admission_review_versions is not None
+            else [],
+            "clientConfig": client_config
+            if client_config is not None
+            else WebhookClientConfig(),
+            "failurePolicy": failure_policy if failure_policy is not None else "",
+            "matchPolicy": match_policy if match_policy is not None else "",
+            "name": name if name is not None else "",
+            "namespaceSelector": namespace_selector
+            if namespace_selector is not None
+            else LabelSelector(),
+            "objectSelector": object_selector
+            if object_selector is not None
+            else LabelSelector(),
+            "rules": rules if rules is not None else [],
+            "sideEffects": side_effects if side_effects is not None else "",
+            "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,
         }
         self._types = {
-            'admissionReviewVersions': (list, str),
-            'clientConfig': (WebhookClientConfig, None),
-            'failurePolicy': (str, None),
-            'matchPolicy': (str, None),
-            'name': (str, None),
-            'namespaceSelector': (LabelSelector, None),
-            'objectSelector': (LabelSelector, None),
-            'rules': (list, RuleWithOperations),
-            'sideEffects': (str, None),
-            'timeoutSeconds': (int, None),
-
+            "admissionReviewVersions": (list, str),
+            "clientConfig": (WebhookClientConfig, None),
+            "failurePolicy": (str, None),
+            "matchPolicy": (str, None),
+            "name": (str, None),
+            "namespaceSelector": (LabelSelector, None),
+            "objectSelector": (LabelSelector, None),
+            "rules": (list, RuleWithOperations),
+            "sideEffects": (str, None),
+            "timeoutSeconds": (int, None),
         }
 
     @property
@@ -1121,7 +1214,10 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         calls to the webhook will fail and be subject to the failure
         policy. Default to `['v1beta1']`.
         """
-        return self._properties.get('admissionReviewVersions')
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("admissionReviewVersions"),
+        )
 
     @admission_review_versions.setter
     def admission_review_versions(self, value: typing.List[str]):
@@ -1136,25 +1232,31 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         calls to the webhook will fail and be subject to the failure
         policy. Default to `['v1beta1']`.
         """
-        self._properties['admissionReviewVersions'] = value
+        self._properties["admissionReviewVersions"] = value
 
     @property
-    def client_config(self) -> 'WebhookClientConfig':
+    def client_config(self) -> "WebhookClientConfig":
         """
         ClientConfig defines how to communicate with the hook.
         Required
         """
-        return self._properties.get('clientConfig')
+        return typing.cast(
+            "WebhookClientConfig",
+            self._properties.get("clientConfig"),
+        )
 
     @client_config.setter
-    def client_config(self, value: typing.Union['WebhookClientConfig', dict]):
+    def client_config(self, value: typing.Union["WebhookClientConfig", dict]):
         """
         ClientConfig defines how to communicate with the hook.
         Required
         """
         if isinstance(value, dict):
-            value = WebhookClientConfig().from_dict(value)
-        self._properties['clientConfig'] = value
+            value = typing.cast(
+                WebhookClientConfig,
+                WebhookClientConfig().from_dict(value),
+            )
+        self._properties["clientConfig"] = value
 
     @property
     def failure_policy(self) -> str:
@@ -1163,7 +1265,10 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         admission endpoint are handled - allowed values are Ignore
         or Fail. Defaults to Ignore.
         """
-        return self._properties.get('failurePolicy')
+        return typing.cast(
+            str,
+            self._properties.get("failurePolicy"),
+        )
 
     @failure_policy.setter
     def failure_policy(self, value: str):
@@ -1172,7 +1277,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         admission endpoint are handled - allowed values are Ignore
         or Fail. Defaults to Ignore.
         """
-        self._properties['failurePolicy'] = value
+        self._properties["failurePolicy"] = value
 
     @property
     def match_policy(self) -> str:
@@ -1200,7 +1305,10 @@ class ValidatingWebhook(_kuber_definitions.Definition):
 
         Defaults to "Exact"
         """
-        return self._properties.get('matchPolicy')
+        return typing.cast(
+            str,
+            self._properties.get("matchPolicy"),
+        )
 
     @match_policy.setter
     def match_policy(self, value: str):
@@ -1228,7 +1336,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
 
         Defaults to "Exact"
         """
-        self._properties['matchPolicy'] = value
+        self._properties["matchPolicy"] = value
 
     @property
     def name(self) -> str:
@@ -1238,7 +1346,10 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         "imagepolicy" is the name of the webhook, and kubernetes.io
         is the name of the organization. Required.
         """
-        return self._properties.get('name')
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
 
     @name.setter
     def name(self, value: str):
@@ -1248,10 +1359,10 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         "imagepolicy" is the name of the webhook, and kubernetes.io
         is the name of the organization. Required.
         """
-        self._properties['name'] = value
+        self._properties["name"] = value
 
     @property
-    def namespace_selector(self) -> 'LabelSelector':
+    def namespace_selector(self) -> "LabelSelector":
         """
         NamespaceSelector decides whether to run the webhook on an
         object based on whether the namespace for that object
@@ -1297,10 +1408,13 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         Default to the empty LabelSelector, which matches
         everything.
         """
-        return self._properties.get('namespaceSelector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("namespaceSelector"),
+        )
 
     @namespace_selector.setter
-    def namespace_selector(self, value: typing.Union['LabelSelector', dict]):
+    def namespace_selector(self, value: typing.Union["LabelSelector", dict]):
         """
         NamespaceSelector decides whether to run the webhook on an
         object based on whether the namespace for that object
@@ -1347,11 +1461,14 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         everything.
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['namespaceSelector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["namespaceSelector"] = value
 
     @property
-    def object_selector(self) -> 'LabelSelector':
+    def object_selector(self) -> "LabelSelector":
         """
         ObjectSelector decides whether to run the webhook based on
         if the object has matching labels. objectSelector is
@@ -1366,10 +1483,13 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         webhook by setting the labels. Default to the empty
         LabelSelector, which matches everything.
         """
-        return self._properties.get('objectSelector')
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("objectSelector"),
+        )
 
     @object_selector.setter
-    def object_selector(self, value: typing.Union['LabelSelector', dict]):
+    def object_selector(self, value: typing.Union["LabelSelector", dict]):
         """
         ObjectSelector decides whether to run the webhook based on
         if the object has matching labels. objectSelector is
@@ -1385,11 +1505,14 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         LabelSelector, which matches everything.
         """
         if isinstance(value, dict):
-            value = LabelSelector().from_dict(value)
-        self._properties['objectSelector'] = value
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["objectSelector"] = value
 
     @property
-    def rules(self) -> typing.List['RuleWithOperations']:
+    def rules(self) -> typing.List["RuleWithOperations"]:
         """
         Rules describes what operations on what
         resources/subresources the webhook cares about. The webhook
@@ -1402,12 +1525,14 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         requests for ValidatingWebhookConfiguration and
         MutatingWebhookConfiguration objects.
         """
-        return self._properties.get('rules')
+        return typing.cast(
+            typing.List["RuleWithOperations"],
+            self._properties.get("rules"),
+        )
 
     @rules.setter
     def rules(
-            self,
-            value: typing.Union[typing.List['RuleWithOperations'], typing.List[dict]]
+        self, value: typing.Union[typing.List["RuleWithOperations"], typing.List[dict]]
     ):
         """
         Rules describes what operations on what
@@ -1421,12 +1546,15 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         requests for ValidatingWebhookConfiguration and
         MutatingWebhookConfiguration objects.
         """
-        cleaned = []
+        cleaned: typing.List[RuleWithOperations] = []
         for item in value:
             if isinstance(item, dict):
-                item = RuleWithOperations().from_dict(item)
-            cleaned.append(item)
-        self._properties['rules'] = cleaned
+                item = typing.cast(
+                    RuleWithOperations,
+                    RuleWithOperations().from_dict(item),
+                )
+            cleaned.append(typing.cast(RuleWithOperations, item))
+        self._properties["rules"] = cleaned
 
     @property
     def side_effects(self) -> str:
@@ -1440,7 +1568,10 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.
         """
-        return self._properties.get('sideEffects')
+        return typing.cast(
+            str,
+            self._properties.get("sideEffects"),
+        )
 
     @side_effects.setter
     def side_effects(self, value: str):
@@ -1454,7 +1585,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.
         """
-        self._properties['sideEffects'] = value
+        self._properties["sideEffects"] = value
 
     @property
     def timeout_seconds(self) -> int:
@@ -1465,7 +1596,10 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         value must be between 1 and 30 seconds. Default to 30
         seconds.
         """
-        return self._properties.get('timeoutSeconds')
+        return typing.cast(
+            int,
+            self._properties.get("timeoutSeconds"),
+        )
 
     @timeout_seconds.setter
     def timeout_seconds(self, value: int):
@@ -1476,9 +1610,9 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         value must be between 1 and 30 seconds. Default to 30
         seconds.
         """
-        self._properties['timeoutSeconds'] = value
+        self._properties["timeoutSeconds"] = value
 
-    def __enter__(self) -> 'ValidatingWebhook':
+    def __enter__(self) -> "ValidatingWebhook":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1495,197 +1629,202 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
     """
 
     def __init__(
-            self,
-            metadata: 'ObjectMeta' = None,
-            webhooks: typing.List['ValidatingWebhook'] = None,
+        self,
+        metadata: "ObjectMeta" = None,
+        webhooks: typing.List["ValidatingWebhook"] = None,
     ):
         """Create ValidatingWebhookConfiguration instance."""
         super(ValidatingWebhookConfiguration, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='ValidatingWebhookConfiguration'
+            api_version="admissionregistration/v1beta1",
+            kind="ValidatingWebhookConfiguration",
         )
         self._properties = {
-            'metadata': metadata if metadata is not None else ObjectMeta(),
-            'webhooks': webhooks if webhooks is not None else [],
-
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "webhooks": webhooks if webhooks is not None else [],
         }
         self._types = {
-            'apiVersion': (str, None),
-            'kind': (str, None),
-            'metadata': (ObjectMeta, None),
-            'webhooks': (list, ValidatingWebhook),
-
+            "apiVersion": (str, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+            "webhooks": (list, ValidatingWebhook),
         }
 
     @property
-    def metadata(self) -> 'ObjectMeta':
+    def metadata(self) -> "ObjectMeta":
         """
         Standard object metadata; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata.
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ObjectMeta', dict]):
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object metadata; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#metadata.
         """
         if isinstance(value, dict):
-            value = ObjectMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @property
-    def webhooks(self) -> typing.List['ValidatingWebhook']:
+    def webhooks(self) -> typing.List["ValidatingWebhook"]:
         """
         Webhooks is a list of webhooks and the affected resources
         and operations.
         """
-        return self._properties.get('webhooks')
+        return typing.cast(
+            typing.List["ValidatingWebhook"],
+            self._properties.get("webhooks"),
+        )
 
     @webhooks.setter
     def webhooks(
-            self,
-            value: typing.Union[typing.List['ValidatingWebhook'], typing.List[dict]]
+        self, value: typing.Union[typing.List["ValidatingWebhook"], typing.List[dict]]
     ):
         """
         Webhooks is a list of webhooks and the affected resources
         and operations.
         """
-        cleaned = []
+        cleaned: typing.List[ValidatingWebhook] = []
         for item in value:
             if isinstance(item, dict):
-                item = ValidatingWebhook().from_dict(item)
-            cleaned.append(item)
-        self._properties['webhooks'] = cleaned
+                item = typing.cast(
+                    ValidatingWebhook,
+                    ValidatingWebhook().from_dict(item),
+                )
+            cleaned.append(typing.cast(ValidatingWebhook, item))
+        self._properties["webhooks"] = cleaned
 
-    def create_resource(self, namespace: 'str' = None):
+    def create_resource(self, namespace: "str" = None):
         """
         Creates the ValidatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'create_namespaced_validating_webhook_configuration',
-            'create_validating_webhook_configuration'
+            "create_namespaced_validating_webhook_configuration",
+            "create_validating_webhook_configuration",
         ]
 
         _kube_api.execute(
-            action='create',
+            action="create",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict()}
+            api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: 'str' = None):
+    def replace_resource(self, namespace: "str" = None):
         """
         Replaces the ValidatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'replace_namespaced_validating_webhook_configuration',
-            'replace_validating_webhook_configuration'
+            "replace_namespaced_validating_webhook_configuration",
+            "replace_validating_webhook_configuration",
         ]
 
         _kube_api.execute(
-            action='replace',
+            action="replace",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: 'str' = None):
+    def patch_resource(self, namespace: "str" = None):
         """
         Patches the ValidatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
         """
         names = [
-            'patch_namespaced_validating_webhook_configuration',
-            'patch_validating_webhook_configuration'
+            "patch_namespaced_validating_webhook_configuration",
+            "patch_validating_webhook_configuration",
         ]
 
         _kube_api.execute(
-            action='patch',
+            action="patch",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'body': self.to_dict(), 'name': self.metadata.name}
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: 'str' = None):
+    def get_resource_status(self, namespace: "str" = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(
-            self,
-            namespace: str = None
-    ):
+    def read_resource(self, namespace: str = None):
         """
         Reads the ValidatingWebhookConfiguration from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            'read_namespaced_validating_webhook_configuration',
-            'read_validating_webhook_configuration'
+            "read_namespaced_validating_webhook_configuration",
+            "read_validating_webhook_configuration",
         ]
         return _kube_api.execute(
-            action='read',
+            action="read",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name}
+            api_args={"name": self.metadata.name},
         )
 
     def delete_resource(
-            self,
-            namespace: str = None,
-            propagation_policy: str = 'Foreground',
-            grace_period_seconds: int = 10
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
     ):
         """
         Deletes the ValidatingWebhookConfiguration from the currently configured
         Kubernetes cluster.
         """
         names = [
-            'delete_namespaced_validating_webhook_configuration',
-            'delete_validating_webhook_configuration'
+            "delete_namespaced_validating_webhook_configuration",
+            "delete_validating_webhook_configuration",
         ]
 
         body = client.V1DeleteOptions(
             propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds
+            grace_period_seconds=grace_period_seconds,
         )
 
         _kube_api.execute(
-            action='delete',
+            action="delete",
             resource=self,
             names=names,
             namespace=namespace,
             api_client=None,
-            api_args={'name': self.metadata.name, 'body': body}
+            api_args={"name": self.metadata.name, "body": body},
         )
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AdmissionregistrationV1beta1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AdmissionregistrationV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AdmissionregistrationV1beta1Api(**kwargs)
 
-    def __enter__(self) -> 'ValidatingWebhookConfiguration':
+    def __enter__(self) -> "ValidatingWebhookConfiguration":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1699,84 +1838,95 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
     """
 
     def __init__(
-            self,
-            items: typing.List['ValidatingWebhookConfiguration'] = None,
-            metadata: 'ListMeta' = None,
+        self,
+        items: typing.List["ValidatingWebhookConfiguration"] = None,
+        metadata: "ListMeta" = None,
     ):
         """Create ValidatingWebhookConfigurationList instance."""
         super(ValidatingWebhookConfigurationList, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='ValidatingWebhookConfigurationList'
+            api_version="admissionregistration/v1beta1",
+            kind="ValidatingWebhookConfigurationList",
         )
         self._properties = {
-            'items': items if items is not None else [],
-            'metadata': metadata if metadata is not None else ListMeta(),
-
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
         }
         self._types = {
-            'apiVersion': (str, None),
-            'items': (list, ValidatingWebhookConfiguration),
-            'kind': (str, None),
-            'metadata': (ListMeta, None),
-
+            "apiVersion": (str, None),
+            "items": (list, ValidatingWebhookConfiguration),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List['ValidatingWebhookConfiguration']:
+    def items(self) -> typing.List["ValidatingWebhookConfiguration"]:
         """
         List of ValidatingWebhookConfiguration.
         """
-        return self._properties.get('items')
+        return typing.cast(
+            typing.List["ValidatingWebhookConfiguration"],
+            self._properties.get("items"),
+        )
 
     @items.setter
     def items(
-            self,
-            value: typing.Union[typing.List['ValidatingWebhookConfiguration'], typing.List[dict]]
+        self,
+        value: typing.Union[
+            typing.List["ValidatingWebhookConfiguration"], typing.List[dict]
+        ],
     ):
         """
         List of ValidatingWebhookConfiguration.
         """
-        cleaned = []
+        cleaned: typing.List[ValidatingWebhookConfiguration] = []
         for item in value:
             if isinstance(item, dict):
-                item = ValidatingWebhookConfiguration().from_dict(item)
-            cleaned.append(item)
-        self._properties['items'] = cleaned
+                item = typing.cast(
+                    ValidatingWebhookConfiguration,
+                    ValidatingWebhookConfiguration().from_dict(item),
+                )
+            cleaned.append(typing.cast(ValidatingWebhookConfiguration, item))
+        self._properties["items"] = cleaned
 
     @property
-    def metadata(self) -> 'ListMeta':
+    def metadata(self) -> "ListMeta":
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
-        return self._properties.get('metadata')
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
 
     @metadata.setter
-    def metadata(self, value: typing.Union['ListMeta', dict]):
+    def metadata(self, value: typing.Union["ListMeta", dict]):
         """
         Standard list metadata. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
         if isinstance(value, dict):
-            value = ListMeta().from_dict(value)
-        self._properties['metadata'] = value
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
-            **kwargs
-    ) -> 'client.AdmissionregistrationV1beta1Api':
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.AdmissionregistrationV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.AdmissionregistrationV1beta1Api(**kwargs)
 
-    def __enter__(self) -> 'ValidatingWebhookConfigurationList':
+    def __enter__(self) -> "ValidatingWebhookConfigurationList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1790,27 +1940,24 @@ class WebhookClientConfig(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
-            ca_bundle: str = None,
-            service: 'ServiceReference' = None,
-            url: str = None,
+        self,
+        ca_bundle: str = None,
+        service: "ServiceReference" = None,
+        url: str = None,
     ):
         """Create WebhookClientConfig instance."""
         super(WebhookClientConfig, self).__init__(
-            api_version='admissionregistration/v1beta1',
-            kind='WebhookClientConfig'
+            api_version="admissionregistration/v1beta1", kind="WebhookClientConfig"
         )
         self._properties = {
-            'caBundle': ca_bundle if ca_bundle is not None else '',
-            'service': service if service is not None else ServiceReference(),
-            'url': url if url is not None else '',
-
+            "caBundle": ca_bundle if ca_bundle is not None else "",
+            "service": service if service is not None else ServiceReference(),
+            "url": url if url is not None else "",
         }
         self._types = {
-            'caBundle': (str, None),
-            'service': (ServiceReference, None),
-            'url': (str, None),
-
+            "caBundle": (str, None),
+            "service": (ServiceReference, None),
+            "url": (str, None),
         }
 
     @property
@@ -1820,7 +1967,10 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         validate the webhook's server certificate. If unspecified,
         system trust roots on the apiserver are used.
         """
-        return self._properties.get('caBundle')
+        return typing.cast(
+            str,
+            self._properties.get("caBundle"),
+        )
 
     @ca_bundle.setter
     def ca_bundle(self, value: str):
@@ -1829,10 +1979,10 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         validate the webhook's server certificate. If unspecified,
         system trust roots on the apiserver are used.
         """
-        self._properties['caBundle'] = value
+        self._properties["caBundle"] = value
 
     @property
-    def service(self) -> 'ServiceReference':
+    def service(self) -> "ServiceReference":
         """
         `service` is a reference to the service for this webhook.
         Either `service` or `url` must be specified.
@@ -1840,10 +1990,13 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         If the webhook is running within the cluster, then you
         should use `service`.
         """
-        return self._properties.get('service')
+        return typing.cast(
+            "ServiceReference",
+            self._properties.get("service"),
+        )
 
     @service.setter
-    def service(self, value: typing.Union['ServiceReference', dict]):
+    def service(self, value: typing.Union["ServiceReference", dict]):
         """
         `service` is a reference to the service for this webhook.
         Either `service` or `url` must be specified.
@@ -1852,8 +2005,11 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         should use `service`.
         """
         if isinstance(value, dict):
-            value = ServiceReference().from_dict(value)
-        self._properties['service'] = value
+            value = typing.cast(
+                ServiceReference,
+                ServiceReference().from_dict(value),
+            )
+        self._properties["service"] = value
 
     @property
     def url(self) -> str:
@@ -1886,7 +2042,10 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         is not allowed. Fragments ("#...") and query parameters
         ("?...") are not allowed, either.
         """
-        return self._properties.get('url')
+        return typing.cast(
+            str,
+            self._properties.get("url"),
+        )
 
     @url.setter
     def url(self, value: str):
@@ -1919,9 +2078,9 @@ class WebhookClientConfig(_kuber_definitions.Definition):
         is not allowed. Fragments ("#...") and query parameters
         ("?...") are not allowed, either.
         """
-        self._properties['url'] = value
+        self._properties["url"] = value
 
-    def __enter__(self) -> 'WebhookClientConfig':
+    def __enter__(self) -> "WebhookClientConfig":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

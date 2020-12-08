@@ -2,11 +2,11 @@
     def get_resource_api(
             api_client: client.ApiClient = None,
             **kwargs
-    ) -> 'client.{{ kubernetes_api_class_name }}':
+    ) -> "client.{{ kubernetes_api_class_name }}":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
-            kwargs['apl_client'] = api_client
+            kwargs["apl_client"] = api_client
         return client.{{ kubernetes_api_class_name }}(**kwargs)

@@ -14,7 +14,7 @@ def test_parse_api_exception():
     error = MagicMock()
     error.body = '{"reason": "foo"}'
     response = execution._parse_api_exception(resource, error)
-    assert response.reason == 'foo'
+    assert response.reason == "foo"
 
 
 def test_parse_api_exception_no_body():
@@ -26,16 +26,13 @@ def test_parse_api_exception_no_body():
     error = MagicMock()
     error.body = '{"a'
     response = execution._parse_api_exception(resource, error)
-    assert response.reason == 'UnknownError'
+    assert response.reason == "UnknownError"
 
 
 def test_echo_response_normal():
     """Should display message without error when response is normal."""
     response = execution.ResponseInfo(
-        resource=MagicMock(),
-        symbol='  ',
-        reason='Success',
-        message='foo'
+        resource=MagicMock(), symbol="  ", reason="Success", message="foo"
     )
     execution._echo_response(response)
 
@@ -44,10 +41,10 @@ def test_echo_response_error():
     """Should display message without error when response is an error."""
     response = execution.ResponseInfo(
         resource=MagicMock(),
-        symbol='!!',
-        reason='Failure',
-        message='Error occurred',
-        exception=MagicMock()
+        symbol="!!",
+        reason="Failure",
+        message="Error occurred",
+        exception=MagicMock(),
     )
     execution._echo_response(response)
 
@@ -55,30 +52,27 @@ def test_echo_response_error():
 def test_create_resource():
     """Should create resource successfully when no error is caught."""
     response = execution.create_resource(MagicMock(), echo=True)
-    assert response.symbol == '+'
-    assert response.reason == 'Created'
+    assert response.symbol == "+"
+    assert response.reason == "Created"
 
 
 def test_create_resource_error():
     """Should handle failed resource creation error."""
     resource = MagicMock()
-    resource.create_resource.side_effect = test_utils.MockApiException(
-        successful=False
-    )
+    resource.create_resource.side_effect = test_utils.MockApiException(successful=False)
     response = execution.create_resource(resource, echo=True)
 
     resource.create_resource.assert_called_once()
-    assert response.symbol == '!!'
-    assert response.reason == 'Testing'
+    assert response.symbol == "!!"
+    assert response.reason == "Testing"
 
 
-@patch('kuber.execution.patch_resource')
+@patch("kuber.execution.patch_resource")
 def test_create_resource_exists(patch_resource: MagicMock):
     """Should attempt to patch resource if it already exists."""
     resource = MagicMock()
     resource.create_resource.side_effect = test_utils.MockApiException(
-        successful=False,
-        reason='AlreadyExists'
+        successful=False, reason="AlreadyExists"
     )
     execution.create_resource(resource, echo=True)
 
@@ -89,8 +83,8 @@ def test_create_resource_exists(patch_resource: MagicMock):
 def test_replace_resource():
     """Should replace resource successfully when no error is caught."""
     response = execution.replace_resource(MagicMock(), echo=True)
-    assert response.symbol == '-/+'
-    assert response.reason == 'Replaced'
+    assert response.symbol == "-/+"
+    assert response.reason == "Replaced"
 
 
 def test_replace_resource_error():
@@ -102,48 +96,44 @@ def test_replace_resource_error():
     response = execution.replace_resource(resource, echo=True)
 
     resource.replace_resource.assert_called_once()
-    assert response.symbol == '!!'
-    assert response.reason == 'Testing'
+    assert response.symbol == "!!"
+    assert response.reason == "Testing"
 
 
 def test_patch_resource():
     """Should patch resource successfully when no error is caught."""
     response = execution.patch_resource(MagicMock(), echo=True)
-    assert response.symbol == '~'
-    assert response.reason == 'Updated'
+    assert response.symbol == "~"
+    assert response.reason == "Updated"
 
 
 def test_patch_resource_error():
     """Should handle failed resource patching error."""
     resource = MagicMock()
-    resource.patch_resource.side_effect = test_utils.MockApiException(
-        successful=False
-    )
+    resource.patch_resource.side_effect = test_utils.MockApiException(successful=False)
     response = execution.patch_resource(resource, echo=True)
 
     resource.patch_resource.assert_called_once()
-    assert response.symbol == '!!'
-    assert response.reason == 'Testing'
+    assert response.symbol == "!!"
+    assert response.reason == "Testing"
 
 
 def test_delete_resource():
     """Should delete resource successfully when no error is caught."""
     response = execution.delete_resource(MagicMock(), echo=True)
-    assert response.symbol == '-'
-    assert response.reason == 'Deleted'
+    assert response.symbol == "-"
+    assert response.reason == "Deleted"
 
 
 def test_delete_resource_error():
     """Should handle failed resource deletion error."""
     resource = MagicMock()
-    resource.delete_resource.side_effect = test_utils.MockApiException(
-        successful=False
-    )
+    resource.delete_resource.side_effect = test_utils.MockApiException(successful=False)
     response = execution.delete_resource(resource, echo=True)
 
     resource.delete_resource.assert_called_once()
-    assert response.symbol == '!!'
-    assert response.reason == 'Testing'
+    assert response.symbol == "!!"
+    assert response.reason == "Testing"
 
 
 def test_get_resource_status_error():
@@ -155,22 +145,22 @@ def test_get_resource_status_error():
     response = execution.get_resource_status(resource, echo=True)
 
     resource.get_resource_status.assert_called_once()
-    assert response.symbol == '!!'
-    assert response.reason == 'Testing'
+    assert response.symbol == "!!"
+    assert response.reason == "Testing"
 
 
 def test_get_resource_status():
     """Should successfully get status for resource."""
     status = MagicMock()
-    status.to_dict.return_value = {'foo': 'bar'}
+    status.to_dict.return_value = {"foo": "bar"}
     resource = MagicMock()
     resource.get_resource_status.return_value = status
     response = execution.get_resource_status(resource, echo=True)
 
     resource.get_resource_status.assert_called_once()
-    assert response.symbol == '*'
-    assert response.reason == 'Status'
-    assert 'foo' in response.message and 'bar' in response.message
+    assert response.symbol == "*"
+    assert response.reason == "Status"
+    assert "foo" in response.message and "bar" in response.message
 
 
 def test_get_resource_status_no_status_object():
@@ -180,5 +170,5 @@ def test_get_resource_status_no_status_object():
     response = execution.get_resource_status(resource, echo=True)
 
     resource.get_resource_status.assert_called_once()
-    assert response.symbol == '*'
-    assert response.reason == 'Status'
+    assert response.symbol == "*"
+    assert response.reason == "Status"

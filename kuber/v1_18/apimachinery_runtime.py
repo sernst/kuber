@@ -16,26 +16,26 @@ class RawExtension(_kuber_definitions.Definition):
     plugin types.
 
     // Internal package: type MyAPIObject struct {
-    	runtime.TypeMeta `json:",inline"`
-    	MyPlugin runtime.Object `json:"myPlugin"`
+        runtime.TypeMeta `json:",inline"`
+        MyPlugin runtime.Object `json:"myPlugin"`
     } type PluginA struct {
-    	AOption string `json:"aOption"`
+        AOption string `json:"aOption"`
     }
 
     // External package: type MyAPIObject struct {
-    	runtime.TypeMeta `json:",inline"`
-    	MyPlugin runtime.RawExtension `json:"myPlugin"`
+        runtime.TypeMeta `json:",inline"`
+        MyPlugin runtime.RawExtension `json:"myPlugin"`
     } type PluginA struct {
-    	AOption string `json:"aOption"`
+        AOption string `json:"aOption"`
     }
 
     // On the wire, the JSON will look something like this: {
-    	"kind":"MyAPIObject",
-    	"apiVersion":"v1",
-    	"myPlugin": {
-    		"kind":"PluginA",
-    		"aOption":"foo",
-    	},
+        "kind":"MyAPIObject",
+        "apiVersion":"v1",
+        "myPlugin": {
+                "kind":"PluginA",
+                "aOption":"foo",
+        },
     }
 
     So what happens? Decode first uses json or yaml to unmarshal
@@ -51,21 +51,16 @@ class RawExtension(_kuber_definitions.Definition):
     """
 
     def __init__(
-            self,
+        self,
     ):
         """Create RawExtension instance."""
         super(RawExtension, self).__init__(
-            api_version='apimachinery/runtime',
-            kind='RawExtension'
+            api_version="apimachinery/runtime", kind="RawExtension"
         )
-        self._properties = {
+        self._properties = {}
+        self._types = {}
 
-        }
-        self._types = {
-
-        }
-
-    def __enter__(self) -> 'RawExtension':
+    def __enter__(self) -> "RawExtension":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
