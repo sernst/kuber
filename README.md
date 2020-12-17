@@ -1,6 +1,6 @@
 [![PyPI version](https://img.shields.io/pypi/v/kuber.svg)](https://pypi.python.org/pypi/kuber)
 [![Documentation Status](https://readthedocs.org/projects/kuber/badge/?version=latest)](https://kuber.readthedocs.io/en/latest/?badge=latest)
-[![build status](https://gitlab.com/swernst/kuber/badges/master/build.svg)](https://gitlab.com/swernst/kuber/commits/master)
+[![build status](https://gitlab.com/swernst/kuber/badges/master/pipeline.svg)](https://gitlab.com/swernst/kuber/commits/master)
 [![coverage report](https://gitlab.com/swernst/kuber/badges/master/coverage.svg)](https://gitlab.com/swernst/kuber/commits/master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Code style: flake8](https://img.shields.io/badge/code%20style-flake8-white)](https://gitlab.com/pycqa/flake8)
