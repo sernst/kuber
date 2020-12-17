@@ -68,6 +68,14 @@ kuber.latest.apiregistration\_v1beta1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.latest.apiserverinternal\_v1alpha1 module
+-----------------------------------------------
+
+.. automodule:: kuber.latest.apiserverinternal_v1alpha1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.latest.apps\_v1 module
 ----------------------------
 
@@ -236,6 +244,14 @@ kuber.latest.flowcontrol\_v1alpha1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.latest.flowcontrol\_v1beta1 module
+----------------------------------------
+
+.. automodule:: kuber.latest.flowcontrol_v1beta1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.latest.meta\_v1 module
 ----------------------------
 
@@ -256,6 +272,14 @@ kuber.latest.networking\_v1beta1 module
 ---------------------------------------
 
 .. automodule:: kuber.latest.networking_v1beta1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kuber.latest.node\_v1 module
+----------------------------
+
+.. automodule:: kuber.latest.node_v1
    :members:
    :undoc-members:
    :show-inheritance:
@@ -328,14 +352,6 @@ kuber.latest.scheduling\_v1beta1 module
 ---------------------------------------
 
 .. automodule:: kuber.latest.scheduling_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.latest.settings\_v1alpha1 module
---------------------------------------
-
-.. automodule:: kuber.latest.settings_v1alpha1
    :members:
    :undoc-members:
    :show-inheritance:

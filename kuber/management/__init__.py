@@ -1,18 +1,18 @@
 import datetime
 import glob
 import os
+import pathlib
 import subprocess
 import typing
 import uuid
-import pathlib
 
 import requests
 
 import kuber
+from kuber import definitions
 from kuber import execution
 from kuber import interface
 from kuber import versioning as _versioning
-from kuber import definitions
 from kuber.definitions import Resource
 from kuber.management import arrays
 from kuber.management import configuration
@@ -279,7 +279,7 @@ class ResourceBundle:
             *creation.from_yaml_multiple(resource_definition, self.kubernetes_version)
         )
 
-    def add_file(self, path: str) -> "ResourceBundle":
+    def add_file(self, path: typing.Union[str, pathlib.Path]) -> "ResourceBundle":
         """
         Loads, parses and adds the Resource object from the given
         configuration file path.
@@ -288,25 +288,30 @@ class ResourceBundle:
             Path to the configuration file to load as a Resource into the
             bundle.
         """
+        p = pathlib.Path(path).absolute()
+
         version = self.kubernetes_version
-        if path.endswith((".yml", ".yaml")):
+        if p.name.endswith((".yml", ".yaml")):
             self.push(
-                *creation.from_yaml_file_multiple(os.path.realpath(path), version)
+                *creation.from_yaml_file_multiple(os.path.realpath(str(p)), version)
             )
-        elif path.endswith(".json"):
-            created = creation.from_json_file(os.path.realpath(path), version)
+        elif p.name.endswith(".json"):
+            created = creation.from_json_file(os.path.realpath(str(p)), version)
             if created is None:
-                raise ValueError(f"Unable to create resource from {path}")
+                raise ValueError(f"Unable to create resource from {p}")
             self.push(created)
         else:
             raise IOError(
-                f'Unrecognized file format for path "{path}". '
+                f'Unrecognized file format for path "{p}". '
                 "Filenames should end with .yml, .yaml or .json."
             )
         return self
 
     def add_directory(
-        self, directory: str, recursive: bool = False, ignores: typing.List[str] = None
+        self,
+        directory: typing.Union[str, pathlib.Path],
+        recursive: bool = False,
+        ignores: typing.List[str] = None,
     ) -> "ResourceBundle":
         """
         Adds all configuration files (YAML and JSON) in the specified
@@ -320,8 +325,9 @@ class ResourceBundle:
         :param ignores:
             Filenames to ignore when loading configuration files.
         """
+        d = pathlib.Path(directory).absolute()
         extensions = (".yml", ".yaml", ".json")
-        parts = [directory, "**" if recursive else None, "*"]
+        parts = [str(d), "**" if recursive else None, "*"]
         glob_path = os.path.realpath(os.path.join(*[p for p in parts if p]))
         paths = sorted(
             [
@@ -338,7 +344,9 @@ class ResourceBundle:
         return self
 
     def add_directory_files(
-        self, directory: str, filenames: typing.Iterable = None
+        self,
+        directory: typing.Union[str, pathlib.Path],
+        filenames: typing.Iterable = None,
     ) -> "ResourceBundle":
         """
         Adds all of the resource configuration filenames listed in the
@@ -352,8 +360,9 @@ class ResourceBundle:
             A list of filenames in the given directory and the order in
             which they should be added.
         """
+        d = pathlib.Path(directory).absolute()
         for name in filenames or []:
-            self.add_file(os.path.realpath(os.path.join(directory, name)))
+            self.add_file(d.joinpath(name))
         return self
 
     def add_from_url(self, url: str) -> "ResourceBundle":
@@ -419,7 +428,7 @@ class ResourceBundle:
             subprocess.run(["helm", "repo", "add", name, url], check=True)
 
         if update:
-            subprocess.run(["helm", "update"])
+            subprocess.run(["helm", "repo", "update"])
 
         response = subprocess.run(arguments, check=True, stdout=subprocess.PIPE)
         self.add_from_yaml(response.stdout.decode())

@@ -15,7 +15,13 @@ from kuber.latest.core_v1 import ObjectReference
 class Event(_kuber_definitions.Resource):
     """
     Event is a report of an event somewhere in the cluster. It
-    generally denotes some state change in the system.
+    generally denotes some state change in the system. Events
+    have a limited retention time and triggers and messages may
+    evolve with time.  Event consumers should not rely on the
+    timing of an event with a given Reason reflecting a
+    consistent underlying trigger, or the continued existence of
+    events with that Reason.  Events should be treated as
+    informative, best-effort, supplemental data.
     """
 
     def __init__(
@@ -91,8 +97,9 @@ class Event(_kuber_definitions.Resource):
     def action(self) -> str:
         """
         action is what action was taken/failed regarding to the
-        regarding object. It is machine-readable. This field can
-        have at most 128 characters.
+        regarding object. It is machine-readable. This field cannot
+        be empty for new Events and it can have at most 128
+        characters.
         """
         return typing.cast(
             str,
@@ -103,8 +110,9 @@ class Event(_kuber_definitions.Resource):
     def action(self, value: str):
         """
         action is what action was taken/failed regarding to the
-        regarding object. It is machine-readable. This field can
-        have at most 128 characters.
+        regarding object. It is machine-readable. This field cannot
+        be empty for new Events and it can have at most 128
+        characters.
         """
         self._properties["action"] = value
 
@@ -268,7 +276,8 @@ class Event(_kuber_definitions.Resource):
     def reason(self) -> str:
         """
         reason is why the action was taken. It is human-readable.
-        This field can have at most 128 characters.
+        This field cannot be empty for new Events and it can have at
+        most 128 characters.
         """
         return typing.cast(
             str,
@@ -279,7 +288,8 @@ class Event(_kuber_definitions.Resource):
     def reason(self, value: str):
         """
         reason is why the action was taken. It is human-readable.
-        This field can have at most 128 characters.
+        This field cannot be empty for new Events and it can have at
+        most 128 characters.
         """
         self._properties["reason"] = value
 
@@ -409,7 +419,8 @@ class Event(_kuber_definitions.Resource):
     def type_(self) -> str:
         """
         type is the type of this event (Normal, Warning), new types
-        could be added in the future. It is machine-readable.
+        could be added in the future. It is machine-readable. This
+        field cannot be empty for new Events.
         """
         return typing.cast(
             str,
@@ -420,7 +431,8 @@ class Event(_kuber_definitions.Resource):
     def type_(self, value: str):
         """
         type is the type of this event (Normal, Warning), new types
-        could be added in the future. It is machine-readable.
+        could be added in the future. It is machine-readable. This
+        field cannot be empty for new Events.
         """
         self._properties["type"] = value
 

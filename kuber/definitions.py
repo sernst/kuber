@@ -1,8 +1,8 @@
 import abc
 import json
+import pathlib
 import typing
 import uuid
-import pathlib
 
 import yaml
 from kubernetes import client
