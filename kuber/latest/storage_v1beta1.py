@@ -328,7 +328,9 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         attach_required: bool = None,
         fs_group_policy: str = None,
         pod_info_on_mount: bool = None,
+        requires_republish: bool = None,
         storage_capacity: bool = None,
+        token_requests: typing.List["TokenRequest"] = None,
         volume_lifecycle_modes: typing.List[str] = None,
     ):
         """Create CSIDriverSpec instance."""
@@ -341,9 +343,13 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             "podInfoOnMount": pod_info_on_mount
             if pod_info_on_mount is not None
             else None,
+            "requiresRepublish": requires_republish
+            if requires_republish is not None
+            else None,
             "storageCapacity": storage_capacity
             if storage_capacity is not None
             else None,
+            "tokenRequests": token_requests if token_requests is not None else [],
             "volumeLifecycleModes": volume_lifecycle_modes
             if volume_lifecycle_modes is not None
             else [],
@@ -352,7 +358,9 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             "attachRequired": (bool, None),
             "fsGroupPolicy": (str, None),
             "podInfoOnMount": (bool, None),
+            "requiresRepublish": (bool, None),
             "storageCapacity": (bool, None),
+            "tokenRequests": (list, TokenRequest),
             "volumeLifecycleModes": (list, str),
         }
 
@@ -492,6 +500,45 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._properties["podInfoOnMount"] = value
 
     @property
+    def requires_republish(self) -> bool:
+        """
+        RequiresRepublish indicates the CSI driver wants
+        `NodePublishVolume` being periodically called to reflect any
+        possible change in the mounted volume. This field defaults
+        to false.
+
+        Note: After a successful initial NodePublishVolume call,
+        subsequent calls to NodePublishVolume should only update the
+        contents of the volume. New mount points will not be seen by
+        a running container.
+
+        This is an alpha feature and only available when the
+        CSIServiceAccountToken feature is enabled.
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("requiresRepublish"),
+        )
+
+    @requires_republish.setter
+    def requires_republish(self, value: bool):
+        """
+        RequiresRepublish indicates the CSI driver wants
+        `NodePublishVolume` being periodically called to reflect any
+        possible change in the mounted volume. This field defaults
+        to false.
+
+        Note: After a successful initial NodePublishVolume call,
+        subsequent calls to NodePublishVolume should only update the
+        contents of the volume. New mount points will not be seen by
+        a running container.
+
+        This is an alpha feature and only available when the
+        CSIServiceAccountToken feature is enabled.
+        """
+        self._properties["requiresRepublish"] = value
+
+    @property
     def storage_capacity(self) -> bool:
         """
         If set to true, storageCapacity indicates that the CSI
@@ -537,6 +584,73 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         CSIStorageCapacity feature is enabled. The default is false.
         """
         self._properties["storageCapacity"] = value
+
+    @property
+    def token_requests(self) -> typing.List["TokenRequest"]:
+        """
+        TokenRequests indicates the CSI driver needs pods' service
+        account tokens it is mounting volume for to do necessary
+        authentication. Kubelet will pass the tokens in
+        VolumeContext in the CSI NodePublishVolume calls. The CSI
+        driver should parse and validate the following
+        VolumeContext: "csi.storage.k8s.io/serviceAccount.tokens": {
+          "<audience>": {
+            "token": <token>,
+            "expirationTimestamp": <expiration timestamp in
+        RFC3339>,
+          },
+          ...
+        }
+
+        Note: Audience in each TokenRequest should be different and
+        at most one token is empty string. To receive a new token
+        after expiry, RequiresRepublish can be used to trigger
+        NodePublishVolume periodically.
+
+        This is an alpha feature and only available when the
+        CSIServiceAccountToken feature is enabled.
+        """
+        return typing.cast(
+            typing.List["TokenRequest"],
+            self._properties.get("tokenRequests"),
+        )
+
+    @token_requests.setter
+    def token_requests(
+        self, value: typing.Union[typing.List["TokenRequest"], typing.List[dict]]
+    ):
+        """
+        TokenRequests indicates the CSI driver needs pods' service
+        account tokens it is mounting volume for to do necessary
+        authentication. Kubelet will pass the tokens in
+        VolumeContext in the CSI NodePublishVolume calls. The CSI
+        driver should parse and validate the following
+        VolumeContext: "csi.storage.k8s.io/serviceAccount.tokens": {
+          "<audience>": {
+            "token": <token>,
+            "expirationTimestamp": <expiration timestamp in
+        RFC3339>,
+          },
+          ...
+        }
+
+        Note: Audience in each TokenRequest should be different and
+        at most one token is empty string. To receive a new token
+        after expiry, RequiresRepublish can be used to trigger
+        NodePublishVolume periodically.
+
+        This is an alpha feature and only available when the
+        CSIServiceAccountToken feature is enabled.
+        """
+        cleaned: typing.List[TokenRequest] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    TokenRequest,
+                    TokenRequest().from_dict(item),
+                )
+            cleaned.append(typing.cast(TokenRequest, item))
+        self._properties["tokenRequests"] = cleaned
 
     @property
     def volume_lifecycle_modes(self) -> typing.List[str]:
@@ -1543,6 +1657,80 @@ class StorageClassList(_kuber_definitions.Collection):
         return client.StorageV1beta1Api(**kwargs)
 
     def __enter__(self) -> "StorageClassList":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class TokenRequest(_kuber_definitions.Definition):
+    """
+    TokenRequest contains parameters of a service account token.
+    """
+
+    def __init__(
+        self,
+        audience: str = None,
+        expiration_seconds: int = None,
+    ):
+        """Create TokenRequest instance."""
+        super(TokenRequest, self).__init__(
+            api_version="storage/v1beta1", kind="TokenRequest"
+        )
+        self._properties = {
+            "audience": audience if audience is not None else "",
+            "expirationSeconds": expiration_seconds
+            if expiration_seconds is not None
+            else None,
+        }
+        self._types = {
+            "audience": (str, None),
+            "expirationSeconds": (int, None),
+        }
+
+    @property
+    def audience(self) -> str:
+        """
+        Audience is the intended audience of the token in
+        "TokenRequestSpec". It will default to the audiences of kube
+        apiserver.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("audience"),
+        )
+
+    @audience.setter
+    def audience(self, value: str):
+        """
+        Audience is the intended audience of the token in
+        "TokenRequestSpec". It will default to the audiences of kube
+        apiserver.
+        """
+        self._properties["audience"] = value
+
+    @property
+    def expiration_seconds(self) -> int:
+        """
+        ExpirationSeconds is the duration of validity of the token
+        in "TokenRequestSpec". It has the same default value of
+        "ExpirationSeconds" in "TokenRequestSpec"
+        """
+        return typing.cast(
+            int,
+            self._properties.get("expirationSeconds"),
+        )
+
+    @expiration_seconds.setter
+    def expiration_seconds(self, value: int):
+        """
+        ExpirationSeconds is the duration of validity of the token
+        in "TokenRequestSpec". It has the same default value of
+        "ExpirationSeconds" in "TokenRequestSpec"
+        """
+        self._properties["expirationSeconds"] = value
+
+    def __enter__(self) -> "TokenRequest":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

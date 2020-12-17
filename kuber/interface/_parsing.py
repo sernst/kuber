@@ -75,7 +75,7 @@ def _populate_delete(subparsers):
 
 def _populate_render(subparsers):
     """..."""
-    parser = subparsers.add_parser("render", help="Render the bundle")
+    parser = subparsers.add_parser("render", aliases=["test"], help="Render the bundle")
     parser.add_argument("--namespace")
     parser.add_argument(
         "--settings",

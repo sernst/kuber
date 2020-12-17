@@ -1150,6 +1150,8 @@ class JobStatus(_kuber_definitions.Definition):
         Represents time when the job was completed. It is not
         guaranteed to be set in happens-before order across separate
         operations. It is represented in RFC3339 form and is in UTC.
+        The completion time is only set when the job finishes
+        successfully.
         """
         return typing.cast(
             str,
@@ -1164,6 +1166,8 @@ class JobStatus(_kuber_definitions.Definition):
         Represents time when the job was completed. It is not
         guaranteed to be set in happens-before order across separate
         operations. It is represented in RFC3339 form and is in UTC.
+        The completion time is only set when the job finishes
+        successfully.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -1175,8 +1179,9 @@ class JobStatus(_kuber_definitions.Definition):
     def conditions(self) -> typing.List["JobCondition"]:
         """
         The latest available observations of an object's current
-        state. More info: https://kubernetes.io/docs/concepts/worklo
-        ads/controllers/jobs-run-to-completion/
+        state. When a job fails, one of the conditions will have
+        type == "Failed". More info: https://kubernetes.io/docs/conc
+        epts/workloads/controllers/jobs-run-to-completion/
         """
         return typing.cast(
             typing.List["JobCondition"],
@@ -1189,8 +1194,9 @@ class JobStatus(_kuber_definitions.Definition):
     ):
         """
         The latest available observations of an object's current
-        state. More info: https://kubernetes.io/docs/concepts/worklo
-        ads/controllers/jobs-run-to-completion/
+        state. When a job fails, one of the conditions will have
+        type == "Failed". More info: https://kubernetes.io/docs/conc
+        epts/workloads/controllers/jobs-run-to-completion/
         """
         cleaned: typing.List[JobCondition] = []
         for item in value:
