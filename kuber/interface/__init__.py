@@ -63,6 +63,7 @@ class ResourceBundleCli:
             "create": do_create,
             "delete": do_delete,
             "render": do_render,
+            "test": do_render,
             "status": do_status,
         }
         command = args.command or "render"

@@ -9,7 +9,7 @@
 # Kuber
 
 kuber is Python library for the management of Kubernetes resources. It's
-ideal for for collectively managing groups of resources throughout their
+ideal for collectively managing groups of resources throughout their
 lifecycle. Resource definitions can be created and managed entirely in Python
 code (the pure-Python approach), but kuber is most effective when used in a
 hybrid fashion that combines configuration files and Python code.
