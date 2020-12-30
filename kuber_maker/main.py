@@ -5,7 +5,6 @@ import typing
 import kuber_maker
 from kuber_maker import documenting
 from kuber_maker import initializer
-from kuber_maker import packaging
 from kuber_maker import parsing
 from kuber_maker import render
 from kuber_maker import updater
@@ -56,15 +55,12 @@ def main(args: typing.List[str] = None):
     subs.add_parser("status")
     subs.add_parser("docs")
     subs.add_parser("apidocs")
-    subs.add_parser("release")
 
     arguments = parser.parse_args(args=args)
     if arguments.action == "status":
         return updater.check_for_updates()
     if arguments.action == "update":
         return updater.update_specs()
-    if arguments.action == "release":
-        return packaging.deploy_release()
     if arguments.action == "docs":
         return documenting.build_docs()
     if arguments.action == "apidocs":
