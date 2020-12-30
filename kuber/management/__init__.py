@@ -200,7 +200,124 @@ class ResourceBundle:
                 self._resources.append(self._conform_resource(r))
         return self
 
-    def unshift(self, resource: "Resource") -> "ResourceBundle":
+    def insert(
+        self,
+        index: int,
+        resource: "Resource",
+        *args: "Resource",
+    ) -> "ResourceBundle":
+        """
+        Inserts the specified resource(s) into the bundle's resources starting at
+        the specified index. Operates in the same fashion as `list.insert()` except
+        that multiple resources can be inserted in a single call.
+
+        :param index:
+            Index where the resource(s) should be inserted.
+        :param resource:
+            Resource to insert into the bundle at the specified index.
+        :param args:
+            Additional resources to insert into the bundle after the first specified
+            resource.
+        """
+        new_resources = [
+            self._conform_resource(r)
+            for r in ([resource] + list(args))
+            if r not in self._resources
+        ]
+
+        start_index = len(self._resources) + index if index < 0 else index
+        for i, r in enumerate(new_resources):
+            self._resources.insert(start_index + i, r)
+        return self
+
+    def insert_after(
+        self,
+        previous_resource: typing.Optional["Resource"],
+        resource: "Resource",
+        *args: "Resource",
+    ) -> "ResourceBundle":
+        """
+        Inserts the specified resource(s) into the bundle's resources after the
+        specified previous_resource, which should be a resource already within the
+        bundle or an IndexError will be raised. Like the `BundleResource.insert()`
+        method, multiple resources can be added.
+
+        :param previous_resource:
+            A resource already in this resource bundle that the new resources should
+            be added after. If this value is None the resource(s) will be added to
+            the top of the bundle.
+        :param resource:
+            Resource to insert into the bundle after the previous_resource.
+        :param args:
+            Additional resources to insert into the bundle after the first specified
+            resources.
+        """
+        if previous_resource is None:
+            return self.insert(0, resource, *args)
+
+        index = self._resources.index(previous_resource)
+        return self.insert(index + 1, resource, *args)
+
+    def move_to(
+        self,
+        index: int,
+        resource: "Resource",
+        *args: "Resource",
+    ) -> "ResourceBundle":
+        """
+        Moves the specified resource(s) already in the bundle to the index in the
+        same fashion as the `ResourceBundle.insert()` does for resources not
+        currently in the bundle.
+
+        :param index:
+            Index where the resource(s) should be re-inserted.
+        :param resource:
+            Resource to move within the bundle to the specified index.
+        :param args:
+            Additional resources to move within the bundle after the first specified
+            resource.
+        """
+        movers = [r for r in ([resource] + list(args)) if r in self._resources]
+        target_position_resource = self._resources[index]
+        if target_position_resource in movers:
+            looker = (r for r in reversed(self._resources[:index]) if r not in movers)
+            target_position_resource = next(looker, None)
+
+        for m in movers:
+            self._resources.remove(m)
+
+        if target_position_resource is None:
+            new_index = 0
+        else:
+            new_index = self._resources.index(target_position_resource)
+        return self.insert(new_index, *movers)
+
+    def move_after(
+        self,
+        previous_resource: "Resource",
+        resource: "Resource",
+        *args: "Resource",
+    ) -> "ResourceBundle":
+        """
+        Moves the specified resource(s) already in the bundle to the position after the
+        specified previous_resource, which must also be a resource already within the
+        bundle or an IndexError will be raised. Like the `BundleResource.move_to()`
+        method, multiple resources can be added.
+
+        :param previous_resource:
+            A resource already in this resource bundle that the new resources should
+            be added after. If this value is None the resource(s) will be added to
+            the top of the bundle.
+        :param resource:
+            Resource to move within the bundle to the specified index.
+        :param args:
+            Additional resources to move within the bundle after the first specified
+            resource.
+        """
+        index = self._resources.index(previous_resource)
+        return self.move_to(index + 1, resource, *args)
+
+    def unshift(self, resource: "Resource", *args: "Resource") -> "ResourceBundle":
         """
         Adds the specified resource to the beginning of the bundle's
         resource list.
@@ -209,8 +326,12 @@ class ResourceBundle:
             Resource object to add to the bundle. It will be conformed to
             the bundle's specifications and constraints upon insertion.
         """
-        if resource not in self._resources:
-            self._resources.insert(0, self._conform_resource(resource))
+        resources = [r for r in ([resource] + list(args)) if r not in self._resources]
+        # Reverse the list so we can add one after another to the top of the list
+        # to get the expected result.
+        resources.reverse()
+        for r in resources:
+            self._resources.insert(0, self._conform_resource(r))
         return self
 
     def add(
@@ -229,23 +350,49 @@ class ResourceBundle:
         :param kwargs:
             Labels to assign to the metadata of the new resource.
         """
-        resource = creation.new_resource(
-            api_version=api_version,
-            kind=kind,
-            name=name,
-            kubernetes_version=self.kubernetes_version,
-            **kwargs,
-        )
-        if resource is None:
-            raise ValueError(f"Unknown resource type {api_version}/{kind}.")
-        return self.push(resource)
+        return self.add_at(0, api_version, kind, name, **kwargs)
 
-    def new(self, api_version: str, kind: str, name: str, **kwargs: str) -> "Resource":
+    def add_after(
+        self,
+        previous_resource: "Resource",
+        api_version: str,
+        kind: str,
+        name: str,
+        **kwargs: str,
+    ) -> "ResourceBundle":
         """
-        Adds an empty resource of the specified type as the last entry
-        to the bundle's resources list and returns that new Resource
-        for immediate configuration.
+        Adds an empty resource of the specified type after the specified
+        previous_resource, which must be a resource already in the bundle.
 
+        :param previous_resource:
+            A resource already in this resource bundle that the new resources should
+            be added after.
+        :param api_version:
+            A standard Kubernetes configuration api version, e.g. "apps/v1".
+        :param kind:
+            The type of resource, e.g. "Deployment".
+        :param name:
+            Name to give the resource.
+        :param kwargs:
+            Labels to assign to the metadata of the new resource.
+        """
+        index = self._resources.index(previous_resource)
+        return self.add_at(index + 1, api_version, kind, name, **kwargs)
+
+    def add_at(
+        self,
+        index: int,
+        api_version: str,
+        kind: str,
+        name: str,
+        **kwargs: str,
+    ) -> "ResourceBundle":
+        """
+        Adds an empty resource of the specified type at the specified index within
+        the bundle.
+
+        :param index:
+            Index at which the resource should be added to the bundle's resources.
         :param api_version:
             A standard Kubernetes configuration api version, e.g. "apps/v1".
         :param kind:
@@ -262,9 +409,90 @@ class ResourceBundle:
             kubernetes_version=self.kubernetes_version,
             **kwargs,
         )
-        if resource is None:
+        if resource is None:  # pragma: no cover
             raise ValueError(f"Unknown resource type {api_version}/{kind}.")
-        self.push(resource)
+        return self.insert(index, resource)
+
+    def new(self, api_version: str, kind: str, name: str, **kwargs: str) -> "Resource":
+        """
+        Adds an empty resource of the specified type as the last entry
+        to the bundle's resources list and returns that new Resource
+        for immediate configuration.
+
+        :param api_version:
+            A standard Kubernetes configuration api version, e.g. "apps/v1".
+        :param kind:
+            The type of resource, e.g. "Deployment".
+        :param name:
+            Name to give the resource.
+        :param kwargs:
+            Labels to assign to the metadata of the new resource.
+        """
+        return self.new_at(-1, api_version, kind, name, **kwargs)
+
+    def new_after(
+        self,
+        previous_resource: "Resource",
+        api_version: str,
+        kind: str,
+        name: str,
+        **kwargs: str,
+    ) -> "Resource":
+        """
+        Adds an empty resource of the specified type after the specified
+        previous_resource to the bundle's resources list and returns that new Resource
+        for immediate configuration.
+
+        :param previous_resource:
+            A resource already in this resource bundle that the new resources should
+            be added after.
+        :param api_version:
+            A standard Kubernetes configuration api version, e.g. "apps/v1".
+        :param kind:
+            The type of resource, e.g. "Deployment".
+        :param name:
+            Name to give the resource.
+        :param kwargs:
+            Labels to assign to the metadata of the new resource.
+        """
+        index = self._resources.index(previous_resource)
+        return self.new_at(index + 1, api_version, kind, name, **kwargs)
+
+    def new_at(
+        self,
+        index: int,
+        api_version: str,
+        kind: str,
+        name: str,
+        **kwargs: str,
+    ) -> "Resource":
+        """
+        Adds an empty resource of the specified type at the specified index
+        within the bundle's resources list and returns that new Resource
+        for immediate configuration.
+
+        :param index:
+            Index within the bundle's resources to add the new resource.
+        :param api_version:
+            A standard Kubernetes configuration api version, e.g. "apps/v1".
+        :param kind:
+            The type of resource, e.g. "Deployment".
+        :param name:
+            Name to give the resource.
+        :param kwargs:
+            Labels to assign to the metadata of the new resource.
+        """
+        resource = creation.new_resource(
+            api_version=api_version,
+            kind=kind,
+            name=name,
+            kubernetes_version=self.kubernetes_version,
+            **kwargs,
+        )
+        if resource is None:  # pragma: no cover
+            raise ValueError(f"Unknown resource type {api_version}/{kind}.")
+
+        self.insert(index, resource)
         return resource
 
     def add_from_yaml(self, resource_definition: str) -> "ResourceBundle":

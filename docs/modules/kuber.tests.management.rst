@@ -20,6 +20,14 @@ kuber.tests.management.test\_arrays module
    :undoc-members:
    :show-inheritance:
 
+kuber.tests.management.test\_complex\_ordering module
+-----------------------------------------------------
+
+.. automodule:: kuber.tests.management.test_complex_ordering
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.tests.management.test\_from\_helm module
 ----------------------------------------------
 
