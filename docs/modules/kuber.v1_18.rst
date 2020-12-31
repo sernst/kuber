@@ -196,6 +196,14 @@ kuber.v1\_18.core\_v1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.v1\_18.custom\_v1 module
+------------------------------
+
+.. automodule:: kuber.v1_18.custom_v1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.v1\_18.discovery\_v1beta1 module
 --------------------------------------
 

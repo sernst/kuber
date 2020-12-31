@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   kuber.definitions
    kuber.interface
    kuber.latest
    kuber.management
@@ -22,14 +23,6 @@ Subpackages
 
 Submodules
 ----------
-
-kuber.definitions module
-------------------------
-
-.. automodule:: kuber.definitions
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 kuber.execution module
 ----------------------

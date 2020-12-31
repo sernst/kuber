@@ -13,7 +13,11 @@
         """
         names = [
             "read_namespaced_{{ entity.class_name | snake_case }}",
+            {%- if entity.class_name == "CustomObject" %}
+            "read_cluster_{{ entity.class_name | snake_case }}",
+            {%- else %}
             "read_{{ entity.class_name | snake_case }}",
+            {%- endif %}
         ]
         return _kube_api.execute(
             action="read",
@@ -36,7 +40,11 @@
         """
         names = [
             "delete_namespaced_{{ entity.class_name | snake_case }}",
+            {%- if entity.class_name == "CustomObject" %}
+            "delete_cluster_{{ entity.class_name | snake_case }}",
+            {%- else %}
             "delete_{{ entity.class_name | snake_case }}",
+            {%- endif %}
         ]
 
         body = client.V1DeleteOptions(

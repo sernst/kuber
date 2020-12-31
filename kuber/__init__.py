@@ -3,26 +3,26 @@ import typing as _typing
 import yaml as _yaml
 
 from kuber import versioning as _versioning
-from kuber.definitions import Collection  # noqa
-from kuber.definitions import Definition  # noqa
-from kuber.definitions import OptionalPathLike  # noqa
-from kuber.definitions import PathLike  # noqa
-from kuber.definitions import Resource  # noqa
-from kuber.interface import CommandAction  # noqa
-from kuber.kube_api import get_version_from_cluster  # noqa
-from kuber.kube_api import load_access_config  # noqa
+from kuber.definitions import Collection  # noqa: F401
+from kuber.definitions import Definition  # noqa: F401
+from kuber.definitions import OptionalPathLike  # noqa: F401
+from kuber.definitions import PathLike  # noqa: F401
+from kuber.definitions import Resource  # noqa: F401
+from kuber.interface import CommandAction  # noqa: F401
+from kuber.kube_api import get_version_from_cluster  # noqa: F401
+from kuber.kube_api import load_access_config  # noqa: F401
 from kuber.management import ResourceBundle
-from kuber.management.creation import from_dict  # noqa
-from kuber.management.creation import from_json_file  # noqa
-from kuber.management.creation import from_yaml  # noqa
-from kuber.management.creation import from_yaml_file  # noqa
-from kuber.management.creation import from_yaml_file_multiple  # noqa
-from kuber.management.creation import from_yaml_multiple  # noqa
-from kuber.management.creation import new_resource  # noqa
-from kuber.versioning import KubernetesVersion  # noqa
+from kuber.management.creation import from_dict  # noqa: F401
+from kuber.management.creation import from_json_file  # noqa: F401
+from kuber.management.creation import from_yaml  # noqa: F401
+from kuber.management.creation import from_yaml_file  # noqa: F401
+from kuber.management.creation import from_yaml_file_multiple  # noqa: F401
+from kuber.management.creation import from_yaml_multiple  # noqa: F401
+from kuber.management.creation import new_resource  # noqa: F401
+from kuber.versioning import KubernetesVersion  # noqa: F401
 
 #: kuber library version.
-__version__ = "1.14.0"
+__version__ = "1.15.0"
 
 #: The loader used when loading yaml via pyyaml. This can be overridden
 #: in cases where a different Loader is preferred.

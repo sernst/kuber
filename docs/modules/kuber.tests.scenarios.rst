@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    kuber.tests.scenarios.cron_suspend
+   kuber.tests.scenarios.custom_object
    kuber.tests.scenarios.custom_resource_definition
    kuber.tests.scenarios.empty_values
    kuber.tests.scenarios.get_containers_from_job

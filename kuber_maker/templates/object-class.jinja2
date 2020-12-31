@@ -12,8 +12,13 @@ class {{ entity.class_name }}(_kuber_definitions.{{ base_class }}):
     ):
         """Create {{ entity.class_name }} instance."""
         super({{ entity.class_name }}, self).__init__(
+            {%- if entity.class_name == "CustomObject" %}
+            api_version=api_version or "custom/v1",
+            kind=kind or "CustomObject",
+            {%- else %}
             api_version="{{ entity.api_version }}",
             kind="{{ entity.class_name }}"
+            {%- endif %}
         )
         self._properties = {
             {%  for p, v in entity.properties.items() if base_class == "Definition" or p not in property_ignores -%}

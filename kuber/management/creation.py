@@ -145,22 +145,23 @@ def from_dict(
         .replace("rbac.authorization.k8s.io/", "rbac/")
         .replace("apiregistration.k8s.io/", "apiregistration/")
         .replace("storage.k8s.io/", "storage/")
+        .replace("apiextensions.k8s.io/", "apiextensions/")
         .split("/")[:2]
     )
     area = parts[-1]
     group = parts[0] if len(parts) > 1 else "core"
-    package = ".".join(["kuber", f"{version}", f"{group}_{area}"])
+    package = f"kuber.{version}.{group}_{area}"
 
     try:
         loaded_module = importlib.import_module(package)
-    except ModuleNotFoundError as error:  # pragma: no cover
-        print(
-            f'Error: Unable to import module "{package}" '
-            f'for resource apiVersion: "{resource_definition["apiVersion"]}".'
-        )
-        raise error
+        resource_class = getattr(loaded_module, resource_definition["kind"])
+    except ModuleNotFoundError:
+        # Assumes something that cannot be loaded through the standard Kubernetes
+        # API is a custom object.
+        package = f"kuber.{version}.custom_v1"
+        loaded_module = importlib.import_module(package)
+        resource_class = getattr(loaded_module, "CustomObject")
 
-    resource_class = getattr(loaded_module, resource_definition["kind"])
     resource: Resource = resource_class()
     return resource.from_dict(resource_definition)
 

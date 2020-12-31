@@ -1,7 +1,7 @@
 import os
 
 import kuber
-from kuber.latest import apiextensions_v1beta1
+from kuber.latest import apiextensions_v1
 
 MY_DIRECTORY = os.path.realpath(os.path.dirname(__file__))
 
@@ -17,9 +17,9 @@ def test_custom_resource_definition():
     )
     assert len(bundle.resources) == 1
 
-    crd: apiextensions_v1beta1.CustomResourceDefinition = bundle.resources[0]
+    crd: apiextensions_v1.CustomResourceDefinition = bundle.resources[0]
     assert (
-        crd.spec.validation.open_apiv3_schema.not_ is None
+        crd.spec.versions[0].schema.open_apiv3_schema.not_ is None
     ), """
         Expect the self-referential property value to be None by default.
         """

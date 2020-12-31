@@ -1,8 +1,8 @@
-import typing
+import typing  # noqa: F401
 
-from kubernetes import client
+from kubernetes import client  # noqa: F401
 
-from kuber import definitions as _kuber_definitions
+from kuber import definitions as _kuber_definitions  # noqa: F401
 
 
 class Info(_kuber_definitions.Definition):

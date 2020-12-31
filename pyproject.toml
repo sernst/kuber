@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuber"
-version = "1.14.0"
+version = "1.15.0"
 description = "Accelerated Kubernetes configuration and package management with Python."
 authors = ["Scott Ernst <swernst@gmail.com>"]
 license = "MIT"
