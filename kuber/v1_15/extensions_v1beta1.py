@@ -1,28 +1,28 @@
-import typing
-import datetime as _datetime
+import typing  # noqa: F401
+import datetime as _datetime  # noqa: F401
 
-from kubernetes import client
-from kuber import kube_api as _kube_api
+from kubernetes import client  # noqa: F401
+from kuber import kube_api as _kube_api  # noqa: F401
 
-from kuber import definitions as _kuber_definitions
-from kuber.v1_15.core_v1 import Container
-from kuber.v1_15.core_v1 import ContainerPort
-from kuber.v1_15.core_v1 import EnvFromSource
-from kuber.v1_15.core_v1 import EnvVar
-from kuber.v1_15.meta_v1 import LabelSelector
-from kuber.v1_15.core_v1 import Lifecycle
-from kuber.v1_15.meta_v1 import ListMeta
-from kuber.v1_15.core_v1 import LoadBalancerStatus
-from kuber.v1_15.meta_v1 import ObjectMeta
-from kuber.v1_15.core_v1 import PodTemplateSpec
-from kuber.v1_15.core_v1 import Probe
-from kuber.v1_15.core_v1 import ResourceRequirements
-from kuber.v1_15.core_v1 import SELinuxOptions
-from kuber.v1_15.core_v1 import SecurityContext
-from kuber.v1_15.meta_v1 import Status
-from kuber.v1_15.meta_v1 import StatusDetails
-from kuber.v1_15.core_v1 import VolumeDevice
-from kuber.v1_15.core_v1 import VolumeMount
+from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber.v1_15.core_v1 import Container  # noqa: F401
+from kuber.v1_15.core_v1 import ContainerPort  # noqa: F401
+from kuber.v1_15.core_v1 import EnvFromSource  # noqa: F401
+from kuber.v1_15.core_v1 import EnvVar  # noqa: F401
+from kuber.v1_15.meta_v1 import LabelSelector  # noqa: F401
+from kuber.v1_15.core_v1 import Lifecycle  # noqa: F401
+from kuber.v1_15.meta_v1 import ListMeta  # noqa: F401
+from kuber.v1_15.core_v1 import LoadBalancerStatus  # noqa: F401
+from kuber.v1_15.meta_v1 import ObjectMeta  # noqa: F401
+from kuber.v1_15.core_v1 import PodTemplateSpec  # noqa: F401
+from kuber.v1_15.core_v1 import Probe  # noqa: F401
+from kuber.v1_15.core_v1 import ResourceRequirements  # noqa: F401
+from kuber.v1_15.core_v1 import SELinuxOptions  # noqa: F401
+from kuber.v1_15.core_v1 import SecurityContext  # noqa: F401
+from kuber.v1_15.meta_v1 import Status  # noqa: F401
+from kuber.v1_15.meta_v1 import StatusDetails  # noqa: F401
+from kuber.v1_15.core_v1 import VolumeDevice  # noqa: F401
+from kuber.v1_15.core_v1 import VolumeMount  # noqa: F401
 
 
 class AllowedCSIDriver(_kuber_definitions.Definition):
@@ -517,7 +517,10 @@ class DaemonSet(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_daemon_set", "read_daemon_set"]
+        names = [
+            "read_namespaced_daemon_set",
+            "read_daemon_set",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -1833,7 +1836,10 @@ class Deployment(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_deployment", "read_deployment"]
+        names = [
+            "read_namespaced_deployment",
+            "read_deployment",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -3641,7 +3647,10 @@ class Ingress(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_ingress", "read_ingress"]
+        names = [
+            "read_namespaced_ingress",
+            "read_ingress",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -6536,7 +6545,10 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_replica_set", "read_replica_set"]
+        names = [
+            "read_namespaced_replica_set",
+            "read_replica_set",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -8025,7 +8037,10 @@ class Scale(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_scale", "read_scale"]
+        names = [
+            "read_namespaced_scale",
+            "read_scale",
+        ]
 
         response = _kube_api.execute(
             action="read",

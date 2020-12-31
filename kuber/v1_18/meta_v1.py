@@ -1,10 +1,10 @@
-import typing
-import datetime as _datetime
+import typing  # noqa: F401
+import datetime as _datetime  # noqa: F401
 
-from kubernetes import client
+from kubernetes import client  # noqa: F401
 
-from kuber import definitions as _kuber_definitions
-from kuber.v1_18.apimachinery_runtime import RawExtension
+from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber.v1_18.apimachinery_runtime import RawExtension  # noqa: F401
 
 
 class APIGroup(_kuber_definitions.Definition):

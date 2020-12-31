@@ -9,7 +9,11 @@
         """
         names = [
             "create_namespaced_{{ entity.class_name | snake_case }}",
+            {%- if entity.class_name == "CustomObject" %}
+            "create_cluster_{{ entity.class_name | snake_case }}",
+            {%- else %}
             "create_{{ entity.class_name | snake_case }}"
+            {%- endif %}
         ]
 
         response = _kube_api.execute(
@@ -37,7 +41,11 @@
         """
         names = [
             "replace_namespaced_{{ entity.class_name | snake_case }}",
+            {%- if entity.class_name == "CustomObject" %}
+            "replace_cluster_{{ entity.class_name | snake_case }}",
+            {%- else %}
             "replace_{{ entity.class_name | snake_case }}"
+            {%- endif %}
         ]
 
         response = _kube_api.execute(
@@ -65,7 +73,11 @@
         """
         names = [
             "patch_namespaced_{{ entity.class_name | snake_case }}",
+            {%- if entity.class_name == "CustomObject" %}
+            "patch_cluster_{{ entity.class_name | snake_case }}",
+            {%- else %}
             "patch_{{ entity.class_name | snake_case }}"
+            {%- endif %}
         ]
 
         response = _kube_api.execute(
@@ -91,7 +103,11 @@
         """
         names = [
             "read_namespaced_{{ entity.class_name | snake_case }}",
-            "read_{{ entity.class_name | snake_case }}"
+            {%- if entity.class_name == "CustomObject" %}
+            "read_cluster_{{ entity.class_name | snake_case }}",
+            {%- else %}
+            "read_{{ entity.class_name | snake_case }}",
+            {%- endif %}
         ]
 
         response = _kube_api.execute(

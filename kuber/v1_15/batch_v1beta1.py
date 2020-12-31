@@ -1,26 +1,26 @@
-import typing
-import datetime as _datetime
+import typing  # noqa: F401
+import datetime as _datetime  # noqa: F401
 
-from kubernetes import client
-from kuber import kube_api as _kube_api
+from kubernetes import client  # noqa: F401
+from kuber import kube_api as _kube_api  # noqa: F401
 
-from kuber import definitions as _kuber_definitions
-from kuber.v1_15.core_v1 import Container
-from kuber.v1_15.core_v1 import ContainerPort
-from kuber.v1_15.core_v1 import EnvFromSource
-from kuber.v1_15.core_v1 import EnvVar
-from kuber.v1_15.batch_v1 import JobSpec
-from kuber.v1_15.core_v1 import Lifecycle
-from kuber.v1_15.meta_v1 import ListMeta
-from kuber.v1_15.meta_v1 import ObjectMeta
-from kuber.v1_15.core_v1 import ObjectReference
-from kuber.v1_15.core_v1 import Probe
-from kuber.v1_15.core_v1 import ResourceRequirements
-from kuber.v1_15.core_v1 import SecurityContext
-from kuber.v1_15.meta_v1 import Status
-from kuber.v1_15.meta_v1 import StatusDetails
-from kuber.v1_15.core_v1 import VolumeDevice
-from kuber.v1_15.core_v1 import VolumeMount
+from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber.v1_15.core_v1 import Container  # noqa: F401
+from kuber.v1_15.core_v1 import ContainerPort  # noqa: F401
+from kuber.v1_15.core_v1 import EnvFromSource  # noqa: F401
+from kuber.v1_15.core_v1 import EnvVar  # noqa: F401
+from kuber.v1_15.batch_v1 import JobSpec  # noqa: F401
+from kuber.v1_15.core_v1 import Lifecycle  # noqa: F401
+from kuber.v1_15.meta_v1 import ListMeta  # noqa: F401
+from kuber.v1_15.meta_v1 import ObjectMeta  # noqa: F401
+from kuber.v1_15.core_v1 import ObjectReference  # noqa: F401
+from kuber.v1_15.core_v1 import Probe  # noqa: F401
+from kuber.v1_15.core_v1 import ResourceRequirements  # noqa: F401
+from kuber.v1_15.core_v1 import SecurityContext  # noqa: F401
+from kuber.v1_15.meta_v1 import Status  # noqa: F401
+from kuber.v1_15.meta_v1 import StatusDetails  # noqa: F401
+from kuber.v1_15.core_v1 import VolumeDevice  # noqa: F401
+from kuber.v1_15.core_v1 import VolumeMount  # noqa: F401
 
 
 class CronJob(_kuber_definitions.Resource):
@@ -343,7 +343,10 @@ class CronJob(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_cron_job", "read_cron_job"]
+        names = [
+            "read_namespaced_cron_job",
+            "read_cron_job",
+        ]
 
         response = _kube_api.execute(
             action="read",

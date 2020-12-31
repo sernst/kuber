@@ -507,7 +507,7 @@ class ResourceBundle:
             *creation.from_yaml_multiple(resource_definition, self.kubernetes_version)
         )
 
-    def add_file(self, path: typing.Union[str, pathlib.Path]) -> "ResourceBundle":
+    def add_file(self, path: "kuber.PathLike") -> "ResourceBundle":
         """
         Loads, parses and adds the Resource object from the given
         configuration file path.
@@ -537,7 +537,7 @@ class ResourceBundle:
 
     def add_directory(
         self,
-        directory: typing.Union[str, pathlib.Path],
+        directory: "kuber.PathLike",
         recursive: bool = False,
         ignores: typing.List[str] = None,
     ) -> "ResourceBundle":
@@ -573,7 +573,7 @@ class ResourceBundle:
 
     def add_directory_files(
         self,
-        directory: typing.Union[str, pathlib.Path],
+        directory: "kuber.PathLike",
         filenames: typing.Iterable = None,
     ) -> "ResourceBundle":
         """

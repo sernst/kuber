@@ -1,13 +1,22 @@
-import typing
+import typing  # noqa: F401
 {% if "Time" in data_types -%}
-import datetime as _datetime
+import datetime as _datetime  # noqa: F401
 {% endif %}
-from kubernetes import client
+from kubernetes import client  # noqa: F401
 {% if has_resource -%}
-from kuber import kube_api as _kube_api
+from kuber import kube_api as _kube_api  # noqa: F401
 {% endif %}
-from kuber import definitions as _kuber_definitions
+from kuber import definitions as _kuber_definitions  # noqa: F401
 {% for imp in imports -%}
-from {{ imp.package }} import {{ imp.target }}
+from {{ imp.package }} import {{ imp.target }}  # noqa: F401
 {% endfor %}
+
+{% if package.endswith("custom_v1") %}
+class CustomObjectStatus(dict):
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "CustomObjectStatus":
+        """Transparent pass-through method to match standard status objects."""
+        return cls(**data)
+{% endif %}
 

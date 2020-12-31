@@ -208,8 +208,13 @@ def _containers_location(
 def _get_kubernetes_api_class_name(entity: kuber_maker.Entity):
     """.."""
     parts = entity.api_version.replace(".k8s.io", "").split("/")
+
     if entity.api_path.find("rbac") != -1:
         return f"RbacAuthorization{parts[-1].capitalize()}Api"
+
+    if entity.api_path.find("custom") != -1:
+        return "CustomObjectsApi"
+
     result = "".join([p.capitalize() for p in parts] + ["Api"])
     if result == "CoordinationV1Api":
         return "CoordinationApi"
@@ -230,7 +235,11 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
         include_container = include_container or bool(containers_location)
         has_resource = has_resource or e.is_resource
         kubernetes_api_class_name = _get_kubernetes_api_class_name(e)
-        property_ignores = ["apiVersion", "kind"]
+
+        if e.class_name == "CustomObject":
+            property_ignores = []
+        else:
+            property_ignores = ["apiVersion", "kind"]
 
         collection = _collection_status(e)
         if collection["is_collection"]:
@@ -293,6 +302,7 @@ def render_package(package: str, all_entities: kuber_maker.AllEntities) -> str:
         imports=sorted(imports),
         data_types=data_types,
         has_resource=has_resource,
+        package=package,
     )
     blocks.insert(0, import_block)
     lines = "\n".join(blocks).replace("\r", "").split("\n")

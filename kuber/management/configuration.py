@@ -1,8 +1,9 @@
+import copy
 import glob
 import json
 import os
+import pathlib
 import typing
-import copy
 
 import yaml
 
@@ -42,7 +43,7 @@ class ResourceBundleSettings:
                 self._data[key] = value
         return self
 
-    def add_from_file(self, path: str) -> "ResourceBundleSettings":
+    def add_from_file(self, path: "kuber.PathLike") -> "ResourceBundleSettings":
         """
         Loads, parses and adds the values from the given file path to
         the settings object.
@@ -50,22 +51,25 @@ class ResourceBundleSettings:
         :param path:
             Path to the settings file to load.
         """
-        with open(path) as f:
-            contents = f.read()
+        p = pathlib.Path(path).expanduser().absolute()
+        contents = p.read_text()
 
-        if path.endswith((".yml", ".yaml")):
+        if p.name.endswith((".yml", ".yaml")):
             return self.add(**yaml.load(contents, Loader=kuber.yaml_loader))
 
-        if path.endswith(".json"):
+        if p.name.endswith(".json"):
             return self.add(**json.loads(contents))
 
         raise IOError(
-            f'Unrecognized file format for path "{path}". '
+            f'Unrecognized file format for path "{p}". '
             "Filenames should end with .yml, .yaml or .json."
         )
 
     def add_from_directory(
-        self, directory: str, recursive: bool = False, ignores: typing.List[str] = None
+        self,
+        directory: "kuber.PathLike",
+        recursive: bool = False,
+        ignores: typing.List[str] = None,
     ) -> "ResourceBundleSettings":
         """
         Adds all settings files (YAML and JSON) from the specified
@@ -79,13 +83,14 @@ class ResourceBundleSettings:
         :param ignores:
             Filenames to ignore when loading settings files.
         """
-        extensions = (".yml", ".yaml", ".json")
-        parts = [directory, "**" if recursive else None, "*"]
-        glob_path = os.path.realpath(os.path.join(*[p for p in parts if p]))
+        glob_path = pathlib.Path(directory).expanduser().absolute()
+        if recursive:
+            glob_path = glob_path.joinpath("**")
+        glob_path = glob_path.joinpath("*")
         paths = [
             path
-            for path in glob.iglob(glob_path, recursive=recursive)
-            if path.endswith(extensions)
+            for path in glob.iglob(str(glob_path), recursive=recursive)
+            if path.endswith((".yml", ".yaml", ".json"))
             and os.path.isfile(path)
             and os.path.basename(path) not in (ignores or [])
         ]

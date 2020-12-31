@@ -1,16 +1,16 @@
-import typing
-import datetime as _datetime
+import typing  # noqa: F401
+import datetime as _datetime  # noqa: F401
 
-from kubernetes import client
-from kuber import kube_api as _kube_api
+from kubernetes import client  # noqa: F401
+from kuber import kube_api as _kube_api  # noqa: F401
 
-from kuber import definitions as _kuber_definitions
-from kuber.v1_15.meta_v1 import LabelSelector
-from kuber.v1_15.meta_v1 import ListMeta
-from kuber.v1_15.meta_v1 import MicroTime
-from kuber.v1_15.meta_v1 import ObjectMeta
-from kuber.v1_15.meta_v1 import Status
-from kuber.v1_15.meta_v1 import StatusDetails
+from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber.v1_15.meta_v1 import LabelSelector  # noqa: F401
+from kuber.v1_15.meta_v1 import ListMeta  # noqa: F401
+from kuber.v1_15.meta_v1 import MicroTime  # noqa: F401
+from kuber.v1_15.meta_v1 import ObjectMeta  # noqa: F401
+from kuber.v1_15.meta_v1 import Status  # noqa: F401
+from kuber.v1_15.meta_v1 import StatusDetails  # noqa: F401
 
 
 class AWSElasticBlockStoreVolumeSource(_kuber_definitions.Definition):
@@ -10280,7 +10280,10 @@ class Namespace(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_namespace", "read_namespace"]
+        names = [
+            "read_namespaced_namespace",
+            "read_namespace",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -10733,7 +10736,10 @@ class Node(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_node", "read_node"]
+        names = [
+            "read_namespaced_node",
+            "read_node",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -13023,7 +13029,10 @@ class PersistentVolume(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_persistent_volume", "read_persistent_volume"]
+        names = [
+            "read_namespaced_persistent_volume",
+            "read_persistent_volume",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -15578,7 +15587,10 @@ class Pod(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_pod", "read_pod"]
+        names = [
+            "read_namespaced_pod",
+            "read_pod",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -21435,7 +21447,10 @@ class ResourceQuota(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_resource_quota", "read_resource_quota"]
+        names = [
+            "read_namespaced_resource_quota",
+            "read_resource_quota",
+        ]
 
         response = _kube_api.execute(
             action="read",
@@ -23973,7 +23988,10 @@ class Service(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_service", "read_service"]
+        names = [
+            "read_namespaced_service",
+            "read_service",
+        ]
 
         response = _kube_api.execute(
             action="read",

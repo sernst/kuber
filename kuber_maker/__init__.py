@@ -1,5 +1,6 @@
 import json
 import os
+import pathlib
 import typing
 import semver
 
@@ -133,19 +134,29 @@ def import_from_reference(version: str, reference_path: str) -> Import:
 
 def load_spec(version: str) -> ApiSpec:
     """..."""
-    path = os.path.realpath(
-        os.path.join(os.path.dirname(__file__), "..", "specs", f"{version}.json")
+    raw = json.loads(
+        pathlib.Path(__file__)
+        .parent.parent.joinpath("specs", f"{version}.json")
+        .read_bytes()
     )
-    with open(path, "rb") as f:
-        contents = f.read()
-    raw = json.loads(contents)
+
+    # Adds the definition for the custom resource object.
+    customs = json.loads(
+        pathlib.Path(__file__)
+        .parent.joinpath("custom_object_definition.json")
+        .read_bytes()
+    )
+
+    definitions: typing.Dict[str, dict] = raw["definitions"]
+    definitions.update(customs["definitions"])
+
     return ApiSpec(
         title=raw["info"]["title"],
         info_version=raw["info"]["version"],
         version=raw["kuber"]["name"],
         version_info=semver.parse_version_info(raw["kuber"]["version"]),
         api_paths=raw["paths"],
-        definitions=raw["definitions"],
+        definitions=definitions,
         commit_sha=raw["kuber"]["commit_sha"],
     )
 

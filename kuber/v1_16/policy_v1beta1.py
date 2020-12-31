@@ -1,16 +1,16 @@
-import typing
+import typing  # noqa: F401
 
-from kubernetes import client
-from kuber import kube_api as _kube_api
+from kubernetes import client  # noqa: F401
+from kuber import kube_api as _kube_api  # noqa: F401
 
-from kuber import definitions as _kuber_definitions
-from kuber.v1_16.meta_v1 import DeleteOptions
-from kuber.v1_16.meta_v1 import LabelSelector
-from kuber.v1_16.meta_v1 import ListMeta
-from kuber.v1_16.meta_v1 import ObjectMeta
-from kuber.v1_16.core_v1 import SELinuxOptions
-from kuber.v1_16.meta_v1 import Status
-from kuber.v1_16.meta_v1 import StatusDetails
+from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber.v1_16.meta_v1 import DeleteOptions  # noqa: F401
+from kuber.v1_16.meta_v1 import LabelSelector  # noqa: F401
+from kuber.v1_16.meta_v1 import ListMeta  # noqa: F401
+from kuber.v1_16.meta_v1 import ObjectMeta  # noqa: F401
+from kuber.v1_16.core_v1 import SELinuxOptions  # noqa: F401
+from kuber.v1_16.meta_v1 import Status  # noqa: F401
+from kuber.v1_16.meta_v1 import StatusDetails  # noqa: F401
 
 
 class AllowedCSIDriver(_kuber_definitions.Definition):
@@ -752,7 +752,10 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
         """
         Returns status information about the given resource within the cluster.
         """
-        names = ["read_namespaced_pod_disruption_budget", "read_pod_disruption_budget"]
+        names = [
+            "read_namespaced_pod_disruption_budget",
+            "read_pod_disruption_budget",
+        ]
 
         response = _kube_api.execute(
             action="read",
