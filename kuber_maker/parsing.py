@@ -14,8 +14,8 @@ TYPES = {
     # IntOrStrings must be integer values because of OpenApi v2
     # validation limitations. See issue for details:
     # https://github.com/kubernetes-client/python/issues/322
-    "IntOrString": "int",
-    "Quantity": "str",
+    "IntOrString": "_types.integer_or_string",
+    "Quantity": "_types.integer_or_string",
     None: None,
 }
 

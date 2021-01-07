@@ -14,6 +14,7 @@ Subpackages
    kuber.tests.scenarios.get_containers_from_job
    kuber.tests.scenarios.metadata_owner_reference
    kuber.tests.scenarios.odd_api_versions
+   kuber.tests.scenarios.port_int_or_string
    kuber.tests.scenarios.same_names_different_resources
    kuber.tests.scenarios.value_casting
    kuber.tests.scenarios.zero_scale_deployment

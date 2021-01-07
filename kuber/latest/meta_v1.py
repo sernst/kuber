@@ -4,6 +4,7 @@ import datetime as _datetime  # noqa: F401
 from kubernetes import client  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.latest.apimachinery_runtime import RawExtension  # noqa: F401
 
 

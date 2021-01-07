@@ -5,6 +5,7 @@ from kubernetes import client  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.v1_19.meta_v1 import LabelSelector  # noqa: F401
 from kuber.v1_19.meta_v1 import ListMeta  # noqa: F401
 from kuber.v1_19.meta_v1 import ObjectMeta  # noqa: F401
@@ -1920,9 +1921,9 @@ class MetricTarget(_kuber_definitions.Definition):
         }
         self._types = {
             "averageUtilization": (int, None),
-            "averageValue": (str, None),
+            "averageValue": (_types.integer_or_string, None),
             "type": (str, None),
-            "value": (str, None),
+            "value": (_types.integer_or_string, None),
         }
 
     @property
@@ -1963,7 +1964,7 @@ class MetricTarget(_kuber_definitions.Definition):
         averageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        self._properties["averageValue"] = None if value is None else f"{value}"
+        self._properties["averageValue"] = _types.integer_or_string(value)
 
     @property
     def type_(self) -> str:
@@ -1997,7 +1998,7 @@ class MetricTarget(_kuber_definitions.Definition):
         """
         value is the target value of the metric (as a quantity).
         """
-        self._properties["value"] = None if value is None else f"{value}"
+        self._properties["value"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "MetricTarget":
         return self
@@ -2030,8 +2031,8 @@ class MetricValueStatus(_kuber_definitions.Definition):
         }
         self._types = {
             "averageUtilization": (int, None),
-            "averageValue": (str, None),
-            "value": (str, None),
+            "averageValue": (_types.integer_or_string, None),
+            "value": (_types.integer_or_string, None),
         }
 
     @property
@@ -2072,7 +2073,7 @@ class MetricValueStatus(_kuber_definitions.Definition):
         averageValue is the current value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        self._properties["averageValue"] = None if value is None else f"{value}"
+        self._properties["averageValue"] = _types.integer_or_string(value)
 
     @property
     def value(self) -> typing.Optional[str]:
@@ -2087,7 +2088,7 @@ class MetricValueStatus(_kuber_definitions.Definition):
         """
         value is the current value of the metric (as a quantity).
         """
-        self._properties["value"] = None if value is None else f"{value}"
+        self._properties["value"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "MetricValueStatus":
         return self

@@ -5,6 +5,7 @@ from kubernetes import client  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.v1_15.core_v1 import Container  # noqa: F401
 from kuber.v1_15.core_v1 import ContainerPort  # noqa: F401
 from kuber.v1_15.core_v1 import EnvFromSource  # noqa: F401
@@ -3753,7 +3754,7 @@ class IngressBackend(_kuber_definitions.Definition):
         }
         self._types = {
             "serviceName": (str, None),
-            "servicePort": (int, None),
+            "servicePort": (_types.integer_or_string, None),
         }
 
     @property
@@ -3774,19 +3775,21 @@ class IngressBackend(_kuber_definitions.Definition):
         self._properties["serviceName"] = value
 
     @property
-    def service_port(self) -> typing.Optional[int]:
+    def service_port(self) -> typing.Union[str, int, None]:
         """
         Specifies the port of the referenced service.
         """
-        value = self._properties.get("servicePort")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("servicePort"),
+        )
 
     @service_port.setter
     def service_port(self, value: typing.Union[str, int, None]):
         """
         Specifies the port of the referenced service.
         """
-        self._properties["servicePort"] = None if value is None else f"{value}"
+        self._properties["servicePort"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "IngressBackend":
         return self
@@ -4924,12 +4927,12 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
             "protocol": protocol if protocol is not None else "",
         }
         self._types = {
-            "port": (int, None),
+            "port": (_types.integer_or_string, None),
             "protocol": (str, None),
         }
 
     @property
-    def port(self) -> typing.Optional[int]:
+    def port(self) -> typing.Union[str, int, None]:
         """
         If specified, the port on the given protocol.  This can
         either be a numerical or named port on a pod.  If this field
@@ -4937,8 +4940,10 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         present, only traffic on the specified protocol AND port
         will be matched.
         """
-        value = self._properties.get("port")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("port"),
+        )
 
     @port.setter
     def port(self, value: typing.Union[str, int, None]):
@@ -4949,7 +4954,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         present, only traffic on the specified protocol AND port
         will be matched.
         """
-        self._properties["port"] = None if value is None else f"{value}"
+        self._properties["port"] = _types.integer_or_string(value)
 
     @property
     def protocol(self) -> str:
@@ -7388,11 +7393,11 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
             "maxUnavailable": max_unavailable if max_unavailable is not None else None,
         }
         self._types = {
-            "maxUnavailable": (int, None),
+            "maxUnavailable": (_types.integer_or_string, None),
         }
 
     @property
-    def max_unavailable(self) -> typing.Optional[int]:
+    def max_unavailable(self) -> typing.Union[str, int, None]:
         """
         The maximum number of DaemonSet pods that can be unavailable
         during the update. Value can be an absolute number (ex: 5)
@@ -7409,8 +7414,10 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        value = self._properties.get("maxUnavailable")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("maxUnavailable"),
+        )
 
     @max_unavailable.setter
     def max_unavailable(self, value: typing.Union[str, int, None]):
@@ -7430,7 +7437,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         pods, thus ensuring that at least 70% of original number of
         DaemonSet pods are available at all times during the update.
         """
-        self._properties["maxUnavailable"] = None if value is None else f"{value}"
+        self._properties["maxUnavailable"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "RollingUpdateDaemonSet":
         return self
@@ -7458,12 +7465,12 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
             "maxUnavailable": max_unavailable if max_unavailable is not None else None,
         }
         self._types = {
-            "maxSurge": (int, None),
-            "maxUnavailable": (int, None),
+            "maxSurge": (_types.integer_or_string, None),
+            "maxUnavailable": (_types.integer_or_string, None),
         }
 
     @property
-    def max_surge(self) -> typing.Optional[int]:
+    def max_surge(self) -> typing.Union[str, int, None]:
         """
         The maximum number of pods that can be scheduled above the
         desired number of pods. Value can be an absolute number (ex:
@@ -7478,8 +7485,10 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is at most 130% of
         desired pods.
         """
-        value = self._properties.get("maxSurge")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("maxSurge"),
+        )
 
     @max_surge.setter
     def max_surge(self, value: typing.Union[str, int, None]):
@@ -7497,10 +7506,10 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         running at any time during the update is at most 130% of
         desired pods.
         """
-        self._properties["maxSurge"] = None if value is None else f"{value}"
+        self._properties["maxSurge"] = _types.integer_or_string(value)
 
     @property
-    def max_unavailable(self) -> typing.Optional[int]:
+    def max_unavailable(self) -> typing.Union[str, int, None]:
         """
         The maximum number of pods that can be unavailable during
         the update. Value can be an absolute number (ex: 5) or a
@@ -7514,8 +7523,10 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        value = self._properties.get("maxUnavailable")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("maxUnavailable"),
+        )
 
     @max_unavailable.setter
     def max_unavailable(self, value: typing.Union[str, int, None]):
@@ -7532,7 +7543,7 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
         that the total number of pods available at all times during
         the update is at least 70% of desired pods.
         """
-        self._properties["maxUnavailable"] = None if value is None else f"{value}"
+        self._properties["maxUnavailable"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "RollingUpdateDeployment":
         return self

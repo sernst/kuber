@@ -5,6 +5,7 @@ from kubernetes import client  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.v1_19.meta_v1 import LabelSelector  # noqa: F401
 from kuber.v1_19.meta_v1 import ListMeta  # noqa: F401
 from kuber.v1_19.meta_v1 import MicroTime  # noqa: F401
@@ -5323,7 +5324,7 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
         }
         self._types = {
             "medium": (str, None),
-            "sizeLimit": (str, None),
+            "sizeLimit": (_types.integer_or_string, None),
         }
 
     @property
@@ -5374,7 +5375,7 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
         is nil which means that the limit is undefined. More info:
         http://kubernetes.io/docs/user-guide/volumes#emptydir
         """
-        self._properties["sizeLimit"] = None if value is None else f"{value}"
+        self._properties["sizeLimit"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "EmptyDirVolumeSource":
         return self
@@ -9051,7 +9052,7 @@ class HTTPGetAction(_kuber_definitions.Definition):
             "host": (str, None),
             "httpHeaders": (list, HTTPHeader),
             "path": (str, None),
-            "port": (int, None),
+            "port": (_types.integer_or_string, None),
             "scheme": (str, None),
         }
 
@@ -9121,14 +9122,16 @@ class HTTPGetAction(_kuber_definitions.Definition):
         self._properties["path"] = value
 
     @property
-    def port(self) -> typing.Optional[int]:
+    def port(self) -> typing.Union[str, int, None]:
         """
         Name or number of the port to access on the container.
         Number must be in the range 1 to 65535. Name must be an
         IANA_SVC_NAME.
         """
-        value = self._properties.get("port")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("port"),
+        )
 
     @port.setter
     def port(self, value: typing.Union[str, int, None]):
@@ -9137,7 +9140,7 @@ class HTTPGetAction(_kuber_definitions.Definition):
         Number must be in the range 1 to 65535. Name must be an
         IANA_SVC_NAME.
         """
-        self._properties["port"] = None if value is None else f"{value}"
+        self._properties["port"] = _types.integer_or_string(value)
 
     @property
     def scheme(self) -> str:
@@ -22846,7 +22849,7 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
         }
         self._types = {
             "containerName": (str, None),
-            "divisor": (str, None),
+            "divisor": (_types.integer_or_string, None),
             "resource": (str, None),
         }
 
@@ -22882,7 +22885,7 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
         Specifies the output format of the exposed resources,
         defaults to "1"
         """
-        self._properties["divisor"] = None if value is None else f"{value}"
+        self._properties["divisor"] = _types.integer_or_string(value)
 
     @property
     def resource(self) -> str:
@@ -26476,7 +26479,7 @@ class ServicePort(_kuber_definitions.Definition):
             "nodePort": (int, None),
             "port": (int, None),
             "protocol": (str, None),
-            "targetPort": (int, None),
+            "targetPort": (_types.integer_or_string, None),
         }
 
     @property
@@ -26603,7 +26606,7 @@ class ServicePort(_kuber_definitions.Definition):
         self._properties["protocol"] = value
 
     @property
-    def target_port(self) -> typing.Optional[int]:
+    def target_port(self) -> typing.Union[str, int, None]:
         """
         Number or name of the port to access on the pods targeted by
         the service. Number must be in the range 1 to 65535. Name
@@ -26616,8 +26619,10 @@ class ServicePort(_kuber_definitions.Definition):
         https://kubernetes.io/docs/concepts/services-
         networking/service/#defining-a-service
         """
-        value = self._properties.get("targetPort")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("targetPort"),
+        )
 
     @target_port.setter
     def target_port(self, value: typing.Union[str, int, None]):
@@ -26633,7 +26638,7 @@ class ServicePort(_kuber_definitions.Definition):
         https://kubernetes.io/docs/concepts/services-
         networking/service/#defining-a-service
         """
-        self._properties["targetPort"] = None if value is None else f"{value}"
+        self._properties["targetPort"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "ServicePort":
         return self
@@ -27716,7 +27721,7 @@ class TCPSocketAction(_kuber_definitions.Definition):
         }
         self._types = {
             "host": (str, None),
-            "port": (int, None),
+            "port": (_types.integer_or_string, None),
         }
 
     @property
@@ -27737,14 +27742,16 @@ class TCPSocketAction(_kuber_definitions.Definition):
         self._properties["host"] = value
 
     @property
-    def port(self) -> typing.Optional[int]:
+    def port(self) -> typing.Union[str, int, None]:
         """
         Number or name of the port to access on the container.
         Number must be in the range 1 to 65535. Name must be an
         IANA_SVC_NAME.
         """
-        value = self._properties.get("port")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("port"),
+        )
 
     @port.setter
     def port(self, value: typing.Union[str, int, None]):
@@ -27753,7 +27760,7 @@ class TCPSocketAction(_kuber_definitions.Definition):
         Number must be in the range 1 to 65535. Name must be an
         IANA_SVC_NAME.
         """
-        self._properties["port"] = None if value is None else f"{value}"
+        self._properties["port"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "TCPSocketAction":
         return self
