@@ -4,6 +4,7 @@ from kubernetes import client  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.v1_18.meta_v1 import LabelSelector  # noqa: F401
 from kuber.v1_18.meta_v1 import ListMeta  # noqa: F401
 from kuber.v1_18.meta_v1 import ObjectMeta  # noqa: F401
@@ -751,19 +752,21 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
             "protocol": protocol if protocol is not None else "",
         }
         self._types = {
-            "port": (int, None),
+            "port": (_types.integer_or_string, None),
             "protocol": (str, None),
         }
 
     @property
-    def port(self) -> typing.Optional[int]:
+    def port(self) -> typing.Union[str, int, None]:
         """
         The port on the given protocol. This can either be a
         numerical or named port on a pod. If this field is not
         provided, this matches all port names and numbers.
         """
-        value = self._properties.get("port")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("port"),
+        )
 
     @port.setter
     def port(self, value: typing.Union[str, int, None]):
@@ -772,7 +775,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         numerical or named port on a pod. If this field is not
         provided, this matches all port names and numbers.
         """
-        self._properties["port"] = None if value is None else f"{value}"
+        self._properties["port"] = _types.integer_or_string(value)
 
     @property
     def protocol(self) -> str:

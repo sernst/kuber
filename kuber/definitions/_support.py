@@ -1,6 +1,7 @@
 import typing
 
 from kuber.definitions import _abstracts
+from kuber import _types
 
 
 def serialize_property(value: typing.Any) -> typing.Any:
@@ -50,6 +51,9 @@ def deserialize_property(value: typing.Any, data_type: tuple) -> typing.Any:
     """
     if value is None:
         return None
+
+    if data_type[0] == _types.integer_or_string:
+        return _types.integer_or_string(value)
 
     if issubclass(data_type[0], _abstracts.Definition):
         return data_type[0]().from_dict(value)

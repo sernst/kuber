@@ -3,6 +3,7 @@ import typing  # noqa: F401
 from kubernetes import client  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 
 
 class Info(_kuber_definitions.Definition):

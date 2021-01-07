@@ -4,6 +4,7 @@ from kubernetes import client  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.v1_19.meta_v1 import ListMeta  # noqa: F401
 from kuber.v1_19.core_v1 import LoadBalancerStatus  # noqa: F401
 from kuber.v1_19.meta_v1 import ObjectMeta  # noqa: F401
@@ -504,7 +505,7 @@ class IngressBackend(_kuber_definitions.Definition):
         self._types = {
             "resource": (TypedLocalObjectReference, None),
             "serviceName": (str, None),
-            "servicePort": (int, None),
+            "servicePort": (_types.integer_or_string, None),
         }
 
     @property
@@ -553,19 +554,21 @@ class IngressBackend(_kuber_definitions.Definition):
         self._properties["serviceName"] = value
 
     @property
-    def service_port(self) -> typing.Optional[int]:
+    def service_port(self) -> typing.Union[str, int, None]:
         """
         Specifies the port of the referenced service.
         """
-        value = self._properties.get("servicePort")
-        return int(value) if value is not None else None
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("servicePort"),
+        )
 
     @service_port.setter
     def service_port(self, value: typing.Union[str, int, None]):
         """
         Specifies the port of the referenced service.
         """
-        self._properties["servicePort"] = None if value is None else f"{value}"
+        self._properties["servicePort"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "IngressBackend":
         return self

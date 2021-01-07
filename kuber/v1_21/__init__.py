@@ -13,6 +13,6 @@ KUBERNETES_VERSION = _versioning.KubernetesVersion(
     patch="0",
     pre_release="alpha.0",
     build="",
-    created_at=_datetime.datetime(2020, 12, 31),
+    created_at=_datetime.datetime(2021, 1, 7),
     commit_sha="98bc258bf5516b6c60860e06845b899eab29825d",
 )

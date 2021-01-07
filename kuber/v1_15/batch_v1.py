@@ -5,6 +5,7 @@ from kubernetes import client  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.v1_15.core_v1 import Container  # noqa: F401
 from kuber.v1_15.core_v1 import ContainerPort  # noqa: F401
 from kuber.v1_15.core_v1 import EnvFromSource  # noqa: F401

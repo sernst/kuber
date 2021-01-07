@@ -5,6 +5,7 @@ from kubernetes import client  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.v1_21.meta_v1 import LabelSelector  # noqa: F401
 from kuber.v1_21.meta_v1 import ListMeta  # noqa: F401
 from kuber.v1_21.meta_v1 import ObjectMeta  # noqa: F401
@@ -50,7 +51,7 @@ class ContainerResourceMetricSource(_kuber_definitions.Definition):
             "container": (str, None),
             "name": (str, None),
             "targetAverageUtilization": (int, None),
-            "targetAverageValue": (str, None),
+            "targetAverageValue": (_types.integer_or_string, None),
         }
 
     @property
@@ -131,7 +132,7 @@ class ContainerResourceMetricSource(_kuber_definitions.Definition):
         (instead of as a percentage of the request), similar to the
         "pods" metric source type.
         """
-        self._properties["targetAverageValue"] = None if value is None else f"{value}"
+        self._properties["targetAverageValue"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "ContainerResourceMetricSource":
         return self
@@ -175,7 +176,7 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
         self._types = {
             "container": (str, None),
             "currentAverageUtilization": (int, None),
-            "currentAverageValue": (str, None),
+            "currentAverageValue": (_types.integer_or_string, None),
             "name": (str, None),
         }
 
@@ -246,7 +247,7 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
         "pods" metric source type. It will always be set, regardless
         of the corresponding metric specification.
         """
-        self._properties["currentAverageValue"] = None if value is None else f"{value}"
+        self._properties["currentAverageValue"] = _types.integer_or_string(value)
 
     @property
     def name(self) -> str:
@@ -396,8 +397,8 @@ class ExternalMetricSource(_kuber_definitions.Definition):
         self._types = {
             "metricName": (str, None),
             "metricSelector": (LabelSelector, None),
-            "targetAverageValue": (str, None),
-            "targetValue": (str, None),
+            "targetAverageValue": (_types.integer_or_string, None),
+            "targetValue": (_types.integer_or_string, None),
         }
 
     @property
@@ -456,7 +457,7 @@ class ExternalMetricSource(_kuber_definitions.Definition):
         targetAverageValue is the target per-pod value of global
         metric (as a quantity). Mutually exclusive with TargetValue.
         """
-        self._properties["targetAverageValue"] = None if value is None else f"{value}"
+        self._properties["targetAverageValue"] = _types.integer_or_string(value)
 
     @property
     def target_value(self) -> typing.Optional[str]:
@@ -473,7 +474,7 @@ class ExternalMetricSource(_kuber_definitions.Definition):
         targetValue is the target value of the metric (as a
         quantity). Mutually exclusive with TargetAverageValue.
         """
-        self._properties["targetValue"] = None if value is None else f"{value}"
+        self._properties["targetValue"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "ExternalMetricSource":
         return self
@@ -510,8 +511,8 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
             else LabelSelector(),
         }
         self._types = {
-            "currentAverageValue": (str, None),
-            "currentValue": (str, None),
+            "currentAverageValue": (_types.integer_or_string, None),
+            "currentValue": (_types.integer_or_string, None),
             "metricName": (str, None),
             "metricSelector": (LabelSelector, None),
         }
@@ -531,7 +532,7 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
         currentAverageValue is the current value of metric averaged
         over autoscaled pods.
         """
-        self._properties["currentAverageValue"] = None if value is None else f"{value}"
+        self._properties["currentAverageValue"] = _types.integer_or_string(value)
 
     @property
     def current_value(self) -> typing.Optional[str]:
@@ -548,7 +549,7 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
         currentValue is the current value of the metric (as a
         quantity)
         """
-        self._properties["currentValue"] = None if value is None else f"{value}"
+        self._properties["currentValue"] = _types.integer_or_string(value)
 
     @property
     def metric_name(self) -> str:
@@ -1941,11 +1942,11 @@ class ObjectMetricSource(_kuber_definitions.Definition):
             "targetValue": target_value if target_value is not None else None,
         }
         self._types = {
-            "averageValue": (str, None),
+            "averageValue": (_types.integer_or_string, None),
             "metricName": (str, None),
             "selector": (LabelSelector, None),
             "target": (CrossVersionObjectReference, None),
-            "targetValue": (str, None),
+            "targetValue": (_types.integer_or_string, None),
         }
 
     @property
@@ -1963,7 +1964,7 @@ class ObjectMetricSource(_kuber_definitions.Definition):
         averageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        self._properties["averageValue"] = None if value is None else f"{value}"
+        self._properties["averageValue"] = _types.integer_or_string(value)
 
     @property
     def metric_name(self) -> str:
@@ -2049,7 +2050,7 @@ class ObjectMetricSource(_kuber_definitions.Definition):
         targetValue is the target value of the metric (as a
         quantity).
         """
-        self._properties["targetValue"] = None if value is None else f"{value}"
+        self._properties["targetValue"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "ObjectMetricSource":
         return self
@@ -2085,8 +2086,8 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
             "target": target if target is not None else CrossVersionObjectReference(),
         }
         self._types = {
-            "averageValue": (str, None),
-            "currentValue": (str, None),
+            "averageValue": (_types.integer_or_string, None),
+            "currentValue": (_types.integer_or_string, None),
             "metricName": (str, None),
             "selector": (LabelSelector, None),
             "target": (CrossVersionObjectReference, None),
@@ -2107,7 +2108,7 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
         averageValue is the current value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        self._properties["averageValue"] = None if value is None else f"{value}"
+        self._properties["averageValue"] = _types.integer_or_string(value)
 
     @property
     def current_value(self) -> typing.Optional[str]:
@@ -2124,7 +2125,7 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
         currentValue is the current value of the metric (as a
         quantity).
         """
-        self._properties["currentValue"] = None if value is None else f"{value}"
+        self._properties["currentValue"] = _types.integer_or_string(value)
 
     @property
     def metric_name(self) -> str:
@@ -2233,7 +2234,7 @@ class PodsMetricSource(_kuber_definitions.Definition):
         self._types = {
             "metricName": (str, None),
             "selector": (LabelSelector, None),
-            "targetAverageValue": (str, None),
+            "targetAverageValue": (_types.integer_or_string, None),
         }
 
     @property
@@ -2298,7 +2299,7 @@ class PodsMetricSource(_kuber_definitions.Definition):
         targetAverageValue is the target value of the average of the
         metric across all relevant pods (as a quantity)
         """
-        self._properties["targetAverageValue"] = None if value is None else f"{value}"
+        self._properties["targetAverageValue"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "PodsMetricSource":
         return self
@@ -2332,7 +2333,7 @@ class PodsMetricStatus(_kuber_definitions.Definition):
             "selector": selector if selector is not None else LabelSelector(),
         }
         self._types = {
-            "currentAverageValue": (str, None),
+            "currentAverageValue": (_types.integer_or_string, None),
             "metricName": (str, None),
             "selector": (LabelSelector, None),
         }
@@ -2352,7 +2353,7 @@ class PodsMetricStatus(_kuber_definitions.Definition):
         currentAverageValue is the current value of the average of
         the metric across all relevant pods (as a quantity)
         """
-        self._properties["currentAverageValue"] = None if value is None else f"{value}"
+        self._properties["currentAverageValue"] = _types.integer_or_string(value)
 
     @property
     def metric_name(self) -> str:
@@ -2442,7 +2443,7 @@ class ResourceMetricSource(_kuber_definitions.Definition):
         self._types = {
             "name": (str, None),
             "targetAverageUtilization": (int, None),
-            "targetAverageValue": (str, None),
+            "targetAverageValue": (_types.integer_or_string, None),
         }
 
     @property
@@ -2504,7 +2505,7 @@ class ResourceMetricSource(_kuber_definitions.Definition):
         (instead of as a percentage of the request), similar to the
         "pods" metric source type.
         """
-        self._properties["targetAverageValue"] = None if value is None else f"{value}"
+        self._properties["targetAverageValue"] = _types.integer_or_string(value)
 
     def __enter__(self) -> "ResourceMetricSource":
         return self
@@ -2545,7 +2546,7 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
         }
         self._types = {
             "currentAverageUtilization": (int, None),
-            "currentAverageValue": (str, None),
+            "currentAverageValue": (_types.integer_or_string, None),
             "name": (str, None),
         }
 
@@ -2597,7 +2598,7 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
         "pods" metric source type. It will always be set, regardless
         of the corresponding metric specification.
         """
-        self._properties["currentAverageValue"] = None if value is None else f"{value}"
+        self._properties["currentAverageValue"] = _types.integer_or_string(value)
 
     @property
     def name(self) -> str:
