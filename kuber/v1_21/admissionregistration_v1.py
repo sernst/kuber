@@ -493,7 +493,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
         via v1beta1 may also specify Some or Unknown). Webhooks with
         side effects MUST implement a reconciliation system, since a
         request may be rejected by a future step in the admission
-        change and the side effects therefore need to be undone.
+        chain and the side effects therefore need to be undone.
         Requests with the dryRun attribute will be auto-rejected if
         they match a webhook with sideEffects == Unknown or Some.
         """
@@ -510,7 +510,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
         via v1beta1 may also specify Some or Unknown). Webhooks with
         side effects MUST implement a reconciliation system, since a
         request may be rejected by a future step in the admission
-        change and the side effects therefore need to be undone.
+        chain and the side effects therefore need to be undone.
         Requests with the dryRun attribute will be auto-rejected if
         they match a webhook with sideEffects == Unknown or Some.
         """
@@ -1566,7 +1566,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         via v1beta1 may also specify Some or Unknown). Webhooks with
         side effects MUST implement a reconciliation system, since a
         request may be rejected by a future step in the admission
-        change and the side effects therefore need to be undone.
+        chain and the side effects therefore need to be undone.
         Requests with the dryRun attribute will be auto-rejected if
         they match a webhook with sideEffects == Unknown or Some.
         """
@@ -1583,7 +1583,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         via v1beta1 may also specify Some or Unknown). Webhooks with
         side effects MUST implement a reconciliation system, since a
         request may be rejected by a future step in the admission
-        change and the side effects therefore need to be undone.
+        chain and the side effects therefore need to be undone.
         Requests with the dryRun attribute will be auto-rejected if
         they match a webhook with sideEffects == Unknown or Some.
         """

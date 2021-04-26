@@ -13,13 +13,12 @@ Subpackages
    kuber.management
    kuber.pre
    kuber.tests
-   kuber.v1_15
-   kuber.v1_16
    kuber.v1_17
    kuber.v1_18
    kuber.v1_19
    kuber.v1_20
    kuber.v1_21
+   kuber.v1_22
 
 Submodules
 ----------

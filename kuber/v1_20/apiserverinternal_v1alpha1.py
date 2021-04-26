@@ -550,7 +550,7 @@ class StorageVersionList(_kuber_definitions.Collection):
 
     @property
     def items(self) -> typing.List["StorageVersion"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["StorageVersion"],
             self._properties.get("items"),
@@ -560,7 +560,7 @@ class StorageVersionList(_kuber_definitions.Collection):
     def items(
         self, value: typing.Union[typing.List["StorageVersion"], typing.List[dict]]
     ):
-        """"""
+        """ """
         cleaned: typing.List[StorageVersion] = []
         for item in value:
             if isinstance(item, dict):
@@ -573,7 +573,7 @@ class StorageVersionList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """"""
+        """ """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -581,7 +581,7 @@ class StorageVersionList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,

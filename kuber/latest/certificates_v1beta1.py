@@ -44,7 +44,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -52,7 +52,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -279,7 +279,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
 
 
 class CertificateSigningRequestCondition(_kuber_definitions.Definition):
-    """"""
+    """ """
 
     def __init__(
         self,
@@ -454,7 +454,7 @@ class CertificateSigningRequestCondition(_kuber_definitions.Definition):
 
 
 class CertificateSigningRequestList(_kuber_definitions.Collection):
-    """"""
+    """ """
 
     def __init__(
         self,
@@ -478,7 +478,7 @@ class CertificateSigningRequestList(_kuber_definitions.Collection):
 
     @property
     def items(self) -> typing.List["CertificateSigningRequest"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["CertificateSigningRequest"],
             self._properties.get("items"),
@@ -491,7 +491,7 @@ class CertificateSigningRequestList(_kuber_definitions.Collection):
             typing.List["CertificateSigningRequest"], typing.List[dict]
         ],
     ):
-        """"""
+        """ """
         cleaned: typing.List[CertificateSigningRequest] = []
         for item in value:
             if isinstance(item, dict):
@@ -504,7 +504,7 @@ class CertificateSigningRequestList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """"""
+        """ """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -512,7 +512,7 @@ class CertificateSigningRequestList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,
@@ -789,7 +789,7 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
 
 
 class CertificateSigningRequestStatus(_kuber_definitions.Definition):
-    """"""
+    """ """
 
     def __init__(
         self,

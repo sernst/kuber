@@ -895,6 +895,7 @@ class CronJobStatus(_kuber_definitions.Definition):
         self,
         active: typing.List["ObjectReference"] = None,
         last_schedule_time: str = None,
+        last_successful_time: str = None,
     ):
         """Create CronJobStatus instance."""
         super(CronJobStatus, self).__init__(
@@ -905,10 +906,14 @@ class CronJobStatus(_kuber_definitions.Definition):
             "lastScheduleTime": last_schedule_time
             if last_schedule_time is not None
             else None,
+            "lastSuccessfulTime": last_successful_time
+            if last_successful_time is not None
+            else None,
         }
         self._types = {
             "active": (list, ObjectReference),
             "lastScheduleTime": (str, None),
+            "lastSuccessfulTime": (str, None),
         }
 
     @property
@@ -962,6 +967,31 @@ class CronJobStatus(_kuber_definitions.Definition):
         elif isinstance(value, _datetime.date):
             value = value.strftime("%Y-%m-%dT00:00:00Z")
         self._properties["lastScheduleTime"] = value
+
+    @property
+    def last_successful_time(self) -> str:
+        """
+        Information when was the last time the job successfully
+        completed.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("lastSuccessfulTime"),
+        )
+
+    @last_successful_time.setter
+    def last_successful_time(
+        self, value: typing.Union[str, _datetime.datetime, _datetime.date]
+    ):
+        """
+        Information when was the last time the job successfully
+        completed.
+        """
+        if isinstance(value, _datetime.datetime):
+            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
+        elif isinstance(value, _datetime.date):
+            value = value.strftime("%Y-%m-%dT00:00:00Z")
+        self._properties["lastSuccessfulTime"] = value
 
     def __enter__(self) -> "CronJobStatus":
         return self

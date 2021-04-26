@@ -2560,8 +2560,7 @@ class ConfigMap(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         ConfigMap cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is a beta field enabled by
-        ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil.
         """
         return typing.cast(
             bool,
@@ -2574,8 +2573,7 @@ class ConfigMap(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         ConfigMap cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is a beta field enabled by
-        ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil.
         """
         self._properties["immutable"] = value
 
@@ -3821,7 +3819,7 @@ class Container(_kuber_definitions.Definition):
         Compute Resources required by this container. Cannot be
         updated. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         return typing.cast(
             "ResourceRequirements",
@@ -3834,7 +3832,7 @@ class Container(_kuber_definitions.Definition):
         Compute Resources required by this container. Cannot be
         updated. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -7148,6 +7146,209 @@ class EphemeralContainer(_kuber_definitions.Definition):
         return False
 
 
+class EphemeralContainers(_kuber_definitions.Resource):
+    """
+    A list of ephemeral containers used with the Pod
+    ephemeralcontainers subresource.
+    """
+
+    def __init__(
+        self,
+        ephemeral_containers: typing.List["EphemeralContainer"] = None,
+        metadata: "ObjectMeta" = None,
+    ):
+        """Create EphemeralContainers instance."""
+        super(EphemeralContainers, self).__init__(
+            api_version="core/v1", kind="EphemeralContainers"
+        )
+        self._properties = {
+            "ephemeralContainers": ephemeral_containers
+            if ephemeral_containers is not None
+            else [],
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+        }
+        self._types = {
+            "apiVersion": (str, None),
+            "ephemeralContainers": (list, EphemeralContainer),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+        }
+
+    @property
+    def ephemeral_containers(self) -> typing.List["EphemeralContainer"]:
+        """
+        A list of ephemeral containers associated with this pod. New
+        ephemeral containers may be appended to this list, but
+        existing ephemeral containers may not be removed or
+        modified.
+        """
+        return typing.cast(
+            typing.List["EphemeralContainer"],
+            self._properties.get("ephemeralContainers"),
+        )
+
+    @ephemeral_containers.setter
+    def ephemeral_containers(
+        self, value: typing.Union[typing.List["EphemeralContainer"], typing.List[dict]]
+    ):
+        """
+        A list of ephemeral containers associated with this pod. New
+        ephemeral containers may be appended to this list, but
+        existing ephemeral containers may not be removed or
+        modified.
+        """
+        cleaned: typing.List[EphemeralContainer] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    EphemeralContainer,
+                    EphemeralContainer().from_dict(item),
+                )
+            cleaned.append(typing.cast(EphemeralContainer, item))
+        self._properties["ephemeralContainers"] = cleaned
+
+    @property
+    def metadata(self) -> "ObjectMeta":
+        """ """
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
+
+    @metadata.setter
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
+        """ """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
+
+    def create_resource(self, namespace: "str" = None):
+        """
+        Creates the EphemeralContainers in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            "create_namespaced_ephemeral_containers",
+            "create_ephemeral_containers",
+        ]
+
+        _kube_api.execute(
+            action="create",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict()},
+        )
+
+    def replace_resource(self, namespace: "str" = None):
+        """
+        Replaces the EphemeralContainers in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            "replace_namespaced_ephemeral_containers",
+            "replace_ephemeral_containers",
+        ]
+
+        _kube_api.execute(
+            action="replace",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
+        )
+
+    def patch_resource(self, namespace: "str" = None):
+        """
+        Patches the EphemeralContainers in the currently
+        configured Kubernetes cluster.
+        """
+        names = ["patch_namespaced_ephemeral_containers", "patch_ephemeral_containers"]
+
+        _kube_api.execute(
+            action="patch",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
+        )
+
+    def get_resource_status(self, namespace: "str" = None):
+        """This resource does not have a status."""
+        pass
+
+    def read_resource(self, namespace: str = None):
+        """
+        Reads the EphemeralContainers from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            "read_namespaced_ephemeral_containers",
+            "read_ephemeral_containers",
+        ]
+        return _kube_api.execute(
+            action="read",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name},
+        )
+
+    def delete_resource(
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
+    ):
+        """
+        Deletes the EphemeralContainers from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            "delete_namespaced_ephemeral_containers",
+            "delete_ephemeral_containers",
+        ]
+
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds,
+        )
+
+        _kube_api.execute(
+            action="delete",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name, "body": body},
+        )
+
+    @staticmethod
+    def get_resource_api(
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.CoreV1Api":
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs["apl_client"] = api_client
+        return client.CoreV1Api(**kwargs)
+
+    def __enter__(self) -> "EphemeralContainers":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class EphemeralVolumeSource(_kuber_definitions.Definition):
     """
     Represents an ephemeral volume that is handled by a normal
@@ -7156,7 +7357,6 @@ class EphemeralVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        read_only: bool = None,
         volume_claim_template: "PersistentVolumeClaimTemplate" = None,
     ):
         """Create EphemeralVolumeSource instance."""
@@ -7164,34 +7364,13 @@ class EphemeralVolumeSource(_kuber_definitions.Definition):
             api_version="core/v1", kind="EphemeralVolumeSource"
         )
         self._properties = {
-            "readOnly": read_only if read_only is not None else None,
             "volumeClaimTemplate": volume_claim_template
             if volume_claim_template is not None
             else PersistentVolumeClaimTemplate(),
         }
         self._types = {
-            "readOnly": (bool, None),
             "volumeClaimTemplate": (PersistentVolumeClaimTemplate, None),
         }
-
-    @property
-    def read_only(self) -> bool:
-        """
-        Specifies a read-only configuration for the volume. Defaults
-        to false (read/write).
-        """
-        return typing.cast(
-            bool,
-            self._properties.get("readOnly"),
-        )
-
-    @read_only.setter
-    def read_only(self, value: bool):
-        """
-        Specifies a read-only configuration for the volume. Defaults
-        to false (read/write).
-        """
-        self._properties["readOnly"] = value
 
     @property
     def volume_claim_template(self) -> "PersistentVolumeClaimTemplate":
@@ -10625,7 +10804,7 @@ class LimitRangeList(_kuber_definitions.Collection):
         """
         Items is a list of LimitRange objects. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         return typing.cast(
             typing.List["LimitRange"],
@@ -10637,7 +10816,7 @@ class LimitRangeList(_kuber_definitions.Collection):
         """
         Items is a list of LimitRange objects. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         cleaned: typing.List[LimitRange] = []
         for item in value:
@@ -11424,7 +11603,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @property
     def last_transition_time(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("lastTransitionTime"),
@@ -11434,7 +11613,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
     def last_transition_time(
         self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
-        """"""
+        """ """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
@@ -11443,7 +11622,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @property
     def message(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("message"),
@@ -11451,12 +11630,12 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @message.setter
     def message(self, value: str):
-        """"""
+        """ """
         self._properties["message"] = value
 
     @property
     def reason(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("reason"),
@@ -11464,7 +11643,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @reason.setter
     def reason(self, value: str):
-        """"""
+        """ """
         self._properties["reason"] = value
 
     @property
@@ -14734,7 +14913,7 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @property
     def status(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("status"),
@@ -14742,12 +14921,12 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @status.setter
     def status(self, value: str):
-        """"""
+        """ """
         self._properties["status"] = value
 
     @property
     def type_(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("type"),
@@ -14755,7 +14934,7 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @type_.setter
     def type_(self, value: str):
-        """"""
+        """ """
         self._properties["type"] = value
 
     def __enter__(self) -> "PersistentVolumeClaimCondition":
@@ -17115,6 +17294,7 @@ class PodAffinityTerm(_kuber_definitions.Definition):
     def __init__(
         self,
         label_selector: "LabelSelector" = None,
+        namespace_selector: "LabelSelector" = None,
         namespaces: typing.List[str] = None,
         topology_key: str = None,
     ):
@@ -17126,11 +17306,15 @@ class PodAffinityTerm(_kuber_definitions.Definition):
             "labelSelector": label_selector
             if label_selector is not None
             else LabelSelector(),
+            "namespaceSelector": namespace_selector
+            if namespace_selector is not None
+            else LabelSelector(),
             "namespaces": namespaces if namespaces is not None else [],
             "topologyKey": topology_key if topology_key is not None else "",
         }
         self._types = {
             "labelSelector": (LabelSelector, None),
+            "namespaceSelector": (LabelSelector, None),
             "namespaces": (list, str),
             "topologyKey": (str, None),
         }
@@ -17158,11 +17342,49 @@ class PodAffinityTerm(_kuber_definitions.Definition):
         self._properties["labelSelector"] = value
 
     @property
+    def namespace_selector(self) -> "LabelSelector":
+        """
+        A label query over the set of namespaces that the term
+        applies to. The term is applied to the union of the
+        namespaces selected by this field and the ones listed in the
+        namespaces field. null selector and null or empty namespaces
+        list means "this pod's namespace". An empty selector ({})
+        matches all namespaces. This field is alpha-level and is
+        only honored when PodAffinityNamespaceSelector feature is
+        enabled.
+        """
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("namespaceSelector"),
+        )
+
+    @namespace_selector.setter
+    def namespace_selector(self, value: typing.Union["LabelSelector", dict]):
+        """
+        A label query over the set of namespaces that the term
+        applies to. The term is applied to the union of the
+        namespaces selected by this field and the ones listed in the
+        namespaces field. null selector and null or empty namespaces
+        list means "this pod's namespace". An empty selector ({})
+        matches all namespaces. This field is alpha-level and is
+        only honored when PodAffinityNamespaceSelector feature is
+        enabled.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["namespaceSelector"] = value
+
+    @property
     def namespaces(self) -> typing.List[str]:
         """
-        namespaces specifies which namespaces the labelSelector
-        applies to (matches against); null or empty list means "this
-        pod's namespace"
+        namespaces specifies a static list of namespace names that
+        the term applies to. The term is applied to the union of the
+        namespaces listed in this field and the ones selected by
+        namespaceSelector. null or empty namespaces list and null
+        namespaceSelector means "this pod's namespace"
         """
         return typing.cast(
             typing.List[str],
@@ -17172,9 +17394,11 @@ class PodAffinityTerm(_kuber_definitions.Definition):
     @namespaces.setter
     def namespaces(self, value: typing.List[str]):
         """
-        namespaces specifies which namespaces the labelSelector
-        applies to (matches against); null or empty list means "this
-        pod's namespace"
+        namespaces specifies a static list of namespace names that
+        the term applies to. The term is applied to the union of the
+        namespaces listed in this field and the ones selected by
+        namespaceSelector. null or empty namespaces list and null
+        namespaceSelector means "this pod's namespace"
         """
         self._properties["namespaces"] = value
 
@@ -17671,7 +17895,7 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
 
     @property
     def value(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("value"),
@@ -17679,7 +17903,7 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
 
     @value.setter
     def value(self, value: str):
-        """"""
+        """ """
         self._properties["value"] = value
 
     def __enter__(self) -> "PodDNSConfigOption":
@@ -19234,10 +19458,11 @@ class PodSpec(_kuber_definitions.Definition):
         """
         Optional duration in seconds the pod needs to terminate
         gracefully. May be decreased in delete request. Value must
-        be non-negative integer. The value zero indicates delete
-        immediately. If this value is nil, the default grace period
-        will be used instead. The grace period is the duration in
-        seconds after the processes running in the pod are sent a
+        be non-negative integer. The value zero indicates stop
+        immediately via the kill signal (no opportunity to shut
+        down). If this value is nil, the default grace period will
+        be used instead. The grace period is the duration in seconds
+        after the processes running in the pod are sent a
         termination signal and the time when the processes are
         forcibly halted with a kill signal. Set this value longer
         than the expected cleanup time for your process. Defaults to
@@ -19253,10 +19478,11 @@ class PodSpec(_kuber_definitions.Definition):
         """
         Optional duration in seconds the pod needs to terminate
         gracefully. May be decreased in delete request. Value must
-        be non-negative integer. The value zero indicates delete
-        immediately. If this value is nil, the default grace period
-        will be used instead. The grace period is the duration in
-        seconds after the processes running in the pod are sent a
+        be non-negative integer. The value zero indicates stop
+        immediately via the kill signal (no opportunity to shut
+        down). If this value is nil, the default grace period will
+        be used instead. The grace period is the duration in seconds
+        after the processes running in the pod are sent a
         termination signal and the time when the processes are
         forcibly halted with a kill signal. Set this value longer
         than the expected cleanup time for your process. Defaults to
@@ -20627,7 +20853,7 @@ class PodTemplateSpec(_kuber_definitions.Definition):
 
 
 class PortStatus(_kuber_definitions.Definition):
-    """"""
+    """ """
 
     def __init__(
         self,
@@ -20909,6 +21135,7 @@ class Probe(_kuber_definitions.Definition):
         period_seconds: int = None,
         success_threshold: int = None,
         tcp_socket: "TCPSocketAction" = None,
+        termination_grace_period_seconds: int = None,
         timeout_seconds: int = None,
     ):
         """Create Probe instance."""
@@ -20927,6 +21154,9 @@ class Probe(_kuber_definitions.Definition):
             if success_threshold is not None
             else None,
             "tcpSocket": tcp_socket if tcp_socket is not None else TCPSocketAction(),
+            "terminationGracePeriodSeconds": termination_grace_period_seconds
+            if termination_grace_period_seconds is not None
+            else None,
             "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,
         }
         self._types = {
@@ -20937,6 +21167,7 @@ class Probe(_kuber_definitions.Definition):
             "periodSeconds": (int, None),
             "successThreshold": (int, None),
             "tcpSocket": (TCPSocketAction, None),
+            "terminationGracePeriodSeconds": (int, None),
             "timeoutSeconds": (int, None),
         }
 
@@ -21093,6 +21324,47 @@ class Probe(_kuber_definitions.Definition):
                 TCPSocketAction().from_dict(value),
             )
         self._properties["tcpSocket"] = value
+
+    @property
+    def termination_grace_period_seconds(self) -> int:
+        """
+        Optional duration in seconds the pod needs to terminate
+        gracefully upon probe failure. The grace period is the
+        duration in seconds after the processes running in the pod
+        are sent a termination signal and the time when the
+        processes are forcibly halted with a kill signal. Set this
+        value longer than the expected cleanup time for your
+        process. If this value is nil, the pod's
+        terminationGracePeriodSeconds will be used. Otherwise, this
+        value overrides the value provided by the pod spec. Value
+        must be non-negative integer. The value zero indicates stop
+        immediately via the kill signal (no opportunity to shut
+        down). This is an alpha field and requires enabling
+        ProbeTerminationGracePeriod feature gate.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("terminationGracePeriodSeconds"),
+        )
+
+    @termination_grace_period_seconds.setter
+    def termination_grace_period_seconds(self, value: int):
+        """
+        Optional duration in seconds the pod needs to terminate
+        gracefully upon probe failure. The grace period is the
+        duration in seconds after the processes running in the pod
+        are sent a termination signal and the time when the
+        processes are forcibly halted with a kill signal. Set this
+        value longer than the expected cleanup time for your
+        process. If this value is nil, the pod's
+        terminationGracePeriodSeconds will be used. Otherwise, this
+        value overrides the value provided by the pod spec. Value
+        must be non-negative integer. The value zero indicates stop
+        immediately via the kill signal (no opportunity to shut
+        down). This is an alpha field and requires enabling
+        ProbeTerminationGracePeriod feature gate.
+        """
+        self._properties["terminationGracePeriodSeconds"] = value
 
     @property
     def timeout_seconds(self) -> int:
@@ -23602,7 +23874,7 @@ class ResourceRequirements(_kuber_definitions.Definition):
         Limits describes the maximum amount of compute resources
         allowed. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         return typing.cast(
             dict,
@@ -23615,7 +23887,7 @@ class ResourceRequirements(_kuber_definitions.Definition):
         Limits describes the maximum amount of compute resources
         allowed. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         self._properties["limits"] = value
 
@@ -23627,7 +23899,7 @@ class ResourceRequirements(_kuber_definitions.Definition):
         defaults to Limits if that is explicitly specified,
         otherwise to an implementation-defined value. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         return typing.cast(
             dict,
@@ -23642,7 +23914,7 @@ class ResourceRequirements(_kuber_definitions.Definition):
         defaults to Limits if that is explicitly specified,
         otherwise to an implementation-defined value. More info:
         https://kubernetes.io/docs/concepts/configuration/manage-
-        compute-resources-container/
+        resources-containers/
         """
         self._properties["requests"] = value
 
@@ -24574,8 +24846,7 @@ class Secret(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         Secret cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is a beta field enabled by
-        ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil.
         """
         return typing.cast(
             bool,
@@ -24588,8 +24859,7 @@ class Secret(_kuber_definitions.Resource):
         Immutable, if set to true, ensures that data stored in the
         Secret cannot be updated (only object metadata can be
         modified). If not set to true, the field can be modified at
-        any time. Defaulted to nil. This is a beta field enabled by
-        ImmutableEphemeralVolumes feature gate.
+        any time. Defaulted to nil.
         """
         self._properties["immutable"] = value
 
@@ -24623,10 +24893,10 @@ class Secret(_kuber_definitions.Resource):
     def string_data(self) -> dict:
         """
         stringData allows specifying non-binary secret data in
-        string form. It is provided as a write-only convenience
-        method. All keys and values are merged into the data field
-        on write, overwriting any existing values. It is never
-        output when reading from the API.
+        string form. It is provided as a write-only input field for
+        convenience. All keys and values are merged into the data
+        field on write, overwriting any existing values. The
+        stringData field is never output when reading from the API.
         """
         return typing.cast(
             dict,
@@ -24637,10 +24907,10 @@ class Secret(_kuber_definitions.Resource):
     def string_data(self, value: dict):
         """
         stringData allows specifying non-binary secret data in
-        string form. It is provided as a write-only convenience
-        method. All keys and values are merged into the data field
-        on write, overwriting any existing values. It is never
-        output when reading from the API.
+        string form. It is provided as a write-only input field for
+        convenience. All keys and values are merged into the data
+        field on write, overwriting any existing values. The
+        stringData field is never output when reading from the API.
         """
         self._properties["stringData"] = value
 
@@ -26793,8 +27063,10 @@ class ServiceSpec(_kuber_definitions.Definition):
         external_name: str = None,
         external_traffic_policy: str = None,
         health_check_node_port: int = None,
+        internal_traffic_policy: str = None,
         ip_families: typing.List[str] = None,
         ip_family_policy: str = None,
+        load_balancer_class: str = None,
         load_balancer_ip: str = None,
         load_balancer_source_ranges: typing.List[str] = None,
         ports: typing.List["ServicePort"] = None,
@@ -26821,8 +27093,14 @@ class ServiceSpec(_kuber_definitions.Definition):
             "healthCheckNodePort": health_check_node_port
             if health_check_node_port is not None
             else None,
+            "internalTrafficPolicy": internal_traffic_policy
+            if internal_traffic_policy is not None
+            else "",
             "ipFamilies": ip_families if ip_families is not None else [],
             "ipFamilyPolicy": ip_family_policy if ip_family_policy is not None else "",
+            "loadBalancerClass": load_balancer_class
+            if load_balancer_class is not None
+            else "",
             "loadBalancerIP": load_balancer_ip if load_balancer_ip is not None else "",
             "loadBalancerSourceRanges": load_balancer_source_ranges
             if load_balancer_source_ranges is not None
@@ -26847,8 +27125,10 @@ class ServiceSpec(_kuber_definitions.Definition):
             "externalName": (str, None),
             "externalTrafficPolicy": (str, None),
             "healthCheckNodePort": (int, None),
+            "internalTrafficPolicy": (str, None),
             "ipFamilies": (list, str),
             "ipFamilyPolicy": (str, None),
+            "loadBalancerClass": (str, None),
             "loadBalancerIP": (str, None),
             "loadBalancerSourceRanges": (list, str),
             "ports": (list, ServicePort),
@@ -27057,8 +27337,8 @@ class ServiceSpec(_kuber_definitions.Definition):
         mechanisms will return as an alias for this service (e.g. a
         DNS CNAME record). No proxying will be involved.  Must be a
         lowercase RFC-1123 hostname
-        (https://tools.ietf.org/html/rfc1123) and requires Type to
-        be
+        (https://tools.ietf.org/html/rfc1123) and requires `type` to
+        be "ExternalName".
         """
         return typing.cast(
             str,
@@ -27072,8 +27352,8 @@ class ServiceSpec(_kuber_definitions.Definition):
         mechanisms will return as an alias for this service (e.g. a
         DNS CNAME record). No proxying will be involved.  Must be a
         lowercase RFC-1123 hostname
-        (https://tools.ietf.org/html/rfc1123) and requires Type to
-        be
+        (https://tools.ietf.org/html/rfc1123) and requires `type` to
+        be "ExternalName".
         """
         self._properties["externalName"] = value
 
@@ -27144,6 +27424,33 @@ class ServiceSpec(_kuber_definitions.Definition):
         longer need it (e.g. changing type).
         """
         self._properties["healthCheckNodePort"] = value
+
+    @property
+    def internal_traffic_policy(self) -> str:
+        """
+        InternalTrafficPolicy specifies if the cluster internal
+        traffic should be routed to all endpoints or node-local
+        endpoints only. "Cluster" routes internal traffic to a
+        Service to all endpoints. "Local" routes traffic to node-
+        local endpoints only, traffic is dropped if no node-local
+        endpoints are ready. The default value is "Cluster".
+        """
+        return typing.cast(
+            str,
+            self._properties.get("internalTrafficPolicy"),
+        )
+
+    @internal_traffic_policy.setter
+    def internal_traffic_policy(self, value: str):
+        """
+        InternalTrafficPolicy specifies if the cluster internal
+        traffic should be routed to all endpoints or node-local
+        endpoints only. "Cluster" routes internal traffic to a
+        Service to all endpoints. "Local" routes traffic to node-
+        local endpoints only, traffic is dropped if no node-local
+        endpoints are ready. The default value is "Cluster".
+        """
+        self._properties["internalTrafficPolicy"] = value
 
     @property
     def ip_families(self) -> typing.List[str]:
@@ -27238,6 +27545,55 @@ class ServiceSpec(_kuber_definitions.Definition):
         be wiped when updating a service to type ExternalName.
         """
         self._properties["ipFamilyPolicy"] = value
+
+    @property
+    def load_balancer_class(self) -> str:
+        """
+        loadBalancerClass is the class of the load balancer
+        implementation this Service belongs to. If specified, the
+        value of this field must be a label-style identifier, with
+        an optional prefix, e.g. "internal-vip" or
+        "example.com/internal-vip". Unprefixed names are reserved
+        for end-users. This field can only be set when the Service
+        type is 'LoadBalancer'. If not set, the default load
+        balancer implementation is used, today this is typically
+        done through the cloud provider integration, but should
+        apply for any default implementation. If set, it is assumed
+        that a load balancer implementation is watching for Services
+        with a matching class. Any default load balancer
+        implementation (e.g. cloud providers) should ignore Services
+        that set this field. This field can only be set when
+        creating or updating a Service to type 'LoadBalancer'. Once
+        set, it can not be changed. This field will be wiped when a
+        service is updated to a non 'LoadBalancer' type.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("loadBalancerClass"),
+        )
+
+    @load_balancer_class.setter
+    def load_balancer_class(self, value: str):
+        """
+        loadBalancerClass is the class of the load balancer
+        implementation this Service belongs to. If specified, the
+        value of this field must be a label-style identifier, with
+        an optional prefix, e.g. "internal-vip" or
+        "example.com/internal-vip". Unprefixed names are reserved
+        for end-users. This field can only be set when the Service
+        type is 'LoadBalancer'. If not set, the default load
+        balancer implementation is used, today this is typically
+        done through the cloud provider integration, but should
+        apply for any default implementation. If set, it is assumed
+        that a load balancer implementation is watching for Services
+        with a matching class. Any default load balancer
+        implementation (e.g. cloud providers) should ignore Services
+        that set this field. This field can only be set when
+        creating or updating a Service to type 'LoadBalancer'. Once
+        set, it can not be changed. This field will be wiped when a
+        service is updated to a non 'LoadBalancer' type.
+        """
+        self._properties["loadBalancerClass"] = value
 
     @property
     def load_balancer_ip(self) -> str:
@@ -27461,7 +27817,8 @@ class ServiceSpec(_kuber_definitions.Definition):
         value in the list. If this is not specified or empty, no
         topology constraints will be applied. This field is alpha-
         level and is only honored by servers that enable the
-        ServiceTopology feature.
+        ServiceTopology feature. This field is deprecated and will
+        be removed in a future version.
         """
         return typing.cast(
             typing.List[str],
@@ -27486,7 +27843,8 @@ class ServiceSpec(_kuber_definitions.Definition):
         value in the list. If this is not specified or empty, no
         topology constraints will be applied. This field is alpha-
         level and is only honored by servers that enable the
-        ServiceTopology feature.
+        ServiceTopology feature. This field is deprecated and will
+        be removed in a future version.
         """
         self._properties["topologyKeys"] = value
 
@@ -29174,9 +29532,9 @@ class Volume(_kuber_definitions.Definition):
     def ephemeral(self) -> "EphemeralVolumeSource":
         """
         Ephemeral represents a volume that is handled by a cluster
-        storage driver (Alpha feature). The volume's lifecycle is
-        tied to the pod that defines it - it will be created before
-        the pod starts, and deleted when the pod is removed.
+        storage driver. The volume's lifecycle is tied to the pod
+        that defines it - it will be created before the pod starts,
+        and deleted when the pod is removed.
 
         Use this if: a) the volume is only needed while the pod
         runs, b) features of normal volumes like restoring from
@@ -29200,6 +29558,9 @@ class Volume(_kuber_definitions.Definition):
 
         A pod can use both types of ephemeral volumes and persistent
         volumes at the same time.
+
+        This is a beta feature and only available when the
+        GenericEphemeralVolume feature gate is enabled.
         """
         return typing.cast(
             "EphemeralVolumeSource",
@@ -29210,9 +29571,9 @@ class Volume(_kuber_definitions.Definition):
     def ephemeral(self, value: typing.Union["EphemeralVolumeSource", dict]):
         """
         Ephemeral represents a volume that is handled by a cluster
-        storage driver (Alpha feature). The volume's lifecycle is
-        tied to the pod that defines it - it will be created before
-        the pod starts, and deleted when the pod is removed.
+        storage driver. The volume's lifecycle is tied to the pod
+        that defines it - it will be created before the pod starts,
+        and deleted when the pod is removed.
 
         Use this if: a) the volume is only needed while the pod
         runs, b) features of normal volumes like restoring from
@@ -29236,6 +29597,9 @@ class Volume(_kuber_definitions.Definition):
 
         A pod can use both types of ephemeral volumes and persistent
         volumes at the same time.
+
+        This is a beta feature and only available when the
+        GenericEphemeralVolume feature gate is enabled.
         """
         if isinstance(value, dict):
             value = typing.cast(

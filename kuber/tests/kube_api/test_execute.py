@@ -24,7 +24,7 @@ def test_execute():
 
 
 def test_execute_no_name():
-    """"Should raise error when no api client function name exists."""
+    """ "Should raise error when no api client function name exists."""
     resource = MagicMock()
     resource.get_resource_api.return_value = None
 

@@ -376,6 +376,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         is enabled and the value is specified to false, the attach
         operation will be skipped. Otherwise the attach operation
         will be called.
+
+        This field is immutable.
         """
         return typing.cast(
             bool,
@@ -397,6 +399,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         is enabled and the value is specified to false, the attach
         operation will be skipped. Otherwise the attach operation
         will be called.
+
+        This field is immutable.
         """
         self._properties["attachRequired"] = value
 
@@ -408,6 +412,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         the specific FSGroupPolicy values for additional details.
         This field is alpha-level, and is only honored by servers
         that enable the CSIVolumeFSGroupPolicy feature gate.
+
+        This field is immutable.
         """
         return typing.cast(
             str,
@@ -422,6 +428,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         the specific FSGroupPolicy values for additional details.
         This field is alpha-level, and is only honored by servers
         that enable the CSIVolumeFSGroupPolicy feature gate.
+
+        This field is immutable.
         """
         self._properties["fsGroupPolicy"] = value
 
@@ -442,7 +450,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
-        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        "csi.storage.k8s.io/ephemeral": "true" if the volume is an
         ephemeral inline volume
                                         defined by a
         CSIVolumeSource, otherwise "false"
@@ -456,6 +464,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         mode when deployed on such a cluster and the deployment
         determines which mode that is, for example via a command
         line parameter of the driver.
+
+        This field is immutable.
         """
         return typing.cast(
             bool,
@@ -479,7 +489,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
-        "csi.storage.k8s.io/ephemeral": "true" iff the volume is an
+        "csi.storage.k8s.io/ephemeral": "true" if the volume is an
         ephemeral inline volume
                                         defined by a
         CSIVolumeSource, otherwise "false"
@@ -493,6 +503,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         mode when deployed on such a cluster and the deployment
         determines which mode that is, for example via a command
         line parameter of the driver.
+
+        This field is immutable.
         """
         self._properties["podInfoOnMount"] = value
 
@@ -509,7 +521,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         contents of the volume. New mount points will not be seen by
         a running container.
 
-        This is an alpha feature and only available when the
+        This is a beta feature and only available when the
         CSIServiceAccountToken feature is enabled.
         """
         return typing.cast(
@@ -530,7 +542,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         contents of the volume. New mount points will not be seen by
         a running container.
 
-        This is an alpha feature and only available when the
+        This is a beta feature and only available when the
         CSIServiceAccountToken feature is enabled.
         """
         self._properties["requiresRepublish"] = value
@@ -552,7 +564,9 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         unset or false and it can be flipped later when storage
         capacity information has been published.
 
-        This is an alpha field and only available when the
+        This field is immutable.
+
+        This is a beta field and only available when the
         CSIStorageCapacity feature is enabled. The default is false.
         """
         return typing.cast(
@@ -577,7 +591,9 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         unset or false and it can be flipped later when storage
         capacity information has been published.
 
-        This is an alpha field and only available when the
+        This field is immutable.
+
+        This is a beta field and only available when the
         CSIStorageCapacity feature is enabled. The default is false.
         """
         self._properties["storageCapacity"] = value
@@ -604,7 +620,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         after expiry, RequiresRepublish can be used to trigger
         NodePublishVolume periodically.
 
-        This is an alpha feature and only available when the
+        This is a beta feature and only available when the
         CSIServiceAccountToken feature is enabled.
         """
         return typing.cast(
@@ -636,7 +652,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         after expiry, RequiresRepublish can be used to trigger
         NodePublishVolume periodically.
 
-        This is an alpha feature and only available when the
+        This is a beta feature and only available when the
         CSIServiceAccountToken feature is enabled.
         """
         cleaned: typing.List[TokenRequest] = []
@@ -666,6 +682,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         volumes.html A driver can support one or more of these modes
         and more modes may be added in the future. This field is
         beta.
+
+        This field is immutable.
         """
         return typing.cast(
             typing.List[str],
@@ -689,6 +707,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         volumes.html A driver can support one or more of these modes
         and more modes may be added in the future. This field is
         beta.
+
+        This field is immutable.
         """
         self._properties["volumeLifecycleModes"] = value
 
@@ -2127,7 +2147,7 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
         VolumeSource. This field is populated only for the
         CSIMigration feature. It contains translated fields from a
         pod's inline VolumeSource to a PersistentVolumeSpec. This
-        field is alpha-level and is only honored by servers that
+        field is beta-level and is only honored by servers that
         enabled the CSIMigration feature.
         """
         return typing.cast(
@@ -2143,7 +2163,7 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
         VolumeSource. This field is populated only for the
         CSIMigration feature. It contains translated fields from a
         pod's inline VolumeSource to a PersistentVolumeSpec. This
-        field is alpha-level and is only honored by servers that
+        field is beta-level and is only honored by servers that
         enabled the CSIMigration feature.
         """
         if isinstance(value, dict):

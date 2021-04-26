@@ -3567,7 +3567,7 @@ class WatchEvent(_kuber_definitions.Definition):
 
     @property
     def type_(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("type"),
@@ -3575,7 +3575,7 @@ class WatchEvent(_kuber_definitions.Definition):
 
     @type_.setter
     def type_(self, value: str):
-        """"""
+        """ """
         self._properties["type"] = value
 
     def __enter__(self) -> "WatchEvent":

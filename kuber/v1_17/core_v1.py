@@ -11205,7 +11205,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @property
     def last_transition_time(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("lastTransitionTime"),
@@ -11215,7 +11215,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
     def last_transition_time(
         self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
-        """"""
+        """ """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
@@ -11224,7 +11224,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @property
     def message(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("message"),
@@ -11232,12 +11232,12 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @message.setter
     def message(self, value: str):
-        """"""
+        """ """
         self._properties["message"] = value
 
     @property
     def reason(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("reason"),
@@ -11245,7 +11245,7 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @reason.setter
     def reason(self, value: str):
-        """"""
+        """ """
         self._properties["reason"] = value
 
     @property
@@ -14517,7 +14517,7 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @property
     def status(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("status"),
@@ -14525,12 +14525,12 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @status.setter
     def status(self, value: str):
-        """"""
+        """ """
         self._properties["status"] = value
 
     @property
     def type_(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("type"),
@@ -14538,7 +14538,7 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @type_.setter
     def type_(self, value: str):
-        """"""
+        """ """
         self._properties["type"] = value
 
     def __enter__(self) -> "PersistentVolumeClaimCondition":
@@ -17370,7 +17370,7 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
 
     @property
     def value(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("value"),
@@ -17378,7 +17378,7 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
 
     @value.setter
     def value(self, value: str):
-        """"""
+        """ """
         self._properties["value"] = value
 
     def __enter__(self) -> "PodDNSConfigOption":

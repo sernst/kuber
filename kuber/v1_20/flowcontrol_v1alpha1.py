@@ -2375,7 +2375,7 @@ class Subject(_kuber_definitions.Definition):
 
     @property
     def group(self) -> "GroupSubject":
-        """"""
+        """ """
         return typing.cast(
             "GroupSubject",
             self._properties.get("group"),
@@ -2383,7 +2383,7 @@ class Subject(_kuber_definitions.Definition):
 
     @group.setter
     def group(self, value: typing.Union["GroupSubject", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 GroupSubject,
@@ -2410,7 +2410,7 @@ class Subject(_kuber_definitions.Definition):
 
     @property
     def service_account(self) -> "ServiceAccountSubject":
-        """"""
+        """ """
         return typing.cast(
             "ServiceAccountSubject",
             self._properties.get("serviceAccount"),
@@ -2418,7 +2418,7 @@ class Subject(_kuber_definitions.Definition):
 
     @service_account.setter
     def service_account(self, value: typing.Union["ServiceAccountSubject", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ServiceAccountSubject,
@@ -2428,7 +2428,7 @@ class Subject(_kuber_definitions.Definition):
 
     @property
     def user(self) -> "UserSubject":
-        """"""
+        """ """
         return typing.cast(
             "UserSubject",
             self._properties.get("user"),
@@ -2436,7 +2436,7 @@ class Subject(_kuber_definitions.Definition):
 
     @user.setter
     def user(self, value: typing.Union["UserSubject", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 UserSubject,

@@ -930,6 +930,148 @@ class IngressClassList(_kuber_definitions.Collection):
         return False
 
 
+class IngressClassParametersReference(_kuber_definitions.Definition):
+    """
+    IngressClassParametersReference identifies an API object.
+    This can be used to specify a cluster or namespace-scoped
+    resource.
+    """
+
+    def __init__(
+        self,
+        api_group: str = None,
+        kind: str = None,
+        name: str = None,
+        namespace: str = None,
+        scope: str = None,
+    ):
+        """Create IngressClassParametersReference instance."""
+        super(IngressClassParametersReference, self).__init__(
+            api_version="networking/v1", kind="IngressClassParametersReference"
+        )
+        self._properties = {
+            "apiGroup": api_group if api_group is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
+            "namespace": namespace if namespace is not None else "",
+            "scope": scope if scope is not None else "",
+        }
+        self._types = {
+            "apiGroup": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
+            "namespace": (str, None),
+            "scope": (str, None),
+        }
+
+    @property
+    def api_group(self) -> str:
+        """
+        APIGroup is the group for the resource being referenced. If
+        APIGroup is not specified, the specified Kind must be in the
+        core API group. For any other third-party types, APIGroup is
+        required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("apiGroup"),
+        )
+
+    @api_group.setter
+    def api_group(self, value: str):
+        """
+        APIGroup is the group for the resource being referenced. If
+        APIGroup is not specified, the specified Kind must be in the
+        core API group. For any other third-party types, APIGroup is
+        required.
+        """
+        self._properties["apiGroup"] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is the type of resource being referenced.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is the type of resource being referenced.
+        """
+        self._properties["kind"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is the name of resource being referenced.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is the name of resource being referenced.
+        """
+        self._properties["name"] = value
+
+    @property
+    def namespace(self) -> str:
+        """
+        Namespace is the namespace of the resource being referenced.
+        This field is required when scope is set to "Namespace" and
+        must be unset when scope is set to "Cluster".
+        """
+        return typing.cast(
+            str,
+            self._properties.get("namespace"),
+        )
+
+    @namespace.setter
+    def namespace(self, value: str):
+        """
+        Namespace is the namespace of the resource being referenced.
+        This field is required when scope is set to "Namespace" and
+        must be unset when scope is set to "Cluster".
+        """
+        self._properties["namespace"] = value
+
+    @property
+    def scope(self) -> str:
+        """
+        Scope represents if this refers to a cluster or namespace
+        scoped resource. This may be set to "Cluster" (default) or
+        "Namespace". Field can be enabled with
+        IngressClassNamespacedParams feature gate.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("scope"),
+        )
+
+    @scope.setter
+    def scope(self, value: str):
+        """
+        Scope represents if this refers to a cluster or namespace
+        scoped resource. This may be set to "Cluster" (default) or
+        "Namespace". Field can be enabled with
+        IngressClassNamespacedParams feature gate.
+        """
+        self._properties["scope"] = value
+
+    def __enter__(self) -> "IngressClassParametersReference":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class IngressClassSpec(_kuber_definitions.Definition):
     """
     IngressClassSpec provides information about the class of an
@@ -939,7 +1081,7 @@ class IngressClassSpec(_kuber_definitions.Definition):
     def __init__(
         self,
         controller: str = None,
-        parameters: "TypedLocalObjectReference" = None,
+        parameters: "IngressClassParametersReference" = None,
     ):
         """Create IngressClassSpec instance."""
         super(IngressClassSpec, self).__init__(
@@ -949,11 +1091,11 @@ class IngressClassSpec(_kuber_definitions.Definition):
             "controller": controller if controller is not None else "",
             "parameters": parameters
             if parameters is not None
-            else TypedLocalObjectReference(),
+            else IngressClassParametersReference(),
         }
         self._types = {
             "controller": (str, None),
-            "parameters": (TypedLocalObjectReference, None),
+            "parameters": (IngressClassParametersReference, None),
         }
 
     @property
@@ -986,7 +1128,7 @@ class IngressClassSpec(_kuber_definitions.Definition):
         self._properties["controller"] = value
 
     @property
-    def parameters(self) -> "TypedLocalObjectReference":
+    def parameters(self) -> "IngressClassParametersReference":
         """
         Parameters is a link to a custom resource containing
         additional configuration for the controller. This is
@@ -994,12 +1136,12 @@ class IngressClassSpec(_kuber_definitions.Definition):
         parameters.
         """
         return typing.cast(
-            "TypedLocalObjectReference",
+            "IngressClassParametersReference",
             self._properties.get("parameters"),
         )
 
     @parameters.setter
-    def parameters(self, value: typing.Union["TypedLocalObjectReference", dict]):
+    def parameters(self, value: typing.Union["IngressClassParametersReference", dict]):
         """
         Parameters is a link to a custom resource containing
         additional configuration for the controller. This is
@@ -1008,8 +1150,8 @@ class IngressClassSpec(_kuber_definitions.Definition):
         """
         if isinstance(value, dict):
             value = typing.cast(
-                TypedLocalObjectReference,
-                TypedLocalObjectReference().from_dict(value),
+                IngressClassParametersReference,
+                IngressClassParametersReference().from_dict(value),
             )
         self._properties["parameters"] = value
 
@@ -1215,7 +1357,7 @@ class IngressRule(_kuber_definitions.Definition):
 
     @property
     def http(self) -> "HTTPIngressRuleValue":
-        """"""
+        """ """
         return typing.cast(
             "HTTPIngressRuleValue",
             self._properties.get("http"),
@@ -1223,7 +1365,7 @@ class IngressRule(_kuber_definitions.Definition):
 
     @http.setter
     def http(self, value: typing.Union["HTTPIngressRuleValue", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 HTTPIngressRuleValue,
@@ -2275,6 +2417,7 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        end_port: int = None,
         port: typing.Union[str, int, None] = None,
         protocol: str = None,
     ):
@@ -2283,20 +2426,53 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
             api_version="networking/v1", kind="NetworkPolicyPort"
         )
         self._properties = {
+            "endPort": end_port if end_port is not None else None,
             "port": port if port is not None else None,
             "protocol": protocol if protocol is not None else "",
         }
         self._types = {
+            "endPort": (int, None),
             "port": (_types.integer_or_string, None),
             "protocol": (str, None),
         }
+
+    @property
+    def end_port(self) -> int:
+        """
+        If set, indicates that the range of ports from port to
+        endPort, inclusive, should be allowed by the policy. This
+        field cannot be defined if the port field is not defined or
+        if the port field is defined as a named (string) port. The
+        endPort must be equal or greater than port. This feature is
+        in Alpha state and should be enabled using the Feature Gate
+        "NetworkPolicyEndPort".
+        """
+        return typing.cast(
+            int,
+            self._properties.get("endPort"),
+        )
+
+    @end_port.setter
+    def end_port(self, value: int):
+        """
+        If set, indicates that the range of ports from port to
+        endPort, inclusive, should be allowed by the policy. This
+        field cannot be defined if the port field is not defined or
+        if the port field is defined as a named (string) port. The
+        endPort must be equal or greater than port. This feature is
+        in Alpha state and should be enabled using the Feature Gate
+        "NetworkPolicyEndPort".
+        """
+        self._properties["endPort"] = value
 
     @property
     def port(self) -> typing.Union[str, int, None]:
         """
         The port on the given protocol. This can either be a
         numerical or named port on a pod. If this field is not
-        provided, this matches all port names and numbers.
+        provided, this matches all port names and numbers. If
+        present, only traffic on the specified protocol AND port
+        will be matched.
         """
         return typing.cast(
             typing.Union[str, int, None],
@@ -2308,7 +2484,9 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         """
         The port on the given protocol. This can either be a
         numerical or named port on a pod. If this field is not
-        provided, this matches all port names and numbers.
+        provided, this matches all port names and numbers. If
+        present, only traffic on the specified protocol AND port
+        will be matched.
         """
         self._properties["port"] = _types.integer_or_string(value)
 
@@ -2496,19 +2674,19 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     def policy_types(self) -> typing.List[str]:
         """
         List of rule types that the NetworkPolicy relates to. Valid
-        options are "Ingress", "Egress", or "Ingress,Egress". If
-        this field is not specified, it will default based on the
-        existence of Ingress or Egress rules; policies that contain
-        an Egress section are assumed to affect Egress, and all
-        policies (whether or not they contain an Ingress section)
-        are assumed to affect Ingress. If you want to write an
-        egress-only policy, you must explicitly specify policyTypes
-        [ "Egress" ]. Likewise, if you want to write a policy that
-        specifies that no egress is allowed, you must specify a
-        policyTypes value that include "Egress" (since such a policy
-        would not include an Egress section and would otherwise
-        default to just [ "Ingress" ]). This field is beta-level in
-        1.8
+        options are ["Ingress"], ["Egress"], or ["Ingress",
+        "Egress"]. If this field is not specified, it will default
+        based on the existence of Ingress or Egress rules; policies
+        that contain an Egress section are assumed to affect Egress,
+        and all policies (whether or not they contain an Ingress
+        section) are assumed to affect Ingress. If you want to write
+        an egress-only policy, you must explicitly specify
+        policyTypes [ "Egress" ]. Likewise, if you want to write a
+        policy that specifies that no egress is allowed, you must
+        specify a policyTypes value that include "Egress" (since
+        such a policy would not include an Egress section and would
+        otherwise default to just [ "Ingress" ]). This field is
+        beta-level in 1.8
         """
         return typing.cast(
             typing.List[str],
@@ -2519,19 +2697,19 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     def policy_types(self, value: typing.List[str]):
         """
         List of rule types that the NetworkPolicy relates to. Valid
-        options are "Ingress", "Egress", or "Ingress,Egress". If
-        this field is not specified, it will default based on the
-        existence of Ingress or Egress rules; policies that contain
-        an Egress section are assumed to affect Egress, and all
-        policies (whether or not they contain an Ingress section)
-        are assumed to affect Ingress. If you want to write an
-        egress-only policy, you must explicitly specify policyTypes
-        [ "Egress" ]. Likewise, if you want to write a policy that
-        specifies that no egress is allowed, you must specify a
-        policyTypes value that include "Egress" (since such a policy
-        would not include an Egress section and would otherwise
-        default to just [ "Ingress" ]). This field is beta-level in
-        1.8
+        options are ["Ingress"], ["Egress"], or ["Ingress",
+        "Egress"]. If this field is not specified, it will default
+        based on the existence of Ingress or Egress rules; policies
+        that contain an Egress section are assumed to affect Egress,
+        and all policies (whether or not they contain an Ingress
+        section) are assumed to affect Ingress. If you want to write
+        an egress-only policy, you must explicitly specify
+        policyTypes [ "Egress" ]. Likewise, if you want to write a
+        policy that specifies that no egress is allowed, you must
+        specify a policyTypes value that include "Egress" (since
+        such a policy would not include an Egress section and would
+        otherwise default to just [ "Ingress" ]). This field is
+        beta-level in 1.8
         """
         self._properties["policyTypes"] = value
 

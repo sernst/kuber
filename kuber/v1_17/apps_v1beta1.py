@@ -2504,7 +2504,7 @@ class StatefulSet(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -2512,7 +2512,7 @@ class StatefulSet(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -3029,7 +3029,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @property
     def items(self) -> typing.List["StatefulSet"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["StatefulSet"],
             self._properties.get("items"),
@@ -3037,7 +3037,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @items.setter
     def items(self, value: typing.Union[typing.List["StatefulSet"], typing.List[dict]]):
-        """"""
+        """ """
         cleaned: typing.List[StatefulSet] = []
         for item in value:
             if isinstance(item, dict):
@@ -3050,7 +3050,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """"""
+        """ """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -3058,7 +3058,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,
