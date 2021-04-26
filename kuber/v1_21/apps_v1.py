@@ -4110,6 +4110,7 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        max_surge: typing.Union[str, int, None] = None,
         max_unavailable: typing.Union[str, int, None] = None,
     ):
         """Create RollingUpdateDaemonSet instance."""
@@ -4117,11 +4118,74 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
             api_version="apps/v1", kind="RollingUpdateDaemonSet"
         )
         self._properties = {
+            "maxSurge": max_surge if max_surge is not None else None,
             "maxUnavailable": max_unavailable if max_unavailable is not None else None,
         }
         self._types = {
+            "maxSurge": (_types.integer_or_string, None),
             "maxUnavailable": (_types.integer_or_string, None),
         }
+
+    @property
+    def max_surge(self) -> typing.Union[str, int, None]:
+        """
+        The maximum number of nodes with an existing available
+        DaemonSet pod that can have an updated DaemonSet pod during
+        during an update. Value can be an absolute number (ex: 5) or
+        a percentage of desired pods (ex: 10%). This can not be 0 if
+        MaxUnavailable is 0. Absolute number is calculated from
+        percentage by rounding up to a minimum of 1. Default value
+        is 0. Example: when this is set to 30%, at most 30% of the
+        total number of nodes that should be running the daemon pod
+        (i.e. status.desiredNumberScheduled) can have their a new
+        pod created before the old pod is marked as deleted. The
+        update starts by launching new pods on 30% of nodes. Once an
+        updated pod is available (Ready for at least
+        minReadySeconds) the old DaemonSet pod on that node is
+        marked deleted. If the old pod becomes unavailable for any
+        reason (Ready transitions to false, is evicted, or is
+        drained) an updated pod is immediatedly created on that node
+        without considering surge limits. Allowing surge implies the
+        possibility that the resources consumed by the daemonset on
+        any given node can double if the readiness check fails, and
+        so resource intensive daemonsets should take into account
+        that they may cause evictions during disruption. This is an
+        alpha field and requires enabling DaemonSetUpdateSurge
+        feature gate.
+        """
+        return typing.cast(
+            typing.Union[str, int, None],
+            self._properties.get("maxSurge"),
+        )
+
+    @max_surge.setter
+    def max_surge(self, value: typing.Union[str, int, None]):
+        """
+        The maximum number of nodes with an existing available
+        DaemonSet pod that can have an updated DaemonSet pod during
+        during an update. Value can be an absolute number (ex: 5) or
+        a percentage of desired pods (ex: 10%). This can not be 0 if
+        MaxUnavailable is 0. Absolute number is calculated from
+        percentage by rounding up to a minimum of 1. Default value
+        is 0. Example: when this is set to 30%, at most 30% of the
+        total number of nodes that should be running the daemon pod
+        (i.e. status.desiredNumberScheduled) can have their a new
+        pod created before the old pod is marked as deleted. The
+        update starts by launching new pods on 30% of nodes. Once an
+        updated pod is available (Ready for at least
+        minReadySeconds) the old DaemonSet pod on that node is
+        marked deleted. If the old pod becomes unavailable for any
+        reason (Ready transitions to false, is evicted, or is
+        drained) an updated pod is immediatedly created on that node
+        without considering surge limits. Allowing surge implies the
+        possibility that the resources consumed by the daemonset on
+        any given node can double if the readiness check fails, and
+        so resource intensive daemonsets should take into account
+        that they may cause evictions during disruption. This is an
+        alpha field and requires enabling DaemonSetUpdateSurge
+        feature gate.
+        """
+        self._properties["maxSurge"] = _types.integer_or_string(value)
 
     @property
     def max_unavailable(self) -> typing.Union[str, int, None]:
@@ -4130,16 +4194,17 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         during the update. Value can be an absolute number (ex: 5)
         or a percentage of total number of DaemonSet pods at the
         start of the update (ex: 10%). Absolute number is calculated
-        from percentage by rounding up. This cannot be 0. Default
-        value is 1. Example: when this is set to 30%, at most 30% of
-        the total number of nodes that should be running the daemon
-        pod (i.e. status.desiredNumberScheduled) can have their pods
-        stopped for an update at any given time. The update starts
-        by stopping at most 30% of those DaemonSet pods and then
-        brings up new DaemonSet pods in their place. Once the new
-        pods are available, it then proceeds onto other DaemonSet
-        pods, thus ensuring that at least 70% of original number of
-        DaemonSet pods are available at all times during the update.
+        from percentage by rounding down to a minimum of one. This
+        cannot be 0 if MaxSurge is 0 Default value is 1. Example:
+        when this is set to 30%, at most 30% of the total number of
+        nodes that should be running the daemon pod (i.e.
+        status.desiredNumberScheduled) can have their pods stopped
+        for an update at any given time. The update starts by
+        stopping at most 30% of those DaemonSet pods and then brings
+        up new DaemonSet pods in their place. Once the new pods are
+        available, it then proceeds onto other DaemonSet pods, thus
+        ensuring that at least 70% of original number of DaemonSet
+        pods are available at all times during the update.
         """
         return typing.cast(
             typing.Union[str, int, None],
@@ -4153,16 +4218,17 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         during the update. Value can be an absolute number (ex: 5)
         or a percentage of total number of DaemonSet pods at the
         start of the update (ex: 10%). Absolute number is calculated
-        from percentage by rounding up. This cannot be 0. Default
-        value is 1. Example: when this is set to 30%, at most 30% of
-        the total number of nodes that should be running the daemon
-        pod (i.e. status.desiredNumberScheduled) can have their pods
-        stopped for an update at any given time. The update starts
-        by stopping at most 30% of those DaemonSet pods and then
-        brings up new DaemonSet pods in their place. Once the new
-        pods are available, it then proceeds onto other DaemonSet
-        pods, thus ensuring that at least 70% of original number of
-        DaemonSet pods are available at all times during the update.
+        from percentage by rounding down to a minimum of one. This
+        cannot be 0 if MaxSurge is 0 Default value is 1. Example:
+        when this is set to 30%, at most 30% of the total number of
+        nodes that should be running the daemon pod (i.e.
+        status.desiredNumberScheduled) can have their pods stopped
+        for an update at any given time. The update starts by
+        stopping at most 30% of those DaemonSet pods and then brings
+        up new DaemonSet pods in their place. Once the new pods are
+        available, it then proceeds onto other DaemonSet pods, thus
+        ensuring that at least 70% of original number of DaemonSet
+        pods are available at all times during the update.
         """
         self._properties["maxUnavailable"] = _types.integer_or_string(value)
 
@@ -4359,7 +4425,7 @@ class StatefulSet(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -4367,7 +4433,7 @@ class StatefulSet(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -4884,7 +4950,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @property
     def items(self) -> typing.List["StatefulSet"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["StatefulSet"],
             self._properties.get("items"),
@@ -4892,7 +4958,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @items.setter
     def items(self, value: typing.Union[typing.List["StatefulSet"], typing.List[dict]]):
-        """"""
+        """ """
         cleaned: typing.List[StatefulSet] = []
         for item in value:
             if isinstance(item, dict):
@@ -4905,7 +4971,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """"""
+        """ """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -4913,7 +4979,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,

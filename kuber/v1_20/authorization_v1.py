@@ -44,7 +44,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -52,7 +52,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -761,7 +761,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -769,7 +769,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -1118,7 +1118,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -1126,7 +1126,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -1347,7 +1347,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
 
 
 class SelfSubjectRulesReviewSpec(_kuber_definitions.Definition):
-    """"""
+    """ """
 
     def __init__(
         self,
@@ -1419,7 +1419,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -1427,7 +1427,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,

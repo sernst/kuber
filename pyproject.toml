@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kuber"
-version = "1.15.1"
+version = "1.16.0"
 description = "Accelerated Kubernetes configuration and package management with Python."
 authors = ["Scott Ernst <swernst@gmail.com>"]
 license = "MIT"
@@ -27,7 +27,7 @@ classifiers = [
 exclude = ["kuber/tests"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = ">=3.6.2,<4.0"
 PyYAML = "^5.3.0"
 kubernetes = ">=10.0.0"
 requests = "^2.20.0"
@@ -40,9 +40,9 @@ pytest = "^6.1.2"
 coverage = "^5.3"
 black = { version = "*", allow-prereleases = true }
 pytest-cov = "^2.10.1"
-flake8 = "^3.8.4"
-flake8-black = "^0.2.1"
-mypy = "^0.790"
+flake8 = ">=3.8.4"
+flake8-black = ">=0.2.1"
+mypy = ">=0.790"
 taskipy = "^1.4.0"
 
 [tool.taskipy.tasks]

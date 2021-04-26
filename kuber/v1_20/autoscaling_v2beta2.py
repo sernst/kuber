@@ -2417,7 +2417,7 @@ class ObjectMetricSource(_kuber_definitions.Definition):
 
     @property
     def described_object(self) -> "CrossVersionObjectReference":
-        """"""
+        """ """
         return typing.cast(
             "CrossVersionObjectReference",
             self._properties.get("describedObject"),
@@ -2427,7 +2427,7 @@ class ObjectMetricSource(_kuber_definitions.Definition):
     def described_object(
         self, value: typing.Union["CrossVersionObjectReference", dict]
     ):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 CrossVersionObjectReference,
@@ -2540,7 +2540,7 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
 
     @property
     def described_object(self) -> "CrossVersionObjectReference":
-        """"""
+        """ """
         return typing.cast(
             "CrossVersionObjectReference",
             self._properties.get("describedObject"),
@@ -2550,7 +2550,7 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
     def described_object(
         self, value: typing.Union["CrossVersionObjectReference", dict]
     ):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 CrossVersionObjectReference,

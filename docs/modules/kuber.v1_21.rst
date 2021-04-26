@@ -156,14 +156,6 @@ kuber.v1\_21.batch\_v1beta1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_21.batch\_v2alpha1 module
------------------------------------
-
-.. automodule:: kuber.v1_21.batch_v2alpha1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_21.certificates\_v1 module
 ------------------------------------
 
@@ -212,6 +204,14 @@ kuber.v1\_21.custom\_v1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.v1\_21.discovery\_v1 module
+---------------------------------
+
+.. automodule:: kuber.v1_21.discovery_v1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.v1\_21.discovery\_v1beta1 module
 --------------------------------------
 
@@ -240,14 +240,6 @@ kuber.v1\_21.extensions\_v1beta1 module
 ---------------------------------------
 
 .. automodule:: kuber.v1_21.extensions_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.v1\_21.flowcontrol\_v1alpha1 module
------------------------------------------
-
-.. automodule:: kuber.v1_21.flowcontrol_v1alpha1
    :members:
    :undoc-members:
    :show-inheritance:
@@ -304,6 +296,14 @@ kuber.v1\_21.node\_v1beta1 module
 ---------------------------------
 
 .. automodule:: kuber.v1_21.node_v1beta1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+kuber.v1\_21.policy\_v1 module
+------------------------------
+
+.. automodule:: kuber.v1_21.policy_v1
    :members:
    :undoc-members:
    :show-inheritance:

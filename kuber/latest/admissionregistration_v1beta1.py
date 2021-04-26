@@ -492,7 +492,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in
-        the admission change and the side effects therefore need to
+        the admission chain and the side effects therefore need to
         be undone. Requests with the dryRun attribute will be auto-
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.
@@ -509,7 +509,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in
-        the admission change and the side effects therefore need to
+        the admission chain and the side effects therefore need to
         be undone. Requests with the dryRun attribute will be auto-
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.
@@ -1568,7 +1568,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in
-        the admission change and the side effects therefore need to
+        the admission chain and the side effects therefore need to
         be undone. Requests with the dryRun attribute will be auto-
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.
@@ -1585,7 +1585,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         Acceptable values are: Unknown, None, Some, NoneOnDryRun
         Webhooks with side effects MUST implement a reconciliation
         system, since a request may be rejected by a future step in
-        the admission change and the side effects therefore need to
+        the admission chain and the side effects therefore need to
         be undone. Requests with the dryRun attribute will be auto-
         rejected if they match a webhook with sideEffects == Unknown
         or Some. Defaults to Unknown.

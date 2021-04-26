@@ -868,6 +868,148 @@ class IngressClassList(_kuber_definitions.Collection):
         return False
 
 
+class IngressClassParametersReference(_kuber_definitions.Definition):
+    """
+    IngressClassParametersReference identifies an API object.
+    This can be used to specify a cluster or namespace-scoped
+    resource.
+    """
+
+    def __init__(
+        self,
+        api_group: str = None,
+        kind: str = None,
+        name: str = None,
+        namespace: str = None,
+        scope: str = None,
+    ):
+        """Create IngressClassParametersReference instance."""
+        super(IngressClassParametersReference, self).__init__(
+            api_version="networking/v1beta1", kind="IngressClassParametersReference"
+        )
+        self._properties = {
+            "apiGroup": api_group if api_group is not None else "",
+            "kind": kind if kind is not None else "",
+            "name": name if name is not None else "",
+            "namespace": namespace if namespace is not None else "",
+            "scope": scope if scope is not None else "",
+        }
+        self._types = {
+            "apiGroup": (str, None),
+            "kind": (str, None),
+            "name": (str, None),
+            "namespace": (str, None),
+            "scope": (str, None),
+        }
+
+    @property
+    def api_group(self) -> str:
+        """
+        APIGroup is the group for the resource being referenced. If
+        APIGroup is not specified, the specified Kind must be in the
+        core API group. For any other third-party types, APIGroup is
+        required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("apiGroup"),
+        )
+
+    @api_group.setter
+    def api_group(self, value: str):
+        """
+        APIGroup is the group for the resource being referenced. If
+        APIGroup is not specified, the specified Kind must be in the
+        core API group. For any other third-party types, APIGroup is
+        required.
+        """
+        self._properties["apiGroup"] = value
+
+    @property
+    def kind(self) -> str:
+        """
+        Kind is the type of resource being referenced.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("kind"),
+        )
+
+    @kind.setter
+    def kind(self, value: str):
+        """
+        Kind is the type of resource being referenced.
+        """
+        self._properties["kind"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is the name of resource being referenced.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is the name of resource being referenced.
+        """
+        self._properties["name"] = value
+
+    @property
+    def namespace(self) -> str:
+        """
+        Namespace is the namespace of the resource being referenced.
+        This field is required when scope is set to "Namespace" and
+        must be unset when scope is set to "Cluster".
+        """
+        return typing.cast(
+            str,
+            self._properties.get("namespace"),
+        )
+
+    @namespace.setter
+    def namespace(self, value: str):
+        """
+        Namespace is the namespace of the resource being referenced.
+        This field is required when scope is set to "Namespace" and
+        must be unset when scope is set to "Cluster".
+        """
+        self._properties["namespace"] = value
+
+    @property
+    def scope(self) -> str:
+        """
+        Scope represents if this refers to a cluster or namespace
+        scoped resource. This may be set to "Cluster" (default) or
+        "Namespace". Field can be enabled with
+        IngressClassNamespacedParams feature gate.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("scope"),
+        )
+
+    @scope.setter
+    def scope(self, value: str):
+        """
+        Scope represents if this refers to a cluster or namespace
+        scoped resource. This may be set to "Cluster" (default) or
+        "Namespace". Field can be enabled with
+        IngressClassNamespacedParams feature gate.
+        """
+        self._properties["scope"] = value
+
+    def __enter__(self) -> "IngressClassParametersReference":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class IngressClassSpec(_kuber_definitions.Definition):
     """
     IngressClassSpec provides information about the class of an
@@ -877,7 +1019,7 @@ class IngressClassSpec(_kuber_definitions.Definition):
     def __init__(
         self,
         controller: str = None,
-        parameters: "TypedLocalObjectReference" = None,
+        parameters: "IngressClassParametersReference" = None,
     ):
         """Create IngressClassSpec instance."""
         super(IngressClassSpec, self).__init__(
@@ -887,11 +1029,11 @@ class IngressClassSpec(_kuber_definitions.Definition):
             "controller": controller if controller is not None else "",
             "parameters": parameters
             if parameters is not None
-            else TypedLocalObjectReference(),
+            else IngressClassParametersReference(),
         }
         self._types = {
             "controller": (str, None),
-            "parameters": (TypedLocalObjectReference, None),
+            "parameters": (IngressClassParametersReference, None),
         }
 
     @property
@@ -924,7 +1066,7 @@ class IngressClassSpec(_kuber_definitions.Definition):
         self._properties["controller"] = value
 
     @property
-    def parameters(self) -> "TypedLocalObjectReference":
+    def parameters(self) -> "IngressClassParametersReference":
         """
         Parameters is a link to a custom resource containing
         additional configuration for the controller. This is
@@ -932,12 +1074,12 @@ class IngressClassSpec(_kuber_definitions.Definition):
         parameters.
         """
         return typing.cast(
-            "TypedLocalObjectReference",
+            "IngressClassParametersReference",
             self._properties.get("parameters"),
         )
 
     @parameters.setter
-    def parameters(self, value: typing.Union["TypedLocalObjectReference", dict]):
+    def parameters(self, value: typing.Union["IngressClassParametersReference", dict]):
         """
         Parameters is a link to a custom resource containing
         additional configuration for the controller. This is
@@ -946,8 +1088,8 @@ class IngressClassSpec(_kuber_definitions.Definition):
         """
         if isinstance(value, dict):
             value = typing.cast(
-                TypedLocalObjectReference,
-                TypedLocalObjectReference().from_dict(value),
+                IngressClassParametersReference,
+                IngressClassParametersReference().from_dict(value),
             )
         self._properties["parameters"] = value
 
@@ -1153,7 +1295,7 @@ class IngressRule(_kuber_definitions.Definition):
 
     @property
     def http(self) -> "HTTPIngressRuleValue":
-        """"""
+        """ """
         return typing.cast(
             "HTTPIngressRuleValue",
             self._properties.get("http"),
@@ -1161,7 +1303,7 @@ class IngressRule(_kuber_definitions.Definition):
 
     @http.setter
     def http(self, value: typing.Union["HTTPIngressRuleValue", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 HTTPIngressRuleValue,

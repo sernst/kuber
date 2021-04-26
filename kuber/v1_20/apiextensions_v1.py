@@ -305,7 +305,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -313,7 +313,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -738,7 +738,7 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """"""
+        """ """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -746,7 +746,7 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,
@@ -1886,7 +1886,7 @@ class ExternalDocumentation(_kuber_definitions.Definition):
 
     @property
     def description(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("description"),
@@ -1894,12 +1894,12 @@ class ExternalDocumentation(_kuber_definitions.Definition):
 
     @description.setter
     def description(self, value: str):
-        """"""
+        """ """
         self._properties["description"] = value
 
     @property
     def url(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("url"),
@@ -1907,7 +1907,7 @@ class ExternalDocumentation(_kuber_definitions.Definition):
 
     @url.setter
     def url(self, value: str):
-        """"""
+        """ """
         self._properties["url"] = value
 
     def __enter__(self) -> "ExternalDocumentation":
@@ -2106,7 +2106,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def additional_items(self) -> "JSONSchemaPropsOrBool":
-        """"""
+        """ """
         return typing.cast(
             "JSONSchemaPropsOrBool",
             self._properties.get("additionalItems"),
@@ -2114,7 +2114,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @additional_items.setter
     def additional_items(self, value: typing.Union["JSONSchemaPropsOrBool", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 JSONSchemaPropsOrBool,
@@ -2124,7 +2124,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def additional_properties(self) -> "JSONSchemaPropsOrBool":
-        """"""
+        """ """
         return typing.cast(
             "JSONSchemaPropsOrBool",
             self._properties.get("additionalProperties"),
@@ -2132,7 +2132,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @additional_properties.setter
     def additional_properties(self, value: typing.Union["JSONSchemaPropsOrBool", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 JSONSchemaPropsOrBool,
@@ -2142,7 +2142,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def all_of(self) -> typing.List["JSONSchemaProps"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["JSONSchemaProps"],
             self._properties.get("allOf"),
@@ -2152,7 +2152,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     def all_of(
         self, value: typing.Union[typing.List["JSONSchemaProps"], typing.List[dict]]
     ):
-        """"""
+        """ """
         cleaned: typing.List[JSONSchemaProps] = []
         for item in value:
             if isinstance(item, dict):
@@ -2165,7 +2165,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def any_of(self) -> typing.List["JSONSchemaProps"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["JSONSchemaProps"],
             self._properties.get("anyOf"),
@@ -2175,7 +2175,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     def any_of(
         self, value: typing.Union[typing.List["JSONSchemaProps"], typing.List[dict]]
     ):
-        """"""
+        """ """
         cleaned: typing.List[JSONSchemaProps] = []
         for item in value:
             if isinstance(item, dict):
@@ -2216,7 +2216,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def definitions(self) -> dict:
-        """"""
+        """ """
         return typing.cast(
             dict,
             self._properties.get("definitions"),
@@ -2224,12 +2224,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @definitions.setter
     def definitions(self, value: dict):
-        """"""
+        """ """
         self._properties["definitions"] = value
 
     @property
     def dependencies(self) -> dict:
-        """"""
+        """ """
         return typing.cast(
             dict,
             self._properties.get("dependencies"),
@@ -2237,12 +2237,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @dependencies.setter
     def dependencies(self, value: dict):
-        """"""
+        """ """
         self._properties["dependencies"] = value
 
     @property
     def description(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("description"),
@@ -2250,12 +2250,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @description.setter
     def description(self, value: str):
-        """"""
+        """ """
         self._properties["description"] = value
 
     @property
     def enum(self) -> typing.List["JSON"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["JSON"],
             self._properties.get("enum"),
@@ -2263,7 +2263,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @enum.setter
     def enum(self, value: typing.Union[typing.List["JSON"], typing.List[dict]]):
-        """"""
+        """ """
         cleaned: typing.List[JSON] = []
         for item in value:
             if isinstance(item, dict):
@@ -2276,7 +2276,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def example(self) -> "JSON":
-        """"""
+        """ """
         return typing.cast(
             "JSON",
             self._properties.get("example"),
@@ -2284,7 +2284,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @example.setter
     def example(self, value: typing.Union["JSON", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 JSON,
@@ -2294,7 +2294,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def exclusive_maximum(self) -> bool:
-        """"""
+        """ """
         return typing.cast(
             bool,
             self._properties.get("exclusiveMaximum"),
@@ -2302,12 +2302,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @exclusive_maximum.setter
     def exclusive_maximum(self, value: bool):
-        """"""
+        """ """
         self._properties["exclusiveMaximum"] = value
 
     @property
     def exclusive_minimum(self) -> bool:
-        """"""
+        """ """
         return typing.cast(
             bool,
             self._properties.get("exclusiveMinimum"),
@@ -2315,12 +2315,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @exclusive_minimum.setter
     def exclusive_minimum(self, value: bool):
-        """"""
+        """ """
         self._properties["exclusiveMinimum"] = value
 
     @property
     def external_docs(self) -> "ExternalDocumentation":
-        """"""
+        """ """
         return typing.cast(
             "ExternalDocumentation",
             self._properties.get("externalDocs"),
@@ -2328,7 +2328,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @external_docs.setter
     def external_docs(self, value: typing.Union["ExternalDocumentation", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ExternalDocumentation,
@@ -2433,7 +2433,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def id_(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("id"),
@@ -2441,12 +2441,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @id_.setter
     def id_(self, value: str):
-        """"""
+        """ """
         self._properties["id"] = value
 
     @property
     def items(self) -> "JSONSchemaPropsOrArray":
-        """"""
+        """ """
         return typing.cast(
             "JSONSchemaPropsOrArray",
             self._properties.get("items"),
@@ -2454,7 +2454,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @items.setter
     def items(self, value: typing.Union["JSONSchemaPropsOrArray", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 JSONSchemaPropsOrArray,
@@ -2464,7 +2464,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def max_items(self) -> int:
-        """"""
+        """ """
         return typing.cast(
             int,
             self._properties.get("maxItems"),
@@ -2472,12 +2472,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @max_items.setter
     def max_items(self, value: int):
-        """"""
+        """ """
         self._properties["maxItems"] = value
 
     @property
     def max_length(self) -> int:
-        """"""
+        """ """
         return typing.cast(
             int,
             self._properties.get("maxLength"),
@@ -2485,12 +2485,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @max_length.setter
     def max_length(self, value: int):
-        """"""
+        """ """
         self._properties["maxLength"] = value
 
     @property
     def max_properties(self) -> int:
-        """"""
+        """ """
         return typing.cast(
             int,
             self._properties.get("maxProperties"),
@@ -2498,12 +2498,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @max_properties.setter
     def max_properties(self, value: int):
-        """"""
+        """ """
         self._properties["maxProperties"] = value
 
     @property
     def maximum(self) -> float:
-        """"""
+        """ """
         return typing.cast(
             float,
             self._properties.get("maximum"),
@@ -2511,12 +2511,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @maximum.setter
     def maximum(self, value: float):
-        """"""
+        """ """
         self._properties["maximum"] = value
 
     @property
     def min_items(self) -> int:
-        """"""
+        """ """
         return typing.cast(
             int,
             self._properties.get("minItems"),
@@ -2524,12 +2524,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @min_items.setter
     def min_items(self, value: int):
-        """"""
+        """ """
         self._properties["minItems"] = value
 
     @property
     def min_length(self) -> int:
-        """"""
+        """ """
         return typing.cast(
             int,
             self._properties.get("minLength"),
@@ -2537,12 +2537,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @min_length.setter
     def min_length(self, value: int):
-        """"""
+        """ """
         self._properties["minLength"] = value
 
     @property
     def min_properties(self) -> int:
-        """"""
+        """ """
         return typing.cast(
             int,
             self._properties.get("minProperties"),
@@ -2550,12 +2550,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @min_properties.setter
     def min_properties(self, value: int):
-        """"""
+        """ """
         self._properties["minProperties"] = value
 
     @property
     def minimum(self) -> float:
-        """"""
+        """ """
         return typing.cast(
             float,
             self._properties.get("minimum"),
@@ -2563,12 +2563,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @minimum.setter
     def minimum(self, value: float):
-        """"""
+        """ """
         self._properties["minimum"] = value
 
     @property
     def multiple_of(self) -> float:
-        """"""
+        """ """
         return typing.cast(
             float,
             self._properties.get("multipleOf"),
@@ -2576,12 +2576,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @multiple_of.setter
     def multiple_of(self, value: float):
-        """"""
+        """ """
         self._properties["multipleOf"] = value
 
     @property
     def not_(self) -> typing.Optional["JSONSchemaProps"]:
-        """"""
+        """ """
         return typing.cast(
             typing.Optional["JSONSchemaProps"],
             self._properties.get("not"),
@@ -2589,7 +2589,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @not_.setter
     def not_(self, value: typing.Union["JSONSchemaProps", dict, None]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 JSONSchemaProps,
@@ -2599,7 +2599,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def nullable(self) -> bool:
-        """"""
+        """ """
         return typing.cast(
             bool,
             self._properties.get("nullable"),
@@ -2607,12 +2607,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @nullable.setter
     def nullable(self, value: bool):
-        """"""
+        """ """
         self._properties["nullable"] = value
 
     @property
     def one_of(self) -> typing.List["JSONSchemaProps"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["JSONSchemaProps"],
             self._properties.get("oneOf"),
@@ -2622,7 +2622,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     def one_of(
         self, value: typing.Union[typing.List["JSONSchemaProps"], typing.List[dict]]
     ):
-        """"""
+        """ """
         cleaned: typing.List[JSONSchemaProps] = []
         for item in value:
             if isinstance(item, dict):
@@ -2635,7 +2635,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @property
     def pattern(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("pattern"),
@@ -2643,12 +2643,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @pattern.setter
     def pattern(self, value: str):
-        """"""
+        """ """
         self._properties["pattern"] = value
 
     @property
     def pattern_properties(self) -> dict:
-        """"""
+        """ """
         return typing.cast(
             dict,
             self._properties.get("patternProperties"),
@@ -2656,12 +2656,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @pattern_properties.setter
     def pattern_properties(self, value: dict):
-        """"""
+        """ """
         self._properties["patternProperties"] = value
 
     @property
     def properties(self) -> dict:
-        """"""
+        """ """
         return typing.cast(
             dict,
             self._properties.get("properties"),
@@ -2669,12 +2669,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @properties.setter
     def properties(self, value: dict):
-        """"""
+        """ """
         self._properties["properties"] = value
 
     @property
     def required(self) -> typing.List[str]:
-        """"""
+        """ """
         return typing.cast(
             typing.List[str],
             self._properties.get("required"),
@@ -2682,12 +2682,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @required.setter
     def required(self, value: typing.List[str]):
-        """"""
+        """ """
         self._properties["required"] = value
 
     @property
     def title(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("title"),
@@ -2695,12 +2695,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @title.setter
     def title(self, value: str):
-        """"""
+        """ """
         self._properties["title"] = value
 
     @property
     def type_(self) -> str:
-        """"""
+        """ """
         return typing.cast(
             str,
             self._properties.get("type"),
@@ -2708,12 +2708,12 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @type_.setter
     def type_(self, value: str):
-        """"""
+        """ """
         self._properties["type"] = value
 
     @property
     def unique_items(self) -> bool:
-        """"""
+        """ """
         return typing.cast(
             bool,
             self._properties.get("uniqueItems"),
@@ -2721,7 +2721,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     @unique_items.setter
     def unique_items(self, value: bool):
-        """"""
+        """ """
         self._properties["uniqueItems"] = value
 
     @property

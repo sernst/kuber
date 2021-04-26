@@ -5,6 +5,7 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
+from kuber.pre.meta_v1 import Condition  # noqa: F401
 from kuber.pre.meta_v1 import DeleteOptions  # noqa: F401
 from kuber.pre.meta_v1 import LabelSelector  # noqa: F401
 from kuber.pre.meta_v1 import ListMeta  # noqa: F401
@@ -610,7 +611,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -618,7 +619,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -866,7 +867,7 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
 
     @property
     def items(self) -> typing.List["PodDisruptionBudget"]:
-        """"""
+        """ """
         return typing.cast(
             typing.List["PodDisruptionBudget"],
             self._properties.get("items"),
@@ -876,7 +877,7 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
     def items(
         self, value: typing.Union[typing.List["PodDisruptionBudget"], typing.List[dict]]
     ):
-        """"""
+        """ """
         cleaned: typing.List[PodDisruptionBudget] = []
         for item in value:
             if isinstance(item, dict):
@@ -889,7 +890,7 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """"""
+        """ """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -897,7 +898,7 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,
@@ -1005,7 +1006,10 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
     def selector(self) -> "LabelSelector":
         """
         Label query over pods whose evictions are managed by the
-        disruption budget.
+        disruption budget. A null selector selects no pods. An empty
+        selector ({}) also selects no pods, which differs from
+        standard behavior of selecting all pods. In policy/v1, an
+        empty selector will select all pods in the namespace.
         """
         return typing.cast(
             "LabelSelector",
@@ -1016,7 +1020,10 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
     def selector(self, value: typing.Union["LabelSelector", dict]):
         """
         Label query over pods whose evictions are managed by the
-        disruption budget.
+        disruption budget. A null selector selects no pods. An empty
+        selector ({}) also selects no pods, which differs from
+        standard behavior of selecting all pods. In policy/v1, an
+        empty selector will select all pods in the namespace.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -1041,6 +1048,7 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        conditions: typing.List["Condition"] = None,
         current_healthy: int = None,
         desired_healthy: int = None,
         disrupted_pods: dict = None,
@@ -1053,6 +1061,7 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
             api_version="policy/v1beta1", kind="PodDisruptionBudgetStatus"
         )
         self._properties = {
+            "conditions": conditions if conditions is not None else [],
             "currentHealthy": current_healthy if current_healthy is not None else None,
             "desiredHealthy": desired_healthy if desired_healthy is not None else None,
             "disruptedPods": disrupted_pods if disrupted_pods is not None else {},
@@ -1065,6 +1074,7 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
             else None,
         }
         self._types = {
+            "conditions": (list, Condition),
             "currentHealthy": (int, None),
             "desiredHealthy": (int, None),
             "disruptedPods": (dict, None),
@@ -1072,6 +1082,73 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
             "expectedPods": (int, None),
             "observedGeneration": (int, None),
         }
+
+    @property
+    def conditions(self) -> typing.List["Condition"]:
+        """
+        Conditions contain conditions for PDB. The disruption
+        controller sets the DisruptionAllowed condition. The
+        following are known values for the reason field (additional
+        reasons could be added in the future): - SyncFailed: The
+        controller encountered an error and wasn't able to compute
+                      the number of allowed disruptions. Therefore
+        no disruptions are
+                      allowed and the status of the condition will
+        be False.
+        - InsufficientPods: The number of pods are either at or
+        below the number
+                            required by the PodDisruptionBudget. No
+        disruptions are
+                            allowed and the status of the condition
+        will be False.
+        - SufficientPods: There are more pods than required by the
+        PodDisruptionBudget.
+                          The condition will be True, and the number
+        of allowed
+                          disruptions are provided by the
+        disruptionsAllowed property.
+        """
+        return typing.cast(
+            typing.List["Condition"],
+            self._properties.get("conditions"),
+        )
+
+    @conditions.setter
+    def conditions(
+        self, value: typing.Union[typing.List["Condition"], typing.List[dict]]
+    ):
+        """
+        Conditions contain conditions for PDB. The disruption
+        controller sets the DisruptionAllowed condition. The
+        following are known values for the reason field (additional
+        reasons could be added in the future): - SyncFailed: The
+        controller encountered an error and wasn't able to compute
+                      the number of allowed disruptions. Therefore
+        no disruptions are
+                      allowed and the status of the condition will
+        be False.
+        - InsufficientPods: The number of pods are either at or
+        below the number
+                            required by the PodDisruptionBudget. No
+        disruptions are
+                            allowed and the status of the condition
+        will be False.
+        - SufficientPods: There are more pods than required by the
+        PodDisruptionBudget.
+                          The condition will be True, and the number
+        of allowed
+                          disruptions are provided by the
+        disruptionsAllowed property.
+        """
+        cleaned: typing.List[Condition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    Condition,
+                    Condition().from_dict(item),
+                )
+            cleaned.append(typing.cast(Condition, item))
+        self._properties["conditions"] = cleaned
 
     @property
     def current_healthy(self) -> int:
@@ -1220,7 +1297,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
     """
     PodSecurityPolicy governs the ability to make requests that
     affect the Security Context that will be applied to a pod
-    and container.
+    and container. Deprecated in 1.21.
     """
 
     def __init__(

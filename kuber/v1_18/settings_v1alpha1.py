@@ -42,7 +42,7 @@ class PodPreset(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -50,7 +50,7 @@ class PodPreset(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -60,7 +60,7 @@ class PodPreset(_kuber_definitions.Resource):
 
     @property
     def spec(self) -> "PodPresetSpec":
-        """"""
+        """ """
         return typing.cast(
             "PodPresetSpec",
             self._properties.get("spec"),
@@ -68,7 +68,7 @@ class PodPreset(_kuber_definitions.Resource):
 
     @spec.setter
     def spec(self, value: typing.Union["PodPresetSpec", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 PodPresetSpec,

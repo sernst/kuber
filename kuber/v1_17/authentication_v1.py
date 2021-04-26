@@ -147,7 +147,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -155,7 +155,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -165,7 +165,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @property
     def spec(self) -> "TokenRequestSpec":
-        """"""
+        """ """
         return typing.cast(
             "TokenRequestSpec",
             self._properties.get("spec"),
@@ -173,7 +173,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @spec.setter
     def spec(self, value: typing.Union["TokenRequestSpec", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 TokenRequestSpec,
@@ -183,7 +183,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @property
     def status(self) -> "TokenRequestStatus":
-        """"""
+        """ """
         return typing.cast(
             "TokenRequestStatus",
             self._properties.get("status"),
@@ -191,7 +191,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @status.setter
     def status(self, value: typing.Union["TokenRequestStatus", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 TokenRequestStatus,
@@ -582,7 +582,7 @@ class TokenReview(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """"""
+        """ """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -590,7 +590,7 @@ class TokenReview(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,

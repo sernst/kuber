@@ -1469,7 +1469,7 @@ class DaemonSetStatus(_kuber_definitions.Definition):
 
 
 class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
-    """"""
+    """ """
 
     def __init__(
         self,
@@ -3987,7 +3987,7 @@ class IngressRule(_kuber_definitions.Definition):
 
     @property
     def http(self) -> "HTTPIngressRuleValue":
-        """"""
+        """ """
         return typing.cast(
             "HTTPIngressRuleValue",
             self._properties.get("http"),
@@ -3995,7 +3995,7 @@ class IngressRule(_kuber_definitions.Definition):
 
     @http.setter
     def http(self, value: typing.Union["HTTPIngressRuleValue", dict]):
-        """"""
+        """ """
         if isinstance(value, dict):
             value = typing.cast(
                 HTTPIngressRuleValue,

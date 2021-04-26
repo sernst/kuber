@@ -20,6 +20,7 @@ class Endpoint(_kuber_definitions.Definition):
         self,
         addresses: typing.List[str] = None,
         conditions: "EndpointConditions" = None,
+        hints: "EndpointHints" = None,
         hostname: str = None,
         node_name: str = None,
         target_ref: "ObjectReference" = None,
@@ -32,6 +33,7 @@ class Endpoint(_kuber_definitions.Definition):
             "conditions": conditions
             if conditions is not None
             else EndpointConditions(),
+            "hints": hints if hints is not None else EndpointHints(),
             "hostname": hostname if hostname is not None else "",
             "nodeName": node_name if node_name is not None else "",
             "targetRef": target_ref if target_ref is not None else ObjectReference(),
@@ -40,6 +42,7 @@ class Endpoint(_kuber_definitions.Definition):
         self._types = {
             "addresses": (list, str),
             "conditions": (EndpointConditions, None),
+            "hints": (EndpointHints, None),
             "hostname": (str, None),
             "nodeName": (str, None),
             "targetRef": (ObjectReference, None),
@@ -94,6 +97,30 @@ class Endpoint(_kuber_definitions.Definition):
                 EndpointConditions().from_dict(value),
             )
         self._properties["conditions"] = value
+
+    @property
+    def hints(self) -> "EndpointHints":
+        """
+        hints contains information associated with how an endpoint
+        should be consumed.
+        """
+        return typing.cast(
+            "EndpointHints",
+            self._properties.get("hints"),
+        )
+
+    @hints.setter
+    def hints(self, value: typing.Union["EndpointHints", dict]):
+        """
+        hints contains information associated with how an endpoint
+        should be consumed.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                EndpointHints,
+                EndpointHints().from_dict(value),
+            )
+        self._properties["hints"] = value
 
     @property
     def hostname(self) -> str:
@@ -340,6 +367,63 @@ class EndpointConditions(_kuber_definitions.Definition):
         self._properties["terminating"] = value
 
     def __enter__(self) -> "EndpointConditions":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class EndpointHints(_kuber_definitions.Definition):
+    """
+    EndpointHints provides hints describing how an endpoint
+    should be consumed.
+    """
+
+    def __init__(
+        self,
+        for_zones: typing.List["ForZone"] = None,
+    ):
+        """Create EndpointHints instance."""
+        super(EndpointHints, self).__init__(
+            api_version="discovery/v1beta1", kind="EndpointHints"
+        )
+        self._properties = {
+            "forZones": for_zones if for_zones is not None else [],
+        }
+        self._types = {
+            "forZones": (list, ForZone),
+        }
+
+    @property
+    def for_zones(self) -> typing.List["ForZone"]:
+        """
+        forZones indicates the zone(s) this endpoint should be
+        consumed by to enable topology aware routing. May contain a
+        maximum of 8 entries.
+        """
+        return typing.cast(
+            typing.List["ForZone"],
+            self._properties.get("forZones"),
+        )
+
+    @for_zones.setter
+    def for_zones(self, value: typing.Union[typing.List["ForZone"], typing.List[dict]]):
+        """
+        forZones indicates the zone(s) this endpoint should be
+        consumed by to enable topology aware routing. May contain a
+        maximum of 8 entries.
+        """
+        cleaned: typing.List[ForZone] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    ForZone,
+                    ForZone().from_dict(item),
+                )
+            cleaned.append(typing.cast(ForZone, item))
+        self._properties["forZones"] = cleaned
+
+    def __enter__(self) -> "EndpointHints":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -834,6 +918,49 @@ class EndpointSliceList(_kuber_definitions.Collection):
         return client.DiscoveryV1beta1Api(**kwargs)
 
     def __enter__(self) -> "EndpointSliceList":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ForZone(_kuber_definitions.Definition):
+    """
+    ForZone provides information about which zones should
+    consume this endpoint.
+    """
+
+    def __init__(
+        self,
+        name: str = None,
+    ):
+        """Create ForZone instance."""
+        super(ForZone, self).__init__(api_version="discovery/v1beta1", kind="ForZone")
+        self._properties = {
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "name": (str, None),
+        }
+
+    @property
+    def name(self) -> str:
+        """
+        name represents the name of the zone.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        name represents the name of the zone.
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "ForZone":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
