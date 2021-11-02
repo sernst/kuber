@@ -1694,7 +1694,9 @@ class Deployment(_kuber_definitions.Resource):
     @property
     def metadata(self) -> "ObjectMeta":
         """
-        Standard object metadata.
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         return typing.cast(
             "ObjectMeta",
@@ -1704,7 +1706,9 @@ class Deployment(_kuber_definitions.Resource):
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
-        Standard object metadata.
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -4149,8 +4153,8 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         possibility that the resources consumed by the daemonset on
         any given node can double if the readiness check fails, and
         so resource intensive daemonsets should take into account
-        that they may cause evictions during disruption. This is an
-        alpha field and requires enabling DaemonSetUpdateSurge
+        that they may cause evictions during disruption. This is
+        beta field and enabled/disabled by DaemonSetUpdateSurge
         feature gate.
         """
         return typing.cast(
@@ -4181,8 +4185,8 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         possibility that the resources consumed by the daemonset on
         any given node can double if the readiness check fails, and
         so resource intensive daemonsets should take into account
-        that they may cause evictions during disruption. This is an
-        alpha field and requires enabling DaemonSetUpdateSurge
+        that they may cause evictions during disruption. This is
+        beta field and enabled/disabled by DaemonSetUpdateSurge
         feature gate.
         """
         self._properties["maxSurge"] = _types.integer_or_string(value)
@@ -4194,17 +4198,17 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         during the update. Value can be an absolute number (ex: 5)
         or a percentage of total number of DaemonSet pods at the
         start of the update (ex: 10%). Absolute number is calculated
-        from percentage by rounding down to a minimum of one. This
-        cannot be 0 if MaxSurge is 0 Default value is 1. Example:
-        when this is set to 30%, at most 30% of the total number of
-        nodes that should be running the daemon pod (i.e.
-        status.desiredNumberScheduled) can have their pods stopped
-        for an update at any given time. The update starts by
-        stopping at most 30% of those DaemonSet pods and then brings
-        up new DaemonSet pods in their place. Once the new pods are
-        available, it then proceeds onto other DaemonSet pods, thus
-        ensuring that at least 70% of original number of DaemonSet
-        pods are available at all times during the update.
+        from percentage by rounding up. This cannot be 0 if MaxSurge
+        is 0 Default value is 1. Example: when this is set to 30%,
+        at most 30% of the total number of nodes that should be
+        running the daemon pod (i.e. status.desiredNumberScheduled)
+        can have their pods stopped for an update at any given time.
+        The update starts by stopping at most 30% of those DaemonSet
+        pods and then brings up new DaemonSet pods in their place.
+        Once the new pods are available, it then proceeds onto other
+        DaemonSet pods, thus ensuring that at least 70% of original
+        number of DaemonSet pods are available at all times during
+        the update.
         """
         return typing.cast(
             typing.Union[str, int, None],
@@ -4218,17 +4222,17 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
         during the update. Value can be an absolute number (ex: 5)
         or a percentage of total number of DaemonSet pods at the
         start of the update (ex: 10%). Absolute number is calculated
-        from percentage by rounding down to a minimum of one. This
-        cannot be 0 if MaxSurge is 0 Default value is 1. Example:
-        when this is set to 30%, at most 30% of the total number of
-        nodes that should be running the daemon pod (i.e.
-        status.desiredNumberScheduled) can have their pods stopped
-        for an update at any given time. The update starts by
-        stopping at most 30% of those DaemonSet pods and then brings
-        up new DaemonSet pods in their place. Once the new pods are
-        available, it then proceeds onto other DaemonSet pods, thus
-        ensuring that at least 70% of original number of DaemonSet
-        pods are available at all times during the update.
+        from percentage by rounding up. This cannot be 0 if MaxSurge
+        is 0 Default value is 1. Example: when this is set to 30%,
+        at most 30% of the total number of nodes that should be
+        running the daemon pod (i.e. status.desiredNumberScheduled)
+        can have their pods stopped for an update at any given time.
+        The update starts by stopping at most 30% of those DaemonSet
+        pods and then brings up new DaemonSet pods in their place.
+        Once the new pods are available, it then proceeds onto other
+        DaemonSet pods, thus ensuring that at least 70% of original
+        number of DaemonSet pods are available at all times during
+        the update.
         """
         self._properties["maxUnavailable"] = _types.integer_or_string(value)
 
@@ -4425,7 +4429,11 @@ class StatefulSet(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """ """
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -4433,7 +4441,11 @@ class StatefulSet(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """ """
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -4950,7 +4962,9 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @property
     def items(self) -> typing.List["StatefulSet"]:
-        """ """
+        """
+        Items is the list of stateful sets.
+        """
         return typing.cast(
             typing.List["StatefulSet"],
             self._properties.get("items"),
@@ -4958,7 +4972,9 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @items.setter
     def items(self, value: typing.Union[typing.List["StatefulSet"], typing.List[dict]]):
-        """ """
+        """
+        Items is the list of stateful sets.
+        """
         cleaned: typing.List[StatefulSet] = []
         for item in value:
             if isinstance(item, dict):
@@ -4971,7 +4987,11 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """ """
+        """
+        Standard list's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -4979,7 +4999,11 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """ """
+        """
+        Standard list's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,
@@ -5013,6 +5037,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        min_ready_seconds: int = None,
         pod_management_policy: str = None,
         replicas: int = None,
         revision_history_limit: int = None,
@@ -5027,6 +5052,9 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetSpec"
         )
         self._properties = {
+            "minReadySeconds": min_ready_seconds
+            if min_ready_seconds is not None
+            else None,
             "podManagementPolicy": pod_management_policy
             if pod_management_policy is not None
             else "",
@@ -5045,6 +5073,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             else [],
         }
         self._types = {
+            "minReadySeconds": (int, None),
             "podManagementPolicy": (str, None),
             "replicas": (int, None),
             "revisionHistoryLimit": (int, None),
@@ -5054,6 +5083,33 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             "updateStrategy": (StatefulSetUpdateStrategy, None),
             "volumeClaimTemplates": (list, PersistentVolumeClaim),
         }
+
+    @property
+    def min_ready_seconds(self) -> int:
+        """
+        Minimum number of seconds for which a newly created pod
+        should be ready without any of its container crashing for it
+        to be considered available. Defaults to 0 (pod will be
+        considered available as soon as it is ready) This is an
+        alpha field and requires enabling StatefulSetMinReadySeconds
+        feature gate.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("minReadySeconds"),
+        )
+
+    @min_ready_seconds.setter
+    def min_ready_seconds(self, value: int):
+        """
+        Minimum number of seconds for which a newly created pod
+        should be ready without any of its container crashing for it
+        to be considered available. Defaults to 0 (pod will be
+        considered available as soon as it is ready) This is an
+        alpha field and requires enabling StatefulSetMinReadySeconds
+        feature gate.
+        """
+        self._properties["minReadySeconds"] = value
 
     @property
     def pod_management_policy(self) -> str:
@@ -5448,6 +5504,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        available_replicas: int = None,
         collision_count: int = None,
         conditions: typing.List["StatefulSetCondition"] = None,
         current_replicas: int = None,
@@ -5463,6 +5520,9 @@ class StatefulSetStatus(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetStatus"
         )
         self._properties = {
+            "availableReplicas": available_replicas
+            if available_replicas is not None
+            else None,
             "collisionCount": collision_count if collision_count is not None else None,
             "conditions": conditions if conditions is not None else [],
             "currentReplicas": current_replicas
@@ -5480,6 +5540,7 @@ class StatefulSetStatus(_kuber_definitions.Definition):
             else None,
         }
         self._types = {
+            "availableReplicas": (int, None),
             "collisionCount": (int, None),
             "conditions": (list, StatefulSetCondition),
             "currentReplicas": (int, None),
@@ -5490,6 +5551,29 @@ class StatefulSetStatus(_kuber_definitions.Definition):
             "updateRevision": (str, None),
             "updatedReplicas": (int, None),
         }
+
+    @property
+    def available_replicas(self) -> int:
+        """
+        Total number of available pods (ready for at least
+        minReadySeconds) targeted by this statefulset. This is an
+        alpha field and requires enabling StatefulSetMinReadySeconds
+        feature gate. Remove omitempty when graduating to beta
+        """
+        return typing.cast(
+            int,
+            self._properties.get("availableReplicas"),
+        )
+
+    @available_replicas.setter
+    def available_replicas(self, value: int):
+        """
+        Total number of available pods (ready for at least
+        minReadySeconds) targeted by this statefulset. This is an
+        alpha field and requires enabling StatefulSetMinReadySeconds
+        feature gate. Remove omitempty when graduating to beta
+        """
+        self._properties["availableReplicas"] = value
 
     @property
     def collision_count(self) -> int:

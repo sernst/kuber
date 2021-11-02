@@ -2373,7 +2373,9 @@ class Subject(_kuber_definitions.Definition):
 
     @property
     def group(self) -> "GroupSubject":
-        """ """
+        """
+        `group` matches based on user group name.
+        """
         return typing.cast(
             "GroupSubject",
             self._properties.get("group"),
@@ -2381,7 +2383,9 @@ class Subject(_kuber_definitions.Definition):
 
     @group.setter
     def group(self, value: typing.Union["GroupSubject", dict]):
-        """ """
+        """
+        `group` matches based on user group name.
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 GroupSubject,
@@ -2392,6 +2396,7 @@ class Subject(_kuber_definitions.Definition):
     @property
     def kind(self) -> str:
         """
+        `kind` indicates which one of the other fields is non-empty.
         Required
         """
         return typing.cast(
@@ -2402,13 +2407,16 @@ class Subject(_kuber_definitions.Definition):
     @kind.setter
     def kind(self, value: str):
         """
+        `kind` indicates which one of the other fields is non-empty.
         Required
         """
         self._properties["kind"] = value
 
     @property
     def service_account(self) -> "ServiceAccountSubject":
-        """ """
+        """
+        `serviceAccount` matches ServiceAccounts.
+        """
         return typing.cast(
             "ServiceAccountSubject",
             self._properties.get("serviceAccount"),
@@ -2416,7 +2424,9 @@ class Subject(_kuber_definitions.Definition):
 
     @service_account.setter
     def service_account(self, value: typing.Union["ServiceAccountSubject", dict]):
-        """ """
+        """
+        `serviceAccount` matches ServiceAccounts.
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 ServiceAccountSubject,
@@ -2426,7 +2436,9 @@ class Subject(_kuber_definitions.Definition):
 
     @property
     def user(self) -> "UserSubject":
-        """ """
+        """
+        `user` matches based on username.
+        """
         return typing.cast(
             "UserSubject",
             self._properties.get("user"),
@@ -2434,7 +2446,9 @@ class Subject(_kuber_definitions.Definition):
 
     @user.setter
     def user(self, value: typing.Union["UserSubject", dict]):
-        """ """
+        """
+        `user` matches based on username.
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 UserSubject,

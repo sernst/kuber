@@ -12,26 +12,10 @@ kuber.v1\_22.admissionregistration\_v1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_22.admissionregistration\_v1beta1 module
---------------------------------------------------
-
-.. automodule:: kuber.v1_22.admissionregistration_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_22.apiextensions\_v1 module
 -------------------------------------
 
 .. automodule:: kuber.v1_22.apiextensions_v1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.v1\_22.apiextensions\_v1beta1 module
-------------------------------------------
-
-.. automodule:: kuber.v1_22.apiextensions_v1beta1
    :members:
    :undoc-members:
    :show-inheritance:
@@ -60,14 +44,6 @@ kuber.v1\_22.apiregistration\_v1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_22.apiregistration\_v1beta1 module
---------------------------------------------
-
-.. automodule:: kuber.v1_22.apiregistration_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_22.apiserverinternal\_v1alpha1 module
 -----------------------------------------------
 
@@ -92,26 +68,10 @@ kuber.v1\_22.authentication\_v1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_22.authentication\_v1beta1 module
--------------------------------------------
-
-.. automodule:: kuber.v1_22.authentication_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_22.authorization\_v1 module
 -------------------------------------
 
 .. automodule:: kuber.v1_22.authorization_v1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.v1\_22.authorization\_v1beta1 module
-------------------------------------------
-
-.. automodule:: kuber.v1_22.authorization_v1beta1
    :members:
    :undoc-members:
    :show-inheritance:
@@ -164,26 +124,10 @@ kuber.v1\_22.certificates\_v1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_22.certificates\_v1beta1 module
------------------------------------------
-
-.. automodule:: kuber.v1_22.certificates_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_22.coordination\_v1 module
 ------------------------------------
 
 .. automodule:: kuber.v1_22.coordination_v1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.v1\_22.coordination\_v1beta1 module
------------------------------------------
-
-.. automodule:: kuber.v1_22.coordination_v1beta1
    :members:
    :undoc-members:
    :show-inheritance:
@@ -236,14 +180,6 @@ kuber.v1\_22.events\_v1beta1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_22.extensions\_v1beta1 module
----------------------------------------
-
-.. automodule:: kuber.v1_22.extensions_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_22.flowcontrol\_v1beta1 module
 ----------------------------------------
 
@@ -264,14 +200,6 @@ kuber.v1\_22.networking\_v1 module
 ----------------------------------
 
 .. automodule:: kuber.v1_22.networking_v1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.v1\_22.networking\_v1beta1 module
----------------------------------------
-
-.. automodule:: kuber.v1_22.networking_v1beta1
    :members:
    :undoc-members:
    :show-inheritance:
@@ -332,14 +260,6 @@ kuber.v1\_22.rbac\_v1alpha1 module
    :undoc-members:
    :show-inheritance:
 
-kuber.v1\_22.rbac\_v1beta1 module
----------------------------------
-
-.. automodule:: kuber.v1_22.rbac_v1beta1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 kuber.v1\_22.scheduling\_v1 module
 ----------------------------------
 
@@ -352,14 +272,6 @@ kuber.v1\_22.scheduling\_v1alpha1 module
 ----------------------------------------
 
 .. automodule:: kuber.v1_22.scheduling_v1alpha1
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-kuber.v1\_22.scheduling\_v1beta1 module
----------------------------------------
-
-.. automodule:: kuber.v1_22.scheduling_v1beta1
    :members:
    :undoc-members:
    :show-inheritance:

@@ -305,7 +305,11 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """ """
+        """
+        Standard object's metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -313,7 +317,11 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """ """
+        """
+        Standard object's metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -738,7 +746,11 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
 
     @property
     def metadata(self) -> "ListMeta":
-        """ """
+        """
+        Standard object's metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         return typing.cast(
             "ListMeta",
             self._properties.get("metadata"),
@@ -746,7 +758,11 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ListMeta", dict]):
-        """ """
+        """
+        Standard object's metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 ListMeta,

@@ -12,15 +12,15 @@ bundle = kuber.from_directory("../samples", kubernetes_version="pre")
 # print('\n--- BUNDLE ---')
 # print(bundle.render_yaml_bundle())
 
-print(bundle.array.job.scott[0].to_yaml())
-print(bundle.array.within("foo").job.scott.to_yaml())
+print(bundle.resources.job.scott[0].to_yaml())
+print(bundle.resources.within("foo").job.scott.to_yaml())
 
-print(bundle.array.deployment[0].metadata.name)
-print(bundle.array.deployment["genesis"].metadata.name)
-print(bundle.array.deployment.genesis.metadata.name)
+print(bundle.resources.deployment[0].metadata.name)
+print(bundle.resources.deployment["genesis"].metadata.name)
+print(bundle.resources.deployment.genesis.metadata.name)
 
-for r in bundle.array.job:
+for r in bundle.resources.job:
     print(f"{r.kind}/{r.metadata.name}")
 
-for r in bundle.array.within("foo").job:
+for r in bundle.resources.within("foo").job:
     print(f"{r.kind}/{r.metadata.name}")

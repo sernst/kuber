@@ -147,7 +147,11 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """ """
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -155,7 +159,11 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """ """
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
@@ -165,7 +173,9 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @property
     def spec(self) -> "TokenRequestSpec":
-        """ """
+        """
+        Spec holds information about the request being evaluated
+        """
         return typing.cast(
             "TokenRequestSpec",
             self._properties.get("spec"),
@@ -173,7 +183,9 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @spec.setter
     def spec(self, value: typing.Union["TokenRequestSpec", dict]):
-        """ """
+        """
+        Spec holds information about the request being evaluated
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 TokenRequestSpec,
@@ -183,7 +195,10 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @property
     def status(self) -> "TokenRequestStatus":
-        """ """
+        """
+        Status is filled in by the server and indicates whether the
+        token can be authenticated.
+        """
         return typing.cast(
             "TokenRequestStatus",
             self._properties.get("status"),
@@ -191,7 +206,10 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @status.setter
     def status(self, value: typing.Union["TokenRequestStatus", dict]):
-        """ """
+        """
+        Status is filled in by the server and indicates whether the
+        token can be authenticated.
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 TokenRequestStatus,
@@ -582,7 +600,11 @@ class TokenReview(_kuber_definitions.Resource):
 
     @property
     def metadata(self) -> "ObjectMeta":
-        """ """
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         return typing.cast(
             "ObjectMeta",
             self._properties.get("metadata"),
@@ -590,7 +612,11 @@ class TokenReview(_kuber_definitions.Resource):
 
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """ """
+        """
+        Standard object's metadata. More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
         if isinstance(value, dict):
             value = typing.cast(
                 ObjectMeta,
