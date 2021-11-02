@@ -1758,13 +1758,14 @@ class JobSpec(_kuber_definitions.Definition):
         completion-index. The Job is considered complete when there
         is one successfully completed Pod for each index. When value
         is `Indexed`, .spec.completions must be specified and
-        `.spec.parallelism` must be less than or equal to 10^5.
+        `.spec.parallelism` must be less than or equal to 10^5. In
+        addition, The Pod name takes the form `$(job-
+        name)-$(index)-$(random-string)`, the Pod hostname takes the
+        form `$(job-name)-$(index)`.
 
-        This field is alpha-level and is only honored by servers
-        that enable the IndexedJob feature gate. More completion
-        modes can be added in the future. If the Job controller
-        observes a mode that it doesn't recognize, the controller
-        skips updates for the Job.
+        This field is beta-level. More completion modes can be added
+        in the future. If the Job controller observes a mode that it
+        doesn't recognize, the controller skips updates for the Job.
         """
         return typing.cast(
             str,
@@ -1787,13 +1788,14 @@ class JobSpec(_kuber_definitions.Definition):
         completion-index. The Job is considered complete when there
         is one successfully completed Pod for each index. When value
         is `Indexed`, .spec.completions must be specified and
-        `.spec.parallelism` must be less than or equal to 10^5.
+        `.spec.parallelism` must be less than or equal to 10^5. In
+        addition, The Pod name takes the form `$(job-
+        name)-$(index)-$(random-string)`, the Pod hostname takes the
+        form `$(job-name)-$(index)`.
 
-        This field is alpha-level and is only honored by servers
-        that enable the IndexedJob feature gate. More completion
-        modes can be added in the future. If the Job controller
-        observes a mode that it doesn't recognize, the controller
-        skips updates for the Job.
+        This field is beta-level. More completion modes can be added
+        in the future. If the Job controller observes a mode that it
+        doesn't recognize, the controller skips updates for the Job.
         """
         self._properties["completionMode"] = value
 
@@ -1935,10 +1937,10 @@ class JobSpec(_kuber_definitions.Definition):
         associated with this Job. Users must design their workload
         to gracefully handle this. Suspending a Job will reset the
         StartTime field of the Job, effectively resetting the
-        ActiveDeadlineSeconds timer too. This is an alpha field and
-        requires the SuspendJob feature gate to be enabled;
-        otherwise this field may not be set to true. Defaults to
-        false.
+        ActiveDeadlineSeconds timer too. Defaults to false.
+
+        This field is beta-level, gated by SuspendJob feature flag
+        (enabled by default).
         """
         return typing.cast(
             bool,
@@ -1956,10 +1958,10 @@ class JobSpec(_kuber_definitions.Definition):
         associated with this Job. Users must design their workload
         to gracefully handle this. Suspending a Job will reset the
         StartTime field of the Job, effectively resetting the
-        ActiveDeadlineSeconds timer too. This is an alpha field and
-        requires the SuspendJob feature gate to be enabled;
-        otherwise this field may not be set to true. Defaults to
-        false.
+        ActiveDeadlineSeconds timer too. Defaults to false.
+
+        This field is beta-level, gated by SuspendJob feature flag
+        (enabled by default).
         """
         self._properties["suspend"] = value
 
@@ -2187,6 +2189,7 @@ class JobStatus(_kuber_definitions.Definition):
         failed: int = None,
         start_time: str = None,
         succeeded: int = None,
+        uncounted_terminated_pods: "UncountedTerminatedPods" = None,
     ):
         """Create JobStatus instance."""
         super(JobStatus, self).__init__(api_version="batch/v1", kind="JobStatus")
@@ -2200,6 +2203,9 @@ class JobStatus(_kuber_definitions.Definition):
             "failed": failed if failed is not None else None,
             "startTime": start_time if start_time is not None else None,
             "succeeded": succeeded if succeeded is not None else None,
+            "uncountedTerminatedPods": uncounted_terminated_pods
+            if uncounted_terminated_pods is not None
+            else UncountedTerminatedPods(),
         }
         self._types = {
             "active": (int, None),
@@ -2209,6 +2215,7 @@ class JobStatus(_kuber_definitions.Definition):
             "failed": (int, None),
             "startTime": (str, None),
             "succeeded": (int, None),
+            "uncountedTerminatedPods": (UncountedTerminatedPods, None),
         }
 
     @property
@@ -2395,6 +2402,62 @@ class JobStatus(_kuber_definitions.Definition):
         The number of pods which reached phase Succeeded.
         """
         self._properties["succeeded"] = value
+
+    @property
+    def uncounted_terminated_pods(self) -> "UncountedTerminatedPods":
+        """
+        UncountedTerminatedPods holds the UIDs of Pods that have
+        terminated but the job controller hasn't yet accounted for
+        in the status counters.
+
+        The job controller creates pods with a finalizer. When a pod
+        terminates (succeeded or failed), the controller does three
+        steps to account for it in the job status: (1) Add the pod
+        UID to the arrays in this field. (2) Remove the pod
+        finalizer. (3) Remove the pod UID from the arrays while
+        increasing the corresponding
+            counter.
+
+        This field is alpha-level. The job controller only makes use
+        of this field when the feature gate
+        PodTrackingWithFinalizers is enabled. Old jobs might not be
+        tracked using this field, in which case the field remains
+        null.
+        """
+        return typing.cast(
+            "UncountedTerminatedPods",
+            self._properties.get("uncountedTerminatedPods"),
+        )
+
+    @uncounted_terminated_pods.setter
+    def uncounted_terminated_pods(
+        self, value: typing.Union["UncountedTerminatedPods", dict]
+    ):
+        """
+        UncountedTerminatedPods holds the UIDs of Pods that have
+        terminated but the job controller hasn't yet accounted for
+        in the status counters.
+
+        The job controller creates pods with a finalizer. When a pod
+        terminates (succeeded or failed), the controller does three
+        steps to account for it in the job status: (1) Add the pod
+        UID to the arrays in this field. (2) Remove the pod
+        finalizer. (3) Remove the pod UID from the arrays while
+        increasing the corresponding
+            counter.
+
+        This field is alpha-level. The job controller only makes use
+        of this field when the feature gate
+        PodTrackingWithFinalizers is enabled. Old jobs might not be
+        tracked using this field, in which case the field remains
+        null.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                UncountedTerminatedPods,
+                UncountedTerminatedPods().from_dict(value),
+            )
+        self._properties["uncountedTerminatedPods"] = value
 
     def __enter__(self) -> "JobStatus":
         return self
@@ -2626,6 +2689,72 @@ class JobTemplateSpec(_kuber_definitions.Definition):
         return self.spec.template.spec.containers
 
     def __enter__(self) -> "JobTemplateSpec":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class UncountedTerminatedPods(_kuber_definitions.Definition):
+    """
+    UncountedTerminatedPods holds UIDs of Pods that have
+    terminated but haven't been accounted in Job status
+    counters.
+    """
+
+    def __init__(
+        self,
+        failed: typing.List[str] = None,
+        succeeded: typing.List[str] = None,
+    ):
+        """Create UncountedTerminatedPods instance."""
+        super(UncountedTerminatedPods, self).__init__(
+            api_version="batch/v1", kind="UncountedTerminatedPods"
+        )
+        self._properties = {
+            "failed": failed if failed is not None else [],
+            "succeeded": succeeded if succeeded is not None else [],
+        }
+        self._types = {
+            "failed": (list, str),
+            "succeeded": (list, str),
+        }
+
+    @property
+    def failed(self) -> typing.List[str]:
+        """
+        Failed holds UIDs of failed Pods.
+        """
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("failed"),
+        )
+
+    @failed.setter
+    def failed(self, value: typing.List[str]):
+        """
+        Failed holds UIDs of failed Pods.
+        """
+        self._properties["failed"] = value
+
+    @property
+    def succeeded(self) -> typing.List[str]:
+        """
+        Succeeded holds UIDs of succeeded Pods.
+        """
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("succeeded"),
+        )
+
+    @succeeded.setter
+    def succeeded(self, value: typing.List[str]):
+        """
+        Succeeded holds UIDs of succeeded Pods.
+        """
+        self._properties["succeeded"] = value
+
+    def __enter__(self) -> "UncountedTerminatedPods":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

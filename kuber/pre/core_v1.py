@@ -2978,7 +2978,10 @@ class ConfigMapList(_kuber_definitions.Collection):
 class ConfigMapNodeConfigSource(_kuber_definitions.Definition):
     """
     ConfigMapNodeConfigSource contains the information to
-    reference a ConfigMap as a config source for the Node.
+    reference a ConfigMap as a config source for the Node. This
+    API is deprecated since 1.22:
+    https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-
+    kubelet-configuration
     """
 
     def __init__(
@@ -3488,13 +3491,14 @@ class Container(_kuber_definitions.Definition):
         if this is not provided. Variable references $(VAR_NAME) are
         expanded using the container's environment. If a variable
         cannot be resolved, the reference in the input string will
-        be unchanged. The $(VAR_NAME) syntax can be escaped with a
-        double $$, ie: $$(VAR_NAME). Escaped references will never
-        be expanded, regardless of whether the variable exists or
-        not. Cannot be updated. More info:
-        https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        be unchanged. Double $$ are reduced to a single $, which
+        allows for escaping the $(VAR_NAME) syntax: i.e.
+        "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         return typing.cast(
             typing.List[str],
@@ -3508,13 +3512,14 @@ class Container(_kuber_definitions.Definition):
         if this is not provided. Variable references $(VAR_NAME) are
         expanded using the container's environment. If a variable
         cannot be resolved, the reference in the input string will
-        be unchanged. The $(VAR_NAME) syntax can be escaped with a
-        double $$, ie: $$(VAR_NAME). Escaped references will never
-        be expanded, regardless of whether the variable exists or
-        not. Cannot be updated. More info:
-        https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        be unchanged. Double $$ are reduced to a single $, which
+        allows for escaping the $(VAR_NAME) syntax: i.e.
+        "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         self._properties["args"] = value
 
@@ -3525,13 +3530,14 @@ class Container(_kuber_definitions.Definition):
         image's ENTRYPOINT is used if this is not provided. Variable
         references $(VAR_NAME) are expanded using the container's
         environment. If a variable cannot be resolved, the reference
-        in the input string will be unchanged. The $(VAR_NAME)
-        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
-        Escaped references will never be expanded, regardless of
-        whether the variable exists or not. Cannot be updated. More
-        info: https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        in the input string will be unchanged. Double $$ are reduced
+        to a single $, which allows for escaping the $(VAR_NAME)
+        syntax: i.e. "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         return typing.cast(
             typing.List[str],
@@ -3545,13 +3551,14 @@ class Container(_kuber_definitions.Definition):
         image's ENTRYPOINT is used if this is not provided. Variable
         references $(VAR_NAME) are expanded using the container's
         environment. If a variable cannot be resolved, the reference
-        in the input string will be unchanged. The $(VAR_NAME)
-        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
-        Escaped references will never be expanded, regardless of
-        whether the variable exists or not. Cannot be updated. More
-        info: https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        in the input string will be unchanged. Double $$ are reduced
+        to a single $, which allows for escaping the $(VAR_NAME)
+        syntax: i.e. "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         self._properties["command"] = value
 
@@ -3844,9 +3851,10 @@ class Container(_kuber_definitions.Definition):
     @property
     def security_context(self) -> "SecurityContext":
         """
-        Security options the pod should run with. More info:
-        https://kubernetes.io/docs/concepts/policy/security-context/
-        More info: https://kubernetes.io/docs/tasks/configure-pod-
+        SecurityContext defines the security options the container
+        should be run with. If set, the fields of SecurityContext
+        override the equivalent fields of PodSecurityContext. More
+        info: https://kubernetes.io/docs/tasks/configure-pod-
         container/security-context/
         """
         return typing.cast(
@@ -3857,9 +3865,10 @@ class Container(_kuber_definitions.Definition):
     @security_context.setter
     def security_context(self, value: typing.Union["SecurityContext", dict]):
         """
-        Security options the pod should run with. More info:
-        https://kubernetes.io/docs/concepts/policy/security-context/
-        More info: https://kubernetes.io/docs/tasks/configure-pod-
+        SecurityContext defines the security options the container
+        should be run with. If set, the fields of SecurityContext
+        override the equivalent fields of PodSecurityContext. More
+        info: https://kubernetes.io/docs/tasks/configure-pod-
         container/security-context/
         """
         if isinstance(value, dict):
@@ -4793,7 +4802,7 @@ class ContainerStatus(_kuber_definitions.Definition):
     def image(self) -> str:
         """
         The image the container is running. More info:
-        https://kubernetes.io/docs/concepts/containers/images
+        https://kubernetes.io/docs/concepts/containers/images.
         """
         return typing.cast(
             str,
@@ -4804,7 +4813,7 @@ class ContainerStatus(_kuber_definitions.Definition):
     def image(self, value: str):
         """
         The image the container is running. More info:
-        https://kubernetes.io/docs/concepts/containers/images
+        https://kubernetes.io/docs/concepts/containers/images.
         """
         self._properties["image"] = value
 
@@ -4888,11 +4897,7 @@ class ContainerStatus(_kuber_definitions.Definition):
     @property
     def restart_count(self) -> int:
         """
-        The number of times the container has been restarted,
-        currently based on the number of dead containers that have
-        not yet been removed. Note that this is calculated from dead
-        containers. But those containers are subject to garbage
-        collection. This value will get capped at 5 by GC.
+        The number of times the container has been restarted.
         """
         return typing.cast(
             int,
@@ -4902,11 +4907,7 @@ class ContainerStatus(_kuber_definitions.Definition):
     @restart_count.setter
     def restart_count(self, value: int):
         """
-        The number of times the container has been restarted,
-        currently based on the number of dead containers that have
-        not yet been removed. Note that this is calculated from dead
-        containers. But those containers are subject to garbage
-        collection. This value will get capped at 5 by GC.
+        The number of times the container has been restarted.
         """
         self._properties["restartCount"] = value
 
@@ -5535,9 +5536,7 @@ class EndpointPort(_kuber_definitions.Definition):
         reserved for IANA standard service names (as per RFC-6335
         and http://www.iana.org/assignments/service-names). Non-
         standard protocols should use prefixed names such as
-        mycompany.com/my-custom-protocol. This is a beta field that
-        is guarded by the ServiceAppProtocol feature gate and
-        enabled by default.
+        mycompany.com/my-custom-protocol.
         """
         return typing.cast(
             str,
@@ -5552,9 +5551,7 @@ class EndpointPort(_kuber_definitions.Definition):
         reserved for IANA standard service names (as per RFC-6335
         and http://www.iana.org/assignments/service-names). Non-
         standard protocols should use prefixed names such as
-        mycompany.com/my-custom-protocol. This is a beta field that
-        is guarded by the ServiceAppProtocol feature gate and
-        enabled by default.
+        mycompany.com/my-custom-protocol.
         """
         self._properties["appProtocol"] = value
 
@@ -6217,13 +6214,14 @@ class EnvVar(_kuber_definitions.Definition):
     def value(self) -> str:
         """
         Variable references $(VAR_NAME) are expanded using the
-        previous defined environment variables in the container and
-        any service environment variables. If a variable cannot be
-        resolved, the reference in the input string will be
-        unchanged. The $(VAR_NAME) syntax can be escaped with a
-        double $$, ie: $$(VAR_NAME). Escaped references will never
-        be expanded, regardless of whether the variable exists or
-        not. Defaults to "".
+        previously defined environment variables in the container
+        and any service environment variables. If a variable cannot
+        be resolved, the reference in the input string will be
+        unchanged. Double $$ are reduced to a single $, which allows
+        for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)"
+        will produce the string literal "$(VAR_NAME)". Escaped
+        references will never be expanded, regardless of whether the
+        variable exists or not. Defaults to "".
         """
         return typing.cast(
             str,
@@ -6234,13 +6232,14 @@ class EnvVar(_kuber_definitions.Definition):
     def value(self, value: str):
         """
         Variable references $(VAR_NAME) are expanded using the
-        previous defined environment variables in the container and
-        any service environment variables. If a variable cannot be
-        resolved, the reference in the input string will be
-        unchanged. The $(VAR_NAME) syntax can be escaped with a
-        double $$, ie: $$(VAR_NAME). Escaped references will never
-        be expanded, regardless of whether the variable exists or
-        not. Defaults to "".
+        previously defined environment variables in the container
+        and any service environment variables. If a variable cannot
+        be resolved, the reference in the input string will be
+        unchanged. Double $$ are reduced to a single $, which allows
+        for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)"
+        will produce the string literal "$(VAR_NAME)". Escaped
+        references will never be expanded, regardless of whether the
+        variable exists or not. Defaults to "".
         """
         self._properties["value"] = value
 
@@ -6533,13 +6532,14 @@ class EphemeralContainer(_kuber_definitions.Definition):
         if this is not provided. Variable references $(VAR_NAME) are
         expanded using the container's environment. If a variable
         cannot be resolved, the reference in the input string will
-        be unchanged. The $(VAR_NAME) syntax can be escaped with a
-        double $$, ie: $$(VAR_NAME). Escaped references will never
-        be expanded, regardless of whether the variable exists or
-        not. Cannot be updated. More info:
-        https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        be unchanged. Double $$ are reduced to a single $, which
+        allows for escaping the $(VAR_NAME) syntax: i.e.
+        "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         return typing.cast(
             typing.List[str],
@@ -6553,13 +6553,14 @@ class EphemeralContainer(_kuber_definitions.Definition):
         if this is not provided. Variable references $(VAR_NAME) are
         expanded using the container's environment. If a variable
         cannot be resolved, the reference in the input string will
-        be unchanged. The $(VAR_NAME) syntax can be escaped with a
-        double $$, ie: $$(VAR_NAME). Escaped references will never
-        be expanded, regardless of whether the variable exists or
-        not. Cannot be updated. More info:
-        https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        be unchanged. Double $$ are reduced to a single $, which
+        allows for escaping the $(VAR_NAME) syntax: i.e.
+        "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         self._properties["args"] = value
 
@@ -6570,13 +6571,14 @@ class EphemeralContainer(_kuber_definitions.Definition):
         image's ENTRYPOINT is used if this is not provided. Variable
         references $(VAR_NAME) are expanded using the container's
         environment. If a variable cannot be resolved, the reference
-        in the input string will be unchanged. The $(VAR_NAME)
-        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
-        Escaped references will never be expanded, regardless of
-        whether the variable exists or not. Cannot be updated. More
-        info: https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        in the input string will be unchanged. Double $$ are reduced
+        to a single $, which allows for escaping the $(VAR_NAME)
+        syntax: i.e. "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         return typing.cast(
             typing.List[str],
@@ -6590,13 +6592,14 @@ class EphemeralContainer(_kuber_definitions.Definition):
         image's ENTRYPOINT is used if this is not provided. Variable
         references $(VAR_NAME) are expanded using the container's
         environment. If a variable cannot be resolved, the reference
-        in the input string will be unchanged. The $(VAR_NAME)
-        syntax can be escaped with a double $$, ie: $$(VAR_NAME).
-        Escaped references will never be expanded, regardless of
-        whether the variable exists or not. Cannot be updated. More
-        info: https://kubernetes.io/docs/tasks/inject-data-
-        application/define-command-argument-container/#running-a-
-        command-in-a-shell
+        in the input string will be unchanged. Double $$ are reduced
+        to a single $, which allows for escaping the $(VAR_NAME)
+        syntax: i.e. "$$(VAR_NAME)" will produce the string literal
+        "$(VAR_NAME)". Escaped references will never be expanded,
+        regardless of whether the variable exists or not. Cannot be
+        updated. More info: https://kubernetes.io/docs/tasks/inject-
+        data-application/define-command-argument-container/#running-
+        a-command-in-a-shell
         """
         self._properties["command"] = value
 
@@ -6853,7 +6856,10 @@ class EphemeralContainer(_kuber_definitions.Definition):
     @property
     def security_context(self) -> "SecurityContext":
         """
-        SecurityContext is not allowed for ephemeral containers.
+        Optional: SecurityContext defines the security options the
+        ephemeral container should be run with. If set, the fields
+        of SecurityContext override the equivalent fields of
+        PodSecurityContext.
         """
         return typing.cast(
             "SecurityContext",
@@ -6863,7 +6869,10 @@ class EphemeralContainer(_kuber_definitions.Definition):
     @security_context.setter
     def security_context(self, value: typing.Union["SecurityContext", dict]):
         """
-        SecurityContext is not allowed for ephemeral containers.
+        Optional: SecurityContext defines the security options the
+        ephemeral container should be run with. If set, the fields
+        of SecurityContext override the equivalent fields of
+        PodSecurityContext.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -7140,209 +7149,6 @@ class EphemeralContainer(_kuber_definitions.Definition):
         self._properties["workingDir"] = value
 
     def __enter__(self) -> "EphemeralContainer":
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
-class EphemeralContainers(_kuber_definitions.Resource):
-    """
-    A list of ephemeral containers used with the Pod
-    ephemeralcontainers subresource.
-    """
-
-    def __init__(
-        self,
-        ephemeral_containers: typing.List["EphemeralContainer"] = None,
-        metadata: "ObjectMeta" = None,
-    ):
-        """Create EphemeralContainers instance."""
-        super(EphemeralContainers, self).__init__(
-            api_version="core/v1", kind="EphemeralContainers"
-        )
-        self._properties = {
-            "ephemeralContainers": ephemeral_containers
-            if ephemeral_containers is not None
-            else [],
-            "metadata": metadata if metadata is not None else ObjectMeta(),
-        }
-        self._types = {
-            "apiVersion": (str, None),
-            "ephemeralContainers": (list, EphemeralContainer),
-            "kind": (str, None),
-            "metadata": (ObjectMeta, None),
-        }
-
-    @property
-    def ephemeral_containers(self) -> typing.List["EphemeralContainer"]:
-        """
-        A list of ephemeral containers associated with this pod. New
-        ephemeral containers may be appended to this list, but
-        existing ephemeral containers may not be removed or
-        modified.
-        """
-        return typing.cast(
-            typing.List["EphemeralContainer"],
-            self._properties.get("ephemeralContainers"),
-        )
-
-    @ephemeral_containers.setter
-    def ephemeral_containers(
-        self, value: typing.Union[typing.List["EphemeralContainer"], typing.List[dict]]
-    ):
-        """
-        A list of ephemeral containers associated with this pod. New
-        ephemeral containers may be appended to this list, but
-        existing ephemeral containers may not be removed or
-        modified.
-        """
-        cleaned: typing.List[EphemeralContainer] = []
-        for item in value:
-            if isinstance(item, dict):
-                item = typing.cast(
-                    EphemeralContainer,
-                    EphemeralContainer().from_dict(item),
-                )
-            cleaned.append(typing.cast(EphemeralContainer, item))
-        self._properties["ephemeralContainers"] = cleaned
-
-    @property
-    def metadata(self) -> "ObjectMeta":
-        """ """
-        return typing.cast(
-            "ObjectMeta",
-            self._properties.get("metadata"),
-        )
-
-    @metadata.setter
-    def metadata(self, value: typing.Union["ObjectMeta", dict]):
-        """ """
-        if isinstance(value, dict):
-            value = typing.cast(
-                ObjectMeta,
-                ObjectMeta().from_dict(value),
-            )
-        self._properties["metadata"] = value
-
-    def create_resource(self, namespace: "str" = None):
-        """
-        Creates the EphemeralContainers in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            "create_namespaced_ephemeral_containers",
-            "create_ephemeral_containers",
-        ]
-
-        _kube_api.execute(
-            action="create",
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={"body": self.to_dict()},
-        )
-
-    def replace_resource(self, namespace: "str" = None):
-        """
-        Replaces the EphemeralContainers in the currently
-        configured Kubernetes cluster.
-        """
-        names = [
-            "replace_namespaced_ephemeral_containers",
-            "replace_ephemeral_containers",
-        ]
-
-        _kube_api.execute(
-            action="replace",
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={"body": self.to_dict(), "name": self.metadata.name},
-        )
-
-    def patch_resource(self, namespace: "str" = None):
-        """
-        Patches the EphemeralContainers in the currently
-        configured Kubernetes cluster.
-        """
-        names = ["patch_namespaced_ephemeral_containers", "patch_ephemeral_containers"]
-
-        _kube_api.execute(
-            action="patch",
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={"body": self.to_dict(), "name": self.metadata.name},
-        )
-
-    def get_resource_status(self, namespace: "str" = None):
-        """This resource does not have a status."""
-        pass
-
-    def read_resource(self, namespace: str = None):
-        """
-        Reads the EphemeralContainers from the currently configured
-        Kubernetes cluster and returns the low-level definition object.
-        """
-        names = [
-            "read_namespaced_ephemeral_containers",
-            "read_ephemeral_containers",
-        ]
-        return _kube_api.execute(
-            action="read",
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={"name": self.metadata.name},
-        )
-
-    def delete_resource(
-        self,
-        namespace: str = None,
-        propagation_policy: str = "Foreground",
-        grace_period_seconds: int = 10,
-    ):
-        """
-        Deletes the EphemeralContainers from the currently configured
-        Kubernetes cluster.
-        """
-        names = [
-            "delete_namespaced_ephemeral_containers",
-            "delete_ephemeral_containers",
-        ]
-
-        body = client.V1DeleteOptions(
-            propagation_policy=propagation_policy,
-            grace_period_seconds=grace_period_seconds,
-        )
-
-        _kube_api.execute(
-            action="delete",
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={"name": self.metadata.name, "body": body},
-        )
-
-    @staticmethod
-    def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
-    ) -> "client.CoreV1Api":
-        """
-        Returns an instance of the kubernetes API client associated with
-        this object.
-        """
-        if api_client:
-            kwargs["apl_client"] = api_client
-        return client.CoreV1Api(**kwargs)
-
-    def __enter__(self) -> "EphemeralContainers":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -11167,7 +10973,7 @@ class LocalVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. It applies only when the Path is a
         block device. Must be a filesystem type supported by the
         host operating system. Ex. "ext4", "xfs", "ntfs". The
-        default value is to auto-select a fileystem if unspecified.
+        default value is to auto-select a filesystem if unspecified.
         """
         return typing.cast(
             str,
@@ -11180,7 +10986,7 @@ class LocalVolumeSource(_kuber_definitions.Definition):
         Filesystem type to mount. It applies only when the Path is a
         block device. Must be a filesystem type supported by the
         host operating system. Ex. "ext4", "xfs", "ntfs". The
-        default value is to auto-select a fileystem if unspecified.
+        default value is to auto-select a filesystem if unspecified.
         """
         self._properties["fsType"] = value
 
@@ -12524,6 +12330,7 @@ class NodeConfigSource(_kuber_definitions.Definition):
     """
     NodeConfigSource specifies a source of node configuration.
     Exactly one subfield (excluding metadata) must be non-nil.
+    This API is deprecated since 1.22
     """
 
     def __init__(
@@ -13217,9 +13024,12 @@ class NodeSpec(_kuber_definitions.Definition):
     @property
     def config_source(self) -> "NodeConfigSource":
         """
-        If specified, the source to get node configuration from The
-        DynamicKubeletConfig feature gate must be enabled for the
-        Kubelet to use this field
+        Deprecated. If specified, the source of the node's
+        configuration. The DynamicKubeletConfig feature gate must be
+        enabled for the Kubelet to use this field. This field is
+        deprecated as of 1.22:
+        https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-
+        kubelet-configuration
         """
         return typing.cast(
             "NodeConfigSource",
@@ -13229,9 +13039,12 @@ class NodeSpec(_kuber_definitions.Definition):
     @config_source.setter
     def config_source(self, value: typing.Union["NodeConfigSource", dict]):
         """
-        If specified, the source to get node configuration from The
-        DynamicKubeletConfig feature gate must be enabled for the
-        Kubelet to use this field
+        Deprecated. If specified, the source of the node's
+        configuration. The DynamicKubeletConfig feature gate must be
+        enabled for the Kubelet to use this field. This field is
+        deprecated as of 1.22:
+        https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-
+        kubelet-configuration
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -15058,6 +14871,7 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         self,
         access_modes: typing.List[str] = None,
         data_source: "TypedLocalObjectReference" = None,
+        data_source_ref: "TypedLocalObjectReference" = None,
         resources: "ResourceRequirements" = None,
         selector: "LabelSelector" = None,
         storage_class_name: str = None,
@@ -15073,6 +14887,9 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
             "dataSource": data_source
             if data_source is not None
             else TypedLocalObjectReference(),
+            "dataSourceRef": data_source_ref
+            if data_source_ref is not None
+            else TypedLocalObjectReference(),
             "resources": resources if resources is not None else ResourceRequirements(),
             "selector": selector if selector is not None else LabelSelector(),
             "storageClassName": storage_class_name
@@ -15084,6 +14901,7 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         self._types = {
             "accessModes": (list, str),
             "dataSource": (TypedLocalObjectReference, None),
+            "dataSourceRef": (TypedLocalObjectReference, None),
             "resources": (ResourceRequirements, None),
             "selector": (LabelSelector, None),
             "storageClassName": (str, None),
@@ -15120,13 +14938,12 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         This field can be used to specify either: * An existing
         VolumeSnapshot object
         (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC
-        (PersistentVolumeClaim) * An existing custom resource that
-        implements data population (Alpha) In order to use custom
-        resource types that implement data population, the
-        AnyVolumeDataSource feature gate must be enabled. If the
-        provisioner or an external controller can support the
-        specified data source, it will create a new volume based on
-        the contents of the specified data source.
+        (PersistentVolumeClaim) If the provisioner or an external
+        controller can support the specified data source, it will
+        create a new volume based on the contents of the specified
+        data source. If the AnyVolumeDataSource feature gate is
+        enabled, this field will always have the same contents as
+        the DataSourceRef field.
         """
         return typing.cast(
             "TypedLocalObjectReference",
@@ -15139,13 +14956,12 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         This field can be used to specify either: * An existing
         VolumeSnapshot object
         (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC
-        (PersistentVolumeClaim) * An existing custom resource that
-        implements data population (Alpha) In order to use custom
-        resource types that implement data population, the
-        AnyVolumeDataSource feature gate must be enabled. If the
-        provisioner or an external controller can support the
-        specified data source, it will create a new volume based on
-        the contents of the specified data source.
+        (PersistentVolumeClaim) If the provisioner or an external
+        controller can support the specified data source, it will
+        create a new volume based on the contents of the specified
+        data source. If the AnyVolumeDataSource feature gate is
+        enabled, this field will always have the same contents as
+        the DataSourceRef field.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -15153,6 +14969,74 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
                 TypedLocalObjectReference().from_dict(value),
             )
         self._properties["dataSource"] = value
+
+    @property
+    def data_source_ref(self) -> "TypedLocalObjectReference":
+        """
+        Specifies the object from which to populate the volume with
+        data, if a non-empty volume is desired. This may be any
+        local object from a non-empty API group (non core object) or
+        a PersistentVolumeClaim object. When this field is
+        specified, volume binding will only succeed if the type of
+        the specified object matches some installed volume populator
+        or dynamic provisioner. This field will replace the
+        functionality of the DataSource field and as such if both
+        fields are non-empty, they must have the same value. For
+        backwards compatibility, both fields (DataSource and
+        DataSourceRef) will be set to the same value automatically
+        if one of them is empty and the other is non-empty. There
+        are two important differences between DataSource and
+        DataSourceRef: * While DataSource only allows two specific
+        types of objects, DataSourceRef
+          allows any non-core object, as well as
+        PersistentVolumeClaim objects.
+        * While DataSource ignores disallowed values (dropping
+        them), DataSourceRef
+          preserves all values, and generates an error if a
+        disallowed value is
+          specified.
+        (Alpha) Using this field requires the AnyVolumeDataSource
+        feature gate to be enabled.
+        """
+        return typing.cast(
+            "TypedLocalObjectReference",
+            self._properties.get("dataSourceRef"),
+        )
+
+    @data_source_ref.setter
+    def data_source_ref(self, value: typing.Union["TypedLocalObjectReference", dict]):
+        """
+        Specifies the object from which to populate the volume with
+        data, if a non-empty volume is desired. This may be any
+        local object from a non-empty API group (non core object) or
+        a PersistentVolumeClaim object. When this field is
+        specified, volume binding will only succeed if the type of
+        the specified object matches some installed volume populator
+        or dynamic provisioner. This field will replace the
+        functionality of the DataSource field and as such if both
+        fields are non-empty, they must have the same value. For
+        backwards compatibility, both fields (DataSource and
+        DataSourceRef) will be set to the same value automatically
+        if one of them is empty and the other is non-empty. There
+        are two important differences between DataSource and
+        DataSourceRef: * While DataSource only allows two specific
+        types of objects, DataSourceRef
+          allows any non-core object, as well as
+        PersistentVolumeClaim objects.
+        * While DataSource ignores disallowed values (dropping
+        them), DataSourceRef
+          preserves all values, and generates an error if a
+        disallowed value is
+          specified.
+        (Alpha) Using this field requires the AnyVolumeDataSource
+        feature gate to be enabled.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                TypedLocalObjectReference,
+                TypedLocalObjectReference().from_dict(value),
+            )
+        self._properties["dataSourceRef"] = value
 
     @property
     def resources(self) -> "ResourceRequirements":
@@ -17349,8 +17233,8 @@ class PodAffinityTerm(_kuber_definitions.Definition):
         namespaces selected by this field and the ones listed in the
         namespaces field. null selector and null or empty namespaces
         list means "this pod's namespace". An empty selector ({})
-        matches all namespaces. This field is alpha-level and is
-        only honored when PodAffinityNamespaceSelector feature is
+        matches all namespaces. This field is beta-level and is only
+        honored when PodAffinityNamespaceSelector feature is
         enabled.
         """
         return typing.cast(
@@ -17366,8 +17250,8 @@ class PodAffinityTerm(_kuber_definitions.Definition):
         namespaces selected by this field and the ones listed in the
         namespaces field. null selector and null or empty namespaces
         list means "this pod's namespace". An empty selector ({})
-        matches all namespaces. This field is alpha-level and is
-        only honored when PodAffinityNamespaceSelector feature is
+        matches all namespaces. This field is beta-level and is only
+        honored when PodAffinityNamespaceSelector feature is
         enabled.
         """
         if isinstance(value, dict):
@@ -19078,9 +18962,9 @@ class PodSpec(_kuber_definitions.Definition):
         PodSpec, Overhead will be set to the value defined in the
         corresponding RuntimeClass, otherwise it will remain unset
         and treated as zero. More info:
-        https://git.k8s.io/enhancements/keps/sig-node/20190226-pod-
-        overhead.md This field is alpha-level as of Kubernetes
-        v1.16, and is only honored by servers that enable the
+        https://git.k8s.io/enhancements/keps/sig-node/688-pod-
+        overhead/README.md This field is beta-level as of Kubernetes
+        v1.18, and is only honored by servers that enable the
         PodOverhead feature.
         """
         return typing.cast(
@@ -19102,9 +18986,9 @@ class PodSpec(_kuber_definitions.Definition):
         PodSpec, Overhead will be set to the value defined in the
         corresponding RuntimeClass, otherwise it will remain unset
         and treated as zero. More info:
-        https://git.k8s.io/enhancements/keps/sig-node/20190226-pod-
-        overhead.md This field is alpha-level as of Kubernetes
-        v1.16, and is only honored by servers that enable the
+        https://git.k8s.io/enhancements/keps/sig-node/688-pod-
+        overhead/README.md This field is beta-level as of Kubernetes
+        v1.18, and is only honored by servers that enable the
         PodOverhead feature.
         """
         self._properties["overhead"] = value
@@ -19195,8 +19079,8 @@ class PodSpec(_kuber_definitions.Definition):
         readiness. A pod is ready when all its containers are ready
         AND all conditions specified in the readiness gates have
         status equal to "True" More info:
-        https://git.k8s.io/enhancements/keps/sig-network/0007-pod-
-        ready%2B%2B.md
+        https://git.k8s.io/enhancements/keps/sig-network/580-pod-
+        readiness-gates
         """
         return typing.cast(
             typing.List["PodReadinessGate"],
@@ -19212,8 +19096,8 @@ class PodSpec(_kuber_definitions.Definition):
         readiness. A pod is ready when all its containers are ready
         AND all conditions specified in the readiness gates have
         status equal to "True" More info:
-        https://git.k8s.io/enhancements/keps/sig-network/0007-pod-
-        ready%2B%2B.md
+        https://git.k8s.io/enhancements/keps/sig-network/580-pod-
+        readiness-gates
         """
         cleaned: typing.List[PodReadinessGate] = []
         for item in value:
@@ -19258,7 +19142,7 @@ class PodSpec(_kuber_definitions.Definition):
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
         More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is a beta feature as of
+        node/585-runtime-class This is a beta feature as of
         Kubernetes v1.14.
         """
         return typing.cast(
@@ -19276,7 +19160,7 @@ class PodSpec(_kuber_definitions.Definition):
         RuntimeClass will be used, which is an implicit class with
         an empty definition that uses the default runtime handler.
         More info: https://git.k8s.io/enhancements/keps/sig-
-        node/runtime-class.md This is a beta feature as of
+        node/585-runtime-class This is a beta feature as of
         Kubernetes v1.14.
         """
         self._properties["runtimeClassName"] = value
@@ -21339,8 +21223,9 @@ class Probe(_kuber_definitions.Definition):
         value overrides the value provided by the pod spec. Value
         must be non-negative integer. The value zero indicates stop
         immediately via the kill signal (no opportunity to shut
-        down). This is an alpha field and requires enabling
-        ProbeTerminationGracePeriod feature gate.
+        down). This is a beta field and requires enabling
+        ProbeTerminationGracePeriod feature gate. Minimum value is
+        1. spec.terminationGracePeriodSeconds is used if unset.
         """
         return typing.cast(
             int,
@@ -21361,8 +21246,9 @@ class Probe(_kuber_definitions.Definition):
         value overrides the value provided by the pod spec. Value
         must be non-negative integer. The value zero indicates stop
         immediately via the kill signal (no opportunity to shut
-        down). This is an alpha field and requires enabling
-        ProbeTerminationGracePeriod feature gate.
+        down). This is a beta field and requires enabling
+        ProbeTerminationGracePeriod feature gate. Minimum value is
+        1. spec.terminationGracePeriodSeconds is used if unset.
         """
         self._properties["terminationGracePeriodSeconds"] = value
 
@@ -26885,9 +26771,7 @@ class ServicePort(_kuber_definitions.Definition):
         reserved for IANA standard service names (as per RFC-6335
         and http://www.iana.org/assignments/service-names). Non-
         standard protocols should use prefixed names such as
-        mycompany.com/my-custom-protocol. This is a beta field that
-        is guarded by the ServiceAppProtocol feature gate and
-        enabled by default.
+        mycompany.com/my-custom-protocol.
         """
         return typing.cast(
             str,
@@ -26902,9 +26786,7 @@ class ServicePort(_kuber_definitions.Definition):
         reserved for IANA standard service names (as per RFC-6335
         and http://www.iana.org/assignments/service-names). Non-
         standard protocols should use prefixed names such as
-        mycompany.com/my-custom-protocol. This is a beta field that
-        is guarded by the ServiceAppProtocol feature gate and
-        enabled by default.
+        mycompany.com/my-custom-protocol.
         """
         self._properties["appProtocol"] = value
 
@@ -27074,7 +26956,6 @@ class ServiceSpec(_kuber_definitions.Definition):
         selector: dict = None,
         session_affinity: str = None,
         session_affinity_config: "SessionAffinityConfig" = None,
-        topology_keys: typing.List[str] = None,
         type_: str = None,
     ):
         """Create ServiceSpec instance."""
@@ -27114,7 +26995,6 @@ class ServiceSpec(_kuber_definitions.Definition):
             "sessionAffinityConfig": session_affinity_config
             if session_affinity_config is not None
             else SessionAffinityConfig(),
-            "topologyKeys": topology_keys if topology_keys is not None else [],
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -27136,7 +27016,6 @@ class ServiceSpec(_kuber_definitions.Definition):
             "selector": (dict, None),
             "sessionAffinity": (str, None),
             "sessionAffinityConfig": (SessionAffinityConfig, None),
-            "topologyKeys": (list, str),
             "type": (str, None),
         }
 
@@ -27146,12 +27025,13 @@ class ServiceSpec(_kuber_definitions.Definition):
         allocateLoadBalancerNodePorts defines if NodePorts will be
         automatically allocated for services with type LoadBalancer.
         Default is "true". It may be set to "false" if the cluster
-        load-balancer does not rely on NodePorts.
-        allocateLoadBalancerNodePorts may only be set for services
-        with type LoadBalancer and will be cleared if the type is
-        changed to any other type. This field is alpha-level and is
-        only honored by servers that enable the
-        ServiceLBNodePortControl feature.
+        load-balancer does not rely on NodePorts.  If the caller
+        requests specific NodePorts (by specifying a value), those
+        requests will be respected, regardless of this field. This
+        field may only be set for services with type LoadBalancer
+        and will be cleared if the type is changed to any other
+        type. This field is beta-level and is only honored by
+        servers that enable the ServiceLBNodePortControl feature.
         """
         return typing.cast(
             bool,
@@ -27164,12 +27044,13 @@ class ServiceSpec(_kuber_definitions.Definition):
         allocateLoadBalancerNodePorts defines if NodePorts will be
         automatically allocated for services with type LoadBalancer.
         Default is "true". It may be set to "false" if the cluster
-        load-balancer does not rely on NodePorts.
-        allocateLoadBalancerNodePorts may only be set for services
-        with type LoadBalancer and will be cleared if the type is
-        changed to any other type. This field is alpha-level and is
-        only honored by servers that enable the
-        ServiceLBNodePortControl feature.
+        load-balancer does not rely on NodePorts.  If the caller
+        requests specific NodePorts (by specifying a value), those
+        requests will be respected, regardless of this field. This
+        field may only be set for services with type LoadBalancer
+        and will be cleared if the type is changed to any other
+        type. This field is beta-level and is only honored by
+        servers that enable the ServiceLBNodePortControl feature.
         """
         self._properties["allocateLoadBalancerNodePorts"] = value
 
@@ -27251,14 +27132,11 @@ class ServiceSpec(_kuber_definitions.Definition):
         field.  If this field is specified, clients must ensure that
         clusterIPs[0] and clusterIP have the same value.
 
-        Unless the "IPv6DualStack" feature gate is enabled, this
-        field is limited to one value, which must be the same as the
-        clusterIP field.  If the feature gate is enabled, this field
-        may hold a maximum of two entries (dual-stack IPs, in either
-        order).  These IPs must correspond to the values of the
-        ipFamilies field. Both clusterIPs and ipFamilies are
-        governed by the ipFamilyPolicy field. More info:
-        https://kubernetes.io/docs/concepts/services-
+        This field may hold a maximum of two entries (dual-stack
+        IPs, in either order). These IPs must correspond to the
+        values of the ipFamilies field. Both clusterIPs and
+        ipFamilies are governed by the ipFamilyPolicy field. More
+        info: https://kubernetes.io/docs/concepts/services-
         networking/service/#virtual-ips-and-service-proxies
         """
         return typing.cast(
@@ -27291,14 +27169,11 @@ class ServiceSpec(_kuber_definitions.Definition):
         field.  If this field is specified, clients must ensure that
         clusterIPs[0] and clusterIP have the same value.
 
-        Unless the "IPv6DualStack" feature gate is enabled, this
-        field is limited to one value, which must be the same as the
-        clusterIP field.  If the feature gate is enabled, this field
-        may hold a maximum of two entries (dual-stack IPs, in either
-        order).  These IPs must correspond to the values of the
-        ipFamilies field. Both clusterIPs and ipFamilies are
-        governed by the ipFamilyPolicy field. More info:
-        https://kubernetes.io/docs/concepts/services-
+        This field may hold a maximum of two entries (dual-stack
+        IPs, in either order). These IPs must correspond to the
+        values of the ipFamilies field. Both clusterIPs and
+        ipFamilies are governed by the ipFamilyPolicy field. More
+        info: https://kubernetes.io/docs/concepts/services-
         networking/service/#virtual-ips-and-service-proxies
         """
         self._properties["clusterIPs"] = value
@@ -27456,19 +27331,18 @@ class ServiceSpec(_kuber_definitions.Definition):
     def ip_families(self) -> typing.List[str]:
         """
         IPFamilies is a list of IP families (e.g. IPv4, IPv6)
-        assigned to this service, and is gated by the
-        "IPv6DualStack" feature gate.  This field is usually
-        assigned automatically based on cluster configuration and
-        the ipFamilyPolicy field. If this field is specified
-        manually, the requested family is available in the cluster,
-        and ipFamilyPolicy allows it, it will be used; otherwise
-        creation of the service will fail.  This field is
+        assigned to this service. This field is usually assigned
+        automatically based on cluster configuration and the
+        ipFamilyPolicy field. If this field is specified manually,
+        the requested family is available in the cluster, and
+        ipFamilyPolicy allows it, it will be used; otherwise
+        creation of the service will fail. This field is
         conditionally mutable: it allows for adding or removing a
         secondary IP family, but it does not allow changing the
-        primary IP family of the Service.  Valid values are "IPv4"
+        primary IP family of the Service. Valid values are "IPv4"
         and "IPv6".  This field only applies to Services of types
         ClusterIP, NodePort, and LoadBalancer, and does apply to
-        "headless" services.  This field will be wiped when updating
+        "headless" services. This field will be wiped when updating
         a Service to type ExternalName.
 
         This field may hold a maximum of two entries (dual-stack
@@ -27486,19 +27360,18 @@ class ServiceSpec(_kuber_definitions.Definition):
     def ip_families(self, value: typing.List[str]):
         """
         IPFamilies is a list of IP families (e.g. IPv4, IPv6)
-        assigned to this service, and is gated by the
-        "IPv6DualStack" feature gate.  This field is usually
-        assigned automatically based on cluster configuration and
-        the ipFamilyPolicy field. If this field is specified
-        manually, the requested family is available in the cluster,
-        and ipFamilyPolicy allows it, it will be used; otherwise
-        creation of the service will fail.  This field is
+        assigned to this service. This field is usually assigned
+        automatically based on cluster configuration and the
+        ipFamilyPolicy field. If this field is specified manually,
+        the requested family is available in the cluster, and
+        ipFamilyPolicy allows it, it will be used; otherwise
+        creation of the service will fail. This field is
         conditionally mutable: it allows for adding or removing a
         secondary IP family, but it does not allow changing the
-        primary IP family of the Service.  Valid values are "IPv4"
+        primary IP family of the Service. Valid values are "IPv4"
         and "IPv6".  This field only applies to Services of types
         ClusterIP, NodePort, and LoadBalancer, and does apply to
-        "headless" services.  This field will be wiped when updating
+        "headless" services. This field will be wiped when updating
         a Service to type ExternalName.
 
         This field may hold a maximum of two entries (dual-stack
@@ -27513,16 +27386,15 @@ class ServiceSpec(_kuber_definitions.Definition):
     def ip_family_policy(self) -> str:
         """
         IPFamilyPolicy represents the dual-stack-ness requested or
-        required by this Service, and is gated by the
-        "IPv6DualStack" feature gate.  If there is no value
-        provided, then this field will be set to SingleStack.
-        Services can be "SingleStack" (a single IP family),
-        "PreferDualStack" (two IP families on dual-stack configured
-        clusters or a single IP family on single-stack clusters), or
-        "RequireDualStack" (two IP families on dual-stack configured
-        clusters, otherwise fail). The ipFamilies and clusterIPs
-        fields depend on the value of this field.  This field will
-        be wiped when updating a service to type ExternalName.
+        required by this Service. If there is no value provided,
+        then this field will be set to SingleStack. Services can be
+        "SingleStack" (a single IP family), "PreferDualStack" (two
+        IP families on dual-stack configured clusters or a single IP
+        family on single-stack clusters), or "RequireDualStack" (two
+        IP families on dual-stack configured clusters, otherwise
+        fail). The ipFamilies and clusterIPs fields depend on the
+        value of this field. This field will be wiped when updating
+        a service to type ExternalName.
         """
         return typing.cast(
             str,
@@ -27533,16 +27405,15 @@ class ServiceSpec(_kuber_definitions.Definition):
     def ip_family_policy(self, value: str):
         """
         IPFamilyPolicy represents the dual-stack-ness requested or
-        required by this Service, and is gated by the
-        "IPv6DualStack" feature gate.  If there is no value
-        provided, then this field will be set to SingleStack.
-        Services can be "SingleStack" (a single IP family),
-        "PreferDualStack" (two IP families on dual-stack configured
-        clusters or a single IP family on single-stack clusters), or
-        "RequireDualStack" (two IP families on dual-stack configured
-        clusters, otherwise fail). The ipFamilies and clusterIPs
-        fields depend on the value of this field.  This field will
-        be wiped when updating a service to type ExternalName.
+        required by this Service. If there is no value provided,
+        then this field will be set to SingleStack. Services can be
+        "SingleStack" (a single IP family), "PreferDualStack" (two
+        IP families on dual-stack configured clusters or a single IP
+        family on single-stack clusters), or "RequireDualStack" (two
+        IP families on dual-stack configured clusters, otherwise
+        fail). The ipFamilies and clusterIPs fields depend on the
+        value of this field. This field will be wiped when updating
+        a service to type ExternalName.
         """
         self._properties["ipFamilyPolicy"] = value
 
@@ -27631,7 +27502,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         will be ignored if the cloud-provider does not support the
         feature." More info:
         https://kubernetes.io/docs/tasks/access-application-
-        cluster/configure-cloud-provider-firewall/
+        cluster/create-external-load-balancer/
         """
         return typing.cast(
             typing.List[str],
@@ -27647,7 +27518,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         will be ignored if the cloud-provider does not support the
         feature." More info:
         https://kubernetes.io/docs/tasks/access-application-
-        cluster/configure-cloud-provider-firewall/
+        cluster/create-external-load-balancer/
         """
         self._properties["loadBalancerSourceRanges"] = value
 
@@ -27798,55 +27669,6 @@ class ServiceSpec(_kuber_definitions.Definition):
                 SessionAffinityConfig().from_dict(value),
             )
         self._properties["sessionAffinityConfig"] = value
-
-    @property
-    def topology_keys(self) -> typing.List[str]:
-        """
-        topologyKeys is a preference-order list of topology keys
-        which implementations of services should use to
-        preferentially sort endpoints when accessing this Service,
-        it can not be used at the same time as
-        externalTrafficPolicy=Local. Topology keys must be valid
-        label keys and at most 16 keys may be specified. Endpoints
-        are chosen based on the first topology key with available
-        backends. If this field is specified and all entries have no
-        backends that match the topology of the client, the service
-        has no backends for that client and connections should fail.
-        The special value "*" may be used to mean "any topology".
-        This catch-all value, if used, only makes sense as the last
-        value in the list. If this is not specified or empty, no
-        topology constraints will be applied. This field is alpha-
-        level and is only honored by servers that enable the
-        ServiceTopology feature. This field is deprecated and will
-        be removed in a future version.
-        """
-        return typing.cast(
-            typing.List[str],
-            self._properties.get("topologyKeys"),
-        )
-
-    @topology_keys.setter
-    def topology_keys(self, value: typing.List[str]):
-        """
-        topologyKeys is a preference-order list of topology keys
-        which implementations of services should use to
-        preferentially sort endpoints when accessing this Service,
-        it can not be used at the same time as
-        externalTrafficPolicy=Local. Topology keys must be valid
-        label keys and at most 16 keys may be specified. Endpoints
-        are chosen based on the first topology key with available
-        backends. If this field is specified and all entries have no
-        backends that match the topology of the client, the service
-        has no backends for that client and connections should fail.
-        The special value "*" may be used to mean "any topology".
-        This catch-all value, if used, only makes sense as the last
-        value in the list. If this is not specified or empty, no
-        topology constraints will be applied. This field is alpha-
-        level and is only honored by servers that enable the
-        ServiceTopology feature. This field is deprecated and will
-        be removed in a future version.
-        """
-        self._properties["topologyKeys"] = value
 
     @property
     def type_(self) -> str:
@@ -29024,7 +28846,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         reduce the
           skew.
         A constraint is considered "Unsatisfiable" for an incoming
-        pod if and only if every possible node assigment for that
+        pod if and only if every possible node assignment for that
         pod would violate "MaxSkew" on some topology. For example,
         in a 3-zone cluster, MaxSkew is set to 1, and pods with the
         same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3
@@ -29052,7 +28874,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         reduce the
           skew.
         A constraint is considered "Unsatisfiable" for an incoming
-        pod if and only if every possible node assigment for that
+        pod if and only if every possible node assignment for that
         pod would violate "MaxSkew" on some topology. For example,
         in a 3-zone cluster, MaxSkew is set to 1, and pods with the
         same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3
@@ -30753,6 +30575,7 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         self,
         gmsa_credential_spec: str = None,
         gmsa_credential_spec_name: str = None,
+        host_process: bool = None,
         run_as_user_name: str = None,
     ):
         """Create WindowsSecurityContextOptions instance."""
@@ -30766,11 +30589,13 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
             "gmsaCredentialSpecName": gmsa_credential_spec_name
             if gmsa_credential_spec_name is not None
             else "",
+            "hostProcess": host_process if host_process is not None else None,
             "runAsUserName": run_as_user_name if run_as_user_name is not None else "",
         }
         self._types = {
             "gmsaCredentialSpec": (str, None),
             "gmsaCredentialSpecName": (str, None),
+            "hostProcess": (bool, None),
             "runAsUserName": (str, None),
         }
 
@@ -30815,6 +30640,41 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
         spec to use.
         """
         self._properties["gmsaCredentialSpecName"] = value
+
+    @property
+    def host_process(self) -> bool:
+        """
+        HostProcess determines if a container should be run as a
+        'Host Process' container. This field is alpha-level and will
+        only be honored by components that enable the
+        WindowsHostProcessContainers feature flag. Setting this
+        field without the feature flag will result in errors when
+        validating the Pod. All of a Pod's containers must have the
+        same effective HostProcess value (it is not allowed to have
+        a mix of HostProcess containers and non-HostProcess
+        containers).  In addition, if HostProcess is true then
+        HostNetwork must also be set to true.
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("hostProcess"),
+        )
+
+    @host_process.setter
+    def host_process(self, value: bool):
+        """
+        HostProcess determines if a container should be run as a
+        'Host Process' container. This field is alpha-level and will
+        only be honored by components that enable the
+        WindowsHostProcessContainers feature flag. Setting this
+        field without the feature flag will result in errors when
+        validating the Pod. All of a Pod's containers must have the
+        same effective HostProcess value (it is not allowed to have
+        a mix of HostProcess containers and non-HostProcess
+        containers).  In addition, if HostProcess is true then
+        HostNetwork must also be set to true.
+        """
+        self._properties["hostProcess"] = value
 
     @property
     def run_as_user_name(self) -> str:

@@ -1809,6 +1809,7 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         fields_v1: "FieldsV1" = None,
         manager: str = None,
         operation: str = None,
+        subresource: str = None,
         time: str = None,
     ):
         """Create ManagedFieldsEntry instance."""
@@ -1821,6 +1822,7 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
             "fieldsV1": fields_v1 if fields_v1 is not None else FieldsV1(),
             "manager": manager if manager is not None else "",
             "operation": operation if operation is not None else "",
+            "subresource": subresource if subresource is not None else "",
             "time": time if time is not None else None,
         }
         self._types = {
@@ -1829,6 +1831,7 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
             "fieldsV1": (FieldsV1, None),
             "manager": (str, None),
             "operation": (str, None),
+            "subresource": (str, None),
             "time": (str, None),
         }
 
@@ -1941,6 +1944,37 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
         this field are 'Apply' and 'Update'.
         """
         self._properties["operation"] = value
+
+    @property
+    def subresource(self) -> str:
+        """
+        Subresource is the name of the subresource used to update
+        that object, or empty string if the object was updated
+        through the main resource. The value of this field is used
+        to distinguish between managers, even if they share the same
+        name. For example, a status update will be distinct from a
+        regular update using the same manager name. Note that the
+        APIVersion field is not related to the Subresource field and
+        it always corresponds to the version of the main resource.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("subresource"),
+        )
+
+    @subresource.setter
+    def subresource(self, value: str):
+        """
+        Subresource is the name of the subresource used to update
+        that object, or empty string if the object was updated
+        through the main resource. The value of this field is used
+        to distinguish between managers, even if they share the same
+        name. For example, a status update will be distinct from a
+        regular update using the same manager name. Note that the
+        APIVersion field is not related to the Subresource field and
+        it always corresponds to the version of the main resource.
+        """
+        self._properties["subresource"] = value
 
     @property
     def time(self) -> str:

@@ -824,8 +824,8 @@ class PolicyRule(_kuber_definitions.Definition):
     @property
     def resources(self) -> typing.List[str]:
         """
-        Resources is a list of resources this rule applies to.
-        ResourceAll represents all resources.
+        Resources is a list of resources this rule applies to. '*'
+        represents all resources.
         """
         return typing.cast(
             typing.List[str],
@@ -835,8 +835,8 @@ class PolicyRule(_kuber_definitions.Definition):
     @resources.setter
     def resources(self, value: typing.List[str]):
         """
-        Resources is a list of resources this rule applies to.
-        ResourceAll represents all resources.
+        Resources is a list of resources this rule applies to. '*'
+        represents all resources.
         """
         self._properties["resources"] = value
 
@@ -844,8 +844,8 @@ class PolicyRule(_kuber_definitions.Definition):
     def verbs(self) -> typing.List[str]:
         """
         Verbs is a list of Verbs that apply to ALL the ResourceKinds
-        and AttributeRestrictions contained in this rule.  VerbAll
-        represents all kinds.
+        and AttributeRestrictions contained in this rule. '*'
+        represents all verbs.
         """
         return typing.cast(
             typing.List[str],
@@ -856,8 +856,8 @@ class PolicyRule(_kuber_definitions.Definition):
     def verbs(self, value: typing.List[str]):
         """
         Verbs is a list of Verbs that apply to ALL the ResourceKinds
-        and AttributeRestrictions contained in this rule.  VerbAll
-        represents all kinds.
+        and AttributeRestrictions contained in this rule. '*'
+        represents all verbs.
         """
         self._properties["verbs"] = value
 

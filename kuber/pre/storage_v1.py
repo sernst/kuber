@@ -410,10 +410,16 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         Defines if the underlying volume supports changing ownership
         and permission of the volume before being mounted. Refer to
         the specific FSGroupPolicy values for additional details.
-        This field is alpha-level, and is only honored by servers
-        that enable the CSIVolumeFSGroupPolicy feature gate.
+        This field is beta, and is only honored by servers that
+        enable the CSIVolumeFSGroupPolicy feature gate.
 
         This field is immutable.
+
+        Defaults to ReadWriteOnceWithFSType, which will examine each
+        volume to determine if Kubernetes should modify ownership
+        and permissions of the volume. With the default policy the
+        defined fsGroup will only be applied if a fstype is defined
+        and the volume's access mode contains ReadWriteOnce.
         """
         return typing.cast(
             str,
@@ -426,10 +432,16 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         Defines if the underlying volume supports changing ownership
         and permission of the volume before being mounted. Refer to
         the specific FSGroupPolicy values for additional details.
-        This field is alpha-level, and is only honored by servers
-        that enable the CSIVolumeFSGroupPolicy feature gate.
+        This field is beta, and is only honored by servers that
+        enable the CSIVolumeFSGroupPolicy feature gate.
 
         This field is immutable.
+
+        Defaults to ReadWriteOnceWithFSType, which will examine each
+        volume to determine if Kubernetes should modify ownership
+        and permissions of the volume. With the default policy the
+        defined fsGroup will only be applied if a fstype is defined
+        and the volume's access mode contains ReadWriteOnce.
         """
         self._properties["fsGroupPolicy"] = value
 
@@ -520,9 +532,6 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         subsequent calls to NodePublishVolume should only update the
         contents of the volume. New mount points will not be seen by
         a running container.
-
-        This is a beta feature and only available when the
-        CSIServiceAccountToken feature is enabled.
         """
         return typing.cast(
             bool,
@@ -541,9 +550,6 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         subsequent calls to NodePublishVolume should only update the
         contents of the volume. New mount points will not be seen by
         a running container.
-
-        This is a beta feature and only available when the
-        CSIServiceAccountToken feature is enabled.
         """
         self._properties["requiresRepublish"] = value
 
@@ -564,7 +570,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         unset or false and it can be flipped later when storage
         capacity information has been published.
 
-        This field is immutable.
+        This field was immutable in Kubernetes <= 1.22 and now is
+        mutable.
 
         This is a beta field and only available when the
         CSIStorageCapacity feature is enabled. The default is false.
@@ -591,7 +598,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         unset or false and it can be flipped later when storage
         capacity information has been published.
 
-        This field is immutable.
+        This field was immutable in Kubernetes <= 1.22 and now is
+        mutable.
 
         This is a beta field and only available when the
         CSIStorageCapacity feature is enabled. The default is false.
@@ -619,9 +627,6 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         at most one token is empty string. To receive a new token
         after expiry, RequiresRepublish can be used to trigger
         NodePublishVolume periodically.
-
-        This is a beta feature and only available when the
-        CSIServiceAccountToken feature is enabled.
         """
         return typing.cast(
             typing.List["TokenRequest"],
@@ -651,9 +656,6 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         at most one token is empty string. To receive a new token
         after expiry, RequiresRepublish can be used to trigger
         NodePublishVolume periodically.
-
-        This is a beta feature and only available when the
-        CSIServiceAccountToken feature is enabled.
         """
         cleaned: typing.List[TokenRequest] = []
         for item in value:

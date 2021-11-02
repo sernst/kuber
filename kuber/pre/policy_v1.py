@@ -6,11 +6,202 @@ from kuber import kube_api as _kube_api  # noqa: F401
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
 from kuber.pre.meta_v1 import Condition  # noqa: F401
+from kuber.pre.meta_v1 import DeleteOptions  # noqa: F401
 from kuber.pre.meta_v1 import LabelSelector  # noqa: F401
 from kuber.pre.meta_v1 import ListMeta  # noqa: F401
 from kuber.pre.meta_v1 import ObjectMeta  # noqa: F401
 from kuber.pre.meta_v1 import Status  # noqa: F401
 from kuber.pre.meta_v1 import StatusDetails  # noqa: F401
+
+
+class Eviction(_kuber_definitions.Resource):
+    """
+    Eviction evicts a pod from its node subject to certain
+    policies and safety constraints. This is a subresource of
+    Pod.  A request to cause such an eviction is created by
+    POSTing to .../pods/<pod name>/evictions.
+    """
+
+    def __init__(
+        self,
+        delete_options: "DeleteOptions" = None,
+        metadata: "ObjectMeta" = None,
+    ):
+        """Create Eviction instance."""
+        super(Eviction, self).__init__(api_version="policy/v1", kind="Eviction")
+        self._properties = {
+            "deleteOptions": delete_options
+            if delete_options is not None
+            else DeleteOptions(),
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+        }
+        self._types = {
+            "apiVersion": (str, None),
+            "deleteOptions": (DeleteOptions, None),
+            "kind": (str, None),
+            "metadata": (ObjectMeta, None),
+        }
+
+    @property
+    def delete_options(self) -> "DeleteOptions":
+        """
+        DeleteOptions may be provided
+        """
+        return typing.cast(
+            "DeleteOptions",
+            self._properties.get("deleteOptions"),
+        )
+
+    @delete_options.setter
+    def delete_options(self, value: typing.Union["DeleteOptions", dict]):
+        """
+        DeleteOptions may be provided
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                DeleteOptions,
+                DeleteOptions().from_dict(value),
+            )
+        self._properties["deleteOptions"] = value
+
+    @property
+    def metadata(self) -> "ObjectMeta":
+        """
+        ObjectMeta describes the pod that is being evicted.
+        """
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
+
+    @metadata.setter
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
+        """
+        ObjectMeta describes the pod that is being evicted.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
+
+    def create_resource(self, namespace: "str" = None):
+        """
+        Creates the Eviction in the currently
+        configured Kubernetes cluster.
+        """
+        names = ["create_namespaced_eviction", "create_eviction"]
+
+        _kube_api.execute(
+            action="create",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict()},
+        )
+
+    def replace_resource(self, namespace: "str" = None):
+        """
+        Replaces the Eviction in the currently
+        configured Kubernetes cluster.
+        """
+        names = ["replace_namespaced_eviction", "replace_eviction"]
+
+        _kube_api.execute(
+            action="replace",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
+        )
+
+    def patch_resource(self, namespace: "str" = None):
+        """
+        Patches the Eviction in the currently
+        configured Kubernetes cluster.
+        """
+        names = ["patch_namespaced_eviction", "patch_eviction"]
+
+        _kube_api.execute(
+            action="patch",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
+        )
+
+    def get_resource_status(self, namespace: "str" = None):
+        """This resource does not have a status."""
+        pass
+
+    def read_resource(self, namespace: str = None):
+        """
+        Reads the Eviction from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            "read_namespaced_eviction",
+            "read_eviction",
+        ]
+        return _kube_api.execute(
+            action="read",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name},
+        )
+
+    def delete_resource(
+        self,
+        namespace: str = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
+    ):
+        """
+        Deletes the Eviction from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            "delete_namespaced_eviction",
+            "delete_eviction",
+        ]
+
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds,
+        )
+
+        _kube_api.execute(
+            action="delete",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name, "body": body},
+        )
+
+    @staticmethod
+    def get_resource_api(
+        api_client: client.ApiClient = None, **kwargs
+    ) -> "client.PolicyV1Api":
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs["apl_client"] = api_client
+        return client.PolicyV1Api(**kwargs)
+
+    def __enter__(self) -> "Eviction":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
 
 
 class PodDisruptionBudget(_kuber_definitions.Resource):

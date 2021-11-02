@@ -71,8 +71,8 @@ class HTTPIngressPath(_kuber_definitions.Definition):
         Path is matched against the path of an incoming request.
         Currently it can contain characters disallowed from the
         conventional "path" part of a URL as defined by RFC 3986.
-        Paths must begin with a '/'. When unspecified, all paths
-        from incoming requests are matched.
+        Paths must begin with a '/' and must be present when using
+        PathType with value "Exact" or "Prefix".
         """
         return typing.cast(
             str,
@@ -85,8 +85,8 @@ class HTTPIngressPath(_kuber_definitions.Definition):
         Path is matched against the path of an incoming request.
         Currently it can contain characters disallowed from the
         conventional "path" part of a URL as defined by RFC 3986.
-        Paths must begin with a '/'. When unspecified, all paths
-        from incoming requests are matched.
+        Paths must begin with a '/' and must be present when using
+        PathType with value "Exact" or "Prefix".
         """
         self._properties["path"] = value
 
@@ -2444,8 +2444,8 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         field cannot be defined if the port field is not defined or
         if the port field is defined as a named (string) port. The
         endPort must be equal or greater than port. This feature is
-        in Alpha state and should be enabled using the Feature Gate
-        "NetworkPolicyEndPort".
+        in Beta state and is enabled by default. It can be disabled
+        using the Feature Gate "NetworkPolicyEndPort".
         """
         return typing.cast(
             int,
@@ -2460,8 +2460,8 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
         field cannot be defined if the port field is not defined or
         if the port field is defined as a named (string) port. The
         endPort must be equal or greater than port. This feature is
-        in Alpha state and should be enabled using the Feature Gate
-        "NetworkPolicyEndPort".
+        in Beta state and is enabled by default. It can be disabled
+        using the Feature Gate "NetworkPolicyEndPort".
         """
         self._properties["endPort"] = value
 

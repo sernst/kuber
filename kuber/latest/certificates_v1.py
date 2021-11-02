@@ -79,9 +79,10 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
     def spec(self) -> "CertificateSigningRequestSpec":
         """
         spec contains the certificate request, and is immutable
-        after creation. Only the request, signerName, and usages
-        fields can be set on creation. Other fields are derived by
-        Kubernetes and cannot be modified by users.
+        after creation. Only the request, signerName,
+        expirationSeconds, and usages fields can be set on creation.
+        Other fields are derived by Kubernetes and cannot be
+        modified by users.
         """
         return typing.cast(
             "CertificateSigningRequestSpec",
@@ -92,9 +93,10 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
     def spec(self, value: typing.Union["CertificateSigningRequestSpec", dict]):
         """
         spec contains the certificate request, and is immutable
-        after creation. Only the request, signerName, and usages
-        fields can be set on creation. Other fields are derived by
-        Kubernetes and cannot be modified by users.
+        after creation. Only the request, signerName,
+        expirationSeconds, and usages fields can be set on creation.
+        Other fields are derived by Kubernetes and cannot be
+        modified by users.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -615,6 +617,7 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        expiration_seconds: int = None,
         extra: dict = None,
         groups: typing.List[str] = None,
         request: str = None,
@@ -628,6 +631,9 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             api_version="certificates/v1", kind="CertificateSigningRequestSpec"
         )
         self._properties = {
+            "expirationSeconds": expiration_seconds
+            if expiration_seconds is not None
+            else None,
             "extra": extra if extra is not None else {},
             "groups": groups if groups is not None else [],
             "request": request if request is not None else "",
@@ -637,6 +643,7 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             "username": username if username is not None else "",
         }
         self._types = {
+            "expirationSeconds": (int, None),
             "extra": (dict, None),
             "groups": (list, str),
             "request": (str, None),
@@ -645,6 +652,79 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             "usages": (list, str),
             "username": (str, None),
         }
+
+    @property
+    def expiration_seconds(self) -> int:
+        """
+        expirationSeconds is the requested duration of validity of
+        the issued certificate. The certificate signer may issue a
+        certificate with a different validity duration so a client
+        must check the delta between the notBefore and and notAfter
+        fields in the issued certificate to determine the actual
+        duration.
+
+        The v1.22+ in-tree implementations of the well-known
+        Kubernetes signers will honor this field as long as the
+        requested duration is not greater than the maximum duration
+        they will honor per the --cluster-signing-duration CLI flag
+        to the Kubernetes controller manager.
+
+        Certificate signers may not honor this field for various
+        reasons:
+
+          1. Old signer that is unaware of the field (such as the
+        in-tree
+             implementations prior to v1.22)
+          2. Signer whose configured maximum is shorter than the
+        requested duration
+          3. Signer whose configured minimum is longer than the
+        requested duration
+
+        The minimum valid value for expirationSeconds is 600, i.e.
+        10 minutes.
+
+        As of v1.22, this field is beta and is controlled via the
+        CSRDuration feature gate.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("expirationSeconds"),
+        )
+
+    @expiration_seconds.setter
+    def expiration_seconds(self, value: int):
+        """
+        expirationSeconds is the requested duration of validity of
+        the issued certificate. The certificate signer may issue a
+        certificate with a different validity duration so a client
+        must check the delta between the notBefore and and notAfter
+        fields in the issued certificate to determine the actual
+        duration.
+
+        The v1.22+ in-tree implementations of the well-known
+        Kubernetes signers will honor this field as long as the
+        requested duration is not greater than the maximum duration
+        they will honor per the --cluster-signing-duration CLI flag
+        to the Kubernetes controller manager.
+
+        Certificate signers may not honor this field for various
+        reasons:
+
+          1. Old signer that is unaware of the field (such as the
+        in-tree
+             implementations prior to v1.22)
+          2. Signer whose configured maximum is shorter than the
+        requested duration
+          3. Signer whose configured minimum is longer than the
+        requested duration
+
+        The minimum valid value for expirationSeconds is 600, i.e.
+        10 minutes.
+
+        As of v1.22, this field is beta and is controlled via the
+        CSRDuration feature gate.
+        """
+        self._properties["expirationSeconds"] = value
 
     @property
     def extra(self) -> dict:
