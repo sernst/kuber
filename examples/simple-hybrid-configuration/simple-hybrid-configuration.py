@@ -6,8 +6,7 @@ from kuber.latest import core_v1
 
 # Load YAML configuration file into a Deployment object
 d = typing.cast(
-    apps_v1.Deployment,
-    kuber.from_yaml_file(file_path="./my-deployment.yaml")
+    apps_v1.Deployment, kuber.from_yaml_file(file_path="./my-deployment.yaml")
 )
 
 # Add an `app` label.

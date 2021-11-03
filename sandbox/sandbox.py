@@ -22,9 +22,12 @@ import typing
 import kuber
 from kuber.latest import core_v1
 
-p = typing.cast(core_v1.Pod, kuber.new_resource(
-    api_version="v1", kind="Pod", name="my-pod", kubernetes_version="1.15"
-))
+p = typing.cast(
+    core_v1.Pod,
+    kuber.new_resource(
+        api_version="v1", kind="Pod", name="my-pod", kubernetes_version="1.15"
+    ),
+)
 
 p.spec.append_container(
     name="c",

@@ -19,12 +19,10 @@ def populate(action: kuber.CommandAction):
     # Get the server container from the server
     # deployment for modification.
     deployment = typing.cast(
-        apps_v1.Deployment,
-        bundle.get(name="prometheus-server", kind="Deployment")
+        apps_v1.Deployment, bundle.get(name="prometheus-server", kind="Deployment")
     )
     server = typing.cast(
-        core_v1.Container,
-        deployment.get_container("prometheus-server")
+        core_v1.Container, deployment.get_container("prometheus-server")
     )
 
     # Override default retention time to be 7 days.
