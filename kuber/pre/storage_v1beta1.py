@@ -32,19 +32,24 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     The producer of these objects can decide which approach is
     more suitable.
 
-    They are consumed by the kube-scheduler if the
-    CSIStorageCapacity beta feature gate is enabled there and a
-    CSI driver opts into capacity-aware scheduling with
-    CSIDriver.StorageCapacity.
+    They are consumed by the kube-scheduler when a CSI driver
+    opts into capacity-aware scheduling with
+    CSIDriverSpec.StorageCapacity. The scheduler compares the
+    MaximumVolumeSize against the requested size of pending
+    volumes to filter out unsuitable nodes. If MaximumVolumeSize
+    is unset, it falls back to a comparison against the less
+    precise Capacity. If that is also unset, the scheduler
+    assumes that capacity is insufficient and tries some other
+    node.
     """
 
     def __init__(
         self,
-        capacity: typing.Union[str, int, None] = None,
-        maximum_volume_size: typing.Union[str, int, None] = None,
-        metadata: "ObjectMeta" = None,
-        node_topology: "LabelSelector" = None,
-        storage_class_name: str = None,
+        capacity: typing.Optional[typing.Union[str, int, None]] = None,
+        maximum_volume_size: typing.Optional[typing.Union[str, int, None]] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        node_topology: typing.Optional["LabelSelector"] = None,
+        storage_class_name: typing.Optional[str] = None,
     ):
         """Create CSIStorageCapacity instance."""
         super(CSIStorageCapacity, self).__init__(
@@ -76,14 +81,14 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @property
     def capacity(self) -> typing.Optional[str]:
         """
-        Capacity is the value reported by the CSI driver in its
+        capacity is the value reported by the CSI driver in its
         GetCapacityResponse for a GetCapacityRequest with topology
         and parameters that match the previous fields.
 
         The semantic is currently (CSI spec 1.2) defined as: The
         available capacity, in bytes, of the storage that can be
         used to provision volumes. If not set, that information is
-        currently unavailable and treated like zero capacity.
+        currently unavailable.
         """
         value = self._properties.get("capacity")
         return f"{value}" if value is not None else None
@@ -91,21 +96,21 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @capacity.setter
     def capacity(self, value: typing.Union[str, int, None]):
         """
-        Capacity is the value reported by the CSI driver in its
+        capacity is the value reported by the CSI driver in its
         GetCapacityResponse for a GetCapacityRequest with topology
         and parameters that match the previous fields.
 
         The semantic is currently (CSI spec 1.2) defined as: The
         available capacity, in bytes, of the storage that can be
         used to provision volumes. If not set, that information is
-        currently unavailable and treated like zero capacity.
+        currently unavailable.
         """
         self._properties["capacity"] = _types.integer_or_string(value)
 
     @property
     def maximum_volume_size(self) -> typing.Optional[str]:
         """
-        MaximumVolumeSize is the value reported by the CSI driver in
+        maximumVolumeSize is the value reported by the CSI driver in
         its GetCapacityResponse for a GetCapacityRequest with
         topology and parameters that match the previous fields.
 
@@ -123,7 +128,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @maximum_volume_size.setter
     def maximum_volume_size(self, value: typing.Union[str, int, None]):
         """
-        MaximumVolumeSize is the value reported by the CSI driver in
+        maximumVolumeSize is the value reported by the CSI driver in
         its GetCapacityResponse for a GetCapacityRequest with
         topology and parameters that match the previous fields.
 
@@ -184,7 +189,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @property
     def node_topology(self) -> "LabelSelector":
         """
-        NodeTopology defines which nodes have access to the storage
+        nodeTopology defines which nodes have access to the storage
         for which capacity was reported. If not set, the storage is
         not accessible from any node in the cluster. If empty, the
         storage is accessible from all nodes. This field is
@@ -198,7 +203,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @node_topology.setter
     def node_topology(self, value: typing.Union["LabelSelector", dict]):
         """
-        NodeTopology defines which nodes have access to the storage
+        nodeTopology defines which nodes have access to the storage
         for which capacity was reported. If not set, the storage is
         not accessible from any node in the cluster. If empty, the
         storage is accessible from all nodes. This field is
@@ -214,12 +219,12 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @property
     def storage_class_name(self) -> str:
         """
-        The name of the StorageClass that the reported capacity
-        applies to. It must meet the same requirements as the name
-        of a StorageClass object (non-empty, DNS subdomain). If that
-        object no longer exists, the CSIStorageCapacity object is
-        obsolete and should be removed by its creator. This field is
-        immutable.
+        storageClassName represents the name of the StorageClass
+        that the reported capacity applies to. It must meet the same
+        requirements as the name of a StorageClass object (non-
+        empty, DNS subdomain). If that object no longer exists, the
+        CSIStorageCapacity object is obsolete and should be removed
+        by its creator. This field is immutable.
         """
         return typing.cast(
             str,
@@ -229,16 +234,16 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @storage_class_name.setter
     def storage_class_name(self, value: str):
         """
-        The name of the StorageClass that the reported capacity
-        applies to. It must meet the same requirements as the name
-        of a StorageClass object (non-empty, DNS subdomain). If that
-        object no longer exists, the CSIStorageCapacity object is
-        obsolete and should be removed by its creator. This field is
-        immutable.
+        storageClassName represents the name of the StorageClass
+        that the reported capacity applies to. It must meet the same
+        requirements as the name of a StorageClass object (non-
+        empty, DNS subdomain). If that object no longer exists, the
+        CSIStorageCapacity object is obsolete and should be removed
+        by its creator. This field is immutable.
         """
         self._properties["storageClassName"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the CSIStorageCapacity in the currently
         configured Kubernetes cluster.
@@ -254,7 +259,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the CSIStorageCapacity in the currently
         configured Kubernetes cluster.
@@ -273,7 +278,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the CSIStorageCapacity in the currently
         configured Kubernetes cluster.
@@ -289,11 +294,11 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CSIStorageCapacity from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -313,7 +318,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -342,7 +347,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -367,8 +372,8 @@ class CSIStorageCapacityList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CSIStorageCapacity"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CSIStorageCapacity"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CSIStorageCapacityList instance."""
         super(CSIStorageCapacityList, self).__init__(
@@ -388,7 +393,7 @@ class CSIStorageCapacityList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["CSIStorageCapacity"]:
         """
-        Items is the list of CSIStorageCapacity objects.
+        items is the list of CSIStorageCapacity objects.
         """
         return typing.cast(
             typing.List["CSIStorageCapacity"],
@@ -400,7 +405,7 @@ class CSIStorageCapacityList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["CSIStorageCapacity"], typing.List[dict]]
     ):
         """
-        Items is the list of CSIStorageCapacity objects.
+        items is the list of CSIStorageCapacity objects.
         """
         cleaned: typing.List[CSIStorageCapacity] = []
         for item in value:
@@ -440,7 +445,7 @@ class CSIStorageCapacityList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with

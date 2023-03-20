@@ -24,8 +24,8 @@ class Eviction(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        delete_options: "DeleteOptions" = None,
-        metadata: "ObjectMeta" = None,
+        delete_options: typing.Optional["DeleteOptions"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
     ):
         """Create Eviction instance."""
         super(Eviction, self).__init__(api_version="policy/v1", kind="Eviction")
@@ -86,7 +86,7 @@ class Eviction(_kuber_definitions.Resource):
             )
         self._properties["metadata"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Eviction in the currently
         configured Kubernetes cluster.
@@ -102,7 +102,7 @@ class Eviction(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Eviction in the currently
         configured Kubernetes cluster.
@@ -118,7 +118,7 @@ class Eviction(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Eviction in the currently
         configured Kubernetes cluster.
@@ -134,11 +134,11 @@ class Eviction(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Eviction from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -158,7 +158,7 @@ class Eviction(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -187,7 +187,7 @@ class Eviction(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.PolicyV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -212,9 +212,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PodDisruptionBudgetSpec" = None,
-        status: "PodDisruptionBudgetStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PodDisruptionBudgetSpec"] = None,
+        status: typing.Optional["PodDisruptionBudgetStatus"] = None,
     ):
         """Create PodDisruptionBudget instance."""
         super(PodDisruptionBudget, self).__init__(
@@ -305,7 +305,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "PodDisruptionBudgetStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PodDisruptionBudgetStatus":
         """
         Creates the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
@@ -330,7 +332,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "PodDisruptionBudgetStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PodDisruptionBudgetStatus":
         """
         Replaces the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
@@ -355,7 +359,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "PodDisruptionBudgetStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PodDisruptionBudgetStatus":
         """
         Patches the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
@@ -381,7 +387,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PodDisruptionBudgetStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -405,7 +411,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PodDisruptionBudget from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -425,7 +431,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -454,7 +460,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.PolicyV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -479,8 +485,8 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PodDisruptionBudget"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PodDisruptionBudget"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PodDisruptionBudgetList instance."""
         super(PodDisruptionBudgetList, self).__init__(
@@ -552,7 +558,7 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.PolicyV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -577,9 +583,10 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_unavailable: typing.Union[str, int, None] = None,
-        min_available: typing.Union[str, int, None] = None,
-        selector: "LabelSelector" = None,
+        max_unavailable: typing.Optional[typing.Union[str, int, None]] = None,
+        min_available: typing.Optional[typing.Union[str, int, None]] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        unhealthy_pod_eviction_policy: typing.Optional[str] = None,
     ):
         """Create PodDisruptionBudgetSpec instance."""
         super(PodDisruptionBudgetSpec, self).__init__(
@@ -589,11 +596,15 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
             "maxUnavailable": max_unavailable if max_unavailable is not None else None,
             "minAvailable": min_available if min_available is not None else None,
             "selector": selector if selector is not None else LabelSelector(),
+            "unhealthyPodEvictionPolicy": unhealthy_pod_eviction_policy
+            if unhealthy_pod_eviction_policy is not None
+            else "",
         }
         self._types = {
             "maxUnavailable": (_types.integer_or_string, None),
             "minAvailable": (_types.integer_or_string, None),
             "selector": (LabelSelector, None),
+            "unhealthyPodEvictionPolicy": (str, None),
         }
 
     @property
@@ -674,6 +685,85 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
             )
         self._properties["selector"] = value
 
+    @property
+    def unhealthy_pod_eviction_policy(self) -> str:
+        """
+        UnhealthyPodEvictionPolicy defines the criteria for when
+        unhealthy pods should be considered for eviction. Current
+        implementation considers healthy pods, as pods that have
+        status.conditions item with type="Ready",status="True".
+
+        Valid policies are IfHealthyBudget and AlwaysAllow. If no
+        policy is specified, the default behavior will be used,
+        which corresponds to the IfHealthyBudget policy.
+
+        IfHealthyBudget policy means that running pods
+        (status.phase="Running"), but not yet healthy can be evicted
+        only if the guarded application is not disrupted
+        (status.currentHealthy is at least equal to
+        status.desiredHealthy). Healthy pods will be subject to the
+        PDB for eviction.
+
+        AlwaysAllow policy means that all running pods
+        (status.phase="Running"), but not yet healthy are considered
+        disrupted and can be evicted regardless of whether the
+        criteria in a PDB is met. This means perspective running
+        pods of a disrupted application might not get a chance to
+        become healthy. Healthy pods will be subject to the PDB for
+        eviction.
+
+        Additional policies may be added in the future. Clients
+        making eviction decisions should disallow eviction of
+        unhealthy pods if they encounter an unrecognized policy in
+        this field.
+
+        This field is alpha-level. The eviction API uses this field
+        when the feature gate PDBUnhealthyPodEvictionPolicy is
+        enabled (disabled by default).
+        """
+        return typing.cast(
+            str,
+            self._properties.get("unhealthyPodEvictionPolicy"),
+        )
+
+    @unhealthy_pod_eviction_policy.setter
+    def unhealthy_pod_eviction_policy(self, value: str):
+        """
+        UnhealthyPodEvictionPolicy defines the criteria for when
+        unhealthy pods should be considered for eviction. Current
+        implementation considers healthy pods, as pods that have
+        status.conditions item with type="Ready",status="True".
+
+        Valid policies are IfHealthyBudget and AlwaysAllow. If no
+        policy is specified, the default behavior will be used,
+        which corresponds to the IfHealthyBudget policy.
+
+        IfHealthyBudget policy means that running pods
+        (status.phase="Running"), but not yet healthy can be evicted
+        only if the guarded application is not disrupted
+        (status.currentHealthy is at least equal to
+        status.desiredHealthy). Healthy pods will be subject to the
+        PDB for eviction.
+
+        AlwaysAllow policy means that all running pods
+        (status.phase="Running"), but not yet healthy are considered
+        disrupted and can be evicted regardless of whether the
+        criteria in a PDB is met. This means perspective running
+        pods of a disrupted application might not get a chance to
+        become healthy. Healthy pods will be subject to the PDB for
+        eviction.
+
+        Additional policies may be added in the future. Clients
+        making eviction decisions should disallow eviction of
+        unhealthy pods if they encounter an unrecognized policy in
+        this field.
+
+        This field is alpha-level. The eviction API uses this field
+        when the feature gate PDBUnhealthyPodEvictionPolicy is
+        enabled (disabled by default).
+        """
+        self._properties["unhealthyPodEvictionPolicy"] = value
+
     def __enter__(self) -> "PodDisruptionBudgetSpec":
         return self
 
@@ -690,13 +780,13 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["Condition"] = None,
-        current_healthy: int = None,
-        desired_healthy: int = None,
-        disrupted_pods: dict = None,
-        disruptions_allowed: int = None,
-        expected_pods: int = None,
-        observed_generation: int = None,
+        conditions: typing.Optional[typing.List["Condition"]] = None,
+        current_healthy: typing.Optional[int] = None,
+        desired_healthy: typing.Optional[int] = None,
+        disrupted_pods: typing.Optional[dict] = None,
+        disruptions_allowed: typing.Optional[int] = None,
+        expected_pods: typing.Optional[int] = None,
+        observed_generation: typing.Optional[int] = None,
     ):
         """Create PodDisruptionBudgetStatus instance."""
         super(PodDisruptionBudgetStatus, self).__init__(

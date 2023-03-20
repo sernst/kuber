@@ -16,12 +16,14 @@ class APIGroup(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        kind: str = None,
-        name: str = None,
-        preferred_version: "GroupVersionForDiscovery" = None,
-        server_address_by_client_cidrs: typing.List["ServerAddressByClientCIDR"] = None,
-        versions: typing.List["GroupVersionForDiscovery"] = None,
+        api_version: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        preferred_version: typing.Optional["GroupVersionForDiscovery"] = None,
+        server_address_by_client_cidrs: typing.Optional[
+            typing.List["ServerAddressByClientCIDR"]
+        ] = None,
+        versions: typing.Optional[typing.List["GroupVersionForDiscovery"]] = None,
     ):
         """Create APIGroup instance."""
         super(APIGroup, self).__init__(api_version="meta/v1", kind="APIGroup")
@@ -236,9 +238,9 @@ class APIGroupList(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        groups: typing.List["APIGroup"] = None,
-        kind: str = None,
+        api_version: typing.Optional[str] = None,
+        groups: typing.Optional[typing.List["APIGroup"]] = None,
+        kind: typing.Optional[str] = None,
     ):
         """Create APIGroupList instance."""
         super(APIGroupList, self).__init__(api_version="meta/v1", kind="APIGroupList")
@@ -347,16 +349,16 @@ class APIResource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        categories: typing.List[str] = None,
-        group: str = None,
-        kind: str = None,
-        name: str = None,
-        namespaced: bool = None,
-        short_names: typing.List[str] = None,
-        singular_name: str = None,
-        storage_version_hash: str = None,
-        verbs: typing.List[str] = None,
-        version: str = None,
+        categories: typing.Optional[typing.List[str]] = None,
+        group: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespaced: typing.Optional[bool] = None,
+        short_names: typing.Optional[typing.List[str]] = None,
+        singular_name: typing.Optional[str] = None,
+        storage_version_hash: typing.Optional[str] = None,
+        verbs: typing.Optional[typing.List[str]] = None,
+        version: typing.Optional[str] = None,
     ):
         """Create APIResource instance."""
         super(APIResource, self).__init__(api_version="meta/v1", kind="APIResource")
@@ -617,10 +619,10 @@ class APIResourceList(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        group_version: str = None,
-        kind: str = None,
-        resources: typing.List["APIResource"] = None,
+        api_version: typing.Optional[str] = None,
+        group_version: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        resources: typing.Optional[typing.List["APIResource"]] = None,
     ):
         """Create APIResourceList instance."""
         super(APIResourceList, self).__init__(
@@ -757,10 +759,12 @@ class APIVersions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        kind: str = None,
-        server_address_by_client_cidrs: typing.List["ServerAddressByClientCIDR"] = None,
-        versions: typing.List[str] = None,
+        api_version: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        server_address_by_client_cidrs: typing.Optional[
+            typing.List["ServerAddressByClientCIDR"]
+        ] = None,
+        versions: typing.Optional[typing.List[str]] = None,
     ):
         """Create APIVersions instance."""
         super(APIVersions, self).__init__(api_version="meta/v1", kind="APIVersions")
@@ -917,12 +921,12 @@ class Condition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        observed_generation: int = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        observed_generation: typing.Optional[int] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create Condition instance."""
         super(Condition, self).__init__(api_version="meta/v1", kind="Condition")
@@ -1101,13 +1105,13 @@ class DeleteOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        dry_run: typing.List[str] = None,
-        grace_period_seconds: int = None,
-        kind: str = None,
-        orphan_dependents: bool = None,
-        preconditions: "Preconditions" = None,
-        propagation_policy: str = None,
+        api_version: typing.Optional[str] = None,
+        dry_run: typing.Optional[typing.List[str]] = None,
+        grace_period_seconds: typing.Optional[int] = None,
+        kind: typing.Optional[str] = None,
+        orphan_dependents: typing.Optional[bool] = None,
+        preconditions: typing.Optional["Preconditions"] = None,
+        propagation_policy: typing.Optional[str] = None,
     ):
         """Create DeleteOptions instance."""
         super(DeleteOptions, self).__init__(api_version="meta/v1", kind="DeleteOptions")
@@ -1377,8 +1381,8 @@ class GroupVersionForDiscovery(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        group_version: str = None,
-        version: str = None,
+        group_version: typing.Optional[str] = None,
+        version: typing.Optional[str] = None,
     ):
         """Create GroupVersionForDiscovery instance."""
         super(GroupVersionForDiscovery, self).__init__(
@@ -1450,8 +1454,10 @@ class LabelSelector(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        match_expressions: typing.List["LabelSelectorRequirement"] = None,
-        match_labels: dict = None,
+        match_expressions: typing.Optional[
+            typing.List["LabelSelectorRequirement"]
+        ] = None,
+        match_labels: typing.Optional[dict] = None,
     ):
         """Create LabelSelector instance."""
         super(LabelSelector, self).__init__(api_version="meta/v1", kind="LabelSelector")
@@ -1537,9 +1543,9 @@ class LabelSelectorRequirement(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        key: str = None,
-        operator: str = None,
-        values: typing.List[str] = None,
+        key: typing.Optional[str] = None,
+        operator: typing.Optional[str] = None,
+        values: typing.Optional[typing.List[str]] = None,
     ):
         """Create LabelSelectorRequirement instance."""
         super(LabelSelectorRequirement, self).__init__(
@@ -1633,10 +1639,10 @@ class ListMeta(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        continue_: str = None,
-        remaining_item_count: int = None,
-        resource_version: str = None,
-        self_link: str = None,
+        continue_: typing.Optional[str] = None,
+        remaining_item_count: typing.Optional[int] = None,
+        resource_version: typing.Optional[str] = None,
+        self_link: typing.Optional[str] = None,
     ):
         """Create ListMeta instance."""
         super(ListMeta, self).__init__(api_version="meta/v1", kind="ListMeta")
@@ -1804,13 +1810,13 @@ class ManagedFieldsEntry(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        fields_type: str = None,
-        fields_v1: "FieldsV1" = None,
-        manager: str = None,
-        operation: str = None,
-        subresource: str = None,
-        time: str = None,
+        api_version: typing.Optional[str] = None,
+        fields_type: typing.Optional[str] = None,
+        fields_v1: typing.Optional["FieldsV1"] = None,
+        manager: typing.Optional[str] = None,
+        operation: typing.Optional[str] = None,
+        subresource: typing.Optional[str] = None,
+        time: typing.Optional[str] = None,
     ):
         """Create ManagedFieldsEntry instance."""
         super(ManagedFieldsEntry, self).__init__(
@@ -2035,22 +2041,22 @@ class ObjectMeta(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        annotations: dict = None,
-        cluster_name: str = None,
-        creation_timestamp: str = None,
-        deletion_grace_period_seconds: int = None,
-        deletion_timestamp: str = None,
-        finalizers: typing.List[str] = None,
-        generate_name: str = None,
-        generation: int = None,
-        labels: dict = None,
-        managed_fields: typing.List["ManagedFieldsEntry"] = None,
-        name: str = None,
-        namespace: str = None,
-        owner_references: typing.List["OwnerReference"] = None,
-        resource_version: str = None,
-        self_link: str = None,
-        uid: str = None,
+        annotations: typing.Optional[dict] = None,
+        cluster_name: typing.Optional[str] = None,
+        creation_timestamp: typing.Optional[str] = None,
+        deletion_grace_period_seconds: typing.Optional[int] = None,
+        deletion_timestamp: typing.Optional[str] = None,
+        finalizers: typing.Optional[typing.List[str]] = None,
+        generate_name: typing.Optional[str] = None,
+        generation: typing.Optional[int] = None,
+        labels: typing.Optional[dict] = None,
+        managed_fields: typing.Optional[typing.List["ManagedFieldsEntry"]] = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        owner_references: typing.Optional[typing.List["OwnerReference"]] = None,
+        resource_version: typing.Optional[str] = None,
+        self_link: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
     ):
         """Create ObjectMeta instance."""
         super(ObjectMeta, self).__init__(api_version="meta/v1", kind="ObjectMeta")
@@ -2674,12 +2680,12 @@ class OwnerReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        block_owner_deletion: bool = None,
-        controller: bool = None,
-        kind: str = None,
-        name: str = None,
-        uid: str = None,
+        api_version: typing.Optional[str] = None,
+        block_owner_deletion: typing.Optional[bool] = None,
+        controller: typing.Optional[bool] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
     ):
         """Create OwnerReference instance."""
         super(OwnerReference, self).__init__(
@@ -2860,8 +2866,8 @@ class Preconditions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        resource_version: str = None,
-        uid: str = None,
+        resource_version: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
     ):
         """Create Preconditions instance."""
         super(Preconditions, self).__init__(api_version="meta/v1", kind="Preconditions")
@@ -2924,8 +2930,8 @@ class ServerAddressByClientCIDR(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        client_cidr: str = None,
-        server_address: str = None,
+        client_cidr: typing.Optional[str] = None,
+        server_address: typing.Optional[str] = None,
     ):
         """Create ServerAddressByClientCIDR instance."""
         super(ServerAddressByClientCIDR, self).__init__(
@@ -2995,14 +3001,14 @@ class Status(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        code: int = None,
-        details: "StatusDetails" = None,
-        kind: str = None,
-        message: str = None,
-        metadata: "ListMeta" = None,
-        reason: str = None,
-        status: str = None,
+        api_version: typing.Optional[str] = None,
+        code: typing.Optional[int] = None,
+        details: typing.Optional["StatusDetails"] = None,
+        kind: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        metadata: typing.Optional["ListMeta"] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
     ):
         """Create Status instance."""
         super(Status, self).__init__(api_version="meta/v1", kind="Status")
@@ -3233,9 +3239,9 @@ class StatusCause(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        field: str = None,
-        message: str = None,
-        reason: str = None,
+        field: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
     ):
         """Create StatusCause instance."""
         super(StatusCause, self).__init__(api_version="meta/v1", kind="StatusCause")
@@ -3343,12 +3349,12 @@ class StatusDetails(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        causes: typing.List["StatusCause"] = None,
-        group: str = None,
-        kind: str = None,
-        name: str = None,
-        retry_after_seconds: int = None,
-        uid: str = None,
+        causes: typing.Optional[typing.List["StatusCause"]] = None,
+        group: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        retry_after_seconds: typing.Optional[int] = None,
+        uid: typing.Optional[str] = None,
     ):
         """Create StatusDetails instance."""
         super(StatusDetails, self).__init__(api_version="meta/v1", kind="StatusDetails")
@@ -3549,8 +3555,8 @@ class WatchEvent(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        object_: "RawExtension" = None,
-        type_: str = None,
+        object_: typing.Optional["RawExtension"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create WatchEvent instance."""
         super(WatchEvent, self).__init__(api_version="meta/v1", kind="WatchEvent")

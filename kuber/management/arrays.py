@@ -33,7 +33,8 @@ def _matches_filter(
 
 
 def _is_matching_resource(
-    resource: "creation.ResourceSubclass", filters: typing.List[str] = None
+    resource: "creation.ResourceSubclass",
+    filters: typing.Optional[typing.List[str]] = None,
 ) -> bool:
     """
     Determines whether or not a given resource matches the specified
@@ -54,7 +55,7 @@ class ResourceKindArray:
         self,
         array: "ResourceArray",
         kind: str,
-        filters: typing.List[str] = None,
+        filters: typing.Optional[typing.List[str]] = None,
     ):
         """
         Creates a ResourceKindArray instance that filters on the specified
@@ -134,8 +135,8 @@ class ResourceArray:
     def __init__(
         self,
         bundle: "management.ResourceBundle",
-        namespace: str = None,
-        filters: typing.List[str] = None,
+        namespace: typing.Optional[str] = None,
+        filters: typing.Optional[typing.List[str]] = None,
     ):
         """
         Creates a ResourceArray for the given bundle and with an optional

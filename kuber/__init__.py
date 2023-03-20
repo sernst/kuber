@@ -1,3 +1,4 @@
+import typing
 import typing as _typing
 
 import yaml as _yaml
@@ -42,7 +43,8 @@ VersionLabel = _typing.Union[KubernetesVersion, str]
 
 
 def create_bundle(
-    kubernetes_version: VersionLabel = None, bundle_name: str = None
+    kubernetes_version: typing.Optional[VersionLabel] = None,
+    bundle_name: typing.Optional[str] = None,
 ) -> ResourceBundle:
     """
     Creates a `ResourceBundle` instance initialized to define resources from
@@ -64,9 +66,9 @@ def create_bundle(
 
 def from_directory_files(
     directory: str,
-    filenames: _typing.Iterable[str] = None,
-    kubernetes_version: VersionLabel = None,
-    bundle_name: str = None,
+    filenames: typing.Optional[_typing.Iterable[str]] = None,
+    kubernetes_version: typing.Optional[VersionLabel] = None,
+    bundle_name: typing.Optional[str] = None,
 ) -> ResourceBundle:
     """
     Creates a `ResourceBundle` object from all of the resource
@@ -98,8 +100,8 @@ def from_directory_files(
 def from_directory(
     directory: "PathLike",
     recursive: bool = False,
-    kubernetes_version: VersionLabel = None,
-    bundle_name: str = None,
+    kubernetes_version: typing.Optional[VersionLabel] = None,
+    bundle_name: typing.Optional[str] = None,
 ) -> ResourceBundle:
     """
     Creates a `ResourceBundle` object from all of the yaml and json
@@ -128,7 +130,9 @@ def from_directory(
 
 
 def from_file(
-    path: "PathLike", kubernetes_version: VersionLabel = None, bundle_name: str = None
+    path: "PathLike",
+    kubernetes_version: typing.Optional[VersionLabel] = None,
+    bundle_name: typing.Optional[str] = None,
 ) -> ResourceBundle:
     """
     Creates a `ResourceBundle` object and populates it with the Kubernetes
@@ -154,7 +158,9 @@ def from_file(
 
 
 def from_url(
-    url: str, kubernetes_version: VersionLabel = None, bundle_name: str = None
+    url: str,
+    kubernetes_version: typing.Optional[VersionLabel] = None,
+    bundle_name: typing.Optional[str] = None,
 ) -> ResourceBundle:
     """
     Creates a `ResourceBundle` object and populates it with the Kubernetes
@@ -186,11 +192,11 @@ def from_helm(
         "OptionalPathLike",
         _typing.Iterable["OptionalPathLike"],
     ] = None,
-    repos: _typing.Dict[str, str] = None,
+    repos: typing.Optional[_typing.Dict[str, str]] = None,
     update: bool = True,
-    kubernetes_version: VersionLabel = None,
-    bundle_name: str = None,
-    namespace: str = None,
+    kubernetes_version: typing.Optional[VersionLabel] = None,
+    bundle_name: typing.Optional[str] = None,
+    namespace: typing.Optional[str] = None,
 ) -> ResourceBundle:
     """
     Creates a `ResourceBundle` object and populates it with the Kubernetes
@@ -235,9 +241,9 @@ def from_helm(
 
 def cli(
     callback: _typing.Callable[["CommandAction"], _typing.Any],
-    kubernetes_version: VersionLabel = None,
-    bundle_name: str = None,
-    arguments: _typing.List[str] = None,
+    kubernetes_version: typing.Optional[VersionLabel] = None,
+    bundle_name: typing.Optional[str] = None,
+    arguments: typing.Optional[_typing.List[str]] = None,
 ) -> ResourceBundle:
     """
     Creates an empty bundle configured with the optionally specified

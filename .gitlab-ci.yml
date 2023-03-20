@@ -2,63 +2,25 @@ stages:
   - check
 
 black-lint:
-  image: python:3.9
+  image: python:3.11
   stage: check
   script:
   - pip install black
   - black --check .
 
 flake8-lint:
-  image: python:3.9
+  image: python:3.11
   stage: check
   script:
   - pip install flake8 flake8-black
   - flake8 .
 
 mypy-lint:
-  image: python:3.9
+  image: python:3.11
   stage: check
   script:
   - pip install mypy
-  - mypy . --install-types --non-interactive --ignore-missing-imports
-
-pytest-py36:
-  image: python:3.6
-  stage: check
-  script:
-    - pip install poetry
-    - poetry install
-    - >
-      poetry run
-      py.test
-      --verbose
-      --cov-report term-missing
-      --cov=.
-      .
-  artifacts:
-    paths:
-      - .coverage
-      - coverage.xml
-    expire_in: 1 day
-
-pytest-py37:
-  image: python:3.7
-  stage: check
-  script:
-    - pip install poetry
-    - poetry install
-    - >
-      poetry run
-      py.test
-      --verbose
-      --cov-report term-missing
-      --cov=.
-      .
-  artifacts:
-    paths:
-      - .coverage
-      - coverage.xml
-    expire_in: 1 day
+  - mypy ./kuber --install-types --non-interactive --ignore-missing-imports
 
 pytest-py38:
   image: python:3.8
@@ -82,6 +44,44 @@ pytest-py38:
 pytest-py39:
   image: python:3.9
   stage: check
+  script:
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov=.
+      .
+  artifacts:
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
+
+pytest-py310:
+  image: python:3.10
+  stage: check
+  script:
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov=.
+      .
+  artifacts:
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
+
+pytest-py311:
+  image: python:3.11
+  stage: check
   coverage: '/^TOTAL.*\s+\d+\s+\d+\s+(\d+)%/'
   script:
     - pip install poetry
@@ -96,14 +96,16 @@ pytest-py39:
       .
   artifacts:
     reports:
-      cobertura: coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: junit_coverage_report.xml
     paths:
       - .coverage
       - coverage.xml
     expire_in: 1 day
 
 sphinx-build:
-  image: python:3.8
+  image: python:3.11
   stage: check
   script:
     - pip install poetry

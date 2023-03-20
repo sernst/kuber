@@ -21,9 +21,9 @@ class ServerStorageVersion(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_server_id: str = None,
-        decodable_versions: typing.List[str] = None,
-        encoding_version: str = None,
+        api_server_id: typing.Optional[str] = None,
+        decodable_versions: typing.Optional[typing.List[str]] = None,
+        encoding_version: typing.Optional[str] = None,
     ):
         """Create ServerStorageVersion instance."""
         super(ServerStorageVersion, self).__init__(
@@ -108,15 +108,14 @@ class ServerStorageVersion(_kuber_definitions.Definition):
 
 class StorageVersion(_kuber_definitions.Resource):
     """
-
     Storage version of a specific resource.
     """
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "StorageVersionSpec" = None,
-        status: "StorageVersionStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["StorageVersionSpec"] = None,
+        status: typing.Optional["StorageVersionStatus"] = None,
     ):
         """Create StorageVersion instance."""
         super(StorageVersion, self).__init__(
@@ -207,7 +206,9 @@ class StorageVersion(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "StorageVersionStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StorageVersionStatus":
         """
         Creates the StorageVersion in the currently
         configured Kubernetes cluster and returns the status information
@@ -229,7 +230,9 @@ class StorageVersion(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "StorageVersionStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StorageVersionStatus":
         """
         Replaces the StorageVersion in the currently
         configured Kubernetes cluster and returns the status information
@@ -251,7 +254,9 @@ class StorageVersion(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "StorageVersionStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StorageVersionStatus":
         """
         Patches the StorageVersion in the currently
         configured Kubernetes cluster and returns the status information
@@ -273,7 +278,9 @@ class StorageVersion(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "StorageVersionStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StorageVersionStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -296,7 +303,7 @@ class StorageVersion(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the StorageVersion from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -316,7 +323,7 @@ class StorageVersion(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -345,7 +352,7 @@ class StorageVersion(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.ApiserverinternalV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -370,12 +377,12 @@ class StorageVersionCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        observed_generation: int = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        observed_generation: typing.Optional[int] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create StorageVersionCondition instance."""
         super(StorageVersionCondition, self).__init__(
@@ -530,8 +537,8 @@ class StorageVersionList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["StorageVersion"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["StorageVersion"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create StorageVersionList instance."""
         super(StorageVersionList, self).__init__(
@@ -603,7 +610,7 @@ class StorageVersionList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.ApiserverinternalV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -651,9 +658,9 @@ class StorageVersionStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        common_encoding_version: str = None,
-        conditions: typing.List["StorageVersionCondition"] = None,
-        storage_versions: typing.List["ServerStorageVersion"] = None,
+        common_encoding_version: typing.Optional[str] = None,
+        conditions: typing.Optional[typing.List["StorageVersionCondition"]] = None,
+        storage_versions: typing.Optional[typing.List["ServerStorageVersion"]] = None,
     ):
         """Create StorageVersionStatus instance."""
         super(StorageVersionStatus, self).__init__(

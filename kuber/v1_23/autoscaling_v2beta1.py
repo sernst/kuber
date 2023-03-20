@@ -28,10 +28,10 @@ class ContainerResourceMetricSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container: str = None,
-        name: str = None,
-        target_average_utilization: int = None,
-        target_average_value: typing.Union[str, int, None] = None,
+        container: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        target_average_utilization: typing.Optional[int] = None,
+        target_average_value: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create ContainerResourceMetricSource instance."""
         super(ContainerResourceMetricSource, self).__init__(
@@ -154,10 +154,10 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container: str = None,
-        current_average_utilization: int = None,
-        current_average_value: typing.Union[str, int, None] = None,
-        name: str = None,
+        container: typing.Optional[str] = None,
+        current_average_utilization: typing.Optional[int] = None,
+        current_average_value: typing.Optional[typing.Union[str, int, None]] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create ContainerResourceMetricStatus instance."""
         super(ContainerResourceMetricStatus, self).__init__(
@@ -281,9 +281,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        kind: str = None,
-        name: str = None,
+        api_version: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create CrossVersionObjectReference instance."""
         super(CrossVersionObjectReference, self).__init__(
@@ -375,10 +375,10 @@ class ExternalMetricSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        metric_name: str = None,
-        metric_selector: "LabelSelector" = None,
-        target_average_value: typing.Union[str, int, None] = None,
-        target_value: typing.Union[str, int, None] = None,
+        metric_name: typing.Optional[str] = None,
+        metric_selector: typing.Optional["LabelSelector"] = None,
+        target_average_value: typing.Optional[typing.Union[str, int, None]] = None,
+        target_value: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create ExternalMetricSource instance."""
         super(ExternalMetricSource, self).__init__(
@@ -491,10 +491,10 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        current_average_value: typing.Union[str, int, None] = None,
-        current_value: typing.Union[str, int, None] = None,
-        metric_name: str = None,
-        metric_selector: "LabelSelector" = None,
+        current_average_value: typing.Optional[typing.Union[str, int, None]] = None,
+        current_value: typing.Optional[typing.Union[str, int, None]] = None,
+        metric_name: typing.Optional[str] = None,
+        metric_selector: typing.Optional["LabelSelector"] = None,
     ):
         """Create ExternalMetricStatus instance."""
         super(ExternalMetricStatus, self).__init__(
@@ -611,9 +611,9 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "HorizontalPodAutoscalerSpec" = None,
-        status: "HorizontalPodAutoscalerStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["HorizontalPodAutoscalerSpec"] = None,
+        status: typing.Optional["HorizontalPodAutoscalerStatus"] = None,
     ):
         """Create HorizontalPodAutoscaler instance."""
         super(HorizontalPodAutoscaler, self).__init__(
@@ -709,7 +709,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         self._properties["status"] = value
 
     def create_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Creates the HorizontalPodAutoscaler in the currently
@@ -736,7 +736,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         return output
 
     def replace_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Replaces the HorizontalPodAutoscaler in the currently
@@ -763,7 +763,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         return output
 
     def patch_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Patches the HorizontalPodAutoscaler in the currently
@@ -790,7 +790,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -814,7 +814,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the HorizontalPodAutoscaler from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -834,7 +834,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -863,7 +863,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AutoscalingV2beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -888,11 +888,11 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create HorizontalPodAutoscalerCondition instance."""
         super(HorizontalPodAutoscalerCondition, self).__init__(
@@ -1025,8 +1025,8 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["HorizontalPodAutoscaler"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["HorizontalPodAutoscaler"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create HorizontalPodAutoscalerList instance."""
         super(HorizontalPodAutoscalerList, self).__init__(
@@ -1095,7 +1095,7 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AutoscalingV2beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1120,10 +1120,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_replicas: int = None,
-        metrics: typing.List["MetricSpec"] = None,
-        min_replicas: int = None,
-        scale_target_ref: "CrossVersionObjectReference" = None,
+        max_replicas: typing.Optional[int] = None,
+        metrics: typing.Optional[typing.List["MetricSpec"]] = None,
+        min_replicas: typing.Optional[int] = None,
+        scale_target_ref: typing.Optional["CrossVersionObjectReference"] = None,
     ):
         """Create HorizontalPodAutoscalerSpec instance."""
         super(HorizontalPodAutoscalerSpec, self).__init__(
@@ -1278,12 +1278,14 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["HorizontalPodAutoscalerCondition"] = None,
-        current_metrics: typing.List["MetricStatus"] = None,
-        current_replicas: int = None,
-        desired_replicas: int = None,
-        last_scale_time: str = None,
-        observed_generation: int = None,
+        conditions: typing.Optional[
+            typing.List["HorizontalPodAutoscalerCondition"]
+        ] = None,
+        current_metrics: typing.Optional[typing.List["MetricStatus"]] = None,
+        current_replicas: typing.Optional[int] = None,
+        desired_replicas: typing.Optional[int] = None,
+        last_scale_time: typing.Optional[str] = None,
+        observed_generation: typing.Optional[int] = None,
     ):
         """Create HorizontalPodAutoscalerStatus instance."""
         super(HorizontalPodAutoscalerStatus, self).__init__(
@@ -1477,12 +1479,12 @@ class MetricSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container_resource: "ContainerResourceMetricSource" = None,
-        external: "ExternalMetricSource" = None,
-        object_: "ObjectMetricSource" = None,
-        pods: "PodsMetricSource" = None,
-        resource: "ResourceMetricSource" = None,
-        type_: str = None,
+        container_resource: typing.Optional["ContainerResourceMetricSource"] = None,
+        external: typing.Optional["ExternalMetricSource"] = None,
+        object_: typing.Optional["ObjectMetricSource"] = None,
+        pods: typing.Optional["PodsMetricSource"] = None,
+        resource: typing.Optional["ResourceMetricSource"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create MetricSpec instance."""
         super(MetricSpec, self).__init__(
@@ -1701,12 +1703,12 @@ class MetricStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container_resource: "ContainerResourceMetricStatus" = None,
-        external: "ExternalMetricStatus" = None,
-        object_: "ObjectMetricStatus" = None,
-        pods: "PodsMetricStatus" = None,
-        resource: "ResourceMetricStatus" = None,
-        type_: str = None,
+        container_resource: typing.Optional["ContainerResourceMetricStatus"] = None,
+        external: typing.Optional["ExternalMetricStatus"] = None,
+        object_: typing.Optional["ObjectMetricStatus"] = None,
+        pods: typing.Optional["PodsMetricStatus"] = None,
+        resource: typing.Optional["ResourceMetricStatus"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create MetricStatus instance."""
         super(MetricStatus, self).__init__(
@@ -1924,11 +1926,11 @@ class ObjectMetricSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        average_value: typing.Union[str, int, None] = None,
-        metric_name: str = None,
-        selector: "LabelSelector" = None,
-        target: "CrossVersionObjectReference" = None,
-        target_value: typing.Union[str, int, None] = None,
+        average_value: typing.Optional[typing.Union[str, int, None]] = None,
+        metric_name: typing.Optional[str] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        target: typing.Optional["CrossVersionObjectReference"] = None,
+        target_value: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create ObjectMetricSource instance."""
         super(ObjectMetricSource, self).__init__(
@@ -2068,11 +2070,11 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        average_value: typing.Union[str, int, None] = None,
-        current_value: typing.Union[str, int, None] = None,
-        metric_name: str = None,
-        selector: "LabelSelector" = None,
-        target: "CrossVersionObjectReference" = None,
+        average_value: typing.Optional[typing.Union[str, int, None]] = None,
+        current_value: typing.Optional[typing.Union[str, int, None]] = None,
+        metric_name: typing.Optional[str] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        target: typing.Optional["CrossVersionObjectReference"] = None,
     ):
         """Create ObjectMetricStatus instance."""
         super(ObjectMetricStatus, self).__init__(
@@ -2216,9 +2218,9 @@ class PodsMetricSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        metric_name: str = None,
-        selector: "LabelSelector" = None,
-        target_average_value: typing.Union[str, int, None] = None,
+        metric_name: typing.Optional[str] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        target_average_value: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create PodsMetricSource instance."""
         super(PodsMetricSource, self).__init__(
@@ -2317,9 +2319,9 @@ class PodsMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        current_average_value: typing.Union[str, int, None] = None,
-        metric_name: str = None,
-        selector: "LabelSelector" = None,
+        current_average_value: typing.Optional[typing.Union[str, int, None]] = None,
+        metric_name: typing.Optional[str] = None,
+        selector: typing.Optional["LabelSelector"] = None,
     ):
         """Create PodsMetricStatus instance."""
         super(PodsMetricStatus, self).__init__(
@@ -2423,9 +2425,9 @@ class ResourceMetricSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        target_average_utilization: int = None,
-        target_average_value: typing.Union[str, int, None] = None,
+        name: typing.Optional[str] = None,
+        target_average_utilization: typing.Optional[int] = None,
+        target_average_value: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create ResourceMetricSource instance."""
         super(ResourceMetricSource, self).__init__(
@@ -2527,9 +2529,9 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        current_average_utilization: int = None,
-        current_average_value: typing.Union[str, int, None] = None,
-        name: str = None,
+        current_average_utilization: typing.Optional[int] = None,
+        current_average_value: typing.Optional[typing.Union[str, int, None]] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create ResourceMetricStatus instance."""
         super(ResourceMetricStatus, self).__init__(

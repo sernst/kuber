@@ -34,9 +34,9 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "CertificateSigningRequestSpec" = None,
-        status: "CertificateSigningRequestStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["CertificateSigningRequestSpec"] = None,
+        status: typing.Optional["CertificateSigningRequestStatus"] = None,
     ):
         """Create CertificateSigningRequest instance."""
         super(CertificateSigningRequest, self).__init__(
@@ -132,7 +132,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
         self._properties["status"] = value
 
     def create_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CertificateSigningRequestStatus":
         """
         Creates the CertificateSigningRequest in the currently
@@ -159,7 +159,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
         return output
 
     def replace_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CertificateSigningRequestStatus":
         """
         Replaces the CertificateSigningRequest in the currently
@@ -186,7 +186,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
         return output
 
     def patch_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CertificateSigningRequestStatus":
         """
         Patches the CertificateSigningRequest in the currently
@@ -213,7 +213,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CertificateSigningRequestStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -237,7 +237,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CertificateSigningRequest from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -257,7 +257,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -286,7 +286,7 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CertificatesV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -311,12 +311,12 @@ class CertificateSigningRequestCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        last_update_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        last_update_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create CertificateSigningRequestCondition instance."""
         super(CertificateSigningRequestCondition, self).__init__(
@@ -524,8 +524,8 @@ class CertificateSigningRequestList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CertificateSigningRequest"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CertificateSigningRequest"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CertificateSigningRequestList instance."""
         super(CertificateSigningRequestList, self).__init__(
@@ -592,7 +592,7 @@ class CertificateSigningRequestList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CertificatesV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -617,14 +617,14 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        expiration_seconds: int = None,
-        extra: dict = None,
-        groups: typing.List[str] = None,
-        request: str = None,
-        signer_name: str = None,
-        uid: str = None,
-        usages: typing.List[str] = None,
-        username: str = None,
+        expiration_seconds: typing.Optional[int] = None,
+        extra: typing.Optional[dict] = None,
+        groups: typing.Optional[typing.List[str]] = None,
+        request: typing.Optional[str] = None,
+        signer_name: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
+        usages: typing.Optional[typing.List[str]] = None,
+        username: typing.Optional[str] = None,
     ):
         """Create CertificateSigningRequestSpec instance."""
         super(CertificateSigningRequestSpec, self).__init__(
@@ -1009,8 +1009,10 @@ class CertificateSigningRequestStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        certificate: str = None,
-        conditions: typing.List["CertificateSigningRequestCondition"] = None,
+        certificate: typing.Optional[str] = None,
+        conditions: typing.Optional[
+            typing.List["CertificateSigningRequestCondition"]
+        ] = None,
     ):
         """Create CertificateSigningRequestStatus instance."""
         super(CertificateSigningRequestStatus, self).__init__(

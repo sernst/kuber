@@ -44,9 +44,9 @@ class ControllerRevision(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        data: "RawExtension" = None,
-        metadata: "ObjectMeta" = None,
-        revision: int = None,
+        data: typing.Optional["RawExtension"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        revision: typing.Optional[int] = None,
     ):
         """Create ControllerRevision instance."""
         super(ControllerRevision, self).__init__(
@@ -132,7 +132,7 @@ class ControllerRevision(_kuber_definitions.Resource):
         """
         self._properties["revision"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the ControllerRevision in the currently
         configured Kubernetes cluster.
@@ -148,7 +148,7 @@ class ControllerRevision(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the ControllerRevision in the currently
         configured Kubernetes cluster.
@@ -167,7 +167,7 @@ class ControllerRevision(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the ControllerRevision in the currently
         configured Kubernetes cluster.
@@ -183,11 +183,11 @@ class ControllerRevision(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ControllerRevision from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -207,7 +207,7 @@ class ControllerRevision(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -236,7 +236,7 @@ class ControllerRevision(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -261,8 +261,8 @@ class ControllerRevisionList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ControllerRevision"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ControllerRevision"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ControllerRevisionList instance."""
         super(ControllerRevisionList, self).__init__(
@@ -334,7 +334,7 @@ class ControllerRevisionList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -358,9 +358,9 @@ class DaemonSet(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "DaemonSetSpec" = None,
-        status: "DaemonSetStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["DaemonSetSpec"] = None,
+        status: typing.Optional["DaemonSetStatus"] = None,
     ):
         """Create DaemonSet instance."""
         super(DaemonSet, self).__init__(api_version="apps/v1", kind="DaemonSet")
@@ -603,7 +603,9 @@ class DaemonSet(_kuber_definitions.Resource):
         """
         return self.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "DaemonSetStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DaemonSetStatus":
         """
         Creates the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -625,7 +627,9 @@ class DaemonSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "DaemonSetStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DaemonSetStatus":
         """
         Replaces the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -647,7 +651,9 @@ class DaemonSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "DaemonSetStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DaemonSetStatus":
         """
         Patches the DaemonSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -669,7 +675,9 @@ class DaemonSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "DaemonSetStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DaemonSetStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -692,7 +700,7 @@ class DaemonSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the DaemonSet from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -712,7 +720,7 @@ class DaemonSet(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -741,7 +749,7 @@ class DaemonSet(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -766,11 +774,11 @@ class DaemonSetCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create DaemonSetCondition instance."""
         super(DaemonSetCondition, self).__init__(
@@ -902,8 +910,8 @@ class DaemonSetList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["DaemonSet"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["DaemonSet"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create DaemonSetList instance."""
         super(DaemonSetList, self).__init__(api_version="apps/v1", kind="DaemonSetList")
@@ -971,7 +979,7 @@ class DaemonSetList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -995,11 +1003,11 @@ class DaemonSetSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        min_ready_seconds: int = None,
-        revision_history_limit: int = None,
-        selector: "LabelSelector" = None,
-        template: "PodTemplateSpec" = None,
-        update_strategy: "DaemonSetUpdateStrategy" = None,
+        min_ready_seconds: typing.Optional[int] = None,
+        revision_history_limit: typing.Optional[int] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
+        update_strategy: typing.Optional["DaemonSetUpdateStrategy"] = None,
     ):
         """Create DaemonSetSpec instance."""
         super(DaemonSetSpec, self).__init__(api_version="apps/v1", kind="DaemonSetSpec")
@@ -1311,16 +1319,16 @@ class DaemonSetStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        collision_count: int = None,
-        conditions: typing.List["DaemonSetCondition"] = None,
-        current_number_scheduled: int = None,
-        desired_number_scheduled: int = None,
-        number_available: int = None,
-        number_misscheduled: int = None,
-        number_ready: int = None,
-        number_unavailable: int = None,
-        observed_generation: int = None,
-        updated_number_scheduled: int = None,
+        collision_count: typing.Optional[int] = None,
+        conditions: typing.Optional[typing.List["DaemonSetCondition"]] = None,
+        current_number_scheduled: typing.Optional[int] = None,
+        desired_number_scheduled: typing.Optional[int] = None,
+        number_available: typing.Optional[int] = None,
+        number_misscheduled: typing.Optional[int] = None,
+        number_ready: typing.Optional[int] = None,
+        number_unavailable: typing.Optional[int] = None,
+        observed_generation: typing.Optional[int] = None,
+        updated_number_scheduled: typing.Optional[int] = None,
     ):
         """Create DaemonSetStatus instance."""
         super(DaemonSetStatus, self).__init__(
@@ -1598,8 +1606,8 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        rolling_update: "RollingUpdateDaemonSet" = None,
-        type_: str = None,
+        rolling_update: typing.Optional["RollingUpdateDaemonSet"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create DaemonSetUpdateStrategy instance."""
         super(DaemonSetUpdateStrategy, self).__init__(
@@ -1645,6 +1653,7 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type of daemon set update. Can be "RollingUpdate" or
         "OnDelete". Default is RollingUpdate.
+
         """
         return typing.cast(
             str,
@@ -1656,6 +1665,7 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type of daemon set update. Can be "RollingUpdate" or
         "OnDelete". Default is RollingUpdate.
+
         """
         self._properties["type"] = value
 
@@ -1674,9 +1684,9 @@ class Deployment(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "DeploymentSpec" = None,
-        status: "DeploymentStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["DeploymentSpec"] = None,
+        status: typing.Optional["DeploymentStatus"] = None,
     ):
         """Create Deployment instance."""
         super(Deployment, self).__init__(api_version="apps/v1", kind="Deployment")
@@ -1907,7 +1917,9 @@ class Deployment(_kuber_definitions.Resource):
         """
         return self.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "DeploymentStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DeploymentStatus":
         """
         Creates the Deployment in the currently
         configured Kubernetes cluster and returns the status information
@@ -1929,7 +1941,9 @@ class Deployment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "DeploymentStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DeploymentStatus":
         """
         Replaces the Deployment in the currently
         configured Kubernetes cluster and returns the status information
@@ -1951,7 +1965,9 @@ class Deployment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "DeploymentStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DeploymentStatus":
         """
         Patches the Deployment in the currently
         configured Kubernetes cluster and returns the status information
@@ -1973,7 +1989,9 @@ class Deployment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "DeploymentStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "DeploymentStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -1996,7 +2014,7 @@ class Deployment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Deployment from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -2016,7 +2034,7 @@ class Deployment(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -2045,7 +2063,7 @@ class Deployment(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2070,12 +2088,12 @@ class DeploymentCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        last_update_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        last_update_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create DeploymentCondition instance."""
         super(DeploymentCondition, self).__init__(
@@ -2234,8 +2252,8 @@ class DeploymentList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Deployment"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Deployment"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create DeploymentList instance."""
         super(DeploymentList, self).__init__(
@@ -2301,7 +2319,7 @@ class DeploymentList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2326,14 +2344,14 @@ class DeploymentSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        min_ready_seconds: int = None,
-        paused: bool = None,
-        progress_deadline_seconds: int = None,
-        replicas: int = None,
-        revision_history_limit: int = None,
-        selector: "LabelSelector" = None,
-        strategy: "DeploymentStrategy" = None,
-        template: "PodTemplateSpec" = None,
+        min_ready_seconds: typing.Optional[int] = None,
+        paused: typing.Optional[bool] = None,
+        progress_deadline_seconds: typing.Optional[int] = None,
+        replicas: typing.Optional[int] = None,
+        revision_history_limit: typing.Optional[int] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        strategy: typing.Optional["DeploymentStrategy"] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
     ):
         """Create DeploymentSpec instance."""
         super(DeploymentSpec, self).__init__(
@@ -2704,14 +2722,14 @@ class DeploymentStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        available_replicas: int = None,
-        collision_count: int = None,
-        conditions: typing.List["DeploymentCondition"] = None,
-        observed_generation: int = None,
-        ready_replicas: int = None,
-        replicas: int = None,
-        unavailable_replicas: int = None,
-        updated_replicas: int = None,
+        available_replicas: typing.Optional[int] = None,
+        collision_count: typing.Optional[int] = None,
+        conditions: typing.Optional[typing.List["DeploymentCondition"]] = None,
+        observed_generation: typing.Optional[int] = None,
+        ready_replicas: typing.Optional[int] = None,
+        replicas: typing.Optional[int] = None,
+        unavailable_replicas: typing.Optional[int] = None,
+        updated_replicas: typing.Optional[int] = None,
     ):
         """Create DeploymentStatus instance."""
         super(DeploymentStatus, self).__init__(
@@ -2931,8 +2949,8 @@ class DeploymentStrategy(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        rolling_update: "RollingUpdateDeployment" = None,
-        type_: str = None,
+        rolling_update: typing.Optional["RollingUpdateDeployment"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create DeploymentStrategy instance."""
         super(DeploymentStrategy, self).__init__(
@@ -2978,6 +2996,7 @@ class DeploymentStrategy(_kuber_definitions.Definition):
         """
         Type of deployment. Can be "Recreate" or "RollingUpdate".
         Default is RollingUpdate.
+
         """
         return typing.cast(
             str,
@@ -2989,6 +3008,7 @@ class DeploymentStrategy(_kuber_definitions.Definition):
         """
         Type of deployment. Can be "Recreate" or "RollingUpdate".
         Default is RollingUpdate.
+
         """
         self._properties["type"] = value
 
@@ -3007,9 +3027,9 @@ class ReplicaSet(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "ReplicaSetSpec" = None,
-        status: "ReplicaSetStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["ReplicaSetSpec"] = None,
+        status: typing.Optional["ReplicaSetStatus"] = None,
     ):
         """Create ReplicaSet instance."""
         super(ReplicaSet, self).__init__(api_version="apps/v1", kind="ReplicaSet")
@@ -3258,7 +3278,9 @@ class ReplicaSet(_kuber_definitions.Resource):
         """
         return self.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "ReplicaSetStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ReplicaSetStatus":
         """
         Creates the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -3280,7 +3302,9 @@ class ReplicaSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "ReplicaSetStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ReplicaSetStatus":
         """
         Replaces the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -3302,7 +3326,9 @@ class ReplicaSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "ReplicaSetStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ReplicaSetStatus":
         """
         Patches the ReplicaSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -3324,7 +3350,9 @@ class ReplicaSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "ReplicaSetStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ReplicaSetStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -3347,7 +3375,7 @@ class ReplicaSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ReplicaSet from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -3367,7 +3395,7 @@ class ReplicaSet(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -3396,7 +3424,7 @@ class ReplicaSet(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -3421,11 +3449,11 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create ReplicaSetCondition instance."""
         super(ReplicaSetCondition, self).__init__(
@@ -3557,8 +3585,8 @@ class ReplicaSetList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ReplicaSet"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ReplicaSet"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ReplicaSetList instance."""
         super(ReplicaSetList, self).__init__(
@@ -3630,7 +3658,7 @@ class ReplicaSetList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -3654,10 +3682,10 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        min_ready_seconds: int = None,
-        replicas: int = None,
-        selector: "LabelSelector" = None,
-        template: "PodTemplateSpec" = None,
+        min_ready_seconds: typing.Optional[int] = None,
+        replicas: typing.Optional[int] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
     ):
         """Create ReplicaSetSpec instance."""
         super(ReplicaSetSpec, self).__init__(
@@ -3943,12 +3971,12 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        available_replicas: int = None,
-        conditions: typing.List["ReplicaSetCondition"] = None,
-        fully_labeled_replicas: int = None,
-        observed_generation: int = None,
-        ready_replicas: int = None,
-        replicas: int = None,
+        available_replicas: typing.Optional[int] = None,
+        conditions: typing.Optional[typing.List["ReplicaSetCondition"]] = None,
+        fully_labeled_replicas: typing.Optional[int] = None,
+        observed_generation: typing.Optional[int] = None,
+        ready_replicas: typing.Optional[int] = None,
+        replicas: typing.Optional[int] = None,
     ):
         """Create ReplicaSetStatus instance."""
         super(ReplicaSetStatus, self).__init__(
@@ -4120,8 +4148,8 @@ class RollingUpdateDaemonSet(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_surge: typing.Union[str, int, None] = None,
-        max_unavailable: typing.Union[str, int, None] = None,
+        max_surge: typing.Optional[typing.Union[str, int, None]] = None,
+        max_unavailable: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create RollingUpdateDaemonSet instance."""
         super(RollingUpdateDaemonSet, self).__init__(
@@ -4256,8 +4284,8 @@ class RollingUpdateDeployment(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_surge: typing.Union[str, int, None] = None,
-        max_unavailable: typing.Union[str, int, None] = None,
+        max_surge: typing.Optional[typing.Union[str, int, None]] = None,
+        max_unavailable: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create RollingUpdateDeployment instance."""
         super(RollingUpdateDeployment, self).__init__(
@@ -4363,7 +4391,7 @@ class RollingUpdateStatefulSetStrategy(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        partition: int = None,
+        partition: typing.Optional[int] = None,
     ):
         """Create RollingUpdateStatefulSetStrategy instance."""
         super(RollingUpdateStatefulSetStrategy, self).__init__(
@@ -4406,17 +4434,18 @@ class StatefulSet(_kuber_definitions.Resource):
     """
     StatefulSet represents a set of pods with consistent
     identities. Identities are defined as:
-     - Network: A single stable DNS and hostname.
-     - Storage: As many VolumeClaims as requested.
+      - Network: A single stable DNS and hostname.
+      - Storage: As many VolumeClaims as requested.
+
     The StatefulSet guarantees that a given network identity
     will always map to the same storage identity.
     """
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "StatefulSetSpec" = None,
-        status: "StatefulSetStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["StatefulSetSpec"] = None,
+        status: typing.Optional["StatefulSetStatus"] = None,
     ):
         """Create StatefulSet instance."""
         super(StatefulSet, self).__init__(api_version="apps/v1", kind="StatefulSet")
@@ -4649,7 +4678,9 @@ class StatefulSet(_kuber_definitions.Resource):
         """
         return self.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "StatefulSetStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StatefulSetStatus":
         """
         Creates the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -4671,7 +4702,9 @@ class StatefulSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "StatefulSetStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StatefulSetStatus":
         """
         Replaces the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -4693,7 +4726,9 @@ class StatefulSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "StatefulSetStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StatefulSetStatus":
         """
         Patches the StatefulSet in the currently
         configured Kubernetes cluster and returns the status information
@@ -4715,7 +4750,9 @@ class StatefulSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "StatefulSetStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "StatefulSetStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -4738,7 +4775,7 @@ class StatefulSet(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the StatefulSet from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -4758,7 +4795,7 @@ class StatefulSet(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -4787,7 +4824,7 @@ class StatefulSet(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -4812,11 +4849,11 @@ class StatefulSetCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create StatefulSetCondition instance."""
         super(StatefulSetCondition, self).__init__(
@@ -4948,8 +4985,8 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["StatefulSet"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["StatefulSet"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create StatefulSetList instance."""
         super(StatefulSetList, self).__init__(
@@ -5019,7 +5056,7 @@ class StatefulSetList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AppsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -5036,6 +5073,91 @@ class StatefulSetList(_kuber_definitions.Collection):
         return False
 
 
+class StatefulSetPersistentVolumeClaimRetentionPolicy(_kuber_definitions.Definition):
+    """
+    StatefulSetPersistentVolumeClaimRetentionPolicy describes
+    the policy used for PVCs created from the StatefulSet
+    VolumeClaimTemplates.
+    """
+
+    def __init__(
+        self,
+        when_deleted: typing.Optional[str] = None,
+        when_scaled: typing.Optional[str] = None,
+    ):
+        """Create StatefulSetPersistentVolumeClaimRetentionPolicy instance."""
+        super(StatefulSetPersistentVolumeClaimRetentionPolicy, self).__init__(
+            api_version="apps/v1",
+            kind="StatefulSetPersistentVolumeClaimRetentionPolicy",
+        )
+        self._properties = {
+            "whenDeleted": when_deleted if when_deleted is not None else "",
+            "whenScaled": when_scaled if when_scaled is not None else "",
+        }
+        self._types = {
+            "whenDeleted": (str, None),
+            "whenScaled": (str, None),
+        }
+
+    @property
+    def when_deleted(self) -> str:
+        """
+        WhenDeleted specifies what happens to PVCs created from
+        StatefulSet VolumeClaimTemplates when the StatefulSet is
+        deleted. The default policy of `Retain` causes PVCs to not
+        be affected by StatefulSet deletion. The `Delete` policy
+        causes those PVCs to be deleted.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("whenDeleted"),
+        )
+
+    @when_deleted.setter
+    def when_deleted(self, value: str):
+        """
+        WhenDeleted specifies what happens to PVCs created from
+        StatefulSet VolumeClaimTemplates when the StatefulSet is
+        deleted. The default policy of `Retain` causes PVCs to not
+        be affected by StatefulSet deletion. The `Delete` policy
+        causes those PVCs to be deleted.
+        """
+        self._properties["whenDeleted"] = value
+
+    @property
+    def when_scaled(self) -> str:
+        """
+        WhenScaled specifies what happens to PVCs created from
+        StatefulSet VolumeClaimTemplates when the StatefulSet is
+        scaled down. The default policy of `Retain` causes PVCs to
+        not be affected by a scaledown. The `Delete` policy causes
+        the associated PVCs for any excess pods above the replica
+        count to be deleted.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("whenScaled"),
+        )
+
+    @when_scaled.setter
+    def when_scaled(self, value: str):
+        """
+        WhenScaled specifies what happens to PVCs created from
+        StatefulSet VolumeClaimTemplates when the StatefulSet is
+        scaled down. The default policy of `Retain` causes PVCs to
+        not be affected by a scaledown. The `Delete` policy causes
+        the associated PVCs for any excess pods above the replica
+        count to be deleted.
+        """
+        self._properties["whenScaled"] = value
+
+    def __enter__(self) -> "StatefulSetPersistentVolumeClaimRetentionPolicy":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class StatefulSetSpec(_kuber_definitions.Definition):
     """
     A StatefulSetSpec is the specification of a StatefulSet.
@@ -5043,15 +5165,20 @@ class StatefulSetSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        min_ready_seconds: int = None,
-        pod_management_policy: str = None,
-        replicas: int = None,
-        revision_history_limit: int = None,
-        selector: "LabelSelector" = None,
-        service_name: str = None,
-        template: "PodTemplateSpec" = None,
-        update_strategy: "StatefulSetUpdateStrategy" = None,
-        volume_claim_templates: typing.List["PersistentVolumeClaim"] = None,
+        min_ready_seconds: typing.Optional[int] = None,
+        persistent_volume_claim_retention_policy: typing.Optional[
+            "StatefulSetPersistentVolumeClaimRetentionPolicy"
+        ] = None,
+        pod_management_policy: typing.Optional[str] = None,
+        replicas: typing.Optional[int] = None,
+        revision_history_limit: typing.Optional[int] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        service_name: typing.Optional[str] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
+        update_strategy: typing.Optional["StatefulSetUpdateStrategy"] = None,
+        volume_claim_templates: typing.Optional[
+            typing.List["PersistentVolumeClaim"]
+        ] = None,
     ):
         """Create StatefulSetSpec instance."""
         super(StatefulSetSpec, self).__init__(
@@ -5061,6 +5188,9 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             "minReadySeconds": min_ready_seconds
             if min_ready_seconds is not None
             else None,
+            "persistentVolumeClaimRetentionPolicy": persistent_volume_claim_retention_policy
+            if persistent_volume_claim_retention_policy is not None
+            else StatefulSetPersistentVolumeClaimRetentionPolicy(),
             "podManagementPolicy": pod_management_policy
             if pod_management_policy is not None
             else "",
@@ -5080,6 +5210,10 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         }
         self._types = {
             "minReadySeconds": (int, None),
+            "persistentVolumeClaimRetentionPolicy": (
+                StatefulSetPersistentVolumeClaimRetentionPolicy,
+                None,
+            ),
             "podManagementPolicy": (str, None),
             "replicas": (int, None),
             "revisionHistoryLimit": (int, None),
@@ -5118,6 +5252,49 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         self._properties["minReadySeconds"] = value
 
     @property
+    def persistent_volume_claim_retention_policy(
+        self,
+    ) -> "StatefulSetPersistentVolumeClaimRetentionPolicy":
+        """
+        persistentVolumeClaimRetentionPolicy describes the lifecycle
+        of persistent volume claims created from
+        volumeClaimTemplates. By default, all persistent volume
+        claims are created as needed and retained until manually
+        deleted. This policy allows the lifecycle to be altered, for
+        example by deleting persistent volume claims when their
+        stateful set is deleted, or when their pod is scaled down.
+        This requires the StatefulSetAutoDeletePVC feature gate to
+        be enabled, which is alpha.  +optional
+        """
+        return typing.cast(
+            "StatefulSetPersistentVolumeClaimRetentionPolicy",
+            self._properties.get("persistentVolumeClaimRetentionPolicy"),
+        )
+
+    @persistent_volume_claim_retention_policy.setter
+    def persistent_volume_claim_retention_policy(
+        self,
+        value: typing.Union["StatefulSetPersistentVolumeClaimRetentionPolicy", dict],
+    ):
+        """
+        persistentVolumeClaimRetentionPolicy describes the lifecycle
+        of persistent volume claims created from
+        volumeClaimTemplates. By default, all persistent volume
+        claims are created as needed and retained until manually
+        deleted. This policy allows the lifecycle to be altered, for
+        example by deleting persistent volume claims when their
+        stateful set is deleted, or when their pod is scaled down.
+        This requires the StatefulSetAutoDeletePVC feature gate to
+        be enabled, which is alpha.  +optional
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                StatefulSetPersistentVolumeClaimRetentionPolicy,
+                StatefulSetPersistentVolumeClaimRetentionPolicy().from_dict(value),
+            )
+        self._properties["persistentVolumeClaimRetentionPolicy"] = value
+
+    @property
     def pod_management_policy(self) -> str:
         """
         podManagementPolicy controls how pods are created during
@@ -5130,6 +5307,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         which will create pods in parallel to match the desired
         scale without waiting, and on scale down will delete all
         pods at once.
+
         """
         return typing.cast(
             str,
@@ -5149,6 +5327,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         which will create pods in parallel to match the desired
         scale without waiting, and on scale down will delete all
         pods at once.
+
         """
         self._properties["podManagementPolicy"] = value
 
@@ -5510,16 +5689,16 @@ class StatefulSetStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        available_replicas: int = None,
-        collision_count: int = None,
-        conditions: typing.List["StatefulSetCondition"] = None,
-        current_replicas: int = None,
-        current_revision: str = None,
-        observed_generation: int = None,
-        ready_replicas: int = None,
-        replicas: int = None,
-        update_revision: str = None,
-        updated_replicas: int = None,
+        available_replicas: typing.Optional[int] = None,
+        collision_count: typing.Optional[int] = None,
+        conditions: typing.Optional[typing.List["StatefulSetCondition"]] = None,
+        current_replicas: typing.Optional[int] = None,
+        current_revision: typing.Optional[str] = None,
+        observed_generation: typing.Optional[int] = None,
+        ready_replicas: typing.Optional[int] = None,
+        replicas: typing.Optional[int] = None,
+        update_revision: typing.Optional[str] = None,
+        updated_replicas: typing.Optional[int] = None,
     ):
         """Create StatefulSetStatus instance."""
         super(StatefulSetStatus, self).__init__(
@@ -5794,8 +5973,8 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        rolling_update: "RollingUpdateStatefulSetStrategy" = None,
-        type_: str = None,
+        rolling_update: typing.Optional["RollingUpdateStatefulSetStrategy"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create StatefulSetUpdateStrategy instance."""
         super(StatefulSetUpdateStrategy, self).__init__(
@@ -5843,6 +6022,7 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type indicates the type of the StatefulSetUpdateStrategy.
         Default is RollingUpdate.
+
         """
         return typing.cast(
             str,
@@ -5854,6 +6034,7 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type indicates the type of the StatefulSetUpdateStrategy.
         Default is RollingUpdate.
+
         """
         self._properties["type"] = value
 

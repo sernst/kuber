@@ -1,4 +1,4 @@
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the {{ entity.class_name }} in the currently
         configured Kubernetes cluster.
@@ -17,7 +17,7 @@
             api_args={"body": self.to_dict()}
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the {{ entity.class_name }} in the currently
         configured Kubernetes cluster.
@@ -36,7 +36,7 @@
             api_args={"body": self.to_dict(), "name": self.metadata.name}
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the {{ entity.class_name }} in the currently
         configured Kubernetes cluster.
@@ -55,6 +55,6 @@
             api_args={"body": self.to_dict(), "name": self.metadata.name}
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass

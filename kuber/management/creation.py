@@ -88,8 +88,8 @@ def from_yaml(
 def new_resource(
     api_version: str,
     kind: str,
-    name: str = None,
-    kubernetes_version: "kuber.VersionLabel" = None,
+    name: typing.Optional[str] = None,
+    kubernetes_version: typing.Optional["kuber.VersionLabel"] = None,
     **kwargs: str,
 ) -> typing.Optional[ResourceSubclass]:
     """
@@ -135,7 +135,11 @@ def from_dict(
     if not resource_definition:
         return None
 
-    version: str = getattr(kubernetes_version, "label", kubernetes_version or "latest")
+    version: str = getattr(
+        kubernetes_version,
+        "label",
+        typing.cast(typing.Optional[str], kubernetes_version) or "latest",
+    )
     if version.find(".") > 0 and not version.startswith("v"):
         version = f"v{version}"
     version = version.replace(".", "_")

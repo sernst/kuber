@@ -18,7 +18,7 @@ class Overhead(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        pod_fixed: dict = None,
+        pod_fixed: typing.Optional[dict] = None,
     ):
         """Create Overhead instance."""
         super(Overhead, self).__init__(api_version="node/v1alpha1", kind="Overhead")
@@ -70,8 +70,8 @@ class RuntimeClass(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "RuntimeClassSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["RuntimeClassSpec"] = None,
     ):
         """Create RuntimeClass instance."""
         super(RuntimeClass, self).__init__(
@@ -140,7 +140,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the RuntimeClass in the currently
         configured Kubernetes cluster.
@@ -156,7 +156,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the RuntimeClass in the currently
         configured Kubernetes cluster.
@@ -172,7 +172,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the RuntimeClass in the currently
         configured Kubernetes cluster.
@@ -188,11 +188,11 @@ class RuntimeClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the RuntimeClass from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -212,7 +212,7 @@ class RuntimeClass(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -241,7 +241,7 @@ class RuntimeClass(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NodeV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -265,8 +265,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["RuntimeClass"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["RuntimeClass"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create RuntimeClassList instance."""
         super(RuntimeClassList, self).__init__(
@@ -338,7 +338,7 @@ class RuntimeClassList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NodeV1alpha1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -367,9 +367,9 @@ class RuntimeClassSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        overhead: "Overhead" = None,
-        runtime_handler: str = None,
-        scheduling: "Scheduling" = None,
+        overhead: typing.Optional["Overhead"] = None,
+        runtime_handler: typing.Optional[str] = None,
+        scheduling: typing.Optional["Scheduling"] = None,
     ):
         """Create RuntimeClassSpec instance."""
         super(RuntimeClassSpec, self).__init__(
@@ -496,8 +496,8 @@ class Scheduling(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        node_selector: dict = None,
-        tolerations: typing.List["Toleration"] = None,
+        node_selector: typing.Optional[dict] = None,
+        tolerations: typing.Optional[typing.List["Toleration"]] = None,
     ):
         """Create Scheduling instance."""
         super(Scheduling, self).__init__(api_version="node/v1alpha1", kind="Scheduling")

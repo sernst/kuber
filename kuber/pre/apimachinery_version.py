@@ -14,15 +14,15 @@ class Info(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        build_date: str = None,
-        compiler: str = None,
-        git_commit: str = None,
-        git_tree_state: str = None,
-        git_version: str = None,
-        go_version: str = None,
-        major: str = None,
-        minor: str = None,
-        platform: str = None,
+        build_date: typing.Optional[str] = None,
+        compiler: typing.Optional[str] = None,
+        git_commit: typing.Optional[str] = None,
+        git_tree_state: typing.Optional[str] = None,
+        git_version: typing.Optional[str] = None,
+        go_version: typing.Optional[str] = None,
+        major: typing.Optional[str] = None,
+        minor: typing.Optional[str] = None,
+        platform: typing.Optional[str] = None,
     ):
         """Create Info instance."""
         super(Info, self).__init__(api_version="apimachinery/version", kind="Info")

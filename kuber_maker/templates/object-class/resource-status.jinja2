@@ -1,6 +1,6 @@
     def create_resource(
             self,
-            namespace: "str" = None
+            namespace: typing.Optional["str"] = None
     ) -> "{{ entity.class_name | to_status_class }}":
         """
         Creates the {{ entity.class_name }} in the currently
@@ -32,7 +32,7 @@
 
     def replace_resource(
             self,
-            namespace: "str" = None
+            namespace: typing.Optional["str"] = None
     ) -> "{{ entity.class_name | to_status_class }}":
         """
         Replaces the {{ entity.class_name }} in the currently
@@ -64,7 +64,7 @@
 
     def patch_resource(
             self,
-            namespace: "str" = None
+            namespace: typing.Optional["str"] = None
     ) -> "{{ entity.class_name | to_status_class }}":
         """
         Patches the {{ entity.class_name }} in the currently
@@ -96,7 +96,7 @@
 
     def get_resource_status(
             self,
-            namespace: "str" = None
+            namespace: typing.Optional["str"] = None
     ) -> "{{ entity.class_name | to_status_class }}":
         """
         Returns status information about the given resource within the cluster.

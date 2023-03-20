@@ -69,7 +69,7 @@ class ResourceBundleSettings:
         self,
         directory: "kuber.PathLike",
         recursive: bool = False,
-        ignores: typing.List[str] = None,
+        ignores: typing.Optional[typing.List[str]] = None,
     ) -> "ResourceBundleSettings":
         """
         Adds all settings files (YAML and JSON) from the specified

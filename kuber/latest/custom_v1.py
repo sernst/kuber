@@ -25,11 +25,11 @@ class CustomObject(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        api_version: str = None,
-        kind: str = None,
-        metadata: "ObjectMeta" = None,
-        spec: dict = None,
-        status: dict = None,
+        api_version: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional[dict] = None,
+        status: typing.Optional[dict] = None,
     ):
         """Create CustomObject instance."""
         super(CustomObject, self).__init__(
@@ -169,7 +169,9 @@ class CustomObject(_kuber_definitions.Resource):
         """
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "CustomObjectStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CustomObjectStatus":
         """
         Creates the CustomObject in the currently
         configured Kubernetes cluster and returns the status information
@@ -194,7 +196,9 @@ class CustomObject(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "CustomObjectStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CustomObjectStatus":
         """
         Replaces the CustomObject in the currently
         configured Kubernetes cluster and returns the status information
@@ -219,7 +223,9 @@ class CustomObject(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "CustomObjectStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CustomObjectStatus":
         """
         Patches the CustomObject in the currently
         configured Kubernetes cluster and returns the status information
@@ -244,7 +250,9 @@ class CustomObject(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "CustomObjectStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CustomObjectStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -267,7 +275,7 @@ class CustomObject(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CustomObject from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -287,7 +295,7 @@ class CustomObject(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -316,7 +324,7 @@ class CustomObject(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CustomObjectsApi":
         """
         Returns an instance of the kubernetes API client associated with

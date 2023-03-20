@@ -18,7 +18,7 @@ class Overhead(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        pod_fixed: dict = None,
+        pod_fixed: typing.Optional[dict] = None,
     ):
         """Create Overhead instance."""
         super(Overhead, self).__init__(api_version="node/v1beta1", kind="Overhead")
@@ -70,10 +70,10 @@ class RuntimeClass(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        handler: str = None,
-        metadata: "ObjectMeta" = None,
-        overhead: "Overhead" = None,
-        scheduling: "Scheduling" = None,
+        handler: typing.Optional[str] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        overhead: typing.Optional["Overhead"] = None,
+        scheduling: typing.Optional["Scheduling"] = None,
     ):
         """Create RuntimeClass instance."""
         super(RuntimeClass, self).__init__(
@@ -215,7 +215,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             )
         self._properties["scheduling"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the RuntimeClass in the currently
         configured Kubernetes cluster.
@@ -231,7 +231,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the RuntimeClass in the currently
         configured Kubernetes cluster.
@@ -247,7 +247,7 @@ class RuntimeClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the RuntimeClass in the currently
         configured Kubernetes cluster.
@@ -263,11 +263,11 @@ class RuntimeClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the RuntimeClass from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -287,7 +287,7 @@ class RuntimeClass(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -316,7 +316,7 @@ class RuntimeClass(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NodeV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -340,8 +340,8 @@ class RuntimeClassList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["RuntimeClass"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["RuntimeClass"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create RuntimeClassList instance."""
         super(RuntimeClassList, self).__init__(
@@ -413,7 +413,7 @@ class RuntimeClassList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NodeV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -438,8 +438,8 @@ class Scheduling(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        node_selector: dict = None,
-        tolerations: typing.List["Toleration"] = None,
+        node_selector: typing.Optional[dict] = None,
+        tolerations: typing.Optional[typing.List["Toleration"]] = None,
     ):
         """Create Scheduling instance."""
         super(Scheduling, self).__init__(api_version="node/v1beta1", kind="Scheduling")
