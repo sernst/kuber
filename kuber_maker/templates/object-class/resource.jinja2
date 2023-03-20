@@ -5,7 +5,7 @@
 {% endif %}
     def read_resource(
             self,
-            namespace: str = None
+            namespace: typing.Optional[str] = None
     ):
         """
         Reads the {{  entity.class_name }} from the currently configured
@@ -30,7 +30,7 @@
 
     def delete_resource(
             self,
-            namespace: str = None,
+            namespace: typing.Optional[str] = None,
             propagation_policy: str = "Foreground",
             grace_period_seconds: int = 10
     ):
@@ -63,7 +63,7 @@
 
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
+            api_client: typing.Optional[client.ApiClient] = None,
             **kwargs
     ) -> "client.{{ kubernetes_api_class_name }}":
         """

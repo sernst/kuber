@@ -17,8 +17,8 @@ class Lease(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "LeaseSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["LeaseSpec"] = None,
     ):
         """Create Lease instance."""
         super(Lease, self).__init__(api_version="coordination/v1", kind="Lease")
@@ -85,7 +85,7 @@ class Lease(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Lease in the currently
         configured Kubernetes cluster.
@@ -101,7 +101,7 @@ class Lease(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Lease in the currently
         configured Kubernetes cluster.
@@ -117,7 +117,7 @@ class Lease(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Lease in the currently
         configured Kubernetes cluster.
@@ -133,11 +133,11 @@ class Lease(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Lease from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -157,7 +157,7 @@ class Lease(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -186,7 +186,7 @@ class Lease(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoordinationApi":
         """
         Returns an instance of the kubernetes API client associated with
@@ -210,8 +210,8 @@ class LeaseList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Lease"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Lease"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create LeaseList instance."""
         super(LeaseList, self).__init__(api_version="coordination/v1", kind="LeaseList")
@@ -279,7 +279,7 @@ class LeaseList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoordinationApi":
         """
         Returns an instance of the kubernetes API client associated with
@@ -303,11 +303,11 @@ class LeaseSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        acquire_time: "MicroTime" = None,
-        holder_identity: str = None,
-        lease_duration_seconds: int = None,
-        lease_transitions: int = None,
-        renew_time: "MicroTime" = None,
+        acquire_time: typing.Optional["MicroTime"] = None,
+        holder_identity: typing.Optional[str] = None,
+        lease_duration_seconds: typing.Optional[int] = None,
+        lease_transitions: typing.Optional[int] = None,
+        renew_time: typing.Optional["MicroTime"] = None,
     ):
         """Create LeaseSpec instance."""
         super(LeaseSpec, self).__init__(api_version="coordination/v1", kind="LeaseSpec")

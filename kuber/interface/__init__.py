@@ -26,7 +26,7 @@ class ResourceBundleCli:
         """Creates a ResourceBundleCli for the given ResourceBundle."""
         self._bundle = bundle
 
-    def __call__(self, arguments: typing.Iterable[str] = None):
+    def __call__(self, arguments: typing.Optional[typing.Iterable[str]] = None):
         """
         Invokes the command line interface for the bundle.
 
@@ -39,8 +39,8 @@ class ResourceBundleCli:
 
     def invoke(
         self,
-        callback: typing.Callable[[CommandAction], typing.Any] = None,
-        arguments: typing.Iterable[str] = None,
+        callback: typing.Optional[typing.Callable[[CommandAction], typing.Any]] = None,
+        arguments: typing.Optional[typing.Iterable[str]] = None,
     ):
         """
         Invokes the command line interface for the bundle, but calls the given

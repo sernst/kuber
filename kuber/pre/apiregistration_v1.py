@@ -20,9 +20,9 @@ class APIService(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "APIServiceSpec" = None,
-        status: "APIServiceStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["APIServiceSpec"] = None,
+        status: typing.Optional["APIServiceStatus"] = None,
     ):
         """Create APIService instance."""
         super(APIService, self).__init__(
@@ -113,7 +113,9 @@ class APIService(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "APIServiceStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "APIServiceStatus":
         """
         Creates the APIService in the currently
         configured Kubernetes cluster and returns the status information
@@ -135,7 +137,9 @@ class APIService(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "APIServiceStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "APIServiceStatus":
         """
         Replaces the APIService in the currently
         configured Kubernetes cluster and returns the status information
@@ -157,7 +161,9 @@ class APIService(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "APIServiceStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "APIServiceStatus":
         """
         Patches the APIService in the currently
         configured Kubernetes cluster and returns the status information
@@ -179,7 +185,9 @@ class APIService(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "APIServiceStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "APIServiceStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -202,7 +210,7 @@ class APIService(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the APIService from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -222,7 +230,7 @@ class APIService(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -251,7 +259,7 @@ class APIService(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.ApiregistrationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -276,11 +284,11 @@ class APIServiceCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create APIServiceCondition instance."""
         super(APIServiceCondition, self).__init__(
@@ -416,8 +424,8 @@ class APIServiceList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["APIService"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["APIService"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create APIServiceList instance."""
         super(APIServiceList, self).__init__(
@@ -487,7 +495,7 @@ class APIServiceList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.ApiregistrationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -513,13 +521,13 @@ class APIServiceSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ca_bundle: str = None,
-        group: str = None,
-        group_priority_minimum: int = None,
-        insecure_skip_tlsverify: bool = None,
-        service: "ServiceReference" = None,
-        version: str = None,
-        version_priority: int = None,
+        ca_bundle: typing.Optional[str] = None,
+        group: typing.Optional[str] = None,
+        group_priority_minimum: typing.Optional[int] = None,
+        insecure_skip_tlsverify: typing.Optional[bool] = None,
+        service: typing.Optional["ServiceReference"] = None,
+        version: typing.Optional[str] = None,
+        version_priority: typing.Optional[int] = None,
     ):
         """Create APIServiceSpec instance."""
         super(APIServiceSpec, self).__init__(
@@ -761,7 +769,7 @@ class APIServiceStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["APIServiceCondition"] = None,
+        conditions: typing.Optional[typing.List["APIServiceCondition"]] = None,
     ):
         """Create APIServiceStatus instance."""
         super(APIServiceStatus, self).__init__(
@@ -815,9 +823,9 @@ class ServiceReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        namespace: str = None,
-        port: int = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(

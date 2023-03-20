@@ -31,9 +31,9 @@ class CronJob(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "CronJobSpec" = None,
-        status: "CronJobStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["CronJobSpec"] = None,
+        status: typing.Optional["CronJobStatus"] = None,
     ):
         """Create CronJob instance."""
         super(CronJob, self).__init__(api_version="batch/v1beta1", kind="CronJob")
@@ -279,7 +279,9 @@ class CronJob(_kuber_definitions.Resource):
         """
         return self.spec.job_template.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Creates the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -301,7 +303,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Replaces the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -323,7 +327,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Patches the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -345,7 +351,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "CronJobStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -368,7 +376,7 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CronJob from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -388,7 +396,7 @@ class CronJob(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -417,7 +425,7 @@ class CronJob(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -441,8 +449,8 @@ class CronJobList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CronJob"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CronJob"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CronJobList instance."""
         super(CronJobList, self).__init__(
@@ -512,7 +520,7 @@ class CronJobList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -537,13 +545,13 @@ class CronJobSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        concurrency_policy: str = None,
-        failed_jobs_history_limit: int = None,
-        job_template: "JobTemplateSpec" = None,
-        schedule: str = None,
-        starting_deadline_seconds: int = None,
-        successful_jobs_history_limit: int = None,
-        suspend: bool = None,
+        concurrency_policy: typing.Optional[str] = None,
+        failed_jobs_history_limit: typing.Optional[int] = None,
+        job_template: typing.Optional["JobTemplateSpec"] = None,
+        schedule: typing.Optional[str] = None,
+        starting_deadline_seconds: typing.Optional[int] = None,
+        successful_jobs_history_limit: typing.Optional[int] = None,
+        suspend: typing.Optional[bool] = None,
     ):
         """Create CronJobSpec instance."""
         super(CronJobSpec, self).__init__(
@@ -893,9 +901,9 @@ class CronJobStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active: typing.List["ObjectReference"] = None,
-        last_schedule_time: str = None,
-        last_successful_time: str = None,
+        active: typing.Optional[typing.List["ObjectReference"]] = None,
+        last_schedule_time: typing.Optional[str] = None,
+        last_successful_time: typing.Optional[str] = None,
     ):
         """Create CronJobStatus instance."""
         super(CronJobStatus, self).__init__(
@@ -1008,8 +1016,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "JobSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["JobSpec"] = None,
     ):
         """Create JobTemplateSpec instance."""
         super(JobTemplateSpec, self).__init__(

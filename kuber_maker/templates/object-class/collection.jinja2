@@ -1,6 +1,6 @@
     @staticmethod
     def get_resource_api(
-            api_client: client.ApiClient = None,
+            api_client: typing.Optional[client.ApiClient] = None,
             **kwargs
     ) -> "client.{{ kubernetes_api_class_name }}":
         """

@@ -27,21 +27,21 @@ class Event(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        action: str = None,
-        deprecated_count: int = None,
-        deprecated_first_timestamp: str = None,
-        deprecated_last_timestamp: str = None,
-        deprecated_source: "EventSource" = None,
-        event_time: "MicroTime" = None,
-        metadata: "ObjectMeta" = None,
-        note: str = None,
-        reason: str = None,
-        regarding: "ObjectReference" = None,
-        related: "ObjectReference" = None,
-        reporting_controller: str = None,
-        reporting_instance: str = None,
-        series: "EventSeries" = None,
-        type_: str = None,
+        action: typing.Optional[str] = None,
+        deprecated_count: typing.Optional[int] = None,
+        deprecated_first_timestamp: typing.Optional[str] = None,
+        deprecated_last_timestamp: typing.Optional[str] = None,
+        deprecated_source: typing.Optional["EventSource"] = None,
+        event_time: typing.Optional["MicroTime"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        note: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        regarding: typing.Optional["ObjectReference"] = None,
+        related: typing.Optional["ObjectReference"] = None,
+        reporting_controller: typing.Optional[str] = None,
+        reporting_instance: typing.Optional[str] = None,
+        series: typing.Optional["EventSeries"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create Event instance."""
         super(Event, self).__init__(api_version="events/v1beta1", kind="Event")
@@ -439,7 +439,7 @@ class Event(_kuber_definitions.Resource):
         """
         self._properties["type"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Event in the currently
         configured Kubernetes cluster.
@@ -455,7 +455,7 @@ class Event(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Event in the currently
         configured Kubernetes cluster.
@@ -471,7 +471,7 @@ class Event(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Event in the currently
         configured Kubernetes cluster.
@@ -487,11 +487,11 @@ class Event(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Event from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -511,7 +511,7 @@ class Event(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -540,7 +540,7 @@ class Event(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.EventsV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -564,8 +564,8 @@ class EventList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Event"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Event"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create EventList instance."""
         super(EventList, self).__init__(api_version="events/v1beta1", kind="EventList")
@@ -633,7 +633,7 @@ class EventList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.EventsV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -658,8 +658,8 @@ class EventSeries(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        count: int = None,
-        last_observed_time: "MicroTime" = None,
+        count: typing.Optional[int] = None,
+        last_observed_time: typing.Optional["MicroTime"] = None,
     ):
         """Create EventSeries instance."""
         super(EventSeries, self).__init__(

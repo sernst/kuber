@@ -14,11 +14,7 @@ OptionalPathLike = typing.Optional[PathLike]
 API_VERSION_REMAPS = {"core/v1": "v1"}
 
 
-# Protocol was added in 3.8 and needs to be gracefully handled for now
-# without the Protocol class for static duck-typing. Eventually this
-# should be replaced by:
-# class ExecutionResponse(typing.Protocol):
-class ExecutionResponse:
+class ExecutionResponse(typing.Protocol):
     """Structural type for kubernetes execution responses."""
 
     @property
@@ -222,38 +218,40 @@ class Resource(Definition):
         return yaml.dump(self.to_dict(), default_flow_style=False)
 
     @abc.abstractmethod
-    def create_resource(self, namespace: str = None):
+    def create_resource(self, namespace: typing.Optional[str] = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional[str] = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional[str] = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def get_resource_status(self, namespace: str = None):
+    def get_resource_status(self, namespace: typing.Optional[str] = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def delete_resource(self, namespace: str = None):
+    def delete_resource(self, namespace: typing.Optional[str] = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """Must be implemented by subclasses."""
         pass  # pragma: no cover
 
     @staticmethod
     @abc.abstractmethod
-    def get_resource_api(api_client: client.ApiClient = None, **kwargs) -> typing.Any:
+    def get_resource_api(
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
+    ) -> typing.Any:
         """
         Returns an instance of the kubernetes API client associated with
         this object.

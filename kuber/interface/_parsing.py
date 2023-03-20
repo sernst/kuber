@@ -103,7 +103,8 @@ def _populate_render(subparsers):
 
 
 def parse_args(
-    bundle: "management.ResourceBundle", arguments: typing.Iterable[str] = None
+    bundle: "management.ResourceBundle",
+    arguments: typing.Optional[typing.Iterable[str]] = None,
 ) -> typing.Tuple[argparse.Namespace, typing.List[str]]:
     """Parses the CLI command line arguments."""
     parser = argparse.ArgumentParser(prog=bundle.name)

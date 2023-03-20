@@ -28,10 +28,10 @@ class AWSElasticBlockStoreVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        partition: int = None,
-        read_only: bool = None,
-        volume_id: str = None,
+        fs_type: typing.Optional[str] = None,
+        partition: typing.Optional[int] = None,
+        read_only: typing.Optional[bool] = None,
+        volume_id: typing.Optional[str] = None,
     ):
         """Create AWSElasticBlockStoreVolumeSource instance."""
         super(AWSElasticBlockStoreVolumeSource, self).__init__(
@@ -160,9 +160,9 @@ class Affinity(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        node_affinity: "NodeAffinity" = None,
-        pod_affinity: "PodAffinity" = None,
-        pod_anti_affinity: "PodAntiAffinity" = None,
+        node_affinity: typing.Optional["NodeAffinity"] = None,
+        pod_affinity: typing.Optional["PodAffinity"] = None,
+        pod_anti_affinity: typing.Optional["PodAntiAffinity"] = None,
     ):
         """Create Affinity instance."""
         super(Affinity, self).__init__(api_version="core/v1", kind="Affinity")
@@ -267,8 +267,8 @@ class AttachedVolume(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        device_path: str = None,
-        name: str = None,
+        device_path: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create AttachedVolume instance."""
         super(AttachedVolume, self).__init__(
@@ -334,12 +334,12 @@ class AzureDiskVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        caching_mode: str = None,
-        disk_name: str = None,
-        disk_uri: str = None,
-        fs_type: str = None,
-        kind: str = None,
-        read_only: bool = None,
+        caching_mode: typing.Optional[str] = None,
+        disk_name: typing.Optional[str] = None,
+        disk_uri: typing.Optional[str] = None,
+        fs_type: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
     ):
         """Create AzureDiskVolumeSource instance."""
         super(AzureDiskVolumeSource, self).__init__(
@@ -491,10 +491,10 @@ class AzureFilePersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        read_only: bool = None,
-        secret_name: str = None,
-        secret_namespace: str = None,
-        share_name: str = None,
+        read_only: typing.Optional[bool] = None,
+        secret_name: typing.Optional[str] = None,
+        secret_namespace: typing.Optional[str] = None,
+        share_name: typing.Optional[str] = None,
     ):
         """Create AzureFilePersistentVolumeSource instance."""
         super(AzureFilePersistentVolumeSource, self).__init__(
@@ -602,9 +602,9 @@ class AzureFileVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        read_only: bool = None,
-        secret_name: str = None,
-        share_name: str = None,
+        read_only: typing.Optional[bool] = None,
+        secret_name: typing.Optional[str] = None,
+        share_name: typing.Optional[str] = None,
     ):
         """Create AzureFileVolumeSource instance."""
         super(AzureFileVolumeSource, self).__init__(
@@ -692,8 +692,8 @@ class Binding(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        target: "ObjectReference" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        target: typing.Optional["ObjectReference"] = None,
     ):
         """Create Binding instance."""
         super(Binding, self).__init__(api_version="core/v1", kind="Binding")
@@ -758,7 +758,7 @@ class Binding(_kuber_definitions.Resource):
             )
         self._properties["target"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Binding in the currently
         configured Kubernetes cluster.
@@ -774,7 +774,7 @@ class Binding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Binding in the currently
         configured Kubernetes cluster.
@@ -790,7 +790,7 @@ class Binding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Binding in the currently
         configured Kubernetes cluster.
@@ -806,11 +806,11 @@ class Binding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Binding from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -830,7 +830,7 @@ class Binding(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -859,7 +859,7 @@ class Binding(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -884,15 +884,15 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        controller_expand_secret_ref: "SecretReference" = None,
-        controller_publish_secret_ref: "SecretReference" = None,
-        driver: str = None,
-        fs_type: str = None,
-        node_publish_secret_ref: "SecretReference" = None,
-        node_stage_secret_ref: "SecretReference" = None,
-        read_only: bool = None,
-        volume_attributes: dict = None,
-        volume_handle: str = None,
+        controller_expand_secret_ref: typing.Optional["SecretReference"] = None,
+        controller_publish_secret_ref: typing.Optional["SecretReference"] = None,
+        driver: typing.Optional[str] = None,
+        fs_type: typing.Optional[str] = None,
+        node_publish_secret_ref: typing.Optional["SecretReference"] = None,
+        node_stage_secret_ref: typing.Optional["SecretReference"] = None,
+        read_only: typing.Optional[bool] = None,
+        volume_attributes: typing.Optional[dict] = None,
+        volume_handle: typing.Optional[str] = None,
     ):
         """Create CSIPersistentVolumeSource instance."""
         super(CSIPersistentVolumeSource, self).__init__(
@@ -1179,11 +1179,11 @@ class CSIVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        driver: str = None,
-        fs_type: str = None,
-        node_publish_secret_ref: "LocalObjectReference" = None,
-        read_only: bool = None,
-        volume_attributes: dict = None,
+        driver: typing.Optional[str] = None,
+        fs_type: typing.Optional[str] = None,
+        node_publish_secret_ref: typing.Optional["LocalObjectReference"] = None,
+        read_only: typing.Optional[bool] = None,
+        volume_attributes: typing.Optional[dict] = None,
     ):
         """Create CSIVolumeSource instance."""
         super(CSIVolumeSource, self).__init__(
@@ -1340,8 +1340,8 @@ class Capabilities(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        add: typing.List[str] = None,
-        drop: typing.List[str] = None,
+        add: typing.Optional[typing.List[str]] = None,
+        drop: typing.Optional[typing.List[str]] = None,
     ):
         """Create Capabilities instance."""
         super(Capabilities, self).__init__(api_version="core/v1", kind="Capabilities")
@@ -1404,12 +1404,12 @@ class CephFSPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        monitors: typing.List[str] = None,
-        path: str = None,
-        read_only: bool = None,
-        secret_file: str = None,
-        secret_ref: "SecretReference" = None,
-        user: str = None,
+        monitors: typing.Optional[typing.List[str]] = None,
+        path: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_file: typing.Optional[str] = None,
+        secret_ref: typing.Optional["SecretReference"] = None,
+        user: typing.Optional[str] = None,
     ):
         """Create CephFSPersistentVolumeSource instance."""
         super(CephFSPersistentVolumeSource, self).__init__(
@@ -1583,12 +1583,12 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        monitors: typing.List[str] = None,
-        path: str = None,
-        read_only: bool = None,
-        secret_file: str = None,
-        secret_ref: "LocalObjectReference" = None,
-        user: str = None,
+        monitors: typing.Optional[typing.List[str]] = None,
+        path: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_file: typing.Optional[str] = None,
+        secret_ref: typing.Optional["LocalObjectReference"] = None,
+        user: typing.Optional[str] = None,
     ):
         """Create CephFSVolumeSource instance."""
         super(CephFSVolumeSource, self).__init__(
@@ -1765,10 +1765,10 @@ class CinderPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        read_only: bool = None,
-        secret_ref: "SecretReference" = None,
-        volume_id: str = None,
+        fs_type: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["SecretReference"] = None,
+        volume_id: typing.Optional[str] = None,
     ):
         """Create CinderPersistentVolumeSource instance."""
         super(CinderPersistentVolumeSource, self).__init__(
@@ -1893,10 +1893,10 @@ class CinderVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        read_only: bool = None,
-        secret_ref: "LocalObjectReference" = None,
-        volume_id: str = None,
+        fs_type: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["LocalObjectReference"] = None,
+        volume_id: typing.Optional[str] = None,
     ):
         """Create CinderVolumeSource instance."""
         super(CinderVolumeSource, self).__init__(
@@ -2021,7 +2021,7 @@ class ClientIPConfig(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        timeout_seconds: int = None,
+        timeout_seconds: typing.Optional[int] = None,
     ):
         """Create ClientIPConfig instance."""
         super(ClientIPConfig, self).__init__(
@@ -2071,10 +2071,10 @@ class ComponentCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        error: str = None,
-        message: str = None,
-        status: str = None,
-        type_: str = None,
+        error: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create ComponentCondition instance."""
         super(ComponentCondition, self).__init__(
@@ -2183,8 +2183,8 @@ class ComponentStatus(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        conditions: typing.List["ComponentCondition"] = None,
-        metadata: "ObjectMeta" = None,
+        conditions: typing.Optional[typing.List["ComponentCondition"]] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
     ):
         """Create ComponentStatus instance."""
         super(ComponentStatus, self).__init__(
@@ -2254,7 +2254,7 @@ class ComponentStatus(_kuber_definitions.Resource):
             )
         self._properties["metadata"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the ComponentStatus in the currently
         configured Kubernetes cluster.
@@ -2270,7 +2270,7 @@ class ComponentStatus(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the ComponentStatus in the currently
         configured Kubernetes cluster.
@@ -2286,7 +2286,7 @@ class ComponentStatus(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the ComponentStatus in the currently
         configured Kubernetes cluster.
@@ -2302,11 +2302,11 @@ class ComponentStatus(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ComponentStatus from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -2326,7 +2326,7 @@ class ComponentStatus(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -2355,7 +2355,7 @@ class ComponentStatus(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2381,8 +2381,8 @@ class ComponentStatusList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ComponentStatus"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ComponentStatus"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ComponentStatusList instance."""
         super(ComponentStatusList, self).__init__(
@@ -2454,7 +2454,7 @@ class ComponentStatusList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2478,10 +2478,10 @@ class ConfigMap(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        binary_data: dict = None,
-        data: dict = None,
-        immutable: bool = None,
-        metadata: "ObjectMeta" = None,
+        binary_data: typing.Optional[dict] = None,
+        data: typing.Optional[dict] = None,
+        immutable: typing.Optional[bool] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
     ):
         """Create ConfigMap instance."""
         super(ConfigMap, self).__init__(api_version="core/v1", kind="ConfigMap")
@@ -2603,7 +2603,7 @@ class ConfigMap(_kuber_definitions.Resource):
             )
         self._properties["metadata"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the ConfigMap in the currently
         configured Kubernetes cluster.
@@ -2619,7 +2619,7 @@ class ConfigMap(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the ConfigMap in the currently
         configured Kubernetes cluster.
@@ -2635,7 +2635,7 @@ class ConfigMap(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the ConfigMap in the currently
         configured Kubernetes cluster.
@@ -2651,11 +2651,11 @@ class ConfigMap(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ConfigMap from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -2675,7 +2675,7 @@ class ConfigMap(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -2704,7 +2704,7 @@ class ConfigMap(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2732,8 +2732,8 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        optional: bool = None,
+        name: typing.Optional[str] = None,
+        optional: typing.Optional[bool] = None,
     ):
         """Create ConfigMapEnvSource instance."""
         super(ConfigMapEnvSource, self).__init__(
@@ -2800,9 +2800,9 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        key: str = None,
-        name: str = None,
-        optional: bool = None,
+        key: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        optional: typing.Optional[bool] = None,
     ):
         """Create ConfigMapKeySelector instance."""
         super(ConfigMapKeySelector, self).__init__(
@@ -2889,8 +2889,8 @@ class ConfigMapList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ConfigMap"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ConfigMap"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ConfigMapList instance."""
         super(ConfigMapList, self).__init__(api_version="core/v1", kind="ConfigMapList")
@@ -2958,7 +2958,7 @@ class ConfigMapList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2986,11 +2986,11 @@ class ConfigMapNodeConfigSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        kubelet_config_key: str = None,
-        name: str = None,
-        namespace: str = None,
-        resource_version: str = None,
-        uid: str = None,
+        kubelet_config_key: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        resource_version: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
     ):
         """Create ConfigMapNodeConfigSource instance."""
         super(ConfigMapNodeConfigSource, self).__init__(
@@ -3135,9 +3135,9 @@ class ConfigMapProjection(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        items: typing.List["KeyToPath"] = None,
-        name: str = None,
-        optional: bool = None,
+        items: typing.Optional[typing.List["KeyToPath"]] = None,
+        name: typing.Optional[str] = None,
+        optional: typing.Optional[bool] = None,
     ):
         """Create ConfigMapProjection instance."""
         super(ConfigMapProjection, self).__init__(
@@ -3253,10 +3253,10 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        default_mode: int = None,
-        items: typing.List["KeyToPath"] = None,
-        name: str = None,
-        optional: bool = None,
+        default_mode: typing.Optional[int] = None,
+        items: typing.Optional[typing.List["KeyToPath"]] = None,
+        name: typing.Optional[str] = None,
+        optional: typing.Optional[bool] = None,
     ):
         """Create ConfigMapVolumeSource instance."""
         super(ConfigMapVolumeSource, self).__init__(
@@ -3400,28 +3400,28 @@ class Container(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        args: typing.List[str] = None,
-        command: typing.List[str] = None,
-        env: typing.List["EnvVar"] = None,
-        env_from: typing.List["EnvFromSource"] = None,
-        image: str = None,
-        image_pull_policy: str = None,
-        lifecycle: "Lifecycle" = None,
-        liveness_probe: "Probe" = None,
-        name: str = None,
-        ports: typing.List["ContainerPort"] = None,
-        readiness_probe: "Probe" = None,
-        resources: "ResourceRequirements" = None,
-        security_context: "SecurityContext" = None,
-        startup_probe: "Probe" = None,
-        stdin: bool = None,
-        stdin_once: bool = None,
-        termination_message_path: str = None,
-        termination_message_policy: str = None,
-        tty: bool = None,
-        volume_devices: typing.List["VolumeDevice"] = None,
-        volume_mounts: typing.List["VolumeMount"] = None,
-        working_dir: str = None,
+        args: typing.Optional[typing.List[str]] = None,
+        command: typing.Optional[typing.List[str]] = None,
+        env: typing.Optional[typing.List["EnvVar"]] = None,
+        env_from: typing.Optional[typing.List["EnvFromSource"]] = None,
+        image: typing.Optional[str] = None,
+        image_pull_policy: typing.Optional[str] = None,
+        lifecycle: typing.Optional["Lifecycle"] = None,
+        liveness_probe: typing.Optional["Probe"] = None,
+        name: typing.Optional[str] = None,
+        ports: typing.Optional[typing.List["ContainerPort"]] = None,
+        readiness_probe: typing.Optional["Probe"] = None,
+        resources: typing.Optional["ResourceRequirements"] = None,
+        security_context: typing.Optional["SecurityContext"] = None,
+        startup_probe: typing.Optional["Probe"] = None,
+        stdin: typing.Optional[bool] = None,
+        stdin_once: typing.Optional[bool] = None,
+        termination_message_path: typing.Optional[str] = None,
+        termination_message_policy: typing.Optional[str] = None,
+        tty: typing.Optional[bool] = None,
+        volume_devices: typing.Optional[typing.List["VolumeDevice"]] = None,
+        volume_mounts: typing.Optional[typing.List["VolumeMount"]] = None,
+        working_dir: typing.Optional[str] = None,
     ):
         """Create Container instance."""
         super(Container, self).__init__(api_version="core/v1", kind="Container")
@@ -3661,6 +3661,7 @@ class Container(_kuber_definitions.Definition):
         IfNotPresent otherwise. Cannot be updated. More info: https:
         //kubernetes.io/docs/concepts/containers/images#updating-
         images
+
         """
         return typing.cast(
             str,
@@ -3675,6 +3676,7 @@ class Container(_kuber_definitions.Definition):
         IfNotPresent otherwise. Cannot be updated. More info: https:
         //kubernetes.io/docs/concepts/containers/images#updating-
         images
+
         """
         self._properties["imagePullPolicy"] = value
 
@@ -4018,6 +4020,7 @@ class Container(_kuber_definitions.Definition):
         empty and the container exited with an error. The log output
         is limited to 2048 bytes or 80 lines, whichever is smaller.
         Defaults to File. Cannot be updated.
+
         """
         return typing.cast(
             str,
@@ -4035,6 +4038,7 @@ class Container(_kuber_definitions.Definition):
         empty and the container exited with an error. The log output
         is limited to 2048 bytes or 80 lines, whichever is smaller.
         Defaults to File. Cannot be updated.
+
         """
         self._properties["terminationMessagePolicy"] = value
 
@@ -4150,8 +4154,8 @@ class ContainerImage(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        names: typing.List[str] = None,
-        size_bytes: int = None,
+        names: typing.Optional[typing.List[str]] = None,
+        size_bytes: typing.Optional[int] = None,
     ):
         """Create ContainerImage instance."""
         super(ContainerImage, self).__init__(
@@ -4219,11 +4223,11 @@ class ContainerPort(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container_port: int = None,
-        host_ip: str = None,
-        host_port: int = None,
-        name: str = None,
-        protocol: str = None,
+        container_port: typing.Optional[int] = None,
+        host_ip: typing.Optional[str] = None,
+        host_port: typing.Optional[int] = None,
+        name: typing.Optional[str] = None,
+        protocol: typing.Optional[str] = None,
     ):
         """Create ContainerPort instance."""
         super(ContainerPort, self).__init__(api_version="core/v1", kind="ContainerPort")
@@ -4327,6 +4331,7 @@ class ContainerPort(_kuber_definitions.Definition):
         """
         Protocol for port. Must be UDP, TCP, or SCTP. Defaults to
         "TCP".
+
         """
         return typing.cast(
             str,
@@ -4338,6 +4343,7 @@ class ContainerPort(_kuber_definitions.Definition):
         """
         Protocol for port. Must be UDP, TCP, or SCTP. Defaults to
         "TCP".
+
         """
         self._properties["protocol"] = value
 
@@ -4357,9 +4363,9 @@ class ContainerState(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        running: "ContainerStateRunning" = None,
-        terminated: "ContainerStateTerminated" = None,
-        waiting: "ContainerStateWaiting" = None,
+        running: typing.Optional["ContainerStateRunning"] = None,
+        terminated: typing.Optional["ContainerStateTerminated"] = None,
+        waiting: typing.Optional["ContainerStateWaiting"] = None,
     ):
         """Create ContainerState instance."""
         super(ContainerState, self).__init__(
@@ -4458,7 +4464,7 @@ class ContainerStateRunning(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        started_at: str = None,
+        started_at: typing.Optional[str] = None,
     ):
         """Create ContainerStateRunning instance."""
         super(ContainerStateRunning, self).__init__(
@@ -4507,13 +4513,13 @@ class ContainerStateTerminated(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container_id: str = None,
-        exit_code: int = None,
-        finished_at: str = None,
-        message: str = None,
-        reason: str = None,
-        signal: int = None,
-        started_at: str = None,
+        container_id: typing.Optional[str] = None,
+        exit_code: typing.Optional[int] = None,
+        finished_at: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        signal: typing.Optional[int] = None,
+        started_at: typing.Optional[str] = None,
     ):
         """Create ContainerStateTerminated instance."""
         super(ContainerStateTerminated, self).__init__(
@@ -4679,8 +4685,8 @@ class ContainerStateWaiting(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        message: str = None,
-        reason: str = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
     ):
         """Create ContainerStateWaiting instance."""
         super(ContainerStateWaiting, self).__init__(
@@ -4744,15 +4750,15 @@ class ContainerStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container_id: str = None,
-        image: str = None,
-        image_id: str = None,
-        last_state: "ContainerState" = None,
-        name: str = None,
-        ready: bool = None,
-        restart_count: int = None,
-        started: bool = None,
-        state: "ContainerState" = None,
+        container_id: typing.Optional[str] = None,
+        image: typing.Optional[str] = None,
+        image_id: typing.Optional[str] = None,
+        last_state: typing.Optional["ContainerState"] = None,
+        name: typing.Optional[str] = None,
+        ready: typing.Optional[bool] = None,
+        restart_count: typing.Optional[int] = None,
+        started: typing.Optional[bool] = None,
+        state: typing.Optional["ContainerState"] = None,
     ):
         """Create ContainerStatus instance."""
         super(ContainerStatus, self).__init__(
@@ -4973,7 +4979,7 @@ class DaemonEndpoint(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        port: int = None,
+        port: typing.Optional[int] = None,
     ):
         """Create DaemonEndpoint instance."""
         super(DaemonEndpoint, self).__init__(
@@ -5019,7 +5025,7 @@ class DownwardAPIProjection(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        items: typing.List["DownwardAPIVolumeFile"] = None,
+        items: typing.Optional[typing.List["DownwardAPIVolumeFile"]] = None,
     ):
         """Create DownwardAPIProjection instance."""
         super(DownwardAPIProjection, self).__init__(
@@ -5075,10 +5081,10 @@ class DownwardAPIVolumeFile(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        field_ref: "ObjectFieldSelector" = None,
-        mode: int = None,
-        path: str = None,
-        resource_field_ref: "ResourceFieldSelector" = None,
+        field_ref: typing.Optional["ObjectFieldSelector"] = None,
+        mode: typing.Optional[int] = None,
+        path: typing.Optional[str] = None,
+        resource_field_ref: typing.Optional["ResourceFieldSelector"] = None,
     ):
         """Create DownwardAPIVolumeFile instance."""
         super(DownwardAPIVolumeFile, self).__init__(
@@ -5217,8 +5223,8 @@ class DownwardAPIVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        default_mode: int = None,
-        items: typing.List["DownwardAPIVolumeFile"] = None,
+        default_mode: typing.Optional[int] = None,
+        items: typing.Optional[typing.List["DownwardAPIVolumeFile"]] = None,
     ):
         """Create DownwardAPIVolumeSource instance."""
         super(DownwardAPIVolumeSource, self).__init__(
@@ -5309,8 +5315,8 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        medium: str = None,
-        size_limit: typing.Union[str, int, None] = None,
+        medium: typing.Optional[str] = None,
+        size_limit: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create EmptyDirVolumeSource instance."""
         super(EmptyDirVolumeSource, self).__init__(
@@ -5389,10 +5395,10 @@ class EndpointAddress(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        hostname: str = None,
-        ip: str = None,
-        node_name: str = None,
-        target_ref: "ObjectReference" = None,
+        hostname: typing.Optional[str] = None,
+        ip: typing.Optional[str] = None,
+        node_name: typing.Optional[str] = None,
+        target_ref: typing.Optional["ObjectReference"] = None,
     ):
         """Create EndpointAddress instance."""
         super(EndpointAddress, self).__init__(
@@ -5508,10 +5514,10 @@ class EndpointPort(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        app_protocol: str = None,
-        name: str = None,
-        port: int = None,
-        protocol: str = None,
+        app_protocol: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
+        protocol: typing.Optional[str] = None,
     ):
         """Create EndpointPort instance."""
         super(EndpointPort, self).__init__(api_version="core/v1", kind="EndpointPort")
@@ -5598,6 +5604,7 @@ class EndpointPort(_kuber_definitions.Definition):
         """
         The IP protocol for this port. Must be UDP, TCP, or SCTP.
         Default is TCP.
+
         """
         return typing.cast(
             str,
@@ -5609,6 +5616,7 @@ class EndpointPort(_kuber_definitions.Definition):
         """
         The IP protocol for this port. Must be UDP, TCP, or SCTP.
         Default is TCP.
+
         """
         self._properties["protocol"] = value
 
@@ -5624,21 +5632,24 @@ class EndpointSubset(_kuber_definitions.Definition):
     EndpointSubset is a group of addresses with a common set of
     ports. The expanded set of endpoints is the Cartesian
     product of Addresses x Ports. For example, given:
-      {
-        Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-        Ports:     [{"name": "a", "port": 8675}, {"name": "b",
+
+        {
+          Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+          Ports:     [{"name": "a", "port": 8675}, {"name": "b",
     "port": 309}]
-      }
+        }
+
     The resulting set of endpoints can be viewed as:
+
         a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
         b: [ 10.10.1.1:309, 10.10.2.2:309 ]
     """
 
     def __init__(
         self,
-        addresses: typing.List["EndpointAddress"] = None,
-        not_ready_addresses: typing.List["EndpointAddress"] = None,
-        ports: typing.List["EndpointPort"] = None,
+        addresses: typing.Optional[typing.List["EndpointAddress"]] = None,
+        not_ready_addresses: typing.Optional[typing.List["EndpointAddress"]] = None,
+        ports: typing.Optional[typing.List["EndpointPort"]] = None,
     ):
         """Create EndpointSubset instance."""
         super(EndpointSubset, self).__init__(
@@ -5759,25 +5770,26 @@ class Endpoints(_kuber_definitions.Resource):
     """
     Endpoints is a collection of endpoints that implement the
     actual service. Example:
-      Name: "mysvc",
-      Subsets: [
-        {
-          Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-          Ports: [{"name": "a", "port": 8675}, {"name": "b",
+
+         Name: "mysvc",
+         Subsets: [
+           {
+             Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+             Ports: [{"name": "a", "port": 8675}, {"name": "b",
     "port": 309}]
-        },
-        {
-          Addresses: [{"ip": "10.10.3.3"}],
-          Ports: [{"name": "a", "port": 93}, {"name": "b",
+           },
+           {
+             Addresses: [{"ip": "10.10.3.3"}],
+             Ports: [{"name": "a", "port": 93}, {"name": "b",
     "port": 76}]
-        },
-     ]
+           },
+        ]
     """
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        subsets: typing.List["EndpointSubset"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        subsets: typing.Optional[typing.List["EndpointSubset"]] = None,
     ):
         """Create Endpoints instance."""
         super(Endpoints, self).__init__(api_version="core/v1", kind="Endpoints")
@@ -5861,7 +5873,7 @@ class Endpoints(_kuber_definitions.Resource):
             cleaned.append(typing.cast(EndpointSubset, item))
         self._properties["subsets"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Endpoints in the currently
         configured Kubernetes cluster.
@@ -5877,7 +5889,7 @@ class Endpoints(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Endpoints in the currently
         configured Kubernetes cluster.
@@ -5893,7 +5905,7 @@ class Endpoints(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Endpoints in the currently
         configured Kubernetes cluster.
@@ -5909,11 +5921,11 @@ class Endpoints(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Endpoints from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -5933,7 +5945,7 @@ class Endpoints(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -5962,7 +5974,7 @@ class Endpoints(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -5986,8 +5998,8 @@ class EndpointsList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Endpoints"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Endpoints"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create EndpointsList instance."""
         super(EndpointsList, self).__init__(api_version="core/v1", kind="EndpointsList")
@@ -6055,7 +6067,7 @@ class EndpointsList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -6079,9 +6091,9 @@ class EnvFromSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        config_map_ref: "ConfigMapEnvSource" = None,
-        prefix: str = None,
-        secret_ref: "SecretEnvSource" = None,
+        config_map_ref: typing.Optional["ConfigMapEnvSource"] = None,
+        prefix: typing.Optional[str] = None,
+        secret_ref: typing.Optional["SecretEnvSource"] = None,
     ):
         """Create EnvFromSource instance."""
         super(EnvFromSource, self).__init__(api_version="core/v1", kind="EnvFromSource")
@@ -6176,9 +6188,9 @@ class EnvVar(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        value: str = None,
-        value_from: "EnvVarSource" = None,
+        name: typing.Optional[str] = None,
+        value: typing.Optional[str] = None,
+        value_from: typing.Optional["EnvVarSource"] = None,
     ):
         """Create EnvVar instance."""
         super(EnvVar, self).__init__(api_version="core/v1", kind="EnvVar")
@@ -6281,10 +6293,10 @@ class EnvVarSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        config_map_key_ref: "ConfigMapKeySelector" = None,
-        field_ref: "ObjectFieldSelector" = None,
-        resource_field_ref: "ResourceFieldSelector" = None,
-        secret_key_ref: "SecretKeySelector" = None,
+        config_map_key_ref: typing.Optional["ConfigMapKeySelector"] = None,
+        field_ref: typing.Optional["ObjectFieldSelector"] = None,
+        resource_field_ref: typing.Optional["ResourceFieldSelector"] = None,
+        secret_key_ref: typing.Optional["SecretKeySelector"] = None,
     ):
         """Create EnvVarSource instance."""
         super(EnvVarSource, self).__init__(api_version="core/v1", kind="EnvVarSource")
@@ -6418,45 +6430,47 @@ class EnvVarSource(_kuber_definitions.Definition):
 
 class EphemeralContainer(_kuber_definitions.Definition):
     """
-    An EphemeralContainer is a container that may be added
-    temporarily to an existing pod for user-initiated activities
-    such as debugging. Ephemeral containers have no resource or
+    An EphemeralContainer is a temporary container that you may
+    add to an existing Pod for user-initiated activities such as
+    debugging. Ephemeral containers have no resource or
     scheduling guarantees, and they will not be restarted when
-    they exit or when a pod is removed or restarted. If an
-    ephemeral container causes a pod to exceed its resource
-    allocation, the pod may be evicted. Ephemeral containers may
-    not be added by directly updating the pod spec. They must be
-    added via the pod's ephemeralcontainers subresource, and
-    they will appear in the pod spec once added. This is an
-    alpha feature enabled by the EphemeralContainers feature
-    flag.
+    they exit or when a Pod is removed or restarted. The kubelet
+    may evict a Pod if an ephemeral container causes the Pod to
+    exceed its resource allocation.
+
+    To add an ephemeral container, use the ephemeralcontainers
+    subresource of an existing Pod. Ephemeral containers may not
+    be removed or restarted.
+
+    This is a beta feature available on clusters that haven't
+    disabled the EphemeralContainers feature gate.
     """
 
     def __init__(
         self,
-        args: typing.List[str] = None,
-        command: typing.List[str] = None,
-        env: typing.List["EnvVar"] = None,
-        env_from: typing.List["EnvFromSource"] = None,
-        image: str = None,
-        image_pull_policy: str = None,
-        lifecycle: "Lifecycle" = None,
-        liveness_probe: "Probe" = None,
-        name: str = None,
-        ports: typing.List["ContainerPort"] = None,
-        readiness_probe: "Probe" = None,
-        resources: "ResourceRequirements" = None,
-        security_context: "SecurityContext" = None,
-        startup_probe: "Probe" = None,
-        stdin: bool = None,
-        stdin_once: bool = None,
-        target_container_name: str = None,
-        termination_message_path: str = None,
-        termination_message_policy: str = None,
-        tty: bool = None,
-        volume_devices: typing.List["VolumeDevice"] = None,
-        volume_mounts: typing.List["VolumeMount"] = None,
-        working_dir: str = None,
+        args: typing.Optional[typing.List[str]] = None,
+        command: typing.Optional[typing.List[str]] = None,
+        env: typing.Optional[typing.List["EnvVar"]] = None,
+        env_from: typing.Optional[typing.List["EnvFromSource"]] = None,
+        image: typing.Optional[str] = None,
+        image_pull_policy: typing.Optional[str] = None,
+        lifecycle: typing.Optional["Lifecycle"] = None,
+        liveness_probe: typing.Optional["Probe"] = None,
+        name: typing.Optional[str] = None,
+        ports: typing.Optional[typing.List["ContainerPort"]] = None,
+        readiness_probe: typing.Optional["Probe"] = None,
+        resources: typing.Optional["ResourceRequirements"] = None,
+        security_context: typing.Optional["SecurityContext"] = None,
+        startup_probe: typing.Optional["Probe"] = None,
+        stdin: typing.Optional[bool] = None,
+        stdin_once: typing.Optional[bool] = None,
+        target_container_name: typing.Optional[str] = None,
+        termination_message_path: typing.Optional[str] = None,
+        termination_message_policy: typing.Optional[str] = None,
+        tty: typing.Optional[bool] = None,
+        volume_devices: typing.Optional[typing.List["VolumeDevice"]] = None,
+        volume_mounts: typing.Optional[typing.List["VolumeMount"]] = None,
+        working_dir: typing.Optional[str] = None,
     ):
         """Create EphemeralContainer instance."""
         super(EphemeralContainer, self).__init__(
@@ -6696,6 +6710,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
         IfNotPresent otherwise. Cannot be updated. More info: https:
         //kubernetes.io/docs/concepts/containers/images#updating-
         images
+
         """
         return typing.cast(
             str,
@@ -6710,6 +6725,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
         IfNotPresent otherwise. Cannot be updated. More info: https:
         //kubernetes.io/docs/concepts/containers/images#updating-
         images
+
         """
         self._properties["imagePullPolicy"] = value
 
@@ -6967,9 +6983,12 @@ class EphemeralContainer(_kuber_definitions.Definition):
         If set, the name of the container from PodSpec that this
         ephemeral container targets. The ephemeral container will be
         run in the namespaces (IPC, PID, etc) of this container. If
-        not set then the ephemeral container is run in whatever
-        namespaces are shared for the pod. Note that the container
-        runtime must support this feature.
+        not set then the ephemeral container uses the namespaces
+        configured in the Pod spec.
+
+        The container runtime must implement support for this
+        feature. If the runtime does not support namespace targeting
+        then the result of setting this field is undefined.
         """
         return typing.cast(
             str,
@@ -6982,9 +7001,12 @@ class EphemeralContainer(_kuber_definitions.Definition):
         If set, the name of the container from PodSpec that this
         ephemeral container targets. The ephemeral container will be
         run in the namespaces (IPC, PID, etc) of this container. If
-        not set then the ephemeral container is run in whatever
-        namespaces are shared for the pod. Note that the container
-        runtime must support this feature.
+        not set then the ephemeral container uses the namespaces
+        configured in the Pod spec.
+
+        The container runtime must implement support for this
+        feature. If the runtime does not support namespace targeting
+        then the result of setting this field is undefined.
         """
         self._properties["targetContainerName"] = value
 
@@ -7030,6 +7052,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
         empty and the container exited with an error. The log output
         is limited to 2048 bytes or 80 lines, whichever is smaller.
         Defaults to File. Cannot be updated.
+
         """
         return typing.cast(
             str,
@@ -7047,6 +7070,7 @@ class EphemeralContainer(_kuber_definitions.Definition):
         empty and the container exited with an error. The log output
         is limited to 2048 bytes or 80 lines, whichever is smaller.
         Defaults to File. Cannot be updated.
+
         """
         self._properties["terminationMessagePolicy"] = value
 
@@ -7101,8 +7125,9 @@ class EphemeralContainer(_kuber_definitions.Definition):
     @property
     def volume_mounts(self) -> typing.List["VolumeMount"]:
         """
-        Pod volumes to mount into the container's filesystem. Cannot
-        be updated.
+        Pod volumes to mount into the container's filesystem.
+        Subpath mounts are not allowed for ephemeral containers.
+        Cannot be updated.
         """
         return typing.cast(
             typing.List["VolumeMount"],
@@ -7114,8 +7139,9 @@ class EphemeralContainer(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["VolumeMount"], typing.List[dict]]
     ):
         """
-        Pod volumes to mount into the container's filesystem. Cannot
-        be updated.
+        Pod volumes to mount into the container's filesystem.
+        Subpath mounts are not allowed for ephemeral containers.
+        Cannot be updated.
         """
         cleaned: typing.List[VolumeMount] = []
         for item in value:
@@ -7163,7 +7189,7 @@ class EphemeralVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        volume_claim_template: "PersistentVolumeClaimTemplate" = None,
+        volume_claim_template: typing.Optional["PersistentVolumeClaimTemplate"] = None,
     ):
         """Create EphemeralVolumeSource instance."""
         super(EphemeralVolumeSource, self).__init__(
@@ -7264,21 +7290,21 @@ class Event(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        action: str = None,
-        count: int = None,
-        event_time: "MicroTime" = None,
-        first_timestamp: str = None,
-        involved_object: "ObjectReference" = None,
-        last_timestamp: str = None,
-        message: str = None,
-        metadata: "ObjectMeta" = None,
-        reason: str = None,
-        related: "ObjectReference" = None,
-        reporting_component: str = None,
-        reporting_instance: str = None,
-        series: "EventSeries" = None,
-        source: "EventSource" = None,
-        type_: str = None,
+        action: typing.Optional[str] = None,
+        count: typing.Optional[int] = None,
+        event_time: typing.Optional["MicroTime"] = None,
+        first_timestamp: typing.Optional[str] = None,
+        involved_object: typing.Optional["ObjectReference"] = None,
+        last_timestamp: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        reason: typing.Optional[str] = None,
+        related: typing.Optional["ObjectReference"] = None,
+        reporting_component: typing.Optional[str] = None,
+        reporting_instance: typing.Optional[str] = None,
+        series: typing.Optional["EventSeries"] = None,
+        source: typing.Optional["EventSource"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create Event instance."""
         super(Event, self).__init__(api_version="core/v1", kind="Event")
@@ -7646,7 +7672,7 @@ class Event(_kuber_definitions.Resource):
         """
         self._properties["type"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Event in the currently
         configured Kubernetes cluster.
@@ -7662,7 +7688,7 @@ class Event(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Event in the currently
         configured Kubernetes cluster.
@@ -7678,7 +7704,7 @@ class Event(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Event in the currently
         configured Kubernetes cluster.
@@ -7694,11 +7720,11 @@ class Event(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Event from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -7718,7 +7744,7 @@ class Event(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -7747,7 +7773,7 @@ class Event(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -7771,8 +7797,8 @@ class EventList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Event"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Event"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create EventList instance."""
         super(EventList, self).__init__(api_version="core/v1", kind="EventList")
@@ -7840,7 +7866,7 @@ class EventList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -7865,8 +7891,8 @@ class EventSeries(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        count: int = None,
-        last_observed_time: "MicroTime" = None,
+        count: typing.Optional[int] = None,
+        last_observed_time: typing.Optional["MicroTime"] = None,
     ):
         """Create EventSeries instance."""
         super(EventSeries, self).__init__(api_version="core/v1", kind="EventSeries")
@@ -7936,8 +7962,8 @@ class EventSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        component: str = None,
-        host: str = None,
+        component: typing.Optional[str] = None,
+        host: typing.Optional[str] = None,
     ):
         """Create EventSource instance."""
         super(EventSource, self).__init__(api_version="core/v1", kind="EventSource")
@@ -7998,7 +8024,7 @@ class ExecAction(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        command: typing.List[str] = None,
+        command: typing.Optional[typing.List[str]] = None,
     ):
         """Create ExecAction instance."""
         super(ExecAction, self).__init__(api_version="core/v1", kind="ExecAction")
@@ -8054,11 +8080,11 @@ class FCVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        lun: int = None,
-        read_only: bool = None,
-        target_wwns: typing.List[str] = None,
-        wwids: typing.List[str] = None,
+        fs_type: typing.Optional[str] = None,
+        lun: typing.Optional[int] = None,
+        read_only: typing.Optional[bool] = None,
+        target_wwns: typing.Optional[typing.List[str]] = None,
+        wwids: typing.Optional[typing.List[str]] = None,
     ):
         """Create FCVolumeSource instance."""
         super(FCVolumeSource, self).__init__(
@@ -8190,11 +8216,11 @@ class FlexPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        driver: str = None,
-        fs_type: str = None,
-        options: dict = None,
-        read_only: bool = None,
-        secret_ref: "SecretReference" = None,
+        driver: typing.Optional[str] = None,
+        fs_type: typing.Optional[str] = None,
+        options: typing.Optional[dict] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["SecretReference"] = None,
     ):
         """Create FlexPersistentVolumeSource instance."""
         super(FlexPersistentVolumeSource, self).__init__(
@@ -8334,11 +8360,11 @@ class FlexVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        driver: str = None,
-        fs_type: str = None,
-        options: dict = None,
-        read_only: bool = None,
-        secret_ref: "LocalObjectReference" = None,
+        driver: typing.Optional[str] = None,
+        fs_type: typing.Optional[str] = None,
+        options: typing.Optional[dict] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["LocalObjectReference"] = None,
     ):
         """Create FlexVolumeSource instance."""
         super(FlexVolumeSource, self).__init__(
@@ -8482,8 +8508,8 @@ class FlockerVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        dataset_name: str = None,
-        dataset_uuid: str = None,
+        dataset_name: typing.Optional[str] = None,
+        dataset_uuid: typing.Optional[str] = None,
     ):
         """Create FlockerVolumeSource instance."""
         super(FlockerVolumeSource, self).__init__(
@@ -8557,10 +8583,10 @@ class GCEPersistentDiskVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        partition: int = None,
-        pd_name: str = None,
-        read_only: bool = None,
+        fs_type: typing.Optional[str] = None,
+        partition: typing.Optional[int] = None,
+        pd_name: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
     ):
         """Create GCEPersistentDiskVolumeSource instance."""
         super(GCEPersistentDiskVolumeSource, self).__init__(
@@ -8682,6 +8708,80 @@ class GCEPersistentDiskVolumeSource(_kuber_definitions.Definition):
         return False
 
 
+class GRPCAction(_kuber_definitions.Definition):
+    """ """
+
+    def __init__(
+        self,
+        port: typing.Optional[int] = None,
+        service: typing.Optional[str] = None,
+    ):
+        """Create GRPCAction instance."""
+        super(GRPCAction, self).__init__(api_version="core/v1", kind="GRPCAction")
+        self._properties = {
+            "port": port if port is not None else None,
+            "service": service if service is not None else "",
+        }
+        self._types = {
+            "port": (int, None),
+            "service": (str, None),
+        }
+
+    @property
+    def port(self) -> int:
+        """
+        Port number of the gRPC service. Number must be in the range
+        1 to 65535.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("port"),
+        )
+
+    @port.setter
+    def port(self, value: int):
+        """
+        Port number of the gRPC service. Number must be in the range
+        1 to 65535.
+        """
+        self._properties["port"] = value
+
+    @property
+    def service(self) -> str:
+        """
+        Service is the name of the service to place in the gRPC
+        HealthCheckRequest (see
+        https://github.com/grpc/grpc/blob/master/doc/health-
+        checking.md).
+
+        If this is not specified, the default behavior is defined by
+        gRPC.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("service"),
+        )
+
+    @service.setter
+    def service(self, value: str):
+        """
+        Service is the name of the service to place in the gRPC
+        HealthCheckRequest (see
+        https://github.com/grpc/grpc/blob/master/doc/health-
+        checking.md).
+
+        If this is not specified, the default behavior is defined by
+        gRPC.
+        """
+        self._properties["service"] = value
+
+    def __enter__(self) -> "GRPCAction":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class GitRepoVolumeSource(_kuber_definitions.Definition):
     """
     Represents a volume that is populated with the contents of a
@@ -8696,9 +8796,9 @@ class GitRepoVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        directory: str = None,
-        repository: str = None,
-        revision: str = None,
+        directory: typing.Optional[str] = None,
+        repository: typing.Optional[str] = None,
+        revision: typing.Optional[str] = None,
     ):
         """Create GitRepoVolumeSource instance."""
         super(GitRepoVolumeSource, self).__init__(
@@ -8790,10 +8890,10 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        endpoints: str = None,
-        endpoints_namespace: str = None,
-        path: str = None,
-        read_only: bool = None,
+        endpoints: typing.Optional[str] = None,
+        endpoints_namespace: typing.Optional[str] = None,
+        path: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
     ):
         """Create GlusterfsPersistentVolumeSource instance."""
         super(GlusterfsPersistentVolumeSource, self).__init__(
@@ -8922,9 +9022,9 @@ class GlusterfsVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        endpoints: str = None,
-        path: str = None,
-        read_only: bool = None,
+        endpoints: typing.Optional[str] = None,
+        path: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
     ):
         """Create GlusterfsVolumeSource instance."""
         super(GlusterfsVolumeSource, self).__init__(
@@ -9023,11 +9123,11 @@ class HTTPGetAction(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        host: str = None,
-        http_headers: typing.List["HTTPHeader"] = None,
-        path: str = None,
-        port: typing.Union[str, int, None] = None,
-        scheme: str = None,
+        host: typing.Optional[str] = None,
+        http_headers: typing.Optional[typing.List["HTTPHeader"]] = None,
+        path: typing.Optional[str] = None,
+        port: typing.Optional[typing.Union[str, int, None]] = None,
+        scheme: typing.Optional[str] = None,
     ):
         """Create HTTPGetAction instance."""
         super(HTTPGetAction, self).__init__(api_version="core/v1", kind="HTTPGetAction")
@@ -9136,6 +9236,7 @@ class HTTPGetAction(_kuber_definitions.Definition):
     def scheme(self) -> str:
         """
         Scheme to use for connecting to the host. Defaults to HTTP.
+
         """
         return typing.cast(
             str,
@@ -9146,6 +9247,7 @@ class HTTPGetAction(_kuber_definitions.Definition):
     def scheme(self, value: str):
         """
         Scheme to use for connecting to the host. Defaults to HTTP.
+
         """
         self._properties["scheme"] = value
 
@@ -9164,8 +9266,8 @@ class HTTPHeader(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        value: str = None,
+        name: typing.Optional[str] = None,
+        value: typing.Optional[str] = None,
     ):
         """Create HTTPHeader instance."""
         super(HTTPHeader, self).__init__(api_version="core/v1", kind="HTTPHeader")
@@ -9219,107 +9321,6 @@ class HTTPHeader(_kuber_definitions.Definition):
         return False
 
 
-class Handler(_kuber_definitions.Definition):
-    """
-    Handler defines a specific action that should be taken
-    """
-
-    def __init__(
-        self,
-        exec_: "ExecAction" = None,
-        http_get: "HTTPGetAction" = None,
-        tcp_socket: "TCPSocketAction" = None,
-    ):
-        """Create Handler instance."""
-        super(Handler, self).__init__(api_version="core/v1", kind="Handler")
-        self._properties = {
-            "exec": exec_ if exec_ is not None else ExecAction(),
-            "httpGet": http_get if http_get is not None else HTTPGetAction(),
-            "tcpSocket": tcp_socket if tcp_socket is not None else TCPSocketAction(),
-        }
-        self._types = {
-            "exec": (ExecAction, None),
-            "httpGet": (HTTPGetAction, None),
-            "tcpSocket": (TCPSocketAction, None),
-        }
-
-    @property
-    def exec_(self) -> "ExecAction":
-        """
-        One and only one of the following should be specified. Exec
-        specifies the action to take.
-        """
-        return typing.cast(
-            "ExecAction",
-            self._properties.get("exec"),
-        )
-
-    @exec_.setter
-    def exec_(self, value: typing.Union["ExecAction", dict]):
-        """
-        One and only one of the following should be specified. Exec
-        specifies the action to take.
-        """
-        if isinstance(value, dict):
-            value = typing.cast(
-                ExecAction,
-                ExecAction().from_dict(value),
-            )
-        self._properties["exec"] = value
-
-    @property
-    def http_get(self) -> "HTTPGetAction":
-        """
-        HTTPGet specifies the http request to perform.
-        """
-        return typing.cast(
-            "HTTPGetAction",
-            self._properties.get("httpGet"),
-        )
-
-    @http_get.setter
-    def http_get(self, value: typing.Union["HTTPGetAction", dict]):
-        """
-        HTTPGet specifies the http request to perform.
-        """
-        if isinstance(value, dict):
-            value = typing.cast(
-                HTTPGetAction,
-                HTTPGetAction().from_dict(value),
-            )
-        self._properties["httpGet"] = value
-
-    @property
-    def tcp_socket(self) -> "TCPSocketAction":
-        """
-        TCPSocket specifies an action involving a TCP port. TCP
-        hooks not yet supported
-        """
-        return typing.cast(
-            "TCPSocketAction",
-            self._properties.get("tcpSocket"),
-        )
-
-    @tcp_socket.setter
-    def tcp_socket(self, value: typing.Union["TCPSocketAction", dict]):
-        """
-        TCPSocket specifies an action involving a TCP port. TCP
-        hooks not yet supported
-        """
-        if isinstance(value, dict):
-            value = typing.cast(
-                TCPSocketAction,
-                TCPSocketAction().from_dict(value),
-            )
-        self._properties["tcpSocket"] = value
-
-    def __enter__(self) -> "Handler":
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
 class HostAlias(_kuber_definitions.Definition):
     """
     HostAlias holds the mapping between IP and hostnames that
@@ -9328,8 +9329,8 @@ class HostAlias(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        hostnames: typing.List[str] = None,
-        ip: str = None,
+        hostnames: typing.Optional[typing.List[str]] = None,
+        ip: typing.Optional[str] = None,
     ):
         """Create HostAlias instance."""
         super(HostAlias, self).__init__(api_version="core/v1", kind="HostAlias")
@@ -9391,8 +9392,8 @@ class HostPathVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        path: str = None,
-        type_: str = None,
+        path: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create HostPathVolumeSource instance."""
         super(HostPathVolumeSource, self).__init__(
@@ -9463,17 +9464,17 @@ class ISCSIPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        chap_auth_discovery: bool = None,
-        chap_auth_session: bool = None,
-        fs_type: str = None,
-        initiator_name: str = None,
-        iqn: str = None,
-        iscsi_interface: str = None,
-        lun: int = None,
-        portals: typing.List[str] = None,
-        read_only: bool = None,
-        secret_ref: "SecretReference" = None,
-        target_portal: str = None,
+        chap_auth_discovery: typing.Optional[bool] = None,
+        chap_auth_session: typing.Optional[bool] = None,
+        fs_type: typing.Optional[str] = None,
+        initiator_name: typing.Optional[str] = None,
+        iqn: typing.Optional[str] = None,
+        iscsi_interface: typing.Optional[str] = None,
+        lun: typing.Optional[int] = None,
+        portals: typing.Optional[typing.List[str]] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["SecretReference"] = None,
+        target_portal: typing.Optional[str] = None,
     ):
         """Create ISCSIPersistentVolumeSource instance."""
         super(ISCSIPersistentVolumeSource, self).__init__(
@@ -9744,17 +9745,17 @@ class ISCSIVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        chap_auth_discovery: bool = None,
-        chap_auth_session: bool = None,
-        fs_type: str = None,
-        initiator_name: str = None,
-        iqn: str = None,
-        iscsi_interface: str = None,
-        lun: int = None,
-        portals: typing.List[str] = None,
-        read_only: bool = None,
-        secret_ref: "LocalObjectReference" = None,
-        target_portal: str = None,
+        chap_auth_discovery: typing.Optional[bool] = None,
+        chap_auth_session: typing.Optional[bool] = None,
+        fs_type: typing.Optional[str] = None,
+        initiator_name: typing.Optional[str] = None,
+        iqn: typing.Optional[str] = None,
+        iscsi_interface: typing.Optional[str] = None,
+        lun: typing.Optional[int] = None,
+        portals: typing.Optional[typing.List[str]] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["LocalObjectReference"] = None,
+        target_portal: typing.Optional[str] = None,
     ):
         """Create ISCSIVolumeSource instance."""
         super(ISCSIVolumeSource, self).__init__(
@@ -10025,9 +10026,9 @@ class KeyToPath(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        key: str = None,
-        mode: int = None,
-        path: str = None,
+        key: typing.Optional[str] = None,
+        mode: typing.Optional[int] = None,
+        path: typing.Optional[str] = None,
     ):
         """Create KeyToPath instance."""
         super(KeyToPath, self).__init__(api_version="core/v1", kind="KeyToPath")
@@ -10128,22 +10129,22 @@ class Lifecycle(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        post_start: "Handler" = None,
-        pre_stop: "Handler" = None,
+        post_start: typing.Optional["LifecycleHandler"] = None,
+        pre_stop: typing.Optional["LifecycleHandler"] = None,
     ):
         """Create Lifecycle instance."""
         super(Lifecycle, self).__init__(api_version="core/v1", kind="Lifecycle")
         self._properties = {
-            "postStart": post_start if post_start is not None else Handler(),
-            "preStop": pre_stop if pre_stop is not None else Handler(),
+            "postStart": post_start if post_start is not None else LifecycleHandler(),
+            "preStop": pre_stop if pre_stop is not None else LifecycleHandler(),
         }
         self._types = {
-            "postStart": (Handler, None),
-            "preStop": (Handler, None),
+            "postStart": (LifecycleHandler, None),
+            "preStop": (LifecycleHandler, None),
         }
 
     @property
-    def post_start(self) -> "Handler":
+    def post_start(self) -> "LifecycleHandler":
         """
         PostStart is called immediately after a container is
         created. If the handler fails, the container is terminated
@@ -10154,12 +10155,12 @@ class Lifecycle(_kuber_definitions.Definition):
         lifecycle-hooks/#container-hooks
         """
         return typing.cast(
-            "Handler",
+            "LifecycleHandler",
             self._properties.get("postStart"),
         )
 
     @post_start.setter
-    def post_start(self, value: typing.Union["Handler", dict]):
+    def post_start(self, value: typing.Union["LifecycleHandler", dict]):
         """
         PostStart is called immediately after a container is
         created. If the handler fails, the container is terminated
@@ -10171,58 +10172,165 @@ class Lifecycle(_kuber_definitions.Definition):
         """
         if isinstance(value, dict):
             value = typing.cast(
-                Handler,
-                Handler().from_dict(value),
+                LifecycleHandler,
+                LifecycleHandler().from_dict(value),
             )
         self._properties["postStart"] = value
 
     @property
-    def pre_stop(self) -> "Handler":
+    def pre_stop(self) -> "LifecycleHandler":
         """
         PreStop is called immediately before a container is
         terminated due to an API request or management event such as
         liveness/startup probe failure, preemption, resource
         contention, etc. The handler is not called if the container
-        crashes or exits. The reason for termination is passed to
-        the handler. The Pod's termination grace period countdown
-        begins before the PreStop hooked is executed. Regardless of
-        the outcome of the handler, the container will eventually
-        terminate within the Pod's termination grace period. Other
-        management of the container blocks until the hook completes
-        or until the termination grace period is reached. More info:
+        crashes or exits. The Pod's termination grace period
+        countdown begins before the PreStop hook is executed.
+        Regardless of the outcome of the handler, the container will
+        eventually terminate within the Pod's termination grace
+        period (unless delayed by finalizers). Other management of
+        the container blocks until the hook completes or until the
+        termination grace period is reached. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
         return typing.cast(
-            "Handler",
+            "LifecycleHandler",
             self._properties.get("preStop"),
         )
 
     @pre_stop.setter
-    def pre_stop(self, value: typing.Union["Handler", dict]):
+    def pre_stop(self, value: typing.Union["LifecycleHandler", dict]):
         """
         PreStop is called immediately before a container is
         terminated due to an API request or management event such as
         liveness/startup probe failure, preemption, resource
         contention, etc. The handler is not called if the container
-        crashes or exits. The reason for termination is passed to
-        the handler. The Pod's termination grace period countdown
-        begins before the PreStop hooked is executed. Regardless of
-        the outcome of the handler, the container will eventually
-        terminate within the Pod's termination grace period. Other
-        management of the container blocks until the hook completes
-        or until the termination grace period is reached. More info:
+        crashes or exits. The Pod's termination grace period
+        countdown begins before the PreStop hook is executed.
+        Regardless of the outcome of the handler, the container will
+        eventually terminate within the Pod's termination grace
+        period (unless delayed by finalizers). Other management of
+        the container blocks until the hook completes or until the
+        termination grace period is reached. More info:
         https://kubernetes.io/docs/concepts/containers/container-
         lifecycle-hooks/#container-hooks
         """
         if isinstance(value, dict):
             value = typing.cast(
-                Handler,
-                Handler().from_dict(value),
+                LifecycleHandler,
+                LifecycleHandler().from_dict(value),
             )
         self._properties["preStop"] = value
 
     def __enter__(self) -> "Lifecycle":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class LifecycleHandler(_kuber_definitions.Definition):
+    """
+    LifecycleHandler defines a specific action that should be
+    taken in a lifecycle hook. One and only one of the fields,
+    except TCPSocket must be specified.
+    """
+
+    def __init__(
+        self,
+        exec_: typing.Optional["ExecAction"] = None,
+        http_get: typing.Optional["HTTPGetAction"] = None,
+        tcp_socket: typing.Optional["TCPSocketAction"] = None,
+    ):
+        """Create LifecycleHandler instance."""
+        super(LifecycleHandler, self).__init__(
+            api_version="core/v1", kind="LifecycleHandler"
+        )
+        self._properties = {
+            "exec": exec_ if exec_ is not None else ExecAction(),
+            "httpGet": http_get if http_get is not None else HTTPGetAction(),
+            "tcpSocket": tcp_socket if tcp_socket is not None else TCPSocketAction(),
+        }
+        self._types = {
+            "exec": (ExecAction, None),
+            "httpGet": (HTTPGetAction, None),
+            "tcpSocket": (TCPSocketAction, None),
+        }
+
+    @property
+    def exec_(self) -> "ExecAction":
+        """
+        Exec specifies the action to take.
+        """
+        return typing.cast(
+            "ExecAction",
+            self._properties.get("exec"),
+        )
+
+    @exec_.setter
+    def exec_(self, value: typing.Union["ExecAction", dict]):
+        """
+        Exec specifies the action to take.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ExecAction,
+                ExecAction().from_dict(value),
+            )
+        self._properties["exec"] = value
+
+    @property
+    def http_get(self) -> "HTTPGetAction":
+        """
+        HTTPGet specifies the http request to perform.
+        """
+        return typing.cast(
+            "HTTPGetAction",
+            self._properties.get("httpGet"),
+        )
+
+    @http_get.setter
+    def http_get(self, value: typing.Union["HTTPGetAction", dict]):
+        """
+        HTTPGet specifies the http request to perform.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                HTTPGetAction,
+                HTTPGetAction().from_dict(value),
+            )
+        self._properties["httpGet"] = value
+
+    @property
+    def tcp_socket(self) -> "TCPSocketAction":
+        """
+        Deprecated. TCPSocket is NOT supported as a LifecycleHandler
+        and kept for the backward compatibility. There are no
+        validation of this field and lifecycle hooks will fail in
+        runtime when tcp handler is specified.
+        """
+        return typing.cast(
+            "TCPSocketAction",
+            self._properties.get("tcpSocket"),
+        )
+
+    @tcp_socket.setter
+    def tcp_socket(self, value: typing.Union["TCPSocketAction", dict]):
+        """
+        Deprecated. TCPSocket is NOT supported as a LifecycleHandler
+        and kept for the backward compatibility. There are no
+        validation of this field and lifecycle hooks will fail in
+        runtime when tcp handler is specified.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                TCPSocketAction,
+                TCPSocketAction().from_dict(value),
+            )
+        self._properties["tcpSocket"] = value
+
+    def __enter__(self) -> "LifecycleHandler":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -10237,8 +10345,8 @@ class LimitRange(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "LimitRangeSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["LimitRangeSpec"] = None,
     ):
         """Create LimitRange instance."""
         super(LimitRange, self).__init__(api_version="core/v1", kind="LimitRange")
@@ -10305,7 +10413,7 @@ class LimitRange(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the LimitRange in the currently
         configured Kubernetes cluster.
@@ -10321,7 +10429,7 @@ class LimitRange(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the LimitRange in the currently
         configured Kubernetes cluster.
@@ -10337,7 +10445,7 @@ class LimitRange(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the LimitRange in the currently
         configured Kubernetes cluster.
@@ -10353,11 +10461,11 @@ class LimitRange(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the LimitRange from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -10377,7 +10485,7 @@ class LimitRange(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -10406,7 +10514,7 @@ class LimitRange(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -10431,12 +10539,12 @@ class LimitRangeItem(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        default: dict = None,
-        default_request: dict = None,
-        max_: dict = None,
-        max_limit_request_ratio: dict = None,
-        min_: dict = None,
-        type_: str = None,
+        default: typing.Optional[dict] = None,
+        default_request: typing.Optional[dict] = None,
+        max_: typing.Optional[dict] = None,
+        max_limit_request_ratio: typing.Optional[dict] = None,
+        min_: typing.Optional[dict] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create LimitRangeItem instance."""
         super(LimitRangeItem, self).__init__(
@@ -10587,8 +10695,8 @@ class LimitRangeList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["LimitRange"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["LimitRange"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create LimitRangeList instance."""
         super(LimitRangeList, self).__init__(
@@ -10662,7 +10770,7 @@ class LimitRangeList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -10687,7 +10795,7 @@ class LimitRangeSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        limits: typing.List["LimitRangeItem"] = None,
+        limits: typing.Optional[typing.List["LimitRangeItem"]] = None,
     ):
         """Create LimitRangeSpec instance."""
         super(LimitRangeSpec, self).__init__(
@@ -10745,9 +10853,9 @@ class LoadBalancerIngress(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        hostname: str = None,
-        ip: str = None,
-        ports: typing.List["PortStatus"] = None,
+        hostname: typing.Optional[str] = None,
+        ip: typing.Optional[str] = None,
+        ports: typing.Optional[typing.List["PortStatus"]] = None,
     ):
         """Create LoadBalancerIngress instance."""
         super(LoadBalancerIngress, self).__init__(
@@ -10843,7 +10951,7 @@ class LoadBalancerStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ingress: typing.List["LoadBalancerIngress"] = None,
+        ingress: typing.Optional[typing.List["LoadBalancerIngress"]] = None,
     ):
         """Create LoadBalancerStatus instance."""
         super(LoadBalancerStatus, self).__init__(
@@ -10902,7 +11010,7 @@ class LocalObjectReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
     ):
         """Create LocalObjectReference instance."""
         super(LocalObjectReference, self).__init__(
@@ -10951,8 +11059,8 @@ class LocalVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        path: str = None,
+        fs_type: typing.Optional[str] = None,
+        path: typing.Optional[str] = None,
     ):
         """Create LocalVolumeSource instance."""
         super(LocalVolumeSource, self).__init__(
@@ -11025,9 +11133,9 @@ class NFSVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        path: str = None,
-        read_only: bool = None,
-        server: str = None,
+        path: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        server: typing.Optional[str] = None,
     ):
         """Create NFSVolumeSource instance."""
         super(NFSVolumeSource, self).__init__(
@@ -11120,9 +11228,9 @@ class Namespace(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "NamespaceSpec" = None,
-        status: "NamespaceStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["NamespaceSpec"] = None,
+        status: typing.Optional["NamespaceStatus"] = None,
     ):
         """Create Namespace instance."""
         super(Namespace, self).__init__(api_version="core/v1", kind="Namespace")
@@ -11217,7 +11325,9 @@ class Namespace(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "NamespaceStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NamespaceStatus":
         """
         Creates the Namespace in the currently
         configured Kubernetes cluster and returns the status information
@@ -11239,7 +11349,9 @@ class Namespace(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "NamespaceStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NamespaceStatus":
         """
         Replaces the Namespace in the currently
         configured Kubernetes cluster and returns the status information
@@ -11261,7 +11373,9 @@ class Namespace(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "NamespaceStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NamespaceStatus":
         """
         Patches the Namespace in the currently
         configured Kubernetes cluster and returns the status information
@@ -11283,7 +11397,9 @@ class Namespace(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "NamespaceStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NamespaceStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -11306,7 +11422,7 @@ class Namespace(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Namespace from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -11326,7 +11442,7 @@ class Namespace(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -11355,7 +11471,7 @@ class Namespace(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -11380,11 +11496,11 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create NamespaceCondition instance."""
         super(NamespaceCondition, self).__init__(
@@ -11500,8 +11616,8 @@ class NamespaceList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Namespace"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Namespace"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create NamespaceList instance."""
         super(NamespaceList, self).__init__(api_version="core/v1", kind="NamespaceList")
@@ -11573,7 +11689,7 @@ class NamespaceList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -11597,7 +11713,7 @@ class NamespaceSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        finalizers: typing.List[str] = None,
+        finalizers: typing.Optional[typing.List[str]] = None,
     ):
         """Create NamespaceSpec instance."""
         super(NamespaceSpec, self).__init__(api_version="core/v1", kind="NamespaceSpec")
@@ -11646,8 +11762,8 @@ class NamespaceStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["NamespaceCondition"] = None,
-        phase: str = None,
+        conditions: typing.Optional[typing.List["NamespaceCondition"]] = None,
+        phase: typing.Optional[str] = None,
     ):
         """Create NamespaceStatus instance."""
         super(NamespaceStatus, self).__init__(
@@ -11697,6 +11813,7 @@ class NamespaceStatus(_kuber_definitions.Definition):
         Phase is the current lifecycle phase of the namespace. More
         info: https://kubernetes.io/docs/tasks/administer-
         cluster/namespaces/
+
         """
         return typing.cast(
             str,
@@ -11709,6 +11826,7 @@ class NamespaceStatus(_kuber_definitions.Definition):
         Phase is the current lifecycle phase of the namespace. More
         info: https://kubernetes.io/docs/tasks/administer-
         cluster/namespaces/
+
         """
         self._properties["phase"] = value
 
@@ -11727,9 +11845,9 @@ class Node(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "NodeSpec" = None,
-        status: "NodeStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["NodeSpec"] = None,
+        status: typing.Optional["NodeStatus"] = None,
     ):
         """Create Node instance."""
         super(Node, self).__init__(api_version="core/v1", kind="Node")
@@ -11826,7 +11944,7 @@ class Node(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "NodeStatus":
+    def create_resource(self, namespace: typing.Optional["str"] = None) -> "NodeStatus":
         """
         Creates the Node in the currently
         configured Kubernetes cluster and returns the status information
@@ -11848,7 +11966,9 @@ class Node(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "NodeStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NodeStatus":
         """
         Replaces the Node in the currently
         configured Kubernetes cluster and returns the status information
@@ -11870,7 +11990,7 @@ class Node(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "NodeStatus":
+    def patch_resource(self, namespace: typing.Optional["str"] = None) -> "NodeStatus":
         """
         Patches the Node in the currently
         configured Kubernetes cluster and returns the status information
@@ -11892,7 +12012,9 @@ class Node(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "NodeStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NodeStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -11915,7 +12037,7 @@ class Node(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Node from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -11935,7 +12057,7 @@ class Node(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -11964,7 +12086,7 @@ class Node(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -11988,8 +12110,8 @@ class NodeAddress(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        address: str = None,
-        type_: str = None,
+        address: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create NodeAddress instance."""
         super(NodeAddress, self).__init__(api_version="core/v1", kind="NodeAddress")
@@ -12052,10 +12174,12 @@ class NodeAffinity(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        preferred_during_scheduling_ignored_during_execution: typing.List[
-            "PreferredSchedulingTerm"
+        preferred_during_scheduling_ignored_during_execution: typing.Optional[
+            typing.List["PreferredSchedulingTerm"]
         ] = None,
-        required_during_scheduling_ignored_during_execution: "NodeSelector" = None,
+        required_during_scheduling_ignored_during_execution: typing.Optional[
+            "NodeSelector"
+        ] = None,
     ):
         """Create NodeAffinity instance."""
         super(NodeAffinity, self).__init__(api_version="core/v1", kind="NodeAffinity")
@@ -12173,12 +12297,12 @@ class NodeCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_heartbeat_time: str = None,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_heartbeat_time: typing.Optional[str] = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create NodeCondition instance."""
         super(NodeCondition, self).__init__(api_version="core/v1", kind="NodeCondition")
@@ -12335,7 +12459,7 @@ class NodeConfigSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        config_map: "ConfigMapNodeConfigSource" = None,
+        config_map: typing.Optional["ConfigMapNodeConfigSource"] = None,
     ):
         """Create NodeConfigSource instance."""
         super(NodeConfigSource, self).__init__(
@@ -12387,10 +12511,10 @@ class NodeConfigStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active: "NodeConfigSource" = None,
-        assigned: "NodeConfigSource" = None,
-        error: str = None,
-        last_known_good: "NodeConfigSource" = None,
+        active: typing.Optional["NodeConfigSource"] = None,
+        assigned: typing.Optional["NodeConfigSource"] = None,
+        error: typing.Optional[str] = None,
+        last_known_good: typing.Optional["NodeConfigSource"] = None,
     ):
         """Create NodeConfigStatus instance."""
         super(NodeConfigStatus, self).__init__(
@@ -12599,7 +12723,7 @@ class NodeDaemonEndpoints(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        kubelet_endpoint: "DaemonEndpoint" = None,
+        kubelet_endpoint: typing.Optional["DaemonEndpoint"] = None,
     ):
         """Create NodeDaemonEndpoints instance."""
         super(NodeDaemonEndpoints, self).__init__(
@@ -12651,8 +12775,8 @@ class NodeList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Node"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Node"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create NodeList instance."""
         super(NodeList, self).__init__(api_version="core/v1", kind="NodeList")
@@ -12720,7 +12844,7 @@ class NodeList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -12747,7 +12871,7 @@ class NodeSelector(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        node_selector_terms: typing.List["NodeSelectorTerm"] = None,
+        node_selector_terms: typing.Optional[typing.List["NodeSelectorTerm"]] = None,
     ):
         """Create NodeSelector instance."""
         super(NodeSelector, self).__init__(api_version="core/v1", kind="NodeSelector")
@@ -12803,9 +12927,9 @@ class NodeSelectorRequirement(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        key: str = None,
-        operator: str = None,
-        values: typing.List[str] = None,
+        key: typing.Optional[str] = None,
+        operator: typing.Optional[str] = None,
+        values: typing.Optional[typing.List[str]] = None,
     ):
         """Create NodeSelectorRequirement instance."""
         super(NodeSelectorRequirement, self).__init__(
@@ -12844,6 +12968,7 @@ class NodeSelectorRequirement(_kuber_definitions.Definition):
         """
         Represents a key's relationship to a set of values. Valid
         operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+
         """
         return typing.cast(
             str,
@@ -12855,6 +12980,7 @@ class NodeSelectorRequirement(_kuber_definitions.Definition):
         """
         Represents a key's relationship to a set of values. Valid
         operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+
         """
         self._properties["operator"] = value
 
@@ -12901,8 +13027,10 @@ class NodeSelectorTerm(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        match_expressions: typing.List["NodeSelectorRequirement"] = None,
-        match_fields: typing.List["NodeSelectorRequirement"] = None,
+        match_expressions: typing.Optional[
+            typing.List["NodeSelectorRequirement"]
+        ] = None,
+        match_fields: typing.Optional[typing.List["NodeSelectorRequirement"]] = None,
     ):
         """Create NodeSelectorTerm instance."""
         super(NodeSelectorTerm, self).__init__(
@@ -12990,13 +13118,13 @@ class NodeSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        config_source: "NodeConfigSource" = None,
-        external_id: str = None,
-        pod_cidr: str = None,
-        pod_cidrs: typing.List[str] = None,
-        provider_id: str = None,
-        taints: typing.List["Taint"] = None,
-        unschedulable: bool = None,
+        config_source: typing.Optional["NodeConfigSource"] = None,
+        external_id: typing.Optional[str] = None,
+        pod_cidr: typing.Optional[str] = None,
+        pod_cidrs: typing.Optional[typing.List[str]] = None,
+        provider_id: typing.Optional[str] = None,
+        taints: typing.Optional[typing.List["Taint"]] = None,
+        unschedulable: typing.Optional[bool] = None,
     ):
         """Create NodeSpec instance."""
         super(NodeSpec, self).__init__(api_version="core/v1", kind="NodeSpec")
@@ -13194,17 +13322,17 @@ class NodeStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        addresses: typing.List["NodeAddress"] = None,
-        allocatable: dict = None,
-        capacity: dict = None,
-        conditions: typing.List["NodeCondition"] = None,
-        config: "NodeConfigStatus" = None,
-        daemon_endpoints: "NodeDaemonEndpoints" = None,
-        images: typing.List["ContainerImage"] = None,
-        node_info: "NodeSystemInfo" = None,
-        phase: str = None,
-        volumes_attached: typing.List["AttachedVolume"] = None,
-        volumes_in_use: typing.List[str] = None,
+        addresses: typing.Optional[typing.List["NodeAddress"]] = None,
+        allocatable: typing.Optional[dict] = None,
+        capacity: typing.Optional[dict] = None,
+        conditions: typing.Optional[typing.List["NodeCondition"]] = None,
+        config: typing.Optional["NodeConfigStatus"] = None,
+        daemon_endpoints: typing.Optional["NodeDaemonEndpoints"] = None,
+        images: typing.Optional[typing.List["ContainerImage"]] = None,
+        node_info: typing.Optional["NodeSystemInfo"] = None,
+        phase: typing.Optional[str] = None,
+        volumes_attached: typing.Optional[typing.List["AttachedVolume"]] = None,
+        volumes_in_use: typing.Optional[typing.List[str]] = None,
     ):
         """Create NodeStatus instance."""
         super(NodeStatus, self).__init__(api_version="core/v1", kind="NodeStatus")
@@ -13455,6 +13583,7 @@ class NodeStatus(_kuber_definitions.Definition):
         node. More info:
         https://kubernetes.io/docs/concepts/nodes/node/#phase The
         field is never populated, and now is deprecated.
+
         """
         return typing.cast(
             str,
@@ -13468,6 +13597,7 @@ class NodeStatus(_kuber_definitions.Definition):
         node. More info:
         https://kubernetes.io/docs/concepts/nodes/node/#phase The
         field is never populated, and now is deprecated.
+
         """
         self._properties["phase"] = value
 
@@ -13530,16 +13660,16 @@ class NodeSystemInfo(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        architecture: str = None,
-        boot_id: str = None,
-        container_runtime_version: str = None,
-        kernel_version: str = None,
-        kube_proxy_version: str = None,
-        kubelet_version: str = None,
-        machine_id: str = None,
-        operating_system: str = None,
-        os_image: str = None,
-        system_uuid: str = None,
+        architecture: typing.Optional[str] = None,
+        boot_id: typing.Optional[str] = None,
+        container_runtime_version: typing.Optional[str] = None,
+        kernel_version: typing.Optional[str] = None,
+        kube_proxy_version: typing.Optional[str] = None,
+        kubelet_version: typing.Optional[str] = None,
+        machine_id: typing.Optional[str] = None,
+        operating_system: typing.Optional[str] = None,
+        os_image: typing.Optional[str] = None,
+        system_uuid: typing.Optional[str] = None,
     ):
         """Create NodeSystemInfo instance."""
         super(NodeSystemInfo, self).__init__(
@@ -13779,8 +13909,8 @@ class ObjectFieldSelector(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        field_path: str = None,
+        api_version: typing.Optional[str] = None,
+        field_path: typing.Optional[str] = None,
     ):
         """Create ObjectFieldSelector instance."""
         super(ObjectFieldSelector, self).__init__(
@@ -13846,13 +13976,13 @@ class ObjectReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        field_path: str = None,
-        kind: str = None,
-        name: str = None,
-        namespace: str = None,
-        resource_version: str = None,
-        uid: str = None,
+        api_version: typing.Optional[str] = None,
+        field_path: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        resource_version: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
     ):
         """Create ObjectReference instance."""
         super(ObjectReference, self).__init__(
@@ -14057,9 +14187,9 @@ class PersistentVolume(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PersistentVolumeSpec" = None,
-        status: "PersistentVolumeStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PersistentVolumeSpec"] = None,
+        status: typing.Optional["PersistentVolumeStatus"] = None,
     ):
         """Create PersistentVolume instance."""
         super(PersistentVolume, self).__init__(
@@ -14162,7 +14292,9 @@ class PersistentVolume(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "PersistentVolumeStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PersistentVolumeStatus":
         """
         Creates the PersistentVolume in the currently
         configured Kubernetes cluster and returns the status information
@@ -14184,7 +14316,9 @@ class PersistentVolume(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "PersistentVolumeStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PersistentVolumeStatus":
         """
         Replaces the PersistentVolume in the currently
         configured Kubernetes cluster and returns the status information
@@ -14206,7 +14340,9 @@ class PersistentVolume(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "PersistentVolumeStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PersistentVolumeStatus":
         """
         Patches the PersistentVolume in the currently
         configured Kubernetes cluster and returns the status information
@@ -14228,7 +14364,9 @@ class PersistentVolume(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "PersistentVolumeStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PersistentVolumeStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -14251,7 +14389,7 @@ class PersistentVolume(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PersistentVolume from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -14271,7 +14409,7 @@ class PersistentVolume(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -14300,7 +14438,7 @@ class PersistentVolume(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -14325,9 +14463,9 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PersistentVolumeClaimSpec" = None,
-        status: "PersistentVolumeClaimStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PersistentVolumeClaimSpec"] = None,
+        status: typing.Optional["PersistentVolumeClaimStatus"] = None,
     ):
         """Create PersistentVolumeClaim instance."""
         super(PersistentVolumeClaim, self).__init__(
@@ -14428,7 +14566,9 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "PersistentVolumeClaimStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PersistentVolumeClaimStatus":
         """
         Creates the PersistentVolumeClaim in the currently
         configured Kubernetes cluster and returns the status information
@@ -14454,7 +14594,7 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
         return output
 
     def replace_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PersistentVolumeClaimStatus":
         """
         Replaces the PersistentVolumeClaim in the currently
@@ -14480,7 +14620,9 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "PersistentVolumeClaimStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PersistentVolumeClaimStatus":
         """
         Patches the PersistentVolumeClaim in the currently
         configured Kubernetes cluster and returns the status information
@@ -14506,7 +14648,7 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PersistentVolumeClaimStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -14530,7 +14672,7 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PersistentVolumeClaim from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -14550,7 +14692,7 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -14579,7 +14721,7 @@ class PersistentVolumeClaim(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -14604,12 +14746,12 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_probe_time: str = None,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_probe_time: typing.Optional[str] = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create PersistentVolumeClaimCondition instance."""
         super(PersistentVolumeClaimCondition, self).__init__(
@@ -14765,8 +14907,8 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PersistentVolumeClaim"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PersistentVolumeClaim"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PersistentVolumeClaimList instance."""
         super(PersistentVolumeClaimList, self).__init__(
@@ -14843,7 +14985,7 @@ class PersistentVolumeClaimList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -14869,14 +15011,14 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        access_modes: typing.List[str] = None,
-        data_source: "TypedLocalObjectReference" = None,
-        data_source_ref: "TypedLocalObjectReference" = None,
-        resources: "ResourceRequirements" = None,
-        selector: "LabelSelector" = None,
-        storage_class_name: str = None,
-        volume_mode: str = None,
-        volume_name: str = None,
+        access_modes: typing.Optional[typing.List[str]] = None,
+        data_source: typing.Optional["TypedLocalObjectReference"] = None,
+        data_source_ref: typing.Optional["TypedLocalObjectReference"] = None,
+        resources: typing.Optional["ResourceRequirements"] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        storage_class_name: typing.Optional[str] = None,
+        volume_mode: typing.Optional[str] = None,
+        volume_name: typing.Optional[str] = None,
     ):
         """Create PersistentVolumeClaimSpec instance."""
         super(PersistentVolumeClaimSpec, self).__init__(
@@ -15042,7 +15184,11 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
     def resources(self) -> "ResourceRequirements":
         """
         Resources represents the minimum resources the volume should
-        have. More info:
+        have. If RecoverVolumeExpansionFailure feature is enabled
+        users are allowed to specify resource requirements that are
+        lower than previous value but must still be higher than
+        capacity recorded in the status field of the claim. More
+        info:
         https://kubernetes.io/docs/concepts/storage/persistent-
         volumes#resources
         """
@@ -15055,7 +15201,11 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
     def resources(self, value: typing.Union["ResourceRequirements", dict]):
         """
         Resources represents the minimum resources the volume should
-        have. More info:
+        have. If RecoverVolumeExpansionFailure feature is enabled
+        users are allowed to specify resource requirements that are
+        lower than previous value but must still be higher than
+        capacity recorded in the status field of the claim. More
+        info:
         https://kubernetes.io/docs/concepts/storage/persistent-
         volumes#resources
         """
@@ -15164,10 +15314,14 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        access_modes: typing.List[str] = None,
-        capacity: dict = None,
-        conditions: typing.List["PersistentVolumeClaimCondition"] = None,
-        phase: str = None,
+        access_modes: typing.Optional[typing.List[str]] = None,
+        allocated_resources: typing.Optional[dict] = None,
+        capacity: typing.Optional[dict] = None,
+        conditions: typing.Optional[
+            typing.List["PersistentVolumeClaimCondition"]
+        ] = None,
+        phase: typing.Optional[str] = None,
+        resize_status: typing.Optional[str] = None,
     ):
         """Create PersistentVolumeClaimStatus instance."""
         super(PersistentVolumeClaimStatus, self).__init__(
@@ -15175,15 +15329,21 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "accessModes": access_modes if access_modes is not None else [],
+            "allocatedResources": allocated_resources
+            if allocated_resources is not None
+            else {},
             "capacity": capacity if capacity is not None else {},
             "conditions": conditions if conditions is not None else [],
             "phase": phase if phase is not None else "",
+            "resizeStatus": resize_status if resize_status is not None else "",
         }
         self._types = {
             "accessModes": (list, str),
+            "allocatedResources": (dict, None),
             "capacity": (dict, None),
             "conditions": (list, PersistentVolumeClaimCondition),
             "phase": (str, None),
+            "resizeStatus": (str, None),
         }
 
     @property
@@ -15208,6 +15368,45 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         volumes#access-modes-1
         """
         self._properties["accessModes"] = value
+
+    @property
+    def allocated_resources(self) -> dict:
+        """
+        The storage resource within AllocatedResources tracks the
+        capacity allocated to a PVC. It may be larger than the
+        actual capacity when a volume expansion operation is
+        requested. For storage quota, the larger value from
+        allocatedResources and PVC.spec.resources is used. If
+        allocatedResources is not set, PVC.spec.resources alone is
+        used for quota calculation. If a volume expansion capacity
+        request is lowered, allocatedResources is only lowered if
+        there are no expansion operations in progress and if the
+        actual volume capacity is equal or lower than the requested
+        capacity. This is an alpha field and requires enabling
+        RecoverVolumeExpansionFailure feature.
+        """
+        return typing.cast(
+            dict,
+            self._properties.get("allocatedResources"),
+        )
+
+    @allocated_resources.setter
+    def allocated_resources(self, value: dict):
+        """
+        The storage resource within AllocatedResources tracks the
+        capacity allocated to a PVC. It may be larger than the
+        actual capacity when a volume expansion operation is
+        requested. For storage quota, the larger value from
+        allocatedResources and PVC.spec.resources is used. If
+        allocatedResources is not set, PVC.spec.resources alone is
+        used for quota calculation. If a volume expansion capacity
+        request is lowered, allocatedResources is only lowered if
+        there are no expansion operations in progress and if the
+        actual volume capacity is equal or lower than the requested
+        capacity. This is an alpha field and requires enabling
+        RecoverVolumeExpansionFailure feature.
+        """
+        self._properties["allocatedResources"] = value
 
     @property
     def capacity(self) -> dict:
@@ -15264,6 +15463,7 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
     def phase(self) -> str:
         """
         Phase represents the current phase of PersistentVolumeClaim.
+
         """
         return typing.cast(
             str,
@@ -15274,8 +15474,34 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
     def phase(self, value: str):
         """
         Phase represents the current phase of PersistentVolumeClaim.
+
         """
         self._properties["phase"] = value
+
+    @property
+    def resize_status(self) -> str:
+        """
+        ResizeStatus stores status of resize operation. ResizeStatus
+        is not set by default but when expansion is complete
+        resizeStatus is set to empty string by resize controller or
+        kubelet. This is an alpha field and requires enabling
+        RecoverVolumeExpansionFailure feature.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("resizeStatus"),
+        )
+
+    @resize_status.setter
+    def resize_status(self, value: str):
+        """
+        ResizeStatus stores status of resize operation. ResizeStatus
+        is not set by default but when expansion is complete
+        resizeStatus is set to empty string by resize controller or
+        kubelet. This is an alpha field and requires enabling
+        RecoverVolumeExpansionFailure feature.
+        """
+        self._properties["resizeStatus"] = value
 
     def __enter__(self) -> "PersistentVolumeClaimStatus":
         return self
@@ -15293,8 +15519,8 @@ class PersistentVolumeClaimTemplate(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PersistentVolumeClaimSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PersistentVolumeClaimSpec"] = None,
     ):
         """Create PersistentVolumeClaimTemplate instance."""
         super(PersistentVolumeClaimTemplate, self).__init__(
@@ -15382,8 +15608,8 @@ class PersistentVolumeClaimVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        claim_name: str = None,
-        read_only: bool = None,
+        claim_name: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
     ):
         """Create PersistentVolumeClaimVolumeSource instance."""
         super(PersistentVolumeClaimVolumeSource, self).__init__(
@@ -15454,8 +15680,8 @@ class PersistentVolumeList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PersistentVolume"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PersistentVolume"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PersistentVolumeList instance."""
         super(PersistentVolumeList, self).__init__(
@@ -15531,7 +15757,7 @@ class PersistentVolumeList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -15556,36 +15782,40 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        access_modes: typing.List[str] = None,
-        aws_elastic_block_store: "AWSElasticBlockStoreVolumeSource" = None,
-        azure_disk: "AzureDiskVolumeSource" = None,
-        azure_file: "AzureFilePersistentVolumeSource" = None,
-        capacity: dict = None,
-        cephfs: "CephFSPersistentVolumeSource" = None,
-        cinder: "CinderPersistentVolumeSource" = None,
-        claim_ref: "ObjectReference" = None,
-        csi: "CSIPersistentVolumeSource" = None,
-        fc: "FCVolumeSource" = None,
-        flex_volume: "FlexPersistentVolumeSource" = None,
-        flocker: "FlockerVolumeSource" = None,
-        gce_persistent_disk: "GCEPersistentDiskVolumeSource" = None,
-        glusterfs: "GlusterfsPersistentVolumeSource" = None,
-        host_path: "HostPathVolumeSource" = None,
-        iscsi: "ISCSIPersistentVolumeSource" = None,
-        local: "LocalVolumeSource" = None,
-        mount_options: typing.List[str] = None,
-        nfs: "NFSVolumeSource" = None,
-        node_affinity: "VolumeNodeAffinity" = None,
-        persistent_volume_reclaim_policy: str = None,
-        photon_persistent_disk: "PhotonPersistentDiskVolumeSource" = None,
-        portworx_volume: "PortworxVolumeSource" = None,
-        quobyte: "QuobyteVolumeSource" = None,
-        rbd: "RBDPersistentVolumeSource" = None,
-        scale_io: "ScaleIOPersistentVolumeSource" = None,
-        storage_class_name: str = None,
-        storageos: "StorageOSPersistentVolumeSource" = None,
-        volume_mode: str = None,
-        vsphere_volume: "VsphereVirtualDiskVolumeSource" = None,
+        access_modes: typing.Optional[typing.List[str]] = None,
+        aws_elastic_block_store: typing.Optional[
+            "AWSElasticBlockStoreVolumeSource"
+        ] = None,
+        azure_disk: typing.Optional["AzureDiskVolumeSource"] = None,
+        azure_file: typing.Optional["AzureFilePersistentVolumeSource"] = None,
+        capacity: typing.Optional[dict] = None,
+        cephfs: typing.Optional["CephFSPersistentVolumeSource"] = None,
+        cinder: typing.Optional["CinderPersistentVolumeSource"] = None,
+        claim_ref: typing.Optional["ObjectReference"] = None,
+        csi: typing.Optional["CSIPersistentVolumeSource"] = None,
+        fc: typing.Optional["FCVolumeSource"] = None,
+        flex_volume: typing.Optional["FlexPersistentVolumeSource"] = None,
+        flocker: typing.Optional["FlockerVolumeSource"] = None,
+        gce_persistent_disk: typing.Optional["GCEPersistentDiskVolumeSource"] = None,
+        glusterfs: typing.Optional["GlusterfsPersistentVolumeSource"] = None,
+        host_path: typing.Optional["HostPathVolumeSource"] = None,
+        iscsi: typing.Optional["ISCSIPersistentVolumeSource"] = None,
+        local: typing.Optional["LocalVolumeSource"] = None,
+        mount_options: typing.Optional[typing.List[str]] = None,
+        nfs: typing.Optional["NFSVolumeSource"] = None,
+        node_affinity: typing.Optional["VolumeNodeAffinity"] = None,
+        persistent_volume_reclaim_policy: typing.Optional[str] = None,
+        photon_persistent_disk: typing.Optional[
+            "PhotonPersistentDiskVolumeSource"
+        ] = None,
+        portworx_volume: typing.Optional["PortworxVolumeSource"] = None,
+        quobyte: typing.Optional["QuobyteVolumeSource"] = None,
+        rbd: typing.Optional["RBDPersistentVolumeSource"] = None,
+        scale_io: typing.Optional["ScaleIOPersistentVolumeSource"] = None,
+        storage_class_name: typing.Optional[str] = None,
+        storageos: typing.Optional["StorageOSPersistentVolumeSource"] = None,
+        volume_mode: typing.Optional[str] = None,
+        vsphere_volume: typing.Optional["VsphereVirtualDiskVolumeSource"] = None,
     ):
         """Create PersistentVolumeSpec instance."""
         super(PersistentVolumeSpec, self).__init__(
@@ -16212,6 +16442,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         this PersistentVolume. More info:
         https://kubernetes.io/docs/concepts/storage/persistent-
         volumes#reclaiming
+
         """
         return typing.cast(
             str,
@@ -16229,6 +16460,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         this PersistentVolume. More info:
         https://kubernetes.io/docs/concepts/storage/persistent-
         volumes#reclaiming
+
         """
         self._properties["persistentVolumeReclaimPolicy"] = value
 
@@ -16467,9 +16699,9 @@ class PersistentVolumeStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        message: str = None,
-        phase: str = None,
-        reason: str = None,
+        message: typing.Optional[str] = None,
+        phase: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
     ):
         """Create PersistentVolumeStatus instance."""
         super(PersistentVolumeStatus, self).__init__(
@@ -16512,6 +16744,7 @@ class PersistentVolumeStatus(_kuber_definitions.Definition):
         or released by a claim. More info:
         https://kubernetes.io/docs/concepts/storage/persistent-
         volumes#phase
+
         """
         return typing.cast(
             str,
@@ -16525,6 +16758,7 @@ class PersistentVolumeStatus(_kuber_definitions.Definition):
         or released by a claim. More info:
         https://kubernetes.io/docs/concepts/storage/persistent-
         volumes#phase
+
         """
         self._properties["phase"] = value
 
@@ -16563,8 +16797,8 @@ class PhotonPersistentDiskVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        pd_id: str = None,
+        fs_type: typing.Optional[str] = None,
+        pd_id: typing.Optional[str] = None,
     ):
         """Create PhotonPersistentDiskVolumeSource instance."""
         super(PhotonPersistentDiskVolumeSource, self).__init__(
@@ -16633,9 +16867,9 @@ class Pod(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PodSpec" = None,
-        status: "PodStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PodSpec"] = None,
+        status: typing.Optional["PodStatus"] = None,
     ):
         """Create Pod instance."""
         super(Pod, self).__init__(api_version="core/v1", kind="Pod")
@@ -16874,7 +17108,7 @@ class Pod(_kuber_definitions.Resource):
         """
         return self.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "PodStatus":
+    def create_resource(self, namespace: typing.Optional["str"] = None) -> "PodStatus":
         """
         Creates the Pod in the currently
         configured Kubernetes cluster and returns the status information
@@ -16896,7 +17130,7 @@ class Pod(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "PodStatus":
+    def replace_resource(self, namespace: typing.Optional["str"] = None) -> "PodStatus":
         """
         Replaces the Pod in the currently
         configured Kubernetes cluster and returns the status information
@@ -16918,7 +17152,7 @@ class Pod(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "PodStatus":
+    def patch_resource(self, namespace: typing.Optional["str"] = None) -> "PodStatus":
         """
         Patches the Pod in the currently
         configured Kubernetes cluster and returns the status information
@@ -16940,7 +17174,9 @@ class Pod(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "PodStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PodStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -16963,7 +17199,7 @@ class Pod(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Pod from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -16983,7 +17219,7 @@ class Pod(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -17012,7 +17248,7 @@ class Pod(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -17037,11 +17273,11 @@ class PodAffinity(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        preferred_during_scheduling_ignored_during_execution: typing.List[
-            "WeightedPodAffinityTerm"
+        preferred_during_scheduling_ignored_during_execution: typing.Optional[
+            typing.List["WeightedPodAffinityTerm"]
         ] = None,
-        required_during_scheduling_ignored_during_execution: typing.List[
-            "PodAffinityTerm"
+        required_during_scheduling_ignored_during_execution: typing.Optional[
+            typing.List["PodAffinityTerm"]
         ] = None,
     ):
         """Create PodAffinity instance."""
@@ -17177,10 +17413,10 @@ class PodAffinityTerm(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        label_selector: "LabelSelector" = None,
-        namespace_selector: "LabelSelector" = None,
-        namespaces: typing.List[str] = None,
-        topology_key: str = None,
+        label_selector: typing.Optional["LabelSelector"] = None,
+        namespace_selector: typing.Optional["LabelSelector"] = None,
+        namespaces: typing.Optional[typing.List[str]] = None,
+        topology_key: typing.Optional[str] = None,
     ):
         """Create PodAffinityTerm instance."""
         super(PodAffinityTerm, self).__init__(
@@ -17328,11 +17564,11 @@ class PodAntiAffinity(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        preferred_during_scheduling_ignored_during_execution: typing.List[
-            "WeightedPodAffinityTerm"
+        preferred_during_scheduling_ignored_during_execution: typing.Optional[
+            typing.List["WeightedPodAffinityTerm"]
         ] = None,
-        required_during_scheduling_ignored_during_execution: typing.List[
-            "PodAffinityTerm"
+        required_during_scheduling_ignored_during_execution: typing.Optional[
+            typing.List["PodAffinityTerm"]
         ] = None,
     ):
         """Create PodAntiAffinity instance."""
@@ -17465,12 +17701,12 @@ class PodCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_probe_time: str = None,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_probe_time: typing.Optional[str] = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create PodCondition instance."""
         super(PodCondition, self).__init__(api_version="core/v1", kind="PodCondition")
@@ -17638,9 +17874,9 @@ class PodDNSConfig(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        nameservers: typing.List[str] = None,
-        options: typing.List["PodDNSConfigOption"] = None,
-        searches: typing.List[str] = None,
+        nameservers: typing.Optional[typing.List[str]] = None,
+        options: typing.Optional[typing.List["PodDNSConfigOption"]] = None,
+        searches: typing.Optional[typing.List[str]] = None,
     ):
         """Create PodDNSConfig instance."""
         super(PodDNSConfig, self).__init__(api_version="core/v1", kind="PodDNSConfig")
@@ -17744,8 +17980,8 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        value: str = None,
+        name: typing.Optional[str] = None,
+        value: typing.Optional[str] = None,
     ):
         """Create PodDNSConfigOption instance."""
         super(PodDNSConfigOption, self).__init__(
@@ -17801,13 +18037,14 @@ class PodIP(_kuber_definitions.Definition):
     """
     IP address information for entries in the (plural) PodIPs
     field. Each entry includes:
-       IP: An IP address allocated to the pod. Routable at least
+
+        IP: An IP address allocated to the pod. Routable at least
     within the cluster.
     """
 
     def __init__(
         self,
-        ip: str = None,
+        ip: typing.Optional[str] = None,
     ):
         """Create PodIP instance."""
         super(PodIP, self).__init__(api_version="core/v1", kind="PodIP")
@@ -17849,8 +18086,8 @@ class PodList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Pod"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Pod"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PodList instance."""
         super(PodList, self).__init__(api_version="core/v1", kind="PodList")
@@ -17922,7 +18159,7 @@ class PodList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -17939,6 +18176,60 @@ class PodList(_kuber_definitions.Collection):
         return False
 
 
+class PodOS(_kuber_definitions.Definition):
+    """
+    PodOS defines the OS parameters of a pod.
+    """
+
+    def __init__(
+        self,
+        name: typing.Optional[str] = None,
+    ):
+        """Create PodOS instance."""
+        super(PodOS, self).__init__(api_version="core/v1", kind="PodOS")
+        self._properties = {
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "name": (str, None),
+        }
+
+    @property
+    def name(self) -> str:
+        """
+        Name is the name of the operating system. The currently
+        supported values are linux and windows. Additional value may
+        be defined in future and can be one of:
+        https://github.com/opencontainers/runtime-
+        spec/blob/master/config.md#platform-specific-configuration
+        Clients should expect to handle additional values and treat
+        unrecognized values in this field as os: null
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is the name of the operating system. The currently
+        supported values are linux and windows. Additional value may
+        be defined in future and can be one of:
+        https://github.com/opencontainers/runtime-
+        spec/blob/master/config.md#platform-specific-configuration
+        Clients should expect to handle additional values and treat
+        unrecognized values in this field as os: null
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "PodOS":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class PodReadinessGate(_kuber_definitions.Definition):
     """
     PodReadinessGate contains the reference to a pod condition
@@ -17946,7 +18237,7 @@ class PodReadinessGate(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        condition_type: str = None,
+        condition_type: typing.Optional[str] = None,
     ):
         """Create PodReadinessGate instance."""
         super(PodReadinessGate, self).__init__(
@@ -17996,16 +18287,16 @@ class PodSecurityContext(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_group: int = None,
-        fs_group_change_policy: str = None,
-        run_as_group: int = None,
-        run_as_non_root: bool = None,
-        run_as_user: int = None,
-        se_linux_options: "SELinuxOptions" = None,
-        seccomp_profile: "SeccompProfile" = None,
-        supplemental_groups: typing.List[int] = None,
-        sysctls: typing.List["Sysctl"] = None,
-        windows_options: "WindowsSecurityContextOptions" = None,
+        fs_group: typing.Optional[int] = None,
+        fs_group_change_policy: typing.Optional[str] = None,
+        run_as_group: typing.Optional[int] = None,
+        run_as_non_root: typing.Optional[bool] = None,
+        run_as_user: typing.Optional[int] = None,
+        se_linux_options: typing.Optional["SELinuxOptions"] = None,
+        seccomp_profile: typing.Optional["SeccompProfile"] = None,
+        supplemental_groups: typing.Optional[typing.List[int]] = None,
+        sysctls: typing.Optional[typing.List["Sysctl"]] = None,
+        windows_options: typing.Optional["WindowsSecurityContextOptions"] = None,
     ):
         """Create PodSecurityContext instance."""
         super(PodSecurityContext, self).__init__(
@@ -18058,7 +18349,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         FSGroup) 3. The permission bits are OR'd with rw-rw----
 
         If unset, the Kubelet will not modify the ownership and
-        permissions of any volume.
+        permissions of any volume. Note that this field cannot be
+        set when spec.os.name is windows.
         """
         return typing.cast(
             int,
@@ -18077,7 +18369,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         FSGroup) 3. The permission bits are OR'd with rw-rw----
 
         If unset, the Kubelet will not modify the ownership and
-        permissions of any volume.
+        permissions of any volume. Note that this field cannot be
+        set when spec.os.name is windows.
         """
         self._properties["fsGroup"] = value
 
@@ -18090,7 +18383,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         support fsGroup based ownership(and permissions). It will
         have no effect on ephemeral volume types such as: secret,
         configmaps and emptydir. Valid values are "OnRootMismatch"
-        and "Always". If not specified, "Always" is used.
+        and "Always". If not specified, "Always" is used. Note that
+        this field cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             str,
@@ -18106,7 +18400,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         support fsGroup based ownership(and permissions). It will
         have no effect on ephemeral volume types such as: secret,
         configmaps and emptydir. Valid values are "OnRootMismatch"
-        and "Always". If not specified, "Always" is used.
+        and "Always". If not specified, "Always" is used. Note that
+        this field cannot be set when spec.os.name is windows.
         """
         self._properties["fsGroupChangePolicy"] = value
 
@@ -18117,7 +18412,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         runtime default if unset. May also be set in
         SecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence for that container.
+        takes precedence for that container. Note that this field
+        cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             int,
@@ -18131,7 +18427,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         runtime default if unset. May also be set in
         SecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence for that container.
+        takes precedence for that container. Note that this field
+        cannot be set when spec.os.name is windows.
         """
         self._properties["runAsGroup"] = value
 
@@ -18173,7 +18470,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         Defaults to user specified in image metadata if unspecified.
         May also be set in SecurityContext.  If set in both
         SecurityContext and PodSecurityContext, the value specified
-        in SecurityContext takes precedence for that container.
+        in SecurityContext takes precedence for that container. Note
+        that this field cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             int,
@@ -18187,7 +18485,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         Defaults to user specified in image metadata if unspecified.
         May also be set in SecurityContext.  If set in both
         SecurityContext and PodSecurityContext, the value specified
-        in SecurityContext takes precedence for that container.
+        in SecurityContext takes precedence for that container. Note
+        that this field cannot be set when spec.os.name is windows.
         """
         self._properties["runAsUser"] = value
 
@@ -18199,7 +18498,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         SELinux context for each container.  May also be set in
         SecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence for that container.
+        takes precedence for that container. Note that this field
+        cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             "SELinuxOptions",
@@ -18214,7 +18514,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         SELinux context for each container.  May also be set in
         SecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence for that container.
+        takes precedence for that container. Note that this field
+        cannot be set when spec.os.name is windows.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -18227,6 +18528,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
     def seccomp_profile(self) -> "SeccompProfile":
         """
         The seccomp options to use by the containers in this pod.
+        Note that this field cannot be set when spec.os.name is
+        windows.
         """
         return typing.cast(
             "SeccompProfile",
@@ -18237,6 +18540,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
     def seccomp_profile(self, value: typing.Union["SeccompProfile", dict]):
         """
         The seccomp options to use by the containers in this pod.
+        Note that this field cannot be set when spec.os.name is
+        windows.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -18250,7 +18555,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         """
         A list of groups applied to the first process run in each
         container, in addition to the container's primary GID.  If
-        unspecified, no groups will be added to any container.
+        unspecified, no groups will be added to any container. Note
+        that this field cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             typing.List[int],
@@ -18262,7 +18568,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         """
         A list of groups applied to the first process run in each
         container, in addition to the container's primary GID.  If
-        unspecified, no groups will be added to any container.
+        unspecified, no groups will be added to any container. Note
+        that this field cannot be set when spec.os.name is windows.
         """
         self._properties["supplementalGroups"] = value
 
@@ -18271,7 +18578,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         """
         Sysctls hold a list of namespaced sysctls used for the pod.
         Pods with unsupported sysctls (by the container runtime)
-        might fail to launch.
+        might fail to launch. Note that this field cannot be set
+        when spec.os.name is windows.
         """
         return typing.cast(
             typing.List["Sysctl"],
@@ -18283,7 +18591,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         """
         Sysctls hold a list of namespaced sysctls used for the pod.
         Pods with unsupported sysctls (by the container runtime)
-        might fail to launch.
+        might fail to launch. Note that this field cannot be set
+        when spec.os.name is windows.
         """
         cleaned: typing.List[Sysctl] = []
         for item in value:
@@ -18302,7 +18611,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         unspecified, the options within a container's
         SecurityContext will be used. If set in both SecurityContext
         and PodSecurityContext, the value specified in
-        SecurityContext takes precedence.
+        SecurityContext takes precedence. Note that this field
+        cannot be set when spec.os.name is linux.
         """
         return typing.cast(
             "WindowsSecurityContextOptions",
@@ -18318,7 +18628,8 @@ class PodSecurityContext(_kuber_definitions.Definition):
         unspecified, the options within a container's
         SecurityContext will be used. If set in both SecurityContext
         and PodSecurityContext, the value specified in
-        SecurityContext takes precedence.
+        SecurityContext takes precedence. Note that this field
+        cannot be set when spec.os.name is linux.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -18341,41 +18652,44 @@ class PodSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active_deadline_seconds: int = None,
-        affinity: "Affinity" = None,
-        automount_service_account_token: bool = None,
-        containers: typing.List["Container"] = None,
-        dns_config: "PodDNSConfig" = None,
-        dns_policy: str = None,
-        enable_service_links: bool = None,
-        ephemeral_containers: typing.List["EphemeralContainer"] = None,
-        host_aliases: typing.List["HostAlias"] = None,
-        host_ipc: bool = None,
-        host_network: bool = None,
-        host_pid: bool = None,
-        hostname: str = None,
-        image_pull_secrets: typing.List["LocalObjectReference"] = None,
-        init_containers: typing.List["Container"] = None,
-        node_name: str = None,
-        node_selector: dict = None,
-        overhead: dict = None,
-        preemption_policy: str = None,
-        priority: int = None,
-        priority_class_name: str = None,
-        readiness_gates: typing.List["PodReadinessGate"] = None,
-        restart_policy: str = None,
-        runtime_class_name: str = None,
-        scheduler_name: str = None,
-        security_context: "PodSecurityContext" = None,
-        service_account: str = None,
-        service_account_name: str = None,
-        set_hostname_as_fqdn: bool = None,
-        share_process_namespace: bool = None,
-        subdomain: str = None,
-        termination_grace_period_seconds: int = None,
-        tolerations: typing.List["Toleration"] = None,
-        topology_spread_constraints: typing.List["TopologySpreadConstraint"] = None,
-        volumes: typing.List["Volume"] = None,
+        active_deadline_seconds: typing.Optional[int] = None,
+        affinity: typing.Optional["Affinity"] = None,
+        automount_service_account_token: typing.Optional[bool] = None,
+        containers: typing.Optional[typing.List["Container"]] = None,
+        dns_config: typing.Optional["PodDNSConfig"] = None,
+        dns_policy: typing.Optional[str] = None,
+        enable_service_links: typing.Optional[bool] = None,
+        ephemeral_containers: typing.Optional[typing.List["EphemeralContainer"]] = None,
+        host_aliases: typing.Optional[typing.List["HostAlias"]] = None,
+        host_ipc: typing.Optional[bool] = None,
+        host_network: typing.Optional[bool] = None,
+        host_pid: typing.Optional[bool] = None,
+        hostname: typing.Optional[str] = None,
+        image_pull_secrets: typing.Optional[typing.List["LocalObjectReference"]] = None,
+        init_containers: typing.Optional[typing.List["Container"]] = None,
+        node_name: typing.Optional[str] = None,
+        node_selector: typing.Optional[dict] = None,
+        os: typing.Optional["PodOS"] = None,
+        overhead: typing.Optional[dict] = None,
+        preemption_policy: typing.Optional[str] = None,
+        priority: typing.Optional[int] = None,
+        priority_class_name: typing.Optional[str] = None,
+        readiness_gates: typing.Optional[typing.List["PodReadinessGate"]] = None,
+        restart_policy: typing.Optional[str] = None,
+        runtime_class_name: typing.Optional[str] = None,
+        scheduler_name: typing.Optional[str] = None,
+        security_context: typing.Optional["PodSecurityContext"] = None,
+        service_account: typing.Optional[str] = None,
+        service_account_name: typing.Optional[str] = None,
+        set_hostname_as_fqdn: typing.Optional[bool] = None,
+        share_process_namespace: typing.Optional[bool] = None,
+        subdomain: typing.Optional[str] = None,
+        termination_grace_period_seconds: typing.Optional[int] = None,
+        tolerations: typing.Optional[typing.List["Toleration"]] = None,
+        topology_spread_constraints: typing.Optional[
+            typing.List["TopologySpreadConstraint"]
+        ] = None,
+        volumes: typing.Optional[typing.List["Volume"]] = None,
     ):
         """Create PodSpec instance."""
         super(PodSpec, self).__init__(api_version="core/v1", kind="PodSpec")
@@ -18407,6 +18721,7 @@ class PodSpec(_kuber_definitions.Definition):
             "initContainers": init_containers if init_containers is not None else [],
             "nodeName": node_name if node_name is not None else "",
             "nodeSelector": node_selector if node_selector is not None else {},
+            "os": os if os is not None else PodOS(),
             "overhead": overhead if overhead is not None else {},
             "preemptionPolicy": preemption_policy
             if preemption_policy is not None
@@ -18462,6 +18777,7 @@ class PodSpec(_kuber_definitions.Definition):
             "initContainers": (list, Container),
             "nodeName": (str, None),
             "nodeSelector": (dict, None),
+            "os": (PodOS, None),
             "overhead": (dict, None),
             "preemptionPolicy": (str, None),
             "priority": (int, None),
@@ -18612,6 +18928,7 @@ class PodSpec(_kuber_definitions.Definition):
         be merged with the policy selected with DNSPolicy. To have
         DNS options set along with hostNetwork, you have to specify
         DNS policy explicitly to 'ClusterFirstWithHostNet'.
+
         """
         return typing.cast(
             str,
@@ -18627,6 +18944,7 @@ class PodSpec(_kuber_definitions.Definition):
         be merged with the policy selected with DNSPolicy. To have
         DNS options set along with hostNetwork, you have to specify
         DNS policy explicitly to 'ClusterFirstWithHostNet'.
+
         """
         self._properties["dnsPolicy"] = value
 
@@ -18662,9 +18980,9 @@ class PodSpec(_kuber_definitions.Definition):
         specified when creating a pod, and it cannot be modified by
         updating the pod spec. In order to add an ephemeral
         container to an existing pod, use the pod's
-        ephemeralcontainers subresource. This field is alpha-level
-        and is only honored by servers that enable the
-        EphemeralContainers feature.
+        ephemeralcontainers subresource. This field is beta-level
+        and available on clusters that haven't disabled the
+        EphemeralContainers feature gate.
         """
         return typing.cast(
             typing.List["EphemeralContainer"],
@@ -18682,9 +19000,9 @@ class PodSpec(_kuber_definitions.Definition):
         specified when creating a pod, and it cannot be modified by
         updating the pod spec. In order to add an ephemeral
         container to an existing pod, use the pod's
-        ephemeralcontainers subresource. This field is alpha-level
-        and is only honored by servers that enable the
-        EphemeralContainers feature.
+        ephemeralcontainers subresource. This field is beta-level
+        and available on clusters that haven't disabled the
+        EphemeralContainers feature gate.
         """
         cleaned: typing.List[EphemeralContainer] = []
         for item in value:
@@ -18949,6 +19267,78 @@ class PodSpec(_kuber_definitions.Definition):
         self._properties["nodeSelector"] = value
 
     @property
+    def os(self) -> "PodOS":
+        """
+        Specifies the OS of the containers in the pod. Some pod and
+        container fields are restricted if this is set.
+
+        If the OS field is set to linux, the following fields must
+        be unset: -securityContext.windowsOptions
+
+        If the OS field is set to windows, following fields must be
+        unset: - spec.hostPID - spec.hostIPC -
+        spec.securityContext.seLinuxOptions -
+        spec.securityContext.seccompProfile -
+        spec.securityContext.fsGroup -
+        spec.securityContext.fsGroupChangePolicy -
+        spec.securityContext.sysctls - spec.shareProcessNamespace -
+        spec.securityContext.runAsUser -
+        spec.securityContext.runAsGroup -
+        spec.securityContext.supplementalGroups -
+        spec.containers[*].securityContext.seLinuxOptions -
+        spec.containers[*].securityContext.seccompProfile -
+        spec.containers[*].securityContext.capabilities -
+        spec.containers[*].securityContext.readOnlyRootFilesystem -
+        spec.containers[*].securityContext.privileged -
+        spec.containers[*].securityContext.allowPrivilegeEscalation
+        - spec.containers[*].securityContext.procMount -
+        spec.containers[*].securityContext.runAsUser -
+        spec.containers[*].securityContext.runAsGroup This is an
+        alpha field and requires the IdentifyPodOS feature
+        """
+        return typing.cast(
+            "PodOS",
+            self._properties.get("os"),
+        )
+
+    @os.setter
+    def os(self, value: typing.Union["PodOS", dict]):
+        """
+        Specifies the OS of the containers in the pod. Some pod and
+        container fields are restricted if this is set.
+
+        If the OS field is set to linux, the following fields must
+        be unset: -securityContext.windowsOptions
+
+        If the OS field is set to windows, following fields must be
+        unset: - spec.hostPID - spec.hostIPC -
+        spec.securityContext.seLinuxOptions -
+        spec.securityContext.seccompProfile -
+        spec.securityContext.fsGroup -
+        spec.securityContext.fsGroupChangePolicy -
+        spec.securityContext.sysctls - spec.shareProcessNamespace -
+        spec.securityContext.runAsUser -
+        spec.securityContext.runAsGroup -
+        spec.securityContext.supplementalGroups -
+        spec.containers[*].securityContext.seLinuxOptions -
+        spec.containers[*].securityContext.seccompProfile -
+        spec.containers[*].securityContext.capabilities -
+        spec.containers[*].securityContext.readOnlyRootFilesystem -
+        spec.containers[*].securityContext.privileged -
+        spec.containers[*].securityContext.allowPrivilegeEscalation
+        - spec.containers[*].securityContext.procMount -
+        spec.containers[*].securityContext.runAsUser -
+        spec.containers[*].securityContext.runAsGroup This is an
+        alpha field and requires the IdentifyPodOS feature
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                PodOS,
+                PodOS().from_dict(value),
+            )
+        self._properties["os"] = value
+
+    @property
     def overhead(self) -> dict:
         """
         Overhead represents the resource overhead associated with
@@ -19116,6 +19506,7 @@ class PodSpec(_kuber_definitions.Definition):
         Always, OnFailure, Never. Default to Always. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle/#restart-policy
+
         """
         return typing.cast(
             str,
@@ -19129,6 +19520,7 @@ class PodSpec(_kuber_definitions.Definition):
         Always, OnFailure, Never. Default to Always. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle/#restart-policy
+
         """
         self._properties["restartPolicy"] = value
 
@@ -19623,19 +20015,21 @@ class PodStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["PodCondition"] = None,
-        container_statuses: typing.List["ContainerStatus"] = None,
-        ephemeral_container_statuses: typing.List["ContainerStatus"] = None,
-        host_ip: str = None,
-        init_container_statuses: typing.List["ContainerStatus"] = None,
-        message: str = None,
-        nominated_node_name: str = None,
-        phase: str = None,
-        pod_ip: str = None,
-        pod_ips: typing.List["PodIP"] = None,
-        qos_class: str = None,
-        reason: str = None,
-        start_time: str = None,
+        conditions: typing.Optional[typing.List["PodCondition"]] = None,
+        container_statuses: typing.Optional[typing.List["ContainerStatus"]] = None,
+        ephemeral_container_statuses: typing.Optional[
+            typing.List["ContainerStatus"]
+        ] = None,
+        host_ip: typing.Optional[str] = None,
+        init_container_statuses: typing.Optional[typing.List["ContainerStatus"]] = None,
+        message: typing.Optional[str] = None,
+        nominated_node_name: typing.Optional[str] = None,
+        phase: typing.Optional[str] = None,
+        pod_ip: typing.Optional[str] = None,
+        pod_ips: typing.Optional[typing.List["PodIP"]] = None,
+        qos_class: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        start_time: typing.Optional[str] = None,
     ):
         """Create PodStatus instance."""
         super(PodStatus, self).__init__(api_version="core/v1", kind="PodStatus")
@@ -19748,8 +20142,8 @@ class PodStatus(_kuber_definitions.Definition):
     def ephemeral_container_statuses(self) -> typing.List["ContainerStatus"]:
         """
         Status for any ephemeral containers that have run in this
-        pod. This field is alpha-level and is only populated by
-        servers that enable the EphemeralContainers feature.
+        pod. This field is beta-level and available on clusters that
+        haven't disabled the EphemeralContainers feature gate.
         """
         return typing.cast(
             typing.List["ContainerStatus"],
@@ -19762,8 +20156,8 @@ class PodStatus(_kuber_definitions.Definition):
     ):
         """
         Status for any ephemeral containers that have run in this
-        pod. This field is alpha-level and is only populated by
-        servers that enable the EphemeralContainers feature.
+        pod. This field is beta-level and available on clusters that
+        haven't disabled the EphemeralContainers feature gate.
         """
         cleaned: typing.List[ContainerStatus] = []
         for item in value:
@@ -19913,6 +20307,7 @@ class PodStatus(_kuber_definitions.Definition):
         More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#pod-phase
+
         """
         return typing.cast(
             str,
@@ -19947,6 +20342,7 @@ class PodStatus(_kuber_definitions.Definition):
         More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#pod-phase
+
         """
         self._properties["phase"] = value
 
@@ -20010,6 +20406,7 @@ class PodStatus(_kuber_definitions.Definition):
         available QOS classes More info:
         https://git.k8s.io/community/contributors/design-
         proposals/node/resource-qos.md
+
         """
         return typing.cast(
             str,
@@ -20024,6 +20421,7 @@ class PodStatus(_kuber_definitions.Definition):
         available QOS classes More info:
         https://git.k8s.io/community/contributors/design-
         proposals/node/resource-qos.md
+
         """
         self._properties["qosClass"] = value
 
@@ -20086,8 +20484,8 @@ class PodTemplate(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        template: "PodTemplateSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
     ):
         """Create PodTemplate instance."""
         super(PodTemplate, self).__init__(api_version="core/v1", kind="PodTemplate")
@@ -20298,7 +20696,7 @@ class PodTemplate(_kuber_definitions.Resource):
         """
         return self.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the PodTemplate in the currently
         configured Kubernetes cluster.
@@ -20314,7 +20712,7 @@ class PodTemplate(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the PodTemplate in the currently
         configured Kubernetes cluster.
@@ -20330,7 +20728,7 @@ class PodTemplate(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the PodTemplate in the currently
         configured Kubernetes cluster.
@@ -20346,11 +20744,11 @@ class PodTemplate(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PodTemplate from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -20370,7 +20768,7 @@ class PodTemplate(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -20399,7 +20797,7 @@ class PodTemplate(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -20423,8 +20821,8 @@ class PodTemplateList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PodTemplate"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PodTemplate"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PodTemplateList instance."""
         super(PodTemplateList, self).__init__(
@@ -20494,7 +20892,7 @@ class PodTemplateList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -20519,8 +20917,8 @@ class PodTemplateSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PodSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PodSpec"] = None,
     ):
         """Create PodTemplateSpec instance."""
         super(PodTemplateSpec, self).__init__(
@@ -20741,9 +21139,9 @@ class PortStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        error: str = None,
-        port: int = None,
-        protocol: str = None,
+        error: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
+        protocol: typing.Optional[str] = None,
     ):
         """Create PortStatus instance."""
         super(PortStatus, self).__init__(api_version="core/v1", kind="PortStatus")
@@ -20814,6 +21212,7 @@ class PortStatus(_kuber_definitions.Definition):
         Protocol is the protocol of the service port of which status
         is recorded here The supported values are: "TCP", "UDP",
         "SCTP"
+
         """
         return typing.cast(
             str,
@@ -20826,6 +21225,7 @@ class PortStatus(_kuber_definitions.Definition):
         Protocol is the protocol of the service port of which status
         is recorded here The supported values are: "TCP", "UDP",
         "SCTP"
+
         """
         self._properties["protocol"] = value
 
@@ -20843,9 +21243,9 @@ class PortworxVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        read_only: bool = None,
-        volume_id: str = None,
+        fs_type: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        volume_id: typing.Optional[str] = None,
     ):
         """Create PortworxVolumeSource instance."""
         super(PortworxVolumeSource, self).__init__(
@@ -20937,8 +21337,8 @@ class PreferredSchedulingTerm(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        preference: "NodeSelectorTerm" = None,
-        weight: int = None,
+        preference: typing.Optional["NodeSelectorTerm"] = None,
+        weight: typing.Optional[int] = None,
     ):
         """Create PreferredSchedulingTerm instance."""
         super(PreferredSchedulingTerm, self).__init__(
@@ -21012,15 +21412,16 @@ class Probe(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        exec_: "ExecAction" = None,
-        failure_threshold: int = None,
-        http_get: "HTTPGetAction" = None,
-        initial_delay_seconds: int = None,
-        period_seconds: int = None,
-        success_threshold: int = None,
-        tcp_socket: "TCPSocketAction" = None,
-        termination_grace_period_seconds: int = None,
-        timeout_seconds: int = None,
+        exec_: typing.Optional["ExecAction"] = None,
+        failure_threshold: typing.Optional[int] = None,
+        grpc: typing.Optional["GRPCAction"] = None,
+        http_get: typing.Optional["HTTPGetAction"] = None,
+        initial_delay_seconds: typing.Optional[int] = None,
+        period_seconds: typing.Optional[int] = None,
+        success_threshold: typing.Optional[int] = None,
+        tcp_socket: typing.Optional["TCPSocketAction"] = None,
+        termination_grace_period_seconds: typing.Optional[int] = None,
+        timeout_seconds: typing.Optional[int] = None,
     ):
         """Create Probe instance."""
         super(Probe, self).__init__(api_version="core/v1", kind="Probe")
@@ -21029,6 +21430,7 @@ class Probe(_kuber_definitions.Definition):
             "failureThreshold": failure_threshold
             if failure_threshold is not None
             else None,
+            "grpc": grpc if grpc is not None else GRPCAction(),
             "httpGet": http_get if http_get is not None else HTTPGetAction(),
             "initialDelaySeconds": initial_delay_seconds
             if initial_delay_seconds is not None
@@ -21046,6 +21448,7 @@ class Probe(_kuber_definitions.Definition):
         self._types = {
             "exec": (ExecAction, None),
             "failureThreshold": (int, None),
+            "grpc": (GRPCAction, None),
             "httpGet": (HTTPGetAction, None),
             "initialDelaySeconds": (int, None),
             "periodSeconds": (int, None),
@@ -21058,8 +21461,7 @@ class Probe(_kuber_definitions.Definition):
     @property
     def exec_(self) -> "ExecAction":
         """
-        One and only one of the following should be specified. Exec
-        specifies the action to take.
+        Exec specifies the action to take.
         """
         return typing.cast(
             "ExecAction",
@@ -21069,8 +21471,7 @@ class Probe(_kuber_definitions.Definition):
     @exec_.setter
     def exec_(self, value: typing.Union["ExecAction", dict]):
         """
-        One and only one of the following should be specified. Exec
-        specifies the action to take.
+        Exec specifies the action to take.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -21099,6 +21500,32 @@ class Probe(_kuber_definitions.Definition):
         is 1.
         """
         self._properties["failureThreshold"] = value
+
+    @property
+    def grpc(self) -> "GRPCAction":
+        """
+        GRPC specifies an action involving a GRPC port. This is an
+        alpha field and requires enabling GRPCContainerProbe feature
+        gate.
+        """
+        return typing.cast(
+            "GRPCAction",
+            self._properties.get("grpc"),
+        )
+
+    @grpc.setter
+    def grpc(self, value: typing.Union["GRPCAction", dict]):
+        """
+        GRPC specifies an action involving a GRPC port. This is an
+        alpha field and requires enabling GRPCContainerProbe feature
+        gate.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                GRPCAction,
+                GRPCAction().from_dict(value),
+            )
+        self._properties["grpc"] = value
 
     @property
     def http_get(self) -> "HTTPGetAction":
@@ -21188,8 +21615,7 @@ class Probe(_kuber_definitions.Definition):
     @property
     def tcp_socket(self) -> "TCPSocketAction":
         """
-        TCPSocket specifies an action involving a TCP port. TCP
-        hooks not yet supported
+        TCPSocket specifies an action involving a TCP port.
         """
         return typing.cast(
             "TCPSocketAction",
@@ -21199,8 +21625,7 @@ class Probe(_kuber_definitions.Definition):
     @tcp_socket.setter
     def tcp_socket(self, value: typing.Union["TCPSocketAction", dict]):
         """
-        TCPSocket specifies an action involving a TCP port. TCP
-        hooks not yet supported
+        TCPSocket specifies an action involving a TCP port.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -21289,8 +21714,8 @@ class ProjectedVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        default_mode: int = None,
-        sources: typing.List["VolumeProjection"] = None,
+        default_mode: typing.Optional[int] = None,
+        sources: typing.Optional[typing.List["VolumeProjection"]] = None,
     ):
         """Create ProjectedVolumeSource instance."""
         super(ProjectedVolumeSource, self).__init__(
@@ -21379,12 +21804,12 @@ class QuobyteVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        group: str = None,
-        read_only: bool = None,
-        registry: str = None,
-        tenant: str = None,
-        user: str = None,
-        volume: str = None,
+        group: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        registry: typing.Optional[str] = None,
+        tenant: typing.Optional[str] = None,
+        user: typing.Optional[str] = None,
+        volume: typing.Optional[str] = None,
     ):
         """Create QuobyteVolumeSource instance."""
         super(QuobyteVolumeSource, self).__init__(
@@ -21539,14 +21964,14 @@ class RBDPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        image: str = None,
-        keyring: str = None,
-        monitors: typing.List[str] = None,
-        pool: str = None,
-        read_only: bool = None,
-        secret_ref: "SecretReference" = None,
-        user: str = None,
+        fs_type: typing.Optional[str] = None,
+        image: typing.Optional[str] = None,
+        keyring: typing.Optional[str] = None,
+        monitors: typing.Optional[typing.List[str]] = None,
+        pool: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["SecretReference"] = None,
+        user: typing.Optional[str] = None,
     ):
         """Create RBDPersistentVolumeSource instance."""
         super(RBDPersistentVolumeSource, self).__init__(
@@ -21758,14 +22183,14 @@ class RBDVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        image: str = None,
-        keyring: str = None,
-        monitors: typing.List[str] = None,
-        pool: str = None,
-        read_only: bool = None,
-        secret_ref: "LocalObjectReference" = None,
-        user: str = None,
+        fs_type: typing.Optional[str] = None,
+        image: typing.Optional[str] = None,
+        keyring: typing.Optional[str] = None,
+        monitors: typing.Optional[typing.List[str]] = None,
+        pool: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["LocalObjectReference"] = None,
+        user: typing.Optional[str] = None,
     ):
         """Create RBDVolumeSource instance."""
         super(RBDVolumeSource, self).__init__(
@@ -21978,9 +22403,9 @@ class ReplicationController(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "ReplicationControllerSpec" = None,
-        status: "ReplicationControllerStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["ReplicationControllerSpec"] = None,
+        status: typing.Optional["ReplicationControllerStatus"] = None,
     ):
         """Create ReplicationController instance."""
         super(ReplicationController, self).__init__(
@@ -22231,7 +22656,9 @@ class ReplicationController(_kuber_definitions.Resource):
         """
         return self.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "ReplicationControllerStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ReplicationControllerStatus":
         """
         Creates the ReplicationController in the currently
         configured Kubernetes cluster and returns the status information
@@ -22257,7 +22684,7 @@ class ReplicationController(_kuber_definitions.Resource):
         return output
 
     def replace_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "ReplicationControllerStatus":
         """
         Replaces the ReplicationController in the currently
@@ -22283,7 +22710,9 @@ class ReplicationController(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "ReplicationControllerStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ReplicationControllerStatus":
         """
         Patches the ReplicationController in the currently
         configured Kubernetes cluster and returns the status information
@@ -22309,7 +22738,7 @@ class ReplicationController(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "ReplicationControllerStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -22333,7 +22762,7 @@ class ReplicationController(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ReplicationController from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -22353,7 +22782,7 @@ class ReplicationController(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -22382,7 +22811,7 @@ class ReplicationController(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -22407,11 +22836,11 @@ class ReplicationControllerCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create ReplicationControllerCondition instance."""
         super(ReplicationControllerCondition, self).__init__(
@@ -22544,8 +22973,8 @@ class ReplicationControllerList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ReplicationController"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ReplicationController"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ReplicationControllerList instance."""
         super(ReplicationControllerList, self).__init__(
@@ -22622,7 +23051,7 @@ class ReplicationControllerList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -22647,10 +23076,10 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        min_ready_seconds: int = None,
-        replicas: int = None,
-        selector: dict = None,
-        template: "PodTemplateSpec" = None,
+        min_ready_seconds: typing.Optional[int] = None,
+        replicas: typing.Optional[int] = None,
+        selector: typing.Optional[dict] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
     ):
         """Create ReplicationControllerSpec instance."""
         super(ReplicationControllerSpec, self).__init__(
@@ -22937,12 +23366,14 @@ class ReplicationControllerStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        available_replicas: int = None,
-        conditions: typing.List["ReplicationControllerCondition"] = None,
-        fully_labeled_replicas: int = None,
-        observed_generation: int = None,
-        ready_replicas: int = None,
-        replicas: int = None,
+        available_replicas: typing.Optional[int] = None,
+        conditions: typing.Optional[
+            typing.List["ReplicationControllerCondition"]
+        ] = None,
+        fully_labeled_replicas: typing.Optional[int] = None,
+        observed_generation: typing.Optional[int] = None,
+        ready_replicas: typing.Optional[int] = None,
+        replicas: typing.Optional[int] = None,
     ):
         """Create ReplicationControllerStatus instance."""
         super(ReplicationControllerStatus, self).__init__(
@@ -23117,9 +23548,9 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        container_name: str = None,
-        divisor: typing.Union[str, int, None] = None,
-        resource: str = None,
+        container_name: typing.Optional[str] = None,
+        divisor: typing.Optional[typing.Union[str, int, None]] = None,
+        resource: typing.Optional[str] = None,
     ):
         """Create ResourceFieldSelector instance."""
         super(ResourceFieldSelector, self).__init__(
@@ -23202,9 +23633,9 @@ class ResourceQuota(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "ResourceQuotaSpec" = None,
-        status: "ResourceQuotaStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["ResourceQuotaSpec"] = None,
+        status: typing.Optional["ResourceQuotaStatus"] = None,
     ):
         """Create ResourceQuota instance."""
         super(ResourceQuota, self).__init__(api_version="core/v1", kind="ResourceQuota")
@@ -23299,7 +23730,9 @@ class ResourceQuota(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "ResourceQuotaStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ResourceQuotaStatus":
         """
         Creates the ResourceQuota in the currently
         configured Kubernetes cluster and returns the status information
@@ -23321,7 +23754,9 @@ class ResourceQuota(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "ResourceQuotaStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ResourceQuotaStatus":
         """
         Replaces the ResourceQuota in the currently
         configured Kubernetes cluster and returns the status information
@@ -23343,7 +23778,9 @@ class ResourceQuota(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "ResourceQuotaStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ResourceQuotaStatus":
         """
         Patches the ResourceQuota in the currently
         configured Kubernetes cluster and returns the status information
@@ -23365,7 +23802,9 @@ class ResourceQuota(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "ResourceQuotaStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ResourceQuotaStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -23388,7 +23827,7 @@ class ResourceQuota(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ResourceQuota from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -23408,7 +23847,7 @@ class ResourceQuota(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -23437,7 +23876,7 @@ class ResourceQuota(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -23461,8 +23900,8 @@ class ResourceQuotaList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ResourceQuota"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ResourceQuota"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ResourceQuotaList instance."""
         super(ResourceQuotaList, self).__init__(
@@ -23536,7 +23975,7 @@ class ResourceQuotaList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -23561,9 +24000,9 @@ class ResourceQuotaSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        hard: dict = None,
-        scope_selector: "ScopeSelector" = None,
-        scopes: typing.List[str] = None,
+        hard: typing.Optional[dict] = None,
+        scope_selector: typing.Optional["ScopeSelector"] = None,
+        scopes: typing.Optional[typing.List[str]] = None,
     ):
         """Create ResourceQuotaSpec instance."""
         super(ResourceQuotaSpec, self).__init__(
@@ -23667,8 +24106,8 @@ class ResourceQuotaStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        hard: dict = None,
-        used: dict = None,
+        hard: typing.Optional[dict] = None,
+        used: typing.Optional[dict] = None,
     ):
         """Create ResourceQuotaStatus instance."""
         super(ResourceQuotaStatus, self).__init__(
@@ -23738,8 +24177,8 @@ class ResourceRequirements(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        limits: dict = None,
-        requests: dict = None,
+        limits: typing.Optional[dict] = None,
+        requests: typing.Optional[dict] = None,
     ):
         """Create ResourceRequirements instance."""
         super(ResourceRequirements, self).__init__(
@@ -23818,10 +24257,10 @@ class SELinuxOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        level: str = None,
-        role: str = None,
-        type_: str = None,
-        user: str = None,
+        level: typing.Optional[str] = None,
+        role: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
+        user: typing.Optional[str] = None,
     ):
         """Create SELinuxOptions instance."""
         super(SELinuxOptions, self).__init__(
@@ -23923,16 +24362,16 @@ class ScaleIOPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        gateway: str = None,
-        protection_domain: str = None,
-        read_only: bool = None,
-        secret_ref: "SecretReference" = None,
-        ssl_enabled: bool = None,
-        storage_mode: str = None,
-        storage_pool: str = None,
-        system: str = None,
-        volume_name: str = None,
+        fs_type: typing.Optional[str] = None,
+        gateway: typing.Optional[str] = None,
+        protection_domain: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["SecretReference"] = None,
+        ssl_enabled: typing.Optional[bool] = None,
+        storage_mode: typing.Optional[str] = None,
+        storage_pool: typing.Optional[str] = None,
+        system: typing.Optional[str] = None,
+        volume_name: typing.Optional[str] = None,
     ):
         """Create ScaleIOPersistentVolumeSource instance."""
         super(ScaleIOPersistentVolumeSource, self).__init__(
@@ -24176,16 +24615,16 @@ class ScaleIOVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        gateway: str = None,
-        protection_domain: str = None,
-        read_only: bool = None,
-        secret_ref: "LocalObjectReference" = None,
-        ssl_enabled: bool = None,
-        storage_mode: str = None,
-        storage_pool: str = None,
-        system: str = None,
-        volume_name: str = None,
+        fs_type: typing.Optional[str] = None,
+        gateway: typing.Optional[str] = None,
+        protection_domain: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["LocalObjectReference"] = None,
+        ssl_enabled: typing.Optional[bool] = None,
+        storage_mode: typing.Optional[str] = None,
+        storage_pool: typing.Optional[str] = None,
+        system: typing.Optional[str] = None,
+        volume_name: typing.Optional[str] = None,
     ):
         """Create ScaleIOVolumeSource instance."""
         super(ScaleIOVolumeSource, self).__init__(
@@ -24432,7 +24871,9 @@ class ScopeSelector(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        match_expressions: typing.List["ScopedResourceSelectorRequirement"] = None,
+        match_expressions: typing.Optional[
+            typing.List["ScopedResourceSelectorRequirement"]
+        ] = None,
     ):
         """Create ScopeSelector instance."""
         super(ScopeSelector, self).__init__(api_version="core/v1", kind="ScopeSelector")
@@ -24493,9 +24934,9 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        operator: str = None,
-        scope_name: str = None,
-        values: typing.List[str] = None,
+        operator: typing.Optional[str] = None,
+        scope_name: typing.Optional[str] = None,
+        values: typing.Optional[typing.List[str]] = None,
     ):
         """Create ScopedResourceSelectorRequirement instance."""
         super(ScopedResourceSelectorRequirement, self).__init__(
@@ -24517,6 +24958,7 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
         """
         Represents a scope's relationship to a set of values. Valid
         operators are In, NotIn, Exists, DoesNotExist.
+
         """
         return typing.cast(
             str,
@@ -24528,6 +24970,7 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
         """
         Represents a scope's relationship to a set of values. Valid
         operators are In, NotIn, Exists, DoesNotExist.
+
         """
         self._properties["operator"] = value
 
@@ -24535,6 +24978,7 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
     def scope_name(self) -> str:
         """
         The name of the scope that the selector applies to.
+
         """
         return typing.cast(
             str,
@@ -24545,6 +24989,7 @@ class ScopedResourceSelectorRequirement(_kuber_definitions.Definition):
     def scope_name(self, value: str):
         """
         The name of the scope that the selector applies to.
+
         """
         self._properties["scopeName"] = value
 
@@ -24586,8 +25031,8 @@ class SeccompProfile(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        localhost_profile: str = None,
-        type_: str = None,
+        localhost_profile: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create SeccompProfile instance."""
         super(SeccompProfile, self).__init__(
@@ -24639,6 +25084,7 @@ class SeccompProfile(_kuber_definitions.Definition):
         be used. RuntimeDefault - the container runtime default
         profile should be used. Unconfined - no profile should be
         applied.
+
         """
         return typing.cast(
             str,
@@ -24655,6 +25101,7 @@ class SeccompProfile(_kuber_definitions.Definition):
         be used. RuntimeDefault - the container runtime default
         profile should be used. Unconfined - no profile should be
         applied.
+
         """
         self._properties["type"] = value
 
@@ -24674,11 +25121,11 @@ class Secret(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        data: dict = None,
-        immutable: bool = None,
-        metadata: "ObjectMeta" = None,
-        string_data: dict = None,
-        type_: str = None,
+        data: typing.Optional[dict] = None,
+        immutable: typing.Optional[bool] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        string_data: typing.Optional[dict] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create Secret instance."""
         super(Secret, self).__init__(api_version="core/v1", kind="Secret")
@@ -24804,6 +25251,8 @@ class Secret(_kuber_definitions.Resource):
     def type_(self) -> str:
         """
         Used to facilitate programmatic handling of secret data.
+        More info: https://kubernetes.io/docs/concepts/configuration
+        /secret/#secret-types
         """
         return typing.cast(
             str,
@@ -24814,10 +25263,12 @@ class Secret(_kuber_definitions.Resource):
     def type_(self, value: str):
         """
         Used to facilitate programmatic handling of secret data.
+        More info: https://kubernetes.io/docs/concepts/configuration
+        /secret/#secret-types
         """
         self._properties["type"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Secret in the currently
         configured Kubernetes cluster.
@@ -24833,7 +25284,7 @@ class Secret(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Secret in the currently
         configured Kubernetes cluster.
@@ -24849,7 +25300,7 @@ class Secret(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Secret in the currently
         configured Kubernetes cluster.
@@ -24865,11 +25316,11 @@ class Secret(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Secret from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -24889,7 +25340,7 @@ class Secret(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -24918,7 +25369,7 @@ class Secret(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -24946,8 +25397,8 @@ class SecretEnvSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        optional: bool = None,
+        name: typing.Optional[str] = None,
+        optional: typing.Optional[bool] = None,
     ):
         """Create SecretEnvSource instance."""
         super(SecretEnvSource, self).__init__(
@@ -25014,9 +25465,9 @@ class SecretKeySelector(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        key: str = None,
-        name: str = None,
-        optional: bool = None,
+        key: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        optional: typing.Optional[bool] = None,
     ):
         """Create SecretKeySelector instance."""
         super(SecretKeySelector, self).__init__(
@@ -25104,8 +25555,8 @@ class SecretList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Secret"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Secret"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create SecretList instance."""
         super(SecretList, self).__init__(api_version="core/v1", kind="SecretList")
@@ -25175,7 +25626,7 @@ class SecretList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -25205,9 +25656,9 @@ class SecretProjection(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        items: typing.List["KeyToPath"] = None,
-        name: str = None,
-        optional: bool = None,
+        items: typing.Optional[typing.List["KeyToPath"]] = None,
+        name: typing.Optional[str] = None,
+        optional: typing.Optional[bool] = None,
     ):
         """Create SecretProjection instance."""
         super(SecretProjection, self).__init__(
@@ -25318,8 +25769,8 @@ class SecretReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        namespace: str = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
     ):
         """Create SecretReference instance."""
         super(SecretReference, self).__init__(
@@ -25391,10 +25842,10 @@ class SecretVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        default_mode: int = None,
-        items: typing.List["KeyToPath"] = None,
-        optional: bool = None,
-        secret_name: str = None,
+        default_mode: typing.Optional[int] = None,
+        items: typing.Optional[typing.List["KeyToPath"]] = None,
+        optional: typing.Optional[bool] = None,
+        secret_name: typing.Optional[str] = None,
     ):
         """Create SecretVolumeSource instance."""
         super(SecretVolumeSource, self).__init__(
@@ -25538,17 +25989,17 @@ class SecurityContext(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        allow_privilege_escalation: bool = None,
-        capabilities: "Capabilities" = None,
-        privileged: bool = None,
-        proc_mount: str = None,
-        read_only_root_filesystem: bool = None,
-        run_as_group: int = None,
-        run_as_non_root: bool = None,
-        run_as_user: int = None,
-        se_linux_options: "SELinuxOptions" = None,
-        seccomp_profile: "SeccompProfile" = None,
-        windows_options: "WindowsSecurityContextOptions" = None,
+        allow_privilege_escalation: typing.Optional[bool] = None,
+        capabilities: typing.Optional["Capabilities"] = None,
+        privileged: typing.Optional[bool] = None,
+        proc_mount: typing.Optional[str] = None,
+        read_only_root_filesystem: typing.Optional[bool] = None,
+        run_as_group: typing.Optional[int] = None,
+        run_as_non_root: typing.Optional[bool] = None,
+        run_as_user: typing.Optional[int] = None,
+        se_linux_options: typing.Optional["SELinuxOptions"] = None,
+        seccomp_profile: typing.Optional["SeccompProfile"] = None,
+        windows_options: typing.Optional["WindowsSecurityContextOptions"] = None,
     ):
         """Create SecurityContext instance."""
         super(SecurityContext, self).__init__(
@@ -25601,7 +26052,8 @@ class SecurityContext(_kuber_definitions.Definition):
         controls if the no_new_privs flag will be set on the
         container process. AllowPrivilegeEscalation is true always
         when the container is: 1) run as Privileged 2) has
-        CAP_SYS_ADMIN
+        CAP_SYS_ADMIN Note that this field cannot be set when
+        spec.os.name is windows.
         """
         return typing.cast(
             bool,
@@ -25616,7 +26068,8 @@ class SecurityContext(_kuber_definitions.Definition):
         controls if the no_new_privs flag will be set on the
         container process. AllowPrivilegeEscalation is true always
         when the container is: 1) run as Privileged 2) has
-        CAP_SYS_ADMIN
+        CAP_SYS_ADMIN Note that this field cannot be set when
+        spec.os.name is windows.
         """
         self._properties["allowPrivilegeEscalation"] = value
 
@@ -25625,7 +26078,8 @@ class SecurityContext(_kuber_definitions.Definition):
         """
         The capabilities to add/drop when running containers.
         Defaults to the default set of capabilities granted by the
-        container runtime.
+        container runtime. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         return typing.cast(
             "Capabilities",
@@ -25637,7 +26091,8 @@ class SecurityContext(_kuber_definitions.Definition):
         """
         The capabilities to add/drop when running containers.
         Defaults to the default set of capabilities granted by the
-        container runtime.
+        container runtime. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -25651,7 +26106,8 @@ class SecurityContext(_kuber_definitions.Definition):
         """
         Run container in privileged mode. Processes in privileged
         containers are essentially equivalent to root on the host.
-        Defaults to false.
+        Defaults to false. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         return typing.cast(
             bool,
@@ -25663,7 +26119,8 @@ class SecurityContext(_kuber_definitions.Definition):
         """
         Run container in privileged mode. Processes in privileged
         containers are essentially equivalent to root on the host.
-        Defaults to false.
+        Defaults to false. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         self._properties["privileged"] = value
 
@@ -25674,7 +26131,8 @@ class SecurityContext(_kuber_definitions.Definition):
         containers. The default is DefaultProcMount which uses the
         container runtime defaults for readonly paths and masked
         paths. This requires the ProcMountType feature flag to be
-        enabled.
+        enabled. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         return typing.cast(
             str,
@@ -25688,7 +26146,8 @@ class SecurityContext(_kuber_definitions.Definition):
         containers. The default is DefaultProcMount which uses the
         container runtime defaults for readonly paths and masked
         paths. This requires the ProcMountType feature flag to be
-        enabled.
+        enabled. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         self._properties["procMount"] = value
 
@@ -25696,7 +26155,8 @@ class SecurityContext(_kuber_definitions.Definition):
     def read_only_root_filesystem(self) -> bool:
         """
         Whether this container has a read-only root filesystem.
-        Default is false.
+        Default is false. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         return typing.cast(
             bool,
@@ -25707,7 +26167,8 @@ class SecurityContext(_kuber_definitions.Definition):
     def read_only_root_filesystem(self, value: bool):
         """
         Whether this container has a read-only root filesystem.
-        Default is false.
+        Default is false. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         self._properties["readOnlyRootFilesystem"] = value
 
@@ -25718,7 +26179,8 @@ class SecurityContext(_kuber_definitions.Definition):
         runtime default if unset. May also be set in
         PodSecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence.
+        takes precedence. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         return typing.cast(
             int,
@@ -25732,7 +26194,8 @@ class SecurityContext(_kuber_definitions.Definition):
         runtime default if unset. May also be set in
         PodSecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence.
+        takes precedence. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         self._properties["runAsGroup"] = value
 
@@ -25774,7 +26237,8 @@ class SecurityContext(_kuber_definitions.Definition):
         Defaults to user specified in image metadata if unspecified.
         May also be set in PodSecurityContext.  If set in both
         SecurityContext and PodSecurityContext, the value specified
-        in SecurityContext takes precedence.
+        in SecurityContext takes precedence. Note that this field
+        cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             int,
@@ -25788,7 +26252,8 @@ class SecurityContext(_kuber_definitions.Definition):
         Defaults to user specified in image metadata if unspecified.
         May also be set in PodSecurityContext.  If set in both
         SecurityContext and PodSecurityContext, the value specified
-        in SecurityContext takes precedence.
+        in SecurityContext takes precedence. Note that this field
+        cannot be set when spec.os.name is windows.
         """
         self._properties["runAsUser"] = value
 
@@ -25800,7 +26265,8 @@ class SecurityContext(_kuber_definitions.Definition):
         SELinux context for each container.  May also be set in
         PodSecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence.
+        takes precedence. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         return typing.cast(
             "SELinuxOptions",
@@ -25815,7 +26281,8 @@ class SecurityContext(_kuber_definitions.Definition):
         SELinux context for each container.  May also be set in
         PodSecurityContext.  If set in both SecurityContext and
         PodSecurityContext, the value specified in SecurityContext
-        takes precedence.
+        takes precedence. Note that this field cannot be set when
+        spec.os.name is windows.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -25829,7 +26296,8 @@ class SecurityContext(_kuber_definitions.Definition):
         """
         The seccomp options to use by this container. If seccomp
         options are provided at both the pod & container level, the
-        container options override the pod options.
+        container options override the pod options. Note that this
+        field cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             "SeccompProfile",
@@ -25841,7 +26309,8 @@ class SecurityContext(_kuber_definitions.Definition):
         """
         The seccomp options to use by this container. If seccomp
         options are provided at both the pod & container level, the
-        container options override the pod options.
+        container options override the pod options. Note that this
+        field cannot be set when spec.os.name is windows.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -25857,6 +26326,8 @@ class SecurityContext(_kuber_definitions.Definition):
         unspecified, the options from the PodSecurityContext will be
         used. If set in both SecurityContext and PodSecurityContext,
         the value specified in SecurityContext takes precedence.
+        Note that this field cannot be set when spec.os.name is
+        linux.
         """
         return typing.cast(
             "WindowsSecurityContextOptions",
@@ -25872,6 +26343,8 @@ class SecurityContext(_kuber_definitions.Definition):
         unspecified, the options from the PodSecurityContext will be
         used. If set in both SecurityContext and PodSecurityContext,
         the value specified in SecurityContext takes precedence.
+        Note that this field cannot be set when spec.os.name is
+        linux.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -25897,9 +26370,9 @@ class Service(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "ServiceSpec" = None,
-        status: "ServiceStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["ServiceSpec"] = None,
+        status: typing.Optional["ServiceStatus"] = None,
     ):
         """Create Service instance."""
         super(Service, self).__init__(api_version="core/v1", kind="Service")
@@ -25996,7 +26469,9 @@ class Service(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "ServiceStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ServiceStatus":
         """
         Creates the Service in the currently
         configured Kubernetes cluster and returns the status information
@@ -26018,7 +26493,9 @@ class Service(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "ServiceStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ServiceStatus":
         """
         Replaces the Service in the currently
         configured Kubernetes cluster and returns the status information
@@ -26040,7 +26517,9 @@ class Service(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "ServiceStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ServiceStatus":
         """
         Patches the Service in the currently
         configured Kubernetes cluster and returns the status information
@@ -26062,7 +26541,9 @@ class Service(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "ServiceStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ServiceStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -26085,7 +26566,7 @@ class Service(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Service from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -26105,7 +26586,7 @@ class Service(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -26134,7 +26615,7 @@ class Service(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -26161,10 +26642,10 @@ class ServiceAccount(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        automount_service_account_token: bool = None,
-        image_pull_secrets: typing.List["LocalObjectReference"] = None,
-        metadata: "ObjectMeta" = None,
-        secrets: typing.List["ObjectReference"] = None,
+        automount_service_account_token: typing.Optional[bool] = None,
+        image_pull_secrets: typing.Optional[typing.List["LocalObjectReference"]] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        secrets: typing.Optional[typing.List["ObjectReference"]] = None,
     ):
         """Create ServiceAccount instance."""
         super(ServiceAccount, self).__init__(
@@ -26307,7 +26788,7 @@ class ServiceAccount(_kuber_definitions.Resource):
             cleaned.append(typing.cast(ObjectReference, item))
         self._properties["secrets"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the ServiceAccount in the currently
         configured Kubernetes cluster.
@@ -26323,7 +26804,7 @@ class ServiceAccount(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the ServiceAccount in the currently
         configured Kubernetes cluster.
@@ -26339,7 +26820,7 @@ class ServiceAccount(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the ServiceAccount in the currently
         configured Kubernetes cluster.
@@ -26355,11 +26836,11 @@ class ServiceAccount(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ServiceAccount from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -26379,7 +26860,7 @@ class ServiceAccount(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -26408,7 +26889,7 @@ class ServiceAccount(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -26432,8 +26913,8 @@ class ServiceAccountList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ServiceAccount"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ServiceAccount"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ServiceAccountList instance."""
         super(ServiceAccountList, self).__init__(
@@ -26509,7 +26990,7 @@ class ServiceAccountList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -26536,9 +27017,9 @@ class ServiceAccountTokenProjection(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        audience: str = None,
-        expiration_seconds: int = None,
-        path: str = None,
+        audience: typing.Optional[str] = None,
+        expiration_seconds: typing.Optional[int] = None,
+        path: typing.Optional[str] = None,
     ):
         """Create ServiceAccountTokenProjection instance."""
         super(ServiceAccountTokenProjection, self).__init__(
@@ -26644,8 +27125,8 @@ class ServiceList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Service"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Service"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ServiceList instance."""
         super(ServiceList, self).__init__(api_version="core/v1", kind="ServiceList")
@@ -26713,7 +27194,7 @@ class ServiceList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.CoreV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -26737,12 +27218,12 @@ class ServicePort(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        app_protocol: str = None,
-        name: str = None,
-        node_port: int = None,
-        port: int = None,
-        protocol: str = None,
-        target_port: typing.Union[str, int, None] = None,
+        app_protocol: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        node_port: typing.Optional[int] = None,
+        port: typing.Optional[int] = None,
+        protocol: typing.Optional[str] = None,
+        target_port: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create ServicePort instance."""
         super(ServicePort, self).__init__(api_version="core/v1", kind="ServicePort")
@@ -26874,6 +27355,7 @@ class ServicePort(_kuber_definitions.Definition):
         """
         The IP protocol for this port. Supports "TCP", "UDP", and
         "SCTP". Default is TCP.
+
         """
         return typing.cast(
             str,
@@ -26885,6 +27367,7 @@ class ServicePort(_kuber_definitions.Definition):
         """
         The IP protocol for this port. Supports "TCP", "UDP", and
         "SCTP". Default is TCP.
+
         """
         self._properties["protocol"] = value
 
@@ -26938,25 +27421,25 @@ class ServiceSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        allocate_load_balancer_node_ports: bool = None,
-        cluster_ip: str = None,
-        cluster_ips: typing.List[str] = None,
-        external_ips: typing.List[str] = None,
-        external_name: str = None,
-        external_traffic_policy: str = None,
-        health_check_node_port: int = None,
-        internal_traffic_policy: str = None,
-        ip_families: typing.List[str] = None,
-        ip_family_policy: str = None,
-        load_balancer_class: str = None,
-        load_balancer_ip: str = None,
-        load_balancer_source_ranges: typing.List[str] = None,
-        ports: typing.List["ServicePort"] = None,
-        publish_not_ready_addresses: bool = None,
-        selector: dict = None,
-        session_affinity: str = None,
-        session_affinity_config: "SessionAffinityConfig" = None,
-        type_: str = None,
+        allocate_load_balancer_node_ports: typing.Optional[bool] = None,
+        cluster_ip: typing.Optional[str] = None,
+        cluster_ips: typing.Optional[typing.List[str]] = None,
+        external_ips: typing.Optional[typing.List[str]] = None,
+        external_name: typing.Optional[str] = None,
+        external_traffic_policy: typing.Optional[str] = None,
+        health_check_node_port: typing.Optional[int] = None,
+        internal_traffic_policy: typing.Optional[str] = None,
+        ip_families: typing.Optional[typing.List[str]] = None,
+        ip_family_policy: typing.Optional[str] = None,
+        load_balancer_class: typing.Optional[str] = None,
+        load_balancer_ip: typing.Optional[str] = None,
+        load_balancer_source_ranges: typing.Optional[typing.List[str]] = None,
+        ports: typing.Optional[typing.List["ServicePort"]] = None,
+        publish_not_ready_addresses: typing.Optional[bool] = None,
+        selector: typing.Optional[dict] = None,
+        session_affinity: typing.Optional[str] = None,
+        session_affinity_config: typing.Optional["SessionAffinityConfig"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create ServiceSpec instance."""
         super(ServiceSpec, self).__init__(api_version="core/v1", kind="ServiceSpec")
@@ -27243,6 +27726,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         "Cluster" obscures the client source IP and may cause a
         second hop to another node, but should have good overall
         load-spreading.
+
         """
         return typing.cast(
             str,
@@ -27260,6 +27744,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         "Cluster" obscures the client source IP and may cause a
         second hop to another node, but should have good overall
         load-spreading.
+
         """
         self._properties["externalTrafficPolicy"] = value
 
@@ -27627,6 +28112,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         ClientIP or None. Defaults to None. More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#virtual-ips-and-service-proxies
+
         """
         return typing.cast(
             str,
@@ -27641,6 +28127,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         ClientIP or None. Defaults to None. More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#virtual-ips-and-service-proxies
+
         """
         self._properties["sessionAffinity"] = value
 
@@ -27691,6 +28178,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         do not apply to ExternalName services. More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#publishing-services-service-types
+
         """
         return typing.cast(
             str,
@@ -27718,6 +28206,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         do not apply to ExternalName services. More info:
         https://kubernetes.io/docs/concepts/services-
         networking/service/#publishing-services-service-types
+
         """
         self._properties["type"] = value
 
@@ -27735,8 +28224,8 @@ class ServiceStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["Condition"] = None,
-        load_balancer: "LoadBalancerStatus" = None,
+        conditions: typing.Optional[typing.List["Condition"]] = None,
+        load_balancer: typing.Optional["LoadBalancerStatus"] = None,
     ):
         """Create ServiceStatus instance."""
         super(ServiceStatus, self).__init__(api_version="core/v1", kind="ServiceStatus")
@@ -27817,7 +28306,7 @@ class SessionAffinityConfig(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        client_ip: "ClientIPConfig" = None,
+        client_ip: typing.Optional["ClientIPConfig"] = None,
     ):
         """Create SessionAffinityConfig instance."""
         super(SessionAffinityConfig, self).__init__(
@@ -27868,11 +28357,11 @@ class StorageOSPersistentVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        read_only: bool = None,
-        secret_ref: "ObjectReference" = None,
-        volume_name: str = None,
-        volume_namespace: str = None,
+        fs_type: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["ObjectReference"] = None,
+        volume_name: typing.Optional[str] = None,
+        volume_namespace: typing.Optional[str] = None,
     ):
         """Create StorageOSPersistentVolumeSource instance."""
         super(StorageOSPersistentVolumeSource, self).__init__(
@@ -28023,11 +28512,11 @@ class StorageOSVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        read_only: bool = None,
-        secret_ref: "LocalObjectReference" = None,
-        volume_name: str = None,
-        volume_namespace: str = None,
+        fs_type: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        secret_ref: typing.Optional["LocalObjectReference"] = None,
+        volume_name: typing.Optional[str] = None,
+        volume_namespace: typing.Optional[str] = None,
     ):
         """Create StorageOSVolumeSource instance."""
         super(StorageOSVolumeSource, self).__init__(
@@ -28180,8 +28669,8 @@ class Sysctl(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        value: str = None,
+        name: typing.Optional[str] = None,
+        value: typing.Optional[str] = None,
     ):
         """Create Sysctl instance."""
         super(Sysctl, self).__init__(api_version="core/v1", kind="Sysctl")
@@ -28243,8 +28732,8 @@ class TCPSocketAction(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        host: str = None,
-        port: typing.Union[str, int, None] = None,
+        host: typing.Optional[str] = None,
+        port: typing.Optional[typing.Union[str, int, None]] = None,
     ):
         """Create TCPSocketAction instance."""
         super(TCPSocketAction, self).__init__(
@@ -28312,10 +28801,10 @@ class Taint(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        effect: str = None,
-        key: str = None,
-        time_added: str = None,
-        value: str = None,
+        effect: typing.Optional[str] = None,
+        key: typing.Optional[str] = None,
+        time_added: typing.Optional[str] = None,
+        value: typing.Optional[str] = None,
     ):
         """Create Taint instance."""
         super(Taint, self).__init__(api_version="core/v1", kind="Taint")
@@ -28338,6 +28827,7 @@ class Taint(_kuber_definitions.Definition):
         Required. The effect of the taint on pods that do not
         tolerate the taint. Valid effects are NoSchedule,
         PreferNoSchedule and NoExecute.
+
         """
         return typing.cast(
             str,
@@ -28350,6 +28840,7 @@ class Taint(_kuber_definitions.Definition):
         Required. The effect of the taint on pods that do not
         tolerate the taint. Valid effects are NoSchedule,
         PreferNoSchedule and NoExecute.
+
         """
         self._properties["effect"] = value
 
@@ -28426,11 +28917,11 @@ class Toleration(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        effect: str = None,
-        key: str = None,
-        operator: str = None,
-        toleration_seconds: int = None,
-        value: str = None,
+        effect: typing.Optional[str] = None,
+        key: typing.Optional[str] = None,
+        operator: typing.Optional[str] = None,
+        toleration_seconds: typing.Optional[int] = None,
+        value: typing.Optional[str] = None,
     ):
         """Create Toleration instance."""
         super(Toleration, self).__init__(api_version="core/v1", kind="Toleration")
@@ -28457,6 +28948,7 @@ class Toleration(_kuber_definitions.Definition):
         Effect indicates the taint effect to match. Empty means
         match all taint effects. When specified, allowed values are
         NoSchedule, PreferNoSchedule and NoExecute.
+
         """
         return typing.cast(
             str,
@@ -28469,6 +28961,7 @@ class Toleration(_kuber_definitions.Definition):
         Effect indicates the taint effect to match. Empty means
         match all taint effects. When specified, allowed values are
         NoSchedule, PreferNoSchedule and NoExecute.
+
         """
         self._properties["effect"] = value
 
@@ -28502,6 +28995,7 @@ class Toleration(_kuber_definitions.Definition):
         operators are Exists and Equal. Defaults to Equal. Exists is
         equivalent to wildcard for value, so that a pod can tolerate
         all taints of a particular category.
+
         """
         return typing.cast(
             str,
@@ -28515,6 +29009,7 @@ class Toleration(_kuber_definitions.Definition):
         operators are Exists and Equal. Defaults to Equal. Exists is
         equivalent to wildcard for value, so that a pod can tolerate
         all taints of a particular category.
+
         """
         self._properties["operator"] = value
 
@@ -28582,8 +29077,8 @@ class TopologySelectorLabelRequirement(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        key: str = None,
-        values: typing.List[str] = None,
+        key: typing.Optional[str] = None,
+        values: typing.Optional[typing.List[str]] = None,
     ):
         """Create TopologySelectorLabelRequirement instance."""
         super(TopologySelectorLabelRequirement, self).__init__(
@@ -28652,7 +29147,9 @@ class TopologySelectorTerm(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        match_label_expressions: typing.List["TopologySelectorLabelRequirement"] = None,
+        match_label_expressions: typing.Optional[
+            typing.List["TopologySelectorLabelRequirement"]
+        ] = None,
     ):
         """Create TopologySelectorTerm instance."""
         super(TopologySelectorTerm, self).__init__(
@@ -28714,10 +29211,10 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        label_selector: "LabelSelector" = None,
-        max_skew: int = None,
-        topology_key: str = None,
-        when_unsatisfiable: str = None,
+        label_selector: typing.Optional["LabelSelector"] = None,
+        max_skew: typing.Optional[int] = None,
+        topology_key: typing.Optional[str] = None,
+        when_unsatisfiable: typing.Optional[str] = None,
     ):
         """Create TopologySpreadConstraint instance."""
         super(TopologySpreadConstraint, self).__init__(
@@ -28856,6 +29353,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         zone2(zone3) satisfies MaxSkew(1). In other words, the
         cluster can still be imbalanced, but scheduler won't make it
         *more* imbalanced. It's a required field.
+
         """
         return typing.cast(
             str,
@@ -28884,6 +29382,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         zone2(zone3) satisfies MaxSkew(1). In other words, the
         cluster can still be imbalanced, but scheduler won't make it
         *more* imbalanced. It's a required field.
+
         """
         self._properties["whenUnsatisfiable"] = value
 
@@ -28903,9 +29402,9 @@ class TypedLocalObjectReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_group: str = None,
-        kind: str = None,
-        name: str = None,
+        api_group: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create TypedLocalObjectReference instance."""
         super(TypedLocalObjectReference, self).__init__(
@@ -28994,36 +29493,42 @@ class Volume(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        aws_elastic_block_store: "AWSElasticBlockStoreVolumeSource" = None,
-        azure_disk: "AzureDiskVolumeSource" = None,
-        azure_file: "AzureFileVolumeSource" = None,
-        cephfs: "CephFSVolumeSource" = None,
-        cinder: "CinderVolumeSource" = None,
-        config_map: "ConfigMapVolumeSource" = None,
-        csi: "CSIVolumeSource" = None,
-        downward_api: "DownwardAPIVolumeSource" = None,
-        empty_dir: "EmptyDirVolumeSource" = None,
-        ephemeral: "EphemeralVolumeSource" = None,
-        fc: "FCVolumeSource" = None,
-        flex_volume: "FlexVolumeSource" = None,
-        flocker: "FlockerVolumeSource" = None,
-        gce_persistent_disk: "GCEPersistentDiskVolumeSource" = None,
-        git_repo: "GitRepoVolumeSource" = None,
-        glusterfs: "GlusterfsVolumeSource" = None,
-        host_path: "HostPathVolumeSource" = None,
-        iscsi: "ISCSIVolumeSource" = None,
-        name: str = None,
-        nfs: "NFSVolumeSource" = None,
-        persistent_volume_claim: "PersistentVolumeClaimVolumeSource" = None,
-        photon_persistent_disk: "PhotonPersistentDiskVolumeSource" = None,
-        portworx_volume: "PortworxVolumeSource" = None,
-        projected: "ProjectedVolumeSource" = None,
-        quobyte: "QuobyteVolumeSource" = None,
-        rbd: "RBDVolumeSource" = None,
-        scale_io: "ScaleIOVolumeSource" = None,
-        secret: "SecretVolumeSource" = None,
-        storageos: "StorageOSVolumeSource" = None,
-        vsphere_volume: "VsphereVirtualDiskVolumeSource" = None,
+        aws_elastic_block_store: typing.Optional[
+            "AWSElasticBlockStoreVolumeSource"
+        ] = None,
+        azure_disk: typing.Optional["AzureDiskVolumeSource"] = None,
+        azure_file: typing.Optional["AzureFileVolumeSource"] = None,
+        cephfs: typing.Optional["CephFSVolumeSource"] = None,
+        cinder: typing.Optional["CinderVolumeSource"] = None,
+        config_map: typing.Optional["ConfigMapVolumeSource"] = None,
+        csi: typing.Optional["CSIVolumeSource"] = None,
+        downward_api: typing.Optional["DownwardAPIVolumeSource"] = None,
+        empty_dir: typing.Optional["EmptyDirVolumeSource"] = None,
+        ephemeral: typing.Optional["EphemeralVolumeSource"] = None,
+        fc: typing.Optional["FCVolumeSource"] = None,
+        flex_volume: typing.Optional["FlexVolumeSource"] = None,
+        flocker: typing.Optional["FlockerVolumeSource"] = None,
+        gce_persistent_disk: typing.Optional["GCEPersistentDiskVolumeSource"] = None,
+        git_repo: typing.Optional["GitRepoVolumeSource"] = None,
+        glusterfs: typing.Optional["GlusterfsVolumeSource"] = None,
+        host_path: typing.Optional["HostPathVolumeSource"] = None,
+        iscsi: typing.Optional["ISCSIVolumeSource"] = None,
+        name: typing.Optional[str] = None,
+        nfs: typing.Optional["NFSVolumeSource"] = None,
+        persistent_volume_claim: typing.Optional[
+            "PersistentVolumeClaimVolumeSource"
+        ] = None,
+        photon_persistent_disk: typing.Optional[
+            "PhotonPersistentDiskVolumeSource"
+        ] = None,
+        portworx_volume: typing.Optional["PortworxVolumeSource"] = None,
+        projected: typing.Optional["ProjectedVolumeSource"] = None,
+        quobyte: typing.Optional["QuobyteVolumeSource"] = None,
+        rbd: typing.Optional["RBDVolumeSource"] = None,
+        scale_io: typing.Optional["ScaleIOVolumeSource"] = None,
+        secret: typing.Optional["SecretVolumeSource"] = None,
+        storageos: typing.Optional["StorageOSVolumeSource"] = None,
+        vsphere_volume: typing.Optional["VsphereVirtualDiskVolumeSource"] = None,
     ):
         """Create Volume instance."""
         super(Volume, self).__init__(api_version="core/v1", kind="Volume")
@@ -29380,9 +29885,6 @@ class Volume(_kuber_definitions.Definition):
 
         A pod can use both types of ephemeral volumes and persistent
         volumes at the same time.
-
-        This is a beta feature and only available when the
-        GenericEphemeralVolume feature gate is enabled.
         """
         return typing.cast(
             "EphemeralVolumeSource",
@@ -29419,9 +29921,6 @@ class Volume(_kuber_definitions.Definition):
 
         A pod can use both types of ephemeral volumes and persistent
         volumes at the same time.
-
-        This is a beta feature and only available when the
-        GenericEphemeralVolume feature gate is enabled.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -29968,8 +30467,8 @@ class VolumeDevice(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        device_path: str = None,
-        name: str = None,
+        device_path: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create VolumeDevice instance."""
         super(VolumeDevice, self).__init__(api_version="core/v1", kind="VolumeDevice")
@@ -30035,12 +30534,12 @@ class VolumeMount(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        mount_path: str = None,
-        mount_propagation: str = None,
-        name: str = None,
-        read_only: bool = None,
-        sub_path: str = None,
-        sub_path_expr: str = None,
+        mount_path: typing.Optional[str] = None,
+        mount_propagation: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        sub_path: typing.Optional[str] = None,
+        sub_path_expr: typing.Optional[str] = None,
     ):
         """Create VolumeMount instance."""
         super(VolumeMount, self).__init__(api_version="core/v1", kind="VolumeMount")
@@ -30200,7 +30699,7 @@ class VolumeNodeAffinity(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        required: "NodeSelector" = None,
+        required: typing.Optional["NodeSelector"] = None,
     ):
         """Create VolumeNodeAffinity instance."""
         super(VolumeNodeAffinity, self).__init__(
@@ -30250,10 +30749,10 @@ class VolumeProjection(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        config_map: "ConfigMapProjection" = None,
-        downward_api: "DownwardAPIProjection" = None,
-        secret: "SecretProjection" = None,
-        service_account_token: "ServiceAccountTokenProjection" = None,
+        config_map: typing.Optional["ConfigMapProjection"] = None,
+        downward_api: typing.Optional["DownwardAPIProjection"] = None,
+        secret: typing.Optional["SecretProjection"] = None,
+        service_account_token: typing.Optional["ServiceAccountTokenProjection"] = None,
     ):
         """Create VolumeProjection instance."""
         super(VolumeProjection, self).__init__(
@@ -30382,10 +30881,10 @@ class VsphereVirtualDiskVolumeSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        fs_type: str = None,
-        storage_policy_id: str = None,
-        storage_policy_name: str = None,
-        volume_path: str = None,
+        fs_type: typing.Optional[str] = None,
+        storage_policy_id: typing.Optional[str] = None,
+        storage_policy_name: typing.Optional[str] = None,
+        volume_path: typing.Optional[str] = None,
     ):
         """Create VsphereVirtualDiskVolumeSource instance."""
         super(VsphereVirtualDiskVolumeSource, self).__init__(
@@ -30497,8 +30996,8 @@ class WeightedPodAffinityTerm(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        pod_affinity_term: "PodAffinityTerm" = None,
-        weight: int = None,
+        pod_affinity_term: typing.Optional["PodAffinityTerm"] = None,
+        weight: typing.Optional[int] = None,
     ):
         """Create WeightedPodAffinityTerm instance."""
         super(WeightedPodAffinityTerm, self).__init__(
@@ -30573,10 +31072,10 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        gmsa_credential_spec: str = None,
-        gmsa_credential_spec_name: str = None,
-        host_process: bool = None,
-        run_as_user_name: str = None,
+        gmsa_credential_spec: typing.Optional[str] = None,
+        gmsa_credential_spec_name: typing.Optional[str] = None,
+        host_process: typing.Optional[bool] = None,
+        run_as_user_name: typing.Optional[str] = None,
     ):
         """Create WindowsSecurityContextOptions instance."""
         super(WindowsSecurityContextOptions, self).__init__(

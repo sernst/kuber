@@ -84,6 +84,14 @@ kuber.v1\_23.autoscaling\_v1 module
    :undoc-members:
    :show-inheritance:
 
+kuber.v1\_23.autoscaling\_v2 module
+-----------------------------------
+
+.. automodule:: kuber.v1_23.autoscaling_v2
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 kuber.v1\_23.autoscaling\_v2beta1 module
 ----------------------------------------
 

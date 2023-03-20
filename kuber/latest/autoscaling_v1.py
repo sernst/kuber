@@ -20,9 +20,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        kind: str = None,
-        name: str = None,
+        api_version: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create CrossVersionObjectReference instance."""
         super(CrossVersionObjectReference, self).__init__(
@@ -61,7 +61,7 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
         """
         Kind of the referent; More info:
         https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#types-kinds"
+        architecture/api-conventions.md#types-kinds
         """
         return typing.cast(
             str,
@@ -73,7 +73,7 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
         """
         Kind of the referent; More info:
         https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#types-kinds"
+        architecture/api-conventions.md#types-kinds
         """
         self._properties["kind"] = value
 
@@ -110,9 +110,9 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "HorizontalPodAutoscalerSpec" = None,
-        status: "HorizontalPodAutoscalerStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["HorizontalPodAutoscalerSpec"] = None,
+        status: typing.Optional["HorizontalPodAutoscalerStatus"] = None,
     ):
         """Create HorizontalPodAutoscaler instance."""
         super(HorizontalPodAutoscaler, self).__init__(
@@ -206,7 +206,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         self._properties["status"] = value
 
     def create_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Creates the HorizontalPodAutoscaler in the currently
@@ -233,7 +233,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         return output
 
     def replace_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Replaces the HorizontalPodAutoscaler in the currently
@@ -260,7 +260,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         return output
 
     def patch_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Patches the HorizontalPodAutoscaler in the currently
@@ -287,7 +287,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "HorizontalPodAutoscalerStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -311,7 +311,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the HorizontalPodAutoscaler from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -331,7 +331,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -360,7 +360,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AutoscalingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -384,8 +384,8 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["HorizontalPodAutoscaler"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["HorizontalPodAutoscaler"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create HorizontalPodAutoscalerList instance."""
         super(HorizontalPodAutoscalerList, self).__init__(
@@ -454,7 +454,7 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AutoscalingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -478,10 +478,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_replicas: int = None,
-        min_replicas: int = None,
-        scale_target_ref: "CrossVersionObjectReference" = None,
-        target_cpuutilization_percentage: int = None,
+        max_replicas: typing.Optional[int] = None,
+        min_replicas: typing.Optional[int] = None,
+        scale_target_ref: typing.Optional["CrossVersionObjectReference"] = None,
+        target_cpuutilization_percentage: typing.Optional[int] = None,
     ):
         """Create HorizontalPodAutoscalerSpec instance."""
         super(HorizontalPodAutoscalerSpec, self).__init__(
@@ -613,11 +613,11 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        current_cpuutilization_percentage: int = None,
-        current_replicas: int = None,
-        desired_replicas: int = None,
-        last_scale_time: str = None,
-        observed_generation: int = None,
+        current_cpuutilization_percentage: typing.Optional[int] = None,
+        current_replicas: typing.Optional[int] = None,
+        desired_replicas: typing.Optional[int] = None,
+        last_scale_time: typing.Optional[str] = None,
+        observed_generation: typing.Optional[int] = None,
     ):
         """Create HorizontalPodAutoscalerStatus instance."""
         super(HorizontalPodAutoscalerStatus, self).__init__(
@@ -763,9 +763,9 @@ class Scale(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "ScaleSpec" = None,
-        status: "ScaleStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["ScaleSpec"] = None,
+        status: typing.Optional["ScaleStatus"] = None,
     ):
         """Create Scale instance."""
         super(Scale, self).__init__(api_version="autoscaling/v1", kind="Scale")
@@ -860,7 +860,9 @@ class Scale(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "ScaleStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ScaleStatus":
         """
         Creates the Scale in the currently
         configured Kubernetes cluster and returns the status information
@@ -882,7 +884,9 @@ class Scale(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "ScaleStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ScaleStatus":
         """
         Replaces the Scale in the currently
         configured Kubernetes cluster and returns the status information
@@ -904,7 +908,7 @@ class Scale(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "ScaleStatus":
+    def patch_resource(self, namespace: typing.Optional["str"] = None) -> "ScaleStatus":
         """
         Patches the Scale in the currently
         configured Kubernetes cluster and returns the status information
@@ -926,7 +930,9 @@ class Scale(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "ScaleStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ScaleStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -949,7 +955,7 @@ class Scale(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Scale from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -969,7 +975,7 @@ class Scale(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -998,7 +1004,7 @@ class Scale(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AutoscalingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1022,7 +1028,7 @@ class ScaleSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        replicas: int = None,
+        replicas: typing.Optional[int] = None,
     ):
         """Create ScaleSpec instance."""
         super(ScaleSpec, self).__init__(api_version="autoscaling/v1", kind="ScaleSpec")
@@ -1065,8 +1071,8 @@ class ScaleStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        replicas: int = None,
-        selector: str = None,
+        replicas: typing.Optional[int] = None,
+        selector: typing.Optional[str] = None,
     ):
         """Create ScaleStatus instance."""
         super(ScaleStatus, self).__init__(

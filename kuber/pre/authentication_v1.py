@@ -20,10 +20,10 @@ class BoundObjectReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_version: str = None,
-        kind: str = None,
-        name: str = None,
-        uid: str = None,
+        api_version: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        uid: typing.Optional[str] = None,
     ):
         """Create BoundObjectReference instance."""
         super(BoundObjectReference, self).__init__(
@@ -124,9 +124,9 @@ class TokenRequest(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "TokenRequestSpec" = None,
-        status: "TokenRequestStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["TokenRequestSpec"] = None,
+        status: typing.Optional["TokenRequestStatus"] = None,
     ):
         """Create TokenRequest instance."""
         super(TokenRequest, self).__init__(
@@ -217,7 +217,9 @@ class TokenRequest(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "TokenRequestStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenRequestStatus":
         """
         Creates the TokenRequest in the currently
         configured Kubernetes cluster and returns the status information
@@ -239,7 +241,9 @@ class TokenRequest(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "TokenRequestStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenRequestStatus":
         """
         Replaces the TokenRequest in the currently
         configured Kubernetes cluster and returns the status information
@@ -261,7 +265,9 @@ class TokenRequest(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "TokenRequestStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenRequestStatus":
         """
         Patches the TokenRequest in the currently
         configured Kubernetes cluster and returns the status information
@@ -283,7 +289,9 @@ class TokenRequest(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "TokenRequestStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenRequestStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -306,7 +314,7 @@ class TokenRequest(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the TokenRequest from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -326,7 +334,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -355,7 +363,7 @@ class TokenRequest(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AuthenticationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -380,9 +388,9 @@ class TokenRequestSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        audiences: typing.List[str] = None,
-        bound_object_ref: "BoundObjectReference" = None,
-        expiration_seconds: int = None,
+        audiences: typing.Optional[typing.List[str]] = None,
+        bound_object_ref: typing.Optional["BoundObjectReference"] = None,
+        expiration_seconds: typing.Optional[int] = None,
     ):
         """Create TokenRequestSpec instance."""
         super(TokenRequestSpec, self).__init__(
@@ -407,7 +415,7 @@ class TokenRequestSpec(_kuber_definitions.Definition):
     def audiences(self) -> typing.List[str]:
         """
         Audiences are the intendend audiences of the token. A
-        recipient of a token must identitfy themself with an
+        recipient of a token must identify themself with an
         identifier in the list of audiences of the token, and
         otherwise should reject the token. A token issued for
         multiple audiences may be used to authenticate against any
@@ -423,7 +431,7 @@ class TokenRequestSpec(_kuber_definitions.Definition):
     def audiences(self, value: typing.List[str]):
         """
         Audiences are the intendend audiences of the token. A
-        recipient of a token must identitfy themself with an
+        recipient of a token must identify themself with an
         identifier in the list of audiences of the token, and
         otherwise should reject the token. A token issued for
         multiple audiences may be used to authenticate against any
@@ -501,8 +509,8 @@ class TokenRequestStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        expiration_timestamp: str = None,
-        token: str = None,
+        expiration_timestamp: typing.Optional[str] = None,
+        token: typing.Optional[str] = None,
     ):
         """Create TokenRequestStatus instance."""
         super(TokenRequestStatus, self).__init__(
@@ -577,9 +585,9 @@ class TokenReview(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "TokenReviewSpec" = None,
-        status: "TokenReviewStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["TokenReviewSpec"] = None,
+        status: typing.Optional["TokenReviewStatus"] = None,
     ):
         """Create TokenReview instance."""
         super(TokenReview, self).__init__(
@@ -670,7 +678,9 @@ class TokenReview(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "TokenReviewStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenReviewStatus":
         """
         Creates the TokenReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -692,7 +702,9 @@ class TokenReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "TokenReviewStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenReviewStatus":
         """
         Replaces the TokenReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -714,7 +726,9 @@ class TokenReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "TokenReviewStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenReviewStatus":
         """
         Patches the TokenReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -736,7 +750,9 @@ class TokenReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "TokenReviewStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "TokenReviewStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -759,7 +775,7 @@ class TokenReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the TokenReview from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -779,7 +795,7 @@ class TokenReview(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -808,7 +824,7 @@ class TokenReview(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AuthenticationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -833,8 +849,8 @@ class TokenReviewSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        audiences: typing.List[str] = None,
-        token: str = None,
+        audiences: typing.Optional[typing.List[str]] = None,
+        token: typing.Optional[str] = None,
     ):
         """Create TokenReviewSpec instance."""
         super(TokenReviewSpec, self).__init__(
@@ -908,10 +924,10 @@ class TokenReviewStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        audiences: typing.List[str] = None,
-        authenticated: bool = None,
-        error: str = None,
-        user: "UserInfo" = None,
+        audiences: typing.Optional[typing.List[str]] = None,
+        authenticated: typing.Optional[bool] = None,
+        error: typing.Optional[str] = None,
+        user: typing.Optional["UserInfo"] = None,
     ):
         """Create TokenReviewStatus instance."""
         super(TokenReviewStatus, self).__init__(
@@ -1040,10 +1056,10 @@ class UserInfo(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        extra: dict = None,
-        groups: typing.List[str] = None,
-        uid: str = None,
-        username: str = None,
+        extra: typing.Optional[dict] = None,
+        groups: typing.Optional[typing.List[str]] = None,
+        uid: typing.Optional[str] = None,
+        username: typing.Optional[str] = None,
     ):
         """Create UserInfo instance."""
         super(UserInfo, self).__init__(api_version="authentication/v1", kind="UserInfo")

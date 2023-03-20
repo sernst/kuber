@@ -7,7 +7,7 @@ class {{ entity.class_name }}(_kuber_definitions.{{ base_class }}):
     def __init__(
             self,
             {%-  for p, v in entity.properties.items() if base_class == "Definition" or p not in property_ignores %}
-            {{ p | snake_case }}: {{ v.data_type.type_hint }} = None,
+            {{ p | snake_case }}: typing.Optional[{{ v.data_type.type_hint }}] = None,
             {%-  endfor %}
     ):
         """Create {{ entity.class_name }} instance."""

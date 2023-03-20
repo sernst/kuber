@@ -21,9 +21,9 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "SubjectAccessReviewSpec" = None,
-        status: "SubjectAccessReviewStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["SubjectAccessReviewSpec"] = None,
+        status: typing.Optional["SubjectAccessReviewStatus"] = None,
     ):
         """Create LocalSubjectAccessReview instance."""
         super(LocalSubjectAccessReview, self).__init__(
@@ -118,7 +118,9 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Creates the LocalSubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -143,7 +145,9 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Replaces the LocalSubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -168,7 +172,9 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Patches the LocalSubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -194,7 +200,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "SubjectAccessReviewStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -218,7 +224,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the LocalSubjectAccessReview from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -238,7 +244,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -267,7 +273,7 @@ class LocalSubjectAccessReview(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -293,8 +299,8 @@ class NonResourceAttributes(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        path: str = None,
-        verb: str = None,
+        path: typing.Optional[str] = None,
+        verb: typing.Optional[str] = None,
     ):
         """Create NonResourceAttributes instance."""
         super(NonResourceAttributes, self).__init__(
@@ -358,8 +364,8 @@ class NonResourceRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        non_resource_urls: typing.List[str] = None,
-        verbs: typing.List[str] = None,
+        non_resource_urls: typing.Optional[typing.List[str]] = None,
+        verbs: typing.Optional[typing.List[str]] = None,
     ):
         """Create NonResourceRule instance."""
         super(NonResourceRule, self).__init__(
@@ -433,13 +439,13 @@ class ResourceAttributes(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        group: str = None,
-        name: str = None,
-        namespace: str = None,
-        resource: str = None,
-        subresource: str = None,
-        verb: str = None,
-        version: str = None,
+        group: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        resource: typing.Optional[str] = None,
+        subresource: typing.Optional[str] = None,
+        verb: typing.Optional[str] = None,
+        version: typing.Optional[str] = None,
     ):
         """Create ResourceAttributes instance."""
         super(ResourceAttributes, self).__init__(
@@ -620,10 +626,10 @@ class ResourceRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_groups: typing.List[str] = None,
-        resource_names: typing.List[str] = None,
-        resources: typing.List[str] = None,
-        verbs: typing.List[str] = None,
+        api_groups: typing.Optional[typing.List[str]] = None,
+        resource_names: typing.Optional[typing.List[str]] = None,
+        resources: typing.Optional[typing.List[str]] = None,
+        verbs: typing.Optional[typing.List[str]] = None,
     ):
         """Create ResourceRule instance."""
         super(ResourceRule, self).__init__(
@@ -746,9 +752,9 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "SelfSubjectAccessReviewSpec" = None,
-        status: "SubjectAccessReviewStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["SelfSubjectAccessReviewSpec"] = None,
+        status: typing.Optional["SubjectAccessReviewStatus"] = None,
     ):
         """Create SelfSubjectAccessReview instance."""
         super(SelfSubjectAccessReview, self).__init__(
@@ -841,7 +847,9 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Creates the SelfSubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -866,7 +874,9 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Replaces the SelfSubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -891,7 +901,9 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Patches the SelfSubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -917,7 +929,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "SubjectAccessReviewStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -941,7 +953,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the SelfSubjectAccessReview from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -961,7 +973,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -990,7 +1002,7 @@ class SelfSubjectAccessReview(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1016,8 +1028,8 @@ class SelfSubjectAccessReviewSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        non_resource_attributes: "NonResourceAttributes" = None,
-        resource_attributes: "ResourceAttributes" = None,
+        non_resource_attributes: typing.Optional["NonResourceAttributes"] = None,
+        resource_attributes: typing.Optional["ResourceAttributes"] = None,
     ):
         """Create SelfSubjectAccessReviewSpec instance."""
         super(SelfSubjectAccessReviewSpec, self).__init__(
@@ -1111,9 +1123,9 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "SelfSubjectRulesReviewSpec" = None,
-        status: "SubjectRulesReviewStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["SelfSubjectRulesReviewSpec"] = None,
+        status: typing.Optional["SubjectRulesReviewStatus"] = None,
     ):
         """Create SelfSubjectRulesReview instance."""
         super(SelfSubjectRulesReview, self).__init__(
@@ -1204,7 +1216,9 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "SubjectRulesReviewStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectRulesReviewStatus":
         """
         Creates the SelfSubjectRulesReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -1229,7 +1243,9 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "SubjectRulesReviewStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectRulesReviewStatus":
         """
         Replaces the SelfSubjectRulesReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -1254,7 +1270,9 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "SubjectRulesReviewStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectRulesReviewStatus":
         """
         Patches the SelfSubjectRulesReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -1280,7 +1298,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "SubjectRulesReviewStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -1304,7 +1322,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the SelfSubjectRulesReview from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1324,7 +1342,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1353,7 +1371,7 @@ class SelfSubjectRulesReview(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1378,7 +1396,7 @@ class SelfSubjectRulesReviewSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
     ):
         """Create SelfSubjectRulesReviewSpec instance."""
         super(SelfSubjectRulesReviewSpec, self).__init__(
@@ -1423,9 +1441,9 @@ class SubjectAccessReview(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "SubjectAccessReviewSpec" = None,
-        status: "SubjectAccessReviewStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["SubjectAccessReviewSpec"] = None,
+        status: typing.Optional["SubjectAccessReviewStatus"] = None,
     ):
         """Create SubjectAccessReview instance."""
         super(SubjectAccessReview, self).__init__(
@@ -1516,7 +1534,9 @@ class SubjectAccessReview(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Creates the SubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -1541,7 +1561,9 @@ class SubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Replaces the SubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -1566,7 +1588,9 @@ class SubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "SubjectAccessReviewStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "SubjectAccessReviewStatus":
         """
         Patches the SubjectAccessReview in the currently
         configured Kubernetes cluster and returns the status information
@@ -1592,7 +1616,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "SubjectAccessReviewStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -1616,7 +1640,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the SubjectAccessReview from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1636,7 +1660,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1665,7 +1689,7 @@ class SubjectAccessReview(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1691,12 +1715,12 @@ class SubjectAccessReviewSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        extra: dict = None,
-        groups: typing.List[str] = None,
-        non_resource_attributes: "NonResourceAttributes" = None,
-        resource_attributes: "ResourceAttributes" = None,
-        uid: str = None,
-        user: str = None,
+        extra: typing.Optional[dict] = None,
+        groups: typing.Optional[typing.List[str]] = None,
+        non_resource_attributes: typing.Optional["NonResourceAttributes"] = None,
+        resource_attributes: typing.Optional["ResourceAttributes"] = None,
+        uid: typing.Optional[str] = None,
+        user: typing.Optional[str] = None,
     ):
         """Create SubjectAccessReviewSpec instance."""
         super(SubjectAccessReviewSpec, self).__init__(
@@ -1863,10 +1887,10 @@ class SubjectAccessReviewStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        allowed: bool = None,
-        denied: bool = None,
-        evaluation_error: str = None,
-        reason: str = None,
+        allowed: typing.Optional[bool] = None,
+        denied: typing.Optional[bool] = None,
+        evaluation_error: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
     ):
         """Create SubjectAccessReviewStatus instance."""
         super(SubjectAccessReviewStatus, self).__init__(
@@ -1995,10 +2019,10 @@ class SubjectRulesReviewStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        evaluation_error: str = None,
-        incomplete: bool = None,
-        non_resource_rules: typing.List["NonResourceRule"] = None,
-        resource_rules: typing.List["ResourceRule"] = None,
+        evaluation_error: typing.Optional[str] = None,
+        incomplete: typing.Optional[bool] = None,
+        non_resource_rules: typing.Optional[typing.List["NonResourceRule"]] = None,
+        resource_rules: typing.Optional[typing.List["ResourceRule"]] = None,
     ):
         """Create SubjectRulesReviewStatus instance."""
         super(SubjectRulesReviewStatus, self).__init__(

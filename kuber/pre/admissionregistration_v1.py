@@ -10,6 +10,135 @@ from kuber.pre.meta_v1 import ListMeta  # noqa: F401
 from kuber.pre.meta_v1 import ObjectMeta  # noqa: F401
 
 
+class MatchCondition(_kuber_definitions.Definition):
+    """
+    MatchCondition represents a condition which must by
+    fulfilled for a request to be sent to a webhook.
+    """
+
+    def __init__(
+        self,
+        expression: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+    ):
+        """Create MatchCondition instance."""
+        super(MatchCondition, self).__init__(
+            api_version="admissionregistration/v1", kind="MatchCondition"
+        )
+        self._properties = {
+            "expression": expression if expression is not None else "",
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "expression": (str, None),
+            "name": (str, None),
+        }
+
+    @property
+    def expression(self) -> str:
+        """
+        Expression represents the expression which will be evaluated
+        by CEL. Must evaluate to bool. CEL expressions have access
+        to the contents of the AdmissionRequest and Authorizer,
+        organized into CEL variables:
+
+        'object' - The object from the incoming request. The value
+        is null for DELETE requests. 'oldObject' - The existing
+        object. The value is null for CREATE requests. 'request' -
+        Attributes of the admission
+        request(/pkg/apis/admission/types.go#AdmissionRequest).
+        'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
+        Documentation on CEL:
+        https://kubernetes.io/docs/reference/using-api/cel/
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("expression"),
+        )
+
+    @expression.setter
+    def expression(self, value: str):
+        """
+        Expression represents the expression which will be evaluated
+        by CEL. Must evaluate to bool. CEL expressions have access
+        to the contents of the AdmissionRequest and Authorizer,
+        organized into CEL variables:
+
+        'object' - The object from the incoming request. The value
+        is null for DELETE requests. 'oldObject' - The existing
+        object. The value is null for CREATE requests. 'request' -
+        Attributes of the admission
+        request(/pkg/apis/admission/types.go#AdmissionRequest).
+        'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
+        Documentation on CEL:
+        https://kubernetes.io/docs/reference/using-api/cel/
+
+        Required.
+        """
+        self._properties["expression"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is an identifier for this match condition, used for
+        strategic merging of MatchConditions, as well as providing
+        an identifier for logging purposes. A good name should be
+        descriptive of the associated expression. Name must be a
+        qualified name consisting of alphanumeric characters, '-',
+        '_' or '.', and must start and end with an alphanumeric
+        character (e.g. 'MyName',  or 'my.name',  or '123-abc',
+        regex used for validation is
+        '([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]') with an optional
+        DNS subdomain prefix and '/' (e.g. 'example.com/MyName')
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is an identifier for this match condition, used for
+        strategic merging of MatchConditions, as well as providing
+        an identifier for logging purposes. A good name should be
+        descriptive of the associated expression. Name must be a
+        qualified name consisting of alphanumeric characters, '-',
+        '_' or '.', and must start and end with an alphanumeric
+        character (e.g. 'MyName',  or 'my.name',  or '123-abc',
+        regex used for validation is
+        '([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]') with an optional
+        DNS subdomain prefix and '/' (e.g. 'example.com/MyName')
+
+        Required.
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "MatchCondition":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class MutatingWebhook(_kuber_definitions.Definition):
     """
     MutatingWebhook describes an admission webhook and the
@@ -18,17 +147,18 @@ class MutatingWebhook(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        admission_review_versions: typing.List[str] = None,
-        client_config: "WebhookClientConfig" = None,
-        failure_policy: str = None,
-        match_policy: str = None,
-        name: str = None,
-        namespace_selector: "LabelSelector" = None,
-        object_selector: "LabelSelector" = None,
-        reinvocation_policy: str = None,
-        rules: typing.List["RuleWithOperations"] = None,
-        side_effects: str = None,
-        timeout_seconds: int = None,
+        admission_review_versions: typing.Optional[typing.List[str]] = None,
+        client_config: typing.Optional["WebhookClientConfig"] = None,
+        failure_policy: typing.Optional[str] = None,
+        match_conditions: typing.Optional[typing.List["MatchCondition"]] = None,
+        match_policy: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespace_selector: typing.Optional["LabelSelector"] = None,
+        object_selector: typing.Optional["LabelSelector"] = None,
+        reinvocation_policy: typing.Optional[str] = None,
+        rules: typing.Optional[typing.List["RuleWithOperations"]] = None,
+        side_effects: typing.Optional[str] = None,
+        timeout_seconds: typing.Optional[int] = None,
     ):
         """Create MutatingWebhook instance."""
         super(MutatingWebhook, self).__init__(
@@ -42,6 +172,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
             if client_config is not None
             else WebhookClientConfig(),
             "failurePolicy": failure_policy if failure_policy is not None else "",
+            "matchConditions": match_conditions if match_conditions is not None else [],
             "matchPolicy": match_policy if match_policy is not None else "",
             "name": name if name is not None else "",
             "namespaceSelector": namespace_selector
@@ -61,6 +192,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
             "admissionReviewVersions": (list, str),
             "clientConfig": (WebhookClientConfig, None),
             "failurePolicy": (str, None),
+            "matchConditions": (list, MatchCondition),
             "matchPolicy": (str, None),
             "name": (str, None),
             "namespaceSelector": (LabelSelector, None),
@@ -148,6 +280,71 @@ class MutatingWebhook(_kuber_definitions.Definition):
         or Fail. Defaults to Fail.
         """
         self._properties["failurePolicy"] = value
+
+    @property
+    def match_conditions(self) -> typing.List["MatchCondition"]:
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is an alpha feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        return typing.cast(
+            typing.List["MatchCondition"],
+            self._properties.get("matchConditions"),
+        )
+
+    @match_conditions.setter
+    def match_conditions(
+        self, value: typing.Union[typing.List["MatchCondition"], typing.List[dict]]
+    ):
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is an alpha feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        cleaned: typing.List[MatchCondition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    MatchCondition,
+                    MatchCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(MatchCondition, item))
+        self._properties["matchConditions"] = cleaned
 
     @property
     def match_policy(self) -> str:
@@ -557,8 +754,8 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        webhooks: typing.List["MutatingWebhook"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        webhooks: typing.Optional[typing.List["MutatingWebhook"]] = None,
     ):
         """Create MutatingWebhookConfiguration instance."""
         super(MutatingWebhookConfiguration, self).__init__(
@@ -630,7 +827,7 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
             cleaned.append(typing.cast(MutatingWebhook, item))
         self._properties["webhooks"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the MutatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
@@ -649,7 +846,7 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the MutatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
@@ -668,7 +865,7 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the MutatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
@@ -687,11 +884,11 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the MutatingWebhookConfiguration from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -711,7 +908,7 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -740,7 +937,7 @@ class MutatingWebhookConfiguration(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AdmissionregistrationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -765,8 +962,8 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["MutatingWebhookConfiguration"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["MutatingWebhookConfiguration"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create MutatingWebhookConfigurationList instance."""
         super(MutatingWebhookConfigurationList, self).__init__(
@@ -842,7 +1039,7 @@ class MutatingWebhookConfigurationList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AdmissionregistrationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -868,11 +1065,11 @@ class RuleWithOperations(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_groups: typing.List[str] = None,
-        api_versions: typing.List[str] = None,
-        operations: typing.List[str] = None,
-        resources: typing.List[str] = None,
-        scope: str = None,
+        api_groups: typing.Optional[typing.List[str]] = None,
+        api_versions: typing.Optional[typing.List[str]] = None,
+        operations: typing.Optional[typing.List[str]] = None,
+        resources: typing.Optional[typing.List[str]] = None,
+        scope: typing.Optional[str] = None,
     ):
         """Create RuleWithOperations instance."""
         super(RuleWithOperations, self).__init__(
@@ -1044,10 +1241,10 @@ class ServiceReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        namespace: str = None,
-        path: str = None,
-        port: int = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        path: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(
@@ -1155,16 +1352,17 @@ class ValidatingWebhook(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        admission_review_versions: typing.List[str] = None,
-        client_config: "WebhookClientConfig" = None,
-        failure_policy: str = None,
-        match_policy: str = None,
-        name: str = None,
-        namespace_selector: "LabelSelector" = None,
-        object_selector: "LabelSelector" = None,
-        rules: typing.List["RuleWithOperations"] = None,
-        side_effects: str = None,
-        timeout_seconds: int = None,
+        admission_review_versions: typing.Optional[typing.List[str]] = None,
+        client_config: typing.Optional["WebhookClientConfig"] = None,
+        failure_policy: typing.Optional[str] = None,
+        match_conditions: typing.Optional[typing.List["MatchCondition"]] = None,
+        match_policy: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespace_selector: typing.Optional["LabelSelector"] = None,
+        object_selector: typing.Optional["LabelSelector"] = None,
+        rules: typing.Optional[typing.List["RuleWithOperations"]] = None,
+        side_effects: typing.Optional[str] = None,
+        timeout_seconds: typing.Optional[int] = None,
     ):
         """Create ValidatingWebhook instance."""
         super(ValidatingWebhook, self).__init__(
@@ -1178,6 +1376,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
             if client_config is not None
             else WebhookClientConfig(),
             "failurePolicy": failure_policy if failure_policy is not None else "",
+            "matchConditions": match_conditions if match_conditions is not None else [],
             "matchPolicy": match_policy if match_policy is not None else "",
             "name": name if name is not None else "",
             "namespaceSelector": namespace_selector
@@ -1194,6 +1393,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
             "admissionReviewVersions": (list, str),
             "clientConfig": (WebhookClientConfig, None),
             "failurePolicy": (str, None),
+            "matchConditions": (list, MatchCondition),
             "matchPolicy": (str, None),
             "name": (str, None),
             "namespaceSelector": (LabelSelector, None),
@@ -1280,6 +1480,71 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         or Fail. Defaults to Fail.
         """
         self._properties["failurePolicy"] = value
+
+    @property
+    def match_conditions(self) -> typing.List["MatchCondition"]:
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is an alpha feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        return typing.cast(
+            typing.List["MatchCondition"],
+            self._properties.get("matchConditions"),
+        )
+
+    @match_conditions.setter
+    def match_conditions(
+        self, value: typing.Union[typing.List["MatchCondition"], typing.List[dict]]
+    ):
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is an alpha feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        cleaned: typing.List[MatchCondition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    MatchCondition,
+                    MatchCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(MatchCondition, item))
+        self._properties["matchConditions"] = cleaned
 
     @property
     def match_policy(self) -> str:
@@ -1630,8 +1895,8 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        webhooks: typing.List["ValidatingWebhook"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        webhooks: typing.Optional[typing.List["ValidatingWebhook"]] = None,
     ):
         """Create ValidatingWebhookConfiguration instance."""
         super(ValidatingWebhookConfiguration, self).__init__(
@@ -1704,7 +1969,7 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
             cleaned.append(typing.cast(ValidatingWebhook, item))
         self._properties["webhooks"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the ValidatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
@@ -1723,7 +1988,7 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the ValidatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
@@ -1742,7 +2007,7 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the ValidatingWebhookConfiguration in the currently
         configured Kubernetes cluster.
@@ -1761,11 +2026,11 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ValidatingWebhookConfiguration from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1785,7 +2050,7 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1814,7 +2079,7 @@ class ValidatingWebhookConfiguration(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AdmissionregistrationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1839,8 +2104,8 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ValidatingWebhookConfiguration"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ValidatingWebhookConfiguration"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ValidatingWebhookConfigurationList instance."""
         super(ValidatingWebhookConfigurationList, self).__init__(
@@ -1916,7 +2181,7 @@ class ValidatingWebhookConfigurationList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.AdmissionregistrationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1941,9 +2206,9 @@ class WebhookClientConfig(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ca_bundle: str = None,
-        service: "ServiceReference" = None,
-        url: str = None,
+        ca_bundle: typing.Optional[str] = None,
+        service: typing.Optional["ServiceReference"] = None,
+        url: typing.Optional[str] = None,
     ):
         """Create WebhookClientConfig instance."""
         super(WebhookClientConfig, self).__init__(

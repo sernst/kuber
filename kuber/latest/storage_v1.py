@@ -6,6 +6,7 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
+from kuber.latest.meta_v1 import LabelSelector  # noqa: F401
 from kuber.latest.meta_v1 import ListMeta  # noqa: F401
 from kuber.latest.meta_v1 import ObjectMeta  # noqa: F401
 from kuber.latest.core_v1 import PersistentVolumeSpec  # noqa: F401
@@ -26,8 +27,8 @@ class CSIDriver(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "CSIDriverSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["CSIDriverSpec"] = None,
     ):
         """Create CSIDriver instance."""
         super(CSIDriver, self).__init__(api_version="storage/v1", kind="CSIDriver")
@@ -102,7 +103,7 @@ class CSIDriver(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the CSIDriver in the currently
         configured Kubernetes cluster.
@@ -118,7 +119,7 @@ class CSIDriver(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the CSIDriver in the currently
         configured Kubernetes cluster.
@@ -134,7 +135,7 @@ class CSIDriver(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the CSIDriver in the currently
         configured Kubernetes cluster.
@@ -150,11 +151,11 @@ class CSIDriver(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CSIDriver from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -174,7 +175,7 @@ class CSIDriver(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -203,7 +204,7 @@ class CSIDriver(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -227,8 +228,8 @@ class CSIDriverList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CSIDriver"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CSIDriver"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CSIDriverList instance."""
         super(CSIDriverList, self).__init__(
@@ -298,7 +299,7 @@ class CSIDriverList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -322,13 +323,14 @@ class CSIDriverSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        attach_required: bool = None,
-        fs_group_policy: str = None,
-        pod_info_on_mount: bool = None,
-        requires_republish: bool = None,
-        storage_capacity: bool = None,
-        token_requests: typing.List["TokenRequest"] = None,
-        volume_lifecycle_modes: typing.List[str] = None,
+        attach_required: typing.Optional[bool] = None,
+        fs_group_policy: typing.Optional[str] = None,
+        pod_info_on_mount: typing.Optional[bool] = None,
+        requires_republish: typing.Optional[bool] = None,
+        se_linux_mount: typing.Optional[bool] = None,
+        storage_capacity: typing.Optional[bool] = None,
+        token_requests: typing.Optional[typing.List["TokenRequest"]] = None,
+        volume_lifecycle_modes: typing.Optional[typing.List[str]] = None,
     ):
         """Create CSIDriverSpec instance."""
         super(CSIDriverSpec, self).__init__(
@@ -343,6 +345,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             "requiresRepublish": requires_republish
             if requires_republish is not None
             else None,
+            "seLinuxMount": se_linux_mount if se_linux_mount is not None else None,
             "storageCapacity": storage_capacity
             if storage_capacity is not None
             else None,
@@ -356,6 +359,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
             "fsGroupPolicy": (str, None),
             "podInfoOnMount": (bool, None),
             "requiresRepublish": (bool, None),
+            "seLinuxMount": (bool, None),
             "storageCapacity": (bool, None),
             "tokenRequests": (list, TokenRequest),
             "volumeLifecycleModes": (list, str),
@@ -410,8 +414,6 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         Defines if the underlying volume supports changing ownership
         and permission of the volume before being mounted. Refer to
         the specific FSGroupPolicy values for additional details.
-        This field is beta, and is only honored by servers that
-        enable the CSIVolumeFSGroupPolicy feature gate.
 
         This field is immutable.
 
@@ -432,8 +434,6 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         Defines if the underlying volume supports changing ownership
         and permission of the volume before being mounted. Refer to
         the specific FSGroupPolicy values for additional details.
-        This field is beta, and is only honored by servers that
-        enable the CSIVolumeFSGroupPolicy feature gate.
 
         This field is immutable.
 
@@ -554,6 +554,61 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._properties["requiresRepublish"] = value
 
     @property
+    def se_linux_mount(self) -> bool:
+        """
+        SELinuxMount specifies if the CSI driver supports "-o
+        context" mount option.
+
+        When "true", the CSI driver must ensure that all volumes
+        provided by this CSI driver can be mounted separately with
+        different `-o context` options. This is typical for storage
+        backends that provide volumes as filesystems on block
+        devices or as independent shared volumes. Kubernetes will
+        call NodeStage / NodePublish with "-o context=xyz" mount
+        option when mounting a ReadWriteOncePod volume used in Pod
+        that has explicitly set SELinux context. In the future, it
+        may be expanded to other volume AccessModes. In any case,
+        Kubernetes will ensure that the volume is mounted only with
+        a single SELinux context.
+
+        When "false", Kubernetes won't pass any special SELinux
+        mount options to the driver. This is typical for volumes
+        that represent subdirectories of a bigger shared filesystem.
+
+        Default is "false".
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("seLinuxMount"),
+        )
+
+    @se_linux_mount.setter
+    def se_linux_mount(self, value: bool):
+        """
+        SELinuxMount specifies if the CSI driver supports "-o
+        context" mount option.
+
+        When "true", the CSI driver must ensure that all volumes
+        provided by this CSI driver can be mounted separately with
+        different `-o context` options. This is typical for storage
+        backends that provide volumes as filesystems on block
+        devices or as independent shared volumes. Kubernetes will
+        call NodeStage / NodePublish with "-o context=xyz" mount
+        option when mounting a ReadWriteOncePod volume used in Pod
+        that has explicitly set SELinux context. In the future, it
+        may be expanded to other volume AccessModes. In any case,
+        Kubernetes will ensure that the volume is mounted only with
+        a single SELinux context.
+
+        When "false", Kubernetes won't pass any special SELinux
+        mount options to the driver. This is typical for volumes
+        that represent subdirectories of a bigger shared filesystem.
+
+        Default is "false".
+        """
+        self._properties["seLinuxMount"] = value
+
+    @property
     def storage_capacity(self) -> bool:
         """
         If set to true, storageCapacity indicates that the CSI
@@ -570,10 +625,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         unset or false and it can be flipped later when storage
         capacity information has been published.
 
-        This field is immutable.
-
-        This is a beta field and only available when the
-        CSIStorageCapacity feature is enabled. The default is false.
+        This field was immutable in Kubernetes <= 1.22 and now is
+        mutable.
         """
         return typing.cast(
             bool,
@@ -597,10 +650,8 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         unset or false and it can be flipped later when storage
         capacity information has been published.
 
-        This field is immutable.
-
-        This is a beta field and only available when the
-        CSIStorageCapacity feature is enabled. The default is false.
+        This field was immutable in Kubernetes <= 1.22 and now is
+        mutable.
         """
         self._properties["storageCapacity"] = value
 
@@ -735,8 +786,8 @@ class CSINode(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "CSINodeSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["CSINodeSpec"] = None,
     ):
         """Create CSINode instance."""
         super(CSINode, self).__init__(api_version="storage/v1", kind="CSINode")
@@ -795,7 +846,7 @@ class CSINode(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the CSINode in the currently
         configured Kubernetes cluster.
@@ -811,7 +862,7 @@ class CSINode(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the CSINode in the currently
         configured Kubernetes cluster.
@@ -827,7 +878,7 @@ class CSINode(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the CSINode in the currently
         configured Kubernetes cluster.
@@ -843,11 +894,11 @@ class CSINode(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CSINode from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -867,7 +918,7 @@ class CSINode(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -896,7 +947,7 @@ class CSINode(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -921,10 +972,10 @@ class CSINodeDriver(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        allocatable: "VolumeNodeResources" = None,
-        name: str = None,
-        node_id: str = None,
-        topology_keys: typing.List[str] = None,
+        allocatable: typing.Optional["VolumeNodeResources"] = None,
+        name: typing.Optional[str] = None,
+        node_id: typing.Optional[str] = None,
+        topology_keys: typing.Optional[typing.List[str]] = None,
     ):
         """Create CSINodeDriver instance."""
         super(CSINodeDriver, self).__init__(
@@ -1078,8 +1129,8 @@ class CSINodeList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CSINode"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CSINode"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CSINodeList instance."""
         super(CSINodeList, self).__init__(api_version="storage/v1", kind="CSINodeList")
@@ -1147,7 +1198,7 @@ class CSINodeList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1172,7 +1223,7 @@ class CSINodeSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        drivers: typing.List["CSINodeDriver"] = None,
+        drivers: typing.Optional[typing.List["CSINodeDriver"]] = None,
     ):
         """Create CSINodeSpec instance."""
         super(CSINodeSpec, self).__init__(api_version="storage/v1", kind="CSINodeSpec")
@@ -1221,6 +1272,458 @@ class CSINodeSpec(_kuber_definitions.Definition):
         return False
 
 
+class CSIStorageCapacity(_kuber_definitions.Resource):
+    """
+    CSIStorageCapacity stores the result of one CSI GetCapacity
+    call. For a given StorageClass, this describes the available
+    capacity in a particular topology segment.  This can be used
+    when considering where to instantiate new PersistentVolumes.
+
+    For example this can express things like: - StorageClass
+    "standard" has "1234 GiB" available in
+    "topology.kubernetes.io/zone=us-east1" - StorageClass
+    "localssd" has "10 GiB" available in
+    "kubernetes.io/hostname=knode-abc123"
+
+    The following three cases all imply that no capacity is
+    available for a certain combination: - no object exists with
+    suitable topology and storage class name - such an object
+    exists, but the capacity is unset - such an object exists,
+    but the capacity is zero
+
+    The producer of these objects can decide which approach is
+    more suitable.
+
+    They are consumed by the kube-scheduler when a CSI driver
+    opts into capacity-aware scheduling with
+    CSIDriverSpec.StorageCapacity. The scheduler compares the
+    MaximumVolumeSize against the requested size of pending
+    volumes to filter out unsuitable nodes. If MaximumVolumeSize
+    is unset, it falls back to a comparison against the less
+    precise Capacity. If that is also unset, the scheduler
+    assumes that capacity is insufficient and tries some other
+    node.
+    """
+
+    def __init__(
+        self,
+        capacity: typing.Optional[typing.Union[str, int, None]] = None,
+        maximum_volume_size: typing.Optional[typing.Union[str, int, None]] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        node_topology: typing.Optional["LabelSelector"] = None,
+        storage_class_name: typing.Optional[str] = None,
+    ):
+        """Create CSIStorageCapacity instance."""
+        super(CSIStorageCapacity, self).__init__(
+            api_version="storage/v1", kind="CSIStorageCapacity"
+        )
+        self._properties = {
+            "capacity": capacity if capacity is not None else None,
+            "maximumVolumeSize": maximum_volume_size
+            if maximum_volume_size is not None
+            else None,
+            "metadata": metadata if metadata is not None else ObjectMeta(),
+            "nodeTopology": node_topology
+            if node_topology is not None
+            else LabelSelector(),
+            "storageClassName": storage_class_name
+            if storage_class_name is not None
+            else "",
+        }
+        self._types = {
+            "apiVersion": (str, None),
+            "capacity": (_types.integer_or_string, None),
+            "kind": (str, None),
+            "maximumVolumeSize": (_types.integer_or_string, None),
+            "metadata": (ObjectMeta, None),
+            "nodeTopology": (LabelSelector, None),
+            "storageClassName": (str, None),
+        }
+
+    @property
+    def capacity(self) -> typing.Optional[str]:
+        """
+        Capacity is the value reported by the CSI driver in its
+        GetCapacityResponse for a GetCapacityRequest with topology
+        and parameters that match the previous fields.
+
+        The semantic is currently (CSI spec 1.2) defined as: The
+        available capacity, in bytes, of the storage that can be
+        used to provision volumes. If not set, that information is
+        currently unavailable.
+        """
+        value = self._properties.get("capacity")
+        return f"{value}" if value is not None else None
+
+    @capacity.setter
+    def capacity(self, value: typing.Union[str, int, None]):
+        """
+        Capacity is the value reported by the CSI driver in its
+        GetCapacityResponse for a GetCapacityRequest with topology
+        and parameters that match the previous fields.
+
+        The semantic is currently (CSI spec 1.2) defined as: The
+        available capacity, in bytes, of the storage that can be
+        used to provision volumes. If not set, that information is
+        currently unavailable.
+        """
+        self._properties["capacity"] = _types.integer_or_string(value)
+
+    @property
+    def maximum_volume_size(self) -> typing.Optional[str]:
+        """
+        MaximumVolumeSize is the value reported by the CSI driver in
+        its GetCapacityResponse for a GetCapacityRequest with
+        topology and parameters that match the previous fields.
+
+        This is defined since CSI spec 1.4.0 as the largest size
+        that may be used in a
+        CreateVolumeRequest.capacity_range.required_bytes field to
+        create a volume with the same parameters as those in
+        GetCapacityRequest. The corresponding value in the
+        Kubernetes API is ResourceRequirements.Requests in a volume
+        claim.
+        """
+        value = self._properties.get("maximumVolumeSize")
+        return f"{value}" if value is not None else None
+
+    @maximum_volume_size.setter
+    def maximum_volume_size(self, value: typing.Union[str, int, None]):
+        """
+        MaximumVolumeSize is the value reported by the CSI driver in
+        its GetCapacityResponse for a GetCapacityRequest with
+        topology and parameters that match the previous fields.
+
+        This is defined since CSI spec 1.4.0 as the largest size
+        that may be used in a
+        CreateVolumeRequest.capacity_range.required_bytes field to
+        create a volume with the same parameters as those in
+        GetCapacityRequest. The corresponding value in the
+        Kubernetes API is ResourceRequirements.Requests in a volume
+        claim.
+        """
+        self._properties["maximumVolumeSize"] = _types.integer_or_string(value)
+
+    @property
+    def metadata(self) -> "ObjectMeta":
+        """
+        Standard object's metadata. The name has no particular
+        meaning. It must be be a DNS subdomain (dots allowed, 253
+        characters). To ensure that there are no conflicts with
+        other CSI drivers on the cluster, the recommendation is to
+        use csisc-<uuid>, a generated name, or a reverse-domain name
+        which ends with the unique CSI driver name.
+
+        Objects are namespaced.
+
+        More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        return typing.cast(
+            "ObjectMeta",
+            self._properties.get("metadata"),
+        )
+
+    @metadata.setter
+    def metadata(self, value: typing.Union["ObjectMeta", dict]):
+        """
+        Standard object's metadata. The name has no particular
+        meaning. It must be be a DNS subdomain (dots allowed, 253
+        characters). To ensure that there are no conflicts with
+        other CSI drivers on the cluster, the recommendation is to
+        use csisc-<uuid>, a generated name, or a reverse-domain name
+        which ends with the unique CSI driver name.
+
+        Objects are namespaced.
+
+        More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ObjectMeta,
+                ObjectMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
+
+    @property
+    def node_topology(self) -> "LabelSelector":
+        """
+        NodeTopology defines which nodes have access to the storage
+        for which capacity was reported. If not set, the storage is
+        not accessible from any node in the cluster. If empty, the
+        storage is accessible from all nodes. This field is
+        immutable.
+        """
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("nodeTopology"),
+        )
+
+    @node_topology.setter
+    def node_topology(self, value: typing.Union["LabelSelector", dict]):
+        """
+        NodeTopology defines which nodes have access to the storage
+        for which capacity was reported. If not set, the storage is
+        not accessible from any node in the cluster. If empty, the
+        storage is accessible from all nodes. This field is
+        immutable.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["nodeTopology"] = value
+
+    @property
+    def storage_class_name(self) -> str:
+        """
+        The name of the StorageClass that the reported capacity
+        applies to. It must meet the same requirements as the name
+        of a StorageClass object (non-empty, DNS subdomain). If that
+        object no longer exists, the CSIStorageCapacity object is
+        obsolete and should be removed by its creator. This field is
+        immutable.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("storageClassName"),
+        )
+
+    @storage_class_name.setter
+    def storage_class_name(self, value: str):
+        """
+        The name of the StorageClass that the reported capacity
+        applies to. It must meet the same requirements as the name
+        of a StorageClass object (non-empty, DNS subdomain). If that
+        object no longer exists, the CSIStorageCapacity object is
+        obsolete and should be removed by its creator. This field is
+        immutable.
+        """
+        self._properties["storageClassName"] = value
+
+    def create_resource(self, namespace: typing.Optional["str"] = None):
+        """
+        Creates the CSIStorageCapacity in the currently
+        configured Kubernetes cluster.
+        """
+        names = ["create_namespaced_csistorage_capacity", "create_csistorage_capacity"]
+
+        _kube_api.execute(
+            action="create",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict()},
+        )
+
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
+        """
+        Replaces the CSIStorageCapacity in the currently
+        configured Kubernetes cluster.
+        """
+        names = [
+            "replace_namespaced_csistorage_capacity",
+            "replace_csistorage_capacity",
+        ]
+
+        _kube_api.execute(
+            action="replace",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
+        )
+
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
+        """
+        Patches the CSIStorageCapacity in the currently
+        configured Kubernetes cluster.
+        """
+        names = ["patch_namespaced_csistorage_capacity", "patch_csistorage_capacity"]
+
+        _kube_api.execute(
+            action="patch",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"body": self.to_dict(), "name": self.metadata.name},
+        )
+
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
+        """This resource does not have a status."""
+        pass
+
+    def read_resource(self, namespace: typing.Optional[str] = None):
+        """
+        Reads the CSIStorageCapacity from the currently configured
+        Kubernetes cluster and returns the low-level definition object.
+        """
+        names = [
+            "read_namespaced_csistorage_capacity",
+            "read_csistorage_capacity",
+        ]
+        return _kube_api.execute(
+            action="read",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name},
+        )
+
+    def delete_resource(
+        self,
+        namespace: typing.Optional[str] = None,
+        propagation_policy: str = "Foreground",
+        grace_period_seconds: int = 10,
+    ):
+        """
+        Deletes the CSIStorageCapacity from the currently configured
+        Kubernetes cluster.
+        """
+        names = [
+            "delete_namespaced_csistorage_capacity",
+            "delete_csistorage_capacity",
+        ]
+
+        body = client.V1DeleteOptions(
+            propagation_policy=propagation_policy,
+            grace_period_seconds=grace_period_seconds,
+        )
+
+        _kube_api.execute(
+            action="delete",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name, "body": body},
+        )
+
+    @staticmethod
+    def get_resource_api(
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
+    ) -> "client.StorageV1Api":
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs["apl_client"] = api_client
+        return client.StorageV1Api(**kwargs)
+
+    def __enter__(self) -> "CSIStorageCapacity":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class CSIStorageCapacityList(_kuber_definitions.Collection):
+    """
+    CSIStorageCapacityList is a collection of CSIStorageCapacity
+    objects.
+    """
+
+    def __init__(
+        self,
+        items: typing.Optional[typing.List["CSIStorageCapacity"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
+    ):
+        """Create CSIStorageCapacityList instance."""
+        super(CSIStorageCapacityList, self).__init__(
+            api_version="storage/v1", kind="CSIStorageCapacityList"
+        )
+        self._properties = {
+            "items": items if items is not None else [],
+            "metadata": metadata if metadata is not None else ListMeta(),
+        }
+        self._types = {
+            "apiVersion": (str, None),
+            "items": (list, CSIStorageCapacity),
+            "kind": (str, None),
+            "metadata": (ListMeta, None),
+        }
+
+    @property
+    def items(self) -> typing.List["CSIStorageCapacity"]:
+        """
+        Items is the list of CSIStorageCapacity objects.
+        """
+        return typing.cast(
+            typing.List["CSIStorageCapacity"],
+            self._properties.get("items"),
+        )
+
+    @items.setter
+    def items(
+        self, value: typing.Union[typing.List["CSIStorageCapacity"], typing.List[dict]]
+    ):
+        """
+        Items is the list of CSIStorageCapacity objects.
+        """
+        cleaned: typing.List[CSIStorageCapacity] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    CSIStorageCapacity,
+                    CSIStorageCapacity().from_dict(item),
+                )
+            cleaned.append(typing.cast(CSIStorageCapacity, item))
+        self._properties["items"] = cleaned
+
+    @property
+    def metadata(self) -> "ListMeta":
+        """
+        Standard list metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        return typing.cast(
+            "ListMeta",
+            self._properties.get("metadata"),
+        )
+
+    @metadata.setter
+    def metadata(self, value: typing.Union["ListMeta", dict]):
+        """
+        Standard list metadata More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#metadata
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ListMeta,
+                ListMeta().from_dict(value),
+            )
+        self._properties["metadata"] = value
+
+    @staticmethod
+    def get_resource_api(
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
+    ) -> "client.StorageV1Api":
+        """
+        Returns an instance of the kubernetes API client associated with
+        this object.
+        """
+        if api_client:
+            kwargs["apl_client"] = api_client
+        return client.StorageV1Api(**kwargs)
+
+    def __enter__(self) -> "CSIStorageCapacityList":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class StorageClass(_kuber_definitions.Resource):
     """
     StorageClass describes the parameters for a class of storage
@@ -1232,14 +1735,14 @@ class StorageClass(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        allow_volume_expansion: bool = None,
-        allowed_topologies: typing.List["TopologySelectorTerm"] = None,
-        metadata: "ObjectMeta" = None,
-        mount_options: typing.List[str] = None,
-        parameters: dict = None,
-        provisioner: str = None,
-        reclaim_policy: str = None,
-        volume_binding_mode: str = None,
+        allow_volume_expansion: typing.Optional[bool] = None,
+        allowed_topologies: typing.Optional[typing.List["TopologySelectorTerm"]] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        mount_options: typing.Optional[typing.List[str]] = None,
+        parameters: typing.Optional[dict] = None,
+        provisioner: typing.Optional[str] = None,
+        reclaim_policy: typing.Optional[str] = None,
+        volume_binding_mode: typing.Optional[str] = None,
     ):
         """Create StorageClass instance."""
         super(StorageClass, self).__init__(
@@ -1460,7 +1963,7 @@ class StorageClass(_kuber_definitions.Resource):
         """
         self._properties["volumeBindingMode"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the StorageClass in the currently
         configured Kubernetes cluster.
@@ -1476,7 +1979,7 @@ class StorageClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the StorageClass in the currently
         configured Kubernetes cluster.
@@ -1492,7 +1995,7 @@ class StorageClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the StorageClass in the currently
         configured Kubernetes cluster.
@@ -1508,11 +2011,11 @@ class StorageClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the StorageClass from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1532,7 +2035,7 @@ class StorageClass(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1561,7 +2064,7 @@ class StorageClass(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1585,8 +2088,8 @@ class StorageClassList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["StorageClass"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["StorageClass"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create StorageClassList instance."""
         super(StorageClassList, self).__init__(
@@ -1658,7 +2161,7 @@ class StorageClassList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1682,8 +2185,8 @@ class TokenRequest(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        audience: str = None,
-        expiration_seconds: int = None,
+        audience: typing.Optional[str] = None,
+        expiration_seconds: typing.Optional[int] = None,
     ):
         """Create TokenRequest instance."""
         super(TokenRequest, self).__init__(
@@ -1759,9 +2262,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "VolumeAttachmentSpec" = None,
-        status: "VolumeAttachmentStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["VolumeAttachmentSpec"] = None,
+        status: typing.Optional["VolumeAttachmentStatus"] = None,
     ):
         """Create VolumeAttachment instance."""
         super(VolumeAttachment, self).__init__(
@@ -1856,7 +2359,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "VolumeAttachmentStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "VolumeAttachmentStatus":
         """
         Creates the VolumeAttachment in the currently
         configured Kubernetes cluster and returns the status information
@@ -1878,7 +2383,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "VolumeAttachmentStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "VolumeAttachmentStatus":
         """
         Replaces the VolumeAttachment in the currently
         configured Kubernetes cluster and returns the status information
@@ -1900,7 +2407,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "VolumeAttachmentStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "VolumeAttachmentStatus":
         """
         Patches the VolumeAttachment in the currently
         configured Kubernetes cluster and returns the status information
@@ -1922,7 +2431,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "VolumeAttachmentStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "VolumeAttachmentStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -1945,7 +2456,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the VolumeAttachment from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1965,7 +2476,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1994,7 +2505,7 @@ class VolumeAttachment(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2019,8 +2530,8 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["VolumeAttachment"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["VolumeAttachment"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create VolumeAttachmentList instance."""
         super(VolumeAttachmentList, self).__init__(
@@ -2092,7 +2603,7 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.StorageV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2119,8 +2630,8 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        inline_volume_spec: "PersistentVolumeSpec" = None,
-        persistent_volume_name: str = None,
+        inline_volume_spec: typing.Optional["PersistentVolumeSpec"] = None,
+        persistent_volume_name: typing.Optional[str] = None,
     ):
         """Create VolumeAttachmentSource instance."""
         super(VolumeAttachmentSource, self).__init__(
@@ -2205,9 +2716,9 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        attacher: str = None,
-        node_name: str = None,
-        source: "VolumeAttachmentSource" = None,
+        attacher: typing.Optional[str] = None,
+        node_name: typing.Optional[str] = None,
+        source: typing.Optional["VolumeAttachmentSource"] = None,
     ):
         """Create VolumeAttachmentSpec instance."""
         super(VolumeAttachmentSpec, self).__init__(
@@ -2299,10 +2810,10 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        attach_error: "VolumeError" = None,
-        attached: bool = None,
-        attachment_metadata: dict = None,
-        detach_error: "VolumeError" = None,
+        attach_error: typing.Optional["VolumeError"] = None,
+        attached: typing.Optional[bool] = None,
+        attachment_metadata: typing.Optional[dict] = None,
+        detach_error: typing.Optional["VolumeError"] = None,
     ):
         """Create VolumeAttachmentStatus instance."""
         super(VolumeAttachmentStatus, self).__init__(
@@ -2436,8 +2947,8 @@ class VolumeError(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        message: str = None,
-        time: str = None,
+        message: typing.Optional[str] = None,
+        time: typing.Optional[str] = None,
     ):
         """Create VolumeError instance."""
         super(VolumeError, self).__init__(api_version="storage/v1", kind="VolumeError")
@@ -2507,7 +3018,7 @@ class VolumeNodeResources(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        count: int = None,
+        count: typing.Optional[int] = None,
     ):
         """Create VolumeNodeResources instance."""
         super(VolumeNodeResources, self).__init__(

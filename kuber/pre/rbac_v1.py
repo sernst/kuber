@@ -18,7 +18,7 @@ class AggregationRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        cluster_role_selectors: typing.List["LabelSelector"] = None,
+        cluster_role_selectors: typing.Optional[typing.List["LabelSelector"]] = None,
     ):
         """Create AggregationRule instance."""
         super(AggregationRule, self).__init__(
@@ -82,9 +82,9 @@ class ClusterRole(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        aggregation_rule: "AggregationRule" = None,
-        metadata: "ObjectMeta" = None,
-        rules: typing.List["PolicyRule"] = None,
+        aggregation_rule: typing.Optional["AggregationRule"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        rules: typing.Optional[typing.List["PolicyRule"]] = None,
     ):
         """Create ClusterRole instance."""
         super(ClusterRole, self).__init__(
@@ -180,7 +180,7 @@ class ClusterRole(_kuber_definitions.Resource):
             cleaned.append(typing.cast(PolicyRule, item))
         self._properties["rules"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the ClusterRole in the currently
         configured Kubernetes cluster.
@@ -196,7 +196,7 @@ class ClusterRole(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the ClusterRole in the currently
         configured Kubernetes cluster.
@@ -212,7 +212,7 @@ class ClusterRole(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the ClusterRole in the currently
         configured Kubernetes cluster.
@@ -228,11 +228,11 @@ class ClusterRole(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ClusterRole from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -252,7 +252,7 @@ class ClusterRole(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -281,7 +281,7 @@ class ClusterRole(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -307,9 +307,9 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        role_ref: "RoleRef" = None,
-        subjects: typing.List["Subject"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        role_ref: typing.Optional["RoleRef"] = None,
+        subjects: typing.Optional[typing.List["Subject"]] = None,
     ):
         """Create ClusterRoleBinding instance."""
         super(ClusterRoleBinding, self).__init__(
@@ -403,7 +403,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
             cleaned.append(typing.cast(Subject, item))
         self._properties["subjects"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the ClusterRoleBinding in the currently
         configured Kubernetes cluster.
@@ -422,7 +422,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the ClusterRoleBinding in the currently
         configured Kubernetes cluster.
@@ -441,7 +441,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the ClusterRoleBinding in the currently
         configured Kubernetes cluster.
@@ -457,11 +457,11 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the ClusterRoleBinding from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -481,7 +481,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -510,7 +510,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -535,8 +535,8 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ClusterRoleBinding"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ClusterRoleBinding"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ClusterRoleBindingList instance."""
         super(ClusterRoleBindingList, self).__init__(
@@ -604,7 +604,7 @@ class ClusterRoleBindingList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -628,8 +628,8 @@ class ClusterRoleList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["ClusterRole"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["ClusterRole"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create ClusterRoleList instance."""
         super(ClusterRoleList, self).__init__(
@@ -695,7 +695,7 @@ class ClusterRoleList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -721,11 +721,11 @@ class PolicyRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_groups: typing.List[str] = None,
-        non_resource_urls: typing.List[str] = None,
-        resource_names: typing.List[str] = None,
-        resources: typing.List[str] = None,
-        verbs: typing.List[str] = None,
+        api_groups: typing.Optional[typing.List[str]] = None,
+        non_resource_urls: typing.Optional[typing.List[str]] = None,
+        resource_names: typing.Optional[typing.List[str]] = None,
+        resources: typing.Optional[typing.List[str]] = None,
+        verbs: typing.Optional[typing.List[str]] = None,
     ):
         """Create PolicyRule instance."""
         super(PolicyRule, self).__init__(
@@ -754,7 +754,8 @@ class PolicyRule(_kuber_definitions.Definition):
         APIGroups is the name of the APIGroup that contains the
         resources.  If multiple API groups are specified, any action
         requested against one of the enumerated resources in any API
-        group will be allowed.
+        group will be allowed. "" represents the core API group and
+        "*" represents all API groups.
         """
         return typing.cast(
             typing.List[str],
@@ -767,7 +768,8 @@ class PolicyRule(_kuber_definitions.Definition):
         APIGroups is the name of the APIGroup that contains the
         resources.  If multiple API groups are specified, any action
         requested against one of the enumerated resources in any API
-        group will be allowed.
+        group will be allowed. "" represents the core API group and
+        "*" represents all API groups.
         """
         self._properties["apiGroups"] = value
 
@@ -874,8 +876,8 @@ class Role(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        rules: typing.List["PolicyRule"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        rules: typing.Optional[typing.List["PolicyRule"]] = None,
     ):
         """Create Role instance."""
         super(Role, self).__init__(
@@ -939,7 +941,7 @@ class Role(_kuber_definitions.Resource):
             cleaned.append(typing.cast(PolicyRule, item))
         self._properties["rules"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the Role in the currently
         configured Kubernetes cluster.
@@ -955,7 +957,7 @@ class Role(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the Role in the currently
         configured Kubernetes cluster.
@@ -971,7 +973,7 @@ class Role(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the Role in the currently
         configured Kubernetes cluster.
@@ -987,11 +989,11 @@ class Role(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Role from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1011,7 +1013,7 @@ class Role(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1040,7 +1042,7 @@ class Role(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1069,9 +1071,9 @@ class RoleBinding(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        role_ref: "RoleRef" = None,
-        subjects: typing.List["Subject"] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        role_ref: typing.Optional["RoleRef"] = None,
+        subjects: typing.Optional[typing.List["Subject"]] = None,
     ):
         """Create RoleBinding instance."""
         super(RoleBinding, self).__init__(
@@ -1165,7 +1167,7 @@ class RoleBinding(_kuber_definitions.Resource):
             cleaned.append(typing.cast(Subject, item))
         self._properties["subjects"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the RoleBinding in the currently
         configured Kubernetes cluster.
@@ -1181,7 +1183,7 @@ class RoleBinding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the RoleBinding in the currently
         configured Kubernetes cluster.
@@ -1197,7 +1199,7 @@ class RoleBinding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the RoleBinding in the currently
         configured Kubernetes cluster.
@@ -1213,11 +1215,11 @@ class RoleBinding(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the RoleBinding from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1237,7 +1239,7 @@ class RoleBinding(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1266,7 +1268,7 @@ class RoleBinding(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1290,8 +1292,8 @@ class RoleBindingList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["RoleBinding"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["RoleBinding"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create RoleBindingList instance."""
         super(RoleBindingList, self).__init__(
@@ -1357,7 +1359,7 @@ class RoleBindingList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1381,8 +1383,8 @@ class RoleList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Role"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Role"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create RoleList instance."""
         super(RoleList, self).__init__(
@@ -1448,7 +1450,7 @@ class RoleList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.RbacAuthorizationV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1473,9 +1475,9 @@ class RoleRef(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_group: str = None,
-        kind: str = None,
-        name: str = None,
+        api_group: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
     ):
         """Create RoleRef instance."""
         super(RoleRef, self).__init__(
@@ -1560,10 +1562,10 @@ class Subject(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_group: str = None,
-        kind: str = None,
-        name: str = None,
-        namespace: str = None,
+        api_group: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
     ):
         """Create Subject instance."""
         super(Subject, self).__init__(

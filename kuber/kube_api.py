@@ -28,7 +28,7 @@ def load_access_config(in_cluster: bool = False, **kwargs):
 
 
 def get_version_from_cluster(
-    fallback: typing.Union["versioning.KubernetesVersion", str] = None
+    fallback: typing.Union["versioning.KubernetesVersion", str, None] = None
 ) -> versioning.KubernetesVersion:
     """
     Returns the KubernetesVersion object associated with the configured
@@ -56,9 +56,9 @@ def execute(
     action: str,
     resource: "definitions.Resource",
     names: typing.List[str],
-    namespace: str = None,
-    api_client: client.ApiClient = None,
-    api_args: typing.Dict[str, typing.Any] = None,
+    namespace: typing.Optional[str] = None,
+    api_client: typing.Optional[client.ApiClient] = None,
+    api_args: typing.Optional[typing.Dict[str, typing.Any]] = None,
 ) -> typing.Optional["definitions.ExecutionResponse"]:
     """
     Executes the specified action on the given resource object using

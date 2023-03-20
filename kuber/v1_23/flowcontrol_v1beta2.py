@@ -20,7 +20,7 @@ class FlowDistinguisherMethod(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        type_: str = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create FlowDistinguisherMethod instance."""
         super(FlowDistinguisherMethod, self).__init__(
@@ -69,9 +69,9 @@ class FlowSchema(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "FlowSchemaSpec" = None,
-        status: "FlowSchemaStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["FlowSchemaSpec"] = None,
+        status: typing.Optional["FlowSchemaStatus"] = None,
     ):
         """Create FlowSchema instance."""
         super(FlowSchema, self).__init__(
@@ -170,7 +170,9 @@ class FlowSchema(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "FlowSchemaStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "FlowSchemaStatus":
         """
         Creates the FlowSchema in the currently
         configured Kubernetes cluster and returns the status information
@@ -192,7 +194,9 @@ class FlowSchema(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "FlowSchemaStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "FlowSchemaStatus":
         """
         Replaces the FlowSchema in the currently
         configured Kubernetes cluster and returns the status information
@@ -214,7 +218,9 @@ class FlowSchema(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "FlowSchemaStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "FlowSchemaStatus":
         """
         Patches the FlowSchema in the currently
         configured Kubernetes cluster and returns the status information
@@ -236,7 +242,9 @@ class FlowSchema(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "FlowSchemaStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "FlowSchemaStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -259,7 +267,7 @@ class FlowSchema(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the FlowSchema from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -279,7 +287,7 @@ class FlowSchema(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -308,7 +316,7 @@ class FlowSchema(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.FlowcontrolV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -332,11 +340,11 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create FlowSchemaCondition instance."""
         super(FlowSchemaCondition, self).__init__(
@@ -472,8 +480,8 @@ class FlowSchemaList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["FlowSchema"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["FlowSchema"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create FlowSchemaList instance."""
         super(FlowSchemaList, self).__init__(
@@ -543,7 +551,7 @@ class FlowSchemaList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.FlowcontrolV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -568,10 +576,12 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        distinguisher_method: "FlowDistinguisherMethod" = None,
-        matching_precedence: int = None,
-        priority_level_configuration: "PriorityLevelConfigurationReference" = None,
-        rules: typing.List["PolicyRulesWithSubjects"] = None,
+        distinguisher_method: typing.Optional["FlowDistinguisherMethod"] = None,
+        matching_precedence: typing.Optional[int] = None,
+        priority_level_configuration: typing.Optional[
+            "PriorityLevelConfigurationReference"
+        ] = None,
+        rules: typing.Optional[typing.List["PolicyRulesWithSubjects"]] = None,
     ):
         """Create FlowSchemaSpec instance."""
         super(FlowSchemaSpec, self).__init__(
@@ -736,7 +746,7 @@ class FlowSchemaStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["FlowSchemaCondition"] = None,
+        conditions: typing.Optional[typing.List["FlowSchemaCondition"]] = None,
     ):
         """Create FlowSchemaStatus instance."""
         super(FlowSchemaStatus, self).__init__(
@@ -791,7 +801,7 @@ class GroupSubject(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
     ):
         """Create GroupSubject instance."""
         super(GroupSubject, self).__init__(
@@ -842,8 +852,8 @@ class LimitResponse(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        queuing: "QueuingConfiguration" = None,
-        type_: str = None,
+        queuing: typing.Optional["QueuingConfiguration"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create LimitResponse instance."""
         super(LimitResponse, self).__init__(
@@ -919,14 +929,14 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
     LimitedPriorityLevelConfiguration specifies how to handle
     requests that are subject to limits. It addresses two
     issues:
-     * How are requests for this priority level limited?
-     * What should be done with requests that exceed the limit?
+      - How are requests for this priority level limited?
+      - What should be done with requests that exceed the limit?
     """
 
     def __init__(
         self,
-        assured_concurrency_shares: int = None,
-        limit_response: "LimitResponse" = None,
+        assured_concurrency_shares: typing.Optional[int] = None,
+        limit_response: typing.Optional["LimitResponse"] = None,
     ):
         """Create LimitedPriorityLevelConfiguration instance."""
         super(LimitedPriorityLevelConfiguration, self).__init__(
@@ -1035,8 +1045,8 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        non_resource_urls: typing.List[str] = None,
-        verbs: typing.List[str] = None,
+        non_resource_urls: typing.Optional[typing.List[str]] = None,
+        verbs: typing.Optional[typing.List[str]] = None,
     ):
         """Create NonResourcePolicyRule instance."""
         super(NonResourcePolicyRule, self).__init__(
@@ -1128,9 +1138,11 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        non_resource_rules: typing.List["NonResourcePolicyRule"] = None,
-        resource_rules: typing.List["ResourcePolicyRule"] = None,
-        subjects: typing.List["Subject"] = None,
+        non_resource_rules: typing.Optional[
+            typing.List["NonResourcePolicyRule"]
+        ] = None,
+        resource_rules: typing.Optional[typing.List["ResourcePolicyRule"]] = None,
+        subjects: typing.Optional[typing.List["Subject"]] = None,
     ):
         """Create PolicyRulesWithSubjects instance."""
         super(PolicyRulesWithSubjects, self).__init__(
@@ -1262,9 +1274,9 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PriorityLevelConfigurationSpec" = None,
-        status: "PriorityLevelConfigurationStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PriorityLevelConfigurationSpec"] = None,
+        status: typing.Optional["PriorityLevelConfigurationStatus"] = None,
     ):
         """Create PriorityLevelConfiguration instance."""
         super(PriorityLevelConfiguration, self).__init__(
@@ -1366,7 +1378,7 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         self._properties["status"] = value
 
     def create_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PriorityLevelConfigurationStatus":
         """
         Creates the PriorityLevelConfiguration in the currently
@@ -1393,7 +1405,7 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         return output
 
     def replace_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PriorityLevelConfigurationStatus":
         """
         Replaces the PriorityLevelConfiguration in the currently
@@ -1420,7 +1432,7 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         return output
 
     def patch_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PriorityLevelConfigurationStatus":
         """
         Patches the PriorityLevelConfiguration in the currently
@@ -1447,7 +1459,7 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PriorityLevelConfigurationStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -1471,7 +1483,7 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PriorityLevelConfiguration from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1491,7 +1503,7 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1520,7 +1532,7 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.FlowcontrolV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1545,11 +1557,11 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create PriorityLevelConfigurationCondition instance."""
         super(PriorityLevelConfigurationCondition, self).__init__(
@@ -1687,8 +1699,8 @@ class PriorityLevelConfigurationList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PriorityLevelConfiguration"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PriorityLevelConfiguration"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PriorityLevelConfigurationList instance."""
         super(PriorityLevelConfigurationList, self).__init__(
@@ -1763,7 +1775,7 @@ class PriorityLevelConfigurationList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.FlowcontrolV1beta2Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1788,7 +1800,7 @@ class PriorityLevelConfigurationReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
     ):
         """Create PriorityLevelConfigurationReference instance."""
         super(PriorityLevelConfigurationReference, self).__init__(
@@ -1836,8 +1848,8 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        limited: "LimitedPriorityLevelConfiguration" = None,
-        type_: str = None,
+        limited: typing.Optional["LimitedPriorityLevelConfiguration"] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create PriorityLevelConfigurationSpec instance."""
         super(PriorityLevelConfigurationSpec, self).__init__(
@@ -1928,7 +1940,9 @@ class PriorityLevelConfigurationStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["PriorityLevelConfigurationCondition"] = None,
+        conditions: typing.Optional[
+            typing.List["PriorityLevelConfigurationCondition"]
+        ] = None,
     ):
         """Create PriorityLevelConfigurationStatus instance."""
         super(PriorityLevelConfigurationStatus, self).__init__(
@@ -1986,9 +2000,9 @@ class QueuingConfiguration(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        hand_size: int = None,
-        queue_length_limit: int = None,
-        queues: int = None,
+        hand_size: typing.Optional[int] = None,
+        queue_length_limit: typing.Optional[int] = None,
+        queues: typing.Optional[int] = None,
     ):
         """Create QueuingConfiguration instance."""
         super(QueuingConfiguration, self).__init__(
@@ -2109,17 +2123,19 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
     and only if: (a) at least one member of verbs matches the
     request, (b) at least one member of apiGroups matches the
     request, (c) at least one member of resources matches the
-    request, and (d) least one member of namespaces matches the
-    request.
+    request, and (d) either (d1) the request does not specify a
+    namespace (i.e., `Namespace==""`) and clusterScope is true
+    or (d2) the request specifies a namespace and least one
+    member of namespaces matches the request's namespace.
     """
 
     def __init__(
         self,
-        api_groups: typing.List[str] = None,
-        cluster_scope: bool = None,
-        namespaces: typing.List[str] = None,
-        resources: typing.List[str] = None,
-        verbs: typing.List[str] = None,
+        api_groups: typing.Optional[typing.List[str]] = None,
+        cluster_scope: typing.Optional[bool] = None,
+        namespaces: typing.Optional[typing.List[str]] = None,
+        resources: typing.Optional[typing.List[str]] = None,
+        verbs: typing.Optional[typing.List[str]] = None,
     ):
         """Create ResourcePolicyRule instance."""
         super(ResourcePolicyRule, self).__init__(
@@ -2278,8 +2294,8 @@ class ServiceAccountSubject(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        namespace: str = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
     ):
         """Create ServiceAccountSubject instance."""
         super(ServiceAccountSubject, self).__init__(
@@ -2349,10 +2365,10 @@ class Subject(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        group: "GroupSubject" = None,
-        kind: str = None,
-        service_account: "ServiceAccountSubject" = None,
-        user: "UserSubject" = None,
+        group: typing.Optional["GroupSubject"] = None,
+        kind: typing.Optional[str] = None,
+        service_account: typing.Optional["ServiceAccountSubject"] = None,
+        user: typing.Optional["UserSubject"] = None,
     ):
         """Create Subject instance."""
         super(Subject, self).__init__(api_version="flowcontrol/v1beta2", kind="Subject")
@@ -2471,7 +2487,7 @@ class UserSubject(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
     ):
         """Create UserSubject instance."""
         super(UserSubject, self).__init__(

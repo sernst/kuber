@@ -22,7 +22,7 @@ class AllowedCSIDriver(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
     ):
         """Create AllowedCSIDriver instance."""
         super(AllowedCSIDriver, self).__init__(
@@ -67,7 +67,7 @@ class AllowedFlexVolume(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        driver: str = None,
+        driver: typing.Optional[str] = None,
     ):
         """Create AllowedFlexVolume instance."""
         super(AllowedFlexVolume, self).__init__(
@@ -113,8 +113,8 @@ class AllowedHostPath(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        path_prefix: str = None,
-        read_only: bool = None,
+        path_prefix: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
     ):
         """Create AllowedHostPath instance."""
         super(AllowedHostPath, self).__init__(
@@ -190,8 +190,8 @@ class FSGroupStrategyOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ranges: typing.List["IDRange"] = None,
-        rule: str = None,
+        ranges: typing.Optional[typing.List["IDRange"]] = None,
+        rule: typing.Optional[str] = None,
     ):
         """Create FSGroupStrategyOptions instance."""
         super(FSGroupStrategyOptions, self).__init__(
@@ -270,8 +270,8 @@ class HostPortRange(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_: int = None,
-        min_: int = None,
+        max_: typing.Optional[int] = None,
+        min_: typing.Optional[int] = None,
     ):
         """Create HostPortRange instance."""
         super(HostPortRange, self).__init__(
@@ -334,8 +334,8 @@ class IDRange(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_: int = None,
-        min_: int = None,
+        max_: typing.Optional[int] = None,
+        min_: typing.Optional[int] = None,
     ):
         """Create IDRange instance."""
         super(IDRange, self).__init__(api_version="policy/v1beta1", kind="IDRange")
@@ -397,9 +397,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PodDisruptionBudgetSpec" = None,
-        status: "PodDisruptionBudgetStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PodDisruptionBudgetSpec"] = None,
+        status: typing.Optional["PodDisruptionBudgetStatus"] = None,
     ):
         """Create PodDisruptionBudget instance."""
         super(PodDisruptionBudget, self).__init__(
@@ -490,7 +490,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "PodDisruptionBudgetStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PodDisruptionBudgetStatus":
         """
         Creates the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
@@ -515,7 +517,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "PodDisruptionBudgetStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PodDisruptionBudgetStatus":
         """
         Replaces the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
@@ -540,7 +544,9 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "PodDisruptionBudgetStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "PodDisruptionBudgetStatus":
         """
         Patches the PodDisruptionBudget in the currently
         configured Kubernetes cluster and returns the status information
@@ -566,7 +572,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "PodDisruptionBudgetStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -590,7 +596,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PodDisruptionBudget from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -610,7 +616,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -639,7 +645,7 @@ class PodDisruptionBudget(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.PolicyV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -664,8 +670,8 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PodDisruptionBudget"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PodDisruptionBudget"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PodDisruptionBudgetList instance."""
         super(PodDisruptionBudgetList, self).__init__(
@@ -737,7 +743,7 @@ class PodDisruptionBudgetList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.PolicyV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -762,9 +768,9 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        max_unavailable: typing.Union[str, int, None] = None,
-        min_available: typing.Union[str, int, None] = None,
-        selector: "LabelSelector" = None,
+        max_unavailable: typing.Optional[typing.Union[str, int, None]] = None,
+        min_available: typing.Optional[typing.Union[str, int, None]] = None,
+        selector: typing.Optional["LabelSelector"] = None,
     ):
         """Create PodDisruptionBudgetSpec instance."""
         super(PodDisruptionBudgetSpec, self).__init__(
@@ -877,13 +883,13 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conditions: typing.List["Condition"] = None,
-        current_healthy: int = None,
-        desired_healthy: int = None,
-        disrupted_pods: dict = None,
-        disruptions_allowed: int = None,
-        expected_pods: int = None,
-        observed_generation: int = None,
+        conditions: typing.Optional[typing.List["Condition"]] = None,
+        current_healthy: typing.Optional[int] = None,
+        desired_healthy: typing.Optional[int] = None,
+        disrupted_pods: typing.Optional[dict] = None,
+        disruptions_allowed: typing.Optional[int] = None,
+        expected_pods: typing.Optional[int] = None,
+        observed_generation: typing.Optional[int] = None,
     ):
         """Create PodDisruptionBudgetStatus instance."""
         super(PodDisruptionBudgetStatus, self).__init__(
@@ -1131,8 +1137,8 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "PodSecurityPolicySpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["PodSecurityPolicySpec"] = None,
     ):
         """Create PodSecurityPolicy instance."""
         super(PodSecurityPolicy, self).__init__(
@@ -1197,7 +1203,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the PodSecurityPolicy in the currently
         configured Kubernetes cluster.
@@ -1213,7 +1219,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the PodSecurityPolicy in the currently
         configured Kubernetes cluster.
@@ -1232,7 +1238,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the PodSecurityPolicy in the currently
         configured Kubernetes cluster.
@@ -1248,11 +1254,11 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PodSecurityPolicy from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1272,7 +1278,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1301,7 +1307,7 @@ class PodSecurityPolicy(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.PolicyV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1326,8 +1332,8 @@ class PodSecurityPolicyList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PodSecurityPolicy"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PodSecurityPolicy"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PodSecurityPolicyList instance."""
         super(PodSecurityPolicyList, self).__init__(
@@ -1399,7 +1405,7 @@ class PodSecurityPolicyList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.PolicyV1beta1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1423,30 +1429,32 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        allow_privilege_escalation: bool = None,
-        allowed_csidrivers: typing.List["AllowedCSIDriver"] = None,
-        allowed_capabilities: typing.List[str] = None,
-        allowed_flex_volumes: typing.List["AllowedFlexVolume"] = None,
-        allowed_host_paths: typing.List["AllowedHostPath"] = None,
-        allowed_proc_mount_types: typing.List[str] = None,
-        allowed_unsafe_sysctls: typing.List[str] = None,
-        default_add_capabilities: typing.List[str] = None,
-        default_allow_privilege_escalation: bool = None,
-        forbidden_sysctls: typing.List[str] = None,
-        fs_group: "FSGroupStrategyOptions" = None,
-        host_ipc: bool = None,
-        host_network: bool = None,
-        host_pid: bool = None,
-        host_ports: typing.List["HostPortRange"] = None,
-        privileged: bool = None,
-        read_only_root_filesystem: bool = None,
-        required_drop_capabilities: typing.List[str] = None,
-        run_as_group: "RunAsGroupStrategyOptions" = None,
-        run_as_user: "RunAsUserStrategyOptions" = None,
-        runtime_class: "RuntimeClassStrategyOptions" = None,
-        se_linux: "SELinuxStrategyOptions" = None,
-        supplemental_groups: "SupplementalGroupsStrategyOptions" = None,
-        volumes: typing.List[str] = None,
+        allow_privilege_escalation: typing.Optional[bool] = None,
+        allowed_csidrivers: typing.Optional[typing.List["AllowedCSIDriver"]] = None,
+        allowed_capabilities: typing.Optional[typing.List[str]] = None,
+        allowed_flex_volumes: typing.Optional[typing.List["AllowedFlexVolume"]] = None,
+        allowed_host_paths: typing.Optional[typing.List["AllowedHostPath"]] = None,
+        allowed_proc_mount_types: typing.Optional[typing.List[str]] = None,
+        allowed_unsafe_sysctls: typing.Optional[typing.List[str]] = None,
+        default_add_capabilities: typing.Optional[typing.List[str]] = None,
+        default_allow_privilege_escalation: typing.Optional[bool] = None,
+        forbidden_sysctls: typing.Optional[typing.List[str]] = None,
+        fs_group: typing.Optional["FSGroupStrategyOptions"] = None,
+        host_ipc: typing.Optional[bool] = None,
+        host_network: typing.Optional[bool] = None,
+        host_pid: typing.Optional[bool] = None,
+        host_ports: typing.Optional[typing.List["HostPortRange"]] = None,
+        privileged: typing.Optional[bool] = None,
+        read_only_root_filesystem: typing.Optional[bool] = None,
+        required_drop_capabilities: typing.Optional[typing.List[str]] = None,
+        run_as_group: typing.Optional["RunAsGroupStrategyOptions"] = None,
+        run_as_user: typing.Optional["RunAsUserStrategyOptions"] = None,
+        runtime_class: typing.Optional["RuntimeClassStrategyOptions"] = None,
+        se_linux: typing.Optional["SELinuxStrategyOptions"] = None,
+        supplemental_groups: typing.Optional[
+            "SupplementalGroupsStrategyOptions"
+        ] = None,
+        volumes: typing.Optional[typing.List[str]] = None,
     ):
         """Create PodSecurityPolicySpec instance."""
         super(PodSecurityPolicySpec, self).__init__(
@@ -2162,8 +2170,8 @@ class RunAsGroupStrategyOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ranges: typing.List["IDRange"] = None,
-        rule: str = None,
+        ranges: typing.Optional[typing.List["IDRange"]] = None,
+        rule: typing.Optional[str] = None,
     ):
         """Create RunAsGroupStrategyOptions instance."""
         super(RunAsGroupStrategyOptions, self).__init__(
@@ -2241,8 +2249,8 @@ class RunAsUserStrategyOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ranges: typing.List["IDRange"] = None,
-        rule: str = None,
+        ranges: typing.Optional[typing.List["IDRange"]] = None,
+        rule: typing.Optional[str] = None,
     ):
         """Create RunAsUserStrategyOptions instance."""
         super(RunAsUserStrategyOptions, self).__init__(
@@ -2320,8 +2328,8 @@ class RuntimeClassStrategyOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        allowed_runtime_class_names: typing.List[str] = None,
-        default_runtime_class_name: str = None,
+        allowed_runtime_class_names: typing.Optional[typing.List[str]] = None,
+        default_runtime_class_name: typing.Optional[str] = None,
     ):
         """Create RuntimeClassStrategyOptions instance."""
         super(RuntimeClassStrategyOptions, self).__init__(
@@ -2403,8 +2411,8 @@ class SELinuxStrategyOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        rule: str = None,
-        se_linux_options: "SELinuxOptions" = None,
+        rule: typing.Optional[str] = None,
+        se_linux_options: typing.Optional["SELinuxOptions"] = None,
     ):
         """Create SELinuxStrategyOptions instance."""
         super(SELinuxStrategyOptions, self).__init__(
@@ -2481,8 +2489,8 @@ class SupplementalGroupsStrategyOptions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ranges: typing.List["IDRange"] = None,
-        rule: str = None,
+        ranges: typing.Optional[typing.List["IDRange"]] = None,
+        rule: typing.Optional[str] = None,
     ):
         """Create SupplementalGroupsStrategyOptions instance."""
         super(SupplementalGroupsStrategyOptions, self).__init__(

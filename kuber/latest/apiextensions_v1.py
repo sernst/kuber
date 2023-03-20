@@ -20,12 +20,12 @@ class CustomResourceColumnDefinition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        description: str = None,
-        format_: str = None,
-        json_path: str = None,
-        name: str = None,
-        priority: int = None,
-        type_: str = None,
+        description: typing.Optional[str] = None,
+        format_: typing.Optional[str] = None,
+        json_path: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        priority: typing.Optional[int] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create CustomResourceColumnDefinition instance."""
         super(CustomResourceColumnDefinition, self).__init__(
@@ -191,8 +191,8 @@ class CustomResourceConversion(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        strategy: str = None,
-        webhook: "WebhookConversion" = None,
+        strategy: typing.Optional[str] = None,
+        webhook: typing.Optional["WebhookConversion"] = None,
     ):
         """Create CustomResourceConversion instance."""
         super(CustomResourceConversion, self).__init__(
@@ -280,9 +280,9 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "CustomResourceDefinitionSpec" = None,
-        status: "CustomResourceDefinitionStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["CustomResourceDefinitionSpec"] = None,
+        status: typing.Optional["CustomResourceDefinitionStatus"] = None,
     ):
         """Create CustomResourceDefinition instance."""
         super(CustomResourceDefinition, self).__init__(
@@ -376,7 +376,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
         self._properties["status"] = value
 
     def create_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CustomResourceDefinitionStatus":
         """
         Creates the CustomResourceDefinition in the currently
@@ -403,7 +403,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
         return output
 
     def replace_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CustomResourceDefinitionStatus":
         """
         Replaces the CustomResourceDefinition in the currently
@@ -430,7 +430,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
         return output
 
     def patch_resource(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CustomResourceDefinitionStatus":
         """
         Patches the CustomResourceDefinition in the currently
@@ -457,7 +457,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
         return output
 
     def get_resource_status(
-        self, namespace: "str" = None
+        self, namespace: typing.Optional["str"] = None
     ) -> "CustomResourceDefinitionStatus":
         """
         Returns status information about the given resource within the cluster.
@@ -481,7 +481,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CustomResourceDefinition from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -501,7 +501,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -530,7 +530,7 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.ApiextensionsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -555,11 +555,11 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create CustomResourceDefinitionCondition instance."""
         super(CustomResourceDefinitionCondition, self).__init__(
@@ -698,8 +698,8 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CustomResourceDefinition"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CustomResourceDefinition"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CustomResourceDefinitionList instance."""
         super(CustomResourceDefinitionList, self).__init__(
@@ -772,7 +772,7 @@ class CustomResourceDefinitionList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.ApiextensionsV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -797,12 +797,12 @@ class CustomResourceDefinitionNames(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        categories: typing.List[str] = None,
-        kind: str = None,
-        list_kind: str = None,
-        plural: str = None,
-        short_names: typing.List[str] = None,
-        singular: str = None,
+        categories: typing.Optional[typing.List[str]] = None,
+        kind: typing.Optional[str] = None,
+        list_kind: typing.Optional[str] = None,
+        plural: typing.Optional[str] = None,
+        short_names: typing.Optional[typing.List[str]] = None,
+        singular: typing.Optional[str] = None,
     ):
         """Create CustomResourceDefinitionNames instance."""
         super(CustomResourceDefinitionNames, self).__init__(
@@ -970,12 +970,14 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        conversion: "CustomResourceConversion" = None,
-        group: str = None,
-        names: "CustomResourceDefinitionNames" = None,
-        preserve_unknown_fields: bool = None,
-        scope: str = None,
-        versions: typing.List["CustomResourceDefinitionVersion"] = None,
+        conversion: typing.Optional["CustomResourceConversion"] = None,
+        group: typing.Optional[str] = None,
+        names: typing.Optional["CustomResourceDefinitionNames"] = None,
+        preserve_unknown_fields: typing.Optional[bool] = None,
+        scope: typing.Optional[str] = None,
+        versions: typing.Optional[
+            typing.List["CustomResourceDefinitionVersion"]
+        ] = None,
     ):
         """Create CustomResourceDefinitionSpec instance."""
         super(CustomResourceDefinitionSpec, self).__init__(
@@ -1080,9 +1082,9 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
         fields inside metadata are always preserved. This field is
         deprecated in favor of setting `x-preserve-unknown-fields`
         to true in `spec.versions[*].schema.openAPIV3Schema`. See
-        https://kubernetes.io/docs/tasks/access-kubernetes-
-        api/custom-resources/custom-resource-definitions/#pruning-
-        versus-preserving-unknown-fields for details.
+        https://kubernetes.io/docs/tasks/extend-kubernetes/custom-
+        resources/custom-resource-definitions/#field-pruning for
+        details.
         """
         return typing.cast(
             bool,
@@ -1098,9 +1100,9 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
         fields inside metadata are always preserved. This field is
         deprecated in favor of setting `x-preserve-unknown-fields`
         to true in `spec.versions[*].schema.openAPIV3Schema`. See
-        https://kubernetes.io/docs/tasks/access-kubernetes-
-        api/custom-resources/custom-resource-definitions/#pruning-
-        versus-preserving-unknown-fields for details.
+        https://kubernetes.io/docs/tasks/extend-kubernetes/custom-
+        resources/custom-resource-definitions/#field-pruning for
+        details.
         """
         self._properties["preserveUnknownFields"] = value
 
@@ -1194,9 +1196,11 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        accepted_names: "CustomResourceDefinitionNames" = None,
-        conditions: typing.List["CustomResourceDefinitionCondition"] = None,
-        stored_versions: typing.List[str] = None,
+        accepted_names: typing.Optional["CustomResourceDefinitionNames"] = None,
+        conditions: typing.Optional[
+            typing.List["CustomResourceDefinitionCondition"]
+        ] = None,
+        stored_versions: typing.Optional[typing.List[str]] = None,
     ):
         """Create CustomResourceDefinitionStatus instance."""
         super(CustomResourceDefinitionStatus, self).__init__(
@@ -1320,16 +1324,16 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        additional_printer_columns: typing.List[
-            "CustomResourceColumnDefinition"
+        additional_printer_columns: typing.Optional[
+            typing.List["CustomResourceColumnDefinition"]
         ] = None,
-        deprecated: bool = None,
-        deprecation_warning: str = None,
-        name: str = None,
-        schema: "CustomResourceValidation" = None,
-        served: bool = None,
-        storage: bool = None,
-        subresources: "CustomResourceSubresources" = None,
+        deprecated: typing.Optional[bool] = None,
+        deprecation_warning: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        schema: typing.Optional["CustomResourceValidation"] = None,
+        served: typing.Optional[bool] = None,
+        storage: typing.Optional[bool] = None,
+        subresources: typing.Optional["CustomResourceSubresources"] = None,
     ):
         """Create CustomResourceDefinitionVersion instance."""
         super(CustomResourceDefinitionVersion, self).__init__(
@@ -1576,9 +1580,9 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        label_selector_path: str = None,
-        spec_replicas_path: str = None,
-        status_replicas_path: str = None,
+        label_selector_path: typing.Optional[str] = None,
+        spec_replicas_path: typing.Optional[str] = None,
+        status_replicas_path: typing.Optional[str] = None,
     ):
         """Create CustomResourceSubresourceScale instance."""
         super(CustomResourceSubresourceScale, self).__init__(
@@ -1741,8 +1745,8 @@ class CustomResourceSubresources(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        scale: "CustomResourceSubresourceScale" = None,
-        status: "CustomResourceSubresourceStatus" = None,
+        scale: typing.Optional["CustomResourceSubresourceScale"] = None,
+        status: typing.Optional["CustomResourceSubresourceStatus"] = None,
     ):
         """Create CustomResourceSubresources instance."""
         super(CustomResourceSubresources, self).__init__(
@@ -1830,7 +1834,7 @@ class CustomResourceValidation(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        open_apiv3_schema: "JSONSchemaProps" = None,
+        open_apiv3_schema: typing.Optional["JSONSchemaProps"] = None,
     ):
         """Create CustomResourceValidation instance."""
         super(CustomResourceValidation, self).__init__(
@@ -1884,8 +1888,8 @@ class ExternalDocumentation(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        description: str = None,
-        url: str = None,
+        description: typing.Optional[str] = None,
+        url: typing.Optional[str] = None,
     ):
         """Create ExternalDocumentation instance."""
         super(ExternalDocumentation, self).__init__(
@@ -1963,47 +1967,48 @@ class JSONSchemaProps(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        additional_items: "JSONSchemaPropsOrBool" = None,
-        additional_properties: "JSONSchemaPropsOrBool" = None,
-        all_of: typing.List["JSONSchemaProps"] = None,
-        any_of: typing.List["JSONSchemaProps"] = None,
-        default: "JSON" = None,
-        definitions: dict = None,
-        dependencies: dict = None,
-        description: str = None,
-        enum: typing.List["JSON"] = None,
-        example: "JSON" = None,
-        exclusive_maximum: bool = None,
-        exclusive_minimum: bool = None,
-        external_docs: "ExternalDocumentation" = None,
-        format_: str = None,
-        id_: str = None,
-        items: "JSONSchemaPropsOrArray" = None,
-        max_items: int = None,
-        max_length: int = None,
-        max_properties: int = None,
-        maximum: float = None,
-        min_items: int = None,
-        min_length: int = None,
-        min_properties: int = None,
-        minimum: float = None,
-        multiple_of: float = None,
-        not_: typing.Optional["JSONSchemaProps"] = None,
-        nullable: bool = None,
-        one_of: typing.List["JSONSchemaProps"] = None,
-        pattern: str = None,
-        pattern_properties: dict = None,
-        properties: dict = None,
-        required: typing.List[str] = None,
-        title: str = None,
-        type_: str = None,
-        unique_items: bool = None,
-        x_kubernetes_embedded_resource: bool = None,
-        x_kubernetes_int_or_string: bool = None,
-        x_kubernetes_list_map_keys: typing.List[str] = None,
-        x_kubernetes_list_type: str = None,
-        x_kubernetes_map_type: str = None,
-        x_kubernetes_preserve_unknown_fields: bool = None,
+        additional_items: typing.Optional["JSONSchemaPropsOrBool"] = None,
+        additional_properties: typing.Optional["JSONSchemaPropsOrBool"] = None,
+        all_of: typing.Optional[typing.List["JSONSchemaProps"]] = None,
+        any_of: typing.Optional[typing.List["JSONSchemaProps"]] = None,
+        default: typing.Optional["JSON"] = None,
+        definitions: typing.Optional[dict] = None,
+        dependencies: typing.Optional[dict] = None,
+        description: typing.Optional[str] = None,
+        enum: typing.Optional[typing.List["JSON"]] = None,
+        example: typing.Optional["JSON"] = None,
+        exclusive_maximum: typing.Optional[bool] = None,
+        exclusive_minimum: typing.Optional[bool] = None,
+        external_docs: typing.Optional["ExternalDocumentation"] = None,
+        format_: typing.Optional[str] = None,
+        id_: typing.Optional[str] = None,
+        items: typing.Optional["JSONSchemaPropsOrArray"] = None,
+        max_items: typing.Optional[int] = None,
+        max_length: typing.Optional[int] = None,
+        max_properties: typing.Optional[int] = None,
+        maximum: typing.Optional[float] = None,
+        min_items: typing.Optional[int] = None,
+        min_length: typing.Optional[int] = None,
+        min_properties: typing.Optional[int] = None,
+        minimum: typing.Optional[float] = None,
+        multiple_of: typing.Optional[float] = None,
+        not_: typing.Optional[typing.Optional["JSONSchemaProps"]] = None,
+        nullable: typing.Optional[bool] = None,
+        one_of: typing.Optional[typing.List["JSONSchemaProps"]] = None,
+        pattern: typing.Optional[str] = None,
+        pattern_properties: typing.Optional[dict] = None,
+        properties: typing.Optional[dict] = None,
+        required: typing.Optional[typing.List[str]] = None,
+        title: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
+        unique_items: typing.Optional[bool] = None,
+        x_kubernetes_embedded_resource: typing.Optional[bool] = None,
+        x_kubernetes_int_or_string: typing.Optional[bool] = None,
+        x_kubernetes_list_map_keys: typing.Optional[typing.List[str]] = None,
+        x_kubernetes_list_type: typing.Optional[str] = None,
+        x_kubernetes_map_type: typing.Optional[str] = None,
+        x_kubernetes_preserve_unknown_fields: typing.Optional[bool] = None,
+        x_kubernetes_validations: typing.Optional[typing.List["ValidationRule"]] = None,
     ):
         """Create JSONSchemaProps instance."""
         super(JSONSchemaProps, self).__init__(
@@ -2075,6 +2080,9 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             "x-kubernetes-preserve-unknown-fields": x_kubernetes_preserve_unknown_fields
             if x_kubernetes_preserve_unknown_fields is not None
             else None,
+            "x-kubernetes-validations": x_kubernetes_validations
+            if x_kubernetes_validations is not None
+            else [],
         }
         self._types = {
             "additionalItems": (JSONSchemaPropsOrBool, None),
@@ -2118,6 +2126,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             "x-kubernetes-list-type": (str, None),
             "x-kubernetes-map-type": (str, None),
             "x-kubernetes-preserve-unknown-fields": (bool, None),
+            "x-kubernetes-validations": (list, ValidationRule),
         }
 
     @property
@@ -2370,29 +2379,30 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         uuid: an UUID that allows uppercase defined by the regex (?i
         )^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-
         f]{12}$ - uuid3: an UUID3 that allows uppercase defined by
-        the regex (?i)^[0-9a-f]{8}-?[0-9a-f]{4}-?3[0-9a-f]{3}-?[0-9a
-        -f]{4}-?[0-9a-f]{12}$ - uuid4: an UUID4 that allows
-        uppercase defined by the regex (?i)^[0-9a-f]{8}-?[0-9a-f]{4}
-        -?4[0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$ - uuid5: an
-        UUID5 that allows uppercase defined by the regex (?i)^[0-9a-
-        f]{8}-?[0-9a-f]{4}-?5[0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f
-        ]{12}$ - isbn: an ISBN10 or ISBN13 number string like
-        "0321751043" or "978-0321751041" - isbn10: an ISBN10 number
-        string like "0321751043" - isbn13: an ISBN13 number string
-        like "978-0321751041" - creditcard: a credit card number
-        defined by the regex ^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]
-        {14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]
-        |[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any
-        non digit characters mixed in - ssn: a U.S. social security
-        number following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ -
-        hexcolor: an hexadecimal color code like "#FFFFFF: following
-        the regex ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an
-        RGB color code like rgb like "rgb(255,255,2559" - byte:
-        base64 encoded binary data - password: any kind of string -
-        date: a date string like "2006-01-02" as defined by full-
-        date in RFC3339 - duration: a duration string like "22 ns"
-        as parsed by Golang time.ParseDuration or compatible with
-        Scala duration format - datetime: a date time string like
+        the regex (?i)^[0-9a-f]{8}-?[0-9a-f]{4}-?3[0-9a-f]{3}-?[0-
+        9a-f]{4}-?[0-9a-f]{12}$ - uuid4: an UUID4 that allows
+        uppercase defined by the regex (?i)^[0-9a-f]{8}-?[0-9a-
+        f]{4}-?4[0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$ -
+        uuid5: an UUID5 that allows uppercase defined by the regex (
+        ?i)^[0-9a-f]{8}-?[0-9a-f]{4}-?5[0-9a-f]{3}-?[89ab][0-9a-
+        f]{3}-?[0-9a-f]{12}$ - isbn: an ISBN10 or ISBN13 number
+        string like "0321751043" or "978-0321751041" - isbn10: an
+        ISBN10 number string like "0321751043" - isbn13: an ISBN13
+        number string like "978-0321751041" - creditcard: a credit
+        card number defined by the regex ^(?:4[0-9]{12}(?:[0-
+        9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-
+        9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-
+        9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any non digit
+        characters mixed in - ssn: a U.S. social security number
+        following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ - hexcolor:
+        an hexadecimal color code like "#FFFFFF: following the regex
+        ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an RGB color
+        code like rgb like "rgb(255,255,2559" - byte: base64 encoded
+        binary data - password: any kind of string - date: a date
+        string like "2006-01-02" as defined by full-date in RFC3339
+        - duration: a duration string like "22 ns" as parsed by
+        Golang time.ParseDuration or compatible with Scala duration
+        format - datetime: a date time string like
         "2014-12-15T19:30:20.000Z" as defined by date-time in
         RFC3339.
         """
@@ -2419,29 +2429,30 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         uuid: an UUID that allows uppercase defined by the regex (?i
         )^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-
         f]{12}$ - uuid3: an UUID3 that allows uppercase defined by
-        the regex (?i)^[0-9a-f]{8}-?[0-9a-f]{4}-?3[0-9a-f]{3}-?[0-9a
-        -f]{4}-?[0-9a-f]{12}$ - uuid4: an UUID4 that allows
-        uppercase defined by the regex (?i)^[0-9a-f]{8}-?[0-9a-f]{4}
-        -?4[0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$ - uuid5: an
-        UUID5 that allows uppercase defined by the regex (?i)^[0-9a-
-        f]{8}-?[0-9a-f]{4}-?5[0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f
-        ]{12}$ - isbn: an ISBN10 or ISBN13 number string like
-        "0321751043" or "978-0321751041" - isbn10: an ISBN10 number
-        string like "0321751043" - isbn13: an ISBN13 number string
-        like "978-0321751041" - creditcard: a credit card number
-        defined by the regex ^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]
-        {14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]
-        |[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any
-        non digit characters mixed in - ssn: a U.S. social security
-        number following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ -
-        hexcolor: an hexadecimal color code like "#FFFFFF: following
-        the regex ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an
-        RGB color code like rgb like "rgb(255,255,2559" - byte:
-        base64 encoded binary data - password: any kind of string -
-        date: a date string like "2006-01-02" as defined by full-
-        date in RFC3339 - duration: a duration string like "22 ns"
-        as parsed by Golang time.ParseDuration or compatible with
-        Scala duration format - datetime: a date time string like
+        the regex (?i)^[0-9a-f]{8}-?[0-9a-f]{4}-?3[0-9a-f]{3}-?[0-
+        9a-f]{4}-?[0-9a-f]{12}$ - uuid4: an UUID4 that allows
+        uppercase defined by the regex (?i)^[0-9a-f]{8}-?[0-9a-
+        f]{4}-?4[0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$ -
+        uuid5: an UUID5 that allows uppercase defined by the regex (
+        ?i)^[0-9a-f]{8}-?[0-9a-f]{4}-?5[0-9a-f]{3}-?[89ab][0-9a-
+        f]{3}-?[0-9a-f]{12}$ - isbn: an ISBN10 or ISBN13 number
+        string like "0321751043" or "978-0321751041" - isbn10: an
+        ISBN10 number string like "0321751043" - isbn13: an ISBN13
+        number string like "978-0321751041" - creditcard: a credit
+        card number defined by the regex ^(?:4[0-9]{12}(?:[0-
+        9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-
+        9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-
+        9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any non digit
+        characters mixed in - ssn: a U.S. social security number
+        following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ - hexcolor:
+        an hexadecimal color code like "#FFFFFF: following the regex
+        ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an RGB color
+        code like rgb like "rgb(255,255,2559" - byte: base64 encoded
+        binary data - password: any kind of string - date: a date
+        string like "2006-01-02" as defined by full-date in RFC3339
+        - duration: a duration string like "22 ns" as parsed by
+        Golang time.ParseDuration or compatible with Scala duration
+        format - datetime: a date time string like
         "2014-12-15T19:30:20.000Z" as defined by date-time in
         RFC3339.
         """
@@ -2982,6 +2993,39 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         """
         self._properties["x-kubernetes-preserve-unknown-fields"] = value
 
+    @property
+    def x_kubernetes_validations(self) -> typing.List["ValidationRule"]:
+        """
+        x-kubernetes-validations describes a list of validation
+        rules written in the CEL expression language. This field is
+        an alpha-level. Using this field requires the feature gate
+        `CustomResourceValidationExpressions` to be enabled.
+        """
+        return typing.cast(
+            typing.List["ValidationRule"],
+            self._properties.get("x-kubernetes-validations"),
+        )
+
+    @x_kubernetes_validations.setter
+    def x_kubernetes_validations(
+        self, value: typing.Union[typing.List["ValidationRule"], typing.List[dict]]
+    ):
+        """
+        x-kubernetes-validations describes a list of validation
+        rules written in the CEL expression language. This field is
+        an alpha-level. Using this field requires the feature gate
+        `CustomResourceValidationExpressions` to be enabled.
+        """
+        cleaned: typing.List[ValidationRule] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    ValidationRule,
+                    ValidationRule().from_dict(item),
+                )
+            cleaned.append(typing.cast(ValidationRule, item))
+        self._properties["x-kubernetes-validations"] = cleaned
+
     def __enter__(self) -> "JSONSchemaProps":
         return self
 
@@ -3066,10 +3110,10 @@ class ServiceReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        namespace: str = None,
-        path: str = None,
-        port: int = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        path: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
     ):
         """Create ServiceReference instance."""
         super(ServiceReference, self).__init__(
@@ -3169,6 +3213,237 @@ class ServiceReference(_kuber_definitions.Definition):
         return False
 
 
+class ValidationRule(_kuber_definitions.Definition):
+    """
+    ValidationRule describes a validation rule written in the
+    CEL expression language.
+    """
+
+    def __init__(
+        self,
+        message: typing.Optional[str] = None,
+        rule: typing.Optional[str] = None,
+    ):
+        """Create ValidationRule instance."""
+        super(ValidationRule, self).__init__(
+            api_version="apiextensions/v1", kind="ValidationRule"
+        )
+        self._properties = {
+            "message": message if message is not None else "",
+            "rule": rule if rule is not None else "",
+        }
+        self._types = {
+            "message": (str, None),
+            "rule": (str, None),
+        }
+
+    @property
+    def message(self) -> str:
+        """
+        Message represents the message displayed when validation
+        fails. The message is required if the Rule contains line
+        breaks. The message must not contain line breaks. If unset,
+        the message is "failed rule: {Rule}". e.g. "must be a URL
+        with the host matching spec.host"
+        """
+        return typing.cast(
+            str,
+            self._properties.get("message"),
+        )
+
+    @message.setter
+    def message(self, value: str):
+        """
+        Message represents the message displayed when validation
+        fails. The message is required if the Rule contains line
+        breaks. The message must not contain line breaks. If unset,
+        the message is "failed rule: {Rule}". e.g. "must be a URL
+        with the host matching spec.host"
+        """
+        self._properties["message"] = value
+
+    @property
+    def rule(self) -> str:
+        """
+        Rule represents the expression which will be evaluated by
+        CEL. ref: https://github.com/google/cel-spec The Rule is
+        scoped to the location of the x-kubernetes-validations
+        extension in the schema. The `self` variable in the CEL
+        expression is bound to the scoped value. Example: - Rule
+        scoped to the root of a resource with a status subresource:
+        {"rule": "self.status.actual <= self.spec.maxDesired"}
+
+        If the Rule is scoped to an object with properties, the
+        accessible properties of the object are field selectable via
+        `self.field` and field presence can be checked via
+        `has(self.field)`. Null valued fields are treated as absent
+        fields in CEL expressions. If the Rule is scoped to an
+        object with additionalProperties (i.e. a map) the value of
+        the map are accessible via `self[mapKey]`, map containment
+        can be checked via `mapKey in self` and all entries of the
+        map are accessible via CEL macros and functions such as
+        `self.all(...)`. If the Rule is scoped to an array, the
+        elements of the array are accessible via `self[i]` and also
+        by macros and functions. If the Rule is scoped to a scalar,
+        `self` is bound to the scalar value. Examples: - Rule scoped
+        to a map of objects: {"rule":
+        "self.components['Widget'].priority < 10"} - Rule scoped to
+        a list of integers: {"rule": "self.values.all(value, value
+        >= 0 && value < 100)"} - Rule scoped to a string value:
+        {"rule": "self.startsWith('kube')"}
+
+        The `apiVersion`, `kind`, `metadata.name` and
+        `metadata.generateName` are always accessible from the root
+        of the object and from any x-kubernetes-embedded-resource
+        annotated objects. No other metadata properties are
+        accessible.
+
+        Unknown data preserved in custom resources via x-kubernetes-
+        preserve-unknown-fields is not accessible in CEL
+        expressions. This includes: - Unknown field values that are
+        preserved by object schemas with x-kubernetes-preserve-
+        unknown-fields. - Object properties where the property
+        schema is of an "unknown type". An "unknown type" is
+        recursively defined as:
+          - A schema with no type and x-kubernetes-preserve-unknown-
+        fields set to true
+          - An array where the items schema is of an "unknown type"
+          - An object where the additionalProperties schema is of an
+        "unknown type"
+
+        Only property names of the form `[a-zA-
+        Z_.-/][a-zA-Z0-9_.-/]*` are accessible. Accessible property
+        names are escaped according to the following rules when
+        accessed in the expression: - '__' escapes to
+        '__underscores__' - '.' escapes to '__dot__' - '-' escapes
+        to '__dash__' - '/' escapes to '__slash__' - Property names
+        that exactly match a CEL RESERVED keyword escape to
+        '__{keyword}__'. The keywords are:
+                  "true", "false", "null", "in", "as", "break", "const",
+        "continue", "else", "for", "function", "if",
+                  "import", "let", "loop", "package", "namespace",
+        "return".
+        Examples:
+          - Rule accessing a property named "namespace": {"rule":
+        "self.__namespace__ > 0"}
+          - Rule accessing a property named "x-prop": {"rule":
+        "self.x__dash__prop > 0"}
+          - Rule accessing a property named "redact__d": {"rule":
+        "self.redact__underscores__d > 0"}
+
+        Equality on arrays with x-kubernetes-list-type of 'set' or
+        'map' ignores element order, i.e. [1, 2] == [2, 1].
+        Concatenation on arrays with x-kubernetes-list-type use the
+        semantics of the list type:
+          - 'set': `X + Y` performs a union where the array
+        positions of all elements in `X` are preserved and
+            non-intersecting elements in `Y` are appended, retaining
+        their partial order.
+          - 'map': `X + Y` performs a merge where the array
+        positions of all keys in `X` are preserved but the values
+            are overwritten by values in `Y` when the key sets of
+        `X` and `Y` intersect. Elements in `Y` with
+            non-intersecting keys are appended, retaining their
+        partial order.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("rule"),
+        )
+
+    @rule.setter
+    def rule(self, value: str):
+        """
+        Rule represents the expression which will be evaluated by
+        CEL. ref: https://github.com/google/cel-spec The Rule is
+        scoped to the location of the x-kubernetes-validations
+        extension in the schema. The `self` variable in the CEL
+        expression is bound to the scoped value. Example: - Rule
+        scoped to the root of a resource with a status subresource:
+        {"rule": "self.status.actual <= self.spec.maxDesired"}
+
+        If the Rule is scoped to an object with properties, the
+        accessible properties of the object are field selectable via
+        `self.field` and field presence can be checked via
+        `has(self.field)`. Null valued fields are treated as absent
+        fields in CEL expressions. If the Rule is scoped to an
+        object with additionalProperties (i.e. a map) the value of
+        the map are accessible via `self[mapKey]`, map containment
+        can be checked via `mapKey in self` and all entries of the
+        map are accessible via CEL macros and functions such as
+        `self.all(...)`. If the Rule is scoped to an array, the
+        elements of the array are accessible via `self[i]` and also
+        by macros and functions. If the Rule is scoped to a scalar,
+        `self` is bound to the scalar value. Examples: - Rule scoped
+        to a map of objects: {"rule":
+        "self.components['Widget'].priority < 10"} - Rule scoped to
+        a list of integers: {"rule": "self.values.all(value, value
+        >= 0 && value < 100)"} - Rule scoped to a string value:
+        {"rule": "self.startsWith('kube')"}
+
+        The `apiVersion`, `kind`, `metadata.name` and
+        `metadata.generateName` are always accessible from the root
+        of the object and from any x-kubernetes-embedded-resource
+        annotated objects. No other metadata properties are
+        accessible.
+
+        Unknown data preserved in custom resources via x-kubernetes-
+        preserve-unknown-fields is not accessible in CEL
+        expressions. This includes: - Unknown field values that are
+        preserved by object schemas with x-kubernetes-preserve-
+        unknown-fields. - Object properties where the property
+        schema is of an "unknown type". An "unknown type" is
+        recursively defined as:
+          - A schema with no type and x-kubernetes-preserve-unknown-
+        fields set to true
+          - An array where the items schema is of an "unknown type"
+          - An object where the additionalProperties schema is of an
+        "unknown type"
+
+        Only property names of the form `[a-zA-
+        Z_.-/][a-zA-Z0-9_.-/]*` are accessible. Accessible property
+        names are escaped according to the following rules when
+        accessed in the expression: - '__' escapes to
+        '__underscores__' - '.' escapes to '__dot__' - '-' escapes
+        to '__dash__' - '/' escapes to '__slash__' - Property names
+        that exactly match a CEL RESERVED keyword escape to
+        '__{keyword}__'. The keywords are:
+                  "true", "false", "null", "in", "as", "break", "const",
+        "continue", "else", "for", "function", "if",
+                  "import", "let", "loop", "package", "namespace",
+        "return".
+        Examples:
+          - Rule accessing a property named "namespace": {"rule":
+        "self.__namespace__ > 0"}
+          - Rule accessing a property named "x-prop": {"rule":
+        "self.x__dash__prop > 0"}
+          - Rule accessing a property named "redact__d": {"rule":
+        "self.redact__underscores__d > 0"}
+
+        Equality on arrays with x-kubernetes-list-type of 'set' or
+        'map' ignores element order, i.e. [1, 2] == [2, 1].
+        Concatenation on arrays with x-kubernetes-list-type use the
+        semantics of the list type:
+          - 'set': `X + Y` performs a union where the array
+        positions of all elements in `X` are preserved and
+            non-intersecting elements in `Y` are appended, retaining
+        their partial order.
+          - 'map': `X + Y` performs a merge where the array
+        positions of all keys in `X` are preserved but the values
+            are overwritten by values in `Y` when the key sets of
+        `X` and `Y` intersect. Elements in `Y` with
+            non-intersecting keys are appended, retaining their
+        partial order.
+        """
+        self._properties["rule"] = value
+
+    def __enter__(self) -> "ValidationRule":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class WebhookClientConfig(_kuber_definitions.Definition):
     """
     WebhookClientConfig contains the information to make a TLS
@@ -3177,9 +3452,9 @@ class WebhookClientConfig(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ca_bundle: str = None,
-        service: "ServiceReference" = None,
-        url: str = None,
+        ca_bundle: typing.Optional[str] = None,
+        service: typing.Optional["ServiceReference"] = None,
+        url: typing.Optional[str] = None,
     ):
         """Create WebhookClientConfig instance."""
         super(WebhookClientConfig, self).__init__(
@@ -3330,8 +3605,8 @@ class WebhookConversion(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        client_config: "WebhookClientConfig" = None,
-        conversion_review_versions: typing.List[str] = None,
+        client_config: typing.Optional["WebhookClientConfig"] = None,
+        conversion_review_versions: typing.Optional[typing.List[str]] = None,
     ):
         """Create WebhookConversion instance."""
         super(WebhookConversion, self).__init__(

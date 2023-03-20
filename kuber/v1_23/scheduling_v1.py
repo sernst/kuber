@@ -18,11 +18,11 @@ class PriorityClass(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        description: str = None,
-        global_default: bool = None,
-        metadata: "ObjectMeta" = None,
-        preemption_policy: str = None,
-        value: int = None,
+        description: typing.Optional[str] = None,
+        global_default: typing.Optional[bool] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        preemption_policy: typing.Optional[str] = None,
+        value: typing.Optional[int] = None,
     ):
         """Create PriorityClass instance."""
         super(PriorityClass, self).__init__(
@@ -165,7 +165,7 @@ class PriorityClass(_kuber_definitions.Resource):
         """
         self._properties["value"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the PriorityClass in the currently
         configured Kubernetes cluster.
@@ -181,7 +181,7 @@ class PriorityClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the PriorityClass in the currently
         configured Kubernetes cluster.
@@ -197,7 +197,7 @@ class PriorityClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the PriorityClass in the currently
         configured Kubernetes cluster.
@@ -213,11 +213,11 @@ class PriorityClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the PriorityClass from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -237,7 +237,7 @@ class PriorityClass(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -266,7 +266,7 @@ class PriorityClass(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.SchedulingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -290,8 +290,8 @@ class PriorityClassList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["PriorityClass"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["PriorityClass"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create PriorityClassList instance."""
         super(PriorityClassList, self).__init__(
@@ -363,7 +363,7 @@ class PriorityClassList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.SchedulingV1Api":
         """
         Returns an instance of the kubernetes API client associated with

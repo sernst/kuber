@@ -5,9 +5,9 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
+from kuber.pre.meta_v1 import Condition  # noqa: F401
 from kuber.pre.meta_v1 import LabelSelector  # noqa: F401
 from kuber.pre.meta_v1 import ListMeta  # noqa: F401
-from kuber.pre.core_v1 import LoadBalancerStatus  # noqa: F401
 from kuber.pre.meta_v1 import ObjectMeta  # noqa: F401
 from kuber.pre.meta_v1 import Status  # noqa: F401
 from kuber.pre.meta_v1 import StatusDetails  # noqa: F401
@@ -22,9 +22,9 @@ class HTTPIngressPath(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        backend: "IngressBackend" = None,
-        path: str = None,
-        path_type: str = None,
+        backend: typing.Optional["IngressBackend"] = None,
+        path: typing.Optional[str] = None,
+        path_type: typing.Optional[str] = None,
     ):
         """Create HTTPIngressPath instance."""
         super(HTTPIngressPath, self).__init__(
@@ -44,7 +44,7 @@ class HTTPIngressPath(_kuber_definitions.Definition):
     @property
     def backend(self) -> "IngressBackend":
         """
-        Backend defines the referenced service endpoint to which the
+        backend defines the referenced service endpoint to which the
         traffic will be forwarded to.
         """
         return typing.cast(
@@ -55,7 +55,7 @@ class HTTPIngressPath(_kuber_definitions.Definition):
     @backend.setter
     def backend(self, value: typing.Union["IngressBackend", dict]):
         """
-        Backend defines the referenced service endpoint to which the
+        backend defines the referenced service endpoint to which the
         traffic will be forwarded to.
         """
         if isinstance(value, dict):
@@ -68,7 +68,7 @@ class HTTPIngressPath(_kuber_definitions.Definition):
     @property
     def path(self) -> str:
         """
-        Path is matched against the path of an incoming request.
+        path is matched against the path of an incoming request.
         Currently it can contain characters disallowed from the
         conventional "path" part of a URL as defined by RFC 3986.
         Paths must begin with a '/' and must be present when using
@@ -82,7 +82,7 @@ class HTTPIngressPath(_kuber_definitions.Definition):
     @path.setter
     def path(self, value: str):
         """
-        Path is matched against the path of an incoming request.
+        path is matched against the path of an incoming request.
         Currently it can contain characters disallowed from the
         conventional "path" part of a URL as defined by RFC 3986.
         Paths must begin with a '/' and must be present when using
@@ -93,7 +93,7 @@ class HTTPIngressPath(_kuber_definitions.Definition):
     @property
     def path_type(self) -> str:
         """
-        PathType determines the interpretation of the Path matching.
+        pathType determines the interpretation of the path matching.
         PathType can be one of the following values: * Exact:
         Matches the URL path exactly. * Prefix: Matches based on a
         URL path prefix split by '/'. Matching is
@@ -123,7 +123,7 @@ class HTTPIngressPath(_kuber_definitions.Definition):
     @path_type.setter
     def path_type(self, value: str):
         """
-        PathType determines the interpretation of the Path matching.
+        pathType determines the interpretation of the path matching.
         PathType can be one of the following values: * Exact:
         Matches the URL path exactly. * Prefix: Matches based on a
         URL path prefix split by '/'. Matching is
@@ -165,7 +165,7 @@ class HTTPIngressRuleValue(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        paths: typing.List["HTTPIngressPath"] = None,
+        paths: typing.Optional[typing.List["HTTPIngressPath"]] = None,
     ):
         """Create HTTPIngressRuleValue instance."""
         super(HTTPIngressRuleValue, self).__init__(
@@ -181,7 +181,8 @@ class HTTPIngressRuleValue(_kuber_definitions.Definition):
     @property
     def paths(self) -> typing.List["HTTPIngressPath"]:
         """
-        A collection of paths that map requests to backends.
+        paths is a collection of paths that map requests to
+        backends.
         """
         return typing.cast(
             typing.List["HTTPIngressPath"],
@@ -193,7 +194,8 @@ class HTTPIngressRuleValue(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["HTTPIngressPath"], typing.List[dict]]
     ):
         """
-        A collection of paths that map requests to backends.
+        paths is a collection of paths that map requests to
+        backends.
         """
         cleaned: typing.List[HTTPIngressPath] = []
         for item in value:
@@ -215,7 +217,7 @@ class HTTPIngressRuleValue(_kuber_definitions.Definition):
 class IPBlock(_kuber_definitions.Definition):
     """
     IPBlock describes a particular CIDR (Ex.
-    "192.168.1.1/24","2001:db9::/64") that is allowed to the
+    "192.168.1.0/24","2001:db8::/64") that is allowed to the
     pods matched by a NetworkPolicySpec's podSelector. The
     except entry describes CIDRs that should not be included
     within this rule.
@@ -223,8 +225,8 @@ class IPBlock(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        cidr: str = None,
-        except_: typing.List[str] = None,
+        cidr: typing.Optional[str] = None,
+        except_: typing.Optional[typing.List[str]] = None,
     ):
         """Create IPBlock instance."""
         super(IPBlock, self).__init__(api_version="networking/v1", kind="IPBlock")
@@ -240,8 +242,8 @@ class IPBlock(_kuber_definitions.Definition):
     @property
     def cidr(self) -> str:
         """
-        CIDR is a string representing the IP Block Valid examples
-        are "192.168.1.1/24" or "2001:db9::/64"
+        cidr is a string representing the IPBlock Valid examples are
+        "192.168.1.0/24" or "2001:db8::/64"
         """
         return typing.cast(
             str,
@@ -251,18 +253,18 @@ class IPBlock(_kuber_definitions.Definition):
     @cidr.setter
     def cidr(self, value: str):
         """
-        CIDR is a string representing the IP Block Valid examples
-        are "192.168.1.1/24" or "2001:db9::/64"
+        cidr is a string representing the IPBlock Valid examples are
+        "192.168.1.0/24" or "2001:db8::/64"
         """
         self._properties["cidr"] = value
 
     @property
     def except_(self) -> typing.List[str]:
         """
-        Except is a slice of CIDRs that should not be included
-        within an IP Block Valid examples are "192.168.1.1/24" or
-        "2001:db9::/64" Except values will be rejected if they are
-        outside the CIDR range
+        except is a slice of CIDRs that should not be included
+        within an IPBlock Valid examples are "192.168.1.0/24" or
+        "2001:db8::/64" Except values will be rejected if they are
+        outside the cidr range
         """
         return typing.cast(
             typing.List[str],
@@ -272,10 +274,10 @@ class IPBlock(_kuber_definitions.Definition):
     @except_.setter
     def except_(self, value: typing.List[str]):
         """
-        Except is a slice of CIDRs that should not be included
-        within an IP Block Valid examples are "192.168.1.1/24" or
-        "2001:db9::/64" Except values will be rejected if they are
-        outside the CIDR range
+        except is a slice of CIDRs that should not be included
+        within an IPBlock Valid examples are "192.168.1.0/24" or
+        "2001:db8::/64" Except values will be rejected if they are
+        outside the cidr range
         """
         self._properties["except"] = value
 
@@ -297,9 +299,9 @@ class Ingress(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "IngressSpec" = None,
-        status: "IngressStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["IngressSpec"] = None,
+        status: typing.Optional["IngressStatus"] = None,
     ):
         """Create Ingress instance."""
         super(Ingress, self).__init__(api_version="networking/v1", kind="Ingress")
@@ -345,7 +347,7 @@ class Ingress(_kuber_definitions.Resource):
     @property
     def spec(self) -> "IngressSpec":
         """
-        Spec is the desired state of the Ingress. More info:
+        spec is the desired state of the Ingress. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -357,7 +359,7 @@ class Ingress(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["IngressSpec", dict]):
         """
-        Spec is the desired state of the Ingress. More info:
+        spec is the desired state of the Ingress. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -371,7 +373,7 @@ class Ingress(_kuber_definitions.Resource):
     @property
     def status(self) -> "IngressStatus":
         """
-        Status is the current state of the Ingress. More info:
+        status is the current state of the Ingress. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -383,7 +385,7 @@ class Ingress(_kuber_definitions.Resource):
     @status.setter
     def status(self, value: typing.Union["IngressStatus", dict]):
         """
-        Status is the current state of the Ingress. More info:
+        status is the current state of the Ingress. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -394,7 +396,9 @@ class Ingress(_kuber_definitions.Resource):
             )
         self._properties["status"] = value
 
-    def create_resource(self, namespace: "str" = None) -> "IngressStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "IngressStatus":
         """
         Creates the Ingress in the currently
         configured Kubernetes cluster and returns the status information
@@ -416,7 +420,9 @@ class Ingress(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "IngressStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "IngressStatus":
         """
         Replaces the Ingress in the currently
         configured Kubernetes cluster and returns the status information
@@ -438,7 +444,9 @@ class Ingress(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "IngressStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "IngressStatus":
         """
         Patches the Ingress in the currently
         configured Kubernetes cluster and returns the status information
@@ -460,7 +468,9 @@ class Ingress(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "IngressStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "IngressStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -483,7 +493,7 @@ class Ingress(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Ingress from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -503,7 +513,7 @@ class Ingress(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -532,7 +542,7 @@ class Ingress(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NetworkingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -557,8 +567,8 @@ class IngressBackend(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        resource: "TypedLocalObjectReference" = None,
-        service: "IngressServiceBackend" = None,
+        resource: typing.Optional["TypedLocalObjectReference"] = None,
+        service: typing.Optional["IngressServiceBackend"] = None,
     ):
         """Create IngressBackend instance."""
         super(IngressBackend, self).__init__(
@@ -578,7 +588,7 @@ class IngressBackend(_kuber_definitions.Definition):
     @property
     def resource(self) -> "TypedLocalObjectReference":
         """
-        Resource is an ObjectRef to another Kubernetes resource in
+        resource is an ObjectRef to another Kubernetes resource in
         the namespace of the Ingress object. If resource is
         specified, a service.Name and service.Port must not be
         specified. This is a mutually exclusive setting with
@@ -592,7 +602,7 @@ class IngressBackend(_kuber_definitions.Definition):
     @resource.setter
     def resource(self, value: typing.Union["TypedLocalObjectReference", dict]):
         """
-        Resource is an ObjectRef to another Kubernetes resource in
+        resource is an ObjectRef to another Kubernetes resource in
         the namespace of the Ingress object. If resource is
         specified, a service.Name and service.Port must not be
         specified. This is a mutually exclusive setting with
@@ -608,7 +618,7 @@ class IngressBackend(_kuber_definitions.Definition):
     @property
     def service(self) -> "IngressServiceBackend":
         """
-        Service references a Service as a Backend. This is a
+        service references a service as a backend. This is a
         mutually exclusive setting with "Resource".
         """
         return typing.cast(
@@ -619,7 +629,7 @@ class IngressBackend(_kuber_definitions.Definition):
     @service.setter
     def service(self, value: typing.Union["IngressServiceBackend", dict]):
         """
-        Service references a Service as a Backend. This is a
+        service references a service as a backend. This is a
         mutually exclusive setting with "Resource".
         """
         if isinstance(value, dict):
@@ -649,8 +659,8 @@ class IngressClass(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "IngressClassSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["IngressClassSpec"] = None,
     ):
         """Create IngressClass instance."""
         super(IngressClass, self).__init__(
@@ -696,7 +706,7 @@ class IngressClass(_kuber_definitions.Resource):
     @property
     def spec(self) -> "IngressClassSpec":
         """
-        Spec is the desired state of the IngressClass. More info:
+        spec is the desired state of the IngressClass. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -708,7 +718,7 @@ class IngressClass(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["IngressClassSpec", dict]):
         """
-        Spec is the desired state of the IngressClass. More info:
+        spec is the desired state of the IngressClass. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -719,7 +729,7 @@ class IngressClass(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the IngressClass in the currently
         configured Kubernetes cluster.
@@ -735,7 +745,7 @@ class IngressClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the IngressClass in the currently
         configured Kubernetes cluster.
@@ -751,7 +761,7 @@ class IngressClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the IngressClass in the currently
         configured Kubernetes cluster.
@@ -767,11 +777,11 @@ class IngressClass(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the IngressClass from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -791,7 +801,7 @@ class IngressClass(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -820,7 +830,7 @@ class IngressClass(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NetworkingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -844,8 +854,8 @@ class IngressClassList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["IngressClass"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["IngressClass"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create IngressClassList instance."""
         super(IngressClassList, self).__init__(
@@ -865,7 +875,7 @@ class IngressClassList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["IngressClass"]:
         """
-        Items is the list of IngressClasses.
+        items is the list of IngressClasses.
         """
         return typing.cast(
             typing.List["IngressClass"],
@@ -877,7 +887,7 @@ class IngressClassList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["IngressClass"], typing.List[dict]]
     ):
         """
-        Items is the list of IngressClasses.
+        items is the list of IngressClasses.
         """
         cleaned: typing.List[IngressClass] = []
         for item in value:
@@ -913,7 +923,7 @@ class IngressClassList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NetworkingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -939,11 +949,11 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        api_group: str = None,
-        kind: str = None,
-        name: str = None,
-        namespace: str = None,
-        scope: str = None,
+        api_group: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        scope: typing.Optional[str] = None,
     ):
         """Create IngressClassParametersReference instance."""
         super(IngressClassParametersReference, self).__init__(
@@ -967,7 +977,7 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @property
     def api_group(self) -> str:
         """
-        APIGroup is the group for the resource being referenced. If
+        apiGroup is the group for the resource being referenced. If
         APIGroup is not specified, the specified Kind must be in the
         core API group. For any other third-party types, APIGroup is
         required.
@@ -980,7 +990,7 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @api_group.setter
     def api_group(self, value: str):
         """
-        APIGroup is the group for the resource being referenced. If
+        apiGroup is the group for the resource being referenced. If
         APIGroup is not specified, the specified Kind must be in the
         core API group. For any other third-party types, APIGroup is
         required.
@@ -990,7 +1000,7 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @property
     def kind(self) -> str:
         """
-        Kind is the type of resource being referenced.
+        kind is the type of resource being referenced.
         """
         return typing.cast(
             str,
@@ -1000,14 +1010,14 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @kind.setter
     def kind(self, value: str):
         """
-        Kind is the type of resource being referenced.
+        kind is the type of resource being referenced.
         """
         self._properties["kind"] = value
 
     @property
     def name(self) -> str:
         """
-        Name is the name of resource being referenced.
+        name is the name of resource being referenced.
         """
         return typing.cast(
             str,
@@ -1017,14 +1027,14 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name is the name of resource being referenced.
+        name is the name of resource being referenced.
         """
         self._properties["name"] = value
 
     @property
     def namespace(self) -> str:
         """
-        Namespace is the namespace of the resource being referenced.
+        namespace is the namespace of the resource being referenced.
         This field is required when scope is set to "Namespace" and
         must be unset when scope is set to "Cluster".
         """
@@ -1036,7 +1046,7 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @namespace.setter
     def namespace(self, value: str):
         """
-        Namespace is the namespace of the resource being referenced.
+        namespace is the namespace of the resource being referenced.
         This field is required when scope is set to "Namespace" and
         must be unset when scope is set to "Cluster".
         """
@@ -1045,10 +1055,9 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @property
     def scope(self) -> str:
         """
-        Scope represents if this refers to a cluster or namespace
+        scope represents if this refers to a cluster or namespace
         scoped resource. This may be set to "Cluster" (default) or
-        "Namespace". Field can be enabled with
-        IngressClassNamespacedParams feature gate.
+        "Namespace".
         """
         return typing.cast(
             str,
@@ -1058,10 +1067,9 @@ class IngressClassParametersReference(_kuber_definitions.Definition):
     @scope.setter
     def scope(self, value: str):
         """
-        Scope represents if this refers to a cluster or namespace
+        scope represents if this refers to a cluster or namespace
         scoped resource. This may be set to "Cluster" (default) or
-        "Namespace". Field can be enabled with
-        IngressClassNamespacedParams feature gate.
+        "Namespace".
         """
         self._properties["scope"] = value
 
@@ -1080,8 +1088,8 @@ class IngressClassSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        controller: str = None,
-        parameters: "IngressClassParametersReference" = None,
+        controller: typing.Optional[str] = None,
+        parameters: typing.Optional["IngressClassParametersReference"] = None,
     ):
         """Create IngressClassSpec instance."""
         super(IngressClassSpec, self).__init__(
@@ -1101,10 +1109,10 @@ class IngressClassSpec(_kuber_definitions.Definition):
     @property
     def controller(self) -> str:
         """
-        Controller refers to the name of the controller that should
+        controller refers to the name of the controller that should
         handle this class. This allows for different "flavors" that
         are controlled by the same controller. For example, you may
-        have different Parameters for the same implementing
+        have different parameters for the same implementing
         controller. This should be specified as a domain-prefixed
         path no more than 250 characters in length, e.g.
         "acme.io/ingress-controller". This field is immutable.
@@ -1117,10 +1125,10 @@ class IngressClassSpec(_kuber_definitions.Definition):
     @controller.setter
     def controller(self, value: str):
         """
-        Controller refers to the name of the controller that should
+        controller refers to the name of the controller that should
         handle this class. This allows for different "flavors" that
         are controlled by the same controller. For example, you may
-        have different Parameters for the same implementing
+        have different parameters for the same implementing
         controller. This should be specified as a domain-prefixed
         path no more than 250 characters in length, e.g.
         "acme.io/ingress-controller". This field is immutable.
@@ -1130,7 +1138,7 @@ class IngressClassSpec(_kuber_definitions.Definition):
     @property
     def parameters(self) -> "IngressClassParametersReference":
         """
-        Parameters is a link to a custom resource containing
+        parameters is a link to a custom resource containing
         additional configuration for the controller. This is
         optional if the controller does not require extra
         parameters.
@@ -1143,7 +1151,7 @@ class IngressClassSpec(_kuber_definitions.Definition):
     @parameters.setter
     def parameters(self, value: typing.Union["IngressClassParametersReference", dict]):
         """
-        Parameters is a link to a custom resource containing
+        parameters is a link to a custom resource containing
         additional configuration for the controller. This is
         optional if the controller does not require extra
         parameters.
@@ -1169,8 +1177,8 @@ class IngressList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Ingress"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Ingress"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create IngressList instance."""
         super(IngressList, self).__init__(
@@ -1190,7 +1198,7 @@ class IngressList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["Ingress"]:
         """
-        Items is the list of Ingress.
+        items is the list of Ingress.
         """
         return typing.cast(
             typing.List["Ingress"],
@@ -1200,7 +1208,7 @@ class IngressList(_kuber_definitions.Collection):
     @items.setter
     def items(self, value: typing.Union[typing.List["Ingress"], typing.List[dict]]):
         """
-        Items is the list of Ingress.
+        items is the list of Ingress.
         """
         cleaned: typing.List[Ingress] = []
         for item in value:
@@ -1240,7 +1248,7 @@ class IngressList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NetworkingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1251,6 +1259,268 @@ class IngressList(_kuber_definitions.Collection):
         return client.NetworkingV1Api(**kwargs)
 
     def __enter__(self) -> "IngressList":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class IngressLoadBalancerIngress(_kuber_definitions.Definition):
+    """
+    IngressLoadBalancerIngress represents the status of a load-
+    balancer ingress point.
+    """
+
+    def __init__(
+        self,
+        hostname: typing.Optional[str] = None,
+        ip: typing.Optional[str] = None,
+        ports: typing.Optional[typing.List["IngressPortStatus"]] = None,
+    ):
+        """Create IngressLoadBalancerIngress instance."""
+        super(IngressLoadBalancerIngress, self).__init__(
+            api_version="networking/v1", kind="IngressLoadBalancerIngress"
+        )
+        self._properties = {
+            "hostname": hostname if hostname is not None else "",
+            "ip": ip if ip is not None else "",
+            "ports": ports if ports is not None else [],
+        }
+        self._types = {
+            "hostname": (str, None),
+            "ip": (str, None),
+            "ports": (list, IngressPortStatus),
+        }
+
+    @property
+    def hostname(self) -> str:
+        """
+        hostname is set for load-balancer ingress points that are
+        DNS based.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("hostname"),
+        )
+
+    @hostname.setter
+    def hostname(self, value: str):
+        """
+        hostname is set for load-balancer ingress points that are
+        DNS based.
+        """
+        self._properties["hostname"] = value
+
+    @property
+    def ip(self) -> str:
+        """
+        ip is set for load-balancer ingress points that are IP
+        based.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("ip"),
+        )
+
+    @ip.setter
+    def ip(self, value: str):
+        """
+        ip is set for load-balancer ingress points that are IP
+        based.
+        """
+        self._properties["ip"] = value
+
+    @property
+    def ports(self) -> typing.List["IngressPortStatus"]:
+        """
+        ports provides information about the ports exposed by this
+        LoadBalancer.
+        """
+        return typing.cast(
+            typing.List["IngressPortStatus"],
+            self._properties.get("ports"),
+        )
+
+    @ports.setter
+    def ports(
+        self, value: typing.Union[typing.List["IngressPortStatus"], typing.List[dict]]
+    ):
+        """
+        ports provides information about the ports exposed by this
+        LoadBalancer.
+        """
+        cleaned: typing.List[IngressPortStatus] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    IngressPortStatus,
+                    IngressPortStatus().from_dict(item),
+                )
+            cleaned.append(typing.cast(IngressPortStatus, item))
+        self._properties["ports"] = cleaned
+
+    def __enter__(self) -> "IngressLoadBalancerIngress":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class IngressLoadBalancerStatus(_kuber_definitions.Definition):
+    """
+    IngressLoadBalancerStatus represents the status of a load-
+    balancer.
+    """
+
+    def __init__(
+        self,
+        ingress: typing.Optional[typing.List["IngressLoadBalancerIngress"]] = None,
+    ):
+        """Create IngressLoadBalancerStatus instance."""
+        super(IngressLoadBalancerStatus, self).__init__(
+            api_version="networking/v1", kind="IngressLoadBalancerStatus"
+        )
+        self._properties = {
+            "ingress": ingress if ingress is not None else [],
+        }
+        self._types = {
+            "ingress": (list, IngressLoadBalancerIngress),
+        }
+
+    @property
+    def ingress(self) -> typing.List["IngressLoadBalancerIngress"]:
+        """
+        ingress is a list containing ingress points for the load-
+        balancer.
+        """
+        return typing.cast(
+            typing.List["IngressLoadBalancerIngress"],
+            self._properties.get("ingress"),
+        )
+
+    @ingress.setter
+    def ingress(
+        self,
+        value: typing.Union[
+            typing.List["IngressLoadBalancerIngress"], typing.List[dict]
+        ],
+    ):
+        """
+        ingress is a list containing ingress points for the load-
+        balancer.
+        """
+        cleaned: typing.List[IngressLoadBalancerIngress] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    IngressLoadBalancerIngress,
+                    IngressLoadBalancerIngress().from_dict(item),
+                )
+            cleaned.append(typing.cast(IngressLoadBalancerIngress, item))
+        self._properties["ingress"] = cleaned
+
+    def __enter__(self) -> "IngressLoadBalancerStatus":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class IngressPortStatus(_kuber_definitions.Definition):
+    """
+    IngressPortStatus represents the error condition of a
+    service port
+    """
+
+    def __init__(
+        self,
+        error: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
+        protocol: typing.Optional[str] = None,
+    ):
+        """Create IngressPortStatus instance."""
+        super(IngressPortStatus, self).__init__(
+            api_version="networking/v1", kind="IngressPortStatus"
+        )
+        self._properties = {
+            "error": error if error is not None else "",
+            "port": port if port is not None else None,
+            "protocol": protocol if protocol is not None else "",
+        }
+        self._types = {
+            "error": (str, None),
+            "port": (int, None),
+            "protocol": (str, None),
+        }
+
+    @property
+    def error(self) -> str:
+        """
+        error is to record the problem with the service port The
+        format of the error shall comply with the following rules: -
+        built-in error values shall be specified in this file and
+        those shall use
+          CamelCase names
+        - cloud provider specific error values must have names that
+        comply with the
+          format foo.example.com/CamelCase.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("error"),
+        )
+
+    @error.setter
+    def error(self, value: str):
+        """
+        error is to record the problem with the service port The
+        format of the error shall comply with the following rules: -
+        built-in error values shall be specified in this file and
+        those shall use
+          CamelCase names
+        - cloud provider specific error values must have names that
+        comply with the
+          format foo.example.com/CamelCase.
+        """
+        self._properties["error"] = value
+
+    @property
+    def port(self) -> int:
+        """
+        port is the port number of the ingress port.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("port"),
+        )
+
+    @port.setter
+    def port(self, value: int):
+        """
+        port is the port number of the ingress port.
+        """
+        self._properties["port"] = value
+
+    @property
+    def protocol(self) -> str:
+        """
+        protocol is the protocol of the ingress port. The supported
+        values are: "TCP", "UDP", "SCTP"
+        """
+        return typing.cast(
+            str,
+            self._properties.get("protocol"),
+        )
+
+    @protocol.setter
+    def protocol(self, value: str):
+        """
+        protocol is the protocol of the ingress port. The supported
+        values are: "TCP", "UDP", "SCTP"
+        """
+        self._properties["protocol"] = value
+
+    def __enter__(self) -> "IngressPortStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1268,8 +1538,8 @@ class IngressRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        host: str = None,
-        http: "HTTPIngressRuleValue" = None,
+        host: typing.Optional[str] = None,
+        http: typing.Optional["HTTPIngressRuleValue"] = None,
     ):
         """Create IngressRule instance."""
         super(IngressRule, self).__init__(
@@ -1287,7 +1557,7 @@ class IngressRule(_kuber_definitions.Definition):
     @property
     def host(self) -> str:
         """
-        Host is the fully qualified domain name of a network host,
+        host is the fully qualified domain name of a network host,
         as defined by RFC 3986. Note the following deviations from
         the "host" part of the URI as defined in RFC 3986: 1. IPs
         are not allowed. Currently an IngressRuleValue can only
@@ -1303,16 +1573,16 @@ class IngressRule(_kuber_definitions.Definition):
         host is unspecified, the Ingress routes all traffic based on
         the specified IngressRuleValue.
 
-        Host can be "precise" which is a domain name without the
+        host can be "precise" which is a domain name without the
         terminating dot of a network host (e.g. "foo.bar.com") or
         "wildcard", which is a domain name prefixed with a single
         wildcard label (e.g. "*.foo.com"). The wildcard character
         '*' must appear by itself as the first DNS label and matches
         only a single label. You cannot have a wildcard label by
         itself (e.g. Host == "*"). Requests will be matched against
-        the Host field in the following way: 1. If Host is precise,
+        the Host field in the following way: 1. If host is precise,
         the request matches this rule if the http host header is
-        equal to Host. 2. If Host is a wildcard, then the request
+        equal to Host. 2. If host is a wildcard, then the request
         matches this rule if the http host header is to equal to the
         suffix (removing the first label) of the wildcard rule.
         """
@@ -1324,7 +1594,7 @@ class IngressRule(_kuber_definitions.Definition):
     @host.setter
     def host(self, value: str):
         """
-        Host is the fully qualified domain name of a network host,
+        host is the fully qualified domain name of a network host,
         as defined by RFC 3986. Note the following deviations from
         the "host" part of the URI as defined in RFC 3986: 1. IPs
         are not allowed. Currently an IngressRuleValue can only
@@ -1340,16 +1610,16 @@ class IngressRule(_kuber_definitions.Definition):
         host is unspecified, the Ingress routes all traffic based on
         the specified IngressRuleValue.
 
-        Host can be "precise" which is a domain name without the
+        host can be "precise" which is a domain name without the
         terminating dot of a network host (e.g. "foo.bar.com") or
         "wildcard", which is a domain name prefixed with a single
         wildcard label (e.g. "*.foo.com"). The wildcard character
         '*' must appear by itself as the first DNS label and matches
         only a single label. You cannot have a wildcard label by
         itself (e.g. Host == "*"). Requests will be matched against
-        the Host field in the following way: 1. If Host is precise,
+        the Host field in the following way: 1. If host is precise,
         the request matches this rule if the http host header is
-        equal to Host. 2. If Host is a wildcard, then the request
+        equal to Host. 2. If host is a wildcard, then the request
         matches this rule if the http host header is to equal to the
         suffix (removing the first label) of the wildcard rule.
         """
@@ -1388,8 +1658,8 @@ class IngressServiceBackend(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        port: "ServiceBackendPort" = None,
+        name: typing.Optional[str] = None,
+        port: typing.Optional["ServiceBackendPort"] = None,
     ):
         """Create IngressServiceBackend instance."""
         super(IngressServiceBackend, self).__init__(
@@ -1407,7 +1677,7 @@ class IngressServiceBackend(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name is the referenced service. The service must exist in
+        name is the referenced service. The service must exist in
         the same namespace as the Ingress object.
         """
         return typing.cast(
@@ -1418,7 +1688,7 @@ class IngressServiceBackend(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name is the referenced service. The service must exist in
+        name is the referenced service. The service must exist in
         the same namespace as the Ingress object.
         """
         self._properties["name"] = value
@@ -1426,7 +1696,7 @@ class IngressServiceBackend(_kuber_definitions.Definition):
     @property
     def port(self) -> "ServiceBackendPort":
         """
-        Port of the referenced service. A port name or port number
+        port of the referenced service. A port name or port number
         is required for a IngressServiceBackend.
         """
         return typing.cast(
@@ -1437,7 +1707,7 @@ class IngressServiceBackend(_kuber_definitions.Definition):
     @port.setter
     def port(self, value: typing.Union["ServiceBackendPort", dict]):
         """
-        Port of the referenced service. A port name or port number
+        port of the referenced service. A port name or port number
         is required for a IngressServiceBackend.
         """
         if isinstance(value, dict):
@@ -1461,10 +1731,10 @@ class IngressSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        default_backend: "IngressBackend" = None,
-        ingress_class_name: str = None,
-        rules: typing.List["IngressRule"] = None,
-        tls: typing.List["IngressTLS"] = None,
+        default_backend: typing.Optional["IngressBackend"] = None,
+        ingress_class_name: typing.Optional[str] = None,
+        rules: typing.Optional[typing.List["IngressRule"]] = None,
+        tls: typing.Optional[typing.List["IngressTLS"]] = None,
     ):
         """Create IngressSpec instance."""
         super(IngressSpec, self).__init__(
@@ -1490,7 +1760,7 @@ class IngressSpec(_kuber_definitions.Definition):
     @property
     def default_backend(self) -> "IngressBackend":
         """
-        DefaultBackend is the backend that should handle requests
+        defaultBackend is the backend that should handle requests
         that don't match any rule. If Rules are not specified,
         DefaultBackend must be specified. If DefaultBackend is not
         set, the handling of requests that do not match any of the
@@ -1504,7 +1774,7 @@ class IngressSpec(_kuber_definitions.Definition):
     @default_backend.setter
     def default_backend(self, value: typing.Union["IngressBackend", dict]):
         """
-        DefaultBackend is the backend that should handle requests
+        defaultBackend is the backend that should handle requests
         that don't match any rule. If Rules are not specified,
         DefaultBackend must be specified. If DefaultBackend is not
         set, the handling of requests that do not match any of the
@@ -1520,18 +1790,19 @@ class IngressSpec(_kuber_definitions.Definition):
     @property
     def ingress_class_name(self) -> str:
         """
-        IngressClassName is the name of the IngressClass cluster
-        resource. The associated IngressClass defines which
-        controller will implement the resource. This replaces the
-        deprecated `kubernetes.io/ingress.class` annotation. For
-        backwards compatibility, when that annotation is set, it
-        must be given precedence over this field. The controller may
-        emit a warning if the field and annotation have different
-        values. Implementations of this API should ignore Ingresses
-        without a class specified. An IngressClass resource may be
-        marked as default, which can be used to set a default value
-        for this field. For more information, refer to the
-        IngressClass documentation.
+        ingressClassName is the name of an IngressClass cluster
+        resource. Ingress controller implementations use this field
+        to know whether they should be serving this Ingress
+        resource, by a transitive connection (controller ->
+        IngressClass -> Ingress resource). Although the
+        `kubernetes.io/ingress.class` annotation (simple constant
+        name) was never formally defined, it was widely supported by
+        Ingress controllers to create a direct binding between
+        Ingress controller and Ingress resources. Newly created
+        Ingress resources should prefer using the field. However,
+        even though the annotation is officially deprecated, for
+        backwards compatibility reasons, ingress controllers should
+        still honor that annotation if present.
         """
         return typing.cast(
             str,
@@ -1541,27 +1812,28 @@ class IngressSpec(_kuber_definitions.Definition):
     @ingress_class_name.setter
     def ingress_class_name(self, value: str):
         """
-        IngressClassName is the name of the IngressClass cluster
-        resource. The associated IngressClass defines which
-        controller will implement the resource. This replaces the
-        deprecated `kubernetes.io/ingress.class` annotation. For
-        backwards compatibility, when that annotation is set, it
-        must be given precedence over this field. The controller may
-        emit a warning if the field and annotation have different
-        values. Implementations of this API should ignore Ingresses
-        without a class specified. An IngressClass resource may be
-        marked as default, which can be used to set a default value
-        for this field. For more information, refer to the
-        IngressClass documentation.
+        ingressClassName is the name of an IngressClass cluster
+        resource. Ingress controller implementations use this field
+        to know whether they should be serving this Ingress
+        resource, by a transitive connection (controller ->
+        IngressClass -> Ingress resource). Although the
+        `kubernetes.io/ingress.class` annotation (simple constant
+        name) was never formally defined, it was widely supported by
+        Ingress controllers to create a direct binding between
+        Ingress controller and Ingress resources. Newly created
+        Ingress resources should prefer using the field. However,
+        even though the annotation is officially deprecated, for
+        backwards compatibility reasons, ingress controllers should
+        still honor that annotation if present.
         """
         self._properties["ingressClassName"] = value
 
     @property
     def rules(self) -> typing.List["IngressRule"]:
         """
-        A list of host rules used to configure the Ingress. If
-        unspecified, or no rule matches, all traffic is sent to the
-        default backend.
+        rules is a list of host rules used to configure the Ingress.
+        If unspecified, or no rule matches, all traffic is sent to
+        the default backend.
         """
         return typing.cast(
             typing.List["IngressRule"],
@@ -1571,9 +1843,9 @@ class IngressSpec(_kuber_definitions.Definition):
     @rules.setter
     def rules(self, value: typing.Union[typing.List["IngressRule"], typing.List[dict]]):
         """
-        A list of host rules used to configure the Ingress. If
-        unspecified, or no rule matches, all traffic is sent to the
-        default backend.
+        rules is a list of host rules used to configure the Ingress.
+        If unspecified, or no rule matches, all traffic is sent to
+        the default backend.
         """
         cleaned: typing.List[IngressRule] = []
         for item in value:
@@ -1588,12 +1860,12 @@ class IngressSpec(_kuber_definitions.Definition):
     @property
     def tls(self) -> typing.List["IngressTLS"]:
         """
-        TLS configuration. Currently the Ingress only supports a
-        single TLS port, 443. If multiple members of this list
-        specify different hosts, they will be multiplexed on the
-        same port according to the hostname specified through the
-        SNI TLS extension, if the ingress controller fulfilling the
-        ingress supports SNI.
+        tls represents the TLS configuration. Currently the Ingress
+        only supports a single TLS port, 443. If multiple members of
+        this list specify different hosts, they will be multiplexed
+        on the same port according to the hostname specified through
+        the SNI TLS extension, if the ingress controller fulfilling
+        the ingress supports SNI.
         """
         return typing.cast(
             typing.List["IngressTLS"],
@@ -1603,12 +1875,12 @@ class IngressSpec(_kuber_definitions.Definition):
     @tls.setter
     def tls(self, value: typing.Union[typing.List["IngressTLS"], typing.List[dict]]):
         """
-        TLS configuration. Currently the Ingress only supports a
-        single TLS port, 443. If multiple members of this list
-        specify different hosts, they will be multiplexed on the
-        same port according to the hostname specified through the
-        SNI TLS extension, if the ingress controller fulfilling the
-        ingress supports SNI.
+        tls represents the TLS configuration. Currently the Ingress
+        only supports a single TLS port, 443. If multiple members of
+        this list specify different hosts, they will be multiplexed
+        on the same port according to the hostname specified through
+        the SNI TLS extension, if the ingress controller fulfilling
+        the ingress supports SNI.
         """
         cleaned: typing.List[IngressTLS] = []
         for item in value:
@@ -1634,7 +1906,7 @@ class IngressStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        load_balancer: "LoadBalancerStatus" = None,
+        load_balancer: typing.Optional["IngressLoadBalancerStatus"] = None,
     ):
         """Create IngressStatus instance."""
         super(IngressStatus, self).__init__(
@@ -1643,33 +1915,33 @@ class IngressStatus(_kuber_definitions.Definition):
         self._properties = {
             "loadBalancer": load_balancer
             if load_balancer is not None
-            else LoadBalancerStatus(),
+            else IngressLoadBalancerStatus(),
         }
         self._types = {
-            "loadBalancer": (LoadBalancerStatus, None),
+            "loadBalancer": (IngressLoadBalancerStatus, None),
         }
 
     @property
-    def load_balancer(self) -> "LoadBalancerStatus":
+    def load_balancer(self) -> "IngressLoadBalancerStatus":
         """
-        LoadBalancer contains the current status of the load-
+        loadBalancer contains the current status of the load-
         balancer.
         """
         return typing.cast(
-            "LoadBalancerStatus",
+            "IngressLoadBalancerStatus",
             self._properties.get("loadBalancer"),
         )
 
     @load_balancer.setter
-    def load_balancer(self, value: typing.Union["LoadBalancerStatus", dict]):
+    def load_balancer(self, value: typing.Union["IngressLoadBalancerStatus", dict]):
         """
-        LoadBalancer contains the current status of the load-
+        loadBalancer contains the current status of the load-
         balancer.
         """
         if isinstance(value, dict):
             value = typing.cast(
-                LoadBalancerStatus,
-                LoadBalancerStatus().from_dict(value),
+                IngressLoadBalancerStatus,
+                IngressLoadBalancerStatus().from_dict(value),
             )
         self._properties["loadBalancer"] = value
 
@@ -1683,13 +1955,13 @@ class IngressStatus(_kuber_definitions.Definition):
 class IngressTLS(_kuber_definitions.Definition):
     """
     IngressTLS describes the transport layer security associated
-    with an Ingress.
+    with an ingress.
     """
 
     def __init__(
         self,
-        hosts: typing.List[str] = None,
-        secret_name: str = None,
+        hosts: typing.Optional[typing.List[str]] = None,
+        secret_name: typing.Optional[str] = None,
     ):
         """Create IngressTLS instance."""
         super(IngressTLS, self).__init__(api_version="networking/v1", kind="IngressTLS")
@@ -1705,7 +1977,7 @@ class IngressTLS(_kuber_definitions.Definition):
     @property
     def hosts(self) -> typing.List[str]:
         """
-        Hosts are a list of hosts included in the TLS certificate.
+        hosts is a list of hosts included in the TLS certificate.
         The values in this list must match the name/s used in the
         tlsSecret. Defaults to the wildcard host setting for the
         loadbalancer controller fulfilling this Ingress, if left
@@ -1719,7 +1991,7 @@ class IngressTLS(_kuber_definitions.Definition):
     @hosts.setter
     def hosts(self, value: typing.List[str]):
         """
-        Hosts are a list of hosts included in the TLS certificate.
+        hosts is a list of hosts included in the TLS certificate.
         The values in this list must match the name/s used in the
         tlsSecret. Defaults to the wildcard host setting for the
         loadbalancer controller fulfilling this Ingress, if left
@@ -1730,12 +2002,12 @@ class IngressTLS(_kuber_definitions.Definition):
     @property
     def secret_name(self) -> str:
         """
-        SecretName is the name of the secret used to terminate TLS
+        secretName is the name of the secret used to terminate TLS
         traffic on port 443. Field is left optional to allow TLS
         routing based on SNI hostname alone. If the SNI host in a
         listener conflicts with the "Host" header field used by an
         IngressRule, the SNI host is used for termination and value
-        of the Host header is used for routing.
+        of the "Host" header is used for routing.
         """
         return typing.cast(
             str,
@@ -1745,12 +2017,12 @@ class IngressTLS(_kuber_definitions.Definition):
     @secret_name.setter
     def secret_name(self, value: str):
         """
-        SecretName is the name of the secret used to terminate TLS
+        secretName is the name of the secret used to terminate TLS
         traffic on port 443. Field is left optional to allow TLS
         routing based on SNI hostname alone. If the SNI host in a
         listener conflicts with the "Host" header field used by an
         IngressRule, the SNI host is used for termination and value
-        of the Host header is used for routing.
+        of the "Host" header is used for routing.
         """
         self._properties["secretName"] = value
 
@@ -1769,8 +2041,9 @@ class NetworkPolicy(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "NetworkPolicySpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["NetworkPolicySpec"] = None,
+        status: typing.Optional["NetworkPolicyStatus"] = None,
     ):
         """Create NetworkPolicy instance."""
         super(NetworkPolicy, self).__init__(
@@ -1779,12 +2052,14 @@ class NetworkPolicy(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else NetworkPolicySpec(),
+            "status": status if status is not None else NetworkPolicyStatus(),
         }
         self._types = {
             "apiVersion": (str, None),
             "kind": (str, None),
             "metadata": (ObjectMeta, None),
             "spec": (NetworkPolicySpec, None),
+            "status": (NetworkPolicyStatus, None),
         }
 
     @property
@@ -1816,8 +2091,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
     @property
     def spec(self) -> "NetworkPolicySpec":
         """
-        Specification of the desired behavior for this
-        NetworkPolicy.
+        spec represents the specification of the desired behavior
+        for this NetworkPolicy.
         """
         return typing.cast(
             "NetworkPolicySpec",
@@ -1827,8 +2102,8 @@ class NetworkPolicy(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["NetworkPolicySpec", dict]):
         """
-        Specification of the desired behavior for this
-        NetworkPolicy.
+        spec represents the specification of the desired behavior
+        for this NetworkPolicy.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -1837,14 +2112,45 @@ class NetworkPolicy(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: "str" = None):
+    @property
+    def status(self) -> "NetworkPolicyStatus":
+        """
+        status represents the current state of the NetworkPolicy.
+        More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
+        """
+        return typing.cast(
+            "NetworkPolicyStatus",
+            self._properties.get("status"),
+        )
+
+    @status.setter
+    def status(self, value: typing.Union["NetworkPolicyStatus", dict]):
+        """
+        status represents the current state of the NetworkPolicy.
+        More info:
+        https://git.k8s.io/community/contributors/devel/sig-
+        architecture/api-conventions.md#spec-and-status
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                NetworkPolicyStatus,
+                NetworkPolicyStatus().from_dict(value),
+            )
+        self._properties["status"] = value
+
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NetworkPolicyStatus":
         """
         Creates the NetworkPolicy in the currently
-        configured Kubernetes cluster.
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the create is complete.
         """
         names = ["create_namespaced_network_policy", "create_network_policy"]
 
-        _kube_api.execute(
+        response = _kube_api.execute(
             action="create",
             resource=self,
             names=names,
@@ -1853,14 +2159,22 @@ class NetworkPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+        output = NetworkPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NetworkPolicyStatus":
         """
         Replaces the NetworkPolicy in the currently
-        configured Kubernetes cluster.
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
         """
         names = ["replace_namespaced_network_policy", "replace_network_policy"]
 
-        _kube_api.execute(
+        response = _kube_api.execute(
             action="replace",
             resource=self,
             names=names,
@@ -1869,14 +2183,22 @@ class NetworkPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+        output = NetworkPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NetworkPolicyStatus":
         """
         Patches the NetworkPolicy in the currently
-        configured Kubernetes cluster.
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
         """
         names = ["patch_namespaced_network_policy", "patch_network_policy"]
 
-        _kube_api.execute(
+        response = _kube_api.execute(
             action="patch",
             resource=self,
             names=names,
@@ -1885,11 +2207,37 @@ class NetworkPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
-        """This resource does not have a status."""
-        pass
+        output = NetworkPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
 
-    def read_resource(self, namespace: str = None):
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "NetworkPolicyStatus":
+        """
+        Returns status information about the given resource within the cluster.
+        """
+        names = [
+            "read_namespaced_network_policy",
+            "read_network_policy",
+        ]
+
+        response = _kube_api.execute(
+            action="read",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name},
+        )
+
+        output = NetworkPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the NetworkPolicy from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1909,7 +2257,7 @@ class NetworkPolicy(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1938,7 +2286,7 @@ class NetworkPolicy(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NetworkingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1965,8 +2313,8 @@ class NetworkPolicyEgressRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ports: typing.List["NetworkPolicyPort"] = None,
-        to: typing.List["NetworkPolicyPeer"] = None,
+        ports: typing.Optional[typing.List["NetworkPolicyPort"]] = None,
+        to: typing.Optional[typing.List["NetworkPolicyPeer"]] = None,
     ):
         """Create NetworkPolicyEgressRule instance."""
         super(NetworkPolicyEgressRule, self).__init__(
@@ -1984,12 +2332,13 @@ class NetworkPolicyEgressRule(_kuber_definitions.Definition):
     @property
     def ports(self) -> typing.List["NetworkPolicyPort"]:
         """
-        List of destination ports for outgoing traffic. Each item in
-        this list is combined using a logical OR. If this field is
-        empty or missing, this rule matches all ports (traffic not
-        restricted by port). If this field is present and contains
-        at least one item, then this rule allows traffic only if the
-        traffic matches at least one port in the list.
+        ports is a list of destination ports for outgoing traffic.
+        Each item in this list is combined using a logical OR. If
+        this field is empty or missing, this rule matches all ports
+        (traffic not restricted by port). If this field is present
+        and contains at least one item, then this rule allows
+        traffic only if the traffic matches at least one port in the
+        list.
         """
         return typing.cast(
             typing.List["NetworkPolicyPort"],
@@ -2001,12 +2350,13 @@ class NetworkPolicyEgressRule(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["NetworkPolicyPort"], typing.List[dict]]
     ):
         """
-        List of destination ports for outgoing traffic. Each item in
-        this list is combined using a logical OR. If this field is
-        empty or missing, this rule matches all ports (traffic not
-        restricted by port). If this field is present and contains
-        at least one item, then this rule allows traffic only if the
-        traffic matches at least one port in the list.
+        ports is a list of destination ports for outgoing traffic.
+        Each item in this list is combined using a logical OR. If
+        this field is empty or missing, this rule matches all ports
+        (traffic not restricted by port). If this field is present
+        and contains at least one item, then this rule allows
+        traffic only if the traffic matches at least one port in the
+        list.
         """
         cleaned: typing.List[NetworkPolicyPort] = []
         for item in value:
@@ -2021,13 +2371,13 @@ class NetworkPolicyEgressRule(_kuber_definitions.Definition):
     @property
     def to(self) -> typing.List["NetworkPolicyPeer"]:
         """
-        List of destinations for outgoing traffic of pods selected
-        for this rule. Items in this list are combined using a
-        logical OR operation. If this field is empty or missing,
-        this rule matches all destinations (traffic not restricted
-        by destination). If this field is present and contains at
-        least one item, this rule allows traffic only if the traffic
-        matches at least one item in the to list.
+        to is a list of destinations for outgoing traffic of pods
+        selected for this rule. Items in this list are combined
+        using a logical OR operation. If this field is empty or
+        missing, this rule matches all destinations (traffic not
+        restricted by destination). If this field is present and
+        contains at least one item, this rule allows traffic only if
+        the traffic matches at least one item in the to list.
         """
         return typing.cast(
             typing.List["NetworkPolicyPeer"],
@@ -2039,13 +2389,13 @@ class NetworkPolicyEgressRule(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["NetworkPolicyPeer"], typing.List[dict]]
     ):
         """
-        List of destinations for outgoing traffic of pods selected
-        for this rule. Items in this list are combined using a
-        logical OR operation. If this field is empty or missing,
-        this rule matches all destinations (traffic not restricted
-        by destination). If this field is present and contains at
-        least one item, this rule allows traffic only if the traffic
-        matches at least one item in the to list.
+        to is a list of destinations for outgoing traffic of pods
+        selected for this rule. Items in this list are combined
+        using a logical OR operation. If this field is empty or
+        missing, this rule matches all destinations (traffic not
+        restricted by destination). If this field is present and
+        contains at least one item, this rule allows traffic only if
+        the traffic matches at least one item in the to list.
         """
         cleaned: typing.List[NetworkPolicyPeer] = []
         for item in value:
@@ -2074,8 +2424,8 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        from_: typing.List["NetworkPolicyPeer"] = None,
-        ports: typing.List["NetworkPolicyPort"] = None,
+        from_: typing.Optional[typing.List["NetworkPolicyPeer"]] = None,
+        ports: typing.Optional[typing.List["NetworkPolicyPort"]] = None,
     ):
         """Create NetworkPolicyIngressRule instance."""
         super(NetworkPolicyIngressRule, self).__init__(
@@ -2093,8 +2443,8 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
     @property
     def from_(self) -> typing.List["NetworkPolicyPeer"]:
         """
-        List of sources which should be able to access the pods
-        selected for this rule. Items in this list are combined
+        from is a list of sources which should be able to access the
+        pods selected for this rule. Items in this list are combined
         using a logical OR operation. If this field is empty or
         missing, this rule matches all sources (traffic not
         restricted by source). If this field is present and contains
@@ -2111,8 +2461,8 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["NetworkPolicyPeer"], typing.List[dict]]
     ):
         """
-        List of sources which should be able to access the pods
-        selected for this rule. Items in this list are combined
+        from is a list of sources which should be able to access the
+        pods selected for this rule. Items in this list are combined
         using a logical OR operation. If this field is empty or
         missing, this rule matches all sources (traffic not
         restricted by source). If this field is present and contains
@@ -2132,13 +2482,13 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
     @property
     def ports(self) -> typing.List["NetworkPolicyPort"]:
         """
-        List of ports which should be made accessible on the pods
-        selected for this rule. Each item in this list is combined
-        using a logical OR. If this field is empty or missing, this
-        rule matches all ports (traffic not restricted by port). If
-        this field is present and contains at least one item, then
-        this rule allows traffic only if the traffic matches at
-        least one port in the list.
+        ports is a list of ports which should be made accessible on
+        the pods selected for this rule. Each item in this list is
+        combined using a logical OR. If this field is empty or
+        missing, this rule matches all ports (traffic not restricted
+        by port). If this field is present and contains at least one
+        item, then this rule allows traffic only if the traffic
+        matches at least one port in the list.
         """
         return typing.cast(
             typing.List["NetworkPolicyPort"],
@@ -2150,13 +2500,13 @@ class NetworkPolicyIngressRule(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["NetworkPolicyPort"], typing.List[dict]]
     ):
         """
-        List of ports which should be made accessible on the pods
-        selected for this rule. Each item in this list is combined
-        using a logical OR. If this field is empty or missing, this
-        rule matches all ports (traffic not restricted by port). If
-        this field is present and contains at least one item, then
-        this rule allows traffic only if the traffic matches at
-        least one port in the list.
+        ports is a list of ports which should be made accessible on
+        the pods selected for this rule. Each item in this list is
+        combined using a logical OR. If this field is empty or
+        missing, this rule matches all ports (traffic not restricted
+        by port). If this field is present and contains at least one
+        item, then this rule allows traffic only if the traffic
+        matches at least one port in the list.
         """
         cleaned: typing.List[NetworkPolicyPort] = []
         for item in value:
@@ -2182,8 +2532,8 @@ class NetworkPolicyList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["NetworkPolicy"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["NetworkPolicy"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create NetworkPolicyList instance."""
         super(NetworkPolicyList, self).__init__(
@@ -2203,7 +2553,7 @@ class NetworkPolicyList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["NetworkPolicy"]:
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         return typing.cast(
             typing.List["NetworkPolicy"],
@@ -2215,7 +2565,7 @@ class NetworkPolicyList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["NetworkPolicy"], typing.List[dict]]
     ):
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         cleaned: typing.List[NetworkPolicy] = []
         for item in value:
@@ -2255,7 +2605,7 @@ class NetworkPolicyList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.NetworkingV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -2280,9 +2630,9 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ip_block: "IPBlock" = None,
-        namespace_selector: "LabelSelector" = None,
-        pod_selector: "LabelSelector" = None,
+        ip_block: typing.Optional["IPBlock"] = None,
+        namespace_selector: typing.Optional["LabelSelector"] = None,
+        pod_selector: typing.Optional["LabelSelector"] = None,
     ):
         """Create NetworkPolicyPeer instance."""
         super(NetworkPolicyPeer, self).__init__(
@@ -2306,7 +2656,7 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
     @property
     def ip_block(self) -> "IPBlock":
         """
-        IPBlock defines policy on a particular IPBlock. If this
+        ipBlock defines policy on a particular IPBlock. If this
         field is set then neither of the other fields can be.
         """
         return typing.cast(
@@ -2317,7 +2667,7 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
     @ip_block.setter
     def ip_block(self, value: typing.Union["IPBlock", dict]):
         """
-        IPBlock defines policy on a particular IPBlock. If this
+        ipBlock defines policy on a particular IPBlock. If this
         field is set then neither of the other fields can be.
         """
         if isinstance(value, dict):
@@ -2330,15 +2680,15 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
     @property
     def namespace_selector(self) -> "LabelSelector":
         """
-        Selects Namespaces using cluster-scoped labels. This field
-        follows standard label selector semantics; if present but
-        empty, it selects all namespaces.
+        namespaceSelector selects namespaces using cluster-scoped
+        labels. This field follows standard label selector
+        semantics; if present but empty, it selects all namespaces.
 
-        If PodSelector is also set, then the NetworkPolicyPeer as a
-        whole selects the Pods matching PodSelector in the
-        Namespaces selected by NamespaceSelector. Otherwise it
-        selects all Pods in the Namespaces selected by
-        NamespaceSelector.
+        If podSelector is also set, then the NetworkPolicyPeer as a
+        whole selects the pods matching podSelector in the
+        namespaces selected by namespaceSelector. Otherwise it
+        selects all pods in the namespaces selected by
+        namespaceSelector.
         """
         return typing.cast(
             "LabelSelector",
@@ -2348,15 +2698,15 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
     @namespace_selector.setter
     def namespace_selector(self, value: typing.Union["LabelSelector", dict]):
         """
-        Selects Namespaces using cluster-scoped labels. This field
-        follows standard label selector semantics; if present but
-        empty, it selects all namespaces.
+        namespaceSelector selects namespaces using cluster-scoped
+        labels. This field follows standard label selector
+        semantics; if present but empty, it selects all namespaces.
 
-        If PodSelector is also set, then the NetworkPolicyPeer as a
-        whole selects the Pods matching PodSelector in the
-        Namespaces selected by NamespaceSelector. Otherwise it
-        selects all Pods in the Namespaces selected by
-        NamespaceSelector.
+        If podSelector is also set, then the NetworkPolicyPeer as a
+        whole selects the pods matching podSelector in the
+        namespaces selected by namespaceSelector. Otherwise it
+        selects all pods in the namespaces selected by
+        namespaceSelector.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2368,15 +2718,15 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
     @property
     def pod_selector(self) -> "LabelSelector":
         """
-        This is a label selector which selects Pods. This field
-        follows standard label selector semantics; if present but
-        empty, it selects all pods.
+        podSelector is a label selector which selects pods. This
+        field follows standard label selector semantics; if present
+        but empty, it selects all pods.
 
-        If NamespaceSelector is also set, then the NetworkPolicyPeer
-        as a whole selects the Pods matching PodSelector in the
+        If namespaceSelector is also set, then the NetworkPolicyPeer
+        as a whole selects the pods matching podSelector in the
         Namespaces selected by NamespaceSelector. Otherwise it
-        selects the Pods matching PodSelector in the policy's own
-        Namespace.
+        selects the pods matching podSelector in the policy's own
+        namespace.
         """
         return typing.cast(
             "LabelSelector",
@@ -2386,15 +2736,15 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
     @pod_selector.setter
     def pod_selector(self, value: typing.Union["LabelSelector", dict]):
         """
-        This is a label selector which selects Pods. This field
-        follows standard label selector semantics; if present but
-        empty, it selects all pods.
+        podSelector is a label selector which selects pods. This
+        field follows standard label selector semantics; if present
+        but empty, it selects all pods.
 
-        If NamespaceSelector is also set, then the NetworkPolicyPeer
-        as a whole selects the Pods matching PodSelector in the
+        If namespaceSelector is also set, then the NetworkPolicyPeer
+        as a whole selects the pods matching podSelector in the
         Namespaces selected by NamespaceSelector. Otherwise it
-        selects the Pods matching PodSelector in the policy's own
-        Namespace.
+        selects the pods matching podSelector in the policy's own
+        namespace.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2417,9 +2767,9 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        end_port: int = None,
-        port: typing.Union[str, int, None] = None,
-        protocol: str = None,
+        end_port: typing.Optional[int] = None,
+        port: typing.Optional[typing.Union[str, int, None]] = None,
+        protocol: typing.Optional[str] = None,
     ):
         """Create NetworkPolicyPort instance."""
         super(NetworkPolicyPort, self).__init__(
@@ -2439,13 +2789,11 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
     @property
     def end_port(self) -> int:
         """
-        If set, indicates that the range of ports from port to
-        endPort, inclusive, should be allowed by the policy. This
-        field cannot be defined if the port field is not defined or
-        if the port field is defined as a named (string) port. The
-        endPort must be equal or greater than port. This feature is
-        in Beta state and is enabled by default. It can be disabled
-        using the Feature Gate "NetworkPolicyEndPort".
+        endPort indicates that the range of ports from port to
+        endPort if set, inclusive, should be allowed by the policy.
+        This field cannot be defined if the port field is not
+        defined or if the port field is defined as a named (string)
+        port. The endPort must be equal or greater than port.
         """
         return typing.cast(
             int,
@@ -2455,22 +2803,20 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
     @end_port.setter
     def end_port(self, value: int):
         """
-        If set, indicates that the range of ports from port to
-        endPort, inclusive, should be allowed by the policy. This
-        field cannot be defined if the port field is not defined or
-        if the port field is defined as a named (string) port. The
-        endPort must be equal or greater than port. This feature is
-        in Beta state and is enabled by default. It can be disabled
-        using the Feature Gate "NetworkPolicyEndPort".
+        endPort indicates that the range of ports from port to
+        endPort if set, inclusive, should be allowed by the policy.
+        This field cannot be defined if the port field is not
+        defined or if the port field is defined as a named (string)
+        port. The endPort must be equal or greater than port.
         """
         self._properties["endPort"] = value
 
     @property
     def port(self) -> typing.Union[str, int, None]:
         """
-        The port on the given protocol. This can either be a
-        numerical or named port on a pod. If this field is not
-        provided, this matches all port names and numbers. If
+        port represents the port on the given protocol. This can
+        either be a numerical or named port on a pod. If this field
+        is not provided, this matches all port names and numbers. If
         present, only traffic on the specified protocol AND port
         will be matched.
         """
@@ -2482,9 +2828,9 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
     @port.setter
     def port(self, value: typing.Union[str, int, None]):
         """
-        The port on the given protocol. This can either be a
-        numerical or named port on a pod. If this field is not
-        provided, this matches all port names and numbers. If
+        port represents the port on the given protocol. This can
+        either be a numerical or named port on a pod. If this field
+        is not provided, this matches all port names and numbers. If
         present, only traffic on the specified protocol AND port
         will be matched.
         """
@@ -2493,8 +2839,9 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
     @property
     def protocol(self) -> str:
         """
-        The protocol (TCP, UDP, or SCTP) which traffic must match.
-        If not specified, this field defaults to TCP.
+        protocol represents the protocol (TCP, UDP, or SCTP) which
+        traffic must match. If not specified, this field defaults to
+        TCP.
         """
         return typing.cast(
             str,
@@ -2504,8 +2851,9 @@ class NetworkPolicyPort(_kuber_definitions.Definition):
     @protocol.setter
     def protocol(self, value: str):
         """
-        The protocol (TCP, UDP, or SCTP) which traffic must match.
-        If not specified, this field defaults to TCP.
+        protocol represents the protocol (TCP, UDP, or SCTP) which
+        traffic must match. If not specified, this field defaults to
+        TCP.
         """
         self._properties["protocol"] = value
 
@@ -2524,10 +2872,10 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        egress: typing.List["NetworkPolicyEgressRule"] = None,
-        ingress: typing.List["NetworkPolicyIngressRule"] = None,
-        pod_selector: "LabelSelector" = None,
-        policy_types: typing.List[str] = None,
+        egress: typing.Optional[typing.List["NetworkPolicyEgressRule"]] = None,
+        ingress: typing.Optional[typing.List["NetworkPolicyIngressRule"]] = None,
+        pod_selector: typing.Optional["LabelSelector"] = None,
+        policy_types: typing.Optional[typing.List[str]] = None,
     ):
         """Create NetworkPolicySpec instance."""
         super(NetworkPolicySpec, self).__init__(
@@ -2551,15 +2899,15 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     @property
     def egress(self) -> typing.List["NetworkPolicyEgressRule"]:
         """
-        List of egress rules to be applied to the selected pods.
-        Outgoing traffic is allowed if there are no NetworkPolicies
-        selecting the pod (and cluster policy otherwise allows the
-        traffic), OR if the traffic matches at least one egress rule
-        across all of the NetworkPolicy objects whose podSelector
-        matches the pod. If this field is empty then this
-        NetworkPolicy limits all outgoing traffic (and serves solely
-        to ensure that the pods it selects are isolated by default).
-        This field is beta-level in 1.8
+        egress is a list of egress rules to be applied to the
+        selected pods. Outgoing traffic is allowed if there are no
+        NetworkPolicies selecting the pod (and cluster policy
+        otherwise allows the traffic), OR if the traffic matches at
+        least one egress rule across all of the NetworkPolicy
+        objects whose podSelector matches the pod. If this field is
+        empty then this NetworkPolicy limits all outgoing traffic
+        (and serves solely to ensure that the pods it selects are
+        isolated by default). This field is beta-level in 1.8
         """
         return typing.cast(
             typing.List["NetworkPolicyEgressRule"],
@@ -2572,15 +2920,15 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
         value: typing.Union[typing.List["NetworkPolicyEgressRule"], typing.List[dict]],
     ):
         """
-        List of egress rules to be applied to the selected pods.
-        Outgoing traffic is allowed if there are no NetworkPolicies
-        selecting the pod (and cluster policy otherwise allows the
-        traffic), OR if the traffic matches at least one egress rule
-        across all of the NetworkPolicy objects whose podSelector
-        matches the pod. If this field is empty then this
-        NetworkPolicy limits all outgoing traffic (and serves solely
-        to ensure that the pods it selects are isolated by default).
-        This field is beta-level in 1.8
+        egress is a list of egress rules to be applied to the
+        selected pods. Outgoing traffic is allowed if there are no
+        NetworkPolicies selecting the pod (and cluster policy
+        otherwise allows the traffic), OR if the traffic matches at
+        least one egress rule across all of the NetworkPolicy
+        objects whose podSelector matches the pod. If this field is
+        empty then this NetworkPolicy limits all outgoing traffic
+        (and serves solely to ensure that the pods it selects are
+        isolated by default). This field is beta-level in 1.8
         """
         cleaned: typing.List[NetworkPolicyEgressRule] = []
         for item in value:
@@ -2595,15 +2943,16 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     @property
     def ingress(self) -> typing.List["NetworkPolicyIngressRule"]:
         """
-        List of ingress rules to be applied to the selected pods.
-        Traffic is allowed to a pod if there are no NetworkPolicies
-        selecting the pod (and cluster policy otherwise allows the
-        traffic), OR if the traffic source is the pod's local node,
-        OR if the traffic matches at least one ingress rule across
-        all of the NetworkPolicy objects whose podSelector matches
-        the pod. If this field is empty then this NetworkPolicy does
-        not allow any traffic (and serves solely to ensure that the
-        pods it selects are isolated by default)
+        ingress is a list of ingress rules to be applied to the
+        selected pods. Traffic is allowed to a pod if there are no
+        NetworkPolicies selecting the pod (and cluster policy
+        otherwise allows the traffic), OR if the traffic source is
+        the pod's local node, OR if the traffic matches at least one
+        ingress rule across all of the NetworkPolicy objects whose
+        podSelector matches the pod. If this field is empty then
+        this NetworkPolicy does not allow any traffic (and serves
+        solely to ensure that the pods it selects are isolated by
+        default)
         """
         return typing.cast(
             typing.List["NetworkPolicyIngressRule"],
@@ -2616,15 +2965,16 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
         value: typing.Union[typing.List["NetworkPolicyIngressRule"], typing.List[dict]],
     ):
         """
-        List of ingress rules to be applied to the selected pods.
-        Traffic is allowed to a pod if there are no NetworkPolicies
-        selecting the pod (and cluster policy otherwise allows the
-        traffic), OR if the traffic source is the pod's local node,
-        OR if the traffic matches at least one ingress rule across
-        all of the NetworkPolicy objects whose podSelector matches
-        the pod. If this field is empty then this NetworkPolicy does
-        not allow any traffic (and serves solely to ensure that the
-        pods it selects are isolated by default)
+        ingress is a list of ingress rules to be applied to the
+        selected pods. Traffic is allowed to a pod if there are no
+        NetworkPolicies selecting the pod (and cluster policy
+        otherwise allows the traffic), OR if the traffic source is
+        the pod's local node, OR if the traffic matches at least one
+        ingress rule across all of the NetworkPolicy objects whose
+        podSelector matches the pod. If this field is empty then
+        this NetworkPolicy does not allow any traffic (and serves
+        solely to ensure that the pods it selects are isolated by
+        default)
         """
         cleaned: typing.List[NetworkPolicyIngressRule] = []
         for item in value:
@@ -2639,13 +2989,13 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     @property
     def pod_selector(self) -> "LabelSelector":
         """
-        Selects the pods to which this NetworkPolicy object applies.
-        The array of ingress rules is applied to any pods selected
-        by this field. Multiple network policies can select the same
-        set of pods. In this case, the ingress rules for each are
-        combined additively. This field is NOT optional and follows
-        standard label selector semantics. An empty podSelector
-        matches all pods in this namespace.
+        podSelector selects the pods to which this NetworkPolicy
+        object applies. The array of ingress rules is applied to any
+        pods selected by this field. Multiple network policies can
+        select the same set of pods. In this case, the ingress rules
+        for each are combined additively. This field is NOT optional
+        and follows standard label selector semantics. An empty
+        podSelector matches all pods in this namespace.
         """
         return typing.cast(
             "LabelSelector",
@@ -2655,13 +3005,13 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     @pod_selector.setter
     def pod_selector(self, value: typing.Union["LabelSelector", dict]):
         """
-        Selects the pods to which this NetworkPolicy object applies.
-        The array of ingress rules is applied to any pods selected
-        by this field. Multiple network policies can select the same
-        set of pods. In this case, the ingress rules for each are
-        combined additively. This field is NOT optional and follows
-        standard label selector semantics. An empty podSelector
-        matches all pods in this namespace.
+        podSelector selects the pods to which this NetworkPolicy
+        object applies. The array of ingress rules is applied to any
+        pods selected by this field. Multiple network policies can
+        select the same set of pods. In this case, the ingress rules
+        for each are combined additively. This field is NOT optional
+        and follows standard label selector semantics. An empty
+        podSelector matches all pods in this namespace.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2673,20 +3023,20 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     @property
     def policy_types(self) -> typing.List[str]:
         """
-        List of rule types that the NetworkPolicy relates to. Valid
-        options are ["Ingress"], ["Egress"], or ["Ingress",
-        "Egress"]. If this field is not specified, it will default
-        based on the existence of Ingress or Egress rules; policies
-        that contain an Egress section are assumed to affect Egress,
-        and all policies (whether or not they contain an Ingress
-        section) are assumed to affect Ingress. If you want to write
-        an egress-only policy, you must explicitly specify
-        policyTypes [ "Egress" ]. Likewise, if you want to write a
-        policy that specifies that no egress is allowed, you must
-        specify a policyTypes value that include "Egress" (since
-        such a policy would not include an Egress section and would
-        otherwise default to just [ "Ingress" ]). This field is
-        beta-level in 1.8
+        policyTypes is a list of rule types that the NetworkPolicy
+        relates to. Valid options are ["Ingress"], ["Egress"], or
+        ["Ingress", "Egress"]. If this field is not specified, it
+        will default based on the existence of ingress or egress
+        rules; policies that contain an egress section are assumed
+        to affect egress, and all policies (whether or not they
+        contain an ingress section) are assumed to affect ingress.
+        If you want to write an egress-only policy, you must
+        explicitly specify policyTypes [ "Egress" ]. Likewise, if
+        you want to write a policy that specifies that no egress is
+        allowed, you must specify a policyTypes value that include
+        "Egress" (since such a policy would not include an egress
+        section and would otherwise default to just [ "Ingress" ]).
+        This field is beta-level in 1.8
         """
         return typing.cast(
             typing.List[str],
@@ -2696,24 +3046,81 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
     @policy_types.setter
     def policy_types(self, value: typing.List[str]):
         """
-        List of rule types that the NetworkPolicy relates to. Valid
-        options are ["Ingress"], ["Egress"], or ["Ingress",
-        "Egress"]. If this field is not specified, it will default
-        based on the existence of Ingress or Egress rules; policies
-        that contain an Egress section are assumed to affect Egress,
-        and all policies (whether or not they contain an Ingress
-        section) are assumed to affect Ingress. If you want to write
-        an egress-only policy, you must explicitly specify
-        policyTypes [ "Egress" ]. Likewise, if you want to write a
-        policy that specifies that no egress is allowed, you must
-        specify a policyTypes value that include "Egress" (since
-        such a policy would not include an Egress section and would
-        otherwise default to just [ "Ingress" ]). This field is
-        beta-level in 1.8
+        policyTypes is a list of rule types that the NetworkPolicy
+        relates to. Valid options are ["Ingress"], ["Egress"], or
+        ["Ingress", "Egress"]. If this field is not specified, it
+        will default based on the existence of ingress or egress
+        rules; policies that contain an egress section are assumed
+        to affect egress, and all policies (whether or not they
+        contain an ingress section) are assumed to affect ingress.
+        If you want to write an egress-only policy, you must
+        explicitly specify policyTypes [ "Egress" ]. Likewise, if
+        you want to write a policy that specifies that no egress is
+        allowed, you must specify a policyTypes value that include
+        "Egress" (since such a policy would not include an egress
+        section and would otherwise default to just [ "Ingress" ]).
+        This field is beta-level in 1.8
         """
         self._properties["policyTypes"] = value
 
     def __enter__(self) -> "NetworkPolicySpec":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class NetworkPolicyStatus(_kuber_definitions.Definition):
+    """
+    NetworkPolicyStatus describes the current state of the
+    NetworkPolicy.
+    """
+
+    def __init__(
+        self,
+        conditions: typing.Optional[typing.List["Condition"]] = None,
+    ):
+        """Create NetworkPolicyStatus instance."""
+        super(NetworkPolicyStatus, self).__init__(
+            api_version="networking/v1", kind="NetworkPolicyStatus"
+        )
+        self._properties = {
+            "conditions": conditions if conditions is not None else [],
+        }
+        self._types = {
+            "conditions": (list, Condition),
+        }
+
+    @property
+    def conditions(self) -> typing.List["Condition"]:
+        """
+        conditions holds an array of metav1.Condition that describe
+        the state of the NetworkPolicy. Current service state
+        """
+        return typing.cast(
+            typing.List["Condition"],
+            self._properties.get("conditions"),
+        )
+
+    @conditions.setter
+    def conditions(
+        self, value: typing.Union[typing.List["Condition"], typing.List[dict]]
+    ):
+        """
+        conditions holds an array of metav1.Condition that describe
+        the state of the NetworkPolicy. Current service state
+        """
+        cleaned: typing.List[Condition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    Condition,
+                    Condition().from_dict(item),
+                )
+            cleaned.append(typing.cast(Condition, item))
+        self._properties["conditions"] = cleaned
+
+    def __enter__(self) -> "NetworkPolicyStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -2727,8 +3134,8 @@ class ServiceBackendPort(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
-        number: int = None,
+        name: typing.Optional[str] = None,
+        number: typing.Optional[int] = None,
     ):
         """Create ServiceBackendPort instance."""
         super(ServiceBackendPort, self).__init__(
@@ -2746,7 +3153,7 @@ class ServiceBackendPort(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name is the name of the port on the Service. This is a
+        name is the name of the port on the Service. This is a
         mutually exclusive setting with "Number".
         """
         return typing.cast(
@@ -2757,7 +3164,7 @@ class ServiceBackendPort(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name is the name of the port on the Service. This is a
+        name is the name of the port on the Service. This is a
         mutually exclusive setting with "Number".
         """
         self._properties["name"] = value
@@ -2765,7 +3172,7 @@ class ServiceBackendPort(_kuber_definitions.Definition):
     @property
     def number(self) -> int:
         """
-        Number is the numerical port number (e.g. 80) on the
+        number is the numerical port number (e.g. 80) on the
         Service. This is a mutually exclusive setting with "Name".
         """
         return typing.cast(
@@ -2776,7 +3183,7 @@ class ServiceBackendPort(_kuber_definitions.Definition):
     @number.setter
     def number(self, value: int):
         """
-        Number is the numerical port number (e.g. 80) on the
+        number is the numerical port number (e.g. 80) on the
         Service. This is a mutually exclusive setting with "Name".
         """
         self._properties["number"] = value

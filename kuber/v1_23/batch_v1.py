@@ -32,9 +32,9 @@ class CronJob(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "CronJobSpec" = None,
-        status: "CronJobStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["CronJobSpec"] = None,
+        status: typing.Optional["CronJobStatus"] = None,
     ):
         """Create CronJob instance."""
         super(CronJob, self).__init__(api_version="batch/v1", kind="CronJob")
@@ -280,7 +280,9 @@ class CronJob(_kuber_definitions.Resource):
         """
         return self.spec.job_template.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Creates the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -302,7 +304,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Replaces the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -324,7 +328,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Patches the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -346,7 +352,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "CronJobStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -369,7 +377,7 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CronJob from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -389,7 +397,7 @@ class CronJob(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -418,7 +426,7 @@ class CronJob(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -442,8 +450,8 @@ class CronJobList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CronJob"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CronJob"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CronJobList instance."""
         super(CronJobList, self).__init__(api_version="batch/v1", kind="CronJobList")
@@ -511,7 +519,7 @@ class CronJobList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -536,13 +544,13 @@ class CronJobSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        concurrency_policy: str = None,
-        failed_jobs_history_limit: int = None,
-        job_template: "JobTemplateSpec" = None,
-        schedule: str = None,
-        starting_deadline_seconds: int = None,
-        successful_jobs_history_limit: int = None,
-        suspend: bool = None,
+        concurrency_policy: typing.Optional[str] = None,
+        failed_jobs_history_limit: typing.Optional[int] = None,
+        job_template: typing.Optional["JobTemplateSpec"] = None,
+        schedule: typing.Optional[str] = None,
+        starting_deadline_seconds: typing.Optional[int] = None,
+        successful_jobs_history_limit: typing.Optional[int] = None,
+        suspend: typing.Optional[bool] = None,
     ):
         """Create CronJobSpec instance."""
         super(CronJobSpec, self).__init__(api_version="batch/v1", kind="CronJobSpec")
@@ -583,6 +591,7 @@ class CronJobSpec(_kuber_definitions.Definition):
         concurrently; - "Forbid": forbids concurrent runs, skipping
         next run if previous run hasn't finished yet; - "Replace":
         cancels currently running job and replaces it with a new one
+
         """
         return typing.cast(
             str,
@@ -597,6 +606,7 @@ class CronJobSpec(_kuber_definitions.Definition):
         concurrently; - "Forbid": forbids concurrent runs, skipping
         next run if previous run hasn't finished yet; - "Replace":
         cancels currently running job and replaces it with a new one
+
         """
         self._properties["concurrencyPolicy"] = value
 
@@ -886,9 +896,9 @@ class CronJobStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active: typing.List["ObjectReference"] = None,
-        last_schedule_time: str = None,
-        last_successful_time: str = None,
+        active: typing.Optional[typing.List["ObjectReference"]] = None,
+        last_schedule_time: typing.Optional[str] = None,
+        last_successful_time: typing.Optional[str] = None,
     ):
         """Create CronJobStatus instance."""
         super(CronJobStatus, self).__init__(
@@ -1000,9 +1010,9 @@ class Job(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "JobSpec" = None,
-        status: "JobStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["JobSpec"] = None,
+        status: typing.Optional["JobStatus"] = None,
     ):
         """Create Job instance."""
         super(Job, self).__init__(api_version="batch/v1", kind="Job")
@@ -1241,7 +1251,7 @@ class Job(_kuber_definitions.Resource):
         """
         return self.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "JobStatus":
+    def create_resource(self, namespace: typing.Optional["str"] = None) -> "JobStatus":
         """
         Creates the Job in the currently
         configured Kubernetes cluster and returns the status information
@@ -1263,7 +1273,7 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "JobStatus":
+    def replace_resource(self, namespace: typing.Optional["str"] = None) -> "JobStatus":
         """
         Replaces the Job in the currently
         configured Kubernetes cluster and returns the status information
@@ -1285,7 +1295,7 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "JobStatus":
+    def patch_resource(self, namespace: typing.Optional["str"] = None) -> "JobStatus":
         """
         Patches the Job in the currently
         configured Kubernetes cluster and returns the status information
@@ -1307,7 +1317,9 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "JobStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "JobStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -1330,7 +1342,7 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Job from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1350,7 +1362,7 @@ class Job(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1379,7 +1391,7 @@ class Job(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1403,12 +1415,12 @@ class JobCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_probe_time: str = None,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_probe_time: typing.Optional[str] = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create JobCondition instance."""
         super(JobCondition, self).__init__(api_version="batch/v1", kind="JobCondition")
@@ -1561,8 +1573,8 @@ class JobList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Job"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Job"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create JobList instance."""
         super(JobList, self).__init__(api_version="batch/v1", kind="JobList")
@@ -1630,7 +1642,7 @@ class JobList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1654,16 +1666,16 @@ class JobSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active_deadline_seconds: int = None,
-        backoff_limit: int = None,
-        completion_mode: str = None,
-        completions: int = None,
-        manual_selector: bool = None,
-        parallelism: int = None,
-        selector: "LabelSelector" = None,
-        suspend: bool = None,
-        template: "PodTemplateSpec" = None,
-        ttl_seconds_after_finished: int = None,
+        active_deadline_seconds: typing.Optional[int] = None,
+        backoff_limit: typing.Optional[int] = None,
+        completion_mode: typing.Optional[str] = None,
+        completions: typing.Optional[int] = None,
+        manual_selector: typing.Optional[bool] = None,
+        parallelism: typing.Optional[int] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        suspend: typing.Optional[bool] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
+        ttl_seconds_after_finished: typing.Optional[int] = None,
     ):
         """Create JobSpec instance."""
         super(JobSpec, self).__init__(api_version="batch/v1", kind="JobSpec")
@@ -2002,8 +2014,7 @@ class JobSpec(_kuber_definitions.Definition):
         finalizers) will be honored. If this field is unset, the Job
         won't be automatically deleted. If this field is set to
         zero, the Job becomes eligible to be deleted immediately
-        after it finishes. This field is alpha-level and is only
-        honored by servers that enable the TTLAfterFinished feature.
+        after it finishes.
         """
         return typing.cast(
             int,
@@ -2021,8 +2032,7 @@ class JobSpec(_kuber_definitions.Definition):
         finalizers) will be honored. If this field is unset, the Job
         won't be automatically deleted. If this field is set to
         zero, the Job becomes eligible to be deleted immediately
-        after it finishes. This field is alpha-level and is only
-        honored by servers that enable the TTLAfterFinished feature.
+        after it finishes.
         """
         self._properties["ttlSecondsAfterFinished"] = value
 
@@ -2182,14 +2192,15 @@ class JobStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active: int = None,
-        completed_indexes: str = None,
-        completion_time: str = None,
-        conditions: typing.List["JobCondition"] = None,
-        failed: int = None,
-        start_time: str = None,
-        succeeded: int = None,
-        uncounted_terminated_pods: "UncountedTerminatedPods" = None,
+        active: typing.Optional[int] = None,
+        completed_indexes: typing.Optional[str] = None,
+        completion_time: typing.Optional[str] = None,
+        conditions: typing.Optional[typing.List["JobCondition"]] = None,
+        failed: typing.Optional[int] = None,
+        ready: typing.Optional[int] = None,
+        start_time: typing.Optional[str] = None,
+        succeeded: typing.Optional[int] = None,
+        uncounted_terminated_pods: typing.Optional["UncountedTerminatedPods"] = None,
     ):
         """Create JobStatus instance."""
         super(JobStatus, self).__init__(api_version="batch/v1", kind="JobStatus")
@@ -2201,6 +2212,7 @@ class JobStatus(_kuber_definitions.Definition):
             "completionTime": completion_time if completion_time is not None else None,
             "conditions": conditions if conditions is not None else [],
             "failed": failed if failed is not None else None,
+            "ready": ready if ready is not None else None,
             "startTime": start_time if start_time is not None else None,
             "succeeded": succeeded if succeeded is not None else None,
             "uncountedTerminatedPods": uncounted_terminated_pods
@@ -2213,6 +2225,7 @@ class JobStatus(_kuber_definitions.Definition):
             "completionTime": (str, None),
             "conditions": (list, JobCondition),
             "failed": (int, None),
+            "ready": (int, None),
             "startTime": (str, None),
             "succeeded": (int, None),
             "uncountedTerminatedPods": (UncountedTerminatedPods, None),
@@ -2221,7 +2234,7 @@ class JobStatus(_kuber_definitions.Definition):
     @property
     def active(self) -> int:
         """
-        The number of actively running pods.
+        The number of pending and running pods.
         """
         return typing.cast(
             int,
@@ -2231,7 +2244,7 @@ class JobStatus(_kuber_definitions.Definition):
     @active.setter
     def active(self, value: int):
         """
-        The number of actively running pods.
+        The number of pending and running pods.
         """
         self._properties["active"] = value
 
@@ -2358,6 +2371,31 @@ class JobStatus(_kuber_definitions.Definition):
         self._properties["failed"] = value
 
     @property
+    def ready(self) -> int:
+        """
+        The number of pods which have a Ready condition.
+
+        This field is alpha-level. The job controller populates the
+        field when the feature gate JobReadyPods is enabled
+        (disabled by default).
+        """
+        return typing.cast(
+            int,
+            self._properties.get("ready"),
+        )
+
+    @ready.setter
+    def ready(self, value: int):
+        """
+        The number of pods which have a Ready condition.
+
+        This field is alpha-level. The job controller populates the
+        field when the feature gate JobReadyPods is enabled
+        (disabled by default).
+        """
+        self._properties["ready"] = value
+
+    @property
     def start_time(self) -> str:
         """
         Represents time when the job controller started processing a
@@ -2418,11 +2456,11 @@ class JobStatus(_kuber_definitions.Definition):
         increasing the corresponding
             counter.
 
-        This field is alpha-level. The job controller only makes use
+        This field is beta-level. The job controller only makes use
         of this field when the feature gate
-        JobTrackingWithFinalizers is enabled. Old jobs might not be
-        tracked using this field, in which case the field remains
-        null.
+        JobTrackingWithFinalizers is enabled (enabled by default).
+        Old jobs might not be tracked using this field, in which
+        case the field remains null.
         """
         return typing.cast(
             "UncountedTerminatedPods",
@@ -2446,11 +2484,11 @@ class JobStatus(_kuber_definitions.Definition):
         increasing the corresponding
             counter.
 
-        This field is alpha-level. The job controller only makes use
+        This field is beta-level. The job controller only makes use
         of this field when the feature gate
-        JobTrackingWithFinalizers is enabled. Old jobs might not be
-        tracked using this field, in which case the field remains
-        null.
+        JobTrackingWithFinalizers is enabled (enabled by default).
+        Old jobs might not be tracked using this field, in which
+        case the field remains null.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2474,8 +2512,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "JobSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["JobSpec"] = None,
     ):
         """Create JobTemplateSpec instance."""
         super(JobTemplateSpec, self).__init__(
@@ -2704,8 +2742,8 @@ class UncountedTerminatedPods(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        failed: typing.List[str] = None,
-        succeeded: typing.List[str] = None,
+        failed: typing.Optional[typing.List[str]] = None,
+        succeeded: typing.Optional[typing.List[str]] = None,
     ):
         """Create UncountedTerminatedPods instance."""
         super(UncountedTerminatedPods, self).__init__(

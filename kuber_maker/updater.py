@@ -57,6 +57,7 @@ def get_release_groups() -> typing.List[ApiGroup]:
     url = VERSION_URL
     while url is not None:
         response = requests.get(url, headers=headers)
+        response.raise_for_status()
         entries += response.json()
         url = response.links.get("next", {}).get("url")
 

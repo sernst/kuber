@@ -24,9 +24,9 @@ class ResourceBundle:
 
     def __init__(
         self,
-        bundle_name: str = None,
-        kubernetes_version: "kuber.VersionLabel" = None,
-        namespace: str = None,
+        bundle_name: typing.Optional[str] = None,
+        kubernetes_version: typing.Optional["kuber.VersionLabel"] = None,
+        namespace: typing.Optional[str] = None,
     ):
         """
         Initializes the bundle.
@@ -79,7 +79,11 @@ class ResourceBundle:
         return self._array
 
     def get(
-        self, name: str = None, kind: str = None, namespace: str = None, **kwargs
+        self,
+        name: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        **kwargs,
     ) -> typing.Optional["creation.ResourceSubclass"]:
         """
         Fetches the resource in the bundle that best and first matches the
@@ -112,7 +116,11 @@ class ResourceBundle:
         return None
 
     def get_many(
-        self, name: str = None, kind: str = None, namespace: str = None, **kwargs
+        self,
+        name: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        namespace: typing.Optional[str] = None,
+        **kwargs,
     ) -> typing.List["creation.ResourceSubclass"]:
         """
         Fetches the resources in the bundle that matches the given properties
@@ -145,7 +153,10 @@ class ResourceBundle:
         return results
 
     def pop(
-        self, name: str = None, kind: str = None, **kwargs
+        self,
+        name: typing.Optional[str] = None,
+        kind: typing.Optional[str] = None,
+        **kwargs,
     ) -> typing.Optional["creation.ResourceSubclass"]:
         """
         Removes the resource matching the specified arguments from the bundle
@@ -539,7 +550,7 @@ class ResourceBundle:
         self,
         directory: "kuber.PathLike",
         recursive: bool = False,
-        ignores: typing.List[str] = None,
+        ignores: typing.Optional[typing.List[str]] = None,
     ) -> "ResourceBundle":
         """
         Adds all configuration files (YAML and JSON) in the specified
@@ -574,7 +585,7 @@ class ResourceBundle:
     def add_directory_files(
         self,
         directory: "kuber.PathLike",
-        filenames: typing.Iterable = None,
+        filenames: typing.Optional[typing.Iterable] = None,
     ) -> "ResourceBundle":
         """
         Adds all of the resource configuration filenames listed in the
@@ -614,7 +625,7 @@ class ResourceBundle:
         ] = None,
         repos: typing.Optional[typing.Dict[str, str]] = None,
         update: bool = True,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
     ) -> "ResourceBundle":
         """
         Adds all of the resource configuration render by the specified helm
@@ -698,9 +709,9 @@ class ResourceBundle:
 
     def create(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         echo: bool = False,
-        filters: typing.List[str] = None,
+        filters: typing.Optional[typing.List[str]] = None,
     ) -> typing.List["execution.ResponseInfo"]:
         """
         Create all resources in the bundle.
@@ -730,9 +741,9 @@ class ResourceBundle:
 
     def replace(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         echo: bool = False,
-        filters: typing.List[str] = None,
+        filters: typing.Optional[typing.List[str]] = None,
     ) -> typing.List["execution.ResponseInfo"]:
         """
         Replace all resources in the bundle.
@@ -762,9 +773,9 @@ class ResourceBundle:
 
     def statuses(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         echo: bool = False,
-        filters: typing.List[str] = None,
+        filters: typing.Optional[typing.List[str]] = None,
     ) -> typing.List["execution.ResponseInfo"]:
         """
         Returns a list of statuses for all resources in the bundle.
@@ -794,9 +805,9 @@ class ResourceBundle:
 
     def delete(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         echo: bool = False,
-        filters: typing.List[str] = None,
+        filters: typing.Optional[typing.List[str]] = None,
     ) -> typing.List["execution.ResponseInfo"]:
         """
         Delete all resources in the bundle.

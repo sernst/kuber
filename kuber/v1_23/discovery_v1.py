@@ -18,14 +18,14 @@ class Endpoint(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        addresses: typing.List[str] = None,
-        conditions: "EndpointConditions" = None,
-        deprecated_topology: dict = None,
-        hints: "EndpointHints" = None,
-        hostname: str = None,
-        node_name: str = None,
-        target_ref: "ObjectReference" = None,
-        zone: str = None,
+        addresses: typing.Optional[typing.List[str]] = None,
+        conditions: typing.Optional["EndpointConditions"] = None,
+        deprecated_topology: typing.Optional[dict] = None,
+        hints: typing.Optional["EndpointHints"] = None,
+        hostname: typing.Optional[str] = None,
+        node_name: typing.Optional[str] = None,
+        target_ref: typing.Optional["ObjectReference"] = None,
+        zone: typing.Optional[str] = None,
     ):
         """Create Endpoint instance."""
         super(Endpoint, self).__init__(api_version="discovery/v1", kind="Endpoint")
@@ -262,9 +262,9 @@ class EndpointConditions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ready: bool = None,
-        serving: bool = None,
-        terminating: bool = None,
+        ready: typing.Optional[bool] = None,
+        serving: typing.Optional[bool] = None,
+        terminating: typing.Optional[bool] = None,
     ):
         """Create EndpointConditions instance."""
         super(EndpointConditions, self).__init__(
@@ -375,7 +375,7 @@ class EndpointHints(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        for_zones: typing.List["ForZone"] = None,
+        for_zones: typing.Optional[typing.List["ForZone"]] = None,
     ):
         """Create EndpointHints instance."""
         super(EndpointHints, self).__init__(
@@ -429,10 +429,10 @@ class EndpointPort(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        app_protocol: str = None,
-        name: str = None,
-        port: int = None,
-        protocol: str = None,
+        app_protocol: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
+        protocol: typing.Optional[str] = None,
     ):
         """Create EndpointPort instance."""
         super(EndpointPort, self).__init__(
@@ -566,10 +566,10 @@ class EndpointSlice(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        address_type: str = None,
-        endpoints: typing.List["Endpoint"] = None,
-        metadata: "ObjectMeta" = None,
-        ports: typing.List["EndpointPort"] = None,
+        address_type: typing.Optional[str] = None,
+        endpoints: typing.Optional[typing.List["Endpoint"]] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        ports: typing.Optional[typing.List["EndpointPort"]] = None,
     ):
         """Create EndpointSlice instance."""
         super(EndpointSlice, self).__init__(
@@ -599,6 +599,7 @@ class EndpointSlice(_kuber_definitions.Resource):
         address types are currently supported: * IPv4: Represents an
         IPv4 Address. * IPv6: Represents an IPv6 Address. * FQDN:
         Represents a Fully Qualified Domain Name.
+
         """
         return typing.cast(
             str,
@@ -614,6 +615,7 @@ class EndpointSlice(_kuber_definitions.Resource):
         address types are currently supported: * IPv4: Represents an
         IPv4 Address. * IPv6: Represents an IPv6 Address. * FQDN:
         Represents a Fully Qualified Domain Name.
+
         """
         self._properties["addressType"] = value
 
@@ -705,7 +707,7 @@ class EndpointSlice(_kuber_definitions.Resource):
             cleaned.append(typing.cast(EndpointPort, item))
         self._properties["ports"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the EndpointSlice in the currently
         configured Kubernetes cluster.
@@ -721,7 +723,7 @@ class EndpointSlice(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the EndpointSlice in the currently
         configured Kubernetes cluster.
@@ -737,7 +739,7 @@ class EndpointSlice(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the EndpointSlice in the currently
         configured Kubernetes cluster.
@@ -753,11 +755,11 @@ class EndpointSlice(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the EndpointSlice from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -777,7 +779,7 @@ class EndpointSlice(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -806,7 +808,7 @@ class EndpointSlice(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.DiscoveryV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -830,8 +832,8 @@ class EndpointSliceList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["EndpointSlice"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["EndpointSlice"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create EndpointSliceList instance."""
         super(EndpointSliceList, self).__init__(
@@ -899,7 +901,7 @@ class EndpointSliceList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.DiscoveryV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -924,7 +926,7 @@ class ForZone(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
     ):
         """Create ForZone instance."""
         super(ForZone, self).__init__(api_version="discovery/v1", kind="ForZone")

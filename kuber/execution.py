@@ -26,7 +26,9 @@ class ResponseInfo(typing.NamedTuple):
 
 
 def _parse_api_exception(
-    resource: "definitions.Resource", error: ApiException, symbols: dict = None
+    resource: "definitions.Resource",
+    error: ApiException,
+    symbols: typing.Optional[dict] = None,
 ) -> ResponseInfo:
     """Returns the parsed body of the given error"""
     try:
@@ -64,7 +66,9 @@ def _echo_response(response: ResponseInfo):
 
 
 def create_resource(
-    resource: "definitions.Resource", namespace: str = None, echo: bool = False
+    resource: "definitions.Resource",
+    namespace: typing.Optional[str] = None,
+    echo: bool = False,
 ) -> ResponseInfo:
     """..."""
     try:
@@ -82,7 +86,9 @@ def create_resource(
 
 
 def replace_resource(
-    resource: "definitions.Resource", namespace: str = None, echo: bool = False
+    resource: "definitions.Resource",
+    namespace: typing.Optional[str] = None,
+    echo: bool = False,
 ) -> ResponseInfo:
     """..."""
     try:
@@ -97,7 +103,9 @@ def replace_resource(
 
 
 def patch_resource(
-    resource: "definitions.Resource", namespace: str = None, echo: bool = False
+    resource: "definitions.Resource",
+    namespace: typing.Optional[str] = None,
+    echo: bool = False,
 ) -> ResponseInfo:
     """..."""
     try:
@@ -112,7 +120,9 @@ def patch_resource(
 
 
 def get_resource_status(
-    resource: "definitions.Resource", namespace: str = None, echo: bool = False
+    resource: "definitions.Resource",
+    namespace: typing.Optional[str] = None,
+    echo: bool = False,
 ) -> ResponseInfo:
     """Shows statuses of resources in the bundle."""
     try:
@@ -146,7 +156,9 @@ def get_resource_status(
 
 
 def delete_resource(
-    resource: "definitions.Resource", namespace: str = None, echo: bool = False
+    resource: "definitions.Resource",
+    namespace: typing.Optional[str] = None,
+    echo: bool = False,
 ) -> ResponseInfo:
     """..."""
     try:

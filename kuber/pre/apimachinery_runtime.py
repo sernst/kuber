@@ -16,28 +16,38 @@ class RawExtension(_kuber_definitions.Definition):
     internal struct. You also need to register your various
     plugin types.
 
-    // Internal package: type MyAPIObject struct {
-        runtime.TypeMeta `json:",inline"`
-        MyPlugin runtime.Object `json:"myPlugin"`
-    } type PluginA struct {
-        AOption string `json:"aOption"`
-    }
+    // Internal package:
 
-    // External package: type MyAPIObject struct {
-        runtime.TypeMeta `json:",inline"`
-        MyPlugin runtime.RawExtension `json:"myPlugin"`
-    } type PluginA struct {
-        AOption string `json:"aOption"`
-    }
+        type MyAPIObject struct {
+                runtime.TypeMeta `json:",inline"`
+                MyPlugin runtime.Object `json:"myPlugin"`
+        }
 
-    // On the wire, the JSON will look something like this: {
-        "kind":"MyAPIObject",
-        "apiVersion":"v1",
-        "myPlugin": {
-                "kind":"PluginA",
-                "aOption":"foo",
-        },
-    }
+        type PluginA struct {
+                AOption string `json:"aOption"`
+        }
+
+    // External package:
+
+        type MyAPIObject struct {
+                runtime.TypeMeta `json:",inline"`
+                MyPlugin runtime.RawExtension `json:"myPlugin"`
+        }
+
+        type PluginA struct {
+                AOption string `json:"aOption"`
+        }
+
+    // On the wire, the JSON will look something like this:
+
+        {
+                "kind":"MyAPIObject",
+                "apiVersion":"v1",
+                "myPlugin": {
+                        "kind":"PluginA",
+                        "aOption":"foo",
+                },
+        }
 
     So what happens? Decode first uses json or yaml to unmarshal
     the serialized data into your external MyAPIObject. That

@@ -32,9 +32,9 @@ class CronJob(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "CronJobSpec" = None,
-        status: "CronJobStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["CronJobSpec"] = None,
+        status: typing.Optional["CronJobStatus"] = None,
     ):
         """Create CronJob instance."""
         super(CronJob, self).__init__(api_version="batch/v1", kind="CronJob")
@@ -280,7 +280,9 @@ class CronJob(_kuber_definitions.Resource):
         """
         return self.spec.job_template.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Creates the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -302,7 +304,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Replaces the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -324,7 +328,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "CronJobStatus":
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Patches the CronJob in the currently
         configured Kubernetes cluster and returns the status information
@@ -346,7 +352,9 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "CronJobStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "CronJobStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -369,7 +377,7 @@ class CronJob(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the CronJob from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -389,7 +397,7 @@ class CronJob(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -418,7 +426,7 @@ class CronJob(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -442,8 +450,8 @@ class CronJobList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["CronJob"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["CronJob"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create CronJobList instance."""
         super(CronJobList, self).__init__(api_version="batch/v1", kind="CronJobList")
@@ -511,7 +519,7 @@ class CronJobList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -536,13 +544,14 @@ class CronJobSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        concurrency_policy: str = None,
-        failed_jobs_history_limit: int = None,
-        job_template: "JobTemplateSpec" = None,
-        schedule: str = None,
-        starting_deadline_seconds: int = None,
-        successful_jobs_history_limit: int = None,
-        suspend: bool = None,
+        concurrency_policy: typing.Optional[str] = None,
+        failed_jobs_history_limit: typing.Optional[int] = None,
+        job_template: typing.Optional["JobTemplateSpec"] = None,
+        schedule: typing.Optional[str] = None,
+        starting_deadline_seconds: typing.Optional[int] = None,
+        successful_jobs_history_limit: typing.Optional[int] = None,
+        suspend: typing.Optional[bool] = None,
+        time_zone: typing.Optional[str] = None,
     ):
         """Create CronJobSpec instance."""
         super(CronJobSpec, self).__init__(api_version="batch/v1", kind="CronJobSpec")
@@ -564,6 +573,7 @@ class CronJobSpec(_kuber_definitions.Definition):
             if successful_jobs_history_limit is not None
             else None,
             "suspend": suspend if suspend is not None else None,
+            "timeZone": time_zone if time_zone is not None else "",
         }
         self._types = {
             "concurrencyPolicy": (str, None),
@@ -573,6 +583,7 @@ class CronJobSpec(_kuber_definitions.Definition):
             "startingDeadlineSeconds": (int, None),
             "successfulJobsHistoryLimit": (int, None),
             "suspend": (bool, None),
+            "timeZone": (str, None),
         }
 
     @property
@@ -583,6 +594,7 @@ class CronJobSpec(_kuber_definitions.Definition):
         concurrently; - "Forbid": forbids concurrent runs, skipping
         next run if previous run hasn't finished yet; - "Replace":
         cancels currently running job and replaces it with a new one
+
         """
         return typing.cast(
             str,
@@ -597,6 +609,7 @@ class CronJobSpec(_kuber_definitions.Definition):
         concurrently; - "Forbid": forbids concurrent runs, skipping
         next run if previous run hasn't finished yet; - "Replace":
         cancels currently running job and replaces it with a new one
+
         """
         self._properties["concurrencyPolicy"] = value
 
@@ -722,6 +735,53 @@ class CronJobSpec(_kuber_definitions.Definition):
         Defaults to false.
         """
         self._properties["suspend"] = value
+
+    @property
+    def time_zone(self) -> str:
+        """
+        The time zone name for the given schedule, see https://en.wi
+        kipedia.org/wiki/List_of_tz_database_time_zones. If not
+        specified, this will default to the time zone of the kube-
+        controller-manager process. The set of valid time zone names
+        and the time zone offset is loaded from the system-wide time
+        zone database by the API server during CronJob validation
+        and the controller manager during execution. If no system-
+        wide time zone database can be found a bundled version of
+        the database is used instead. If the time zone name becomes
+        invalid during the lifetime of a CronJob or due to a change
+        in host configuration, the controller will stop creating new
+        new Jobs and will create a system event with the reason
+        UnknownTimeZone. More information can be found in https://ku
+        bernetes.io/docs/concepts/workloads/controllers/cron-
+        jobs/#time-zones This is beta field and must be enabled via
+        the `CronJobTimeZone` feature gate.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("timeZone"),
+        )
+
+    @time_zone.setter
+    def time_zone(self, value: str):
+        """
+        The time zone name for the given schedule, see https://en.wi
+        kipedia.org/wiki/List_of_tz_database_time_zones. If not
+        specified, this will default to the time zone of the kube-
+        controller-manager process. The set of valid time zone names
+        and the time zone offset is loaded from the system-wide time
+        zone database by the API server during CronJob validation
+        and the controller manager during execution. If no system-
+        wide time zone database can be found a bundled version of
+        the database is used instead. If the time zone name becomes
+        invalid during the lifetime of a CronJob or due to a change
+        in host configuration, the controller will stop creating new
+        new Jobs and will create a system event with the reason
+        UnknownTimeZone. More information can be found in https://ku
+        bernetes.io/docs/concepts/workloads/controllers/cron-
+        jobs/#time-zones This is beta field and must be enabled via
+        the `CronJobTimeZone` feature gate.
+        """
+        self._properties["timeZone"] = value
 
     def append_container(
         self,
@@ -886,9 +946,9 @@ class CronJobStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active: typing.List["ObjectReference"] = None,
-        last_schedule_time: str = None,
-        last_successful_time: str = None,
+        active: typing.Optional[typing.List["ObjectReference"]] = None,
+        last_schedule_time: typing.Optional[str] = None,
+        last_successful_time: typing.Optional[str] = None,
     ):
         """Create CronJobStatus instance."""
         super(CronJobStatus, self).__init__(
@@ -1000,9 +1060,9 @@ class Job(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "JobSpec" = None,
-        status: "JobStatus" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["JobSpec"] = None,
+        status: typing.Optional["JobStatus"] = None,
     ):
         """Create Job instance."""
         super(Job, self).__init__(api_version="batch/v1", kind="Job")
@@ -1241,7 +1301,7 @@ class Job(_kuber_definitions.Resource):
         """
         return self.spec.template.spec.containers
 
-    def create_resource(self, namespace: "str" = None) -> "JobStatus":
+    def create_resource(self, namespace: typing.Optional["str"] = None) -> "JobStatus":
         """
         Creates the Job in the currently
         configured Kubernetes cluster and returns the status information
@@ -1263,7 +1323,7 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def replace_resource(self, namespace: "str" = None) -> "JobStatus":
+    def replace_resource(self, namespace: typing.Optional["str"] = None) -> "JobStatus":
         """
         Replaces the Job in the currently
         configured Kubernetes cluster and returns the status information
@@ -1285,7 +1345,7 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def patch_resource(self, namespace: "str" = None) -> "JobStatus":
+    def patch_resource(self, namespace: typing.Optional["str"] = None) -> "JobStatus":
         """
         Patches the Job in the currently
         configured Kubernetes cluster and returns the status information
@@ -1307,7 +1367,9 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def get_resource_status(self, namespace: "str" = None) -> "JobStatus":
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "JobStatus":
         """
         Returns status information about the given resource within the cluster.
         """
@@ -1330,7 +1392,7 @@ class Job(_kuber_definitions.Resource):
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the Job from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -1350,7 +1412,7 @@ class Job(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -1379,7 +1441,7 @@ class Job(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1403,12 +1465,12 @@ class JobCondition(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        last_probe_time: str = None,
-        last_transition_time: str = None,
-        message: str = None,
-        reason: str = None,
-        status: str = None,
-        type_: str = None,
+        last_probe_time: typing.Optional[str] = None,
+        last_transition_time: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        reason: typing.Optional[str] = None,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
     ):
         """Create JobCondition instance."""
         super(JobCondition, self).__init__(api_version="batch/v1", kind="JobCondition")
@@ -1561,8 +1623,8 @@ class JobList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["Job"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["Job"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create JobList instance."""
         super(JobList, self).__init__(api_version="batch/v1", kind="JobList")
@@ -1630,7 +1692,7 @@ class JobList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.BatchV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -1654,16 +1716,17 @@ class JobSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active_deadline_seconds: int = None,
-        backoff_limit: int = None,
-        completion_mode: str = None,
-        completions: int = None,
-        manual_selector: bool = None,
-        parallelism: int = None,
-        selector: "LabelSelector" = None,
-        suspend: bool = None,
-        template: "PodTemplateSpec" = None,
-        ttl_seconds_after_finished: int = None,
+        active_deadline_seconds: typing.Optional[int] = None,
+        backoff_limit: typing.Optional[int] = None,
+        completion_mode: typing.Optional[str] = None,
+        completions: typing.Optional[int] = None,
+        manual_selector: typing.Optional[bool] = None,
+        parallelism: typing.Optional[int] = None,
+        pod_failure_policy: typing.Optional["PodFailurePolicy"] = None,
+        selector: typing.Optional["LabelSelector"] = None,
+        suspend: typing.Optional[bool] = None,
+        template: typing.Optional["PodTemplateSpec"] = None,
+        ttl_seconds_after_finished: typing.Optional[int] = None,
     ):
         """Create JobSpec instance."""
         super(JobSpec, self).__init__(api_version="batch/v1", kind="JobSpec")
@@ -1676,6 +1739,9 @@ class JobSpec(_kuber_definitions.Definition):
             "completions": completions if completions is not None else None,
             "manualSelector": manual_selector if manual_selector is not None else None,
             "parallelism": parallelism if parallelism is not None else None,
+            "podFailurePolicy": pod_failure_policy
+            if pod_failure_policy is not None
+            else PodFailurePolicy(),
             "selector": selector if selector is not None else LabelSelector(),
             "suspend": suspend if suspend is not None else None,
             "template": template if template is not None else PodTemplateSpec(),
@@ -1690,6 +1756,7 @@ class JobSpec(_kuber_definitions.Definition):
             "completions": (int, None),
             "manualSelector": (bool, None),
             "parallelism": (int, None),
+            "podFailurePolicy": (PodFailurePolicy, None),
             "selector": (LabelSelector, None),
             "suspend": (bool, None),
             "template": (PodTemplateSpec, None),
@@ -1763,9 +1830,10 @@ class JobSpec(_kuber_definitions.Definition):
         name)-$(index)-$(random-string)`, the Pod hostname takes the
         form `$(job-name)-$(index)`.
 
-        This field is beta-level. More completion modes can be added
-        in the future. If the Job controller observes a mode that it
-        doesn't recognize, the controller skips updates for the Job.
+        More completion modes can be added in the future. If the Job
+        controller observes a mode that it doesn't recognize, which
+        is possible during upgrades due to version skew, the
+        controller skips updates for the Job.
         """
         return typing.cast(
             str,
@@ -1793,9 +1861,10 @@ class JobSpec(_kuber_definitions.Definition):
         name)-$(index)-$(random-string)`, the Pod hostname takes the
         form `$(job-name)-$(index)`.
 
-        This field is beta-level. More completion modes can be added
-        in the future. If the Job controller observes a mode that it
-        doesn't recognize, the controller skips updates for the Job.
+        More completion modes can be added in the future. If the Job
+        controller observes a mode that it doesn't recognize, which
+        is possible during upgrades due to version skew, the
+        controller skips updates for the Job.
         """
         self._properties["completionMode"] = value
 
@@ -1899,6 +1968,50 @@ class JobSpec(_kuber_definitions.Definition):
         self._properties["parallelism"] = value
 
     @property
+    def pod_failure_policy(self) -> "PodFailurePolicy":
+        """
+        Specifies the policy of handling failed pods. In particular,
+        it allows to specify the set of actions and conditions which
+        need to be satisfied to take the associated action. If
+        empty, the default behaviour applies - the counter of failed
+        pods, represented by the jobs's .status.failed field, is
+        incremented and it is checked against the backoffLimit. This
+        field cannot be used in combination with
+        restartPolicy=OnFailure.
+
+        This field is alpha-level. To use this field, you must
+        enable the `JobPodFailurePolicy` feature gate (disabled by
+        default).
+        """
+        return typing.cast(
+            "PodFailurePolicy",
+            self._properties.get("podFailurePolicy"),
+        )
+
+    @pod_failure_policy.setter
+    def pod_failure_policy(self, value: typing.Union["PodFailurePolicy", dict]):
+        """
+        Specifies the policy of handling failed pods. In particular,
+        it allows to specify the set of actions and conditions which
+        need to be satisfied to take the associated action. If
+        empty, the default behaviour applies - the counter of failed
+        pods, represented by the jobs's .status.failed field, is
+        incremented and it is checked against the backoffLimit. This
+        field cannot be used in combination with
+        restartPolicy=OnFailure.
+
+        This field is alpha-level. To use this field, you must
+        enable the `JobPodFailurePolicy` feature gate (disabled by
+        default).
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                PodFailurePolicy,
+                PodFailurePolicy().from_dict(value),
+            )
+        self._properties["podFailurePolicy"] = value
+
+    @property
     def selector(self) -> "LabelSelector":
         """
         A label query over pods that should match the pod count.
@@ -1938,9 +2051,6 @@ class JobSpec(_kuber_definitions.Definition):
         to gracefully handle this. Suspending a Job will reset the
         StartTime field of the Job, effectively resetting the
         ActiveDeadlineSeconds timer too. Defaults to false.
-
-        This field is beta-level, gated by SuspendJob feature flag
-        (enabled by default).
         """
         return typing.cast(
             bool,
@@ -1959,9 +2069,6 @@ class JobSpec(_kuber_definitions.Definition):
         to gracefully handle this. Suspending a Job will reset the
         StartTime field of the Job, effectively resetting the
         ActiveDeadlineSeconds timer too. Defaults to false.
-
-        This field is beta-level, gated by SuspendJob feature flag
-        (enabled by default).
         """
         self._properties["suspend"] = value
 
@@ -2002,8 +2109,7 @@ class JobSpec(_kuber_definitions.Definition):
         finalizers) will be honored. If this field is unset, the Job
         won't be automatically deleted. If this field is set to
         zero, the Job becomes eligible to be deleted immediately
-        after it finishes. This field is alpha-level and is only
-        honored by servers that enable the TTLAfterFinished feature.
+        after it finishes.
         """
         return typing.cast(
             int,
@@ -2021,8 +2127,7 @@ class JobSpec(_kuber_definitions.Definition):
         finalizers) will be honored. If this field is unset, the Job
         won't be automatically deleted. If this field is set to
         zero, the Job becomes eligible to be deleted immediately
-        after it finishes. This field is alpha-level and is only
-        honored by servers that enable the TTLAfterFinished feature.
+        after it finishes.
         """
         self._properties["ttlSecondsAfterFinished"] = value
 
@@ -2182,14 +2287,15 @@ class JobStatus(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        active: int = None,
-        completed_indexes: str = None,
-        completion_time: str = None,
-        conditions: typing.List["JobCondition"] = None,
-        failed: int = None,
-        start_time: str = None,
-        succeeded: int = None,
-        uncounted_terminated_pods: "UncountedTerminatedPods" = None,
+        active: typing.Optional[int] = None,
+        completed_indexes: typing.Optional[str] = None,
+        completion_time: typing.Optional[str] = None,
+        conditions: typing.Optional[typing.List["JobCondition"]] = None,
+        failed: typing.Optional[int] = None,
+        ready: typing.Optional[int] = None,
+        start_time: typing.Optional[str] = None,
+        succeeded: typing.Optional[int] = None,
+        uncounted_terminated_pods: typing.Optional["UncountedTerminatedPods"] = None,
     ):
         """Create JobStatus instance."""
         super(JobStatus, self).__init__(api_version="batch/v1", kind="JobStatus")
@@ -2201,6 +2307,7 @@ class JobStatus(_kuber_definitions.Definition):
             "completionTime": completion_time if completion_time is not None else None,
             "conditions": conditions if conditions is not None else [],
             "failed": failed if failed is not None else None,
+            "ready": ready if ready is not None else None,
             "startTime": start_time if start_time is not None else None,
             "succeeded": succeeded if succeeded is not None else None,
             "uncountedTerminatedPods": uncounted_terminated_pods
@@ -2213,6 +2320,7 @@ class JobStatus(_kuber_definitions.Definition):
             "completionTime": (str, None),
             "conditions": (list, JobCondition),
             "failed": (int, None),
+            "ready": (int, None),
             "startTime": (str, None),
             "succeeded": (int, None),
             "uncountedTerminatedPods": (UncountedTerminatedPods, None),
@@ -2221,7 +2329,7 @@ class JobStatus(_kuber_definitions.Definition):
     @property
     def active(self) -> int:
         """
-        The number of actively running pods.
+        The number of pending and running pods.
         """
         return typing.cast(
             int,
@@ -2231,7 +2339,7 @@ class JobStatus(_kuber_definitions.Definition):
     @active.setter
     def active(self, value: int):
         """
-        The number of actively running pods.
+        The number of pending and running pods.
         """
         self._properties["active"] = value
 
@@ -2358,6 +2466,31 @@ class JobStatus(_kuber_definitions.Definition):
         self._properties["failed"] = value
 
     @property
+    def ready(self) -> int:
+        """
+        The number of pods which have a Ready condition.
+
+        This field is beta-level. The job controller populates the
+        field when the feature gate JobReadyPods is enabled (enabled
+        by default).
+        """
+        return typing.cast(
+            int,
+            self._properties.get("ready"),
+        )
+
+    @ready.setter
+    def ready(self, value: int):
+        """
+        The number of pods which have a Ready condition.
+
+        This field is beta-level. The job controller populates the
+        field when the feature gate JobReadyPods is enabled (enabled
+        by default).
+        """
+        self._properties["ready"] = value
+
+    @property
     def start_time(self) -> str:
         """
         Represents time when the job controller started processing a
@@ -2418,11 +2551,8 @@ class JobStatus(_kuber_definitions.Definition):
         increasing the corresponding
             counter.
 
-        This field is alpha-level. The job controller only makes use
-        of this field when the feature gate
-        PodTrackingWithFinalizers is enabled. Old jobs might not be
-        tracked using this field, in which case the field remains
-        null.
+        Old jobs might not be tracked using this field, in which
+        case the field remains null.
         """
         return typing.cast(
             "UncountedTerminatedPods",
@@ -2446,11 +2576,8 @@ class JobStatus(_kuber_definitions.Definition):
         increasing the corresponding
             counter.
 
-        This field is alpha-level. The job controller only makes use
-        of this field when the feature gate
-        PodTrackingWithFinalizers is enabled. Old jobs might not be
-        tracked using this field, in which case the field remains
-        null.
+        Old jobs might not be tracked using this field, in which
+        case the field remains null.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2474,8 +2601,8 @@ class JobTemplateSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        metadata: "ObjectMeta" = None,
-        spec: "JobSpec" = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        spec: typing.Optional["JobSpec"] = None,
     ):
         """Create JobTemplateSpec instance."""
         super(JobTemplateSpec, self).__init__(
@@ -2695,6 +2822,439 @@ class JobTemplateSpec(_kuber_definitions.Definition):
         return False
 
 
+class PodFailurePolicy(_kuber_definitions.Definition):
+    """
+    PodFailurePolicy describes how failed pods influence the
+    backoffLimit.
+    """
+
+    def __init__(
+        self,
+        rules: typing.Optional[typing.List["PodFailurePolicyRule"]] = None,
+    ):
+        """Create PodFailurePolicy instance."""
+        super(PodFailurePolicy, self).__init__(
+            api_version="batch/v1", kind="PodFailurePolicy"
+        )
+        self._properties = {
+            "rules": rules if rules is not None else [],
+        }
+        self._types = {
+            "rules": (list, PodFailurePolicyRule),
+        }
+
+    @property
+    def rules(self) -> typing.List["PodFailurePolicyRule"]:
+        """
+        A list of pod failure policy rules. The rules are evaluated
+        in order. Once a rule matches a Pod failure, the remaining
+        of the rules are ignored. When no rule matches the Pod
+        failure, the default handling applies - the counter of pod
+        failures is incremented and it is checked against the
+        backoffLimit. At most 20 elements are allowed.
+        """
+        return typing.cast(
+            typing.List["PodFailurePolicyRule"],
+            self._properties.get("rules"),
+        )
+
+    @rules.setter
+    def rules(
+        self,
+        value: typing.Union[typing.List["PodFailurePolicyRule"], typing.List[dict]],
+    ):
+        """
+        A list of pod failure policy rules. The rules are evaluated
+        in order. Once a rule matches a Pod failure, the remaining
+        of the rules are ignored. When no rule matches the Pod
+        failure, the default handling applies - the counter of pod
+        failures is incremented and it is checked against the
+        backoffLimit. At most 20 elements are allowed.
+        """
+        cleaned: typing.List[PodFailurePolicyRule] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    PodFailurePolicyRule,
+                    PodFailurePolicyRule().from_dict(item),
+                )
+            cleaned.append(typing.cast(PodFailurePolicyRule, item))
+        self._properties["rules"] = cleaned
+
+    def __enter__(self) -> "PodFailurePolicy":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class PodFailurePolicyOnExitCodesRequirement(_kuber_definitions.Definition):
+    """
+    PodFailurePolicyOnExitCodesRequirement describes the
+    requirement for handling a failed pod based on its container
+    exit codes. In particular, it lookups the
+    .state.terminated.exitCode for each app container and init
+    container status, represented by the
+    .status.containerStatuses and .status.initContainerStatuses
+    fields in the Pod status, respectively. Containers completed
+    with success (exit code 0) are excluded from the requirement
+    check.
+    """
+
+    def __init__(
+        self,
+        container_name: typing.Optional[str] = None,
+        operator: typing.Optional[str] = None,
+        values: typing.Optional[typing.List[int]] = None,
+    ):
+        """Create PodFailurePolicyOnExitCodesRequirement instance."""
+        super(PodFailurePolicyOnExitCodesRequirement, self).__init__(
+            api_version="batch/v1", kind="PodFailurePolicyOnExitCodesRequirement"
+        )
+        self._properties = {
+            "containerName": container_name if container_name is not None else "",
+            "operator": operator if operator is not None else "",
+            "values": values if values is not None else [],
+        }
+        self._types = {
+            "containerName": (str, None),
+            "operator": (str, None),
+            "values": (list, int),
+        }
+
+    @property
+    def container_name(self) -> str:
+        """
+        Restricts the check for exit codes to the container with the
+        specified name. When null, the rule applies to all
+        containers. When specified, it should match one the
+        container or initContainer names in the pod template.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("containerName"),
+        )
+
+    @container_name.setter
+    def container_name(self, value: str):
+        """
+        Restricts the check for exit codes to the container with the
+        specified name. When null, the rule applies to all
+        containers. When specified, it should match one the
+        container or initContainer names in the pod template.
+        """
+        self._properties["containerName"] = value
+
+    @property
+    def operator(self) -> str:
+        """
+        Represents the relationship between the container exit
+        code(s) and the specified values. Containers completed with
+        success (exit code 0) are excluded from the requirement
+        check. Possible values are: - In: the requirement is
+        satisfied if at least one container exit code
+          (might be multiple if there are multiple containers not
+        restricted
+          by the 'containerName' field) is in the set of specified
+        values.
+        - NotIn: the requirement is satisfied if at least one
+        container exit code
+          (might be multiple if there are multiple containers not
+        restricted
+          by the 'containerName' field) is not in the set of
+        specified values.
+        Additional values are considered to be added in the future.
+        Clients should react to an unknown operator by assuming the
+        requirement is not satisfied.
+
+        """
+        return typing.cast(
+            str,
+            self._properties.get("operator"),
+        )
+
+    @operator.setter
+    def operator(self, value: str):
+        """
+        Represents the relationship between the container exit
+        code(s) and the specified values. Containers completed with
+        success (exit code 0) are excluded from the requirement
+        check. Possible values are: - In: the requirement is
+        satisfied if at least one container exit code
+          (might be multiple if there are multiple containers not
+        restricted
+          by the 'containerName' field) is in the set of specified
+        values.
+        - NotIn: the requirement is satisfied if at least one
+        container exit code
+          (might be multiple if there are multiple containers not
+        restricted
+          by the 'containerName' field) is not in the set of
+        specified values.
+        Additional values are considered to be added in the future.
+        Clients should react to an unknown operator by assuming the
+        requirement is not satisfied.
+
+        """
+        self._properties["operator"] = value
+
+    @property
+    def values(self) -> typing.List[int]:
+        """
+        Specifies the set of values. Each returned container exit
+        code (might be multiple in case of multiple containers) is
+        checked against this set of values with respect to the
+        operator. The list of values must be ordered and must not
+        contain duplicates. Value '0' cannot be used for the In
+        operator. At least one element is required. At most 255
+        elements are allowed.
+        """
+        return typing.cast(
+            typing.List[int],
+            self._properties.get("values"),
+        )
+
+    @values.setter
+    def values(self, value: typing.List[int]):
+        """
+        Specifies the set of values. Each returned container exit
+        code (might be multiple in case of multiple containers) is
+        checked against this set of values with respect to the
+        operator. The list of values must be ordered and must not
+        contain duplicates. Value '0' cannot be used for the In
+        operator. At least one element is required. At most 255
+        elements are allowed.
+        """
+        self._properties["values"] = value
+
+    def __enter__(self) -> "PodFailurePolicyOnExitCodesRequirement":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class PodFailurePolicyOnPodConditionsPattern(_kuber_definitions.Definition):
+    """
+    PodFailurePolicyOnPodConditionsPattern describes a pattern
+    for matching an actual pod condition type.
+    """
+
+    def __init__(
+        self,
+        status: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
+    ):
+        """Create PodFailurePolicyOnPodConditionsPattern instance."""
+        super(PodFailurePolicyOnPodConditionsPattern, self).__init__(
+            api_version="batch/v1", kind="PodFailurePolicyOnPodConditionsPattern"
+        )
+        self._properties = {
+            "status": status if status is not None else "",
+            "type": type_ if type_ is not None else "",
+        }
+        self._types = {
+            "status": (str, None),
+            "type": (str, None),
+        }
+
+    @property
+    def status(self) -> str:
+        """
+        Specifies the required Pod condition status. To match a pod
+        condition it is required that the specified status equals
+        the pod condition status. Defaults to True.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("status"),
+        )
+
+    @status.setter
+    def status(self, value: str):
+        """
+        Specifies the required Pod condition status. To match a pod
+        condition it is required that the specified status equals
+        the pod condition status. Defaults to True.
+        """
+        self._properties["status"] = value
+
+    @property
+    def type_(self) -> str:
+        """
+        Specifies the required Pod condition type. To match a pod
+        condition it is required that specified type equals the pod
+        condition type.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
+
+    @type_.setter
+    def type_(self, value: str):
+        """
+        Specifies the required Pod condition type. To match a pod
+        condition it is required that specified type equals the pod
+        condition type.
+        """
+        self._properties["type"] = value
+
+    def __enter__(self) -> "PodFailurePolicyOnPodConditionsPattern":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class PodFailurePolicyRule(_kuber_definitions.Definition):
+    """
+    PodFailurePolicyRule describes how a pod failure is handled
+    when the requirements are met. One of OnExitCodes and
+    onPodConditions, but not both, can be used in each rule.
+    """
+
+    def __init__(
+        self,
+        action: typing.Optional[str] = None,
+        on_exit_codes: typing.Optional["PodFailurePolicyOnExitCodesRequirement"] = None,
+        on_pod_conditions: typing.Optional[
+            typing.List["PodFailurePolicyOnPodConditionsPattern"]
+        ] = None,
+    ):
+        """Create PodFailurePolicyRule instance."""
+        super(PodFailurePolicyRule, self).__init__(
+            api_version="batch/v1", kind="PodFailurePolicyRule"
+        )
+        self._properties = {
+            "action": action if action is not None else "",
+            "onExitCodes": on_exit_codes
+            if on_exit_codes is not None
+            else PodFailurePolicyOnExitCodesRequirement(),
+            "onPodConditions": on_pod_conditions
+            if on_pod_conditions is not None
+            else [],
+        }
+        self._types = {
+            "action": (str, None),
+            "onExitCodes": (PodFailurePolicyOnExitCodesRequirement, None),
+            "onPodConditions": (list, PodFailurePolicyOnPodConditionsPattern),
+        }
+
+    @property
+    def action(self) -> str:
+        """
+        Specifies the action taken on a pod failure when the
+        requirements are satisfied. Possible values are: - FailJob:
+        indicates that the pod's job is marked as Failed and all
+          running pods are terminated.
+        - Ignore: indicates that the counter towards the
+        .backoffLimit is not
+          incremented and a replacement pod is created.
+        - Count: indicates that the pod is handled in the default
+        way - the
+          counter towards the .backoffLimit is incremented.
+        Additional values are considered to be added in the future.
+        Clients should react to an unknown action by skipping the
+        rule.
+
+        """
+        return typing.cast(
+            str,
+            self._properties.get("action"),
+        )
+
+    @action.setter
+    def action(self, value: str):
+        """
+        Specifies the action taken on a pod failure when the
+        requirements are satisfied. Possible values are: - FailJob:
+        indicates that the pod's job is marked as Failed and all
+          running pods are terminated.
+        - Ignore: indicates that the counter towards the
+        .backoffLimit is not
+          incremented and a replacement pod is created.
+        - Count: indicates that the pod is handled in the default
+        way - the
+          counter towards the .backoffLimit is incremented.
+        Additional values are considered to be added in the future.
+        Clients should react to an unknown action by skipping the
+        rule.
+
+        """
+        self._properties["action"] = value
+
+    @property
+    def on_exit_codes(self) -> "PodFailurePolicyOnExitCodesRequirement":
+        """
+        Represents the requirement on the container exit codes.
+        """
+        return typing.cast(
+            "PodFailurePolicyOnExitCodesRequirement",
+            self._properties.get("onExitCodes"),
+        )
+
+    @on_exit_codes.setter
+    def on_exit_codes(
+        self, value: typing.Union["PodFailurePolicyOnExitCodesRequirement", dict]
+    ):
+        """
+        Represents the requirement on the container exit codes.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                PodFailurePolicyOnExitCodesRequirement,
+                PodFailurePolicyOnExitCodesRequirement().from_dict(value),
+            )
+        self._properties["onExitCodes"] = value
+
+    @property
+    def on_pod_conditions(
+        self,
+    ) -> typing.List["PodFailurePolicyOnPodConditionsPattern"]:
+        """
+        Represents the requirement on the pod conditions. The
+        requirement is represented as a list of pod condition
+        patterns. The requirement is satisfied if at least one
+        pattern matches an actual pod condition. At most 20 elements
+        are allowed.
+        """
+        return typing.cast(
+            typing.List["PodFailurePolicyOnPodConditionsPattern"],
+            self._properties.get("onPodConditions"),
+        )
+
+    @on_pod_conditions.setter
+    def on_pod_conditions(
+        self,
+        value: typing.Union[
+            typing.List["PodFailurePolicyOnPodConditionsPattern"], typing.List[dict]
+        ],
+    ):
+        """
+        Represents the requirement on the pod conditions. The
+        requirement is represented as a list of pod condition
+        patterns. The requirement is satisfied if at least one
+        pattern matches an actual pod condition. At most 20 elements
+        are allowed.
+        """
+        cleaned: typing.List[PodFailurePolicyOnPodConditionsPattern] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    PodFailurePolicyOnPodConditionsPattern,
+                    PodFailurePolicyOnPodConditionsPattern().from_dict(item),
+                )
+            cleaned.append(typing.cast(PodFailurePolicyOnPodConditionsPattern, item))
+        self._properties["onPodConditions"] = cleaned
+
+    def __enter__(self) -> "PodFailurePolicyRule":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class UncountedTerminatedPods(_kuber_definitions.Definition):
     """
     UncountedTerminatedPods holds UIDs of Pods that have
@@ -2704,8 +3264,8 @@ class UncountedTerminatedPods(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        failed: typing.List[str] = None,
-        succeeded: typing.List[str] = None,
+        failed: typing.Optional[typing.List[str]] = None,
+        succeeded: typing.Optional[typing.List[str]] = None,
     ):
         """Create UncountedTerminatedPods instance."""
         super(UncountedTerminatedPods, self).__init__(

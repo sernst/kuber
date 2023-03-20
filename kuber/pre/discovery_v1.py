@@ -18,14 +18,14 @@ class Endpoint(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        addresses: typing.List[str] = None,
-        conditions: "EndpointConditions" = None,
-        deprecated_topology: dict = None,
-        hints: "EndpointHints" = None,
-        hostname: str = None,
-        node_name: str = None,
-        target_ref: "ObjectReference" = None,
-        zone: str = None,
+        addresses: typing.Optional[typing.List[str]] = None,
+        conditions: typing.Optional["EndpointConditions"] = None,
+        deprecated_topology: typing.Optional[dict] = None,
+        hints: typing.Optional["EndpointHints"] = None,
+        hostname: typing.Optional[str] = None,
+        node_name: typing.Optional[str] = None,
+        target_ref: typing.Optional["ObjectReference"] = None,
+        zone: typing.Optional[str] = None,
     ):
         """Create Endpoint instance."""
         super(Endpoint, self).__init__(api_version="discovery/v1", kind="Endpoint")
@@ -62,6 +62,9 @@ class Endpoint(_kuber_definitions.Definition):
         addressType field. Consumers must handle different types of
         addresses in the context of their own capabilities. This
         must contain at least one address but no more than 100.
+        These are all assumed to be fungible and clients may choose
+        to only use the first element. Refer to:
+        https://issue.k8s.io/106267
         """
         return typing.cast(
             typing.List[str],
@@ -76,6 +79,9 @@ class Endpoint(_kuber_definitions.Definition):
         addressType field. Consumers must handle different types of
         addresses in the context of their own capabilities. This
         must contain at least one address but no more than 100.
+        These are all assumed to be fungible and clients may choose
+        to only use the first element. Refer to:
+        https://issue.k8s.io/106267
         """
         self._properties["addresses"] = value
 
@@ -188,8 +194,7 @@ class Endpoint(_kuber_definitions.Definition):
         """
         nodeName represents the name of the Node hosting this
         endpoint. This can be used to determine endpoints local to a
-        Node. This field can be enabled with the
-        EndpointSliceNodeName feature gate.
+        Node.
         """
         return typing.cast(
             str,
@@ -201,8 +206,7 @@ class Endpoint(_kuber_definitions.Definition):
         """
         nodeName represents the name of the Node hosting this
         endpoint. This can be used to determine endpoints local to a
-        Node. This field can be enabled with the
-        EndpointSliceNodeName feature gate.
+        Node.
         """
         self._properties["nodeName"] = value
 
@@ -262,9 +266,9 @@ class EndpointConditions(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        ready: bool = None,
-        serving: bool = None,
-        terminating: bool = None,
+        ready: typing.Optional[bool] = None,
+        serving: typing.Optional[bool] = None,
+        terminating: typing.Optional[bool] = None,
     ):
         """Create EndpointConditions instance."""
         super(EndpointConditions, self).__init__(
@@ -315,8 +319,7 @@ class EndpointConditions(_kuber_definitions.Definition):
         regardless of the terminating state of endpoints. This
         condition should be set to true for a ready endpoint that is
         terminating. If nil, consumers should defer to the ready
-        condition. This field can be enabled with the
-        EndpointSliceTerminatingCondition feature gate.
+        condition.
         """
         return typing.cast(
             bool,
@@ -330,8 +333,7 @@ class EndpointConditions(_kuber_definitions.Definition):
         regardless of the terminating state of endpoints. This
         condition should be set to true for a ready endpoint that is
         terminating. If nil, consumers should defer to the ready
-        condition. This field can be enabled with the
-        EndpointSliceTerminatingCondition feature gate.
+        condition.
         """
         self._properties["serving"] = value
 
@@ -341,8 +343,7 @@ class EndpointConditions(_kuber_definitions.Definition):
         terminating indicates that this endpoint is terminating. A
         nil value indicates an unknown state. Consumers should
         interpret this unknown state to mean that the endpoint is
-        not terminating. This field can be enabled with the
-        EndpointSliceTerminatingCondition feature gate.
+        not terminating.
         """
         return typing.cast(
             bool,
@@ -355,8 +356,7 @@ class EndpointConditions(_kuber_definitions.Definition):
         terminating indicates that this endpoint is terminating. A
         nil value indicates an unknown state. Consumers should
         interpret this unknown state to mean that the endpoint is
-        not terminating. This field can be enabled with the
-        EndpointSliceTerminatingCondition feature gate.
+        not terminating.
         """
         self._properties["terminating"] = value
 
@@ -375,7 +375,7 @@ class EndpointHints(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        for_zones: typing.List["ForZone"] = None,
+        for_zones: typing.Optional[typing.List["ForZone"]] = None,
     ):
         """Create EndpointHints instance."""
         super(EndpointHints, self).__init__(
@@ -429,10 +429,10 @@ class EndpointPort(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        app_protocol: str = None,
-        name: str = None,
-        port: int = None,
-        protocol: str = None,
+        app_protocol: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        port: typing.Optional[int] = None,
+        protocol: typing.Optional[str] = None,
     ):
         """Create EndpointPort instance."""
         super(EndpointPort, self).__init__(
@@ -454,12 +454,24 @@ class EndpointPort(_kuber_definitions.Definition):
     @property
     def app_protocol(self) -> str:
         """
-        The application protocol for this port. This field follows
-        standard Kubernetes label syntax. Un-prefixed names are
-        reserved for IANA standard service names (as per RFC-6335
-        and http://www.iana.org/assignments/service-names). Non-
-        standard protocols should use prefixed names such as
-        mycompany.com/my-custom-protocol.
+        The application protocol for this port. This is used as a
+        hint for implementations to offer richer behavior for
+        protocols that they understand. This field follows standard
+        Kubernetes label syntax. Valid values are either:
+
+        * Un-prefixed protocol names - reserved for IANA standard
+        service names (as per RFC-6335 and
+        https://www.iana.org/assignments/service-names).
+
+        * Kubernetes-defined prefixed names:
+          * 'kubernetes.io/h2c' - HTTP/2 over cleartext as described
+        in https://www.rfc-editor.org/rfc/rfc7540
+          * 'kubernetes.io/grpc' - gRPC over HTTP/2 as described in
+        https://github.com/grpc/grpc/blob/v1.51.1/doc/PROTOCOL-
+        HTTP2.md
+
+        * Other protocols should use implementation-defined prefixed
+        names such as mycompany.com/my-custom-protocol.
         """
         return typing.cast(
             str,
@@ -469,26 +481,38 @@ class EndpointPort(_kuber_definitions.Definition):
     @app_protocol.setter
     def app_protocol(self, value: str):
         """
-        The application protocol for this port. This field follows
-        standard Kubernetes label syntax. Un-prefixed names are
-        reserved for IANA standard service names (as per RFC-6335
-        and http://www.iana.org/assignments/service-names). Non-
-        standard protocols should use prefixed names such as
-        mycompany.com/my-custom-protocol.
+        The application protocol for this port. This is used as a
+        hint for implementations to offer richer behavior for
+        protocols that they understand. This field follows standard
+        Kubernetes label syntax. Valid values are either:
+
+        * Un-prefixed protocol names - reserved for IANA standard
+        service names (as per RFC-6335 and
+        https://www.iana.org/assignments/service-names).
+
+        * Kubernetes-defined prefixed names:
+          * 'kubernetes.io/h2c' - HTTP/2 over cleartext as described
+        in https://www.rfc-editor.org/rfc/rfc7540
+          * 'kubernetes.io/grpc' - gRPC over HTTP/2 as described in
+        https://github.com/grpc/grpc/blob/v1.51.1/doc/PROTOCOL-
+        HTTP2.md
+
+        * Other protocols should use implementation-defined prefixed
+        names such as mycompany.com/my-custom-protocol.
         """
         self._properties["appProtocol"] = value
 
     @property
     def name(self) -> str:
         """
-        The name of this port. All ports in an EndpointSlice must
-        have a unique name. If the EndpointSlice is dervied from a
-        Kubernetes service, this corresponds to the
-        Service.ports[].name. Name must either be an empty string or
-        pass DNS_LABEL validation: * must be no more than 63
-        characters long. * must consist of lower case alphanumeric
-        characters or '-'. * must start and end with an alphanumeric
-        character. Default is empty string.
+        name represents the name of this port. All ports in an
+        EndpointSlice must have a unique name. If the EndpointSlice
+        is dervied from a Kubernetes service, this corresponds to
+        the Service.ports[].name. Name must either be an empty
+        string or pass DNS_LABEL validation: * must be no more than
+        63 characters long. * must consist of lower case
+        alphanumeric characters or '-'. * must start and end with an
+        alphanumeric character. Default is empty string.
         """
         return typing.cast(
             str,
@@ -498,23 +522,23 @@ class EndpointPort(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        The name of this port. All ports in an EndpointSlice must
-        have a unique name. If the EndpointSlice is dervied from a
-        Kubernetes service, this corresponds to the
-        Service.ports[].name. Name must either be an empty string or
-        pass DNS_LABEL validation: * must be no more than 63
-        characters long. * must consist of lower case alphanumeric
-        characters or '-'. * must start and end with an alphanumeric
-        character. Default is empty string.
+        name represents the name of this port. All ports in an
+        EndpointSlice must have a unique name. If the EndpointSlice
+        is dervied from a Kubernetes service, this corresponds to
+        the Service.ports[].name. Name must either be an empty
+        string or pass DNS_LABEL validation: * must be no more than
+        63 characters long. * must consist of lower case
+        alphanumeric characters or '-'. * must start and end with an
+        alphanumeric character. Default is empty string.
         """
         self._properties["name"] = value
 
     @property
     def port(self) -> int:
         """
-        The port number of the endpoint. If this is not specified,
-        ports are not restricted and must be interpreted in the
-        context of the specific consumer.
+        port represents the port number of the endpoint. If this is
+        not specified, ports are not restricted and must be
+        interpreted in the context of the specific consumer.
         """
         return typing.cast(
             int,
@@ -524,17 +548,17 @@ class EndpointPort(_kuber_definitions.Definition):
     @port.setter
     def port(self, value: int):
         """
-        The port number of the endpoint. If this is not specified,
-        ports are not restricted and must be interpreted in the
-        context of the specific consumer.
+        port represents the port number of the endpoint. If this is
+        not specified, ports are not restricted and must be
+        interpreted in the context of the specific consumer.
         """
         self._properties["port"] = value
 
     @property
     def protocol(self) -> str:
         """
-        The IP protocol for this port. Must be UDP, TCP, or SCTP.
-        Default is TCP.
+        protocol represents the IP protocol for this port. Must be
+        UDP, TCP, or SCTP. Default is TCP.
         """
         return typing.cast(
             str,
@@ -544,8 +568,8 @@ class EndpointPort(_kuber_definitions.Definition):
     @protocol.setter
     def protocol(self, value: str):
         """
-        The IP protocol for this port. Must be UDP, TCP, or SCTP.
-        Default is TCP.
+        protocol represents the IP protocol for this port. Must be
+        UDP, TCP, or SCTP. Default is TCP.
         """
         self._properties["protocol"] = value
 
@@ -566,10 +590,10 @@ class EndpointSlice(_kuber_definitions.Resource):
 
     def __init__(
         self,
-        address_type: str = None,
-        endpoints: typing.List["Endpoint"] = None,
-        metadata: "ObjectMeta" = None,
-        ports: typing.List["EndpointPort"] = None,
+        address_type: typing.Optional[str] = None,
+        endpoints: typing.Optional[typing.List["Endpoint"]] = None,
+        metadata: typing.Optional["ObjectMeta"] = None,
+        ports: typing.Optional[typing.List["EndpointPort"]] = None,
     ):
         """Create EndpointSlice instance."""
         super(EndpointSlice, self).__init__(
@@ -705,7 +729,7 @@ class EndpointSlice(_kuber_definitions.Resource):
             cleaned.append(typing.cast(EndpointPort, item))
         self._properties["ports"] = cleaned
 
-    def create_resource(self, namespace: "str" = None):
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the EndpointSlice in the currently
         configured Kubernetes cluster.
@@ -721,7 +745,7 @@ class EndpointSlice(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: "str" = None):
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the EndpointSlice in the currently
         configured Kubernetes cluster.
@@ -737,7 +761,7 @@ class EndpointSlice(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: "str" = None):
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the EndpointSlice in the currently
         configured Kubernetes cluster.
@@ -753,11 +777,11 @@ class EndpointSlice(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: "str" = None):
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
         """This resource does not have a status."""
         pass
 
-    def read_resource(self, namespace: str = None):
+    def read_resource(self, namespace: typing.Optional[str] = None):
         """
         Reads the EndpointSlice from the currently configured
         Kubernetes cluster and returns the low-level definition object.
@@ -777,7 +801,7 @@ class EndpointSlice(_kuber_definitions.Resource):
 
     def delete_resource(
         self,
-        namespace: str = None,
+        namespace: typing.Optional[str] = None,
         propagation_policy: str = "Foreground",
         grace_period_seconds: int = 10,
     ):
@@ -806,7 +830,7 @@ class EndpointSlice(_kuber_definitions.Resource):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.DiscoveryV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -830,8 +854,8 @@ class EndpointSliceList(_kuber_definitions.Collection):
 
     def __init__(
         self,
-        items: typing.List["EndpointSlice"] = None,
-        metadata: "ListMeta" = None,
+        items: typing.Optional[typing.List["EndpointSlice"]] = None,
+        metadata: typing.Optional["ListMeta"] = None,
     ):
         """Create EndpointSliceList instance."""
         super(EndpointSliceList, self).__init__(
@@ -851,7 +875,7 @@ class EndpointSliceList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["EndpointSlice"]:
         """
-        List of endpoint slices
+        items is the list of endpoint slices
         """
         return typing.cast(
             typing.List["EndpointSlice"],
@@ -863,7 +887,7 @@ class EndpointSliceList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["EndpointSlice"], typing.List[dict]]
     ):
         """
-        List of endpoint slices
+        items is the list of endpoint slices
         """
         cleaned: typing.List[EndpointSlice] = []
         for item in value:
@@ -899,7 +923,7 @@ class EndpointSliceList(_kuber_definitions.Collection):
 
     @staticmethod
     def get_resource_api(
-        api_client: client.ApiClient = None, **kwargs
+        api_client: typing.Optional[client.ApiClient] = None, **kwargs
     ) -> "client.DiscoveryV1Api":
         """
         Returns an instance of the kubernetes API client associated with
@@ -924,7 +948,7 @@ class ForZone(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        name: str = None,
+        name: typing.Optional[str] = None,
     ):
         """Create ForZone instance."""
         super(ForZone, self).__init__(api_version="discovery/v1", kind="ForZone")
