@@ -24,6 +24,7 @@ class ServerStorageVersion(_kuber_definitions.Definition):
         api_server_id: typing.Optional[str] = None,
         decodable_versions: typing.Optional[typing.List[str]] = None,
         encoding_version: typing.Optional[str] = None,
+        served_versions: typing.Optional[typing.List[str]] = None,
     ):
         """Create ServerStorageVersion instance."""
         super(ServerStorageVersion, self).__init__(
@@ -31,15 +32,17 @@ class ServerStorageVersion(_kuber_definitions.Definition):
         )
         self._properties = {
             "apiServerID": api_server_id if api_server_id is not None else "",
-            "decodableVersions": decodable_versions
-            if decodable_versions is not None
-            else [],
+            "decodableVersions": (
+                decodable_versions if decodable_versions is not None else []
+            ),
             "encodingVersion": encoding_version if encoding_version is not None else "",
+            "servedVersions": served_versions if served_versions is not None else [],
         }
         self._types = {
             "apiServerID": (str, None),
             "decodableVersions": (list, str),
             "encodingVersion": (str, None),
+            "servedVersions": (list, str),
         }
 
     @property
@@ -98,6 +101,25 @@ class ServerStorageVersion(_kuber_definitions.Definition):
         persisting it in the backend (e.g., etcd).
         """
         self._properties["encodingVersion"] = value
+
+    @property
+    def served_versions(self) -> typing.List[str]:
+        """
+        The API server can serve these versions. DecodableVersions
+        must include all ServedVersions.
+        """
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("servedVersions"),
+        )
+
+    @served_versions.setter
+    def served_versions(self, value: typing.List[str]):
+        """
+        The API server can serve these versions. DecodableVersions
+        must include all ServedVersions.
+        """
+        self._properties["servedVersions"] = value
 
     def __enter__(self) -> "ServerStorageVersion":
         return self
@@ -389,13 +411,13 @@ class StorageVersionCondition(_kuber_definitions.Definition):
             api_version="apiserverinternal/v1alpha1", kind="StorageVersionCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
             "type": type_ if type_ is not None else "",
@@ -667,9 +689,9 @@ class StorageVersionStatus(_kuber_definitions.Definition):
             api_version="apiserverinternal/v1alpha1", kind="StorageVersionStatus"
         )
         self._properties = {
-            "commonEncodingVersion": common_encoding_version
-            if common_encoding_version is not None
-            else "",
+            "commonEncodingVersion": (
+                common_encoding_version if common_encoding_version is not None else ""
+            ),
             "conditions": conditions if conditions is not None else [],
             "storageVersions": storage_versions if storage_versions is not None else [],
         }

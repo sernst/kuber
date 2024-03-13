@@ -12,6 +12,7 @@ from kuber.v1_24.meta_v1 import StatusDetails  # noqa: F401
 
 
 class CustomObjectStatus(dict):
+
     @classmethod
     def from_dict(cls, data: dict) -> "CustomObjectStatus":
         """Transparent pass-through method to match standard status objects."""

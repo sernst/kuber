@@ -10,6 +10,135 @@ from kuber.latest.meta_v1 import ListMeta  # noqa: F401
 from kuber.latest.meta_v1 import ObjectMeta  # noqa: F401
 
 
+class MatchCondition(_kuber_definitions.Definition):
+    """
+    MatchCondition represents a condition which must by
+    fulfilled for a request to be sent to a webhook.
+    """
+
+    def __init__(
+        self,
+        expression: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+    ):
+        """Create MatchCondition instance."""
+        super(MatchCondition, self).__init__(
+            api_version="admissionregistration/v1", kind="MatchCondition"
+        )
+        self._properties = {
+            "expression": expression if expression is not None else "",
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "expression": (str, None),
+            "name": (str, None),
+        }
+
+    @property
+    def expression(self) -> str:
+        """
+        Expression represents the expression which will be evaluated
+        by CEL. Must evaluate to bool. CEL expressions have access
+        to the contents of the AdmissionRequest and Authorizer,
+        organized into CEL variables:
+
+        'object' - The object from the incoming request. The value
+        is null for DELETE requests. 'oldObject' - The existing
+        object. The value is null for CREATE requests. 'request' -
+        Attributes of the admission
+        request(/pkg/apis/admission/types.go#AdmissionRequest).
+        'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
+        Documentation on CEL:
+        https://kubernetes.io/docs/reference/using-api/cel/
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("expression"),
+        )
+
+    @expression.setter
+    def expression(self, value: str):
+        """
+        Expression represents the expression which will be evaluated
+        by CEL. Must evaluate to bool. CEL expressions have access
+        to the contents of the AdmissionRequest and Authorizer,
+        organized into CEL variables:
+
+        'object' - The object from the incoming request. The value
+        is null for DELETE requests. 'oldObject' - The existing
+        object. The value is null for CREATE requests. 'request' -
+        Attributes of the admission
+        request(/pkg/apis/admission/types.go#AdmissionRequest).
+        'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
+        Documentation on CEL:
+        https://kubernetes.io/docs/reference/using-api/cel/
+
+        Required.
+        """
+        self._properties["expression"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is an identifier for this match condition, used for
+        strategic merging of MatchConditions, as well as providing
+        an identifier for logging purposes. A good name should be
+        descriptive of the associated expression. Name must be a
+        qualified name consisting of alphanumeric characters, '-',
+        '_' or '.', and must start and end with an alphanumeric
+        character (e.g. 'MyName',  or 'my.name',  or '123-abc',
+        regex used for validation is
+        '([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]') with an optional
+        DNS subdomain prefix and '/' (e.g. 'example.com/MyName')
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is an identifier for this match condition, used for
+        strategic merging of MatchConditions, as well as providing
+        an identifier for logging purposes. A good name should be
+        descriptive of the associated expression. Name must be a
+        qualified name consisting of alphanumeric characters, '-',
+        '_' or '.', and must start and end with an alphanumeric
+        character (e.g. 'MyName',  or 'my.name',  or '123-abc',
+        regex used for validation is
+        '([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]') with an optional
+        DNS subdomain prefix and '/' (e.g. 'example.com/MyName')
+
+        Required.
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "MatchCondition":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class MutatingWebhook(_kuber_definitions.Definition):
     """
     MutatingWebhook describes an admission webhook and the
@@ -21,6 +150,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
         admission_review_versions: typing.Optional[typing.List[str]] = None,
         client_config: typing.Optional["WebhookClientConfig"] = None,
         failure_policy: typing.Optional[str] = None,
+        match_conditions: typing.Optional[typing.List["MatchCondition"]] = None,
         match_policy: typing.Optional[str] = None,
         name: typing.Optional[str] = None,
         namespace_selector: typing.Optional["LabelSelector"] = None,
@@ -35,24 +165,29 @@ class MutatingWebhook(_kuber_definitions.Definition):
             api_version="admissionregistration/v1", kind="MutatingWebhook"
         )
         self._properties = {
-            "admissionReviewVersions": admission_review_versions
-            if admission_review_versions is not None
-            else [],
-            "clientConfig": client_config
-            if client_config is not None
-            else WebhookClientConfig(),
+            "admissionReviewVersions": (
+                admission_review_versions
+                if admission_review_versions is not None
+                else []
+            ),
+            "clientConfig": (
+                client_config if client_config is not None else WebhookClientConfig()
+            ),
             "failurePolicy": failure_policy if failure_policy is not None else "",
+            "matchConditions": match_conditions if match_conditions is not None else [],
             "matchPolicy": match_policy if match_policy is not None else "",
             "name": name if name is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
-            "reinvocationPolicy": reinvocation_policy
-            if reinvocation_policy is not None
-            else "",
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
+            "reinvocationPolicy": (
+                reinvocation_policy if reinvocation_policy is not None else ""
+            ),
             "rules": rules if rules is not None else [],
             "sideEffects": side_effects if side_effects is not None else "",
             "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,
@@ -61,6 +196,7 @@ class MutatingWebhook(_kuber_definitions.Definition):
             "admissionReviewVersions": (list, str),
             "clientConfig": (WebhookClientConfig, None),
             "failurePolicy": (str, None),
+            "matchConditions": (list, MatchCondition),
             "matchPolicy": (str, None),
             "name": (str, None),
             "namespaceSelector": (LabelSelector, None),
@@ -148,6 +284,71 @@ class MutatingWebhook(_kuber_definitions.Definition):
         or Fail. Defaults to Fail.
         """
         self._properties["failurePolicy"] = value
+
+    @property
+    def match_conditions(self) -> typing.List["MatchCondition"]:
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is a beta feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        return typing.cast(
+            typing.List["MatchCondition"],
+            self._properties.get("matchConditions"),
+        )
+
+    @match_conditions.setter
+    def match_conditions(
+        self, value: typing.Union[typing.List["MatchCondition"], typing.List[dict]]
+    ):
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is a beta feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        cleaned: typing.List[MatchCondition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    MatchCondition,
+                    MatchCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(MatchCondition, item))
+        self._properties["matchConditions"] = cleaned
 
     @property
     def match_policy(self) -> str:
@@ -1158,6 +1359,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         admission_review_versions: typing.Optional[typing.List[str]] = None,
         client_config: typing.Optional["WebhookClientConfig"] = None,
         failure_policy: typing.Optional[str] = None,
+        match_conditions: typing.Optional[typing.List["MatchCondition"]] = None,
         match_policy: typing.Optional[str] = None,
         name: typing.Optional[str] = None,
         namespace_selector: typing.Optional["LabelSelector"] = None,
@@ -1171,21 +1373,26 @@ class ValidatingWebhook(_kuber_definitions.Definition):
             api_version="admissionregistration/v1", kind="ValidatingWebhook"
         )
         self._properties = {
-            "admissionReviewVersions": admission_review_versions
-            if admission_review_versions is not None
-            else [],
-            "clientConfig": client_config
-            if client_config is not None
-            else WebhookClientConfig(),
+            "admissionReviewVersions": (
+                admission_review_versions
+                if admission_review_versions is not None
+                else []
+            ),
+            "clientConfig": (
+                client_config if client_config is not None else WebhookClientConfig()
+            ),
             "failurePolicy": failure_policy if failure_policy is not None else "",
+            "matchConditions": match_conditions if match_conditions is not None else [],
             "matchPolicy": match_policy if match_policy is not None else "",
             "name": name if name is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
             "rules": rules if rules is not None else [],
             "sideEffects": side_effects if side_effects is not None else "",
             "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,
@@ -1194,6 +1401,7 @@ class ValidatingWebhook(_kuber_definitions.Definition):
             "admissionReviewVersions": (list, str),
             "clientConfig": (WebhookClientConfig, None),
             "failurePolicy": (str, None),
+            "matchConditions": (list, MatchCondition),
             "matchPolicy": (str, None),
             "name": (str, None),
             "namespaceSelector": (LabelSelector, None),
@@ -1280,6 +1488,71 @@ class ValidatingWebhook(_kuber_definitions.Definition):
         or Fail. Defaults to Fail.
         """
         self._properties["failurePolicy"] = value
+
+    @property
+    def match_conditions(self) -> typing.List["MatchCondition"]:
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is a beta feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        return typing.cast(
+            typing.List["MatchCondition"],
+            self._properties.get("matchConditions"),
+        )
+
+    @match_conditions.setter
+    def match_conditions(
+        self, value: typing.Union[typing.List["MatchCondition"], typing.List[dict]]
+    ):
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be sent to this webhook. Match conditions
+        filter requests that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the webhook
+        is skipped.
+          2. If ALL matchConditions evaluate to TRUE, the webhook is
+        called.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the error is ignored and the
+        webhook is skipped
+
+        This is a beta feature and managed by the
+        AdmissionWebhookMatchConditions feature gate.
+        """
+        cleaned: typing.List[MatchCondition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    MatchCondition,
+                    MatchCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(MatchCondition, item))
+        self._properties["matchConditions"] = cleaned
 
     @property
     def match_policy(self) -> str:

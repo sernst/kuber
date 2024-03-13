@@ -556,22 +556,28 @@ class CronJobSpec(_kuber_definitions.Definition):
         """Create CronJobSpec instance."""
         super(CronJobSpec, self).__init__(api_version="batch/v1", kind="CronJobSpec")
         self._properties = {
-            "concurrencyPolicy": concurrency_policy
-            if concurrency_policy is not None
-            else "",
-            "failedJobsHistoryLimit": failed_jobs_history_limit
-            if failed_jobs_history_limit is not None
-            else None,
-            "jobTemplate": job_template
-            if job_template is not None
-            else JobTemplateSpec(),
+            "concurrencyPolicy": (
+                concurrency_policy if concurrency_policy is not None else ""
+            ),
+            "failedJobsHistoryLimit": (
+                failed_jobs_history_limit
+                if failed_jobs_history_limit is not None
+                else None
+            ),
+            "jobTemplate": (
+                job_template if job_template is not None else JobTemplateSpec()
+            ),
             "schedule": schedule if schedule is not None else "",
-            "startingDeadlineSeconds": starting_deadline_seconds
-            if starting_deadline_seconds is not None
-            else None,
-            "successfulJobsHistoryLimit": successful_jobs_history_limit
-            if successful_jobs_history_limit is not None
-            else None,
+            "startingDeadlineSeconds": (
+                starting_deadline_seconds
+                if starting_deadline_seconds is not None
+                else None
+            ),
+            "successfulJobsHistoryLimit": (
+                successful_jobs_history_limit
+                if successful_jobs_history_limit is not None
+                else None
+            ),
             "suspend": suspend if suspend is not None else None,
             "timeZone": time_zone if time_zone is not None else "",
         }
@@ -934,12 +940,12 @@ class CronJobStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "active": active if active is not None else [],
-            "lastScheduleTime": last_schedule_time
-            if last_schedule_time is not None
-            else None,
-            "lastSuccessfulTime": last_successful_time
-            if last_successful_time is not None
-            else None,
+            "lastScheduleTime": (
+                last_schedule_time if last_schedule_time is not None else None
+            ),
+            "lastSuccessfulTime": (
+                last_successful_time if last_successful_time is not None else None
+            ),
         }
         self._types = {
             "active": (list, ObjectReference),
@@ -1454,9 +1460,9 @@ class JobCondition(_kuber_definitions.Definition):
         super(JobCondition, self).__init__(api_version="batch/v1", kind="JobCondition")
         self._properties = {
             "lastProbeTime": last_probe_time if last_probe_time is not None else None,
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1708,9 +1714,9 @@ class JobSpec(_kuber_definitions.Definition):
         """Create JobSpec instance."""
         super(JobSpec, self).__init__(api_version="batch/v1", kind="JobSpec")
         self._properties = {
-            "activeDeadlineSeconds": active_deadline_seconds
-            if active_deadline_seconds is not None
-            else None,
+            "activeDeadlineSeconds": (
+                active_deadline_seconds if active_deadline_seconds is not None else None
+            ),
             "backoffLimit": backoff_limit if backoff_limit is not None else None,
             "completionMode": completion_mode if completion_mode is not None else "",
             "completions": completions if completions is not None else None,
@@ -1719,9 +1725,11 @@ class JobSpec(_kuber_definitions.Definition):
             "selector": selector if selector is not None else LabelSelector(),
             "suspend": suspend if suspend is not None else None,
             "template": template if template is not None else PodTemplateSpec(),
-            "ttlSecondsAfterFinished": ttl_seconds_after_finished
-            if ttl_seconds_after_finished is not None
-            else None,
+            "ttlSecondsAfterFinished": (
+                ttl_seconds_after_finished
+                if ttl_seconds_after_finished is not None
+                else None
+            ),
         }
         self._types = {
             "activeDeadlineSeconds": (int, None),
@@ -2230,18 +2238,20 @@ class JobStatus(_kuber_definitions.Definition):
         super(JobStatus, self).__init__(api_version="batch/v1", kind="JobStatus")
         self._properties = {
             "active": active if active is not None else None,
-            "completedIndexes": completed_indexes
-            if completed_indexes is not None
-            else "",
+            "completedIndexes": (
+                completed_indexes if completed_indexes is not None else ""
+            ),
             "completionTime": completion_time if completion_time is not None else None,
             "conditions": conditions if conditions is not None else [],
             "failed": failed if failed is not None else None,
             "ready": ready if ready is not None else None,
             "startTime": start_time if start_time is not None else None,
             "succeeded": succeeded if succeeded is not None else None,
-            "uncountedTerminatedPods": uncounted_terminated_pods
-            if uncounted_terminated_pods is not None
-            else UncountedTerminatedPods(),
+            "uncountedTerminatedPods": (
+                uncounted_terminated_pods
+                if uncounted_terminated_pods is not None
+                else UncountedTerminatedPods()
+            ),
         }
         self._types = {
             "active": (int, None),

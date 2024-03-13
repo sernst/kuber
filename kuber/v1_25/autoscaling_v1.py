@@ -490,12 +490,16 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         self._properties = {
             "maxReplicas": max_replicas if max_replicas is not None else None,
             "minReplicas": min_replicas if min_replicas is not None else None,
-            "scaleTargetRef": scale_target_ref
-            if scale_target_ref is not None
-            else CrossVersionObjectReference(),
-            "targetCPUUtilizationPercentage": target_cpuutilization_percentage
-            if target_cpuutilization_percentage is not None
-            else None,
+            "scaleTargetRef": (
+                scale_target_ref
+                if scale_target_ref is not None
+                else CrossVersionObjectReference()
+            ),
+            "targetCPUUtilizationPercentage": (
+                target_cpuutilization_percentage
+                if target_cpuutilization_percentage is not None
+                else None
+            ),
         }
         self._types = {
             "maxReplicas": (int, None),
@@ -624,19 +628,21 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v1", kind="HorizontalPodAutoscalerStatus"
         )
         self._properties = {
-            "currentCPUUtilizationPercentage": current_cpuutilization_percentage
-            if current_cpuutilization_percentage is not None
-            else None,
-            "currentReplicas": current_replicas
-            if current_replicas is not None
-            else None,
-            "desiredReplicas": desired_replicas
-            if desired_replicas is not None
-            else None,
+            "currentCPUUtilizationPercentage": (
+                current_cpuutilization_percentage
+                if current_cpuutilization_percentage is not None
+                else None
+            ),
+            "currentReplicas": (
+                current_replicas if current_replicas is not None else None
+            ),
+            "desiredReplicas": (
+                desired_replicas if desired_replicas is not None else None
+            ),
             "lastScaleTime": last_scale_time if last_scale_time is not None else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
         }
         self._types = {
             "currentCPUUtilizationPercentage": (int, None),

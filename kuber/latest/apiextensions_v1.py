@@ -1,11 +1,11 @@
-import typing  # noqa: F401
 import datetime as _datetime  # noqa: F401
+import typing  # noqa: F401
 
 from kubernetes import client  # noqa: F401
-from kuber import kube_api as _kube_api  # noqa: F401
 
-from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
+from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import kube_api as _kube_api  # noqa: F401
 from kuber.latest.meta_v1 import ListMeta  # noqa: F401
 from kuber.latest.meta_v1 import ObjectMeta  # noqa: F401
 from kuber.latest.meta_v1 import Status  # noqa: F401
@@ -211,11 +211,11 @@ class CustomResourceConversion(_kuber_definitions.Definition):
     def strategy(self) -> str:
         """
         strategy specifies how custom resources are converted
-        between versions. Allowed values are: - `None`: The
+        between versions. Allowed values are: - `"None"`: The
         converter only change the apiVersion and would not touch any
-        other field in the custom resource. - `Webhook`: API Server
-        will call to an external webhook to do the conversion.
-        Additional information
+        other field in the custom resource. - `"Webhook"`: API
+        Server will call to an external webhook to do the
+        conversion. Additional information
           is needed for this option. This requires
         spec.preserveUnknownFields to be false, and
         spec.conversion.webhook to be set.
@@ -229,11 +229,11 @@ class CustomResourceConversion(_kuber_definitions.Definition):
     def strategy(self, value: str):
         """
         strategy specifies how custom resources are converted
-        between versions. Allowed values are: - `None`: The
+        between versions. Allowed values are: - `"None"`: The
         converter only change the apiVersion and would not touch any
-        other field in the custom resource. - `Webhook`: API Server
-        will call to an external webhook to do the conversion.
-        Additional information
+        other field in the custom resource. - `"Webhook"`: API
+        Server will call to an external webhook to do the
+        conversion. Additional information
           is needed for this option. This requires
         spec.preserveUnknownFields to be false, and
         spec.conversion.webhook to be set.
@@ -244,7 +244,7 @@ class CustomResourceConversion(_kuber_definitions.Definition):
     def webhook(self) -> "WebhookConversion":
         """
         webhook describes how to call the conversion webhook.
-        Required when `strategy` is set to `Webhook`.
+        Required when `strategy` is set to `"Webhook"`.
         """
         return typing.cast(
             "WebhookConversion",
@@ -255,7 +255,7 @@ class CustomResourceConversion(_kuber_definitions.Definition):
     def webhook(self, value: typing.Union["WebhookConversion", dict]):
         """
         webhook describes how to call the conversion webhook.
-        Required when `strategy` is set to `Webhook`.
+        Required when `strategy` is set to `"Webhook"`.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -291,9 +291,9 @@ class CustomResourceDefinition(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else CustomResourceDefinitionSpec(),
-            "status": status
-            if status is not None
-            else CustomResourceDefinitionStatus(),
+            "status": (
+                status if status is not None else CustomResourceDefinitionStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -566,9 +566,9 @@ class CustomResourceDefinitionCondition(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="CustomResourceDefinitionCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -984,14 +984,14 @@ class CustomResourceDefinitionSpec(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="CustomResourceDefinitionSpec"
         )
         self._properties = {
-            "conversion": conversion
-            if conversion is not None
-            else CustomResourceConversion(),
+            "conversion": (
+                conversion if conversion is not None else CustomResourceConversion()
+            ),
             "group": group if group is not None else "",
             "names": names if names is not None else CustomResourceDefinitionNames(),
-            "preserveUnknownFields": preserve_unknown_fields
-            if preserve_unknown_fields is not None
-            else None,
+            "preserveUnknownFields": (
+                preserve_unknown_fields if preserve_unknown_fields is not None else None
+            ),
             "scope": scope if scope is not None else "",
             "versions": versions if versions is not None else [],
         }
@@ -1207,9 +1207,11 @@ class CustomResourceDefinitionStatus(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="CustomResourceDefinitionStatus"
         )
         self._properties = {
-            "acceptedNames": accepted_names
-            if accepted_names is not None
-            else CustomResourceDefinitionNames(),
+            "acceptedNames": (
+                accepted_names
+                if accepted_names is not None
+                else CustomResourceDefinitionNames()
+            ),
             "conditions": conditions if conditions is not None else [],
             "storedVersions": stored_versions if stored_versions is not None else [],
         }
@@ -1340,20 +1342,24 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="CustomResourceDefinitionVersion"
         )
         self._properties = {
-            "additionalPrinterColumns": additional_printer_columns
-            if additional_printer_columns is not None
-            else [],
+            "additionalPrinterColumns": (
+                additional_printer_columns
+                if additional_printer_columns is not None
+                else []
+            ),
             "deprecated": deprecated if deprecated is not None else None,
-            "deprecationWarning": deprecation_warning
-            if deprecation_warning is not None
-            else "",
+            "deprecationWarning": (
+                deprecation_warning if deprecation_warning is not None else ""
+            ),
             "name": name if name is not None else "",
             "schema": schema if schema is not None else CustomResourceValidation(),
             "served": served if served is not None else None,
             "storage": storage if storage is not None else None,
-            "subresources": subresources
-            if subresources is not None
-            else CustomResourceSubresources(),
+            "subresources": (
+                subresources
+                if subresources is not None
+                else CustomResourceSubresources()
+            ),
         }
         self._types = {
             "additionalPrinterColumns": (list, CustomResourceColumnDefinition),
@@ -1589,15 +1595,15 @@ class CustomResourceSubresourceScale(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="CustomResourceSubresourceScale"
         )
         self._properties = {
-            "labelSelectorPath": label_selector_path
-            if label_selector_path is not None
-            else "",
-            "specReplicasPath": spec_replicas_path
-            if spec_replicas_path is not None
-            else "",
-            "statusReplicasPath": status_replicas_path
-            if status_replicas_path is not None
-            else "",
+            "labelSelectorPath": (
+                label_selector_path if label_selector_path is not None else ""
+            ),
+            "specReplicasPath": (
+                spec_replicas_path if spec_replicas_path is not None else ""
+            ),
+            "statusReplicasPath": (
+                status_replicas_path if status_replicas_path is not None else ""
+            ),
         }
         self._types = {
             "labelSelectorPath": (str, None),
@@ -1754,9 +1760,9 @@ class CustomResourceSubresources(_kuber_definitions.Definition):
         )
         self._properties = {
             "scale": scale if scale is not None else CustomResourceSubresourceScale(),
-            "status": status
-            if status is not None
-            else CustomResourceSubresourceStatus(),
+            "status": (
+                status if status is not None else CustomResourceSubresourceStatus()
+            ),
         }
         self._types = {
             "scale": (CustomResourceSubresourceScale, None),
@@ -1841,9 +1847,11 @@ class CustomResourceValidation(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="CustomResourceValidation"
         )
         self._properties = {
-            "openAPIV3Schema": open_apiv3_schema
-            if open_apiv3_schema is not None
-            else JSONSchemaProps(),
+            "openAPIV3Schema": (
+                open_apiv3_schema
+                if open_apiv3_schema is not None
+                else JSONSchemaProps()
+            ),
         }
         self._types = {
             "openAPIV3Schema": (JSONSchemaProps, None),
@@ -2015,12 +2023,16 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="JSONSchemaProps"
         )
         self._properties = {
-            "additionalItems": additional_items
-            if additional_items is not None
-            else JSONSchemaPropsOrBool(),
-            "additionalProperties": additional_properties
-            if additional_properties is not None
-            else JSONSchemaPropsOrBool(),
+            "additionalItems": (
+                additional_items
+                if additional_items is not None
+                else JSONSchemaPropsOrBool()
+            ),
+            "additionalProperties": (
+                additional_properties
+                if additional_properties is not None
+                else JSONSchemaPropsOrBool()
+            ),
             "allOf": all_of if all_of is not None else [],
             "anyOf": any_of if any_of is not None else [],
             "default": default if default is not None else JSON(),
@@ -2029,15 +2041,15 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             "description": description if description is not None else "",
             "enum": enum if enum is not None else [],
             "example": example if example is not None else JSON(),
-            "exclusiveMaximum": exclusive_maximum
-            if exclusive_maximum is not None
-            else None,
-            "exclusiveMinimum": exclusive_minimum
-            if exclusive_minimum is not None
-            else None,
-            "externalDocs": external_docs
-            if external_docs is not None
-            else ExternalDocumentation(),
+            "exclusiveMaximum": (
+                exclusive_maximum if exclusive_maximum is not None else None
+            ),
+            "exclusiveMinimum": (
+                exclusive_minimum if exclusive_minimum is not None else None
+            ),
+            "externalDocs": (
+                external_docs if external_docs is not None else ExternalDocumentation()
+            ),
             "format": format_ if format_ is not None else "",
             "id": id_ if id_ is not None else "",
             "items": items if items is not None else JSONSchemaPropsOrArray(),
@@ -2054,35 +2066,43 @@ class JSONSchemaProps(_kuber_definitions.Definition):
             "nullable": nullable if nullable is not None else None,
             "oneOf": one_of if one_of is not None else [],
             "pattern": pattern if pattern is not None else "",
-            "patternProperties": pattern_properties
-            if pattern_properties is not None
-            else {},
+            "patternProperties": (
+                pattern_properties if pattern_properties is not None else {}
+            ),
             "properties": properties if properties is not None else {},
             "required": required if required is not None else [],
             "title": title if title is not None else "",
             "type": type_ if type_ is not None else "",
             "uniqueItems": unique_items if unique_items is not None else None,
-            "x-kubernetes-embedded-resource": x_kubernetes_embedded_resource
-            if x_kubernetes_embedded_resource is not None
-            else None,
-            "x-kubernetes-int-or-string": x_kubernetes_int_or_string
-            if x_kubernetes_int_or_string is not None
-            else None,
-            "x-kubernetes-list-map-keys": x_kubernetes_list_map_keys
-            if x_kubernetes_list_map_keys is not None
-            else [],
-            "x-kubernetes-list-type": x_kubernetes_list_type
-            if x_kubernetes_list_type is not None
-            else "",
-            "x-kubernetes-map-type": x_kubernetes_map_type
-            if x_kubernetes_map_type is not None
-            else "",
-            "x-kubernetes-preserve-unknown-fields": x_kubernetes_preserve_unknown_fields
-            if x_kubernetes_preserve_unknown_fields is not None
-            else None,
-            "x-kubernetes-validations": x_kubernetes_validations
-            if x_kubernetes_validations is not None
-            else [],
+            "x-kubernetes-embedded-resource": (
+                x_kubernetes_embedded_resource
+                if x_kubernetes_embedded_resource is not None
+                else None
+            ),
+            "x-kubernetes-int-or-string": (
+                x_kubernetes_int_or_string
+                if x_kubernetes_int_or_string is not None
+                else None
+            ),
+            "x-kubernetes-list-map-keys": (
+                x_kubernetes_list_map_keys
+                if x_kubernetes_list_map_keys is not None
+                else []
+            ),
+            "x-kubernetes-list-type": (
+                x_kubernetes_list_type if x_kubernetes_list_type is not None else ""
+            ),
+            "x-kubernetes-map-type": (
+                x_kubernetes_map_type if x_kubernetes_map_type is not None else ""
+            ),
+            "x-kubernetes-preserve-unknown-fields": (
+                x_kubernetes_preserve_unknown_fields
+                if x_kubernetes_preserve_unknown_fields is not None
+                else None
+            ),
+            "x-kubernetes-validations": (
+                x_kubernetes_validations if x_kubernetes_validations is not None else []
+            ),
         }
         self._types = {
             "additionalItems": (JSONSchemaPropsOrBool, None),
@@ -3221,7 +3241,11 @@ class ValidationRule(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        field_path: typing.Optional[str] = None,
         message: typing.Optional[str] = None,
+        message_expression: typing.Optional[str] = None,
+        optional_old_self: typing.Optional[bool] = None,
+        reason: typing.Optional[str] = None,
         rule: typing.Optional[str] = None,
     ):
         """Create ValidationRule instance."""
@@ -3229,13 +3253,74 @@ class ValidationRule(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="ValidationRule"
         )
         self._properties = {
+            "fieldPath": field_path if field_path is not None else "",
             "message": message if message is not None else "",
+            "messageExpression": (
+                message_expression if message_expression is not None else ""
+            ),
+            "optionalOldSelf": (
+                optional_old_self if optional_old_self is not None else None
+            ),
+            "reason": reason if reason is not None else "",
             "rule": rule if rule is not None else "",
         }
         self._types = {
+            "fieldPath": (str, None),
             "message": (str, None),
+            "messageExpression": (str, None),
+            "optionalOldSelf": (bool, None),
+            "reason": (str, None),
             "rule": (str, None),
         }
+
+    @property
+    def field_path(self) -> str:
+        """
+        fieldPath represents the field path returned when the
+        validation fails. It must be a relative JSON path (i.e. with
+        array notation) scoped to the location of this x-kubernetes-
+        validations extension in the schema and refer to an existing
+        field. e.g. when validation checks if a specific attribute
+        `foo` under a map `testMap`, the fieldPath could be set to
+        `.testMap.foo` If the validation checks two lists must have
+        unique attributes, the fieldPath could be set to either of
+        the list: e.g. `.testList` It does not support list numeric
+        index. It supports child operation to refer to an existing
+        field currently. Refer to [JSONPath support in Kubernetes](h
+        ttps://kubernetes.io/docs/reference/kubectl/jsonpath/) for
+        more info. Numeric index of array is not supported. For
+        field name which contains special characters, use
+        `['specialName']` to refer the field name. e.g. for
+        attribute `foo.34$` appears in a list `testList`, the
+        fieldPath could be set to `.testList['foo.34$']`
+        """
+        return typing.cast(
+            str,
+            self._properties.get("fieldPath"),
+        )
+
+    @field_path.setter
+    def field_path(self, value: str):
+        """
+        fieldPath represents the field path returned when the
+        validation fails. It must be a relative JSON path (i.e. with
+        array notation) scoped to the location of this x-kubernetes-
+        validations extension in the schema and refer to an existing
+        field. e.g. when validation checks if a specific attribute
+        `foo` under a map `testMap`, the fieldPath could be set to
+        `.testMap.foo` If the validation checks two lists must have
+        unique attributes, the fieldPath could be set to either of
+        the list: e.g. `.testList` It does not support list numeric
+        index. It supports child operation to refer to an existing
+        field currently. Refer to [JSONPath support in Kubernetes](h
+        ttps://kubernetes.io/docs/reference/kubectl/jsonpath/) for
+        more info. Numeric index of array is not supported. For
+        field name which contains special characters, use
+        `['specialName']` to refer the field name. e.g. for
+        attribute `foo.34$` appears in a list `testList`, the
+        fieldPath could be set to `.testList['foo.34$']`
+        """
+        self._properties["fieldPath"] = value
 
     @property
     def message(self) -> str:
@@ -3261,6 +3346,139 @@ class ValidationRule(_kuber_definitions.Definition):
         with the host matching spec.host"
         """
         self._properties["message"] = value
+
+    @property
+    def message_expression(self) -> str:
+        """
+        MessageExpression declares a CEL expression that evaluates
+        to the validation failure message that is returned when this
+        rule fails. Since messageExpression is used as a failure
+        message, it must evaluate to a string. If both message and
+        messageExpression are present on a rule, then
+        messageExpression will be used if validation fails. If
+        messageExpression results in a runtime error, the runtime
+        error is logged, and the validation failure message is
+        produced as if the messageExpression field were unset. If
+        messageExpression evaluates to an empty string, a string
+        with only spaces, or a string that contains line breaks,
+        then the validation failure message will also be produced as
+        if the messageExpression field were unset, and the fact that
+        messageExpression produced an empty string/string with only
+        spaces/string with line breaks will be logged.
+        messageExpression has access to all the same variables as
+        the rule; the only difference is the return type. Example:
+        "x must be less than max ("+string(self.max)+")"
+        """
+        return typing.cast(
+            str,
+            self._properties.get("messageExpression"),
+        )
+
+    @message_expression.setter
+    def message_expression(self, value: str):
+        """
+        MessageExpression declares a CEL expression that evaluates
+        to the validation failure message that is returned when this
+        rule fails. Since messageExpression is used as a failure
+        message, it must evaluate to a string. If both message and
+        messageExpression are present on a rule, then
+        messageExpression will be used if validation fails. If
+        messageExpression results in a runtime error, the runtime
+        error is logged, and the validation failure message is
+        produced as if the messageExpression field were unset. If
+        messageExpression evaluates to an empty string, a string
+        with only spaces, or a string that contains line breaks,
+        then the validation failure message will also be produced as
+        if the messageExpression field were unset, and the fact that
+        messageExpression produced an empty string/string with only
+        spaces/string with line breaks will be logged.
+        messageExpression has access to all the same variables as
+        the rule; the only difference is the return type. Example:
+        "x must be less than max ("+string(self.max)+")"
+        """
+        self._properties["messageExpression"] = value
+
+    @property
+    def optional_old_self(self) -> bool:
+        """
+        optionalOldSelf is used to opt a transition rule into
+        evaluation even when the object is first created, or if the
+        old object is missing the value.
+
+        When enabled `oldSelf` will be a CEL optional whose value
+        will be `None` if there is no old value, or when the object
+        is initially created.
+
+        You may check for presence of oldSelf using
+        `oldSelf.hasValue()` and unwrap it after checking using
+        `oldSelf.value()`. Check the CEL documentation for Optional
+        types for more information:
+        https://pkg.go.dev/github.com/google/cel-
+        go/cel#OptionalTypes
+
+        May not be set unless `oldSelf` is used in `rule`.
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("optionalOldSelf"),
+        )
+
+    @optional_old_self.setter
+    def optional_old_self(self, value: bool):
+        """
+        optionalOldSelf is used to opt a transition rule into
+        evaluation even when the object is first created, or if the
+        old object is missing the value.
+
+        When enabled `oldSelf` will be a CEL optional whose value
+        will be `None` if there is no old value, or when the object
+        is initially created.
+
+        You may check for presence of oldSelf using
+        `oldSelf.hasValue()` and unwrap it after checking using
+        `oldSelf.value()`. Check the CEL documentation for Optional
+        types for more information:
+        https://pkg.go.dev/github.com/google/cel-
+        go/cel#OptionalTypes
+
+        May not be set unless `oldSelf` is used in `rule`.
+        """
+        self._properties["optionalOldSelf"] = value
+
+    @property
+    def reason(self) -> str:
+        """
+        reason provides a machine-readable validation failure reason
+        that is returned to the caller when a request fails this
+        validation rule. The HTTP status code returned to the caller
+        will match the reason of the reason of the first failed
+        validation rule. The currently supported reasons are:
+        "FieldValueInvalid", "FieldValueForbidden",
+        "FieldValueRequired", "FieldValueDuplicate". If not set,
+        default to use "FieldValueInvalid". All future added reasons
+        must be accepted by clients when reading this value and
+        unknown reasons should be treated as FieldValueInvalid.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("reason"),
+        )
+
+    @reason.setter
+    def reason(self, value: str):
+        """
+        reason provides a machine-readable validation failure reason
+        that is returned to the caller when a request fails this
+        validation rule. The HTTP status code returned to the caller
+        will match the reason of the reason of the first failed
+        validation rule. The currently supported reasons are:
+        "FieldValueInvalid", "FieldValueForbidden",
+        "FieldValueRequired", "FieldValueDuplicate". If not set,
+        default to use "FieldValueInvalid". All future added reasons
+        must be accepted by clients when reading this value and
+        unknown reasons should be treated as FieldValueInvalid.
+        """
+        self._properties["reason"] = value
 
     @property
     def rule(self) -> str:
@@ -3345,6 +3563,21 @@ class ValidationRule(_kuber_definitions.Definition):
         `X` and `Y` intersect. Elements in `Y` with
             non-intersecting keys are appended, retaining their
         partial order.
+
+        If `rule` makes use of the `oldSelf` variable it is
+        implicitly a `transition rule`.
+
+        By default, the `oldSelf` variable is the same type as
+        `self`. When `optionalOldSelf` is true, the `oldSelf`
+        variable is a CEL optional
+         variable whose value() is the same type as `self`.
+        See the documentation for the `optionalOldSelf` field for
+        details.
+
+        Transition rules by default are applied only on UPDATE
+        requests and are skipped if an old value could not be found.
+        You can opt a transition rule into unconditional evaluation
+        by setting `optionalOldSelf` to true.
         """
         return typing.cast(
             str,
@@ -3434,6 +3667,21 @@ class ValidationRule(_kuber_definitions.Definition):
         `X` and `Y` intersect. Elements in `Y` with
             non-intersecting keys are appended, retaining their
         partial order.
+
+        If `rule` makes use of the `oldSelf` variable it is
+        implicitly a `transition rule`.
+
+        By default, the `oldSelf` variable is the same type as
+        `self`. When `optionalOldSelf` is true, the `oldSelf`
+        variable is a CEL optional
+         variable whose value() is the same type as `self`.
+        See the documentation for the `optionalOldSelf` field for
+        details.
+
+        Transition rules by default are applied only on UPDATE
+        requests and are skipped if an old value could not be found.
+        You can opt a transition rule into unconditional evaluation
+        by setting `optionalOldSelf` to true.
         """
         self._properties["rule"] = value
 
@@ -3613,12 +3861,14 @@ class WebhookConversion(_kuber_definitions.Definition):
             api_version="apiextensions/v1", kind="WebhookConversion"
         )
         self._properties = {
-            "clientConfig": client_config
-            if client_config is not None
-            else WebhookClientConfig(),
-            "conversionReviewVersions": conversion_review_versions
-            if conversion_review_versions is not None
-            else [],
+            "clientConfig": (
+                client_config if client_config is not None else WebhookClientConfig()
+            ),
+            "conversionReviewVersions": (
+                conversion_review_versions
+                if conversion_review_versions is not None
+                else []
+            ),
         }
         self._types = {
             "clientConfig": (WebhookClientConfig, None),

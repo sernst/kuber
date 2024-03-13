@@ -574,9 +574,9 @@ class IngressBackend(_kuber_definitions.Definition):
             api_version="networking/v1", kind="IngressBackend"
         )
         self._properties = {
-            "resource": resource
-            if resource is not None
-            else TypedLocalObjectReference(),
+            "resource": (
+                resource if resource is not None else TypedLocalObjectReference()
+            ),
             "service": service if service is not None else IngressServiceBackend(),
         }
         self._types = {
@@ -1096,9 +1096,11 @@ class IngressClassSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "controller": controller if controller is not None else "",
-            "parameters": parameters
-            if parameters is not None
-            else IngressClassParametersReference(),
+            "parameters": (
+                parameters
+                if parameters is not None
+                else IngressClassParametersReference()
+            ),
         }
         self._types = {
             "controller": (str, None),
@@ -1478,12 +1480,12 @@ class IngressSpec(_kuber_definitions.Definition):
             api_version="networking/v1", kind="IngressSpec"
         )
         self._properties = {
-            "defaultBackend": default_backend
-            if default_backend is not None
-            else IngressBackend(),
-            "ingressClassName": ingress_class_name
-            if ingress_class_name is not None
-            else "",
+            "defaultBackend": (
+                default_backend if default_backend is not None else IngressBackend()
+            ),
+            "ingressClassName": (
+                ingress_class_name if ingress_class_name is not None else ""
+            ),
             "rules": rules if rules is not None else [],
             "tls": tls if tls is not None else [],
         }
@@ -1648,9 +1650,9 @@ class IngressStatus(_kuber_definitions.Definition):
             api_version="networking/v1", kind="IngressStatus"
         )
         self._properties = {
-            "loadBalancer": load_balancer
-            if load_balancer is not None
-            else LoadBalancerStatus(),
+            "loadBalancer": (
+                load_balancer if load_balancer is not None else LoadBalancerStatus()
+            ),
         }
         self._types = {
             "loadBalancer": (LoadBalancerStatus, None),
@@ -2371,12 +2373,14 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         )
         self._properties = {
             "ipBlock": ip_block if ip_block is not None else IPBlock(),
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "podSelector": pod_selector
-            if pod_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "podSelector": (
+                pod_selector if pod_selector is not None else LabelSelector()
+            ),
         }
         self._types = {
             "ipBlock": (IPBlock, None),
@@ -2617,9 +2621,9 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
         self._properties = {
             "egress": egress if egress is not None else [],
             "ingress": ingress if ingress is not None else [],
-            "podSelector": pod_selector
-            if pod_selector is not None
-            else LabelSelector(),
+            "podSelector": (
+                pod_selector if pod_selector is not None else LabelSelector()
+            ),
             "policyTypes": policy_types if policy_types is not None else [],
         }
         self._types = {

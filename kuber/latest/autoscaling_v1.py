@@ -42,7 +42,7 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @property
     def api_version(self) -> str:
         """
-        API version of the referent
+        apiVersion is the API version of the referent
         """
         return typing.cast(
             str,
@@ -52,14 +52,14 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @api_version.setter
     def api_version(self, value: str):
         """
-        API version of the referent
+        apiVersion is the API version of the referent
         """
         self._properties["apiVersion"] = value
 
     @property
     def kind(self) -> str:
         """
-        Kind of the referent; More info:
+        kind is the kind of the referent; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
@@ -71,7 +71,7 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @kind.setter
     def kind(self, value: str):
         """
-        Kind of the referent; More info:
+        kind is the kind of the referent; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
@@ -80,8 +80,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent; More info:
-        http://kubernetes.io/docs/user-guide/identifiers#names
+        name is the name of the referent; More info:
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/names/#names
         """
         return typing.cast(
             str,
@@ -91,8 +92,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent; More info:
-        http://kubernetes.io/docs/user-guide/identifiers#names
+        name is the name of the referent; More info:
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/names/#names
         """
         self._properties["name"] = value
 
@@ -160,7 +162,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     @property
     def spec(self) -> "HorizontalPodAutoscalerSpec":
         """
-        behaviour of autoscaler. More info:
+        spec defines the behaviour of autoscaler. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status.
         """
@@ -172,7 +174,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["HorizontalPodAutoscalerSpec", dict]):
         """
-        behaviour of autoscaler. More info:
+        spec defines the behaviour of autoscaler. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status.
         """
@@ -186,7 +188,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     @property
     def status(self) -> "HorizontalPodAutoscalerStatus":
         """
-        current information about the autoscaler.
+        status is the current information about the autoscaler.
         """
         return typing.cast(
             "HorizontalPodAutoscalerStatus",
@@ -196,7 +198,7 @@ class HorizontalPodAutoscaler(_kuber_definitions.Resource):
     @status.setter
     def status(self, value: typing.Union["HorizontalPodAutoscalerStatus", dict]):
         """
-        current information about the autoscaler.
+        status is the current information about the autoscaler.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -405,7 +407,7 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["HorizontalPodAutoscaler"]:
         """
-        list of horizontal pod autoscaler objects.
+        items is the list of horizontal pod autoscaler objects.
         """
         return typing.cast(
             typing.List["HorizontalPodAutoscaler"],
@@ -418,7 +420,7 @@ class HorizontalPodAutoscalerList(_kuber_definitions.Collection):
         value: typing.Union[typing.List["HorizontalPodAutoscaler"], typing.List[dict]],
     ):
         """
-        list of horizontal pod autoscaler objects.
+        items is the list of horizontal pod autoscaler objects.
         """
         cleaned: typing.List[HorizontalPodAutoscaler] = []
         for item in value:
@@ -490,12 +492,16 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
         self._properties = {
             "maxReplicas": max_replicas if max_replicas is not None else None,
             "minReplicas": min_replicas if min_replicas is not None else None,
-            "scaleTargetRef": scale_target_ref
-            if scale_target_ref is not None
-            else CrossVersionObjectReference(),
-            "targetCPUUtilizationPercentage": target_cpuutilization_percentage
-            if target_cpuutilization_percentage is not None
-            else None,
+            "scaleTargetRef": (
+                scale_target_ref
+                if scale_target_ref is not None
+                else CrossVersionObjectReference()
+            ),
+            "targetCPUUtilizationPercentage": (
+                target_cpuutilization_percentage
+                if target_cpuutilization_percentage is not None
+                else None
+            ),
         }
         self._types = {
             "maxReplicas": (int, None),
@@ -507,8 +513,9 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     @property
     def max_replicas(self) -> int:
         """
-        upper limit for the number of pods that can be set by the
-        autoscaler; cannot be smaller than MinReplicas.
+        maxReplicas is the upper limit for the number of pods that
+        can be set by the autoscaler; cannot be smaller than
+        MinReplicas.
         """
         return typing.cast(
             int,
@@ -518,8 +525,9 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     @max_replicas.setter
     def max_replicas(self, value: int):
         """
-        upper limit for the number of pods that can be set by the
-        autoscaler; cannot be smaller than MinReplicas.
+        maxReplicas is the upper limit for the number of pods that
+        can be set by the autoscaler; cannot be smaller than
+        MinReplicas.
         """
         self._properties["maxReplicas"] = value
 
@@ -581,9 +589,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     @property
     def target_cpuutilization_percentage(self) -> int:
         """
-        target average CPU utilization (represented as a percentage
-        of requested CPU) over all the pods; if not specified the
-        default autoscaling policy will be used.
+        targetCPUUtilizationPercentage is the target average CPU
+        utilization (represented as a percentage of requested CPU)
+        over all the pods; if not specified the default autoscaling
+        policy will be used.
         """
         return typing.cast(
             int,
@@ -593,9 +602,10 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
     @target_cpuutilization_percentage.setter
     def target_cpuutilization_percentage(self, value: int):
         """
-        target average CPU utilization (represented as a percentage
-        of requested CPU) over all the pods; if not specified the
-        default autoscaling policy will be used.
+        targetCPUUtilizationPercentage is the target average CPU
+        utilization (represented as a percentage of requested CPU)
+        over all the pods; if not specified the default autoscaling
+        policy will be used.
         """
         self._properties["targetCPUUtilizationPercentage"] = value
 
@@ -624,19 +634,21 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v1", kind="HorizontalPodAutoscalerStatus"
         )
         self._properties = {
-            "currentCPUUtilizationPercentage": current_cpuutilization_percentage
-            if current_cpuutilization_percentage is not None
-            else None,
-            "currentReplicas": current_replicas
-            if current_replicas is not None
-            else None,
-            "desiredReplicas": desired_replicas
-            if desired_replicas is not None
-            else None,
+            "currentCPUUtilizationPercentage": (
+                current_cpuutilization_percentage
+                if current_cpuutilization_percentage is not None
+                else None
+            ),
+            "currentReplicas": (
+                current_replicas if current_replicas is not None else None
+            ),
+            "desiredReplicas": (
+                desired_replicas if desired_replicas is not None else None
+            ),
             "lastScaleTime": last_scale_time if last_scale_time is not None else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
         }
         self._types = {
             "currentCPUUtilizationPercentage": (int, None),
@@ -649,9 +661,10 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
     @property
     def current_cpuutilization_percentage(self) -> int:
         """
-        current average CPU utilization over all pods, represented
-        as a percentage of requested CPU, e.g. 70 means that an
-        average pod is using now 70% of its requested CPU.
+        currentCPUUtilizationPercentage is the current average CPU
+        utilization over all pods, represented as a percentage of
+        requested CPU, e.g. 70 means that an average pod is using
+        now 70% of its requested CPU.
         """
         return typing.cast(
             int,
@@ -661,17 +674,18 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
     @current_cpuutilization_percentage.setter
     def current_cpuutilization_percentage(self, value: int):
         """
-        current average CPU utilization over all pods, represented
-        as a percentage of requested CPU, e.g. 70 means that an
-        average pod is using now 70% of its requested CPU.
+        currentCPUUtilizationPercentage is the current average CPU
+        utilization over all pods, represented as a percentage of
+        requested CPU, e.g. 70 means that an average pod is using
+        now 70% of its requested CPU.
         """
         self._properties["currentCPUUtilizationPercentage"] = value
 
     @property
     def current_replicas(self) -> int:
         """
-        current number of replicas of pods managed by this
-        autoscaler.
+        currentReplicas is the current number of replicas of pods
+        managed by this autoscaler.
         """
         return typing.cast(
             int,
@@ -681,16 +695,16 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
     @current_replicas.setter
     def current_replicas(self, value: int):
         """
-        current number of replicas of pods managed by this
-        autoscaler.
+        currentReplicas is the current number of replicas of pods
+        managed by this autoscaler.
         """
         self._properties["currentReplicas"] = value
 
     @property
     def desired_replicas(self) -> int:
         """
-        desired number of replicas of pods managed by this
-        autoscaler.
+        desiredReplicas is the  desired number of replicas of pods
+        managed by this autoscaler.
         """
         return typing.cast(
             int,
@@ -700,17 +714,17 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
     @desired_replicas.setter
     def desired_replicas(self, value: int):
         """
-        desired number of replicas of pods managed by this
-        autoscaler.
+        desiredReplicas is the  desired number of replicas of pods
+        managed by this autoscaler.
         """
         self._properties["desiredReplicas"] = value
 
     @property
     def last_scale_time(self) -> str:
         """
-        last time the HorizontalPodAutoscaler scaled the number of
-        pods; used by the autoscaler to control how often the number
-        of pods is changed.
+        lastScaleTime is the last time the HorizontalPodAutoscaler
+        scaled the number of pods; used by the autoscaler to control
+        how often the number of pods is changed.
         """
         return typing.cast(
             str,
@@ -722,9 +736,9 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
         """
-        last time the HorizontalPodAutoscaler scaled the number of
-        pods; used by the autoscaler to control how often the number
-        of pods is changed.
+        lastScaleTime is the last time the HorizontalPodAutoscaler
+        scaled the number of pods; used by the autoscaler to control
+        how often the number of pods is changed.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -735,7 +749,8 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
     @property
     def observed_generation(self) -> int:
         """
-        most recent generation observed by this autoscaler.
+        observedGeneration is the most recent generation observed by
+        this autoscaler.
         """
         return typing.cast(
             int,
@@ -745,7 +760,8 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
     @observed_generation.setter
     def observed_generation(self, value: int):
         """
-        most recent generation observed by this autoscaler.
+        observedGeneration is the most recent generation observed by
+        this autoscaler.
         """
         self._properties["observedGeneration"] = value
 
@@ -811,7 +827,7 @@ class Scale(_kuber_definitions.Resource):
     @property
     def spec(self) -> "ScaleSpec":
         """
-        defines the behavior of the scale. More info:
+        spec defines the behavior of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status.
         """
@@ -823,7 +839,7 @@ class Scale(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["ScaleSpec", dict]):
         """
-        defines the behavior of the scale. More info:
+        spec defines the behavior of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status.
         """
@@ -837,7 +853,7 @@ class Scale(_kuber_definitions.Resource):
     @property
     def status(self) -> "ScaleStatus":
         """
-        current status of the scale. More info:
+        status is the current status of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status. Read-only.
         """
@@ -849,7 +865,7 @@ class Scale(_kuber_definitions.Resource):
     @status.setter
     def status(self, value: typing.Union["ScaleStatus", dict]):
         """
-        current status of the scale. More info:
+        status is the current status of the scale. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status. Read-only.
         """
@@ -1042,7 +1058,8 @@ class ScaleSpec(_kuber_definitions.Definition):
     @property
     def replicas(self) -> int:
         """
-        desired number of instances for the scaled object.
+        replicas is the desired number of instances for the scaled
+        object.
         """
         return typing.cast(
             int,
@@ -1052,7 +1069,8 @@ class ScaleSpec(_kuber_definitions.Definition):
     @replicas.setter
     def replicas(self, value: int):
         """
-        desired number of instances for the scaled object.
+        replicas is the desired number of instances for the scaled
+        object.
         """
         self._properties["replicas"] = value
 
@@ -1090,7 +1108,8 @@ class ScaleStatus(_kuber_definitions.Definition):
     @property
     def replicas(self) -> int:
         """
-        actual number of observed instances of the scaled object.
+        replicas is the actual number of observed instances of the
+        scaled object.
         """
         return typing.cast(
             int,
@@ -1100,19 +1119,21 @@ class ScaleStatus(_kuber_definitions.Definition):
     @replicas.setter
     def replicas(self, value: int):
         """
-        actual number of observed instances of the scaled object.
+        replicas is the actual number of observed instances of the
+        scaled object.
         """
         self._properties["replicas"] = value
 
     @property
     def selector(self) -> str:
         """
-        label query over pods that should match the replicas count.
-        This is same as the label selector but in the string format
-        to avoid introspection by clients. The string will be in the
-        same format as the query-param syntax. More info about label
-        selectors: http://kubernetes.io/docs/user-
-        guide/labels#label-selectors
+        selector is the label query over pods that should match the
+        replicas count. This is same as the label selector but in
+        the string format to avoid introspection by clients. The
+        string will be in the same format as the query-param syntax.
+        More info about label selectors:
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/labels/
         """
         return typing.cast(
             str,
@@ -1122,12 +1143,13 @@ class ScaleStatus(_kuber_definitions.Definition):
     @selector.setter
     def selector(self, value: str):
         """
-        label query over pods that should match the replicas count.
-        This is same as the label selector but in the string format
-        to avoid introspection by clients. The string will be in the
-        same format as the query-param syntax. More info about label
-        selectors: http://kubernetes.io/docs/user-
-        guide/labels#label-selectors
+        selector is the label query over pods that should match the
+        replicas count. This is same as the label selector but in
+        the string format to avoid introspection by clients. The
+        string will be in the same format as the query-param syntax.
+        More info about label selectors:
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/labels/
         """
         self._properties["selector"] = value
 

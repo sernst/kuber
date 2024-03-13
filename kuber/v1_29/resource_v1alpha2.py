@@ -5,39 +5,39 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
-from kuber.latest.meta_v1 import ListMeta  # noqa: F401
-from kuber.latest.core_v1 import NodeSelector  # noqa: F401
-from kuber.latest.meta_v1 import ObjectMeta  # noqa: F401
-from kuber.latest.meta_v1 import Status  # noqa: F401
-from kuber.latest.meta_v1 import StatusDetails  # noqa: F401
+from kuber.v1_29.meta_v1 import ListMeta  # noqa: F401
+from kuber.v1_29.core_v1 import NodeSelector  # noqa: F401
+from kuber.v1_29.meta_v1 import ObjectMeta  # noqa: F401
+from kuber.v1_29.meta_v1 import Status  # noqa: F401
+from kuber.v1_29.meta_v1 import StatusDetails  # noqa: F401
 
 
 class AllocationResult(_kuber_definitions.Definition):
     """
-    AllocationResult contains attributed of an allocated
+    AllocationResult contains attributes of an allocated
     resource.
     """
 
     def __init__(
         self,
         available_on_nodes: typing.Optional["NodeSelector"] = None,
-        resource_handle: typing.Optional[str] = None,
+        resource_handles: typing.Optional[typing.List["ResourceHandle"]] = None,
         shareable: typing.Optional[bool] = None,
     ):
         """Create AllocationResult instance."""
         super(AllocationResult, self).__init__(
-            api_version="resource/v1alpha1", kind="AllocationResult"
+            api_version="resource/v1alpha2", kind="AllocationResult"
         )
         self._properties = {
-            "availableOnNodes": available_on_nodes
-            if available_on_nodes is not None
-            else NodeSelector(),
-            "resourceHandle": resource_handle if resource_handle is not None else "",
+            "availableOnNodes": (
+                available_on_nodes if available_on_nodes is not None else NodeSelector()
+            ),
+            "resourceHandles": resource_handles if resource_handles is not None else [],
             "shareable": shareable if shareable is not None else None,
         }
         self._types = {
             "availableOnNodes": (NodeSelector, None),
-            "resourceHandle": (str, None),
+            "resourceHandles": (list, ResourceHandle),
             "shareable": (bool, None),
         }
 
@@ -45,8 +45,8 @@ class AllocationResult(_kuber_definitions.Definition):
     def available_on_nodes(self) -> "NodeSelector":
         """
         This field will get set by the resource driver after it has
-        allocated the resource driver to inform the scheduler where
-        it can schedule Pods using the ResourceClaim.
+        allocated the resource to inform the scheduler where it can
+        schedule Pods using the ResourceClaim.
 
         Setting this field is optional. If null, the resource is
         available everywhere.
@@ -60,8 +60,8 @@ class AllocationResult(_kuber_definitions.Definition):
     def available_on_nodes(self, value: typing.Union["NodeSelector", dict]):
         """
         This field will get set by the resource driver after it has
-        allocated the resource driver to inform the scheduler where
-        it can schedule Pods using the ResourceClaim.
+        allocated the resource to inform the scheduler where it can
+        schedule Pods using the ResourceClaim.
 
         Setting this field is optional. If null, the resource is
         available everywhere.
@@ -74,33 +74,57 @@ class AllocationResult(_kuber_definitions.Definition):
         self._properties["availableOnNodes"] = value
 
     @property
-    def resource_handle(self) -> str:
+    def resource_handles(self) -> typing.List["ResourceHandle"]:
         """
-        ResourceHandle contains arbitrary data returned by the
-        driver after a successful allocation. This is opaque for
-        Kubernetes. Driver documentation may explain to users how to
-        interpret this data if needed.
+        ResourceHandles contain the state associated with an
+        allocation that should be maintained throughout the lifetime
+        of a claim. Each ResourceHandle contains data that should be
+        passed to a specific kubelet plugin once it lands on a node.
+        This data is returned by the driver after a successful
+        allocation and is opaque to Kubernetes. Driver documentation
+        may explain to users how to interpret this data if needed.
 
-        The maximum size of this field is 16KiB. This may get
-        increased in the future, but not reduced.
+        Setting this field is optional. It has a maximum size of 32
+        entries. If null (or empty), it is assumed this allocation
+        will be processed by a single kubelet plugin with no
+        ResourceHandle data attached. The name of the kubelet plugin
+        invoked will match the DriverName set in the
+        ResourceClaimStatus this AllocationResult is embedded in.
         """
         return typing.cast(
-            str,
-            self._properties.get("resourceHandle"),
+            typing.List["ResourceHandle"],
+            self._properties.get("resourceHandles"),
         )
 
-    @resource_handle.setter
-    def resource_handle(self, value: str):
+    @resource_handles.setter
+    def resource_handles(
+        self, value: typing.Union[typing.List["ResourceHandle"], typing.List[dict]]
+    ):
         """
-        ResourceHandle contains arbitrary data returned by the
-        driver after a successful allocation. This is opaque for
-        Kubernetes. Driver documentation may explain to users how to
-        interpret this data if needed.
+        ResourceHandles contain the state associated with an
+        allocation that should be maintained throughout the lifetime
+        of a claim. Each ResourceHandle contains data that should be
+        passed to a specific kubelet plugin once it lands on a node.
+        This data is returned by the driver after a successful
+        allocation and is opaque to Kubernetes. Driver documentation
+        may explain to users how to interpret this data if needed.
 
-        The maximum size of this field is 16KiB. This may get
-        increased in the future, but not reduced.
+        Setting this field is optional. It has a maximum size of 32
+        entries. If null (or empty), it is assumed this allocation
+        will be processed by a single kubelet plugin with no
+        ResourceHandle data attached. The name of the kubelet plugin
+        invoked will match the DriverName set in the
+        ResourceClaimStatus this AllocationResult is embedded in.
         """
-        self._properties["resourceHandle"] = value
+        cleaned: typing.List[ResourceHandle] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    ResourceHandle,
+                    ResourceHandle().from_dict(item),
+                )
+            cleaned.append(typing.cast(ResourceHandle, item))
+        self._properties["resourceHandles"] = cleaned
 
     @property
     def shareable(self) -> bool:
@@ -128,10 +152,10 @@ class AllocationResult(_kuber_definitions.Definition):
         return False
 
 
-class PodScheduling(_kuber_definitions.Resource):
+class PodSchedulingContext(_kuber_definitions.Resource):
     """
-    PodScheduling objects hold information that is needed to
-    schedule a Pod with ResourceClaims that use
+    PodSchedulingContext objects hold information that is needed
+    to schedule a Pod with ResourceClaims that use
     "WaitForFirstConsumer" allocation mode.
 
     This is an alpha type and requires enabling the
@@ -141,24 +165,24 @@ class PodScheduling(_kuber_definitions.Resource):
     def __init__(
         self,
         metadata: typing.Optional["ObjectMeta"] = None,
-        spec: typing.Optional["PodSchedulingSpec"] = None,
-        status: typing.Optional["PodSchedulingStatus"] = None,
+        spec: typing.Optional["PodSchedulingContextSpec"] = None,
+        status: typing.Optional["PodSchedulingContextStatus"] = None,
     ):
-        """Create PodScheduling instance."""
-        super(PodScheduling, self).__init__(
-            api_version="resource/v1alpha1", kind="PodScheduling"
+        """Create PodSchedulingContext instance."""
+        super(PodSchedulingContext, self).__init__(
+            api_version="resource/v1alpha2", kind="PodSchedulingContext"
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "spec": spec if spec is not None else PodSchedulingSpec(),
-            "status": status if status is not None else PodSchedulingStatus(),
+            "spec": spec if spec is not None else PodSchedulingContextSpec(),
+            "status": status if status is not None else PodSchedulingContextStatus(),
         }
         self._types = {
             "apiVersion": (str, None),
             "kind": (str, None),
             "metadata": (ObjectMeta, None),
-            "spec": (PodSchedulingSpec, None),
-            "status": (PodSchedulingStatus, None),
+            "spec": (PodSchedulingContextSpec, None),
+            "status": (PodSchedulingContextStatus, None),
         }
 
     @property
@@ -184,60 +208,63 @@ class PodScheduling(_kuber_definitions.Resource):
         self._properties["metadata"] = value
 
     @property
-    def spec(self) -> "PodSchedulingSpec":
+    def spec(self) -> "PodSchedulingContextSpec":
         """
         Spec describes where resources for the Pod are needed.
         """
         return typing.cast(
-            "PodSchedulingSpec",
+            "PodSchedulingContextSpec",
             self._properties.get("spec"),
         )
 
     @spec.setter
-    def spec(self, value: typing.Union["PodSchedulingSpec", dict]):
+    def spec(self, value: typing.Union["PodSchedulingContextSpec", dict]):
         """
         Spec describes where resources for the Pod are needed.
         """
         if isinstance(value, dict):
             value = typing.cast(
-                PodSchedulingSpec,
-                PodSchedulingSpec().from_dict(value),
+                PodSchedulingContextSpec,
+                PodSchedulingContextSpec().from_dict(value),
             )
         self._properties["spec"] = value
 
     @property
-    def status(self) -> "PodSchedulingStatus":
+    def status(self) -> "PodSchedulingContextStatus":
         """
         Status describes where resources for the Pod can be
         allocated.
         """
         return typing.cast(
-            "PodSchedulingStatus",
+            "PodSchedulingContextStatus",
             self._properties.get("status"),
         )
 
     @status.setter
-    def status(self, value: typing.Union["PodSchedulingStatus", dict]):
+    def status(self, value: typing.Union["PodSchedulingContextStatus", dict]):
         """
         Status describes where resources for the Pod can be
         allocated.
         """
         if isinstance(value, dict):
             value = typing.cast(
-                PodSchedulingStatus,
-                PodSchedulingStatus().from_dict(value),
+                PodSchedulingContextStatus,
+                PodSchedulingContextStatus().from_dict(value),
             )
         self._properties["status"] = value
 
     def create_resource(
         self, namespace: typing.Optional["str"] = None
-    ) -> "PodSchedulingStatus":
+    ) -> "PodSchedulingContextStatus":
         """
-        Creates the PodScheduling in the currently
+        Creates the PodSchedulingContext in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the create is complete.
         """
-        names = ["create_namespaced_pod_scheduling", "create_pod_scheduling"]
+        names = [
+            "create_namespaced_pod_scheduling_context",
+            "create_pod_scheduling_context",
+        ]
 
         response = _kube_api.execute(
             action="create",
@@ -248,20 +275,23 @@ class PodScheduling(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-        output = PodSchedulingStatus()
+        output = PodSchedulingContextStatus()
         if response is not None:
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
     def replace_resource(
         self, namespace: typing.Optional["str"] = None
-    ) -> "PodSchedulingStatus":
+    ) -> "PodSchedulingContextStatus":
         """
-        Replaces the PodScheduling in the currently
+        Replaces the PodSchedulingContext in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = ["replace_namespaced_pod_scheduling", "replace_pod_scheduling"]
+        names = [
+            "replace_namespaced_pod_scheduling_context",
+            "replace_pod_scheduling_context",
+        ]
 
         response = _kube_api.execute(
             action="replace",
@@ -272,20 +302,23 @@ class PodScheduling(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-        output = PodSchedulingStatus()
+        output = PodSchedulingContextStatus()
         if response is not None:
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
     def patch_resource(
         self, namespace: typing.Optional["str"] = None
-    ) -> "PodSchedulingStatus":
+    ) -> "PodSchedulingContextStatus":
         """
-        Patches the PodScheduling in the currently
+        Patches the PodSchedulingContext in the currently
         configured Kubernetes cluster and returns the status information
         returned by the Kubernetes API after the replace is complete.
         """
-        names = ["patch_namespaced_pod_scheduling", "patch_pod_scheduling"]
+        names = [
+            "patch_namespaced_pod_scheduling_context",
+            "patch_pod_scheduling_context",
+        ]
 
         response = _kube_api.execute(
             action="patch",
@@ -296,20 +329,20 @@ class PodScheduling(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-        output = PodSchedulingStatus()
+        output = PodSchedulingContextStatus()
         if response is not None:
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
     def get_resource_status(
         self, namespace: typing.Optional["str"] = None
-    ) -> "PodSchedulingStatus":
+    ) -> "PodSchedulingContextStatus":
         """
         Returns status information about the given resource within the cluster.
         """
         names = [
-            "read_namespaced_pod_scheduling",
-            "read_pod_scheduling",
+            "read_namespaced_pod_scheduling_context",
+            "read_pod_scheduling_context",
         ]
 
         response = _kube_api.execute(
@@ -321,19 +354,19 @@ class PodScheduling(_kuber_definitions.Resource):
             api_args={"name": self.metadata.name},
         )
 
-        output = PodSchedulingStatus()
+        output = PodSchedulingContextStatus()
         if response is not None:
             output.from_dict(_kube_api.to_kuber_dict(response.status))
         return output
 
     def read_resource(self, namespace: typing.Optional[str] = None):
         """
-        Reads the PodScheduling from the currently configured
+        Reads the PodSchedulingContext from the currently configured
         Kubernetes cluster and returns the low-level definition object.
         """
         names = [
-            "read_namespaced_pod_scheduling",
-            "read_pod_scheduling",
+            "read_namespaced_pod_scheduling_context",
+            "read_pod_scheduling_context",
         ]
         return _kube_api.execute(
             action="read",
@@ -351,12 +384,12 @@ class PodScheduling(_kuber_definitions.Resource):
         grace_period_seconds: int = 10,
     ):
         """
-        Deletes the PodScheduling from the currently configured
+        Deletes the PodSchedulingContext from the currently configured
         Kubernetes cluster.
         """
         names = [
-            "delete_namespaced_pod_scheduling",
-            "delete_pod_scheduling",
+            "delete_namespaced_pod_scheduling_context",
+            "delete_pod_scheduling_context",
         ]
 
         body = client.V1DeleteOptions(
@@ -376,35 +409,36 @@ class PodScheduling(_kuber_definitions.Resource):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
-    def __enter__(self) -> "PodScheduling":
+    def __enter__(self) -> "PodSchedulingContext":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
 
-class PodSchedulingList(_kuber_definitions.Collection):
+class PodSchedulingContextList(_kuber_definitions.Collection):
     """
-    PodSchedulingList is a collection of Pod scheduling objects.
+    PodSchedulingContextList is a collection of Pod scheduling
+    objects.
     """
 
     def __init__(
         self,
-        items: typing.Optional[typing.List["PodScheduling"]] = None,
+        items: typing.Optional[typing.List["PodSchedulingContext"]] = None,
         metadata: typing.Optional["ListMeta"] = None,
     ):
-        """Create PodSchedulingList instance."""
-        super(PodSchedulingList, self).__init__(
-            api_version="resource/v1alpha1", kind="PodSchedulingList"
+        """Create PodSchedulingContextList instance."""
+        super(PodSchedulingContextList, self).__init__(
+            api_version="resource/v1alpha2", kind="PodSchedulingContextList"
         )
         self._properties = {
             "items": items if items is not None else [],
@@ -412,36 +446,37 @@ class PodSchedulingList(_kuber_definitions.Collection):
         }
         self._types = {
             "apiVersion": (str, None),
-            "items": (list, PodScheduling),
+            "items": (list, PodSchedulingContext),
             "kind": (str, None),
             "metadata": (ListMeta, None),
         }
 
     @property
-    def items(self) -> typing.List["PodScheduling"]:
+    def items(self) -> typing.List["PodSchedulingContext"]:
         """
-        Items is the list of PodScheduling objects.
+        Items is the list of PodSchedulingContext objects.
         """
         return typing.cast(
-            typing.List["PodScheduling"],
+            typing.List["PodSchedulingContext"],
             self._properties.get("items"),
         )
 
     @items.setter
     def items(
-        self, value: typing.Union[typing.List["PodScheduling"], typing.List[dict]]
+        self,
+        value: typing.Union[typing.List["PodSchedulingContext"], typing.List[dict]],
     ):
         """
-        Items is the list of PodScheduling objects.
+        Items is the list of PodSchedulingContext objects.
         """
-        cleaned: typing.List[PodScheduling] = []
+        cleaned: typing.List[PodSchedulingContext] = []
         for item in value:
             if isinstance(item, dict):
                 item = typing.cast(
-                    PodScheduling,
-                    PodScheduling().from_dict(item),
+                    PodSchedulingContext,
+                    PodSchedulingContext().from_dict(item),
                 )
-            cleaned.append(typing.cast(PodScheduling, item))
+            cleaned.append(typing.cast(PodSchedulingContext, item))
         self._properties["items"] = cleaned
 
     @property
@@ -469,26 +504,26 @@ class PodSchedulingList(_kuber_definitions.Collection):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
-    def __enter__(self) -> "PodSchedulingList":
+    def __enter__(self) -> "PodSchedulingContextList":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
 
-class PodSchedulingSpec(_kuber_definitions.Definition):
+class PodSchedulingContextSpec(_kuber_definitions.Definition):
     """
-    PodSchedulingSpec describes where resources for the Pod are
-    needed.
+    PodSchedulingContextSpec describes where resources for the
+    Pod are needed.
     """
 
     def __init__(
@@ -496,9 +531,9 @@ class PodSchedulingSpec(_kuber_definitions.Definition):
         potential_nodes: typing.Optional[typing.List[str]] = None,
         selected_node: typing.Optional[str] = None,
     ):
-        """Create PodSchedulingSpec instance."""
-        super(PodSchedulingSpec, self).__init__(
-            api_version="resource/v1alpha1", kind="PodSchedulingSpec"
+        """Create PodSchedulingContextSpec instance."""
+        super(PodSchedulingContextSpec, self).__init__(
+            api_version="resource/v1alpha2", kind="PodSchedulingContextSpec"
         )
         self._properties = {
             "potentialNodes": potential_nodes if potential_nodes is not None else [],
@@ -559,17 +594,17 @@ class PodSchedulingSpec(_kuber_definitions.Definition):
         """
         self._properties["selectedNode"] = value
 
-    def __enter__(self) -> "PodSchedulingSpec":
+    def __enter__(self) -> "PodSchedulingContextSpec":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
 
-class PodSchedulingStatus(_kuber_definitions.Definition):
+class PodSchedulingContextStatus(_kuber_definitions.Definition):
     """
-    PodSchedulingStatus describes where resources for the Pod
-    can be allocated.
+    PodSchedulingContextStatus describes where resources for the
+    Pod can be allocated.
     """
 
     def __init__(
@@ -578,9 +613,9 @@ class PodSchedulingStatus(_kuber_definitions.Definition):
             typing.List["ResourceClaimSchedulingStatus"]
         ] = None,
     ):
-        """Create PodSchedulingStatus instance."""
-        super(PodSchedulingStatus, self).__init__(
-            api_version="resource/v1alpha1", kind="PodSchedulingStatus"
+        """Create PodSchedulingContextStatus instance."""
+        super(PodSchedulingContextStatus, self).__init__(
+            api_version="resource/v1alpha2", kind="PodSchedulingContextStatus"
         )
         self._properties = {
             "resourceClaims": resource_claims if resource_claims is not None else [],
@@ -623,7 +658,7 @@ class PodSchedulingStatus(_kuber_definitions.Definition):
             cleaned.append(typing.cast(ResourceClaimSchedulingStatus, item))
         self._properties["resourceClaims"] = cleaned
 
-    def __enter__(self) -> "PodSchedulingStatus":
+    def __enter__(self) -> "PodSchedulingContextStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -648,7 +683,7 @@ class ResourceClaim(_kuber_definitions.Resource):
     ):
         """Create ResourceClaim instance."""
         super(ResourceClaim, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaim"
+            api_version="resource/v1alpha2", kind="ResourceClaim"
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
@@ -882,14 +917,14 @@ class ResourceClaim(_kuber_definitions.Resource):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
     def __enter__(self) -> "ResourceClaim":
         return self
@@ -915,7 +950,7 @@ class ResourceClaimConsumerReference(_kuber_definitions.Definition):
     ):
         """Create ResourceClaimConsumerReference instance."""
         super(ResourceClaimConsumerReference, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimConsumerReference"
+            api_version="resource/v1alpha2", kind="ResourceClaimConsumerReference"
         )
         self._properties = {
             "apiGroup": api_group if api_group is not None else "",
@@ -1023,7 +1058,7 @@ class ResourceClaimList(_kuber_definitions.Collection):
     ):
         """Create ResourceClaimList instance."""
         super(ResourceClaimList, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimList"
+            api_version="resource/v1alpha2", kind="ResourceClaimList"
         )
         self._properties = {
             "items": items if items is not None else [],
@@ -1088,14 +1123,14 @@ class ResourceClaimList(_kuber_definitions.Collection):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
     def __enter__(self) -> "ResourceClaimList":
         return self
@@ -1119,7 +1154,7 @@ class ResourceClaimParametersReference(_kuber_definitions.Definition):
     ):
         """Create ResourceClaimParametersReference instance."""
         super(ResourceClaimParametersReference, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimParametersReference"
+            api_version="resource/v1alpha2", kind="ResourceClaimParametersReference"
         )
         self._properties = {
             "apiGroup": api_group if api_group is not None else "",
@@ -1212,7 +1247,7 @@ class ResourceClaimSchedulingStatus(_kuber_definitions.Definition):
     ):
         """Create ResourceClaimSchedulingStatus instance."""
         super(ResourceClaimSchedulingStatus, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimSchedulingStatus"
+            api_version="resource/v1alpha2", kind="ResourceClaimSchedulingStatus"
         )
         self._properties = {
             "name": name if name is not None else "",
@@ -1287,16 +1322,18 @@ class ResourceClaimSpec(_kuber_definitions.Definition):
     ):
         """Create ResourceClaimSpec instance."""
         super(ResourceClaimSpec, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimSpec"
+            api_version="resource/v1alpha2", kind="ResourceClaimSpec"
         )
         self._properties = {
             "allocationMode": allocation_mode if allocation_mode is not None else "",
-            "parametersRef": parameters_ref
-            if parameters_ref is not None
-            else ResourceClaimParametersReference(),
-            "resourceClassName": resource_class_name
-            if resource_class_name is not None
-            else "",
+            "parametersRef": (
+                parameters_ref
+                if parameters_ref is not None
+                else ResourceClaimParametersReference()
+            ),
+            "resourceClassName": (
+                resource_class_name if resource_class_name is not None else ""
+            ),
         }
         self._types = {
             "allocationMode": (str, None),
@@ -1402,13 +1439,13 @@ class ResourceClaimStatus(_kuber_definitions.Definition):
     ):
         """Create ResourceClaimStatus instance."""
         super(ResourceClaimStatus, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimStatus"
+            api_version="resource/v1alpha2", kind="ResourceClaimStatus"
         )
         self._properties = {
             "allocation": allocation if allocation is not None else AllocationResult(),
-            "deallocationRequested": deallocation_requested
-            if deallocation_requested is not None
-            else None,
+            "deallocationRequested": (
+                deallocation_requested if deallocation_requested is not None else None
+            ),
             "driverName": driver_name if driver_name is not None else "",
             "reservedFor": reserved_for if reserved_for is not None else [],
         }
@@ -1422,9 +1459,9 @@ class ResourceClaimStatus(_kuber_definitions.Definition):
     @property
     def allocation(self) -> "AllocationResult":
         """
-        Allocation is set by the resource driver once a resource has
-        been allocated successfully. If this is not specified, the
-        resource is not yet allocated.
+        Allocation is set by the resource driver once a resource or
+        set of resources has been allocated successfully. If this is
+        not specified, the resources have not been allocated yet.
         """
         return typing.cast(
             "AllocationResult",
@@ -1434,9 +1471,9 @@ class ResourceClaimStatus(_kuber_definitions.Definition):
     @allocation.setter
     def allocation(self, value: typing.Union["AllocationResult", dict]):
         """
-        Allocation is set by the resource driver once a resource has
-        been allocated successfully. If this is not specified, the
-        resource is not yet allocated.
+        Allocation is set by the resource driver once a resource or
+        set of resources has been allocated successfully. If this is
+        not specified, the resources have not been allocated yet.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -1555,7 +1592,7 @@ class ResourceClaimTemplate(_kuber_definitions.Resource):
     ):
         """Create ResourceClaimTemplate instance."""
         super(ResourceClaimTemplate, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimTemplate"
+            api_version="resource/v1alpha2", kind="ResourceClaimTemplate"
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
@@ -1731,14 +1768,14 @@ class ResourceClaimTemplate(_kuber_definitions.Resource):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
     def __enter__(self) -> "ResourceClaimTemplate":
         return self
@@ -1760,7 +1797,7 @@ class ResourceClaimTemplateList(_kuber_definitions.Collection):
     ):
         """Create ResourceClaimTemplateList instance."""
         super(ResourceClaimTemplateList, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimTemplateList"
+            api_version="resource/v1alpha2", kind="ResourceClaimTemplateList"
         )
         self._properties = {
             "items": items if items is not None else [],
@@ -1826,14 +1863,14 @@ class ResourceClaimTemplateList(_kuber_definitions.Collection):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
     def __enter__(self) -> "ResourceClaimTemplateList":
         return self
@@ -1855,7 +1892,7 @@ class ResourceClaimTemplateSpec(_kuber_definitions.Definition):
     ):
         """Create ResourceClaimTemplateSpec instance."""
         super(ResourceClaimTemplateSpec, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClaimTemplateSpec"
+            api_version="resource/v1alpha2", kind="ResourceClaimTemplateSpec"
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
@@ -1945,17 +1982,19 @@ class ResourceClass(_kuber_definitions.Resource):
     ):
         """Create ResourceClass instance."""
         super(ResourceClass, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClass"
+            api_version="resource/v1alpha2", kind="ResourceClass"
         )
         self._properties = {
             "driverName": driver_name if driver_name is not None else "",
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "parametersRef": parameters_ref
-            if parameters_ref is not None
-            else ResourceClassParametersReference(),
-            "suitableNodes": suitable_nodes
-            if suitable_nodes is not None
-            else NodeSelector(),
+            "parametersRef": (
+                parameters_ref
+                if parameters_ref is not None
+                else ResourceClassParametersReference()
+            ),
+            "suitableNodes": (
+                suitable_nodes if suitable_nodes is not None else NodeSelector()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -2183,14 +2222,14 @@ class ResourceClass(_kuber_definitions.Resource):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
     def __enter__(self) -> "ResourceClass":
         return self
@@ -2211,7 +2250,7 @@ class ResourceClassList(_kuber_definitions.Collection):
     ):
         """Create ResourceClassList instance."""
         super(ResourceClassList, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClassList"
+            api_version="resource/v1alpha2", kind="ResourceClassList"
         )
         self._properties = {
             "items": items if items is not None else [],
@@ -2276,14 +2315,14 @@ class ResourceClassList(_kuber_definitions.Collection):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.ResourceV1alpha1Api":
+    ) -> "client.ResourceV1alpha2Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.ResourceV1alpha1Api(**kwargs)
+        return client.ResourceV1alpha2Api(**kwargs)
 
     def __enter__(self) -> "ResourceClassList":
         return self
@@ -2307,7 +2346,7 @@ class ResourceClassParametersReference(_kuber_definitions.Definition):
     ):
         """Create ResourceClassParametersReference instance."""
         super(ResourceClassParametersReference, self).__init__(
-            api_version="resource/v1alpha1", kind="ResourceClassParametersReference"
+            api_version="resource/v1alpha2", kind="ResourceClassParametersReference"
         )
         self._properties = {
             "apiGroup": api_group if api_group is not None else "",
@@ -2401,6 +2440,97 @@ class ResourceClassParametersReference(_kuber_definitions.Definition):
         self._properties["namespace"] = value
 
     def __enter__(self) -> "ResourceClassParametersReference":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ResourceHandle(_kuber_definitions.Definition):
+    """
+    ResourceHandle holds opaque resource data for processing by
+    a specific kubelet plugin.
+    """
+
+    def __init__(
+        self,
+        data: typing.Optional[str] = None,
+        driver_name: typing.Optional[str] = None,
+    ):
+        """Create ResourceHandle instance."""
+        super(ResourceHandle, self).__init__(
+            api_version="resource/v1alpha2", kind="ResourceHandle"
+        )
+        self._properties = {
+            "data": data if data is not None else "",
+            "driverName": driver_name if driver_name is not None else "",
+        }
+        self._types = {
+            "data": (str, None),
+            "driverName": (str, None),
+        }
+
+    @property
+    def data(self) -> str:
+        """
+        Data contains the opaque data associated with this
+        ResourceHandle. It is set by the controller component of the
+        resource driver whose name matches the DriverName set in the
+        ResourceClaimStatus this ResourceHandle is embedded in. It
+        is set at allocation time and is intended for processing by
+        the kubelet plugin whose name matches the DriverName set in
+        this ResourceHandle.
+
+        The maximum size of this field is 16KiB. This may get
+        increased in the future, but not reduced.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("data"),
+        )
+
+    @data.setter
+    def data(self, value: str):
+        """
+        Data contains the opaque data associated with this
+        ResourceHandle. It is set by the controller component of the
+        resource driver whose name matches the DriverName set in the
+        ResourceClaimStatus this ResourceHandle is embedded in. It
+        is set at allocation time and is intended for processing by
+        the kubelet plugin whose name matches the DriverName set in
+        this ResourceHandle.
+
+        The maximum size of this field is 16KiB. This may get
+        increased in the future, but not reduced.
+        """
+        self._properties["data"] = value
+
+    @property
+    def driver_name(self) -> str:
+        """
+        DriverName specifies the name of the resource driver whose
+        kubelet plugin should be invoked to process this
+        ResourceHandle's data once it lands on a node. This may
+        differ from the DriverName set in ResourceClaimStatus this
+        ResourceHandle is embedded in.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("driverName"),
+        )
+
+    @driver_name.setter
+    def driver_name(self, value: str):
+        """
+        DriverName specifies the name of the resource driver whose
+        kubelet plugin should be invoked to process this
+        ResourceHandle's data once it lands on a node. This may
+        differ from the DriverName set in ResourceClaimStatus this
+        ResourceHandle is embedded in.
+        """
+        self._properties["driverName"] = value
+
+    def __enter__(self) -> "ResourceHandle":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

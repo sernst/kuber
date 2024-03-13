@@ -329,12 +329,12 @@ class ClusterCIDRSpec(_kuber_definitions.Definition):
         self._properties = {
             "ipv4": ipv4 if ipv4 is not None else "",
             "ipv6": ipv6 if ipv6 is not None else "",
-            "nodeSelector": node_selector
-            if node_selector is not None
-            else NodeSelector(),
-            "perNodeHostBits": per_node_host_bits
-            if per_node_host_bits is not None
-            else None,
+            "nodeSelector": (
+                node_selector if node_selector is not None else NodeSelector()
+            ),
+            "perNodeHostBits": (
+                per_node_host_bits if per_node_host_bits is not None else None
+            ),
         }
         self._types = {
             "ipv4": (str, None),

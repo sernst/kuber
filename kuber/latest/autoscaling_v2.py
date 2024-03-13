@@ -147,7 +147,7 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
     @property
     def container(self) -> str:
         """
-        Container is the name of the container in the pods of the
+        container is the name of the container in the pods of the
         scaling target
         """
         return typing.cast(
@@ -158,7 +158,7 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
     @container.setter
     def container(self, value: str):
         """
-        Container is the name of the container in the pods of the
+        container is the name of the container in the pods of the
         scaling target
         """
         self._properties["container"] = value
@@ -188,7 +188,7 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name is the name of the resource in question.
+        name is the name of the resource in question.
         """
         return typing.cast(
             str,
@@ -198,7 +198,7 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name is the name of the resource in question.
+        name is the name of the resource in question.
         """
         self._properties["name"] = value
 
@@ -239,7 +239,7 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @property
     def api_version(self) -> str:
         """
-        API version of the referent
+        apiVersion is the API version of the referent
         """
         return typing.cast(
             str,
@@ -249,14 +249,14 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @api_version.setter
     def api_version(self, value: str):
         """
-        API version of the referent
+        apiVersion is the API version of the referent
         """
         self._properties["apiVersion"] = value
 
     @property
     def kind(self) -> str:
         """
-        Kind of the referent; More info:
+        kind is the kind of the referent; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
@@ -268,7 +268,7 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @kind.setter
     def kind(self, value: str):
         """
-        Kind of the referent; More info:
+        kind is the kind of the referent; More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#types-kinds
         """
@@ -277,8 +277,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent; More info:
-        http://kubernetes.io/docs/user-guide/identifiers#names
+        name is the name of the referent; More info:
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/names/#names
         """
         return typing.cast(
             str,
@@ -288,8 +289,9 @@ class CrossVersionObjectReference(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent; More info:
-        http://kubernetes.io/docs/user-guide/identifiers#names
+        name is the name of the referent; More info:
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/names/#names
         """
         self._properties["name"] = value
 
@@ -482,7 +484,7 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
     @property
     def period_seconds(self) -> int:
         """
-        PeriodSeconds specifies the window of time for which the
+        periodSeconds specifies the window of time for which the
         policy should hold true. PeriodSeconds must be greater than
         zero and less than or equal to 1800 (30 min).
         """
@@ -494,7 +496,7 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
     @period_seconds.setter
     def period_seconds(self, value: int):
         """
-        PeriodSeconds specifies the window of time for which the
+        periodSeconds specifies the window of time for which the
         policy should hold true. PeriodSeconds must be greater than
         zero and less than or equal to 1800 (30 min).
         """
@@ -503,7 +505,7 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
     @property
     def type_(self) -> str:
         """
-        Type is used to specify the scaling policy.
+        type is used to specify the scaling policy.
         """
         return typing.cast(
             str,
@@ -513,14 +515,14 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
     @type_.setter
     def type_(self, value: str):
         """
-        Type is used to specify the scaling policy.
+        type is used to specify the scaling policy.
         """
         self._properties["type"] = value
 
     @property
     def value(self) -> int:
         """
-        Value contains the amount of change which is permitted by
+        value contains the amount of change which is permitted by
         the policy. It must be greater than zero
         """
         return typing.cast(
@@ -531,7 +533,7 @@ class HPAScalingPolicy(_kuber_definitions.Definition):
     @value.setter
     def value(self, value: int):
         """
-        Value contains the amount of change which is permitted by
+        value contains the amount of change which is permitted by
         the policy. It must be greater than zero
         """
         self._properties["value"] = value
@@ -567,9 +569,11 @@ class HPAScalingRules(_kuber_definitions.Definition):
         self._properties = {
             "policies": policies if policies is not None else [],
             "selectPolicy": select_policy if select_policy is not None else "",
-            "stabilizationWindowSeconds": stabilization_window_seconds
-            if stabilization_window_seconds is not None
-            else None,
+            "stabilizationWindowSeconds": (
+                stabilization_window_seconds
+                if stabilization_window_seconds is not None
+                else None
+            ),
         }
         self._types = {
             "policies": (list, HPAScalingPolicy),
@@ -630,7 +634,7 @@ class HPAScalingRules(_kuber_definitions.Definition):
     @property
     def stabilization_window_seconds(self) -> int:
         """
-        StabilizationWindowSeconds is the number of seconds for
+        stabilizationWindowSeconds is the number of seconds for
         which past recommendations should be considered while
         scaling up or scaling down. StabilizationWindowSeconds must
         be greater than or equal to zero and less than or equal to
@@ -647,7 +651,7 @@ class HPAScalingRules(_kuber_definitions.Definition):
     @stabilization_window_seconds.setter
     def stabilization_window_seconds(self, value: int):
         """
-        StabilizationWindowSeconds is the number of seconds for
+        stabilizationWindowSeconds is the number of seconds for
         which past recommendations should be considered while
         scaling up or scaling down. StabilizationWindowSeconds must
         be greater than or equal to zero and less than or equal to
@@ -1053,9 +1057,9 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
             api_version="autoscaling/v2", kind="HorizontalPodAutoscalerCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1285,15 +1289,17 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
             api_version="autoscaling/v2", kind="HorizontalPodAutoscalerSpec"
         )
         self._properties = {
-            "behavior": behavior
-            if behavior is not None
-            else HorizontalPodAutoscalerBehavior(),
+            "behavior": (
+                behavior if behavior is not None else HorizontalPodAutoscalerBehavior()
+            ),
             "maxReplicas": max_replicas if max_replicas is not None else None,
             "metrics": metrics if metrics is not None else [],
             "minReplicas": min_replicas if min_replicas is not None else None,
-            "scaleTargetRef": scale_target_ref
-            if scale_target_ref is not None
-            else CrossVersionObjectReference(),
+            "scaleTargetRef": (
+                scale_target_ref
+                if scale_target_ref is not None
+                else CrossVersionObjectReference()
+            ),
         }
         self._types = {
             "behavior": (HorizontalPodAutoscalerBehavior, None),
@@ -1483,16 +1489,16 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         self._properties = {
             "conditions": conditions if conditions is not None else [],
             "currentMetrics": current_metrics if current_metrics is not None else [],
-            "currentReplicas": current_replicas
-            if current_replicas is not None
-            else None,
-            "desiredReplicas": desired_replicas
-            if desired_replicas is not None
-            else None,
+            "currentReplicas": (
+                current_replicas if current_replicas is not None else None
+            ),
+            "desiredReplicas": (
+                desired_replicas if desired_replicas is not None else None
+            ),
             "lastScaleTime": last_scale_time if last_scale_time is not None else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
         }
         self._types = {
             "conditions": (list, HorizontalPodAutoscalerCondition),
@@ -1758,9 +1764,11 @@ class MetricSpec(_kuber_definitions.Definition):
             api_version="autoscaling/v2", kind="MetricSpec"
         )
         self._properties = {
-            "containerResource": container_resource
-            if container_resource is not None
-            else ContainerResourceMetricSource(),
+            "containerResource": (
+                container_resource
+                if container_resource is not None
+                else ContainerResourceMetricSource()
+            ),
             "external": external if external is not None else ExternalMetricSource(),
             "object": object_ if object_ is not None else ObjectMetricSource(),
             "pods": pods if pods is not None else PodsMetricSource(),
@@ -1982,9 +1990,11 @@ class MetricStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v2", kind="MetricStatus"
         )
         self._properties = {
-            "containerResource": container_resource
-            if container_resource is not None
-            else ContainerResourceMetricStatus(),
+            "containerResource": (
+                container_resource
+                if container_resource is not None
+                else ContainerResourceMetricStatus()
+            ),
             "external": external if external is not None else ExternalMetricStatus(),
             "object": object_ if object_ is not None else ObjectMetricStatus(),
             "pods": pods if pods is not None else PodsMetricStatus(),
@@ -2202,9 +2212,9 @@ class MetricTarget(_kuber_definitions.Definition):
             api_version="autoscaling/v2", kind="MetricTarget"
         )
         self._properties = {
-            "averageUtilization": average_utilization
-            if average_utilization is not None
-            else None,
+            "averageUtilization": (
+                average_utilization if average_utilization is not None else None
+            ),
             "averageValue": average_value if average_value is not None else None,
             "type": type_ if type_ is not None else "",
             "value": value if value is not None else None,
@@ -2313,9 +2323,9 @@ class MetricValueStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v2", kind="MetricValueStatus"
         )
         self._properties = {
-            "averageUtilization": average_utilization
-            if average_utilization is not None
-            else None,
+            "averageUtilization": (
+                average_utilization if average_utilization is not None else None
+            ),
             "averageValue": average_value if average_value is not None else None,
             "value": value if value is not None else None,
         }
@@ -2405,9 +2415,11 @@ class ObjectMetricSource(_kuber_definitions.Definition):
             api_version="autoscaling/v2", kind="ObjectMetricSource"
         )
         self._properties = {
-            "describedObject": described_object
-            if described_object is not None
-            else CrossVersionObjectReference(),
+            "describedObject": (
+                described_object
+                if described_object is not None
+                else CrossVersionObjectReference()
+            ),
             "metric": metric if metric is not None else MetricIdentifier(),
             "target": target if target is not None else MetricTarget(),
         }
@@ -2513,9 +2525,11 @@ class ObjectMetricStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "current": current if current is not None else MetricValueStatus(),
-            "describedObject": described_object
-            if described_object is not None
-            else CrossVersionObjectReference(),
+            "describedObject": (
+                described_object
+                if described_object is not None
+                else CrossVersionObjectReference()
+            ),
             "metric": metric if metric is not None else MetricIdentifier(),
         }
         self._types = {
@@ -2885,7 +2899,7 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name is the name of the resource in question.
+        name is the name of the resource in question.
         """
         return typing.cast(
             str,
@@ -2895,7 +2909,7 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name is the name of the resource in question.
+        name is the name of the resource in question.
         """
         self._properties["name"] = value
 

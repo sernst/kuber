@@ -31,9 +31,9 @@ class ServerStorageVersion(_kuber_definitions.Definition):
         )
         self._properties = {
             "apiServerID": api_server_id if api_server_id is not None else "",
-            "decodableVersions": decodable_versions
-            if decodable_versions is not None
-            else [],
+            "decodableVersions": (
+                decodable_versions if decodable_versions is not None else []
+            ),
             "encodingVersion": encoding_version if encoding_version is not None else "",
         }
         self._types = {
@@ -389,13 +389,13 @@ class StorageVersionCondition(_kuber_definitions.Definition):
             api_version="apiserverinternal/v1alpha1", kind="StorageVersionCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
             "type": type_ if type_ is not None else "",
@@ -667,9 +667,9 @@ class StorageVersionStatus(_kuber_definitions.Definition):
             api_version="apiserverinternal/v1alpha1", kind="StorageVersionStatus"
         )
         self._properties = {
-            "commonEncodingVersion": common_encoding_version
-            if common_encoding_version is not None
-            else "",
+            "commonEncodingVersion": (
+                common_encoding_version if common_encoding_version is not None else ""
+            ),
             "conditions": conditions if conditions is not None else [],
             "storageVersions": storage_versions if storage_versions is not None else [],
         }

@@ -785,9 +785,9 @@ class DaemonSetCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DaemonSetCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1012,17 +1012,19 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         """Create DaemonSetSpec instance."""
         super(DaemonSetSpec, self).__init__(api_version="apps/v1", kind="DaemonSetSpec")
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
-            "revisionHistoryLimit": revision_history_limit
-            if revision_history_limit is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
+            "revisionHistoryLimit": (
+                revision_history_limit if revision_history_limit is not None else None
+            ),
             "selector": selector if selector is not None else LabelSelector(),
             "template": template if template is not None else PodTemplateSpec(),
-            "updateStrategy": update_strategy
-            if update_strategy is not None
-            else DaemonSetUpdateStrategy(),
+            "updateStrategy": (
+                update_strategy
+                if update_strategy is not None
+                else DaemonSetUpdateStrategy()
+            ),
         }
         self._types = {
             "minReadySeconds": (int, None),
@@ -1337,28 +1339,34 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         self._properties = {
             "collisionCount": collision_count if collision_count is not None else None,
             "conditions": conditions if conditions is not None else [],
-            "currentNumberScheduled": current_number_scheduled
-            if current_number_scheduled is not None
-            else None,
-            "desiredNumberScheduled": desired_number_scheduled
-            if desired_number_scheduled is not None
-            else None,
-            "numberAvailable": number_available
-            if number_available is not None
-            else None,
-            "numberMisscheduled": number_misscheduled
-            if number_misscheduled is not None
-            else None,
+            "currentNumberScheduled": (
+                current_number_scheduled
+                if current_number_scheduled is not None
+                else None
+            ),
+            "desiredNumberScheduled": (
+                desired_number_scheduled
+                if desired_number_scheduled is not None
+                else None
+            ),
+            "numberAvailable": (
+                number_available if number_available is not None else None
+            ),
+            "numberMisscheduled": (
+                number_misscheduled if number_misscheduled is not None else None
+            ),
             "numberReady": number_ready if number_ready is not None else None,
-            "numberUnavailable": number_unavailable
-            if number_unavailable is not None
-            else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
-            "updatedNumberScheduled": updated_number_scheduled
-            if updated_number_scheduled is not None
-            else None,
+            "numberUnavailable": (
+                number_unavailable if number_unavailable is not None else None
+            ),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
+            "updatedNumberScheduled": (
+                updated_number_scheduled
+                if updated_number_scheduled is not None
+                else None
+            ),
         }
         self._types = {
             "collisionCount": (int, None),
@@ -1614,9 +1622,11 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DaemonSetUpdateStrategy"
         )
         self._properties = {
-            "rollingUpdate": rolling_update
-            if rolling_update is not None
-            else RollingUpdateDaemonSet(),
+            "rollingUpdate": (
+                rolling_update
+                if rolling_update is not None
+                else RollingUpdateDaemonSet()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -2100,12 +2110,12 @@ class DeploymentCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
-            "lastUpdateTime": last_update_time
-            if last_update_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
+            "lastUpdateTime": (
+                last_update_time if last_update_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -2358,17 +2368,19 @@ class DeploymentSpec(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentSpec"
         )
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
             "paused": paused if paused is not None else None,
-            "progressDeadlineSeconds": progress_deadline_seconds
-            if progress_deadline_seconds is not None
-            else None,
+            "progressDeadlineSeconds": (
+                progress_deadline_seconds
+                if progress_deadline_seconds is not None
+                else None
+            ),
             "replicas": replicas if replicas is not None else None,
-            "revisionHistoryLimit": revision_history_limit
-            if revision_history_limit is not None
-            else None,
+            "revisionHistoryLimit": (
+                revision_history_limit if revision_history_limit is not None else None
+            ),
             "selector": selector if selector is not None else LabelSelector(),
             "strategy": strategy if strategy is not None else DeploymentStrategy(),
             "template": template if template is not None else PodTemplateSpec(),
@@ -2736,22 +2748,22 @@ class DeploymentStatus(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentStatus"
         )
         self._properties = {
-            "availableReplicas": available_replicas
-            if available_replicas is not None
-            else None,
+            "availableReplicas": (
+                available_replicas if available_replicas is not None else None
+            ),
             "collisionCount": collision_count if collision_count is not None else None,
             "conditions": conditions if conditions is not None else [],
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
-            "unavailableReplicas": unavailable_replicas
-            if unavailable_replicas is not None
-            else None,
-            "updatedReplicas": updated_replicas
-            if updated_replicas is not None
-            else None,
+            "unavailableReplicas": (
+                unavailable_replicas if unavailable_replicas is not None else None
+            ),
+            "updatedReplicas": (
+                updated_replicas if updated_replicas is not None else None
+            ),
         }
         self._types = {
             "availableReplicas": (int, None),
@@ -2957,9 +2969,11 @@ class DeploymentStrategy(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentStrategy"
         )
         self._properties = {
-            "rollingUpdate": rolling_update
-            if rolling_update is not None
-            else RollingUpdateDeployment(),
+            "rollingUpdate": (
+                rolling_update
+                if rolling_update is not None
+                else RollingUpdateDeployment()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -3460,9 +3474,9 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="ReplicaSetCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -3692,9 +3706,9 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
             api_version="apps/v1", kind="ReplicaSetSpec"
         )
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
             "replicas": replicas if replicas is not None else None,
             "selector": selector if selector is not None else LabelSelector(),
             "template": template if template is not None else PodTemplateSpec(),
@@ -3983,16 +3997,16 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
             api_version="apps/v1", kind="ReplicaSetStatus"
         )
         self._properties = {
-            "availableReplicas": available_replicas
-            if available_replicas is not None
-            else None,
+            "availableReplicas": (
+                available_replicas if available_replicas is not None else None
+            ),
             "conditions": conditions if conditions is not None else [],
-            "fullyLabeledReplicas": fully_labeled_replicas
-            if fully_labeled_replicas is not None
-            else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "fullyLabeledReplicas": (
+                fully_labeled_replicas if fully_labeled_replicas is not None else None
+            ),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
         }
@@ -4902,9 +4916,9 @@ class StatefulSetCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -5227,28 +5241,32 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetSpec"
         )
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
-            "persistentVolumeClaimRetentionPolicy": persistent_volume_claim_retention_policy
-            if persistent_volume_claim_retention_policy is not None
-            else StatefulSetPersistentVolumeClaimRetentionPolicy(),
-            "podManagementPolicy": pod_management_policy
-            if pod_management_policy is not None
-            else "",
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
+            "persistentVolumeClaimRetentionPolicy": (
+                persistent_volume_claim_retention_policy
+                if persistent_volume_claim_retention_policy is not None
+                else StatefulSetPersistentVolumeClaimRetentionPolicy()
+            ),
+            "podManagementPolicy": (
+                pod_management_policy if pod_management_policy is not None else ""
+            ),
             "replicas": replicas if replicas is not None else None,
-            "revisionHistoryLimit": revision_history_limit
-            if revision_history_limit is not None
-            else None,
+            "revisionHistoryLimit": (
+                revision_history_limit if revision_history_limit is not None else None
+            ),
             "selector": selector if selector is not None else LabelSelector(),
             "serviceName": service_name if service_name is not None else "",
             "template": template if template is not None else PodTemplateSpec(),
-            "updateStrategy": update_strategy
-            if update_strategy is not None
-            else StatefulSetUpdateStrategy(),
-            "volumeClaimTemplates": volume_claim_templates
-            if volume_claim_templates is not None
-            else [],
+            "updateStrategy": (
+                update_strategy
+                if update_strategy is not None
+                else StatefulSetUpdateStrategy()
+            ),
+            "volumeClaimTemplates": (
+                volume_claim_templates if volume_claim_templates is not None else []
+            ),
         }
         self._types = {
             "minReadySeconds": (int, None),
@@ -5743,24 +5761,24 @@ class StatefulSetStatus(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetStatus"
         )
         self._properties = {
-            "availableReplicas": available_replicas
-            if available_replicas is not None
-            else None,
+            "availableReplicas": (
+                available_replicas if available_replicas is not None else None
+            ),
             "collisionCount": collision_count if collision_count is not None else None,
             "conditions": conditions if conditions is not None else [],
-            "currentReplicas": current_replicas
-            if current_replicas is not None
-            else None,
+            "currentReplicas": (
+                current_replicas if current_replicas is not None else None
+            ),
             "currentRevision": current_revision if current_revision is not None else "",
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
             "updateRevision": update_revision if update_revision is not None else "",
-            "updatedReplicas": updated_replicas
-            if updated_replicas is not None
-            else None,
+            "updatedReplicas": (
+                updated_replicas if updated_replicas is not None else None
+            ),
         }
         self._types = {
             "availableReplicas": (int, None),
@@ -6015,9 +6033,11 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetUpdateStrategy"
         )
         self._properties = {
-            "rollingUpdate": rolling_update
-            if rolling_update is not None
-            else RollingUpdateStatefulSetStrategy(),
+            "rollingUpdate": (
+                rolling_update
+                if rolling_update is not None
+                else RollingUpdateStatefulSetStrategy()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {

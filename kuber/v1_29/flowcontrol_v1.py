@@ -6,10 +6,130 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
-from kuber.pre.meta_v1 import ListMeta  # noqa: F401
-from kuber.pre.meta_v1 import ObjectMeta  # noqa: F401
-from kuber.pre.meta_v1 import Status  # noqa: F401
-from kuber.pre.meta_v1 import StatusDetails  # noqa: F401
+from kuber.v1_29.meta_v1 import ListMeta  # noqa: F401
+from kuber.v1_29.meta_v1 import ObjectMeta  # noqa: F401
+from kuber.v1_29.meta_v1 import Status  # noqa: F401
+from kuber.v1_29.meta_v1 import StatusDetails  # noqa: F401
+
+
+class ExemptPriorityLevelConfiguration(_kuber_definitions.Definition):
+    """
+    ExemptPriorityLevelConfiguration describes the configurable
+    aspects of the handling of exempt requests. In the mandatory
+    exempt configuration object the values in the fields here
+    can be modified by authorized users, unlike the rest of the
+    `spec`.
+    """
+
+    def __init__(
+        self,
+        lendable_percent: typing.Optional[int] = None,
+        nominal_concurrency_shares: typing.Optional[int] = None,
+    ):
+        """Create ExemptPriorityLevelConfiguration instance."""
+        super(ExemptPriorityLevelConfiguration, self).__init__(
+            api_version="flowcontrol/v1", kind="ExemptPriorityLevelConfiguration"
+        )
+        self._properties = {
+            "lendablePercent": (
+                lendable_percent if lendable_percent is not None else None
+            ),
+            "nominalConcurrencyShares": (
+                nominal_concurrency_shares
+                if nominal_concurrency_shares is not None
+                else None
+            ),
+        }
+        self._types = {
+            "lendablePercent": (int, None),
+            "nominalConcurrencyShares": (int, None),
+        }
+
+    @property
+    def lendable_percent(self) -> int:
+        """
+        `lendablePercent` prescribes the fraction of the level's
+        NominalCL that can be borrowed by other priority levels.
+        This value of this field must be between 0 and 100,
+        inclusive, and it defaults to 0. The number of seats that
+        other levels can borrow from this level, known as this
+        level's LendableConcurrencyLimit (LendableCL), is defined as
+        follows.
+
+        LendableCL(i) = round( NominalCL(i) *
+        lendablePercent(i)/100.0 )
+        """
+        return typing.cast(
+            int,
+            self._properties.get("lendablePercent"),
+        )
+
+    @lendable_percent.setter
+    def lendable_percent(self, value: int):
+        """
+        `lendablePercent` prescribes the fraction of the level's
+        NominalCL that can be borrowed by other priority levels.
+        This value of this field must be between 0 and 100,
+        inclusive, and it defaults to 0. The number of seats that
+        other levels can borrow from this level, known as this
+        level's LendableConcurrencyLimit (LendableCL), is defined as
+        follows.
+
+        LendableCL(i) = round( NominalCL(i) *
+        lendablePercent(i)/100.0 )
+        """
+        self._properties["lendablePercent"] = value
+
+    @property
+    def nominal_concurrency_shares(self) -> int:
+        """
+        `nominalConcurrencyShares` (NCS) contributes to the
+        computation of the NominalConcurrencyLimit (NominalCL) of
+        this level. This is the number of execution seats nominally
+        reserved for this priority level. This DOES NOT limit the
+        dispatching from this priority level but affects the other
+        priority levels through the borrowing mechanism. The
+        server's concurrency limit (ServerCL) is divided among all
+        the priority levels in proportion to their NCS values:
+
+        NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
+        = sum[priority level k] NCS(k)
+
+        Bigger numbers mean a larger nominal concurrency limit, at
+        the expense of every other priority level. This field has a
+        default value of zero.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("nominalConcurrencyShares"),
+        )
+
+    @nominal_concurrency_shares.setter
+    def nominal_concurrency_shares(self, value: int):
+        """
+        `nominalConcurrencyShares` (NCS) contributes to the
+        computation of the NominalConcurrencyLimit (NominalCL) of
+        this level. This is the number of execution seats nominally
+        reserved for this priority level. This DOES NOT limit the
+        dispatching from this priority level but affects the other
+        priority levels through the borrowing mechanism. The
+        server's concurrency limit (ServerCL) is divided among all
+        the priority levels in proportion to their NCS values:
+
+        NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
+        = sum[priority level k] NCS(k)
+
+        Bigger numbers mean a larger nominal concurrency limit, at
+        the expense of every other priority level. This field has a
+        default value of zero.
+        """
+        self._properties["nominalConcurrencyShares"] = value
+
+    def __enter__(self) -> "ExemptPriorityLevelConfiguration":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
 
 
 class FlowDistinguisherMethod(_kuber_definitions.Definition):
@@ -24,7 +144,7 @@ class FlowDistinguisherMethod(_kuber_definitions.Definition):
     ):
         """Create FlowDistinguisherMethod instance."""
         super(FlowDistinguisherMethod, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="FlowDistinguisherMethod"
+            api_version="flowcontrol/v1", kind="FlowDistinguisherMethod"
         )
         self._properties = {
             "type": type_ if type_ is not None else "",
@@ -75,7 +195,7 @@ class FlowSchema(_kuber_definitions.Resource):
     ):
         """Create FlowSchema instance."""
         super(FlowSchema, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="FlowSchema"
+            api_version="flowcontrol/v1", kind="FlowSchema"
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
@@ -317,14 +437,14 @@ class FlowSchema(_kuber_definitions.Resource):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.FlowcontrolV1beta2Api":
+    ) -> "client.FlowcontrolV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.FlowcontrolV1beta2Api(**kwargs)
+        return client.FlowcontrolV1Api(**kwargs)
 
     def __enter__(self) -> "FlowSchema":
         return self
@@ -348,12 +468,12 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
     ):
         """Create FlowSchemaCondition instance."""
         super(FlowSchemaCondition, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="FlowSchemaCondition"
+            api_version="flowcontrol/v1", kind="FlowSchemaCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -485,7 +605,7 @@ class FlowSchemaList(_kuber_definitions.Collection):
     ):
         """Create FlowSchemaList instance."""
         super(FlowSchemaList, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="FlowSchemaList"
+            api_version="flowcontrol/v1", kind="FlowSchemaList"
         )
         self._properties = {
             "items": items if items is not None else [],
@@ -552,14 +672,14 @@ class FlowSchemaList(_kuber_definitions.Collection):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.FlowcontrolV1beta2Api":
+    ) -> "client.FlowcontrolV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.FlowcontrolV1beta2Api(**kwargs)
+        return client.FlowcontrolV1Api(**kwargs)
 
     def __enter__(self) -> "FlowSchemaList":
         return self
@@ -585,18 +705,22 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
     ):
         """Create FlowSchemaSpec instance."""
         super(FlowSchemaSpec, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="FlowSchemaSpec"
+            api_version="flowcontrol/v1", kind="FlowSchemaSpec"
         )
         self._properties = {
-            "distinguisherMethod": distinguisher_method
-            if distinguisher_method is not None
-            else FlowDistinguisherMethod(),
-            "matchingPrecedence": matching_precedence
-            if matching_precedence is not None
-            else None,
-            "priorityLevelConfiguration": priority_level_configuration
-            if priority_level_configuration is not None
-            else PriorityLevelConfigurationReference(),
+            "distinguisherMethod": (
+                distinguisher_method
+                if distinguisher_method is not None
+                else FlowDistinguisherMethod()
+            ),
+            "matchingPrecedence": (
+                matching_precedence if matching_precedence is not None else None
+            ),
+            "priorityLevelConfiguration": (
+                priority_level_configuration
+                if priority_level_configuration is not None
+                else PriorityLevelConfigurationReference()
+            ),
             "rules": rules if rules is not None else [],
         }
         self._types = {
@@ -750,7 +874,7 @@ class FlowSchemaStatus(_kuber_definitions.Definition):
     ):
         """Create FlowSchemaStatus instance."""
         super(FlowSchemaStatus, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="FlowSchemaStatus"
+            api_version="flowcontrol/v1", kind="FlowSchemaStatus"
         )
         self._properties = {
             "conditions": conditions if conditions is not None else [],
@@ -805,7 +929,7 @@ class GroupSubject(_kuber_definitions.Definition):
     ):
         """Create GroupSubject instance."""
         super(GroupSubject, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="GroupSubject"
+            api_version="flowcontrol/v1", kind="GroupSubject"
         )
         self._properties = {
             "name": name if name is not None else "",
@@ -857,7 +981,7 @@ class LimitResponse(_kuber_definitions.Definition):
     ):
         """Create LimitResponse instance."""
         super(LimitResponse, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="LimitResponse"
+            api_version="flowcontrol/v1", kind="LimitResponse"
         )
         self._properties = {
             "queuing": queuing if queuing is not None else QueuingConfiguration(),
@@ -935,82 +1059,37 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
 
     def __init__(
         self,
-        assured_concurrency_shares: typing.Optional[int] = None,
         borrowing_limit_percent: typing.Optional[int] = None,
         lendable_percent: typing.Optional[int] = None,
         limit_response: typing.Optional["LimitResponse"] = None,
+        nominal_concurrency_shares: typing.Optional[int] = None,
     ):
         """Create LimitedPriorityLevelConfiguration instance."""
         super(LimitedPriorityLevelConfiguration, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="LimitedPriorityLevelConfiguration"
+            api_version="flowcontrol/v1", kind="LimitedPriorityLevelConfiguration"
         )
         self._properties = {
-            "assuredConcurrencyShares": assured_concurrency_shares
-            if assured_concurrency_shares is not None
-            else None,
-            "borrowingLimitPercent": borrowing_limit_percent
-            if borrowing_limit_percent is not None
-            else None,
-            "lendablePercent": lendable_percent
-            if lendable_percent is not None
-            else None,
-            "limitResponse": limit_response
-            if limit_response is not None
-            else LimitResponse(),
+            "borrowingLimitPercent": (
+                borrowing_limit_percent if borrowing_limit_percent is not None else None
+            ),
+            "lendablePercent": (
+                lendable_percent if lendable_percent is not None else None
+            ),
+            "limitResponse": (
+                limit_response if limit_response is not None else LimitResponse()
+            ),
+            "nominalConcurrencyShares": (
+                nominal_concurrency_shares
+                if nominal_concurrency_shares is not None
+                else None
+            ),
         }
         self._types = {
-            "assuredConcurrencyShares": (int, None),
             "borrowingLimitPercent": (int, None),
             "lendablePercent": (int, None),
             "limitResponse": (LimitResponse, None),
+            "nominalConcurrencyShares": (int, None),
         }
-
-    @property
-    def assured_concurrency_shares(self) -> int:
-        """
-        `assuredConcurrencyShares` (ACS) configures the execution
-        limit, which is a limit on the number of requests of this
-        priority level that may be exeucting at a given time.  ACS
-        must be a positive number. The server's concurrency limit
-        (SCL) is divided among the concurrency-controlled priority
-        levels in proportion to their assured concurrency shares.
-        This produces the assured concurrency value (ACV) --- the
-        number of requests that may be executing at a time --- for
-        each such priority level:
-
-                    ACV(l) = ceil( SCL * ACS(l) / ( sum[priority
-        levels k] ACS(k) ) )
-
-        bigger numbers of ACS mean more reserved concurrent requests
-        (at the expense of every other PL). This field has a default
-        value of 30.
-        """
-        return typing.cast(
-            int,
-            self._properties.get("assuredConcurrencyShares"),
-        )
-
-    @assured_concurrency_shares.setter
-    def assured_concurrency_shares(self, value: int):
-        """
-        `assuredConcurrencyShares` (ACS) configures the execution
-        limit, which is a limit on the number of requests of this
-        priority level that may be exeucting at a given time.  ACS
-        must be a positive number. The server's concurrency limit
-        (SCL) is divided among the concurrency-controlled priority
-        levels in proportion to their assured concurrency shares.
-        This produces the assured concurrency value (ACV) --- the
-        number of requests that may be executing at a time --- for
-        each such priority level:
-
-                    ACV(l) = ceil( SCL * ACS(l) / ( sum[priority
-        levels k] ACS(k) ) )
-
-        bigger numbers of ACS mean more reserved concurrent requests
-        (at the expense of every other PL). This field has a default
-        value of 30.
-        """
-        self._properties["assuredConcurrencyShares"] = value
 
     @property
     def borrowing_limit_percent(self) -> int:
@@ -1122,6 +1201,63 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
             )
         self._properties["limitResponse"] = value
 
+    @property
+    def nominal_concurrency_shares(self) -> int:
+        """
+        `nominalConcurrencyShares` (NCS) contributes to the
+        computation of the NominalConcurrencyLimit (NominalCL) of
+        this level. This is the number of execution seats available
+        at this priority level. This is used both for requests
+        dispatched from this priority level as well as requests
+        dispatched from other priority levels borrowing seats from
+        this level. The server's concurrency limit (ServerCL) is
+        divided among the Limited priority levels in proportion to
+        their NCS values:
+
+        NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
+        = sum[priority level k] NCS(k)
+
+        Bigger numbers mean a larger nominal concurrency limit, at
+        the expense of every other priority level.
+
+        If not specified, this field defaults to a value of 30.
+
+        Setting this field to zero supports the construction of a
+        "jail" for this priority level that is used to hold some
+        request(s)
+        """
+        return typing.cast(
+            int,
+            self._properties.get("nominalConcurrencyShares"),
+        )
+
+    @nominal_concurrency_shares.setter
+    def nominal_concurrency_shares(self, value: int):
+        """
+        `nominalConcurrencyShares` (NCS) contributes to the
+        computation of the NominalConcurrencyLimit (NominalCL) of
+        this level. This is the number of execution seats available
+        at this priority level. This is used both for requests
+        dispatched from this priority level as well as requests
+        dispatched from other priority levels borrowing seats from
+        this level. The server's concurrency limit (ServerCL) is
+        divided among the Limited priority levels in proportion to
+        their NCS values:
+
+        NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
+        = sum[priority level k] NCS(k)
+
+        Bigger numbers mean a larger nominal concurrency limit, at
+        the expense of every other priority level.
+
+        If not specified, this field defaults to a value of 30.
+
+        Setting this field to zero supports the construction of a
+        "jail" for this priority level that is used to hold some
+        request(s)
+        """
+        self._properties["nominalConcurrencyShares"] = value
+
     def __enter__(self) -> "LimitedPriorityLevelConfiguration":
         return self
 
@@ -1146,12 +1282,12 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
     ):
         """Create NonResourcePolicyRule instance."""
         super(NonResourcePolicyRule, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="NonResourcePolicyRule"
+            api_version="flowcontrol/v1", kind="NonResourcePolicyRule"
         )
         self._properties = {
-            "nonResourceURLs": non_resource_urls
-            if non_resource_urls is not None
-            else [],
+            "nonResourceURLs": (
+                non_resource_urls if non_resource_urls is not None else []
+            ),
             "verbs": verbs if verbs is not None else [],
         }
         self._types = {
@@ -1242,12 +1378,12 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
     ):
         """Create PolicyRulesWithSubjects instance."""
         super(PolicyRulesWithSubjects, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="PolicyRulesWithSubjects"
+            api_version="flowcontrol/v1", kind="PolicyRulesWithSubjects"
         )
         self._properties = {
-            "nonResourceRules": non_resource_rules
-            if non_resource_rules is not None
-            else [],
+            "nonResourceRules": (
+                non_resource_rules if non_resource_rules is not None else []
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
             "subjects": subjects if subjects is not None else [],
         }
@@ -1376,14 +1512,14 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
     ):
         """Create PriorityLevelConfiguration instance."""
         super(PriorityLevelConfiguration, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="PriorityLevelConfiguration"
+            api_version="flowcontrol/v1", kind="PriorityLevelConfiguration"
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else PriorityLevelConfigurationSpec(),
-            "status": status
-            if status is not None
-            else PriorityLevelConfigurationStatus(),
+            "status": (
+                status if status is not None else PriorityLevelConfigurationStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1629,14 +1765,14 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.FlowcontrolV1beta2Api":
+    ) -> "client.FlowcontrolV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.FlowcontrolV1beta2Api(**kwargs)
+        return client.FlowcontrolV1Api(**kwargs)
 
     def __enter__(self) -> "PriorityLevelConfiguration":
         return self
@@ -1661,13 +1797,12 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
     ):
         """Create PriorityLevelConfigurationCondition instance."""
         super(PriorityLevelConfigurationCondition, self).__init__(
-            api_version="flowcontrol/v1beta2",
-            kind="PriorityLevelConfigurationCondition",
+            api_version="flowcontrol/v1", kind="PriorityLevelConfigurationCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1800,7 +1935,7 @@ class PriorityLevelConfigurationList(_kuber_definitions.Collection):
     ):
         """Create PriorityLevelConfigurationList instance."""
         super(PriorityLevelConfigurationList, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="PriorityLevelConfigurationList"
+            api_version="flowcontrol/v1", kind="PriorityLevelConfigurationList"
         )
         self._properties = {
             "items": items if items is not None else [],
@@ -1872,14 +2007,14 @@ class PriorityLevelConfigurationList(_kuber_definitions.Collection):
     @staticmethod
     def get_resource_api(
         api_client: typing.Optional[client.ApiClient] = None, **kwargs
-    ) -> "client.FlowcontrolV1beta2Api":
+    ) -> "client.FlowcontrolV1Api":
         """
         Returns an instance of the kubernetes API client associated with
         this object.
         """
         if api_client:
             kwargs["apl_client"] = api_client
-        return client.FlowcontrolV1beta2Api(**kwargs)
+        return client.FlowcontrolV1Api(**kwargs)
 
     def __enter__(self) -> "PriorityLevelConfigurationList":
         return self
@@ -1900,8 +2035,7 @@ class PriorityLevelConfigurationReference(_kuber_definitions.Definition):
     ):
         """Create PriorityLevelConfigurationReference instance."""
         super(PriorityLevelConfigurationReference, self).__init__(
-            api_version="flowcontrol/v1beta2",
-            kind="PriorityLevelConfigurationReference",
+            api_version="flowcontrol/v1", kind="PriorityLevelConfigurationReference"
         )
         self._properties = {
             "name": name if name is not None else "",
@@ -1944,23 +2078,58 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        exempt: typing.Optional["ExemptPriorityLevelConfiguration"] = None,
         limited: typing.Optional["LimitedPriorityLevelConfiguration"] = None,
         type_: typing.Optional[str] = None,
     ):
         """Create PriorityLevelConfigurationSpec instance."""
         super(PriorityLevelConfigurationSpec, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="PriorityLevelConfigurationSpec"
+            api_version="flowcontrol/v1", kind="PriorityLevelConfigurationSpec"
         )
         self._properties = {
-            "limited": limited
-            if limited is not None
-            else LimitedPriorityLevelConfiguration(),
+            "exempt": (
+                exempt if exempt is not None else ExemptPriorityLevelConfiguration()
+            ),
+            "limited": (
+                limited if limited is not None else LimitedPriorityLevelConfiguration()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
+            "exempt": (ExemptPriorityLevelConfiguration, None),
             "limited": (LimitedPriorityLevelConfiguration, None),
             "type": (str, None),
         }
+
+    @property
+    def exempt(self) -> "ExemptPriorityLevelConfiguration":
+        """
+        `exempt` specifies how requests are handled for an exempt
+        priority level. This field MUST be empty if `type` is
+        `"Limited"`. This field MAY be non-empty if `type` is
+        `"Exempt"`. If empty and `type` is `"Exempt"` then the
+        default values for `ExemptPriorityLevelConfiguration` apply.
+        """
+        return typing.cast(
+            "ExemptPriorityLevelConfiguration",
+            self._properties.get("exempt"),
+        )
+
+    @exempt.setter
+    def exempt(self, value: typing.Union["ExemptPriorityLevelConfiguration", dict]):
+        """
+        `exempt` specifies how requests are handled for an exempt
+        priority level. This field MUST be empty if `type` is
+        `"Limited"`. This field MAY be non-empty if `type` is
+        `"Exempt"`. If empty and `type` is `"Exempt"` then the
+        default values for `ExemptPriorityLevelConfiguration` apply.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ExemptPriorityLevelConfiguration,
+                ExemptPriorityLevelConfiguration().from_dict(value),
+            )
+        self._properties["exempt"] = value
 
     @property
     def limited(self) -> "LimitedPriorityLevelConfiguration":
@@ -2042,7 +2211,7 @@ class PriorityLevelConfigurationStatus(_kuber_definitions.Definition):
     ):
         """Create PriorityLevelConfigurationStatus instance."""
         super(PriorityLevelConfigurationStatus, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="PriorityLevelConfigurationStatus"
+            api_version="flowcontrol/v1", kind="PriorityLevelConfigurationStatus"
         )
         self._properties = {
             "conditions": conditions if conditions is not None else [],
@@ -2102,13 +2271,13 @@ class QueuingConfiguration(_kuber_definitions.Definition):
     ):
         """Create QueuingConfiguration instance."""
         super(QueuingConfiguration, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="QueuingConfiguration"
+            api_version="flowcontrol/v1", kind="QueuingConfiguration"
         )
         self._properties = {
             "handSize": hand_size if hand_size is not None else None,
-            "queueLengthLimit": queue_length_limit
-            if queue_length_limit is not None
-            else None,
+            "queueLengthLimit": (
+                queue_length_limit if queue_length_limit is not None else None
+            ),
             "queues": queues if queues is not None else None,
         }
         self._types = {
@@ -2235,7 +2404,7 @@ class ResourcePolicyRule(_kuber_definitions.Definition):
     ):
         """Create ResourcePolicyRule instance."""
         super(ResourcePolicyRule, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="ResourcePolicyRule"
+            api_version="flowcontrol/v1", kind="ResourcePolicyRule"
         )
         self._properties = {
             "apiGroups": api_groups if api_groups is not None else [],
@@ -2395,7 +2564,7 @@ class ServiceAccountSubject(_kuber_definitions.Definition):
     ):
         """Create ServiceAccountSubject instance."""
         super(ServiceAccountSubject, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="ServiceAccountSubject"
+            api_version="flowcontrol/v1", kind="ServiceAccountSubject"
         )
         self._properties = {
             "name": name if name is not None else "",
@@ -2467,13 +2636,15 @@ class Subject(_kuber_definitions.Definition):
         user: typing.Optional["UserSubject"] = None,
     ):
         """Create Subject instance."""
-        super(Subject, self).__init__(api_version="flowcontrol/v1beta2", kind="Subject")
+        super(Subject, self).__init__(api_version="flowcontrol/v1", kind="Subject")
         self._properties = {
             "group": group if group is not None else GroupSubject(),
             "kind": kind if kind is not None else "",
-            "serviceAccount": service_account
-            if service_account is not None
-            else ServiceAccountSubject(),
+            "serviceAccount": (
+                service_account
+                if service_account is not None
+                else ServiceAccountSubject()
+            ),
             "user": user if user is not None else UserSubject(),
         }
         self._types = {
@@ -2587,7 +2758,7 @@ class UserSubject(_kuber_definitions.Definition):
     ):
         """Create UserSubject instance."""
         super(UserSubject, self).__init__(
-            api_version="flowcontrol/v1beta2", kind="UserSubject"
+            api_version="flowcontrol/v1", kind="UserSubject"
         )
         self._properties = {
             "name": name if name is not None else "",

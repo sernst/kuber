@@ -25,9 +25,9 @@ class AggregationRule(_kuber_definitions.Definition):
             api_version="rbac.authorization.k8s.io/v1", kind="AggregationRule"
         )
         self._properties = {
-            "clusterRoleSelectors": cluster_role_selectors
-            if cluster_role_selectors is not None
-            else [],
+            "clusterRoleSelectors": (
+                cluster_role_selectors if cluster_role_selectors is not None else []
+            ),
         }
         self._types = {
             "clusterRoleSelectors": (list, LabelSelector),
@@ -91,9 +91,9 @@ class ClusterRole(_kuber_definitions.Resource):
             api_version="rbac.authorization.k8s.io/v1", kind="ClusterRole"
         )
         self._properties = {
-            "aggregationRule": aggregation_rule
-            if aggregation_rule is not None
-            else AggregationRule(),
+            "aggregationRule": (
+                aggregation_rule if aggregation_rule is not None else AggregationRule()
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "rules": rules if rules is not None else [],
         }
@@ -355,7 +355,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
         """
         RoleRef can only reference a ClusterRole in the global
         namespace. If the RoleRef cannot be resolved, the Authorizer
-        must return an error.
+        must return an error. This field is immutable.
         """
         return typing.cast(
             "RoleRef",
@@ -367,7 +367,7 @@ class ClusterRoleBinding(_kuber_definitions.Resource):
         """
         RoleRef can only reference a ClusterRole in the global
         namespace. If the RoleRef cannot be resolved, the Authorizer
-        must return an error.
+        must return an error. This field is immutable.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -733,9 +733,9 @@ class PolicyRule(_kuber_definitions.Definition):
         )
         self._properties = {
             "apiGroups": api_groups if api_groups is not None else [],
-            "nonResourceURLs": non_resource_urls
-            if non_resource_urls is not None
-            else [],
+            "nonResourceURLs": (
+                non_resource_urls if non_resource_urls is not None else []
+            ),
             "resourceNames": resource_names if resource_names is not None else [],
             "resources": resources if resources is not None else [],
             "verbs": verbs if verbs is not None else [],
@@ -1119,7 +1119,8 @@ class RoleBinding(_kuber_definitions.Resource):
         """
         RoleRef can reference a Role in the current namespace or a
         ClusterRole in the global namespace. If the RoleRef cannot
-        be resolved, the Authorizer must return an error.
+        be resolved, the Authorizer must return an error. This field
+        is immutable.
         """
         return typing.cast(
             "RoleRef",
@@ -1131,7 +1132,8 @@ class RoleBinding(_kuber_definitions.Resource):
         """
         RoleRef can reference a Role in the current namespace or a
         ClusterRole in the global namespace. If the RoleRef cannot
-        be resolved, the Authorizer must return an error.
+        be resolved, the Authorizer must return an error. This field
+        is immutable.
         """
         if isinstance(value, dict):
             value = typing.cast(

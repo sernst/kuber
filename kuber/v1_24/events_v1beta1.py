@@ -47,30 +47,34 @@ class Event(_kuber_definitions.Resource):
         super(Event, self).__init__(api_version="events/v1beta1", kind="Event")
         self._properties = {
             "action": action if action is not None else "",
-            "deprecatedCount": deprecated_count
-            if deprecated_count is not None
-            else None,
-            "deprecatedFirstTimestamp": deprecated_first_timestamp
-            if deprecated_first_timestamp is not None
-            else None,
-            "deprecatedLastTimestamp": deprecated_last_timestamp
-            if deprecated_last_timestamp is not None
-            else None,
-            "deprecatedSource": deprecated_source
-            if deprecated_source is not None
-            else EventSource(),
+            "deprecatedCount": (
+                deprecated_count if deprecated_count is not None else None
+            ),
+            "deprecatedFirstTimestamp": (
+                deprecated_first_timestamp
+                if deprecated_first_timestamp is not None
+                else None
+            ),
+            "deprecatedLastTimestamp": (
+                deprecated_last_timestamp
+                if deprecated_last_timestamp is not None
+                else None
+            ),
+            "deprecatedSource": (
+                deprecated_source if deprecated_source is not None else EventSource()
+            ),
             "eventTime": event_time if event_time is not None else MicroTime(),
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "note": note if note is not None else "",
             "reason": reason if reason is not None else "",
             "regarding": regarding if regarding is not None else ObjectReference(),
             "related": related if related is not None else ObjectReference(),
-            "reportingController": reporting_controller
-            if reporting_controller is not None
-            else "",
-            "reportingInstance": reporting_instance
-            if reporting_instance is not None
-            else "",
+            "reportingController": (
+                reporting_controller if reporting_controller is not None else ""
+            ),
+            "reportingInstance": (
+                reporting_instance if reporting_instance is not None else ""
+            ),
             "series": series if series is not None else EventSeries(),
             "type": type_ if type_ is not None else "",
         }
@@ -667,9 +671,9 @@ class EventSeries(_kuber_definitions.Definition):
         )
         self._properties = {
             "count": count if count is not None else None,
-            "lastObservedTime": last_observed_time
-            if last_observed_time is not None
-            else MicroTime(),
+            "lastObservedTime": (
+                last_observed_time if last_observed_time is not None else MicroTime()
+            ),
         }
         self._types = {
             "count": (int, None),

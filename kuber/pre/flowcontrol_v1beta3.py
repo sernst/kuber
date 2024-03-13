@@ -12,6 +12,126 @@ from kuber.pre.meta_v1 import Status  # noqa: F401
 from kuber.pre.meta_v1 import StatusDetails  # noqa: F401
 
 
+class ExemptPriorityLevelConfiguration(_kuber_definitions.Definition):
+    """
+    ExemptPriorityLevelConfiguration describes the configurable
+    aspects of the handling of exempt requests. In the mandatory
+    exempt configuration object the values in the fields here
+    can be modified by authorized users, unlike the rest of the
+    `spec`.
+    """
+
+    def __init__(
+        self,
+        lendable_percent: typing.Optional[int] = None,
+        nominal_concurrency_shares: typing.Optional[int] = None,
+    ):
+        """Create ExemptPriorityLevelConfiguration instance."""
+        super(ExemptPriorityLevelConfiguration, self).__init__(
+            api_version="flowcontrol/v1beta3", kind="ExemptPriorityLevelConfiguration"
+        )
+        self._properties = {
+            "lendablePercent": (
+                lendable_percent if lendable_percent is not None else None
+            ),
+            "nominalConcurrencyShares": (
+                nominal_concurrency_shares
+                if nominal_concurrency_shares is not None
+                else None
+            ),
+        }
+        self._types = {
+            "lendablePercent": (int, None),
+            "nominalConcurrencyShares": (int, None),
+        }
+
+    @property
+    def lendable_percent(self) -> int:
+        """
+        `lendablePercent` prescribes the fraction of the level's
+        NominalCL that can be borrowed by other priority levels.
+        This value of this field must be between 0 and 100,
+        inclusive, and it defaults to 0. The number of seats that
+        other levels can borrow from this level, known as this
+        level's LendableConcurrencyLimit (LendableCL), is defined as
+        follows.
+
+        LendableCL(i) = round( NominalCL(i) *
+        lendablePercent(i)/100.0 )
+        """
+        return typing.cast(
+            int,
+            self._properties.get("lendablePercent"),
+        )
+
+    @lendable_percent.setter
+    def lendable_percent(self, value: int):
+        """
+        `lendablePercent` prescribes the fraction of the level's
+        NominalCL that can be borrowed by other priority levels.
+        This value of this field must be between 0 and 100,
+        inclusive, and it defaults to 0. The number of seats that
+        other levels can borrow from this level, known as this
+        level's LendableConcurrencyLimit (LendableCL), is defined as
+        follows.
+
+        LendableCL(i) = round( NominalCL(i) *
+        lendablePercent(i)/100.0 )
+        """
+        self._properties["lendablePercent"] = value
+
+    @property
+    def nominal_concurrency_shares(self) -> int:
+        """
+        `nominalConcurrencyShares` (NCS) contributes to the
+        computation of the NominalConcurrencyLimit (NominalCL) of
+        this level. This is the number of execution seats nominally
+        reserved for this priority level. This DOES NOT limit the
+        dispatching from this priority level but affects the other
+        priority levels through the borrowing mechanism. The
+        server's concurrency limit (ServerCL) is divided among all
+        the priority levels in proportion to their NCS values:
+
+        NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
+        = sum[priority level k] NCS(k)
+
+        Bigger numbers mean a larger nominal concurrency limit, at
+        the expense of every other priority level. This field has a
+        default value of zero.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("nominalConcurrencyShares"),
+        )
+
+    @nominal_concurrency_shares.setter
+    def nominal_concurrency_shares(self, value: int):
+        """
+        `nominalConcurrencyShares` (NCS) contributes to the
+        computation of the NominalConcurrencyLimit (NominalCL) of
+        this level. This is the number of execution seats nominally
+        reserved for this priority level. This DOES NOT limit the
+        dispatching from this priority level but affects the other
+        priority levels through the borrowing mechanism. The
+        server's concurrency limit (ServerCL) is divided among all
+        the priority levels in proportion to their NCS values:
+
+        NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
+        = sum[priority level k] NCS(k)
+
+        Bigger numbers mean a larger nominal concurrency limit, at
+        the expense of every other priority level. This field has a
+        default value of zero.
+        """
+        self._properties["nominalConcurrencyShares"] = value
+
+    def __enter__(self) -> "ExemptPriorityLevelConfiguration":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class FlowDistinguisherMethod(_kuber_definitions.Definition):
     """
     FlowDistinguisherMethod specifies the method of a flow
@@ -351,9 +471,9 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta3", kind="FlowSchemaCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -588,15 +708,19 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta3", kind="FlowSchemaSpec"
         )
         self._properties = {
-            "distinguisherMethod": distinguisher_method
-            if distinguisher_method is not None
-            else FlowDistinguisherMethod(),
-            "matchingPrecedence": matching_precedence
-            if matching_precedence is not None
-            else None,
-            "priorityLevelConfiguration": priority_level_configuration
-            if priority_level_configuration is not None
-            else PriorityLevelConfigurationReference(),
+            "distinguisherMethod": (
+                distinguisher_method
+                if distinguisher_method is not None
+                else FlowDistinguisherMethod()
+            ),
+            "matchingPrecedence": (
+                matching_precedence if matching_precedence is not None else None
+            ),
+            "priorityLevelConfiguration": (
+                priority_level_configuration
+                if priority_level_configuration is not None
+                else PriorityLevelConfigurationReference()
+            ),
             "rules": rules if rules is not None else [],
         }
         self._types = {
@@ -945,18 +1069,20 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta3", kind="LimitedPriorityLevelConfiguration"
         )
         self._properties = {
-            "borrowingLimitPercent": borrowing_limit_percent
-            if borrowing_limit_percent is not None
-            else None,
-            "lendablePercent": lendable_percent
-            if lendable_percent is not None
-            else None,
-            "limitResponse": limit_response
-            if limit_response is not None
-            else LimitResponse(),
-            "nominalConcurrencyShares": nominal_concurrency_shares
-            if nominal_concurrency_shares is not None
-            else None,
+            "borrowingLimitPercent": (
+                borrowing_limit_percent if borrowing_limit_percent is not None else None
+            ),
+            "lendablePercent": (
+                lendable_percent if lendable_percent is not None else None
+            ),
+            "limitResponse": (
+                limit_response if limit_response is not None else LimitResponse()
+            ),
+            "nominalConcurrencyShares": (
+                nominal_concurrency_shares
+                if nominal_concurrency_shares is not None
+                else None
+            ),
         }
         self._types = {
             "borrowingLimitPercent": (int, None),
@@ -1089,11 +1215,11 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         their NCS values:
 
         NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
-        = sum[limited priority level k] NCS(k)
+        = sum[priority level k] NCS(k)
 
         Bigger numbers mean a larger nominal concurrency limit, at
-        the expense of every other Limited priority level. This
-        field has a default value of 30.
+        the expense of every other priority level. This field has a
+        default value of 30.
         """
         return typing.cast(
             int,
@@ -1114,11 +1240,11 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
         their NCS values:
 
         NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs
-        = sum[limited priority level k] NCS(k)
+        = sum[priority level k] NCS(k)
 
         Bigger numbers mean a larger nominal concurrency limit, at
-        the expense of every other Limited priority level. This
-        field has a default value of 30.
+        the expense of every other priority level. This field has a
+        default value of 30.
         """
         self._properties["nominalConcurrencyShares"] = value
 
@@ -1149,9 +1275,9 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta3", kind="NonResourcePolicyRule"
         )
         self._properties = {
-            "nonResourceURLs": non_resource_urls
-            if non_resource_urls is not None
-            else [],
+            "nonResourceURLs": (
+                non_resource_urls if non_resource_urls is not None else []
+            ),
             "verbs": verbs if verbs is not None else [],
         }
         self._types = {
@@ -1245,9 +1371,9 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta3", kind="PolicyRulesWithSubjects"
         )
         self._properties = {
-            "nonResourceRules": non_resource_rules
-            if non_resource_rules is not None
-            else [],
+            "nonResourceRules": (
+                non_resource_rules if non_resource_rules is not None else []
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
             "subjects": subjects if subjects is not None else [],
         }
@@ -1381,9 +1507,9 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else PriorityLevelConfigurationSpec(),
-            "status": status
-            if status is not None
-            else PriorityLevelConfigurationStatus(),
+            "status": (
+                status if status is not None else PriorityLevelConfigurationStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1665,9 +1791,9 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
             kind="PriorityLevelConfigurationCondition",
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1944,6 +2070,7 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        exempt: typing.Optional["ExemptPriorityLevelConfiguration"] = None,
         limited: typing.Optional["LimitedPriorityLevelConfiguration"] = None,
         type_: typing.Optional[str] = None,
     ):
@@ -1952,15 +2079,49 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta3", kind="PriorityLevelConfigurationSpec"
         )
         self._properties = {
-            "limited": limited
-            if limited is not None
-            else LimitedPriorityLevelConfiguration(),
+            "exempt": (
+                exempt if exempt is not None else ExemptPriorityLevelConfiguration()
+            ),
+            "limited": (
+                limited if limited is not None else LimitedPriorityLevelConfiguration()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
+            "exempt": (ExemptPriorityLevelConfiguration, None),
             "limited": (LimitedPriorityLevelConfiguration, None),
             "type": (str, None),
         }
+
+    @property
+    def exempt(self) -> "ExemptPriorityLevelConfiguration":
+        """
+        `exempt` specifies how requests are handled for an exempt
+        priority level. This field MUST be empty if `type` is
+        `"Limited"`. This field MAY be non-empty if `type` is
+        `"Exempt"`. If empty and `type` is `"Exempt"` then the
+        default values for `ExemptPriorityLevelConfiguration` apply.
+        """
+        return typing.cast(
+            "ExemptPriorityLevelConfiguration",
+            self._properties.get("exempt"),
+        )
+
+    @exempt.setter
+    def exempt(self, value: typing.Union["ExemptPriorityLevelConfiguration", dict]):
+        """
+        `exempt` specifies how requests are handled for an exempt
+        priority level. This field MUST be empty if `type` is
+        `"Limited"`. This field MAY be non-empty if `type` is
+        `"Exempt"`. If empty and `type` is `"Exempt"` then the
+        default values for `ExemptPriorityLevelConfiguration` apply.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ExemptPriorityLevelConfiguration,
+                ExemptPriorityLevelConfiguration().from_dict(value),
+            )
+        self._properties["exempt"] = value
 
     @property
     def limited(self) -> "LimitedPriorityLevelConfiguration":
@@ -2106,9 +2267,9 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         )
         self._properties = {
             "handSize": hand_size if hand_size is not None else None,
-            "queueLengthLimit": queue_length_limit
-            if queue_length_limit is not None
-            else None,
+            "queueLengthLimit": (
+                queue_length_limit if queue_length_limit is not None else None
+            ),
             "queues": queues if queues is not None else None,
         }
         self._types = {
@@ -2471,9 +2632,11 @@ class Subject(_kuber_definitions.Definition):
         self._properties = {
             "group": group if group is not None else GroupSubject(),
             "kind": kind if kind is not None else "",
-            "serviceAccount": service_account
-            if service_account is not None
-            else ServiceAccountSubject(),
+            "serviceAccount": (
+                service_account
+                if service_account is not None
+                else ServiceAccountSubject()
+            ),
             "user": user if user is not None else UserSubject(),
         }
         self._types = {

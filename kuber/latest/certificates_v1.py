@@ -45,9 +45,9 @@ class CertificateSigningRequest(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else CertificateSigningRequestSpec(),
-            "status": status
-            if status is not None
-            else CertificateSigningRequestStatus(),
+            "status": (
+                status if status is not None else CertificateSigningRequestStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -323,12 +323,12 @@ class CertificateSigningRequestCondition(_kuber_definitions.Definition):
             api_version="certificates/v1", kind="CertificateSigningRequestCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
-            "lastUpdateTime": last_update_time
-            if last_update_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
+            "lastUpdateTime": (
+                last_update_time if last_update_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -631,9 +631,9 @@ class CertificateSigningRequestSpec(_kuber_definitions.Definition):
             api_version="certificates/v1", kind="CertificateSigningRequestSpec"
         )
         self._properties = {
-            "expirationSeconds": expiration_seconds
-            if expiration_seconds is not None
-            else None,
+            "expirationSeconds": (
+                expiration_seconds if expiration_seconds is not None else None
+            ),
             "extra": extra if extra is not None else {},
             "groups": groups if groups is not None else [],
             "request": request if request is not None else "",

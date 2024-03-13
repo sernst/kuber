@@ -62,7 +62,7 @@ class Lease(_kuber_definitions.Resource):
     @property
     def spec(self) -> "LeaseSpec":
         """
-        Specification of the Lease. More info:
+        spec contains the specification of the Lease. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -74,7 +74,7 @@ class Lease(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["LeaseSpec", dict]):
         """
-        Specification of the Lease. More info:
+        spec contains the specification of the Lease. More info:
         https://git.k8s.io/community/contributors/devel/sig-
         architecture/api-conventions.md#spec-and-status
         """
@@ -229,7 +229,7 @@ class LeaseList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["Lease"]:
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         return typing.cast(
             typing.List["Lease"],
@@ -239,7 +239,7 @@ class LeaseList(_kuber_definitions.Collection):
     @items.setter
     def items(self, value: typing.Union[typing.List["Lease"], typing.List[dict]]):
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         cleaned: typing.List[Lease] = []
         for item in value:
@@ -314,12 +314,12 @@ class LeaseSpec(_kuber_definitions.Definition):
         self._properties = {
             "acquireTime": acquire_time if acquire_time is not None else MicroTime(),
             "holderIdentity": holder_identity if holder_identity is not None else "",
-            "leaseDurationSeconds": lease_duration_seconds
-            if lease_duration_seconds is not None
-            else None,
-            "leaseTransitions": lease_transitions
-            if lease_transitions is not None
-            else None,
+            "leaseDurationSeconds": (
+                lease_duration_seconds if lease_duration_seconds is not None else None
+            ),
+            "leaseTransitions": (
+                lease_transitions if lease_transitions is not None else None
+            ),
             "renewTime": renew_time if renew_time is not None else MicroTime(),
         }
         self._types = {
@@ -376,7 +376,7 @@ class LeaseSpec(_kuber_definitions.Definition):
         """
         leaseDurationSeconds is a duration that candidates for a
         lease need to wait to force acquire it. This is measure
-        against time of last observed RenewTime.
+        against time of last observed renewTime.
         """
         return typing.cast(
             int,
@@ -388,7 +388,7 @@ class LeaseSpec(_kuber_definitions.Definition):
         """
         leaseDurationSeconds is a duration that candidates for a
         lease need to wait to force acquire it. This is measure
-        against time of last observed RenewTime.
+        against time of last observed renewTime.
         """
         self._properties["leaseDurationSeconds"] = value
 

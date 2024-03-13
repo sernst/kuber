@@ -8,6 +8,7 @@ from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
 from kuber.latest.core_v1 import Container  # noqa: F401
 from kuber.latest.core_v1 import ContainerPort  # noqa: F401
+from kuber.latest.core_v1 import ContainerResizePolicy  # noqa: F401
 from kuber.latest.core_v1 import EnvFromSource  # noqa: F401
 from kuber.latest.core_v1 import EnvVar  # noqa: F401
 from kuber.latest.meta_v1 import LabelSelector  # noqa: F401
@@ -505,8 +506,16 @@ class DaemonSet(_kuber_definitions.Resource):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -563,7 +572,9 @@ class DaemonSet(_kuber_definitions.Resource):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -785,9 +796,9 @@ class DaemonSetCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DaemonSetCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1012,17 +1023,19 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         """Create DaemonSetSpec instance."""
         super(DaemonSetSpec, self).__init__(api_version="apps/v1", kind="DaemonSetSpec")
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
-            "revisionHistoryLimit": revision_history_limit
-            if revision_history_limit is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
+            "revisionHistoryLimit": (
+                revision_history_limit if revision_history_limit is not None else None
+            ),
             "selector": selector if selector is not None else LabelSelector(),
             "template": template if template is not None else PodTemplateSpec(),
-            "updateStrategy": update_strategy
-            if update_strategy is not None
-            else DaemonSetUpdateStrategy(),
+            "updateStrategy": (
+                update_strategy
+                if update_strategy is not None
+                else DaemonSetUpdateStrategy()
+            ),
         }
         self._types = {
             "minReadySeconds": (int, None),
@@ -1112,9 +1125,10 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         An object that describes the pod that will be created. The
         DaemonSet will create exactly one copy of this pod on every
         node that matches the template's node selector (or on every
-        node if no node selector is specified). More info: https://k
-        ubernetes.io/docs/concepts/workloads/controllers/replication
-        controller#pod-template
+        node if no node selector is specified). The only allowed
+        template.spec.restartPolicy value is "Always". More info: ht
+        tps://kubernetes.io/docs/concepts/workloads/controllers/repl
+        icationcontroller#pod-template
         """
         return typing.cast(
             "PodTemplateSpec",
@@ -1127,9 +1141,10 @@ class DaemonSetSpec(_kuber_definitions.Definition):
         An object that describes the pod that will be created. The
         DaemonSet will create exactly one copy of this pod on every
         node that matches the template's node selector (or on every
-        node if no node selector is specified). More info: https://k
-        ubernetes.io/docs/concepts/workloads/controllers/replication
-        controller#pod-template
+        node if no node selector is specified). The only allowed
+        template.spec.restartPolicy value is "Always". More info: ht
+        tps://kubernetes.io/docs/concepts/workloads/controllers/repl
+        icationcontroller#pod-template
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -1208,8 +1223,16 @@ class DaemonSetSpec(_kuber_definitions.Definition):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -1266,7 +1289,9 @@ class DaemonSetSpec(_kuber_definitions.Definition):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -1337,28 +1362,34 @@ class DaemonSetStatus(_kuber_definitions.Definition):
         self._properties = {
             "collisionCount": collision_count if collision_count is not None else None,
             "conditions": conditions if conditions is not None else [],
-            "currentNumberScheduled": current_number_scheduled
-            if current_number_scheduled is not None
-            else None,
-            "desiredNumberScheduled": desired_number_scheduled
-            if desired_number_scheduled is not None
-            else None,
-            "numberAvailable": number_available
-            if number_available is not None
-            else None,
-            "numberMisscheduled": number_misscheduled
-            if number_misscheduled is not None
-            else None,
+            "currentNumberScheduled": (
+                current_number_scheduled
+                if current_number_scheduled is not None
+                else None
+            ),
+            "desiredNumberScheduled": (
+                desired_number_scheduled
+                if desired_number_scheduled is not None
+                else None
+            ),
+            "numberAvailable": (
+                number_available if number_available is not None else None
+            ),
+            "numberMisscheduled": (
+                number_misscheduled if number_misscheduled is not None else None
+            ),
             "numberReady": number_ready if number_ready is not None else None,
-            "numberUnavailable": number_unavailable
-            if number_unavailable is not None
-            else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
-            "updatedNumberScheduled": updated_number_scheduled
-            if updated_number_scheduled is not None
-            else None,
+            "numberUnavailable": (
+                number_unavailable if number_unavailable is not None else None
+            ),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
+            "updatedNumberScheduled": (
+                updated_number_scheduled
+                if updated_number_scheduled is not None
+                else None
+            ),
         }
         self._types = {
             "collisionCount": (int, None),
@@ -1614,9 +1645,11 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DaemonSetUpdateStrategy"
         )
         self._properties = {
-            "rollingUpdate": rolling_update
-            if rolling_update is not None
-            else RollingUpdateDaemonSet(),
+            "rollingUpdate": (
+                rolling_update
+                if rolling_update is not None
+                else RollingUpdateDaemonSet()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -1653,7 +1686,6 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type of daemon set update. Can be "RollingUpdate" or
         "OnDelete". Default is RollingUpdate.
-
         """
         return typing.cast(
             str,
@@ -1665,7 +1697,6 @@ class DaemonSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type of daemon set update. Can be "RollingUpdate" or
         "OnDelete". Default is RollingUpdate.
-
         """
         self._properties["type"] = value
 
@@ -1819,8 +1850,16 @@ class Deployment(_kuber_definitions.Resource):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -1877,7 +1916,9 @@ class Deployment(_kuber_definitions.Resource):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -2100,12 +2141,12 @@ class DeploymentCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
-            "lastUpdateTime": last_update_time
-            if last_update_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
+            "lastUpdateTime": (
+                last_update_time if last_update_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -2358,17 +2399,19 @@ class DeploymentSpec(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentSpec"
         )
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
             "paused": paused if paused is not None else None,
-            "progressDeadlineSeconds": progress_deadline_seconds
-            if progress_deadline_seconds is not None
-            else None,
+            "progressDeadlineSeconds": (
+                progress_deadline_seconds
+                if progress_deadline_seconds is not None
+                else None
+            ),
             "replicas": replicas if replicas is not None else None,
-            "revisionHistoryLimit": revision_history_limit
-            if revision_history_limit is not None
-            else None,
+            "revisionHistoryLimit": (
+                revision_history_limit if revision_history_limit is not None else None
+            ),
             "selector": selector if selector is not None else LabelSelector(),
             "strategy": strategy if strategy is not None else DeploymentStrategy(),
             "template": template if template is not None else PodTemplateSpec(),
@@ -2546,7 +2589,8 @@ class DeploymentSpec(_kuber_definitions.Definition):
     @property
     def template(self) -> "PodTemplateSpec":
         """
-        Template describes the pods that will be created.
+        Template describes the pods that will be created. The only
+        allowed template.spec.restartPolicy value is "Always".
         """
         return typing.cast(
             "PodTemplateSpec",
@@ -2556,7 +2600,8 @@ class DeploymentSpec(_kuber_definitions.Definition):
     @template.setter
     def template(self, value: typing.Union["PodTemplateSpec", dict]):
         """
-        Template describes the pods that will be created.
+        Template describes the pods that will be created. The only
+        allowed template.spec.restartPolicy value is "Always".
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2611,8 +2656,16 @@ class DeploymentSpec(_kuber_definitions.Definition):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -2669,7 +2722,9 @@ class DeploymentSpec(_kuber_definitions.Definition):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -2736,22 +2791,22 @@ class DeploymentStatus(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentStatus"
         )
         self._properties = {
-            "availableReplicas": available_replicas
-            if available_replicas is not None
-            else None,
+            "availableReplicas": (
+                available_replicas if available_replicas is not None else None
+            ),
             "collisionCount": collision_count if collision_count is not None else None,
             "conditions": conditions if conditions is not None else [],
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
-            "unavailableReplicas": unavailable_replicas
-            if unavailable_replicas is not None
-            else None,
-            "updatedReplicas": updated_replicas
-            if updated_replicas is not None
-            else None,
+            "unavailableReplicas": (
+                unavailable_replicas if unavailable_replicas is not None else None
+            ),
+            "updatedReplicas": (
+                updated_replicas if updated_replicas is not None else None
+            ),
         }
         self._types = {
             "availableReplicas": (int, None),
@@ -2957,9 +3012,11 @@ class DeploymentStrategy(_kuber_definitions.Definition):
             api_version="apps/v1", kind="DeploymentStrategy"
         )
         self._properties = {
-            "rollingUpdate": rolling_update
-            if rolling_update is not None
-            else RollingUpdateDeployment(),
+            "rollingUpdate": (
+                rolling_update
+                if rolling_update is not None
+                else RollingUpdateDeployment()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -2996,7 +3053,6 @@ class DeploymentStrategy(_kuber_definitions.Definition):
         """
         Type of deployment. Can be "Recreate" or "RollingUpdate".
         Default is RollingUpdate.
-
         """
         return typing.cast(
             str,
@@ -3008,7 +3064,6 @@ class DeploymentStrategy(_kuber_definitions.Definition):
         """
         Type of deployment. Can be "Recreate" or "RollingUpdate".
         Default is RollingUpdate.
-
         """
         self._properties["type"] = value
 
@@ -3180,8 +3235,16 @@ class ReplicaSet(_kuber_definitions.Resource):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -3238,7 +3301,9 @@ class ReplicaSet(_kuber_definitions.Resource):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -3460,9 +3525,9 @@ class ReplicaSetCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="ReplicaSetCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -3692,9 +3757,9 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
             api_version="apps/v1", kind="ReplicaSetSpec"
         )
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
             "replicas": replicas if replicas is not None else None,
             "selector": selector if selector is not None else LabelSelector(),
             "template": template if template is not None else PodTemplateSpec(),
@@ -3860,8 +3925,16 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -3918,7 +3991,9 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -3983,16 +4058,16 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
             api_version="apps/v1", kind="ReplicaSetStatus"
         )
         self._properties = {
-            "availableReplicas": available_replicas
-            if available_replicas is not None
-            else None,
+            "availableReplicas": (
+                available_replicas if available_replicas is not None else None
+            ),
             "conditions": conditions if conditions is not None else [],
-            "fullyLabeledReplicas": fully_labeled_replicas
-            if fully_labeled_replicas is not None
-            else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "fullyLabeledReplicas": (
+                fully_labeled_replicas if fully_labeled_replicas is not None else None
+            ),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
         }
@@ -4622,8 +4697,16 @@ class StatefulSet(_kuber_definitions.Resource):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -4680,7 +4763,9 @@ class StatefulSet(_kuber_definitions.Resource):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -4902,9 +4987,9 @@ class StatefulSetCondition(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -5293,29 +5378,33 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetSpec"
         )
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
             "ordinals": ordinals if ordinals is not None else StatefulSetOrdinals(),
-            "persistentVolumeClaimRetentionPolicy": persistent_volume_claim_retention_policy
-            if persistent_volume_claim_retention_policy is not None
-            else StatefulSetPersistentVolumeClaimRetentionPolicy(),
-            "podManagementPolicy": pod_management_policy
-            if pod_management_policy is not None
-            else "",
+            "persistentVolumeClaimRetentionPolicy": (
+                persistent_volume_claim_retention_policy
+                if persistent_volume_claim_retention_policy is not None
+                else StatefulSetPersistentVolumeClaimRetentionPolicy()
+            ),
+            "podManagementPolicy": (
+                pod_management_policy if pod_management_policy is not None else ""
+            ),
             "replicas": replicas if replicas is not None else None,
-            "revisionHistoryLimit": revision_history_limit
-            if revision_history_limit is not None
-            else None,
+            "revisionHistoryLimit": (
+                revision_history_limit if revision_history_limit is not None else None
+            ),
             "selector": selector if selector is not None else LabelSelector(),
             "serviceName": service_name if service_name is not None else "",
             "template": template if template is not None else PodTemplateSpec(),
-            "updateStrategy": update_strategy
-            if update_strategy is not None
-            else StatefulSetUpdateStrategy(),
-            "volumeClaimTemplates": volume_claim_templates
-            if volume_claim_templates is not None
-            else [],
+            "updateStrategy": (
+                update_strategy
+                if update_strategy is not None
+                else StatefulSetUpdateStrategy()
+            ),
+            "volumeClaimTemplates": (
+                volume_claim_templates if volume_claim_templates is not None else []
+            ),
         }
         self._types = {
             "minReadySeconds": (int, None),
@@ -5365,7 +5454,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         index to the first replica and increments the index by one
         for each additional replica requested. Using the ordinals
         field requires the StatefulSetStartOrdinal feature gate to
-        be enabled, which is alpha.
+        be enabled, which is beta.
         """
         return typing.cast(
             "StatefulSetOrdinals",
@@ -5380,7 +5469,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         index to the first replica and increments the index by one
         for each additional replica requested. Using the ordinals
         field requires the StatefulSetStartOrdinal feature gate to
-        be enabled, which is alpha.
+        be enabled, which is beta.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -5445,7 +5534,6 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         which will create pods in parallel to match the desired
         scale without waiting, and on scale down will delete all
         pods at once.
-
         """
         return typing.cast(
             str,
@@ -5465,7 +5553,6 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         which will create pods in parallel to match the desired
         scale without waiting, and on scale down will delete all
         pods at once.
-
         """
         self._properties["podManagementPolicy"] = value
 
@@ -5584,7 +5671,8 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         Each pod will be named with the format
         <statefulsetname>-<podindex>. For example, a pod in a
         StatefulSet named "web" with index number "3" would be named
-        "web-3".
+        "web-3". The only allowed template.spec.restartPolicy value
+        is "Always".
         """
         return typing.cast(
             "PodTemplateSpec",
@@ -5601,7 +5689,8 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         Each pod will be named with the format
         <statefulsetname>-<podindex>. For example, a pod in a
         StatefulSet named "web" with index number "3" would be named
-        "web-3".
+        "web-3". The only allowed template.spec.restartPolicy value
+        is "Always".
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -5724,8 +5813,16 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             "Probe",
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
+        resize_policy: typing.Union[
+            typing.List["ContainerResizePolicy"],
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
         resources: typing.Union[
             "ResourceRequirements",
+            _kuber_definitions.InternalValue,
+        ] = _kuber_definitions.UNCHANGED_VALUE,
+        restart_policy: typing.Union[
+            str,
             _kuber_definitions.InternalValue,
         ] = _kuber_definitions.UNCHANGED_VALUE,
         security_context: typing.Union[
@@ -5782,7 +5879,9 @@ class StatefulSetSpec(_kuber_definitions.Definition):
             "name": name,
             "ports": ports,
             "readiness_probe": readiness_probe,
+            "resize_policy": resize_policy,
             "resources": resources,
+            "restart_policy": restart_policy,
             "security_context": security_context,
             "startup_probe": startup_probe,
             "stdin": stdin,
@@ -5851,24 +5950,24 @@ class StatefulSetStatus(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetStatus"
         )
         self._properties = {
-            "availableReplicas": available_replicas
-            if available_replicas is not None
-            else None,
+            "availableReplicas": (
+                available_replicas if available_replicas is not None else None
+            ),
             "collisionCount": collision_count if collision_count is not None else None,
             "conditions": conditions if conditions is not None else [],
-            "currentReplicas": current_replicas
-            if current_replicas is not None
-            else None,
+            "currentReplicas": (
+                current_replicas if current_replicas is not None else None
+            ),
             "currentRevision": current_revision if current_revision is not None else "",
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
             "updateRevision": update_revision if update_revision is not None else "",
-            "updatedReplicas": updated_replicas
-            if updated_replicas is not None
-            else None,
+            "updatedReplicas": (
+                updated_replicas if updated_replicas is not None else None
+            ),
         }
         self._types = {
             "availableReplicas": (int, None),
@@ -6123,9 +6222,11 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
             api_version="apps/v1", kind="StatefulSetUpdateStrategy"
         )
         self._properties = {
-            "rollingUpdate": rolling_update
-            if rolling_update is not None
-            else RollingUpdateStatefulSetStrategy(),
+            "rollingUpdate": (
+                rolling_update
+                if rolling_update is not None
+                else RollingUpdateStatefulSetStrategy()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -6164,7 +6265,6 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type indicates the type of the StatefulSetUpdateStrategy.
         Default is RollingUpdate.
-
         """
         return typing.cast(
             str,
@@ -6176,7 +6276,6 @@ class StatefulSetUpdateStrategy(_kuber_definitions.Definition):
         """
         Type indicates the type of the StatefulSetUpdateStrategy.
         Default is RollingUpdate.
-
         """
         self._properties["type"] = value
 

@@ -559,22 +559,28 @@ class CronJobSpec(_kuber_definitions.Definition):
             api_version="batch/v1beta1", kind="CronJobSpec"
         )
         self._properties = {
-            "concurrencyPolicy": concurrency_policy
-            if concurrency_policy is not None
-            else "",
-            "failedJobsHistoryLimit": failed_jobs_history_limit
-            if failed_jobs_history_limit is not None
-            else None,
-            "jobTemplate": job_template
-            if job_template is not None
-            else JobTemplateSpec(),
+            "concurrencyPolicy": (
+                concurrency_policy if concurrency_policy is not None else ""
+            ),
+            "failedJobsHistoryLimit": (
+                failed_jobs_history_limit
+                if failed_jobs_history_limit is not None
+                else None
+            ),
+            "jobTemplate": (
+                job_template if job_template is not None else JobTemplateSpec()
+            ),
             "schedule": schedule if schedule is not None else "",
-            "startingDeadlineSeconds": starting_deadline_seconds
-            if starting_deadline_seconds is not None
-            else None,
-            "successfulJobsHistoryLimit": successful_jobs_history_limit
-            if successful_jobs_history_limit is not None
-            else None,
+            "startingDeadlineSeconds": (
+                starting_deadline_seconds
+                if starting_deadline_seconds is not None
+                else None
+            ),
+            "successfulJobsHistoryLimit": (
+                successful_jobs_history_limit
+                if successful_jobs_history_limit is not None
+                else None
+            ),
             "suspend": suspend if suspend is not None else None,
             "timeZone": time_zone if time_zone is not None else "",
         }
@@ -939,12 +945,12 @@ class CronJobStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "active": active if active is not None else [],
-            "lastScheduleTime": last_schedule_time
-            if last_schedule_time is not None
-            else None,
-            "lastSuccessfulTime": last_successful_time
-            if last_successful_time is not None
-            else None,
+            "lastScheduleTime": (
+                last_schedule_time if last_schedule_time is not None else None
+            ),
+            "lastSuccessfulTime": (
+                last_successful_time if last_successful_time is not None else None
+            ),
         }
         self._types = {
             "active": (list, ObjectReference),

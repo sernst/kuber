@@ -351,9 +351,9 @@ class FlowSchemaCondition(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta1", kind="FlowSchemaCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -588,15 +588,19 @@ class FlowSchemaSpec(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta1", kind="FlowSchemaSpec"
         )
         self._properties = {
-            "distinguisherMethod": distinguisher_method
-            if distinguisher_method is not None
-            else FlowDistinguisherMethod(),
-            "matchingPrecedence": matching_precedence
-            if matching_precedence is not None
-            else None,
-            "priorityLevelConfiguration": priority_level_configuration
-            if priority_level_configuration is not None
-            else PriorityLevelConfigurationReference(),
+            "distinguisherMethod": (
+                distinguisher_method
+                if distinguisher_method is not None
+                else FlowDistinguisherMethod()
+            ),
+            "matchingPrecedence": (
+                matching_precedence if matching_precedence is not None else None
+            ),
+            "priorityLevelConfiguration": (
+                priority_level_configuration
+                if priority_level_configuration is not None
+                else PriorityLevelConfigurationReference()
+            ),
             "rules": rules if rules is not None else [],
         }
         self._types = {
@@ -943,12 +947,14 @@ class LimitedPriorityLevelConfiguration(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta1", kind="LimitedPriorityLevelConfiguration"
         )
         self._properties = {
-            "assuredConcurrencyShares": assured_concurrency_shares
-            if assured_concurrency_shares is not None
-            else None,
-            "limitResponse": limit_response
-            if limit_response is not None
-            else LimitResponse(),
+            "assuredConcurrencyShares": (
+                assured_concurrency_shares
+                if assured_concurrency_shares is not None
+                else None
+            ),
+            "limitResponse": (
+                limit_response if limit_response is not None else LimitResponse()
+            ),
         }
         self._types = {
             "assuredConcurrencyShares": (int, None),
@@ -1053,9 +1059,9 @@ class NonResourcePolicyRule(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta1", kind="NonResourcePolicyRule"
         )
         self._properties = {
-            "nonResourceURLs": non_resource_urls
-            if non_resource_urls is not None
-            else [],
+            "nonResourceURLs": (
+                non_resource_urls if non_resource_urls is not None else []
+            ),
             "verbs": verbs if verbs is not None else [],
         }
         self._types = {
@@ -1149,9 +1155,9 @@ class PolicyRulesWithSubjects(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta1", kind="PolicyRulesWithSubjects"
         )
         self._properties = {
-            "nonResourceRules": non_resource_rules
-            if non_resource_rules is not None
-            else [],
+            "nonResourceRules": (
+                non_resource_rules if non_resource_rules is not None else []
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
             "subjects": subjects if subjects is not None else [],
         }
@@ -1285,9 +1291,9 @@ class PriorityLevelConfiguration(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else PriorityLevelConfigurationSpec(),
-            "status": status
-            if status is not None
-            else PriorityLevelConfigurationStatus(),
+            "status": (
+                status if status is not None else PriorityLevelConfigurationStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1569,9 +1575,9 @@ class PriorityLevelConfigurationCondition(_kuber_definitions.Definition):
             kind="PriorityLevelConfigurationCondition",
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1856,9 +1862,9 @@ class PriorityLevelConfigurationSpec(_kuber_definitions.Definition):
             api_version="flowcontrol/v1beta1", kind="PriorityLevelConfigurationSpec"
         )
         self._properties = {
-            "limited": limited
-            if limited is not None
-            else LimitedPriorityLevelConfiguration(),
+            "limited": (
+                limited if limited is not None else LimitedPriorityLevelConfiguration()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -2010,9 +2016,9 @@ class QueuingConfiguration(_kuber_definitions.Definition):
         )
         self._properties = {
             "handSize": hand_size if hand_size is not None else None,
-            "queueLengthLimit": queue_length_limit
-            if queue_length_limit is not None
-            else None,
+            "queueLengthLimit": (
+                queue_length_limit if queue_length_limit is not None else None
+            ),
             "queues": queues if queues is not None else None,
         }
         self._types = {
@@ -2375,9 +2381,11 @@ class Subject(_kuber_definitions.Definition):
         self._properties = {
             "group": group if group is not None else GroupSubject(),
             "kind": kind if kind is not None else "",
-            "serviceAccount": service_account
-            if service_account is not None
-            else ServiceAccountSubject(),
+            "serviceAccount": (
+                service_account
+                if service_account is not None
+                else ServiceAccountSubject()
+            ),
             "user": user if user is not None else UserSubject(),
         }
         self._types = {

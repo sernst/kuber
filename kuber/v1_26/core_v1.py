@@ -165,13 +165,15 @@ class Affinity(_kuber_definitions.Definition):
         """Create Affinity instance."""
         super(Affinity, self).__init__(api_version="core/v1", kind="Affinity")
         self._properties = {
-            "nodeAffinity": node_affinity
-            if node_affinity is not None
-            else NodeAffinity(),
+            "nodeAffinity": (
+                node_affinity if node_affinity is not None else NodeAffinity()
+            ),
             "podAffinity": pod_affinity if pod_affinity is not None else PodAffinity(),
-            "podAntiAffinity": pod_anti_affinity
-            if pod_anti_affinity is not None
-            else PodAntiAffinity(),
+            "podAntiAffinity": (
+                pod_anti_affinity
+                if pod_anti_affinity is not None
+                else PodAntiAffinity()
+            ),
         }
         self._types = {
             "nodeAffinity": (NodeAffinity, None),
@@ -904,27 +906,37 @@ class CSIPersistentVolumeSource(_kuber_definitions.Definition):
             api_version="core/v1", kind="CSIPersistentVolumeSource"
         )
         self._properties = {
-            "controllerExpandSecretRef": controller_expand_secret_ref
-            if controller_expand_secret_ref is not None
-            else SecretReference(),
-            "controllerPublishSecretRef": controller_publish_secret_ref
-            if controller_publish_secret_ref is not None
-            else SecretReference(),
+            "controllerExpandSecretRef": (
+                controller_expand_secret_ref
+                if controller_expand_secret_ref is not None
+                else SecretReference()
+            ),
+            "controllerPublishSecretRef": (
+                controller_publish_secret_ref
+                if controller_publish_secret_ref is not None
+                else SecretReference()
+            ),
             "driver": driver if driver is not None else "",
             "fsType": fs_type if fs_type is not None else "",
-            "nodeExpandSecretRef": node_expand_secret_ref
-            if node_expand_secret_ref is not None
-            else SecretReference(),
-            "nodePublishSecretRef": node_publish_secret_ref
-            if node_publish_secret_ref is not None
-            else SecretReference(),
-            "nodeStageSecretRef": node_stage_secret_ref
-            if node_stage_secret_ref is not None
-            else SecretReference(),
+            "nodeExpandSecretRef": (
+                node_expand_secret_ref
+                if node_expand_secret_ref is not None
+                else SecretReference()
+            ),
+            "nodePublishSecretRef": (
+                node_publish_secret_ref
+                if node_publish_secret_ref is not None
+                else SecretReference()
+            ),
+            "nodeStageSecretRef": (
+                node_stage_secret_ref
+                if node_stage_secret_ref is not None
+                else SecretReference()
+            ),
             "readOnly": read_only if read_only is not None else None,
-            "volumeAttributes": volume_attributes
-            if volume_attributes is not None
-            else {},
+            "volumeAttributes": (
+                volume_attributes if volume_attributes is not None else {}
+            ),
             "volumeHandle": volume_handle if volume_handle is not None else "",
         }
         self._types = {
@@ -1231,13 +1243,15 @@ class CSIVolumeSource(_kuber_definitions.Definition):
         self._properties = {
             "driver": driver if driver is not None else "",
             "fsType": fs_type if fs_type is not None else "",
-            "nodePublishSecretRef": node_publish_secret_ref
-            if node_publish_secret_ref is not None
-            else LocalObjectReference(),
+            "nodePublishSecretRef": (
+                node_publish_secret_ref
+                if node_publish_secret_ref is not None
+                else LocalObjectReference()
+            ),
             "readOnly": read_only if read_only is not None else None,
-            "volumeAttributes": volume_attributes
-            if volume_attributes is not None
-            else {},
+            "volumeAttributes": (
+                volume_attributes if volume_attributes is not None else {}
+            ),
         }
         self._types = {
             "driver": (str, None),
@@ -1644,9 +1658,9 @@ class CephFSVolumeSource(_kuber_definitions.Definition):
             "path": path if path is not None else "",
             "readOnly": read_only if read_only is not None else None,
             "secretFile": secret_file if secret_file is not None else "",
-            "secretRef": secret_ref
-            if secret_ref is not None
-            else LocalObjectReference(),
+            "secretRef": (
+                secret_ref if secret_ref is not None else LocalObjectReference()
+            ),
             "user": user if user is not None else "",
         }
         self._types = {
@@ -1958,9 +1972,9 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         self._properties = {
             "fsType": fs_type if fs_type is not None else "",
             "readOnly": read_only if read_only is not None else None,
-            "secretRef": secret_ref
-            if secret_ref is not None
-            else LocalObjectReference(),
+            "secretRef": (
+                secret_ref if secret_ref is not None else LocalObjectReference()
+            ),
             "volumeID": volume_id if volume_id is not None else "",
         }
         self._types = {
@@ -2083,12 +2097,14 @@ class ClaimSource(_kuber_definitions.Definition):
         """Create ClaimSource instance."""
         super(ClaimSource, self).__init__(api_version="core/v1", kind="ClaimSource")
         self._properties = {
-            "resourceClaimName": resource_claim_name
-            if resource_claim_name is not None
-            else "",
-            "resourceClaimTemplateName": resource_claim_template_name
-            if resource_claim_template_name is not None
-            else "",
+            "resourceClaimName": (
+                resource_claim_name if resource_claim_name is not None else ""
+            ),
+            "resourceClaimTemplateName": (
+                resource_claim_template_name
+                if resource_claim_template_name is not None
+                else ""
+            ),
         }
         self._types = {
             "resourceClaimName": (str, None),
@@ -3162,9 +3178,9 @@ class ConfigMapNodeConfigSource(_kuber_definitions.Definition):
             api_version="core/v1", kind="ConfigMapNodeConfigSource"
         )
         self._properties = {
-            "kubeletConfigKey": kubelet_config_key
-            if kubelet_config_key is not None
-            else "",
+            "kubeletConfigKey": (
+                kubelet_config_key if kubelet_config_key is not None else ""
+            ),
             "name": name if name is not None else "",
             "namespace": namespace if namespace is not None else "",
             "resourceVersion": resource_version if resource_version is not None else "",
@@ -3600,29 +3616,31 @@ class Container(_kuber_definitions.Definition):
             "env": env if env is not None else [],
             "envFrom": env_from if env_from is not None else [],
             "image": image if image is not None else "",
-            "imagePullPolicy": image_pull_policy
-            if image_pull_policy is not None
-            else "",
+            "imagePullPolicy": (
+                image_pull_policy if image_pull_policy is not None else ""
+            ),
             "lifecycle": lifecycle if lifecycle is not None else Lifecycle(),
             "livenessProbe": liveness_probe if liveness_probe is not None else Probe(),
             "name": name if name is not None else "",
             "ports": ports if ports is not None else [],
-            "readinessProbe": readiness_probe
-            if readiness_probe is not None
-            else Probe(),
+            "readinessProbe": (
+                readiness_probe if readiness_probe is not None else Probe()
+            ),
             "resources": resources if resources is not None else ResourceRequirements(),
-            "securityContext": security_context
-            if security_context is not None
-            else SecurityContext(),
+            "securityContext": (
+                security_context if security_context is not None else SecurityContext()
+            ),
             "startupProbe": startup_probe if startup_probe is not None else Probe(),
             "stdin": stdin if stdin is not None else None,
             "stdinOnce": stdin_once if stdin_once is not None else None,
-            "terminationMessagePath": termination_message_path
-            if termination_message_path is not None
-            else "",
-            "terminationMessagePolicy": termination_message_policy
-            if termination_message_policy is not None
-            else "",
+            "terminationMessagePath": (
+                termination_message_path if termination_message_path is not None else ""
+            ),
+            "terminationMessagePolicy": (
+                termination_message_policy
+                if termination_message_policy is not None
+                else ""
+            ),
             "tty": tty if tty is not None else None,
             "volumeDevices": volume_devices if volume_devices is not None else [],
             "volumeMounts": volume_mounts if volume_mounts is not None else [],
@@ -4544,9 +4562,9 @@ class ContainerState(_kuber_definitions.Definition):
         )
         self._properties = {
             "running": running if running is not None else ContainerStateRunning(),
-            "terminated": terminated
-            if terminated is not None
-            else ContainerStateTerminated(),
+            "terminated": (
+                terminated if terminated is not None else ContainerStateTerminated()
+            ),
             "waiting": waiting if waiting is not None else ContainerStateWaiting(),
         }
         self._types = {
@@ -5265,9 +5283,11 @@ class DownwardAPIVolumeFile(_kuber_definitions.Definition):
             "fieldRef": field_ref if field_ref is not None else ObjectFieldSelector(),
             "mode": mode if mode is not None else None,
             "path": path if path is not None else "",
-            "resourceFieldRef": resource_field_ref
-            if resource_field_ref is not None
-            else ResourceFieldSelector(),
+            "resourceFieldRef": (
+                resource_field_ref
+                if resource_field_ref is not None
+                else ResourceFieldSelector()
+            ),
         }
         self._types = {
             "fieldRef": (ObjectFieldSelector, None),
@@ -5832,9 +5852,9 @@ class EndpointSubset(_kuber_definitions.Definition):
         )
         self._properties = {
             "addresses": addresses if addresses is not None else [],
-            "notReadyAddresses": not_ready_addresses
-            if not_ready_addresses is not None
-            else [],
+            "notReadyAddresses": (
+                not_ready_addresses if not_ready_addresses is not None else []
+            ),
             "ports": ports if ports is not None else [],
         }
         self._types = {
@@ -6273,9 +6293,9 @@ class EnvFromSource(_kuber_definitions.Definition):
         """Create EnvFromSource instance."""
         super(EnvFromSource, self).__init__(api_version="core/v1", kind="EnvFromSource")
         self._properties = {
-            "configMapRef": config_map_ref
-            if config_map_ref is not None
-            else ConfigMapEnvSource(),
+            "configMapRef": (
+                config_map_ref if config_map_ref is not None else ConfigMapEnvSource()
+            ),
             "prefix": prefix if prefix is not None else "",
             "secretRef": secret_ref if secret_ref is not None else SecretEnvSource(),
         }
@@ -6476,16 +6496,20 @@ class EnvVarSource(_kuber_definitions.Definition):
         """Create EnvVarSource instance."""
         super(EnvVarSource, self).__init__(api_version="core/v1", kind="EnvVarSource")
         self._properties = {
-            "configMapKeyRef": config_map_key_ref
-            if config_map_key_ref is not None
-            else ConfigMapKeySelector(),
+            "configMapKeyRef": (
+                config_map_key_ref
+                if config_map_key_ref is not None
+                else ConfigMapKeySelector()
+            ),
             "fieldRef": field_ref if field_ref is not None else ObjectFieldSelector(),
-            "resourceFieldRef": resource_field_ref
-            if resource_field_ref is not None
-            else ResourceFieldSelector(),
-            "secretKeyRef": secret_key_ref
-            if secret_key_ref is not None
-            else SecretKeySelector(),
+            "resourceFieldRef": (
+                resource_field_ref
+                if resource_field_ref is not None
+                else ResourceFieldSelector()
+            ),
+            "secretKeyRef": (
+                secret_key_ref if secret_key_ref is not None else SecretKeySelector()
+            ),
         }
         self._types = {
             "configMapKeyRef": (ConfigMapKeySelector, None),
@@ -6654,32 +6678,34 @@ class EphemeralContainer(_kuber_definitions.Definition):
             "env": env if env is not None else [],
             "envFrom": env_from if env_from is not None else [],
             "image": image if image is not None else "",
-            "imagePullPolicy": image_pull_policy
-            if image_pull_policy is not None
-            else "",
+            "imagePullPolicy": (
+                image_pull_policy if image_pull_policy is not None else ""
+            ),
             "lifecycle": lifecycle if lifecycle is not None else Lifecycle(),
             "livenessProbe": liveness_probe if liveness_probe is not None else Probe(),
             "name": name if name is not None else "",
             "ports": ports if ports is not None else [],
-            "readinessProbe": readiness_probe
-            if readiness_probe is not None
-            else Probe(),
+            "readinessProbe": (
+                readiness_probe if readiness_probe is not None else Probe()
+            ),
             "resources": resources if resources is not None else ResourceRequirements(),
-            "securityContext": security_context
-            if security_context is not None
-            else SecurityContext(),
+            "securityContext": (
+                security_context if security_context is not None else SecurityContext()
+            ),
             "startupProbe": startup_probe if startup_probe is not None else Probe(),
             "stdin": stdin if stdin is not None else None,
             "stdinOnce": stdin_once if stdin_once is not None else None,
-            "targetContainerName": target_container_name
-            if target_container_name is not None
-            else "",
-            "terminationMessagePath": termination_message_path
-            if termination_message_path is not None
-            else "",
-            "terminationMessagePolicy": termination_message_policy
-            if termination_message_policy is not None
-            else "",
+            "targetContainerName": (
+                target_container_name if target_container_name is not None else ""
+            ),
+            "terminationMessagePath": (
+                termination_message_path if termination_message_path is not None else ""
+            ),
+            "terminationMessagePolicy": (
+                termination_message_policy
+                if termination_message_policy is not None
+                else ""
+            ),
             "tty": tty if tty is not None else None,
             "volumeDevices": volume_devices if volume_devices is not None else [],
             "volumeMounts": volume_mounts if volume_mounts is not None else [],
@@ -7368,9 +7394,11 @@ class EphemeralVolumeSource(_kuber_definitions.Definition):
             api_version="core/v1", kind="EphemeralVolumeSource"
         )
         self._properties = {
-            "volumeClaimTemplate": volume_claim_template
-            if volume_claim_template is not None
-            else PersistentVolumeClaimTemplate(),
+            "volumeClaimTemplate": (
+                volume_claim_template
+                if volume_claim_template is not None
+                else PersistentVolumeClaimTemplate()
+            ),
         }
         self._types = {
             "volumeClaimTemplate": (PersistentVolumeClaimTemplate, None),
@@ -7485,20 +7513,20 @@ class Event(_kuber_definitions.Resource):
             "count": count if count is not None else None,
             "eventTime": event_time if event_time is not None else MicroTime(),
             "firstTimestamp": first_timestamp if first_timestamp is not None else None,
-            "involvedObject": involved_object
-            if involved_object is not None
-            else ObjectReference(),
+            "involvedObject": (
+                involved_object if involved_object is not None else ObjectReference()
+            ),
             "lastTimestamp": last_timestamp if last_timestamp is not None else None,
             "message": message if message is not None else "",
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "reason": reason if reason is not None else "",
             "related": related if related is not None else ObjectReference(),
-            "reportingComponent": reporting_component
-            if reporting_component is not None
-            else "",
-            "reportingInstance": reporting_instance
-            if reporting_instance is not None
-            else "",
+            "reportingComponent": (
+                reporting_component if reporting_component is not None else ""
+            ),
+            "reportingInstance": (
+                reporting_instance if reporting_instance is not None else ""
+            ),
             "series": series if series is not None else EventSeries(),
             "source": source if source is not None else EventSource(),
             "type": type_ if type_ is not None else "",
@@ -8070,9 +8098,9 @@ class EventSeries(_kuber_definitions.Definition):
         super(EventSeries, self).__init__(api_version="core/v1", kind="EventSeries")
         self._properties = {
             "count": count if count is not None else None,
-            "lastObservedTime": last_observed_time
-            if last_observed_time is not None
-            else MicroTime(),
+            "lastObservedTime": (
+                last_observed_time if last_observed_time is not None else MicroTime()
+            ),
         }
         self._types = {
             "count": (int, None),
@@ -8557,9 +8585,9 @@ class FlexVolumeSource(_kuber_definitions.Definition):
             "fsType": fs_type if fs_type is not None else "",
             "options": options if options is not None else {},
             "readOnly": read_only if read_only is not None else None,
-            "secretRef": secret_ref
-            if secret_ref is not None
-            else LocalObjectReference(),
+            "secretRef": (
+                secret_ref if secret_ref is not None else LocalObjectReference()
+            ),
         }
         self._types = {
             "driver": (str, None),
@@ -9091,9 +9119,9 @@ class GlusterfsPersistentVolumeSource(_kuber_definitions.Definition):
         )
         self._properties = {
             "endpoints": endpoints if endpoints is not None else "",
-            "endpointsNamespace": endpoints_namespace
-            if endpoints_namespace is not None
-            else "",
+            "endpointsNamespace": (
+                endpoints_namespace if endpoints_namespace is not None else ""
+            ),
             "path": path if path is not None else "",
             "readOnly": read_only if read_only is not None else None,
         }
@@ -9473,7 +9501,9 @@ class HTTPHeader(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        The header field name
+        The header field name. This will be canonicalized upon
+        output, so case-variant names will be understood as the same
+        header.
         """
         return typing.cast(
             str,
@@ -9483,7 +9513,9 @@ class HTTPHeader(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        The header field name
+        The header field name. This will be canonicalized upon
+        output, so case-variant names will be understood as the same
+        header.
         """
         self._properties["name"] = value
 
@@ -9671,12 +9703,12 @@ class ISCSIPersistentVolumeSource(_kuber_definitions.Definition):
             api_version="core/v1", kind="ISCSIPersistentVolumeSource"
         )
         self._properties = {
-            "chapAuthDiscovery": chap_auth_discovery
-            if chap_auth_discovery is not None
-            else None,
-            "chapAuthSession": chap_auth_session
-            if chap_auth_session is not None
-            else None,
+            "chapAuthDiscovery": (
+                chap_auth_discovery if chap_auth_discovery is not None else None
+            ),
+            "chapAuthSession": (
+                chap_auth_session if chap_auth_session is not None else None
+            ),
             "fsType": fs_type if fs_type is not None else "",
             "initiatorName": initiator_name if initiator_name is not None else "",
             "iqn": iqn if iqn is not None else "",
@@ -9958,12 +9990,12 @@ class ISCSIVolumeSource(_kuber_definitions.Definition):
             api_version="core/v1", kind="ISCSIVolumeSource"
         )
         self._properties = {
-            "chapAuthDiscovery": chap_auth_discovery
-            if chap_auth_discovery is not None
-            else None,
-            "chapAuthSession": chap_auth_session
-            if chap_auth_session is not None
-            else None,
+            "chapAuthDiscovery": (
+                chap_auth_discovery if chap_auth_discovery is not None else None
+            ),
+            "chapAuthSession": (
+                chap_auth_session if chap_auth_session is not None else None
+            ),
             "fsType": fs_type if fs_type is not None else "",
             "initiatorName": initiator_name if initiator_name is not None else "",
             "iqn": iqn if iqn is not None else "",
@@ -9971,9 +10003,9 @@ class ISCSIVolumeSource(_kuber_definitions.Definition):
             "lun": lun if lun is not None else None,
             "portals": portals if portals is not None else [],
             "readOnly": read_only if read_only is not None else None,
-            "secretRef": secret_ref
-            if secret_ref is not None
-            else LocalObjectReference(),
+            "secretRef": (
+                secret_ref if secret_ref is not None else LocalObjectReference()
+            ),
             "targetPortal": target_portal if target_portal is not None else "",
         }
         self._types = {
@@ -10758,9 +10790,9 @@ class LimitRangeItem(_kuber_definitions.Definition):
             "default": default if default is not None else {},
             "defaultRequest": default_request if default_request is not None else {},
             "max": max_ if max_ is not None else {},
-            "maxLimitRequestRatio": max_limit_request_ratio
-            if max_limit_request_ratio is not None
-            else {},
+            "maxLimitRequestRatio": (
+                max_limit_request_ratio if max_limit_request_ratio is not None else {}
+            ),
             "min": min_ if min_ is not None else {},
             "type": type_ if type_ is not None else "",
         }
@@ -11713,9 +11745,9 @@ class NamespaceCondition(_kuber_definitions.Definition):
             api_version="core/v1", kind="NamespaceCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -12390,12 +12422,16 @@ class NodeAffinity(_kuber_definitions.Definition):
         """Create NodeAffinity instance."""
         super(NodeAffinity, self).__init__(api_version="core/v1", kind="NodeAffinity")
         self._properties = {
-            "preferredDuringSchedulingIgnoredDuringExecution": preferred_during_scheduling_ignored_during_execution
-            if preferred_during_scheduling_ignored_during_execution is not None
-            else [],
-            "requiredDuringSchedulingIgnoredDuringExecution": required_during_scheduling_ignored_during_execution
-            if required_during_scheduling_ignored_during_execution is not None
-            else NodeSelector(),
+            "preferredDuringSchedulingIgnoredDuringExecution": (
+                preferred_during_scheduling_ignored_during_execution
+                if preferred_during_scheduling_ignored_during_execution is not None
+                else []
+            ),
+            "requiredDuringSchedulingIgnoredDuringExecution": (
+                required_during_scheduling_ignored_during_execution
+                if required_during_scheduling_ignored_during_execution is not None
+                else NodeSelector()
+            ),
         }
         self._types = {
             "preferredDuringSchedulingIgnoredDuringExecution": (
@@ -12513,12 +12549,12 @@ class NodeCondition(_kuber_definitions.Definition):
         """Create NodeCondition instance."""
         super(NodeCondition, self).__init__(api_version="core/v1", kind="NodeCondition")
         self._properties = {
-            "lastHeartbeatTime": last_heartbeat_time
-            if last_heartbeat_time is not None
-            else None,
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastHeartbeatTime": (
+                last_heartbeat_time if last_heartbeat_time is not None else None
+            ),
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -12672,9 +12708,9 @@ class NodeConfigSource(_kuber_definitions.Definition):
             api_version="core/v1", kind="NodeConfigSource"
         )
         self._properties = {
-            "configMap": config_map
-            if config_map is not None
-            else ConfigMapNodeConfigSource(),
+            "configMap": (
+                config_map if config_map is not None else ConfigMapNodeConfigSource()
+            ),
         }
         self._types = {
             "configMap": (ConfigMapNodeConfigSource, None),
@@ -12730,9 +12766,9 @@ class NodeConfigStatus(_kuber_definitions.Definition):
             "active": active if active is not None else NodeConfigSource(),
             "assigned": assigned if assigned is not None else NodeConfigSource(),
             "error": error if error is not None else "",
-            "lastKnownGood": last_known_good
-            if last_known_good is not None
-            else NodeConfigSource(),
+            "lastKnownGood": (
+                last_known_good if last_known_good is not None else NodeConfigSource()
+            ),
         }
         self._types = {
             "active": (NodeConfigSource, None),
@@ -12936,9 +12972,9 @@ class NodeDaemonEndpoints(_kuber_definitions.Definition):
             api_version="core/v1", kind="NodeDaemonEndpoints"
         )
         self._properties = {
-            "kubeletEndpoint": kubelet_endpoint
-            if kubelet_endpoint is not None
-            else DaemonEndpoint(),
+            "kubeletEndpoint": (
+                kubelet_endpoint if kubelet_endpoint is not None else DaemonEndpoint()
+            ),
         }
         self._types = {
             "kubeletEndpoint": (DaemonEndpoint, None),
@@ -13082,9 +13118,9 @@ class NodeSelector(_kuber_definitions.Definition):
         """Create NodeSelector instance."""
         super(NodeSelector, self).__init__(api_version="core/v1", kind="NodeSelector")
         self._properties = {
-            "nodeSelectorTerms": node_selector_terms
-            if node_selector_terms is not None
-            else [],
+            "nodeSelectorTerms": (
+                node_selector_terms if node_selector_terms is not None else []
+            ),
         }
         self._types = {
             "nodeSelectorTerms": (list, NodeSelectorTerm),
@@ -13243,9 +13279,9 @@ class NodeSelectorTerm(_kuber_definitions.Definition):
             api_version="core/v1", kind="NodeSelectorTerm"
         )
         self._properties = {
-            "matchExpressions": match_expressions
-            if match_expressions is not None
-            else [],
+            "matchExpressions": (
+                match_expressions if match_expressions is not None else []
+            ),
             "matchFields": match_fields if match_fields is not None else [],
         }
         self._types = {
@@ -13335,9 +13371,9 @@ class NodeSpec(_kuber_definitions.Definition):
         """Create NodeSpec instance."""
         super(NodeSpec, self).__init__(api_version="core/v1", kind="NodeSpec")
         self._properties = {
-            "configSource": config_source
-            if config_source is not None
-            else NodeConfigSource(),
+            "configSource": (
+                config_source if config_source is not None else NodeConfigSource()
+            ),
             "externalID": external_id if external_id is not None else "",
             "podCIDR": pod_cidr if pod_cidr is not None else "",
             "podCIDRs": pod_cidrs if pod_cidrs is not None else [],
@@ -13542,9 +13578,11 @@ class NodeStatus(_kuber_definitions.Definition):
             "capacity": capacity if capacity is not None else {},
             "conditions": conditions if conditions is not None else [],
             "config": config if config is not None else NodeConfigStatus(),
-            "daemonEndpoints": daemon_endpoints
-            if daemon_endpoints is not None
-            else NodeDaemonEndpoints(),
+            "daemonEndpoints": (
+                daemon_endpoints
+                if daemon_endpoints is not None
+                else NodeDaemonEndpoints()
+            ),
             "images": images if images is not None else [],
             "nodeInfo": node_info if node_info is not None else NodeSystemInfo(),
             "phase": phase if phase is not None else "",
@@ -13878,13 +13916,15 @@ class NodeSystemInfo(_kuber_definitions.Definition):
         self._properties = {
             "architecture": architecture if architecture is not None else "",
             "bootID": boot_id if boot_id is not None else "",
-            "containerRuntimeVersion": container_runtime_version
-            if container_runtime_version is not None
-            else "",
+            "containerRuntimeVersion": (
+                container_runtime_version
+                if container_runtime_version is not None
+                else ""
+            ),
             "kernelVersion": kernel_version if kernel_version is not None else "",
-            "kubeProxyVersion": kube_proxy_version
-            if kube_proxy_version is not None
-            else "",
+            "kubeProxyVersion": (
+                kube_proxy_version if kube_proxy_version is not None else ""
+            ),
             "kubeletVersion": kubelet_version if kubelet_version is not None else "",
             "machineID": machine_id if machine_id is not None else "",
             "operatingSystem": operating_system if operating_system is not None else "",
@@ -14959,9 +14999,9 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
         )
         self._properties = {
             "lastProbeTime": last_probe_time if last_probe_time is not None else None,
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -15226,17 +15266,19 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "accessModes": access_modes if access_modes is not None else [],
-            "dataSource": data_source
-            if data_source is not None
-            else TypedLocalObjectReference(),
-            "dataSourceRef": data_source_ref
-            if data_source_ref is not None
-            else TypedObjectReference(),
+            "dataSource": (
+                data_source if data_source is not None else TypedLocalObjectReference()
+            ),
+            "dataSourceRef": (
+                data_source_ref
+                if data_source_ref is not None
+                else TypedObjectReference()
+            ),
             "resources": resources if resources is not None else ResourceRequirements(),
             "selector": selector if selector is not None else LabelSelector(),
-            "storageClassName": storage_class_name
-            if storage_class_name is not None
-            else "",
+            "storageClassName": (
+                storage_class_name if storage_class_name is not None else ""
+            ),
             "volumeMode": volume_mode if volume_mode is not None else "",
             "volumeName": volume_name if volume_name is not None else "",
         }
@@ -15555,9 +15597,9 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "accessModes": access_modes if access_modes is not None else [],
-            "allocatedResources": allocated_resources
-            if allocated_resources is not None
-            else {},
+            "allocatedResources": (
+                allocated_resources if allocated_resources is not None else {}
+            ),
             "capacity": capacity if capacity is not None else {},
             "conditions": conditions if conditions is not None else [],
             "phase": phase if phase is not None else "",
@@ -16053,63 +16095,81 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "accessModes": access_modes if access_modes is not None else [],
-            "awsElasticBlockStore": aws_elastic_block_store
-            if aws_elastic_block_store is not None
-            else AWSElasticBlockStoreVolumeSource(),
-            "azureDisk": azure_disk
-            if azure_disk is not None
-            else AzureDiskVolumeSource(),
-            "azureFile": azure_file
-            if azure_file is not None
-            else AzureFilePersistentVolumeSource(),
+            "awsElasticBlockStore": (
+                aws_elastic_block_store
+                if aws_elastic_block_store is not None
+                else AWSElasticBlockStoreVolumeSource()
+            ),
+            "azureDisk": (
+                azure_disk if azure_disk is not None else AzureDiskVolumeSource()
+            ),
+            "azureFile": (
+                azure_file
+                if azure_file is not None
+                else AzureFilePersistentVolumeSource()
+            ),
             "capacity": capacity if capacity is not None else {},
             "cephfs": cephfs if cephfs is not None else CephFSPersistentVolumeSource(),
             "cinder": cinder if cinder is not None else CinderPersistentVolumeSource(),
             "claimRef": claim_ref if claim_ref is not None else ObjectReference(),
             "csi": csi if csi is not None else CSIPersistentVolumeSource(),
             "fc": fc if fc is not None else FCVolumeSource(),
-            "flexVolume": flex_volume
-            if flex_volume is not None
-            else FlexPersistentVolumeSource(),
+            "flexVolume": (
+                flex_volume if flex_volume is not None else FlexPersistentVolumeSource()
+            ),
             "flocker": flocker if flocker is not None else FlockerVolumeSource(),
-            "gcePersistentDisk": gce_persistent_disk
-            if gce_persistent_disk is not None
-            else GCEPersistentDiskVolumeSource(),
-            "glusterfs": glusterfs
-            if glusterfs is not None
-            else GlusterfsPersistentVolumeSource(),
+            "gcePersistentDisk": (
+                gce_persistent_disk
+                if gce_persistent_disk is not None
+                else GCEPersistentDiskVolumeSource()
+            ),
+            "glusterfs": (
+                glusterfs
+                if glusterfs is not None
+                else GlusterfsPersistentVolumeSource()
+            ),
             "hostPath": host_path if host_path is not None else HostPathVolumeSource(),
             "iscsi": iscsi if iscsi is not None else ISCSIPersistentVolumeSource(),
             "local": local if local is not None else LocalVolumeSource(),
             "mountOptions": mount_options if mount_options is not None else [],
             "nfs": nfs if nfs is not None else NFSVolumeSource(),
-            "nodeAffinity": node_affinity
-            if node_affinity is not None
-            else VolumeNodeAffinity(),
-            "persistentVolumeReclaimPolicy": persistent_volume_reclaim_policy
-            if persistent_volume_reclaim_policy is not None
-            else "",
-            "photonPersistentDisk": photon_persistent_disk
-            if photon_persistent_disk is not None
-            else PhotonPersistentDiskVolumeSource(),
-            "portworxVolume": portworx_volume
-            if portworx_volume is not None
-            else PortworxVolumeSource(),
+            "nodeAffinity": (
+                node_affinity if node_affinity is not None else VolumeNodeAffinity()
+            ),
+            "persistentVolumeReclaimPolicy": (
+                persistent_volume_reclaim_policy
+                if persistent_volume_reclaim_policy is not None
+                else ""
+            ),
+            "photonPersistentDisk": (
+                photon_persistent_disk
+                if photon_persistent_disk is not None
+                else PhotonPersistentDiskVolumeSource()
+            ),
+            "portworxVolume": (
+                portworx_volume
+                if portworx_volume is not None
+                else PortworxVolumeSource()
+            ),
             "quobyte": quobyte if quobyte is not None else QuobyteVolumeSource(),
             "rbd": rbd if rbd is not None else RBDPersistentVolumeSource(),
-            "scaleIO": scale_io
-            if scale_io is not None
-            else ScaleIOPersistentVolumeSource(),
-            "storageClassName": storage_class_name
-            if storage_class_name is not None
-            else "",
-            "storageos": storageos
-            if storageos is not None
-            else StorageOSPersistentVolumeSource(),
+            "scaleIO": (
+                scale_io if scale_io is not None else ScaleIOPersistentVolumeSource()
+            ),
+            "storageClassName": (
+                storage_class_name if storage_class_name is not None else ""
+            ),
+            "storageos": (
+                storageos
+                if storageos is not None
+                else StorageOSPersistentVolumeSource()
+            ),
             "volumeMode": volume_mode if volume_mode is not None else "",
-            "vsphereVolume": vsphere_volume
-            if vsphere_volume is not None
-            else VsphereVirtualDiskVolumeSource(),
+            "vsphereVolume": (
+                vsphere_volume
+                if vsphere_volume is not None
+                else VsphereVirtualDiskVolumeSource()
+            ),
         }
         self._types = {
             "accessModes": (list, str),
@@ -17521,12 +17581,16 @@ class PodAffinity(_kuber_definitions.Definition):
         """Create PodAffinity instance."""
         super(PodAffinity, self).__init__(api_version="core/v1", kind="PodAffinity")
         self._properties = {
-            "preferredDuringSchedulingIgnoredDuringExecution": preferred_during_scheduling_ignored_during_execution
-            if preferred_during_scheduling_ignored_during_execution is not None
-            else [],
-            "requiredDuringSchedulingIgnoredDuringExecution": required_during_scheduling_ignored_during_execution
-            if required_during_scheduling_ignored_during_execution is not None
-            else [],
+            "preferredDuringSchedulingIgnoredDuringExecution": (
+                preferred_during_scheduling_ignored_during_execution
+                if preferred_during_scheduling_ignored_during_execution is not None
+                else []
+            ),
+            "requiredDuringSchedulingIgnoredDuringExecution": (
+                required_during_scheduling_ignored_during_execution
+                if required_during_scheduling_ignored_during_execution is not None
+                else []
+            ),
         }
         self._types = {
             "preferredDuringSchedulingIgnoredDuringExecution": (
@@ -17661,12 +17725,14 @@ class PodAffinityTerm(_kuber_definitions.Definition):
             api_version="core/v1", kind="PodAffinityTerm"
         )
         self._properties = {
-            "labelSelector": label_selector
-            if label_selector is not None
-            else LabelSelector(),
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
+            "labelSelector": (
+                label_selector if label_selector is not None else LabelSelector()
+            ),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
             "namespaces": namespaces if namespaces is not None else [],
             "topologyKey": topology_key if topology_key is not None else "",
         }
@@ -17810,12 +17876,16 @@ class PodAntiAffinity(_kuber_definitions.Definition):
             api_version="core/v1", kind="PodAntiAffinity"
         )
         self._properties = {
-            "preferredDuringSchedulingIgnoredDuringExecution": preferred_during_scheduling_ignored_during_execution
-            if preferred_during_scheduling_ignored_during_execution is not None
-            else [],
-            "requiredDuringSchedulingIgnoredDuringExecution": required_during_scheduling_ignored_during_execution
-            if required_during_scheduling_ignored_during_execution is not None
-            else [],
+            "preferredDuringSchedulingIgnoredDuringExecution": (
+                preferred_during_scheduling_ignored_during_execution
+                if preferred_during_scheduling_ignored_during_execution is not None
+                else []
+            ),
+            "requiredDuringSchedulingIgnoredDuringExecution": (
+                required_during_scheduling_ignored_during_execution
+                if required_during_scheduling_ignored_during_execution is not None
+                else []
+            ),
         }
         self._types = {
             "preferredDuringSchedulingIgnoredDuringExecution": (
@@ -17946,9 +18016,9 @@ class PodCondition(_kuber_definitions.Definition):
         super(PodCondition, self).__init__(api_version="core/v1", kind="PodCondition")
         self._properties = {
             "lastProbeTime": last_probe_time if last_probe_time is not None else None,
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -18660,25 +18730,27 @@ class PodSecurityContext(_kuber_definitions.Definition):
         )
         self._properties = {
             "fsGroup": fs_group if fs_group is not None else None,
-            "fsGroupChangePolicy": fs_group_change_policy
-            if fs_group_change_policy is not None
-            else "",
+            "fsGroupChangePolicy": (
+                fs_group_change_policy if fs_group_change_policy is not None else ""
+            ),
             "runAsGroup": run_as_group if run_as_group is not None else None,
             "runAsNonRoot": run_as_non_root if run_as_non_root is not None else None,
             "runAsUser": run_as_user if run_as_user is not None else None,
-            "seLinuxOptions": se_linux_options
-            if se_linux_options is not None
-            else SELinuxOptions(),
-            "seccompProfile": seccomp_profile
-            if seccomp_profile is not None
-            else SeccompProfile(),
-            "supplementalGroups": supplemental_groups
-            if supplemental_groups is not None
-            else [],
+            "seLinuxOptions": (
+                se_linux_options if se_linux_options is not None else SELinuxOptions()
+            ),
+            "seccompProfile": (
+                seccomp_profile if seccomp_profile is not None else SeccompProfile()
+            ),
+            "supplementalGroups": (
+                supplemental_groups if supplemental_groups is not None else []
+            ),
             "sysctls": sysctls if sysctls is not None else [],
-            "windowsOptions": windows_options
-            if windows_options is not None
-            else WindowsSecurityContextOptions(),
+            "windowsOptions": (
+                windows_options
+                if windows_options is not None
+                else WindowsSecurityContextOptions()
+            ),
         }
         self._types = {
             "fsGroup": (int, None),
@@ -19065,72 +19137,80 @@ class PodSpec(_kuber_definitions.Definition):
         """Create PodSpec instance."""
         super(PodSpec, self).__init__(api_version="core/v1", kind="PodSpec")
         self._properties = {
-            "activeDeadlineSeconds": active_deadline_seconds
-            if active_deadline_seconds is not None
-            else None,
+            "activeDeadlineSeconds": (
+                active_deadline_seconds if active_deadline_seconds is not None else None
+            ),
             "affinity": affinity if affinity is not None else Affinity(),
-            "automountServiceAccountToken": automount_service_account_token
-            if automount_service_account_token is not None
-            else None,
+            "automountServiceAccountToken": (
+                automount_service_account_token
+                if automount_service_account_token is not None
+                else None
+            ),
             "containers": containers if containers is not None else [],
             "dnsConfig": dns_config if dns_config is not None else PodDNSConfig(),
             "dnsPolicy": dns_policy if dns_policy is not None else "",
-            "enableServiceLinks": enable_service_links
-            if enable_service_links is not None
-            else None,
-            "ephemeralContainers": ephemeral_containers
-            if ephemeral_containers is not None
-            else [],
+            "enableServiceLinks": (
+                enable_service_links if enable_service_links is not None else None
+            ),
+            "ephemeralContainers": (
+                ephemeral_containers if ephemeral_containers is not None else []
+            ),
             "hostAliases": host_aliases if host_aliases is not None else [],
             "hostIPC": host_ipc if host_ipc is not None else None,
             "hostNetwork": host_network if host_network is not None else None,
             "hostPID": host_pid if host_pid is not None else None,
             "hostUsers": host_users if host_users is not None else None,
             "hostname": hostname if hostname is not None else "",
-            "imagePullSecrets": image_pull_secrets
-            if image_pull_secrets is not None
-            else [],
+            "imagePullSecrets": (
+                image_pull_secrets if image_pull_secrets is not None else []
+            ),
             "initContainers": init_containers if init_containers is not None else [],
             "nodeName": node_name if node_name is not None else "",
             "nodeSelector": node_selector if node_selector is not None else {},
             "os": os if os is not None else PodOS(),
             "overhead": overhead if overhead is not None else {},
-            "preemptionPolicy": preemption_policy
-            if preemption_policy is not None
-            else "",
+            "preemptionPolicy": (
+                preemption_policy if preemption_policy is not None else ""
+            ),
             "priority": priority if priority is not None else None,
-            "priorityClassName": priority_class_name
-            if priority_class_name is not None
-            else "",
+            "priorityClassName": (
+                priority_class_name if priority_class_name is not None else ""
+            ),
             "readinessGates": readiness_gates if readiness_gates is not None else [],
             "resourceClaims": resource_claims if resource_claims is not None else [],
             "restartPolicy": restart_policy if restart_policy is not None else "",
-            "runtimeClassName": runtime_class_name
-            if runtime_class_name is not None
-            else "",
+            "runtimeClassName": (
+                runtime_class_name if runtime_class_name is not None else ""
+            ),
             "schedulerName": scheduler_name if scheduler_name is not None else "",
             "schedulingGates": scheduling_gates if scheduling_gates is not None else [],
-            "securityContext": security_context
-            if security_context is not None
-            else PodSecurityContext(),
+            "securityContext": (
+                security_context
+                if security_context is not None
+                else PodSecurityContext()
+            ),
             "serviceAccount": service_account if service_account is not None else "",
-            "serviceAccountName": service_account_name
-            if service_account_name is not None
-            else "",
-            "setHostnameAsFQDN": set_hostname_as_fqdn
-            if set_hostname_as_fqdn is not None
-            else None,
-            "shareProcessNamespace": share_process_namespace
-            if share_process_namespace is not None
-            else None,
+            "serviceAccountName": (
+                service_account_name if service_account_name is not None else ""
+            ),
+            "setHostnameAsFQDN": (
+                set_hostname_as_fqdn if set_hostname_as_fqdn is not None else None
+            ),
+            "shareProcessNamespace": (
+                share_process_namespace if share_process_namespace is not None else None
+            ),
             "subdomain": subdomain if subdomain is not None else "",
-            "terminationGracePeriodSeconds": termination_grace_period_seconds
-            if termination_grace_period_seconds is not None
-            else None,
+            "terminationGracePeriodSeconds": (
+                termination_grace_period_seconds
+                if termination_grace_period_seconds is not None
+                else None
+            ),
             "tolerations": tolerations if tolerations is not None else [],
-            "topologySpreadConstraints": topology_spread_constraints
-            if topology_spread_constraints is not None
-            else [],
+            "topologySpreadConstraints": (
+                topology_spread_constraints
+                if topology_spread_constraints is not None
+                else []
+            ),
             "volumes": volumes if volumes is not None else [],
         }
         self._types = {
@@ -20513,20 +20593,22 @@ class PodStatus(_kuber_definitions.Definition):
         super(PodStatus, self).__init__(api_version="core/v1", kind="PodStatus")
         self._properties = {
             "conditions": conditions if conditions is not None else [],
-            "containerStatuses": container_statuses
-            if container_statuses is not None
-            else [],
-            "ephemeralContainerStatuses": ephemeral_container_statuses
-            if ephemeral_container_statuses is not None
-            else [],
+            "containerStatuses": (
+                container_statuses if container_statuses is not None else []
+            ),
+            "ephemeralContainerStatuses": (
+                ephemeral_container_statuses
+                if ephemeral_container_statuses is not None
+                else []
+            ),
             "hostIP": host_ip if host_ip is not None else "",
-            "initContainerStatuses": init_container_statuses
-            if init_container_statuses is not None
-            else [],
+            "initContainerStatuses": (
+                init_container_statuses if init_container_statuses is not None else []
+            ),
             "message": message if message is not None else "",
-            "nominatedNodeName": nominated_node_name
-            if nominated_node_name is not None
-            else "",
+            "nominatedNodeName": (
+                nominated_node_name if nominated_node_name is not None else ""
+            ),
             "phase": phase if phase is not None else "",
             "podIP": pod_ip if pod_ip is not None else "",
             "podIPs": pod_ips if pod_ips is not None else [],
@@ -21901,22 +21983,24 @@ class Probe(_kuber_definitions.Definition):
         super(Probe, self).__init__(api_version="core/v1", kind="Probe")
         self._properties = {
             "exec": exec_ if exec_ is not None else ExecAction(),
-            "failureThreshold": failure_threshold
-            if failure_threshold is not None
-            else None,
+            "failureThreshold": (
+                failure_threshold if failure_threshold is not None else None
+            ),
             "grpc": grpc if grpc is not None else GRPCAction(),
             "httpGet": http_get if http_get is not None else HTTPGetAction(),
-            "initialDelaySeconds": initial_delay_seconds
-            if initial_delay_seconds is not None
-            else None,
+            "initialDelaySeconds": (
+                initial_delay_seconds if initial_delay_seconds is not None else None
+            ),
             "periodSeconds": period_seconds if period_seconds is not None else None,
-            "successThreshold": success_threshold
-            if success_threshold is not None
-            else None,
+            "successThreshold": (
+                success_threshold if success_threshold is not None else None
+            ),
             "tcpSocket": tcp_socket if tcp_socket is not None else TCPSocketAction(),
-            "terminationGracePeriodSeconds": termination_grace_period_seconds
-            if termination_grace_period_seconds is not None
-            else None,
+            "terminationGracePeriodSeconds": (
+                termination_grace_period_seconds
+                if termination_grace_period_seconds is not None
+                else None
+            ),
             "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,
         }
         self._types = {
@@ -22677,9 +22761,9 @@ class RBDVolumeSource(_kuber_definitions.Definition):
             "monitors": monitors if monitors is not None else [],
             "pool": pool if pool is not None else "",
             "readOnly": read_only if read_only is not None else None,
-            "secretRef": secret_ref
-            if secret_ref is not None
-            else LocalObjectReference(),
+            "secretRef": (
+                secret_ref if secret_ref is not None else LocalObjectReference()
+            ),
             "user": user if user is not None else "",
         }
         self._types = {
@@ -23321,9 +23405,9 @@ class ReplicationControllerCondition(_kuber_definitions.Definition):
             api_version="core/v1", kind="ReplicationControllerCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -23560,9 +23644,9 @@ class ReplicationControllerSpec(_kuber_definitions.Definition):
             api_version="core/v1", kind="ReplicationControllerSpec"
         )
         self._properties = {
-            "minReadySeconds": min_ready_seconds
-            if min_ready_seconds is not None
-            else None,
+            "minReadySeconds": (
+                min_ready_seconds if min_ready_seconds is not None else None
+            ),
             "replicas": replicas if replicas is not None else None,
             "selector": selector if selector is not None else {},
             "template": template if template is not None else PodTemplateSpec(),
@@ -23854,16 +23938,16 @@ class ReplicationControllerStatus(_kuber_definitions.Definition):
             api_version="core/v1", kind="ReplicationControllerStatus"
         )
         self._properties = {
-            "availableReplicas": available_replicas
-            if available_replicas is not None
-            else None,
+            "availableReplicas": (
+                available_replicas if available_replicas is not None else None
+            ),
             "conditions": conditions if conditions is not None else [],
-            "fullyLabeledReplicas": fully_labeled_replicas
-            if fully_labeled_replicas is not None
-            else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "fullyLabeledReplicas": (
+                fully_labeled_replicas if fully_labeled_replicas is not None else None
+            ),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
         }
@@ -24531,9 +24615,9 @@ class ResourceQuotaSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "hard": hard if hard is not None else {},
-            "scopeSelector": scope_selector
-            if scope_selector is not None
-            else ScopeSelector(),
+            "scopeSelector": (
+                scope_selector if scope_selector is not None else ScopeSelector()
+            ),
             "scopes": scopes if scopes is not None else [],
         }
         self._types = {
@@ -24943,9 +25027,9 @@ class ScaleIOPersistentVolumeSource(_kuber_definitions.Definition):
         self._properties = {
             "fsType": fs_type if fs_type is not None else "",
             "gateway": gateway if gateway is not None else "",
-            "protectionDomain": protection_domain
-            if protection_domain is not None
-            else "",
+            "protectionDomain": (
+                protection_domain if protection_domain is not None else ""
+            ),
             "readOnly": read_only if read_only is not None else None,
             "secretRef": secret_ref if secret_ref is not None else SecretReference(),
             "sslEnabled": ssl_enabled if ssl_enabled is not None else None,
@@ -25198,13 +25282,13 @@ class ScaleIOVolumeSource(_kuber_definitions.Definition):
         self._properties = {
             "fsType": fs_type if fs_type is not None else "",
             "gateway": gateway if gateway is not None else "",
-            "protectionDomain": protection_domain
-            if protection_domain is not None
-            else "",
+            "protectionDomain": (
+                protection_domain if protection_domain is not None else ""
+            ),
             "readOnly": read_only if read_only is not None else None,
-            "secretRef": secret_ref
-            if secret_ref is not None
-            else LocalObjectReference(),
+            "secretRef": (
+                secret_ref if secret_ref is not None else LocalObjectReference()
+            ),
             "sslEnabled": ssl_enabled if ssl_enabled is not None else None,
             "storageMode": storage_mode if storage_mode is not None else "",
             "storagePool": storage_pool if storage_pool is not None else "",
@@ -25445,9 +25529,9 @@ class ScopeSelector(_kuber_definitions.Definition):
         """Create ScopeSelector instance."""
         super(ScopeSelector, self).__init__(api_version="core/v1", kind="ScopeSelector")
         self._properties = {
-            "matchExpressions": match_expressions
-            if match_expressions is not None
-            else [],
+            "matchExpressions": (
+                match_expressions if match_expressions is not None else []
+            ),
         }
         self._types = {
             "matchExpressions": (list, ScopedResourceSelectorRequirement),
@@ -25606,9 +25690,9 @@ class SeccompProfile(_kuber_definitions.Definition):
             api_version="core/v1", kind="SeccompProfile"
         )
         self._properties = {
-            "localhostProfile": localhost_profile
-            if localhost_profile is not None
-            else "",
+            "localhostProfile": (
+                localhost_profile if localhost_profile is not None else ""
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -26579,29 +26663,35 @@ class SecurityContext(_kuber_definitions.Definition):
             api_version="core/v1", kind="SecurityContext"
         )
         self._properties = {
-            "allowPrivilegeEscalation": allow_privilege_escalation
-            if allow_privilege_escalation is not None
-            else None,
-            "capabilities": capabilities
-            if capabilities is not None
-            else Capabilities(),
+            "allowPrivilegeEscalation": (
+                allow_privilege_escalation
+                if allow_privilege_escalation is not None
+                else None
+            ),
+            "capabilities": (
+                capabilities if capabilities is not None else Capabilities()
+            ),
             "privileged": privileged if privileged is not None else None,
             "procMount": proc_mount if proc_mount is not None else "",
-            "readOnlyRootFilesystem": read_only_root_filesystem
-            if read_only_root_filesystem is not None
-            else None,
+            "readOnlyRootFilesystem": (
+                read_only_root_filesystem
+                if read_only_root_filesystem is not None
+                else None
+            ),
             "runAsGroup": run_as_group if run_as_group is not None else None,
             "runAsNonRoot": run_as_non_root if run_as_non_root is not None else None,
             "runAsUser": run_as_user if run_as_user is not None else None,
-            "seLinuxOptions": se_linux_options
-            if se_linux_options is not None
-            else SELinuxOptions(),
-            "seccompProfile": seccomp_profile
-            if seccomp_profile is not None
-            else SeccompProfile(),
-            "windowsOptions": windows_options
-            if windows_options is not None
-            else WindowsSecurityContextOptions(),
+            "seLinuxOptions": (
+                se_linux_options if se_linux_options is not None else SELinuxOptions()
+            ),
+            "seccompProfile": (
+                seccomp_profile if seccomp_profile is not None else SeccompProfile()
+            ),
+            "windowsOptions": (
+                windows_options
+                if windows_options is not None
+                else WindowsSecurityContextOptions()
+            ),
         }
         self._types = {
             "allowPrivilegeEscalation": (bool, None),
@@ -27225,12 +27315,14 @@ class ServiceAccount(_kuber_definitions.Resource):
             api_version="core/v1", kind="ServiceAccount"
         )
         self._properties = {
-            "automountServiceAccountToken": automount_service_account_token
-            if automount_service_account_token is not None
-            else None,
-            "imagePullSecrets": image_pull_secrets
-            if image_pull_secrets is not None
-            else [],
+            "automountServiceAccountToken": (
+                automount_service_account_token
+                if automount_service_account_token is not None
+                else None
+            ),
+            "imagePullSecrets": (
+                image_pull_secrets if image_pull_secrets is not None else []
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "secrets": secrets if secrets is not None else [],
         }
@@ -27614,9 +27706,9 @@ class ServiceAccountTokenProjection(_kuber_definitions.Definition):
         )
         self._properties = {
             "audience": audience if audience is not None else "",
-            "expirationSeconds": expiration_seconds
-            if expiration_seconds is not None
-            else None,
+            "expirationSeconds": (
+                expiration_seconds if expiration_seconds is not None else None
+            ),
             "path": path if path is not None else "",
         }
         self._types = {
@@ -28031,40 +28123,48 @@ class ServiceSpec(_kuber_definitions.Definition):
         """Create ServiceSpec instance."""
         super(ServiceSpec, self).__init__(api_version="core/v1", kind="ServiceSpec")
         self._properties = {
-            "allocateLoadBalancerNodePorts": allocate_load_balancer_node_ports
-            if allocate_load_balancer_node_ports is not None
-            else None,
+            "allocateLoadBalancerNodePorts": (
+                allocate_load_balancer_node_ports
+                if allocate_load_balancer_node_ports is not None
+                else None
+            ),
             "clusterIP": cluster_ip if cluster_ip is not None else "",
             "clusterIPs": cluster_ips if cluster_ips is not None else [],
             "externalIPs": external_ips if external_ips is not None else [],
             "externalName": external_name if external_name is not None else "",
-            "externalTrafficPolicy": external_traffic_policy
-            if external_traffic_policy is not None
-            else "",
-            "healthCheckNodePort": health_check_node_port
-            if health_check_node_port is not None
-            else None,
-            "internalTrafficPolicy": internal_traffic_policy
-            if internal_traffic_policy is not None
-            else "",
+            "externalTrafficPolicy": (
+                external_traffic_policy if external_traffic_policy is not None else ""
+            ),
+            "healthCheckNodePort": (
+                health_check_node_port if health_check_node_port is not None else None
+            ),
+            "internalTrafficPolicy": (
+                internal_traffic_policy if internal_traffic_policy is not None else ""
+            ),
             "ipFamilies": ip_families if ip_families is not None else [],
             "ipFamilyPolicy": ip_family_policy if ip_family_policy is not None else "",
-            "loadBalancerClass": load_balancer_class
-            if load_balancer_class is not None
-            else "",
+            "loadBalancerClass": (
+                load_balancer_class if load_balancer_class is not None else ""
+            ),
             "loadBalancerIP": load_balancer_ip if load_balancer_ip is not None else "",
-            "loadBalancerSourceRanges": load_balancer_source_ranges
-            if load_balancer_source_ranges is not None
-            else [],
+            "loadBalancerSourceRanges": (
+                load_balancer_source_ranges
+                if load_balancer_source_ranges is not None
+                else []
+            ),
             "ports": ports if ports is not None else [],
-            "publishNotReadyAddresses": publish_not_ready_addresses
-            if publish_not_ready_addresses is not None
-            else None,
+            "publishNotReadyAddresses": (
+                publish_not_ready_addresses
+                if publish_not_ready_addresses is not None
+                else None
+            ),
             "selector": selector if selector is not None else {},
             "sessionAffinity": session_affinity if session_affinity is not None else "",
-            "sessionAffinityConfig": session_affinity_config
-            if session_affinity_config is not None
-            else SessionAffinityConfig(),
+            "sessionAffinityConfig": (
+                session_affinity_config
+                if session_affinity_config is not None
+                else SessionAffinityConfig()
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -28848,9 +28948,9 @@ class ServiceStatus(_kuber_definitions.Definition):
         super(ServiceStatus, self).__init__(api_version="core/v1", kind="ServiceStatus")
         self._properties = {
             "conditions": conditions if conditions is not None else [],
-            "loadBalancer": load_balancer
-            if load_balancer is not None
-            else LoadBalancerStatus(),
+            "loadBalancer": (
+                load_balancer if load_balancer is not None else LoadBalancerStatus()
+            ),
         }
         self._types = {
             "conditions": (list, Condition),
@@ -29144,9 +29244,9 @@ class StorageOSVolumeSource(_kuber_definitions.Definition):
         self._properties = {
             "fsType": fs_type if fs_type is not None else "",
             "readOnly": read_only if read_only is not None else None,
-            "secretRef": secret_ref
-            if secret_ref is not None
-            else LocalObjectReference(),
+            "secretRef": (
+                secret_ref if secret_ref is not None else LocalObjectReference()
+            ),
             "volumeName": volume_name if volume_name is not None else "",
             "volumeNamespace": volume_namespace if volume_namespace is not None else "",
         }
@@ -29550,9 +29650,9 @@ class Toleration(_kuber_definitions.Definition):
             "effect": effect if effect is not None else "",
             "key": key if key is not None else "",
             "operator": operator if operator is not None else "",
-            "tolerationSeconds": toleration_seconds
-            if toleration_seconds is not None
-            else None,
+            "tolerationSeconds": (
+                toleration_seconds if toleration_seconds is not None else None
+            ),
             "value": value if value is not None else "",
         }
         self._types = {
@@ -29777,9 +29877,9 @@ class TopologySelectorTerm(_kuber_definitions.Definition):
             api_version="core/v1", kind="TopologySelectorTerm"
         )
         self._properties = {
-            "matchLabelExpressions": match_label_expressions
-            if match_label_expressions is not None
-            else [],
+            "matchLabelExpressions": (
+                match_label_expressions if match_label_expressions is not None else []
+            ),
         }
         self._types = {
             "matchLabelExpressions": (list, TopologySelectorLabelRequirement),
@@ -29846,22 +29946,22 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
             api_version="core/v1", kind="TopologySpreadConstraint"
         )
         self._properties = {
-            "labelSelector": label_selector
-            if label_selector is not None
-            else LabelSelector(),
+            "labelSelector": (
+                label_selector if label_selector is not None else LabelSelector()
+            ),
             "matchLabelKeys": match_label_keys if match_label_keys is not None else [],
             "maxSkew": max_skew if max_skew is not None else None,
             "minDomains": min_domains if min_domains is not None else None,
-            "nodeAffinityPolicy": node_affinity_policy
-            if node_affinity_policy is not None
-            else "",
-            "nodeTaintsPolicy": node_taints_policy
-            if node_taints_policy is not None
-            else "",
+            "nodeAffinityPolicy": (
+                node_affinity_policy if node_affinity_policy is not None else ""
+            ),
+            "nodeTaintsPolicy": (
+                node_taints_policy if node_taints_policy is not None else ""
+            ),
             "topologyKey": topology_key if topology_key is not None else "",
-            "whenUnsatisfiable": when_unsatisfiable
-            if when_unsatisfiable is not None
-            else "",
+            "whenUnsatisfiable": (
+                when_unsatisfiable if when_unsatisfiable is not None else ""
+            ),
         }
         self._types = {
             "labelSelector": (LabelSelector, None),
@@ -30476,66 +30576,78 @@ class Volume(_kuber_definitions.Definition):
         """Create Volume instance."""
         super(Volume, self).__init__(api_version="core/v1", kind="Volume")
         self._properties = {
-            "awsElasticBlockStore": aws_elastic_block_store
-            if aws_elastic_block_store is not None
-            else AWSElasticBlockStoreVolumeSource(),
-            "azureDisk": azure_disk
-            if azure_disk is not None
-            else AzureDiskVolumeSource(),
-            "azureFile": azure_file
-            if azure_file is not None
-            else AzureFileVolumeSource(),
+            "awsElasticBlockStore": (
+                aws_elastic_block_store
+                if aws_elastic_block_store is not None
+                else AWSElasticBlockStoreVolumeSource()
+            ),
+            "azureDisk": (
+                azure_disk if azure_disk is not None else AzureDiskVolumeSource()
+            ),
+            "azureFile": (
+                azure_file if azure_file is not None else AzureFileVolumeSource()
+            ),
             "cephfs": cephfs if cephfs is not None else CephFSVolumeSource(),
             "cinder": cinder if cinder is not None else CinderVolumeSource(),
-            "configMap": config_map
-            if config_map is not None
-            else ConfigMapVolumeSource(),
+            "configMap": (
+                config_map if config_map is not None else ConfigMapVolumeSource()
+            ),
             "csi": csi if csi is not None else CSIVolumeSource(),
-            "downwardAPI": downward_api
-            if downward_api is not None
-            else DownwardAPIVolumeSource(),
+            "downwardAPI": (
+                downward_api if downward_api is not None else DownwardAPIVolumeSource()
+            ),
             "emptyDir": empty_dir if empty_dir is not None else EmptyDirVolumeSource(),
-            "ephemeral": ephemeral
-            if ephemeral is not None
-            else EphemeralVolumeSource(),
+            "ephemeral": (
+                ephemeral if ephemeral is not None else EphemeralVolumeSource()
+            ),
             "fc": fc if fc is not None else FCVolumeSource(),
-            "flexVolume": flex_volume
-            if flex_volume is not None
-            else FlexVolumeSource(),
+            "flexVolume": (
+                flex_volume if flex_volume is not None else FlexVolumeSource()
+            ),
             "flocker": flocker if flocker is not None else FlockerVolumeSource(),
-            "gcePersistentDisk": gce_persistent_disk
-            if gce_persistent_disk is not None
-            else GCEPersistentDiskVolumeSource(),
+            "gcePersistentDisk": (
+                gce_persistent_disk
+                if gce_persistent_disk is not None
+                else GCEPersistentDiskVolumeSource()
+            ),
             "gitRepo": git_repo if git_repo is not None else GitRepoVolumeSource(),
-            "glusterfs": glusterfs
-            if glusterfs is not None
-            else GlusterfsVolumeSource(),
+            "glusterfs": (
+                glusterfs if glusterfs is not None else GlusterfsVolumeSource()
+            ),
             "hostPath": host_path if host_path is not None else HostPathVolumeSource(),
             "iscsi": iscsi if iscsi is not None else ISCSIVolumeSource(),
             "name": name if name is not None else "",
             "nfs": nfs if nfs is not None else NFSVolumeSource(),
-            "persistentVolumeClaim": persistent_volume_claim
-            if persistent_volume_claim is not None
-            else PersistentVolumeClaimVolumeSource(),
-            "photonPersistentDisk": photon_persistent_disk
-            if photon_persistent_disk is not None
-            else PhotonPersistentDiskVolumeSource(),
-            "portworxVolume": portworx_volume
-            if portworx_volume is not None
-            else PortworxVolumeSource(),
-            "projected": projected
-            if projected is not None
-            else ProjectedVolumeSource(),
+            "persistentVolumeClaim": (
+                persistent_volume_claim
+                if persistent_volume_claim is not None
+                else PersistentVolumeClaimVolumeSource()
+            ),
+            "photonPersistentDisk": (
+                photon_persistent_disk
+                if photon_persistent_disk is not None
+                else PhotonPersistentDiskVolumeSource()
+            ),
+            "portworxVolume": (
+                portworx_volume
+                if portworx_volume is not None
+                else PortworxVolumeSource()
+            ),
+            "projected": (
+                projected if projected is not None else ProjectedVolumeSource()
+            ),
             "quobyte": quobyte if quobyte is not None else QuobyteVolumeSource(),
             "rbd": rbd if rbd is not None else RBDVolumeSource(),
             "scaleIO": scale_io if scale_io is not None else ScaleIOVolumeSource(),
             "secret": secret if secret is not None else SecretVolumeSource(),
-            "storageos": storageos
-            if storageos is not None
-            else StorageOSVolumeSource(),
-            "vsphereVolume": vsphere_volume
-            if vsphere_volume is not None
-            else VsphereVirtualDiskVolumeSource(),
+            "storageos": (
+                storageos if storageos is not None else StorageOSVolumeSource()
+            ),
+            "vsphereVolume": (
+                vsphere_volume
+                if vsphere_volume is not None
+                else VsphereVirtualDiskVolumeSource()
+            ),
         }
         self._types = {
             "awsElasticBlockStore": (AWSElasticBlockStoreVolumeSource, None),
@@ -31488,9 +31600,9 @@ class VolumeMount(_kuber_definitions.Definition):
         super(VolumeMount, self).__init__(api_version="core/v1", kind="VolumeMount")
         self._properties = {
             "mountPath": mount_path if mount_path is not None else "",
-            "mountPropagation": mount_propagation
-            if mount_propagation is not None
-            else "",
+            "mountPropagation": (
+                mount_propagation if mount_propagation is not None else ""
+            ),
             "name": name if name is not None else "",
             "readOnly": read_only if read_only is not None else None,
             "subPath": sub_path if sub_path is not None else "",
@@ -31702,16 +31814,18 @@ class VolumeProjection(_kuber_definitions.Definition):
             api_version="core/v1", kind="VolumeProjection"
         )
         self._properties = {
-            "configMap": config_map
-            if config_map is not None
-            else ConfigMapProjection(),
-            "downwardAPI": downward_api
-            if downward_api is not None
-            else DownwardAPIProjection(),
+            "configMap": (
+                config_map if config_map is not None else ConfigMapProjection()
+            ),
+            "downwardAPI": (
+                downward_api if downward_api is not None else DownwardAPIProjection()
+            ),
             "secret": secret if secret is not None else SecretProjection(),
-            "serviceAccountToken": service_account_token
-            if service_account_token is not None
-            else ServiceAccountTokenProjection(),
+            "serviceAccountToken": (
+                service_account_token
+                if service_account_token is not None
+                else ServiceAccountTokenProjection()
+            ),
         }
         self._types = {
             "configMap": (ConfigMapProjection, None),
@@ -31839,12 +31953,12 @@ class VsphereVirtualDiskVolumeSource(_kuber_definitions.Definition):
         )
         self._properties = {
             "fsType": fs_type if fs_type is not None else "",
-            "storagePolicyID": storage_policy_id
-            if storage_policy_id is not None
-            else "",
-            "storagePolicyName": storage_policy_name
-            if storage_policy_name is not None
-            else "",
+            "storagePolicyID": (
+                storage_policy_id if storage_policy_id is not None else ""
+            ),
+            "storagePolicyName": (
+                storage_policy_name if storage_policy_name is not None else ""
+            ),
             "volumePath": volume_path if volume_path is not None else "",
         }
         self._types = {
@@ -31955,9 +32069,11 @@ class WeightedPodAffinityTerm(_kuber_definitions.Definition):
             api_version="core/v1", kind="WeightedPodAffinityTerm"
         )
         self._properties = {
-            "podAffinityTerm": pod_affinity_term
-            if pod_affinity_term is not None
-            else PodAffinityTerm(),
+            "podAffinityTerm": (
+                pod_affinity_term
+                if pod_affinity_term is not None
+                else PodAffinityTerm()
+            ),
             "weight": weight if weight is not None else None,
         }
         self._types = {
@@ -32033,12 +32149,14 @@ class WindowsSecurityContextOptions(_kuber_definitions.Definition):
             api_version="core/v1", kind="WindowsSecurityContextOptions"
         )
         self._properties = {
-            "gmsaCredentialSpec": gmsa_credential_spec
-            if gmsa_credential_spec is not None
-            else "",
-            "gmsaCredentialSpecName": gmsa_credential_spec_name
-            if gmsa_credential_spec_name is not None
-            else "",
+            "gmsaCredentialSpec": (
+                gmsa_credential_spec if gmsa_credential_spec is not None else ""
+            ),
+            "gmsaCredentialSpecName": (
+                gmsa_credential_spec_name
+                if gmsa_credential_spec_name is not None
+                else ""
+            ),
             "hostProcess": host_process if host_process is not None else None,
             "runAsUserName": run_as_user_name if run_as_user_name is not None else "",
         }

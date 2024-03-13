@@ -31,12 +31,12 @@ class Endpoint(_kuber_definitions.Definition):
         super(Endpoint, self).__init__(api_version="discovery/v1", kind="Endpoint")
         self._properties = {
             "addresses": addresses if addresses is not None else [],
-            "conditions": conditions
-            if conditions is not None
-            else EndpointConditions(),
-            "deprecatedTopology": deprecated_topology
-            if deprecated_topology is not None
-            else {},
+            "conditions": (
+                conditions if conditions is not None else EndpointConditions()
+            ),
+            "deprecatedTopology": (
+                deprecated_topology if deprecated_topology is not None else {}
+            ),
             "hints": hints if hints is not None else EndpointHints(),
             "hostname": hostname if hostname is not None else "",
             "nodeName": node_name if node_name is not None else "",
@@ -293,7 +293,10 @@ class EndpointConditions(_kuber_definitions.Definition):
         endpoint. A nil value indicates an unknown state. In most
         cases consumers should interpret this unknown state as
         ready. For compatibility reasons, ready should never be
-        "true" for terminating endpoints.
+        "true" for terminating endpoints, except when the normal
+        readiness behavior is being explicitly overridden, for
+        example when the associated Service has set the
+        publishNotReadyAddresses flag.
         """
         return typing.cast(
             bool,
@@ -308,7 +311,10 @@ class EndpointConditions(_kuber_definitions.Definition):
         endpoint. A nil value indicates an unknown state. In most
         cases consumers should interpret this unknown state as
         ready. For compatibility reasons, ready should never be
-        "true" for terminating endpoints.
+        "true" for terminating endpoints, except when the normal
+        readiness behavior is being explicitly overridden, for
+        example when the associated Service has set the
+        publishNotReadyAddresses flag.
         """
         self._properties["ready"] = value
 
@@ -466,9 +472,6 @@ class EndpointPort(_kuber_definitions.Definition):
         * Kubernetes-defined prefixed names:
           * 'kubernetes.io/h2c' - HTTP/2 over cleartext as described
         in https://www.rfc-editor.org/rfc/rfc7540
-          * 'kubernetes.io/grpc' - gRPC over HTTP/2 as described in
-        https://github.com/grpc/grpc/blob/v1.51.1/doc/PROTOCOL-
-        HTTP2.md
 
         * Other protocols should use implementation-defined prefixed
         names such as mycompany.com/my-custom-protocol.
@@ -493,9 +496,6 @@ class EndpointPort(_kuber_definitions.Definition):
         * Kubernetes-defined prefixed names:
           * 'kubernetes.io/h2c' - HTTP/2 over cleartext as described
         in https://www.rfc-editor.org/rfc/rfc7540
-          * 'kubernetes.io/grpc' - gRPC over HTTP/2 as described in
-        https://github.com/grpc/grpc/blob/v1.51.1/doc/PROTOCOL-
-        HTTP2.md
 
         * Other protocols should use implementation-defined prefixed
         names such as mycompany.com/my-custom-protocol.

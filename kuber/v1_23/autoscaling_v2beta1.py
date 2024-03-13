@@ -40,12 +40,14 @@ class ContainerResourceMetricSource(_kuber_definitions.Definition):
         self._properties = {
             "container": container if container is not None else "",
             "name": name if name is not None else "",
-            "targetAverageUtilization": target_average_utilization
-            if target_average_utilization is not None
-            else None,
-            "targetAverageValue": target_average_value
-            if target_average_value is not None
-            else None,
+            "targetAverageUtilization": (
+                target_average_utilization
+                if target_average_utilization is not None
+                else None
+            ),
+            "targetAverageValue": (
+                target_average_value if target_average_value is not None else None
+            ),
         }
         self._types = {
             "container": (str, None),
@@ -165,12 +167,14 @@ class ContainerResourceMetricStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "container": container if container is not None else "",
-            "currentAverageUtilization": current_average_utilization
-            if current_average_utilization is not None
-            else None,
-            "currentAverageValue": current_average_value
-            if current_average_value is not None
-            else None,
+            "currentAverageUtilization": (
+                current_average_utilization
+                if current_average_utilization is not None
+                else None
+            ),
+            "currentAverageValue": (
+                current_average_value if current_average_value is not None else None
+            ),
             "name": name if name is not None else "",
         }
         self._types = {
@@ -386,12 +390,12 @@ class ExternalMetricSource(_kuber_definitions.Definition):
         )
         self._properties = {
             "metricName": metric_name if metric_name is not None else "",
-            "metricSelector": metric_selector
-            if metric_selector is not None
-            else LabelSelector(),
-            "targetAverageValue": target_average_value
-            if target_average_value is not None
-            else None,
+            "metricSelector": (
+                metric_selector if metric_selector is not None else LabelSelector()
+            ),
+            "targetAverageValue": (
+                target_average_value if target_average_value is not None else None
+            ),
             "targetValue": target_value if target_value is not None else None,
         }
         self._types = {
@@ -501,14 +505,14 @@ class ExternalMetricStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v2beta1", kind="ExternalMetricStatus"
         )
         self._properties = {
-            "currentAverageValue": current_average_value
-            if current_average_value is not None
-            else None,
+            "currentAverageValue": (
+                current_average_value if current_average_value is not None else None
+            ),
             "currentValue": current_value if current_value is not None else None,
             "metricName": metric_name if metric_name is not None else "",
-            "metricSelector": metric_selector
-            if metric_selector is not None
-            else LabelSelector(),
+            "metricSelector": (
+                metric_selector if metric_selector is not None else LabelSelector()
+            ),
         }
         self._types = {
             "currentAverageValue": (_types.integer_or_string, None),
@@ -899,9 +903,9 @@ class HorizontalPodAutoscalerCondition(_kuber_definitions.Definition):
             api_version="autoscaling/v2beta1", kind="HorizontalPodAutoscalerCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -1133,9 +1137,11 @@ class HorizontalPodAutoscalerSpec(_kuber_definitions.Definition):
             "maxReplicas": max_replicas if max_replicas is not None else None,
             "metrics": metrics if metrics is not None else [],
             "minReplicas": min_replicas if min_replicas is not None else None,
-            "scaleTargetRef": scale_target_ref
-            if scale_target_ref is not None
-            else CrossVersionObjectReference(),
+            "scaleTargetRef": (
+                scale_target_ref
+                if scale_target_ref is not None
+                else CrossVersionObjectReference()
+            ),
         }
         self._types = {
             "maxReplicas": (int, None),
@@ -1294,16 +1300,16 @@ class HorizontalPodAutoscalerStatus(_kuber_definitions.Definition):
         self._properties = {
             "conditions": conditions if conditions is not None else [],
             "currentMetrics": current_metrics if current_metrics is not None else [],
-            "currentReplicas": current_replicas
-            if current_replicas is not None
-            else None,
-            "desiredReplicas": desired_replicas
-            if desired_replicas is not None
-            else None,
+            "currentReplicas": (
+                current_replicas if current_replicas is not None else None
+            ),
+            "desiredReplicas": (
+                desired_replicas if desired_replicas is not None else None
+            ),
             "lastScaleTime": last_scale_time if last_scale_time is not None else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
         }
         self._types = {
             "conditions": (list, HorizontalPodAutoscalerCondition),
@@ -1491,9 +1497,11 @@ class MetricSpec(_kuber_definitions.Definition):
             api_version="autoscaling/v2beta1", kind="MetricSpec"
         )
         self._properties = {
-            "containerResource": container_resource
-            if container_resource is not None
-            else ContainerResourceMetricSource(),
+            "containerResource": (
+                container_resource
+                if container_resource is not None
+                else ContainerResourceMetricSource()
+            ),
             "external": external if external is not None else ExternalMetricSource(),
             "object": object_ if object_ is not None else ObjectMetricSource(),
             "pods": pods if pods is not None else PodsMetricSource(),
@@ -1715,9 +1723,11 @@ class MetricStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v2beta1", kind="MetricStatus"
         )
         self._properties = {
-            "containerResource": container_resource
-            if container_resource is not None
-            else ContainerResourceMetricStatus(),
+            "containerResource": (
+                container_resource
+                if container_resource is not None
+                else ContainerResourceMetricStatus()
+            ),
             "external": external if external is not None else ExternalMetricStatus(),
             "object": object_ if object_ is not None else ObjectMetricStatus(),
             "pods": pods if pods is not None else PodsMetricStatus(),
@@ -2229,9 +2239,9 @@ class PodsMetricSource(_kuber_definitions.Definition):
         self._properties = {
             "metricName": metric_name if metric_name is not None else "",
             "selector": selector if selector is not None else LabelSelector(),
-            "targetAverageValue": target_average_value
-            if target_average_value is not None
-            else None,
+            "targetAverageValue": (
+                target_average_value if target_average_value is not None else None
+            ),
         }
         self._types = {
             "metricName": (str, None),
@@ -2328,9 +2338,9 @@ class PodsMetricStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v2beta1", kind="PodsMetricStatus"
         )
         self._properties = {
-            "currentAverageValue": current_average_value
-            if current_average_value is not None
-            else None,
+            "currentAverageValue": (
+                current_average_value if current_average_value is not None else None
+            ),
             "metricName": metric_name if metric_name is not None else "",
             "selector": selector if selector is not None else LabelSelector(),
         }
@@ -2435,12 +2445,14 @@ class ResourceMetricSource(_kuber_definitions.Definition):
         )
         self._properties = {
             "name": name if name is not None else "",
-            "targetAverageUtilization": target_average_utilization
-            if target_average_utilization is not None
-            else None,
-            "targetAverageValue": target_average_value
-            if target_average_value is not None
-            else None,
+            "targetAverageUtilization": (
+                target_average_utilization
+                if target_average_utilization is not None
+                else None
+            ),
+            "targetAverageValue": (
+                target_average_value if target_average_value is not None else None
+            ),
         }
         self._types = {
             "name": (str, None),
@@ -2538,12 +2550,14 @@ class ResourceMetricStatus(_kuber_definitions.Definition):
             api_version="autoscaling/v2beta1", kind="ResourceMetricStatus"
         )
         self._properties = {
-            "currentAverageUtilization": current_average_utilization
-            if current_average_utilization is not None
-            else None,
-            "currentAverageValue": current_average_value
-            if current_average_value is not None
-            else None,
+            "currentAverageUtilization": (
+                current_average_utilization
+                if current_average_utilization is not None
+                else None
+            ),
+            "currentAverageValue": (
+                current_average_value if current_average_value is not None else None
+            ),
             "name": name if name is not None else "",
         }
         self._types = {

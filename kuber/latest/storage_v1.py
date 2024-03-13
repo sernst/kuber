@@ -84,7 +84,7 @@ class CSIDriver(_kuber_definitions.Resource):
     @property
     def spec(self) -> "CSIDriverSpec":
         """
-        Specification of the CSI Driver.
+        spec represents the specification of the CSI Driver.
         """
         return typing.cast(
             "CSIDriverSpec",
@@ -94,7 +94,7 @@ class CSIDriver(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["CSIDriverSpec", dict]):
         """
-        Specification of the CSI Driver.
+        spec represents the specification of the CSI Driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -339,20 +339,20 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._properties = {
             "attachRequired": attach_required if attach_required is not None else None,
             "fsGroupPolicy": fs_group_policy if fs_group_policy is not None else "",
-            "podInfoOnMount": pod_info_on_mount
-            if pod_info_on_mount is not None
-            else None,
-            "requiresRepublish": requires_republish
-            if requires_republish is not None
-            else None,
+            "podInfoOnMount": (
+                pod_info_on_mount if pod_info_on_mount is not None else None
+            ),
+            "requiresRepublish": (
+                requires_republish if requires_republish is not None else None
+            ),
             "seLinuxMount": se_linux_mount if se_linux_mount is not None else None,
-            "storageCapacity": storage_capacity
-            if storage_capacity is not None
-            else None,
+            "storageCapacity": (
+                storage_capacity if storage_capacity is not None else None
+            ),
             "tokenRequests": token_requests if token_requests is not None else [],
-            "volumeLifecycleModes": volume_lifecycle_modes
-            if volume_lifecycle_modes is not None
-            else [],
+            "volumeLifecycleModes": (
+                volume_lifecycle_modes if volume_lifecycle_modes is not None else []
+            ),
         }
         self._types = {
             "attachRequired": (bool, None),
@@ -411,9 +411,10 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @property
     def fs_group_policy(self) -> str:
         """
-        Defines if the underlying volume supports changing ownership
-        and permission of the volume before being mounted. Refer to
-        the specific FSGroupPolicy values for additional details.
+        fsGroupPolicy defines if the underlying volume supports
+        changing ownership and permission of the volume before being
+        mounted. Refer to the specific FSGroupPolicy values for
+        additional details.
 
         This field is immutable.
 
@@ -431,9 +432,10 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @fs_group_policy.setter
     def fs_group_policy(self, value: str):
         """
-        Defines if the underlying volume supports changing ownership
-        and permission of the volume before being mounted. Refer to
-        the specific FSGroupPolicy values for additional details.
+        fsGroupPolicy defines if the underlying volume supports
+        changing ownership and permission of the volume before being
+        mounted. Refer to the specific FSGroupPolicy values for
+        additional details.
 
         This field is immutable.
 
@@ -448,18 +450,21 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @property
     def pod_info_on_mount(self) -> bool:
         """
-        If set to true, podInfoOnMount indicates this CSI volume
-        driver requires additional pod information (like podName,
-        podUID, etc.) during mount operations. If set to false, pod
-        information will not be passed on mount. Default is false.
+        podInfoOnMount indicates this CSI volume driver requires
+        additional pod information (like podName, podUID, etc.)
+        during mount operations, if set to true. If set to false,
+        pod information will not be passed on mount. Default is
+        false.
+
         The CSI driver specifies podInfoOnMount as part of driver
         deployment. If true, Kubelet will pass pod information as
         VolumeContext in the CSI NodePublishVolume() calls. The CSI
         driver is responsible for parsing and validating the
-        information passed in as VolumeContext. The following
-        VolumeConext will be passed if podInfoOnMount is set to
-        true. This list might grow, but the prefix will be used.
-        "csi.storage.k8s.io/pod.name": pod.Name
+        information passed in as VolumeContext.
+
+        The following VolumeContext will be passed if podInfoOnMount
+        is set to true. This list might grow, but the prefix will be
+        used. "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
         "csi.storage.k8s.io/ephemeral": "true" if the volume is an
@@ -487,18 +492,21 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @pod_info_on_mount.setter
     def pod_info_on_mount(self, value: bool):
         """
-        If set to true, podInfoOnMount indicates this CSI volume
-        driver requires additional pod information (like podName,
-        podUID, etc.) during mount operations. If set to false, pod
-        information will not be passed on mount. Default is false.
+        podInfoOnMount indicates this CSI volume driver requires
+        additional pod information (like podName, podUID, etc.)
+        during mount operations, if set to true. If set to false,
+        pod information will not be passed on mount. Default is
+        false.
+
         The CSI driver specifies podInfoOnMount as part of driver
         deployment. If true, Kubelet will pass pod information as
         VolumeContext in the CSI NodePublishVolume() calls. The CSI
         driver is responsible for parsing and validating the
-        information passed in as VolumeContext. The following
-        VolumeConext will be passed if podInfoOnMount is set to
-        true. This list might grow, but the prefix will be used.
-        "csi.storage.k8s.io/pod.name": pod.Name
+        information passed in as VolumeContext.
+
+        The following VolumeContext will be passed if podInfoOnMount
+        is set to true. This list might grow, but the prefix will be
+        used. "csi.storage.k8s.io/pod.name": pod.Name
         "csi.storage.k8s.io/pod.namespace": pod.Namespace
         "csi.storage.k8s.io/pod.uid": string(pod.UID)
         "csi.storage.k8s.io/ephemeral": "true" if the volume is an
@@ -523,7 +531,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @property
     def requires_republish(self) -> bool:
         """
-        RequiresRepublish indicates the CSI driver wants
+        requiresRepublish indicates the CSI driver wants
         `NodePublishVolume` being periodically called to reflect any
         possible change in the mounted volume. This field defaults
         to false.
@@ -541,7 +549,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @requires_republish.setter
     def requires_republish(self, value: bool):
         """
-        RequiresRepublish indicates the CSI driver wants
+        requiresRepublish indicates the CSI driver wants
         `NodePublishVolume` being periodically called to reflect any
         possible change in the mounted volume. This field defaults
         to false.
@@ -556,7 +564,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @property
     def se_linux_mount(self) -> bool:
         """
-        SELinuxMount specifies if the CSI driver supports "-o
+        seLinuxMount specifies if the CSI driver supports "-o
         context" mount option.
 
         When "true", the CSI driver must ensure that all volumes
@@ -585,7 +593,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @se_linux_mount.setter
     def se_linux_mount(self, value: bool):
         """
-        SELinuxMount specifies if the CSI driver supports "-o
+        seLinuxMount specifies if the CSI driver supports "-o
         context" mount option.
 
         When "true", the CSI driver must ensure that all volumes
@@ -611,10 +619,10 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @property
     def storage_capacity(self) -> bool:
         """
-        If set to true, storageCapacity indicates that the CSI
-        volume driver wants pod scheduling to consider the storage
-        capacity that the driver deployment will report by creating
-        CSIStorageCapacity objects with capacity information.
+        storageCapacity indicates that the CSI volume driver wants
+        pod scheduling to consider the storage capacity that the
+        driver deployment will report by creating CSIStorageCapacity
+        objects with capacity information, if set to true.
 
         The check can be enabled immediately when deploying a
         driver. In that case, provisioning new volumes with late
@@ -636,10 +644,10 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @storage_capacity.setter
     def storage_capacity(self, value: bool):
         """
-        If set to true, storageCapacity indicates that the CSI
-        volume driver wants pod scheduling to consider the storage
-        capacity that the driver deployment will report by creating
-        CSIStorageCapacity objects with capacity information.
+        storageCapacity indicates that the CSI volume driver wants
+        pod scheduling to consider the storage capacity that the
+        driver deployment will report by creating CSIStorageCapacity
+        objects with capacity information, if set to true.
 
         The check can be enabled immediately when deploying a
         driver. In that case, provisioning new volumes with late
@@ -658,7 +666,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
     @property
     def token_requests(self) -> typing.List["TokenRequest"]:
         """
-        TokenRequests indicates the CSI driver needs pods' service
+        tokenRequests indicates the CSI driver needs pods' service
         account tokens it is mounting volume for to do necessary
         authentication. Kubelet will pass the tokens in
         VolumeContext in the CSI NodePublishVolume calls. The CSI
@@ -687,7 +695,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["TokenRequest"], typing.List[dict]]
     ):
         """
-        TokenRequests indicates the CSI driver needs pods' service
+        tokenRequests indicates the CSI driver needs pods' service
         account tokens it is mounting volume for to do necessary
         authentication. Kubelet will pass the tokens in
         VolumeContext in the CSI NodePublishVolume calls. The CSI
@@ -723,18 +731,20 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         volume driver supports. The default if the list is empty is
         "Persistent", which is the usage defined by the CSI
         specification and implemented in Kubernetes via the usual
-        PV/PVC mechanism. The other mode is "Ephemeral". In this
-        mode, volumes are defined inline inside the pod spec with
-        CSIVolumeSource and their lifecycle is tied to the lifecycle
-        of that pod. A driver has to be aware of this because it is
-        only going to get a NodePublishVolume call for such a
-        volume. For more information about implementing this mode,
-        see https://kubernetes-csi.github.io/docs/ephemeral-local-
-        volumes.html A driver can support one or more of these modes
-        and more modes may be added in the future. This field is
-        beta.
+        PV/PVC mechanism.
 
-        This field is immutable.
+        The other mode is "Ephemeral". In this mode, volumes are
+        defined inline inside the pod spec with CSIVolumeSource and
+        their lifecycle is tied to the lifecycle of that pod. A
+        driver has to be aware of this because it is only going to
+        get a NodePublishVolume call for such a volume.
+
+        For more information about implementing this mode, see
+        https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future.
+
+        This field is beta. This field is immutable.
         """
         return typing.cast(
             typing.List[str],
@@ -748,18 +758,20 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         volume driver supports. The default if the list is empty is
         "Persistent", which is the usage defined by the CSI
         specification and implemented in Kubernetes via the usual
-        PV/PVC mechanism. The other mode is "Ephemeral". In this
-        mode, volumes are defined inline inside the pod spec with
-        CSIVolumeSource and their lifecycle is tied to the lifecycle
-        of that pod. A driver has to be aware of this because it is
-        only going to get a NodePublishVolume call for such a
-        volume. For more information about implementing this mode,
-        see https://kubernetes-csi.github.io/docs/ephemeral-local-
-        volumes.html A driver can support one or more of these modes
-        and more modes may be added in the future. This field is
-        beta.
+        PV/PVC mechanism.
 
-        This field is immutable.
+        The other mode is "Ephemeral". In this mode, volumes are
+        defined inline inside the pod spec with CSIVolumeSource and
+        their lifecycle is tied to the lifecycle of that pod. A
+        driver has to be aware of this because it is only going to
+        get a NodePublishVolume call for such a volume.
+
+        For more information about implementing this mode, see
+        https://kubernetes-csi.github.io/docs/ephemeral-local-
+        volumes.html A driver can support one or more of these modes
+        and more modes may be added in the future.
+
+        This field is beta. This field is immutable.
         """
         self._properties["volumeLifecycleModes"] = value
 
@@ -805,7 +817,8 @@ class CSINode(_kuber_definitions.Resource):
     @property
     def metadata(self) -> "ObjectMeta":
         """
-        metadata.name must be the Kubernetes node name.
+        Standard object's metadata. metadata.name must be the
+        Kubernetes node name.
         """
         return typing.cast(
             "ObjectMeta",
@@ -815,7 +828,8 @@ class CSINode(_kuber_definitions.Resource):
     @metadata.setter
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
-        metadata.name must be the Kubernetes node name.
+        Standard object's metadata. metadata.name must be the
+        Kubernetes node name.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -982,9 +996,9 @@ class CSINodeDriver(_kuber_definitions.Definition):
             api_version="storage/v1", kind="CSINodeDriver"
         )
         self._properties = {
-            "allocatable": allocatable
-            if allocatable is not None
-            else VolumeNodeResources(),
+            "allocatable": (
+                allocatable if allocatable is not None else VolumeNodeResources()
+            ),
             "name": name if name is not None else "",
             "nodeID": node_id if node_id is not None else "",
             "topologyKeys": topology_keys if topology_keys is not None else [],
@@ -1023,8 +1037,8 @@ class CSINodeDriver(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        This is the name of the CSI driver that this object refers
-        to. This MUST be the same name returned by the CSI
+        name represents the name of the CSI driver that this object
+        refers to. This MUST be the same name returned by the CSI
         GetPluginName() call for that driver.
         """
         return typing.cast(
@@ -1035,8 +1049,8 @@ class CSINodeDriver(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        This is the name of the CSI driver that this object refers
-        to. This MUST be the same name returned by the CSI
+        name represents the name of the CSI driver that this object
+        refers to. This MUST be the same name returned by the CSI
         GetPluginName() call for that driver.
         """
         self._properties["name"] = value
@@ -1319,16 +1333,16 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
         )
         self._properties = {
             "capacity": capacity if capacity is not None else None,
-            "maximumVolumeSize": maximum_volume_size
-            if maximum_volume_size is not None
-            else None,
+            "maximumVolumeSize": (
+                maximum_volume_size if maximum_volume_size is not None else None
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "nodeTopology": node_topology
-            if node_topology is not None
-            else LabelSelector(),
-            "storageClassName": storage_class_name
-            if storage_class_name is not None
-            else "",
+            "nodeTopology": (
+                node_topology if node_topology is not None else LabelSelector()
+            ),
+            "storageClassName": (
+                storage_class_name if storage_class_name is not None else ""
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1343,7 +1357,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @property
     def capacity(self) -> typing.Optional[str]:
         """
-        Capacity is the value reported by the CSI driver in its
+        capacity is the value reported by the CSI driver in its
         GetCapacityResponse for a GetCapacityRequest with topology
         and parameters that match the previous fields.
 
@@ -1358,7 +1372,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @capacity.setter
     def capacity(self, value: typing.Union[str, int, None]):
         """
-        Capacity is the value reported by the CSI driver in its
+        capacity is the value reported by the CSI driver in its
         GetCapacityResponse for a GetCapacityRequest with topology
         and parameters that match the previous fields.
 
@@ -1372,7 +1386,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @property
     def maximum_volume_size(self) -> typing.Optional[str]:
         """
-        MaximumVolumeSize is the value reported by the CSI driver in
+        maximumVolumeSize is the value reported by the CSI driver in
         its GetCapacityResponse for a GetCapacityRequest with
         topology and parameters that match the previous fields.
 
@@ -1390,7 +1404,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @maximum_volume_size.setter
     def maximum_volume_size(self, value: typing.Union[str, int, None]):
         """
-        MaximumVolumeSize is the value reported by the CSI driver in
+        maximumVolumeSize is the value reported by the CSI driver in
         its GetCapacityResponse for a GetCapacityRequest with
         topology and parameters that match the previous fields.
 
@@ -1408,7 +1422,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     def metadata(self) -> "ObjectMeta":
         """
         Standard object's metadata. The name has no particular
-        meaning. It must be be a DNS subdomain (dots allowed, 253
+        meaning. It must be a DNS subdomain (dots allowed, 253
         characters). To ensure that there are no conflicts with
         other CSI drivers on the cluster, the recommendation is to
         use csisc-<uuid>, a generated name, or a reverse-domain name
@@ -1429,7 +1443,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     def metadata(self, value: typing.Union["ObjectMeta", dict]):
         """
         Standard object's metadata. The name has no particular
-        meaning. It must be be a DNS subdomain (dots allowed, 253
+        meaning. It must be a DNS subdomain (dots allowed, 253
         characters). To ensure that there are no conflicts with
         other CSI drivers on the cluster, the recommendation is to
         use csisc-<uuid>, a generated name, or a reverse-domain name
@@ -1451,7 +1465,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @property
     def node_topology(self) -> "LabelSelector":
         """
-        NodeTopology defines which nodes have access to the storage
+        nodeTopology defines which nodes have access to the storage
         for which capacity was reported. If not set, the storage is
         not accessible from any node in the cluster. If empty, the
         storage is accessible from all nodes. This field is
@@ -1465,7 +1479,7 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @node_topology.setter
     def node_topology(self, value: typing.Union["LabelSelector", dict]):
         """
-        NodeTopology defines which nodes have access to the storage
+        nodeTopology defines which nodes have access to the storage
         for which capacity was reported. If not set, the storage is
         not accessible from any node in the cluster. If empty, the
         storage is accessible from all nodes. This field is
@@ -1481,12 +1495,12 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @property
     def storage_class_name(self) -> str:
         """
-        The name of the StorageClass that the reported capacity
-        applies to. It must meet the same requirements as the name
-        of a StorageClass object (non-empty, DNS subdomain). If that
-        object no longer exists, the CSIStorageCapacity object is
-        obsolete and should be removed by its creator. This field is
-        immutable.
+        storageClassName represents the name of the StorageClass
+        that the reported capacity applies to. It must meet the same
+        requirements as the name of a StorageClass object (non-
+        empty, DNS subdomain). If that object no longer exists, the
+        CSIStorageCapacity object is obsolete and should be removed
+        by its creator. This field is immutable.
         """
         return typing.cast(
             str,
@@ -1496,12 +1510,12 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
     @storage_class_name.setter
     def storage_class_name(self, value: str):
         """
-        The name of the StorageClass that the reported capacity
-        applies to. It must meet the same requirements as the name
-        of a StorageClass object (non-empty, DNS subdomain). If that
-        object no longer exists, the CSIStorageCapacity object is
-        obsolete and should be removed by its creator. This field is
-        immutable.
+        storageClassName represents the name of the StorageClass
+        that the reported capacity applies to. It must meet the same
+        requirements as the name of a StorageClass object (non-
+        empty, DNS subdomain). If that object no longer exists, the
+        CSIStorageCapacity object is obsolete and should be removed
+        by its creator. This field is immutable.
         """
         self._properties["storageClassName"] = value
 
@@ -1655,7 +1669,7 @@ class CSIStorageCapacityList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["CSIStorageCapacity"]:
         """
-        Items is the list of CSIStorageCapacity objects.
+        items is the list of CSIStorageCapacity objects.
         """
         return typing.cast(
             typing.List["CSIStorageCapacity"],
@@ -1667,7 +1681,7 @@ class CSIStorageCapacityList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["CSIStorageCapacity"], typing.List[dict]]
     ):
         """
-        Items is the list of CSIStorageCapacity objects.
+        items is the list of CSIStorageCapacity objects.
         """
         cleaned: typing.List[CSIStorageCapacity] = []
         for item in value:
@@ -1749,20 +1763,20 @@ class StorageClass(_kuber_definitions.Resource):
             api_version="storage/v1", kind="StorageClass"
         )
         self._properties = {
-            "allowVolumeExpansion": allow_volume_expansion
-            if allow_volume_expansion is not None
-            else None,
-            "allowedTopologies": allowed_topologies
-            if allowed_topologies is not None
-            else [],
+            "allowVolumeExpansion": (
+                allow_volume_expansion if allow_volume_expansion is not None else None
+            ),
+            "allowedTopologies": (
+                allowed_topologies if allowed_topologies is not None else []
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "mountOptions": mount_options if mount_options is not None else [],
             "parameters": parameters if parameters is not None else {},
             "provisioner": provisioner if provisioner is not None else "",
             "reclaimPolicy": reclaim_policy if reclaim_policy is not None else "",
-            "volumeBindingMode": volume_binding_mode
-            if volume_binding_mode is not None
-            else "",
+            "volumeBindingMode": (
+                volume_binding_mode if volume_binding_mode is not None else ""
+            ),
         }
         self._types = {
             "allowVolumeExpansion": (bool, None),
@@ -1780,8 +1794,8 @@ class StorageClass(_kuber_definitions.Resource):
     @property
     def allow_volume_expansion(self) -> bool:
         """
-        AllowVolumeExpansion shows whether the storage class allow
-        volume expand
+        allowVolumeExpansion shows whether the storage class allow
+        volume expand.
         """
         return typing.cast(
             bool,
@@ -1791,17 +1805,17 @@ class StorageClass(_kuber_definitions.Resource):
     @allow_volume_expansion.setter
     def allow_volume_expansion(self, value: bool):
         """
-        AllowVolumeExpansion shows whether the storage class allow
-        volume expand
+        allowVolumeExpansion shows whether the storage class allow
+        volume expand.
         """
         self._properties["allowVolumeExpansion"] = value
 
     @property
     def allowed_topologies(self) -> typing.List["TopologySelectorTerm"]:
         """
-        Restrict the node topologies where volumes can be
-        dynamically provisioned. Each volume plugin defines its own
-        supported topology specifications. An empty
+        allowedTopologies restrict the node topologies where volumes
+        can be dynamically provisioned. Each volume plugin defines
+        its own supported topology specifications. An empty
         TopologySelectorTerm list means there is no topology
         restriction. This field is only honored by servers that
         enable the VolumeScheduling feature.
@@ -1817,9 +1831,9 @@ class StorageClass(_kuber_definitions.Resource):
         value: typing.Union[typing.List["TopologySelectorTerm"], typing.List[dict]],
     ):
         """
-        Restrict the node topologies where volumes can be
-        dynamically provisioned. Each volume plugin defines its own
-        supported topology specifications. An empty
+        allowedTopologies restrict the node topologies where volumes
+        can be dynamically provisioned. Each volume plugin defines
+        its own supported topology specifications. An empty
         TopologySelectorTerm list means there is no topology
         restriction. This field is only honored by servers that
         enable the VolumeScheduling feature.
@@ -1863,10 +1877,10 @@ class StorageClass(_kuber_definitions.Resource):
     @property
     def mount_options(self) -> typing.List[str]:
         """
-        Dynamically provisioned PersistentVolumes of this storage
-        class are created with these mountOptions, e.g. ["ro",
-        "soft"]. Not validated - mount of the PVs will simply fail
-        if one is invalid.
+        mountOptions controls the mountOptions for dynamically
+        provisioned PersistentVolumes of this storage class. e.g.
+        ["ro", "soft"]. Not validated - mount of the PVs will simply
+        fail if one is invalid.
         """
         return typing.cast(
             typing.List[str],
@@ -1876,17 +1890,17 @@ class StorageClass(_kuber_definitions.Resource):
     @mount_options.setter
     def mount_options(self, value: typing.List[str]):
         """
-        Dynamically provisioned PersistentVolumes of this storage
-        class are created with these mountOptions, e.g. ["ro",
-        "soft"]. Not validated - mount of the PVs will simply fail
-        if one is invalid.
+        mountOptions controls the mountOptions for dynamically
+        provisioned PersistentVolumes of this storage class. e.g.
+        ["ro", "soft"]. Not validated - mount of the PVs will simply
+        fail if one is invalid.
         """
         self._properties["mountOptions"] = value
 
     @property
     def parameters(self) -> dict:
         """
-        Parameters holds the parameters for the provisioner that
+        parameters holds the parameters for the provisioner that
         should create volumes of this storage class.
         """
         return typing.cast(
@@ -1897,7 +1911,7 @@ class StorageClass(_kuber_definitions.Resource):
     @parameters.setter
     def parameters(self, value: dict):
         """
-        Parameters holds the parameters for the provisioner that
+        parameters holds the parameters for the provisioner that
         should create volumes of this storage class.
         """
         self._properties["parameters"] = value
@@ -1905,7 +1919,7 @@ class StorageClass(_kuber_definitions.Resource):
     @property
     def provisioner(self) -> str:
         """
-        Provisioner indicates the type of the provisioner.
+        provisioner indicates the type of the provisioner.
         """
         return typing.cast(
             str,
@@ -1915,16 +1929,16 @@ class StorageClass(_kuber_definitions.Resource):
     @provisioner.setter
     def provisioner(self, value: str):
         """
-        Provisioner indicates the type of the provisioner.
+        provisioner indicates the type of the provisioner.
         """
         self._properties["provisioner"] = value
 
     @property
     def reclaim_policy(self) -> str:
         """
-        Dynamically provisioned PersistentVolumes of this storage
-        class are created with this reclaimPolicy. Defaults to
-        Delete.
+        reclaimPolicy controls the reclaimPolicy for dynamically
+        provisioned PersistentVolumes of this storage class.
+        Defaults to Delete.
         """
         return typing.cast(
             str,
@@ -1934,16 +1948,16 @@ class StorageClass(_kuber_definitions.Resource):
     @reclaim_policy.setter
     def reclaim_policy(self, value: str):
         """
-        Dynamically provisioned PersistentVolumes of this storage
-        class are created with this reclaimPolicy. Defaults to
-        Delete.
+        reclaimPolicy controls the reclaimPolicy for dynamically
+        provisioned PersistentVolumes of this storage class.
+        Defaults to Delete.
         """
         self._properties["reclaimPolicy"] = value
 
     @property
     def volume_binding_mode(self) -> str:
         """
-        VolumeBindingMode indicates how PersistentVolumeClaims
+        volumeBindingMode indicates how PersistentVolumeClaims
         should be provisioned and bound.  When unset,
         VolumeBindingImmediate is used. This field is only honored
         by servers that enable the VolumeScheduling feature.
@@ -1956,7 +1970,7 @@ class StorageClass(_kuber_definitions.Resource):
     @volume_binding_mode.setter
     def volume_binding_mode(self, value: str):
         """
-        VolumeBindingMode indicates how PersistentVolumeClaims
+        volumeBindingMode indicates how PersistentVolumeClaims
         should be provisioned and bound.  When unset,
         VolumeBindingImmediate is used. This field is only honored
         by servers that enable the VolumeScheduling feature.
@@ -2109,7 +2123,7 @@ class StorageClassList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["StorageClass"]:
         """
-        Items is the list of StorageClasses
+        items is the list of StorageClasses
         """
         return typing.cast(
             typing.List["StorageClass"],
@@ -2121,7 +2135,7 @@ class StorageClassList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["StorageClass"], typing.List[dict]]
     ):
         """
-        Items is the list of StorageClasses
+        items is the list of StorageClasses
         """
         cleaned: typing.List[StorageClass] = []
         for item in value:
@@ -2194,9 +2208,9 @@ class TokenRequest(_kuber_definitions.Definition):
         )
         self._properties = {
             "audience": audience if audience is not None else "",
-            "expirationSeconds": expiration_seconds
-            if expiration_seconds is not None
-            else None,
+            "expirationSeconds": (
+                expiration_seconds if expiration_seconds is not None else None
+            ),
         }
         self._types = {
             "audience": (str, None),
@@ -2206,7 +2220,7 @@ class TokenRequest(_kuber_definitions.Definition):
     @property
     def audience(self) -> str:
         """
-        Audience is the intended audience of the token in
+        audience is the intended audience of the token in
         "TokenRequestSpec". It will default to the audiences of kube
         apiserver.
         """
@@ -2218,7 +2232,7 @@ class TokenRequest(_kuber_definitions.Definition):
     @audience.setter
     def audience(self, value: str):
         """
-        Audience is the intended audience of the token in
+        audience is the intended audience of the token in
         "TokenRequestSpec". It will default to the audiences of kube
         apiserver.
         """
@@ -2227,7 +2241,7 @@ class TokenRequest(_kuber_definitions.Definition):
     @property
     def expiration_seconds(self) -> int:
         """
-        ExpirationSeconds is the duration of validity of the token
+        expirationSeconds is the duration of validity of the token
         in "TokenRequestSpec". It has the same default value of
         "ExpirationSeconds" in "TokenRequestSpec".
         """
@@ -2239,7 +2253,7 @@ class TokenRequest(_kuber_definitions.Definition):
     @expiration_seconds.setter
     def expiration_seconds(self, value: int):
         """
-        ExpirationSeconds is the duration of validity of the token
+        expirationSeconds is the duration of validity of the token
         in "TokenRequestSpec". It has the same default value of
         "ExpirationSeconds" in "TokenRequestSpec".
         """
@@ -2312,8 +2326,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     @property
     def spec(self) -> "VolumeAttachmentSpec":
         """
-        Specification of the desired attach/detach volume behavior.
-        Populated by the Kubernetes system.
+        spec represents specification of the desired attach/detach
+        volume behavior. Populated by the Kubernetes system.
         """
         return typing.cast(
             "VolumeAttachmentSpec",
@@ -2323,8 +2337,8 @@ class VolumeAttachment(_kuber_definitions.Resource):
     @spec.setter
     def spec(self, value: typing.Union["VolumeAttachmentSpec", dict]):
         """
-        Specification of the desired attach/detach volume behavior.
-        Populated by the Kubernetes system.
+        spec represents specification of the desired attach/detach
+        volume behavior. Populated by the Kubernetes system.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2336,9 +2350,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
     @property
     def status(self) -> "VolumeAttachmentStatus":
         """
-        Status of the VolumeAttachment request. Populated by the
-        entity completing the attach or detach operation, i.e. the
-        external-attacher.
+        status represents status of the VolumeAttachment request.
+        Populated by the entity completing the attach or detach
+        operation, i.e. the external-attacher.
         """
         return typing.cast(
             "VolumeAttachmentStatus",
@@ -2348,9 +2362,9 @@ class VolumeAttachment(_kuber_definitions.Resource):
     @status.setter
     def status(self, value: typing.Union["VolumeAttachmentStatus", dict]):
         """
-        Status of the VolumeAttachment request. Populated by the
-        entity completing the attach or detach operation, i.e. the
-        external-attacher.
+        status represents status of the VolumeAttachment request.
+        Populated by the entity completing the attach or detach
+        operation, i.e. the external-attacher.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2551,7 +2565,7 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["VolumeAttachment"]:
         """
-        Items is the list of VolumeAttachments
+        items is the list of VolumeAttachments
         """
         return typing.cast(
             typing.List["VolumeAttachment"],
@@ -2563,7 +2577,7 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["VolumeAttachment"], typing.List[dict]]
     ):
         """
-        Items is the list of VolumeAttachments
+        items is the list of VolumeAttachments
         """
         cleaned: typing.List[VolumeAttachment] = []
         for item in value:
@@ -2638,12 +2652,14 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
             api_version="storage/v1", kind="VolumeAttachmentSource"
         )
         self._properties = {
-            "inlineVolumeSpec": inline_volume_spec
-            if inline_volume_spec is not None
-            else PersistentVolumeSpec(),
-            "persistentVolumeName": persistent_volume_name
-            if persistent_volume_name is not None
-            else "",
+            "inlineVolumeSpec": (
+                inline_volume_spec
+                if inline_volume_spec is not None
+                else PersistentVolumeSpec()
+            ),
+            "persistentVolumeName": (
+                persistent_volume_name if persistent_volume_name is not None else ""
+            ),
         }
         self._types = {
             "inlineVolumeSpec": (PersistentVolumeSpec, None),
@@ -2687,7 +2703,8 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
     @property
     def persistent_volume_name(self) -> str:
         """
-        Name of the persistent volume to attach.
+        persistentVolumeName represents the name of the persistent
+        volume to attach.
         """
         return typing.cast(
             str,
@@ -2697,7 +2714,8 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
     @persistent_volume_name.setter
     def persistent_volume_name(self, value: str):
         """
-        Name of the persistent volume to attach.
+        persistentVolumeName represents the name of the persistent
+        volume to attach.
         """
         self._properties["persistentVolumeName"] = value
 
@@ -2738,7 +2756,7 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
     @property
     def attacher(self) -> str:
         """
-        Attacher indicates the name of the volume driver that MUST
+        attacher indicates the name of the volume driver that MUST
         handle this request. This is the name returned by
         GetPluginName().
         """
@@ -2750,7 +2768,7 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
     @attacher.setter
     def attacher(self, value: str):
         """
-        Attacher indicates the name of the volume driver that MUST
+        attacher indicates the name of the volume driver that MUST
         handle this request. This is the name returned by
         GetPluginName().
         """
@@ -2759,7 +2777,8 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
     @property
     def node_name(self) -> str:
         """
-        The node that the volume should be attached to.
+        nodeName represents the node that the volume should be
+        attached to.
         """
         return typing.cast(
             str,
@@ -2769,14 +2788,15 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
     @node_name.setter
     def node_name(self, value: str):
         """
-        The node that the volume should be attached to.
+        nodeName represents the node that the volume should be
+        attached to.
         """
         self._properties["nodeName"] = value
 
     @property
     def source(self) -> "VolumeAttachmentSource":
         """
-        Source represents the volume that should be attached.
+        source represents the volume that should be attached.
         """
         return typing.cast(
             "VolumeAttachmentSource",
@@ -2786,7 +2806,7 @@ class VolumeAttachmentSpec(_kuber_definitions.Definition):
     @source.setter
     def source(self, value: typing.Union["VolumeAttachmentSource", dict]):
         """
-        Source represents the volume that should be attached.
+        source represents the volume that should be attached.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2822,9 +2842,9 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
         self._properties = {
             "attachError": attach_error if attach_error is not None else VolumeError(),
             "attached": attached if attached is not None else None,
-            "attachmentMetadata": attachment_metadata
-            if attachment_metadata is not None
-            else {},
+            "attachmentMetadata": (
+                attachment_metadata if attachment_metadata is not None else {}
+            ),
             "detachError": detach_error if detach_error is not None else VolumeError(),
         }
         self._types = {
@@ -2837,9 +2857,10 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
     @property
     def attach_error(self) -> "VolumeError":
         """
-        The last error encountered during attach operation, if any.
-        This field must only be set by the entity completing the
-        attach operation, i.e. the external-attacher.
+        attachError represents the last error encountered during
+        attach operation, if any. This field must only be set by the
+        entity completing the attach operation, i.e. the external-
+        attacher.
         """
         return typing.cast(
             "VolumeError",
@@ -2849,9 +2870,10 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
     @attach_error.setter
     def attach_error(self, value: typing.Union["VolumeError", dict]):
         """
-        The last error encountered during attach operation, if any.
-        This field must only be set by the entity completing the
-        attach operation, i.e. the external-attacher.
+        attachError represents the last error encountered during
+        attach operation, if any. This field must only be set by the
+        entity completing the attach operation, i.e. the external-
+        attacher.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2863,8 +2885,8 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
     @property
     def attached(self) -> bool:
         """
-        Indicates the volume is successfully attached. This field
-        must only be set by the entity completing the attach
+        attached indicates the volume is successfully attached. This
+        field must only be set by the entity completing the attach
         operation, i.e. the external-attacher.
         """
         return typing.cast(
@@ -2875,8 +2897,8 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
     @attached.setter
     def attached(self, value: bool):
         """
-        Indicates the volume is successfully attached. This field
-        must only be set by the entity completing the attach
+        attached indicates the volume is successfully attached. This
+        field must only be set by the entity completing the attach
         operation, i.e. the external-attacher.
         """
         self._properties["attached"] = value
@@ -2884,11 +2906,11 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
     @property
     def attachment_metadata(self) -> dict:
         """
-        Upon successful attach, this field is populated with any
-        information returned by the attach operation that must be
-        passed into subsequent WaitForAttach or Mount calls. This
-        field must only be set by the entity completing the attach
-        operation, i.e. the external-attacher.
+        attachmentMetadata is populated with any information
+        returned by the attach operation, upon successful attach,
+        that must be passed into subsequent WaitForAttach or Mount
+        calls. This field must only be set by the entity completing
+        the attach operation, i.e. the external-attacher.
         """
         return typing.cast(
             dict,
@@ -2898,20 +2920,21 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
     @attachment_metadata.setter
     def attachment_metadata(self, value: dict):
         """
-        Upon successful attach, this field is populated with any
-        information returned by the attach operation that must be
-        passed into subsequent WaitForAttach or Mount calls. This
-        field must only be set by the entity completing the attach
-        operation, i.e. the external-attacher.
+        attachmentMetadata is populated with any information
+        returned by the attach operation, upon successful attach,
+        that must be passed into subsequent WaitForAttach or Mount
+        calls. This field must only be set by the entity completing
+        the attach operation, i.e. the external-attacher.
         """
         self._properties["attachmentMetadata"] = value
 
     @property
     def detach_error(self) -> "VolumeError":
         """
-        The last error encountered during detach operation, if any.
-        This field must only be set by the entity completing the
-        detach operation, i.e. the external-attacher.
+        detachError represents the last error encountered during
+        detach operation, if any. This field must only be set by the
+        entity completing the detach operation, i.e. the external-
+        attacher.
         """
         return typing.cast(
             "VolumeError",
@@ -2921,9 +2944,10 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
     @detach_error.setter
     def detach_error(self, value: typing.Union["VolumeError", dict]):
         """
-        The last error encountered during detach operation, if any.
-        This field must only be set by the entity completing the
-        detach operation, i.e. the external-attacher.
+        detachError represents the last error encountered during
+        detach operation, if any. This field must only be set by the
+        entity completing the detach operation, i.e. the external-
+        attacher.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2964,7 +2988,7 @@ class VolumeError(_kuber_definitions.Definition):
     @property
     def message(self) -> str:
         """
-        String detailing the error encountered during Attach or
+        message represents the error encountered during Attach or
         Detach operation. This string may be logged, so it should
         not contain sensitive information.
         """
@@ -2976,7 +3000,7 @@ class VolumeError(_kuber_definitions.Definition):
     @message.setter
     def message(self, value: str):
         """
-        String detailing the error encountered during Attach or
+        message represents the error encountered during Attach or
         Detach operation. This string may be logged, so it should
         not contain sensitive information.
         """
@@ -2985,7 +3009,7 @@ class VolumeError(_kuber_definitions.Definition):
     @property
     def time(self) -> str:
         """
-        Time the error was encountered.
+        time represents the time the error was encountered.
         """
         return typing.cast(
             str,
@@ -2995,7 +3019,7 @@ class VolumeError(_kuber_definitions.Definition):
     @time.setter
     def time(self, value: typing.Union[str, _datetime.datetime, _datetime.date]):
         """
-        Time the error was encountered.
+        time represents the time the error was encountered.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -3034,13 +3058,13 @@ class VolumeNodeResources(_kuber_definitions.Definition):
     @property
     def count(self) -> int:
         """
-        Maximum number of unique volumes managed by the CSI driver
-        that can be used on a node. A volume that is both attached
-        and mounted on a node is considered to be used once, not
-        twice. The same rule applies for a unique volume that is
-        shared among multiple pods on the same node. If this field
-        is not specified, then the supported number of volumes on
-        this node is unbounded.
+        count indicates the maximum number of unique volumes managed
+        by the CSI driver that can be used on a node. A volume that
+        is both attached and mounted on a node is considered to be
+        used once, not twice. The same rule applies for a unique
+        volume that is shared among multiple pods on the same node.
+        If this field is not specified, then the supported number of
+        volumes on this node is unbounded.
         """
         return typing.cast(
             int,
@@ -3050,13 +3074,13 @@ class VolumeNodeResources(_kuber_definitions.Definition):
     @count.setter
     def count(self, value: int):
         """
-        Maximum number of unique volumes managed by the CSI driver
-        that can be used on a node. A volume that is both attached
-        and mounted on a node is considered to be used once, not
-        twice. The same rule applies for a unique volume that is
-        shared among multiple pods on the same node. If this field
-        is not specified, then the supported number of volumes on
-        this node is unbounded.
+        count indicates the maximum number of unique volumes managed
+        by the CSI driver that can be used on a node. A volume that
+        is both attached and mounted on a node is considered to be
+        used once, not twice. The same rule applies for a unique
+        volume that is shared among multiple pods on the same node.
+        If this field is not specified, then the supported number of
+        volumes on this node is unbounded.
         """
         self._properties["count"] = value
 

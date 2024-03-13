@@ -314,12 +314,12 @@ class LeaseSpec(_kuber_definitions.Definition):
         self._properties = {
             "acquireTime": acquire_time if acquire_time is not None else MicroTime(),
             "holderIdentity": holder_identity if holder_identity is not None else "",
-            "leaseDurationSeconds": lease_duration_seconds
-            if lease_duration_seconds is not None
-            else None,
-            "leaseTransitions": lease_transitions
-            if lease_transitions is not None
-            else None,
+            "leaseDurationSeconds": (
+                lease_duration_seconds if lease_duration_seconds is not None else None
+            ),
+            "leaseTransitions": (
+                lease_transitions if lease_transitions is not None else None
+            ),
             "renewTime": renew_time if renew_time is not None else MicroTime(),
         }
         self._types = {

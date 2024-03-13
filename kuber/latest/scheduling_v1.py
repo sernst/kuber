@@ -32,9 +32,9 @@ class PriorityClass(_kuber_definitions.Resource):
             "description": description if description is not None else "",
             "globalDefault": global_default if global_default is not None else None,
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "preemptionPolicy": preemption_policy
-            if preemption_policy is not None
-            else "",
+            "preemptionPolicy": (
+                preemption_policy if preemption_policy is not None else ""
+            ),
             "value": value if value is not None else None,
         }
         self._types = {
@@ -124,7 +124,7 @@ class PriorityClass(_kuber_definitions.Resource):
     @property
     def preemption_policy(self) -> str:
         """
-        PreemptionPolicy is the Policy for preempting pods with
+        preemptionPolicy is the Policy for preempting pods with
         lower priority. One of Never, PreemptLowerPriority. Defaults
         to PreemptLowerPriority if unset.
         """
@@ -136,7 +136,7 @@ class PriorityClass(_kuber_definitions.Resource):
     @preemption_policy.setter
     def preemption_policy(self, value: str):
         """
-        PreemptionPolicy is the Policy for preempting pods with
+        preemptionPolicy is the Policy for preempting pods with
         lower priority. One of Never, PreemptLowerPriority. Defaults
         to PreemptLowerPriority if unset.
         """
@@ -145,9 +145,9 @@ class PriorityClass(_kuber_definitions.Resource):
     @property
     def value(self) -> int:
         """
-        The value of this priority class. This is the actual
-        priority that pods receive when they have the name of this
-        class in their pod spec.
+        value represents the integer value of this priority class.
+        This is the actual priority that pods receive when they have
+        the name of this class in their pod spec.
         """
         return typing.cast(
             int,
@@ -157,9 +157,9 @@ class PriorityClass(_kuber_definitions.Resource):
     @value.setter
     def value(self, value: int):
         """
-        The value of this priority class. This is the actual
-        priority that pods receive when they have the name of this
-        class in their pod spec.
+        value represents the integer value of this priority class.
+        This is the actual priority that pods receive when they have
+        the name of this class in their pod spec.
         """
         self._properties["value"] = value
 

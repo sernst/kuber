@@ -30,9 +30,9 @@ class Endpoint(_kuber_definitions.Definition):
         super(Endpoint, self).__init__(api_version="discovery/v1beta1", kind="Endpoint")
         self._properties = {
             "addresses": addresses if addresses is not None else [],
-            "conditions": conditions
-            if conditions is not None
-            else EndpointConditions(),
+            "conditions": (
+                conditions if conditions is not None else EndpointConditions()
+            ),
             "hints": hints if hints is not None else EndpointHints(),
             "hostname": hostname if hostname is not None else "",
             "nodeName": node_name if node_name is not None else "",

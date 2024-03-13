@@ -398,12 +398,14 @@ class TokenRequestSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "audiences": audiences if audiences is not None else [],
-            "boundObjectRef": bound_object_ref
-            if bound_object_ref is not None
-            else BoundObjectReference(),
-            "expirationSeconds": expiration_seconds
-            if expiration_seconds is not None
-            else None,
+            "boundObjectRef": (
+                bound_object_ref
+                if bound_object_ref is not None
+                else BoundObjectReference()
+            ),
+            "expirationSeconds": (
+                expiration_seconds if expiration_seconds is not None else None
+            ),
         }
         self._types = {
             "audiences": (list, str),
@@ -517,9 +519,9 @@ class TokenRequestStatus(_kuber_definitions.Definition):
             api_version="authentication/v1", kind="TokenRequestStatus"
         )
         self._properties = {
-            "expirationTimestamp": expiration_timestamp
-            if expiration_timestamp is not None
-            else None,
+            "expirationTimestamp": (
+                expiration_timestamp if expiration_timestamp is not None else None
+            ),
             "token": token if token is not None else "",
         }
         self._types = {

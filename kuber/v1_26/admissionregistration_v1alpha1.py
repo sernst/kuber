@@ -33,16 +33,18 @@ class MatchResources(_kuber_definitions.Definition):
             api_version="admissionregistration/v1alpha1", kind="MatchResources"
         )
         self._properties = {
-            "excludeResourceRules": exclude_resource_rules
-            if exclude_resource_rules is not None
-            else [],
+            "excludeResourceRules": (
+                exclude_resource_rules if exclude_resource_rules is not None else []
+            ),
             "matchPolicy": match_policy if match_policy is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
         }
         self._types = {
@@ -896,9 +898,9 @@ class ValidatingAdmissionPolicyBinding(_kuber_definitions.Resource):
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "spec": spec
-            if spec is not None
-            else ValidatingAdmissionPolicyBindingSpec(),
+            "spec": (
+                spec if spec is not None else ValidatingAdmissionPolicyBindingSpec()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1204,9 +1206,9 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
             kind="ValidatingAdmissionPolicyBindingSpec",
         )
         self._properties = {
-            "matchResources": match_resources
-            if match_resources is not None
-            else MatchResources(),
+            "matchResources": (
+                match_resources if match_resources is not None else MatchResources()
+            ),
             "paramRef": param_ref if param_ref is not None else ParamRef(),
             "policyName": policy_name if policy_name is not None else "",
         }
@@ -1442,9 +1444,9 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "failurePolicy": failure_policy if failure_policy is not None else "",
-            "matchConstraints": match_constraints
-            if match_constraints is not None
-            else MatchResources(),
+            "matchConstraints": (
+                match_constraints if match_constraints is not None else MatchResources()
+            ),
             "paramKind": param_kind if param_kind is not None else ParamKind(),
             "validations": validations if validations is not None else [],
         }

@@ -57,16 +57,16 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
         )
         self._properties = {
             "capacity": capacity if capacity is not None else None,
-            "maximumVolumeSize": maximum_volume_size
-            if maximum_volume_size is not None
-            else None,
+            "maximumVolumeSize": (
+                maximum_volume_size if maximum_volume_size is not None else None
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "nodeTopology": node_topology
-            if node_topology is not None
-            else LabelSelector(),
-            "storageClassName": storage_class_name
-            if storage_class_name is not None
-            else "",
+            "nodeTopology": (
+                node_topology if node_topology is not None else LabelSelector()
+            ),
+            "storageClassName": (
+                storage_class_name if storage_class_name is not None else ""
+            ),
         }
         self._types = {
             "apiVersion": (str, None),

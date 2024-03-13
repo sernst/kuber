@@ -29,9 +29,9 @@ class AllocationResult(_kuber_definitions.Definition):
             api_version="resource/v1alpha1", kind="AllocationResult"
         )
         self._properties = {
-            "availableOnNodes": available_on_nodes
-            if available_on_nodes is not None
-            else NodeSelector(),
+            "availableOnNodes": (
+                available_on_nodes if available_on_nodes is not None else NodeSelector()
+            ),
             "resourceHandle": resource_handle if resource_handle is not None else "",
             "shareable": shareable if shareable is not None else None,
         }
@@ -1291,12 +1291,14 @@ class ResourceClaimSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "allocationMode": allocation_mode if allocation_mode is not None else "",
-            "parametersRef": parameters_ref
-            if parameters_ref is not None
-            else ResourceClaimParametersReference(),
-            "resourceClassName": resource_class_name
-            if resource_class_name is not None
-            else "",
+            "parametersRef": (
+                parameters_ref
+                if parameters_ref is not None
+                else ResourceClaimParametersReference()
+            ),
+            "resourceClassName": (
+                resource_class_name if resource_class_name is not None else ""
+            ),
         }
         self._types = {
             "allocationMode": (str, None),
@@ -1406,9 +1408,9 @@ class ResourceClaimStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "allocation": allocation if allocation is not None else AllocationResult(),
-            "deallocationRequested": deallocation_requested
-            if deallocation_requested is not None
-            else None,
+            "deallocationRequested": (
+                deallocation_requested if deallocation_requested is not None else None
+            ),
             "driverName": driver_name if driver_name is not None else "",
             "reservedFor": reserved_for if reserved_for is not None else [],
         }
@@ -1950,12 +1952,14 @@ class ResourceClass(_kuber_definitions.Resource):
         self._properties = {
             "driverName": driver_name if driver_name is not None else "",
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "parametersRef": parameters_ref
-            if parameters_ref is not None
-            else ResourceClassParametersReference(),
-            "suitableNodes": suitable_nodes
-            if suitable_nodes is not None
-            else NodeSelector(),
+            "parametersRef": (
+                parameters_ref
+                if parameters_ref is not None
+                else ResourceClassParametersReference()
+            ),
+            "suitableNodes": (
+                suitable_nodes if suitable_nodes is not None else NodeSelector()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),

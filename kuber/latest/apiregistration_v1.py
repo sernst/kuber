@@ -295,9 +295,9 @@ class APIServiceCondition(_kuber_definitions.Definition):
             api_version="apiregistration.k8s.io/v1", kind="APIServiceCondition"
         )
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
@@ -536,17 +536,17 @@ class APIServiceSpec(_kuber_definitions.Definition):
         self._properties = {
             "caBundle": ca_bundle if ca_bundle is not None else "",
             "group": group if group is not None else "",
-            "groupPriorityMinimum": group_priority_minimum
-            if group_priority_minimum is not None
-            else None,
-            "insecureSkipTLSVerify": insecure_skip_tlsverify
-            if insecure_skip_tlsverify is not None
-            else None,
+            "groupPriorityMinimum": (
+                group_priority_minimum if group_priority_minimum is not None else None
+            ),
+            "insecureSkipTLSVerify": (
+                insecure_skip_tlsverify if insecure_skip_tlsverify is not None else None
+            ),
             "service": service if service is not None else ServiceReference(),
             "version": version if version is not None else "",
-            "versionPriority": version_priority
-            if version_priority is not None
-            else None,
+            "versionPriority": (
+                version_priority if version_priority is not None else None
+            ),
         }
         self._types = {
             "caBundle": (str, None),
@@ -599,11 +599,11 @@ class APIServiceSpec(_kuber_definitions.Definition):
     @property
     def group_priority_minimum(self) -> int:
         """
-        GroupPriorityMininum is the priority this group should have
+        GroupPriorityMinimum is the priority this group should have
         at least. Higher priority means that the group is preferred
         by clients over lower priority ones. Note that other
         versions of this group might specify even higher
-        GroupPriorityMininum values such that the whole group gets a
+        GroupPriorityMinimum values such that the whole group gets a
         higher priority. The primary sort is based on
         GroupPriorityMinimum, ordered highest number to lowest (20
         before 10). The secondary sort is based on the alphabetical
@@ -620,11 +620,11 @@ class APIServiceSpec(_kuber_definitions.Definition):
     @group_priority_minimum.setter
     def group_priority_minimum(self, value: int):
         """
-        GroupPriorityMininum is the priority this group should have
+        GroupPriorityMinimum is the priority this group should have
         at least. Higher priority means that the group is preferred
         by clients over lower priority ones. Note that other
         versions of this group might specify even higher
-        GroupPriorityMininum values such that the whole group gets a
+        GroupPriorityMinimum values such that the whole group gets a
         higher priority. The primary sort is based on
         GroupPriorityMinimum, ordered highest number to lowest (20
         before 10). The secondary sort is based on the alphabetical

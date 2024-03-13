@@ -31,12 +31,16 @@ class APIGroup(_kuber_definitions.Definition):
             "apiVersion": api_version if api_version is not None else "",
             "kind": kind if kind is not None else "",
             "name": name if name is not None else "",
-            "preferredVersion": preferred_version
-            if preferred_version is not None
-            else GroupVersionForDiscovery(),
-            "serverAddressByClientCIDRs": server_address_by_client_cidrs
-            if server_address_by_client_cidrs is not None
-            else [],
+            "preferredVersion": (
+                preferred_version
+                if preferred_version is not None
+                else GroupVersionForDiscovery()
+            ),
+            "serverAddressByClientCIDRs": (
+                server_address_by_client_cidrs
+                if server_address_by_client_cidrs is not None
+                else []
+            ),
             "versions": versions if versions is not None else [],
         }
         self._types = {
@@ -370,9 +374,9 @@ class APIResource(_kuber_definitions.Definition):
             "namespaced": namespaced if namespaced is not None else None,
             "shortNames": short_names if short_names is not None else [],
             "singularName": singular_name if singular_name is not None else "",
-            "storageVersionHash": storage_version_hash
-            if storage_version_hash is not None
-            else "",
+            "storageVersionHash": (
+                storage_version_hash if storage_version_hash is not None else ""
+            ),
             "verbs": verbs if verbs is not None else [],
             "version": version if version is not None else "",
         }
@@ -771,9 +775,11 @@ class APIVersions(_kuber_definitions.Definition):
         self._properties = {
             "apiVersion": api_version if api_version is not None else "",
             "kind": kind if kind is not None else "",
-            "serverAddressByClientCIDRs": server_address_by_client_cidrs
-            if server_address_by_client_cidrs is not None
-            else [],
+            "serverAddressByClientCIDRs": (
+                server_address_by_client_cidrs
+                if server_address_by_client_cidrs is not None
+                else []
+            ),
             "versions": versions if versions is not None else [],
         }
         self._types = {
@@ -931,13 +937,13 @@ class Condition(_kuber_definitions.Definition):
         """Create Condition instance."""
         super(Condition, self).__init__(api_version="meta/v1", kind="Condition")
         self._properties = {
-            "lastTransitionTime": last_transition_time
-            if last_transition_time is not None
-            else None,
+            "lastTransitionTime": (
+                last_transition_time if last_transition_time is not None else None
+            ),
             "message": message if message is not None else "",
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
             "type": type_ if type_ is not None else "",
@@ -1118,19 +1124,19 @@ class DeleteOptions(_kuber_definitions.Definition):
         self._properties = {
             "apiVersion": api_version if api_version is not None else "",
             "dryRun": dry_run if dry_run is not None else [],
-            "gracePeriodSeconds": grace_period_seconds
-            if grace_period_seconds is not None
-            else None,
+            "gracePeriodSeconds": (
+                grace_period_seconds if grace_period_seconds is not None else None
+            ),
             "kind": kind if kind is not None else "",
-            "orphanDependents": orphan_dependents
-            if orphan_dependents is not None
-            else None,
-            "preconditions": preconditions
-            if preconditions is not None
-            else Preconditions(),
-            "propagationPolicy": propagation_policy
-            if propagation_policy is not None
-            else "",
+            "orphanDependents": (
+                orphan_dependents if orphan_dependents is not None else None
+            ),
+            "preconditions": (
+                preconditions if preconditions is not None else Preconditions()
+            ),
+            "propagationPolicy": (
+                propagation_policy if propagation_policy is not None else ""
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1462,9 +1468,9 @@ class LabelSelector(_kuber_definitions.Definition):
         """Create LabelSelector instance."""
         super(LabelSelector, self).__init__(api_version="meta/v1", kind="LabelSelector")
         self._properties = {
-            "matchExpressions": match_expressions
-            if match_expressions is not None
-            else [],
+            "matchExpressions": (
+                match_expressions if match_expressions is not None else []
+            ),
             "matchLabels": match_labels if match_labels is not None else {},
         }
         self._types = {
@@ -1648,9 +1654,9 @@ class ListMeta(_kuber_definitions.Definition):
         super(ListMeta, self).__init__(api_version="meta/v1", kind="ListMeta")
         self._properties = {
             "continue": continue_ if continue_ is not None else "",
-            "remainingItemCount": remaining_item_count
-            if remaining_item_count is not None
-            else None,
+            "remainingItemCount": (
+                remaining_item_count if remaining_item_count is not None else None
+            ),
             "resourceVersion": resource_version if resource_version is not None else "",
             "selfLink": self_link if self_link is not None else "",
         }
@@ -2061,15 +2067,17 @@ class ObjectMeta(_kuber_definitions.Definition):
         super(ObjectMeta, self).__init__(api_version="meta/v1", kind="ObjectMeta")
         self._properties = {
             "annotations": annotations if annotations is not None else {},
-            "creationTimestamp": creation_timestamp
-            if creation_timestamp is not None
-            else None,
-            "deletionGracePeriodSeconds": deletion_grace_period_seconds
-            if deletion_grace_period_seconds is not None
-            else None,
-            "deletionTimestamp": deletion_timestamp
-            if deletion_timestamp is not None
-            else None,
+            "creationTimestamp": (
+                creation_timestamp if creation_timestamp is not None else None
+            ),
+            "deletionGracePeriodSeconds": (
+                deletion_grace_period_seconds
+                if deletion_grace_period_seconds is not None
+                else None
+            ),
+            "deletionTimestamp": (
+                deletion_timestamp if deletion_timestamp is not None else None
+            ),
             "finalizers": finalizers if finalizers is not None else [],
             "generateName": generate_name if generate_name is not None else "",
             "generation": generation if generation is not None else None,
@@ -2649,9 +2657,9 @@ class OwnerReference(_kuber_definitions.Definition):
         )
         self._properties = {
             "apiVersion": api_version if api_version is not None else "",
-            "blockOwnerDeletion": block_owner_deletion
-            if block_owner_deletion is not None
-            else None,
+            "blockOwnerDeletion": (
+                block_owner_deletion if block_owner_deletion is not None else None
+            ),
             "controller": controller if controller is not None else None,
             "kind": kind if kind is not None else "",
             "name": name if name is not None else "",
@@ -3325,9 +3333,9 @@ class StatusDetails(_kuber_definitions.Definition):
             "group": group if group is not None else "",
             "kind": kind if kind is not None else "",
             "name": name if name is not None else "",
-            "retryAfterSeconds": retry_after_seconds
-            if retry_after_seconds is not None
-            else None,
+            "retryAfterSeconds": (
+                retry_after_seconds if retry_after_seconds is not None else None
+            ),
             "uid": uid if uid is not None else "",
         }
         self._types = {

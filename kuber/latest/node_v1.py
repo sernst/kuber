@@ -32,7 +32,7 @@ class Overhead(_kuber_definitions.Definition):
     @property
     def pod_fixed(self) -> dict:
         """
-        PodFixed represents the fixed resource overhead associated
+        podFixed represents the fixed resource overhead associated
         with running a pod.
         """
         return typing.cast(
@@ -43,7 +43,7 @@ class Overhead(_kuber_definitions.Definition):
     @pod_fixed.setter
     def pod_fixed(self, value: dict):
         """
-        PodFixed represents the fixed resource overhead associated
+        podFixed represents the fixed resource overhead associated
         with running a pod.
         """
         self._properties["podFixed"] = value
@@ -95,7 +95,7 @@ class RuntimeClass(_kuber_definitions.Resource):
     @property
     def handler(self) -> str:
         """
-        Handler specifies the underlying runtime and configuration
+        handler specifies the underlying runtime and configuration
         that the CRI implementation will use to handle pods of this
         class. The possible values are specific to the node & CRI
         configuration.  It is assumed that all handlers are
@@ -114,7 +114,7 @@ class RuntimeClass(_kuber_definitions.Resource):
     @handler.setter
     def handler(self, value: str):
         """
-        Handler specifies the underlying runtime and configuration
+        handler specifies the underlying runtime and configuration
         that the CRI implementation will use to handle pods of this
         class. The possible values are specific to the node & CRI
         configuration.  It is assumed that all handlers are
@@ -156,7 +156,7 @@ class RuntimeClass(_kuber_definitions.Resource):
     @property
     def overhead(self) -> "Overhead":
         """
-        Overhead represents the resource overhead associated with
+        overhead represents the resource overhead associated with
         running a pod for a given RuntimeClass. For more details,
         see
          https://kubernetes.io/docs/concepts/scheduling-
@@ -170,7 +170,7 @@ class RuntimeClass(_kuber_definitions.Resource):
     @overhead.setter
     def overhead(self, value: typing.Union["Overhead", dict]):
         """
-        Overhead represents the resource overhead associated with
+        overhead represents the resource overhead associated with
         running a pod for a given RuntimeClass. For more details,
         see
          https://kubernetes.io/docs/concepts/scheduling-
@@ -186,7 +186,7 @@ class RuntimeClass(_kuber_definitions.Resource):
     @property
     def scheduling(self) -> "Scheduling":
         """
-        Scheduling holds the scheduling constraints to ensure that
+        scheduling holds the scheduling constraints to ensure that
         pods running with this RuntimeClass are scheduled to nodes
         that support it. If scheduling is nil, this RuntimeClass is
         assumed to be supported by all nodes.
@@ -199,7 +199,7 @@ class RuntimeClass(_kuber_definitions.Resource):
     @scheduling.setter
     def scheduling(self, value: typing.Union["Scheduling", dict]):
         """
-        Scheduling holds the scheduling constraints to ensure that
+        scheduling holds the scheduling constraints to ensure that
         pods running with this RuntimeClass are scheduled to nodes
         that support it. If scheduling is nil, this RuntimeClass is
         assumed to be supported by all nodes.
@@ -357,7 +357,7 @@ class RuntimeClassList(_kuber_definitions.Collection):
     @property
     def items(self) -> typing.List["RuntimeClass"]:
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         return typing.cast(
             typing.List["RuntimeClass"],
@@ -369,7 +369,7 @@ class RuntimeClassList(_kuber_definitions.Collection):
         self, value: typing.Union[typing.List["RuntimeClass"], typing.List[dict]]
     ):
         """
-        Items is a list of schema objects.
+        items is a list of schema objects.
         """
         cleaned: typing.List[RuntimeClass] = []
         for item in value:

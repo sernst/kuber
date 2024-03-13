@@ -32,9 +32,9 @@ class PriorityClass(_kuber_definitions.Resource):
             "description": description if description is not None else "",
             "globalDefault": global_default if global_default is not None else None,
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "preemptionPolicy": preemption_policy
-            if preemption_policy is not None
-            else "",
+            "preemptionPolicy": (
+                preemption_policy if preemption_policy is not None else ""
+            ),
             "value": value if value is not None else None,
         }
         self._types = {

@@ -30,9 +30,9 @@ class Eviction(_kuber_definitions.Resource):
         """Create Eviction instance."""
         super(Eviction, self).__init__(api_version="policy/v1", kind="Eviction")
         self._properties = {
-            "deleteOptions": delete_options
-            if delete_options is not None
-            else DeleteOptions(),
+            "deleteOptions": (
+                delete_options if delete_options is not None else DeleteOptions()
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
         }
         self._types = {
@@ -596,9 +596,11 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
             "maxUnavailable": max_unavailable if max_unavailable is not None else None,
             "minAvailable": min_available if min_available is not None else None,
             "selector": selector if selector is not None else LabelSelector(),
-            "unhealthyPodEvictionPolicy": unhealthy_pod_eviction_policy
-            if unhealthy_pod_eviction_policy is not None
-            else "",
+            "unhealthyPodEvictionPolicy": (
+                unhealthy_pod_eviction_policy
+                if unhealthy_pod_eviction_policy is not None
+                else ""
+            ),
         }
         self._types = {
             "maxUnavailable": (_types.integer_or_string, None),
@@ -717,9 +719,9 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         unhealthy pods if they encounter an unrecognized policy in
         this field.
 
-        This field is alpha-level. The eviction API uses this field
+        This field is beta-level. The eviction API uses this field
         when the feature gate PDBUnhealthyPodEvictionPolicy is
-        enabled (disabled by default).
+        enabled (enabled by default).
         """
         return typing.cast(
             str,
@@ -758,9 +760,9 @@ class PodDisruptionBudgetSpec(_kuber_definitions.Definition):
         unhealthy pods if they encounter an unrecognized policy in
         this field.
 
-        This field is alpha-level. The eviction API uses this field
+        This field is beta-level. The eviction API uses this field
         when the feature gate PDBUnhealthyPodEvictionPolicy is
-        enabled (disabled by default).
+        enabled (enabled by default).
         """
         self._properties["unhealthyPodEvictionPolicy"] = value
 
@@ -797,13 +799,13 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
             "currentHealthy": current_healthy if current_healthy is not None else None,
             "desiredHealthy": desired_healthy if desired_healthy is not None else None,
             "disruptedPods": disrupted_pods if disrupted_pods is not None else {},
-            "disruptionsAllowed": disruptions_allowed
-            if disruptions_allowed is not None
-            else None,
+            "disruptionsAllowed": (
+                disruptions_allowed if disruptions_allowed is not None else None
+            ),
             "expectedPods": expected_pods if expected_pods is not None else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
         }
         self._types = {
             "conditions": (list, Condition),

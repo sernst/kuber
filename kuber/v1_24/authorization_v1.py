@@ -372,9 +372,9 @@ class NonResourceRule(_kuber_definitions.Definition):
             api_version="authorization/v1", kind="NonResourceRule"
         )
         self._properties = {
-            "nonResourceURLs": non_resource_urls
-            if non_resource_urls is not None
-            else [],
+            "nonResourceURLs": (
+                non_resource_urls if non_resource_urls is not None else []
+            ),
             "verbs": verbs if verbs is not None else [],
         }
         self._types = {
@@ -1036,12 +1036,16 @@ class SelfSubjectAccessReviewSpec(_kuber_definitions.Definition):
             api_version="authorization/v1", kind="SelfSubjectAccessReviewSpec"
         )
         self._properties = {
-            "nonResourceAttributes": non_resource_attributes
-            if non_resource_attributes is not None
-            else NonResourceAttributes(),
-            "resourceAttributes": resource_attributes
-            if resource_attributes is not None
-            else ResourceAttributes(),
+            "nonResourceAttributes": (
+                non_resource_attributes
+                if non_resource_attributes is not None
+                else NonResourceAttributes()
+            ),
+            "resourceAttributes": (
+                resource_attributes
+                if resource_attributes is not None
+                else ResourceAttributes()
+            ),
         }
         self._types = {
             "nonResourceAttributes": (NonResourceAttributes, None),
@@ -1729,12 +1733,16 @@ class SubjectAccessReviewSpec(_kuber_definitions.Definition):
         self._properties = {
             "extra": extra if extra is not None else {},
             "groups": groups if groups is not None else [],
-            "nonResourceAttributes": non_resource_attributes
-            if non_resource_attributes is not None
-            else NonResourceAttributes(),
-            "resourceAttributes": resource_attributes
-            if resource_attributes is not None
-            else ResourceAttributes(),
+            "nonResourceAttributes": (
+                non_resource_attributes
+                if non_resource_attributes is not None
+                else NonResourceAttributes()
+            ),
+            "resourceAttributes": (
+                resource_attributes
+                if resource_attributes is not None
+                else ResourceAttributes()
+            ),
             "uid": uid if uid is not None else "",
             "user": user if user is not None else "",
         }
@@ -2031,9 +2039,9 @@ class SubjectRulesReviewStatus(_kuber_definitions.Definition):
         self._properties = {
             "evaluationError": evaluation_error if evaluation_error is not None else "",
             "incomplete": incomplete if incomplete is not None else None,
-            "nonResourceRules": non_resource_rules
-            if non_resource_rules is not None
-            else [],
+            "nonResourceRules": (
+                non_resource_rules if non_resource_rules is not None else []
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
         }
         self._types = {

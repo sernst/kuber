@@ -165,25 +165,29 @@ class MutatingWebhook(_kuber_definitions.Definition):
             api_version="admissionregistration/v1", kind="MutatingWebhook"
         )
         self._properties = {
-            "admissionReviewVersions": admission_review_versions
-            if admission_review_versions is not None
-            else [],
-            "clientConfig": client_config
-            if client_config is not None
-            else WebhookClientConfig(),
+            "admissionReviewVersions": (
+                admission_review_versions
+                if admission_review_versions is not None
+                else []
+            ),
+            "clientConfig": (
+                client_config if client_config is not None else WebhookClientConfig()
+            ),
             "failurePolicy": failure_policy if failure_policy is not None else "",
             "matchConditions": match_conditions if match_conditions is not None else [],
             "matchPolicy": match_policy if match_policy is not None else "",
             "name": name if name is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
-            "reinvocationPolicy": reinvocation_policy
-            if reinvocation_policy is not None
-            else "",
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
+            "reinvocationPolicy": (
+                reinvocation_policy if reinvocation_policy is not None else ""
+            ),
             "rules": rules if rules is not None else [],
             "sideEffects": side_effects if side_effects is not None else "",
             "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,
@@ -1369,22 +1373,26 @@ class ValidatingWebhook(_kuber_definitions.Definition):
             api_version="admissionregistration/v1", kind="ValidatingWebhook"
         )
         self._properties = {
-            "admissionReviewVersions": admission_review_versions
-            if admission_review_versions is not None
-            else [],
-            "clientConfig": client_config
-            if client_config is not None
-            else WebhookClientConfig(),
+            "admissionReviewVersions": (
+                admission_review_versions
+                if admission_review_versions is not None
+                else []
+            ),
+            "clientConfig": (
+                client_config if client_config is not None else WebhookClientConfig()
+            ),
             "failurePolicy": failure_policy if failure_policy is not None else "",
             "matchConditions": match_conditions if match_conditions is not None else [],
             "matchPolicy": match_policy if match_policy is not None else "",
             "name": name if name is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
             "rules": rules if rules is not None else [],
             "sideEffects": side_effects if side_effects is not None else "",
             "timeoutSeconds": timeout_seconds if timeout_seconds is not None else None,

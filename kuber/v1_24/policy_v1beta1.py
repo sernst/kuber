@@ -900,13 +900,13 @@ class PodDisruptionBudgetStatus(_kuber_definitions.Definition):
             "currentHealthy": current_healthy if current_healthy is not None else None,
             "desiredHealthy": desired_healthy if desired_healthy is not None else None,
             "disruptedPods": disrupted_pods if disrupted_pods is not None else {},
-            "disruptionsAllowed": disruptions_allowed
-            if disruptions_allowed is not None
-            else None,
+            "disruptionsAllowed": (
+                disruptions_allowed if disruptions_allowed is not None else None
+            ),
             "expectedPods": expected_pods if expected_pods is not None else None,
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
         }
         self._types = {
             "conditions": (list, Condition),
@@ -1461,61 +1461,75 @@ class PodSecurityPolicySpec(_kuber_definitions.Definition):
             api_version="policy/v1beta1", kind="PodSecurityPolicySpec"
         )
         self._properties = {
-            "allowPrivilegeEscalation": allow_privilege_escalation
-            if allow_privilege_escalation is not None
-            else None,
-            "allowedCSIDrivers": allowed_csidrivers
-            if allowed_csidrivers is not None
-            else [],
-            "allowedCapabilities": allowed_capabilities
-            if allowed_capabilities is not None
-            else [],
-            "allowedFlexVolumes": allowed_flex_volumes
-            if allowed_flex_volumes is not None
-            else [],
-            "allowedHostPaths": allowed_host_paths
-            if allowed_host_paths is not None
-            else [],
-            "allowedProcMountTypes": allowed_proc_mount_types
-            if allowed_proc_mount_types is not None
-            else [],
-            "allowedUnsafeSysctls": allowed_unsafe_sysctls
-            if allowed_unsafe_sysctls is not None
-            else [],
-            "defaultAddCapabilities": default_add_capabilities
-            if default_add_capabilities is not None
-            else [],
-            "defaultAllowPrivilegeEscalation": default_allow_privilege_escalation
-            if default_allow_privilege_escalation is not None
-            else None,
-            "forbiddenSysctls": forbidden_sysctls
-            if forbidden_sysctls is not None
-            else [],
+            "allowPrivilegeEscalation": (
+                allow_privilege_escalation
+                if allow_privilege_escalation is not None
+                else None
+            ),
+            "allowedCSIDrivers": (
+                allowed_csidrivers if allowed_csidrivers is not None else []
+            ),
+            "allowedCapabilities": (
+                allowed_capabilities if allowed_capabilities is not None else []
+            ),
+            "allowedFlexVolumes": (
+                allowed_flex_volumes if allowed_flex_volumes is not None else []
+            ),
+            "allowedHostPaths": (
+                allowed_host_paths if allowed_host_paths is not None else []
+            ),
+            "allowedProcMountTypes": (
+                allowed_proc_mount_types if allowed_proc_mount_types is not None else []
+            ),
+            "allowedUnsafeSysctls": (
+                allowed_unsafe_sysctls if allowed_unsafe_sysctls is not None else []
+            ),
+            "defaultAddCapabilities": (
+                default_add_capabilities if default_add_capabilities is not None else []
+            ),
+            "defaultAllowPrivilegeEscalation": (
+                default_allow_privilege_escalation
+                if default_allow_privilege_escalation is not None
+                else None
+            ),
+            "forbiddenSysctls": (
+                forbidden_sysctls if forbidden_sysctls is not None else []
+            ),
             "fsGroup": fs_group if fs_group is not None else FSGroupStrategyOptions(),
             "hostIPC": host_ipc if host_ipc is not None else None,
             "hostNetwork": host_network if host_network is not None else None,
             "hostPID": host_pid if host_pid is not None else None,
             "hostPorts": host_ports if host_ports is not None else [],
             "privileged": privileged if privileged is not None else None,
-            "readOnlyRootFilesystem": read_only_root_filesystem
-            if read_only_root_filesystem is not None
-            else None,
-            "requiredDropCapabilities": required_drop_capabilities
-            if required_drop_capabilities is not None
-            else [],
-            "runAsGroup": run_as_group
-            if run_as_group is not None
-            else RunAsGroupStrategyOptions(),
-            "runAsUser": run_as_user
-            if run_as_user is not None
-            else RunAsUserStrategyOptions(),
-            "runtimeClass": runtime_class
-            if runtime_class is not None
-            else RuntimeClassStrategyOptions(),
+            "readOnlyRootFilesystem": (
+                read_only_root_filesystem
+                if read_only_root_filesystem is not None
+                else None
+            ),
+            "requiredDropCapabilities": (
+                required_drop_capabilities
+                if required_drop_capabilities is not None
+                else []
+            ),
+            "runAsGroup": (
+                run_as_group
+                if run_as_group is not None
+                else RunAsGroupStrategyOptions()
+            ),
+            "runAsUser": (
+                run_as_user if run_as_user is not None else RunAsUserStrategyOptions()
+            ),
+            "runtimeClass": (
+                runtime_class
+                if runtime_class is not None
+                else RuntimeClassStrategyOptions()
+            ),
             "seLinux": se_linux if se_linux is not None else SELinuxStrategyOptions(),
-            "supplementalGroups": supplemental_groups
-            if supplemental_groups is not None
-            else SupplementalGroupsStrategyOptions(),
+            "supplementalGroups": (
+                supplemental_groups
+                if supplemental_groups is not None
+                else SupplementalGroupsStrategyOptions()
+            ),
             "volumes": volumes if volumes is not None else [],
         }
         self._types = {
@@ -2336,12 +2350,16 @@ class RuntimeClassStrategyOptions(_kuber_definitions.Definition):
             api_version="policy/v1beta1", kind="RuntimeClassStrategyOptions"
         )
         self._properties = {
-            "allowedRuntimeClassNames": allowed_runtime_class_names
-            if allowed_runtime_class_names is not None
-            else [],
-            "defaultRuntimeClassName": default_runtime_class_name
-            if default_runtime_class_name is not None
-            else "",
+            "allowedRuntimeClassNames": (
+                allowed_runtime_class_names
+                if allowed_runtime_class_names is not None
+                else []
+            ),
+            "defaultRuntimeClassName": (
+                default_runtime_class_name
+                if default_runtime_class_name is not None
+                else ""
+            ),
         }
         self._types = {
             "allowedRuntimeClassNames": (list, str),
@@ -2420,9 +2438,9 @@ class SELinuxStrategyOptions(_kuber_definitions.Definition):
         )
         self._properties = {
             "rule": rule if rule is not None else "",
-            "seLinuxOptions": se_linux_options
-            if se_linux_options is not None
-            else SELinuxOptions(),
+            "seLinuxOptions": (
+                se_linux_options if se_linux_options is not None else SELinuxOptions()
+            ),
         }
         self._types = {
             "rule": (str, None),

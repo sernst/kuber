@@ -338,19 +338,19 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._properties = {
             "attachRequired": attach_required if attach_required is not None else None,
             "fsGroupPolicy": fs_group_policy if fs_group_policy is not None else "",
-            "podInfoOnMount": pod_info_on_mount
-            if pod_info_on_mount is not None
-            else None,
-            "requiresRepublish": requires_republish
-            if requires_republish is not None
-            else None,
-            "storageCapacity": storage_capacity
-            if storage_capacity is not None
-            else None,
+            "podInfoOnMount": (
+                pod_info_on_mount if pod_info_on_mount is not None else None
+            ),
+            "requiresRepublish": (
+                requires_republish if requires_republish is not None else None
+            ),
+            "storageCapacity": (
+                storage_capacity if storage_capacity is not None else None
+            ),
             "tokenRequests": token_requests if token_requests is not None else [],
-            "volumeLifecycleModes": volume_lifecycle_modes
-            if volume_lifecycle_modes is not None
-            else [],
+            "volumeLifecycleModes": (
+                volume_lifecycle_modes if volume_lifecycle_modes is not None else []
+            ),
         }
         self._types = {
             "attachRequired": (bool, None),
@@ -924,9 +924,9 @@ class CSINodeDriver(_kuber_definitions.Definition):
             api_version="storage/v1", kind="CSINodeDriver"
         )
         self._properties = {
-            "allocatable": allocatable
-            if allocatable is not None
-            else VolumeNodeResources(),
+            "allocatable": (
+                allocatable if allocatable is not None else VolumeNodeResources()
+            ),
             "name": name if name is not None else "",
             "nodeID": node_id if node_id is not None else "",
             "topologyKeys": topology_keys if topology_keys is not None else [],
@@ -1261,16 +1261,16 @@ class CSIStorageCapacity(_kuber_definitions.Resource):
         )
         self._properties = {
             "capacity": capacity if capacity is not None else None,
-            "maximumVolumeSize": maximum_volume_size
-            if maximum_volume_size is not None
-            else None,
+            "maximumVolumeSize": (
+                maximum_volume_size if maximum_volume_size is not None else None
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "nodeTopology": node_topology
-            if node_topology is not None
-            else LabelSelector(),
-            "storageClassName": storage_class_name
-            if storage_class_name is not None
-            else "",
+            "nodeTopology": (
+                node_topology if node_topology is not None else LabelSelector()
+            ),
+            "storageClassName": (
+                storage_class_name if storage_class_name is not None else ""
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1691,20 +1691,20 @@ class StorageClass(_kuber_definitions.Resource):
             api_version="storage/v1", kind="StorageClass"
         )
         self._properties = {
-            "allowVolumeExpansion": allow_volume_expansion
-            if allow_volume_expansion is not None
-            else None,
-            "allowedTopologies": allowed_topologies
-            if allowed_topologies is not None
-            else [],
+            "allowVolumeExpansion": (
+                allow_volume_expansion if allow_volume_expansion is not None else None
+            ),
+            "allowedTopologies": (
+                allowed_topologies if allowed_topologies is not None else []
+            ),
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "mountOptions": mount_options if mount_options is not None else [],
             "parameters": parameters if parameters is not None else {},
             "provisioner": provisioner if provisioner is not None else "",
             "reclaimPolicy": reclaim_policy if reclaim_policy is not None else "",
-            "volumeBindingMode": volume_binding_mode
-            if volume_binding_mode is not None
-            else "",
+            "volumeBindingMode": (
+                volume_binding_mode if volume_binding_mode is not None else ""
+            ),
         }
         self._types = {
             "allowVolumeExpansion": (bool, None),
@@ -2136,9 +2136,9 @@ class TokenRequest(_kuber_definitions.Definition):
         )
         self._properties = {
             "audience": audience if audience is not None else "",
-            "expirationSeconds": expiration_seconds
-            if expiration_seconds is not None
-            else None,
+            "expirationSeconds": (
+                expiration_seconds if expiration_seconds is not None else None
+            ),
         }
         self._types = {
             "audience": (str, None),
@@ -2580,12 +2580,14 @@ class VolumeAttachmentSource(_kuber_definitions.Definition):
             api_version="storage/v1", kind="VolumeAttachmentSource"
         )
         self._properties = {
-            "inlineVolumeSpec": inline_volume_spec
-            if inline_volume_spec is not None
-            else PersistentVolumeSpec(),
-            "persistentVolumeName": persistent_volume_name
-            if persistent_volume_name is not None
-            else "",
+            "inlineVolumeSpec": (
+                inline_volume_spec
+                if inline_volume_spec is not None
+                else PersistentVolumeSpec()
+            ),
+            "persistentVolumeName": (
+                persistent_volume_name if persistent_volume_name is not None else ""
+            ),
         }
         self._types = {
             "inlineVolumeSpec": (PersistentVolumeSpec, None),
@@ -2764,9 +2766,9 @@ class VolumeAttachmentStatus(_kuber_definitions.Definition):
         self._properties = {
             "attachError": attach_error if attach_error is not None else VolumeError(),
             "attached": attached if attached is not None else None,
-            "attachmentMetadata": attachment_metadata
-            if attachment_metadata is not None
-            else {},
+            "attachmentMetadata": (
+                attachment_metadata if attachment_metadata is not None else {}
+            ),
             "detachError": detach_error if detach_error is not None else VolumeError(),
         }
         self._types = {

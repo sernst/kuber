@@ -366,16 +366,18 @@ class MatchResources(_kuber_definitions.Definition):
             api_version="admissionregistration/v1alpha1", kind="MatchResources"
         )
         self._properties = {
-            "excludeResourceRules": exclude_resource_rules
-            if exclude_resource_rules is not None
-            else [],
+            "excludeResourceRules": (
+                exclude_resource_rules if exclude_resource_rules is not None else []
+            ),
             "matchPolicy": match_policy if match_policy is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
         }
         self._types = {
@@ -1018,9 +1020,9 @@ class TypeChecking(_kuber_definitions.Definition):
             api_version="admissionregistration/v1alpha1", kind="TypeChecking"
         )
         self._properties = {
-            "expressionWarnings": expression_warnings
-            if expression_warnings is not None
-            else [],
+            "expressionWarnings": (
+                expression_warnings if expression_warnings is not None else []
+            ),
         }
         self._types = {
             "expressionWarnings": (list, ExpressionWarning),
@@ -1081,9 +1083,9 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else ValidatingAdmissionPolicySpec(),
-            "status": status
-            if status is not None
-            else ValidatingAdmissionPolicyStatus(),
+            "status": (
+                status if status is not None else ValidatingAdmissionPolicyStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1362,9 +1364,9 @@ class ValidatingAdmissionPolicyBinding(_kuber_definitions.Resource):
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "spec": spec
-            if spec is not None
-            else ValidatingAdmissionPolicyBindingSpec(),
+            "spec": (
+                spec if spec is not None else ValidatingAdmissionPolicyBindingSpec()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1671,14 +1673,14 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
             kind="ValidatingAdmissionPolicyBindingSpec",
         )
         self._properties = {
-            "matchResources": match_resources
-            if match_resources is not None
-            else MatchResources(),
+            "matchResources": (
+                match_resources if match_resources is not None else MatchResources()
+            ),
             "paramRef": param_ref if param_ref is not None else ParamRef(),
             "policyName": policy_name if policy_name is not None else "",
-            "validationActions": validation_actions
-            if validation_actions is not None
-            else [],
+            "validationActions": (
+                validation_actions if validation_actions is not None else []
+            ),
         }
         self._types = {
             "matchResources": (MatchResources, None),
@@ -2035,14 +2037,14 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
             kind="ValidatingAdmissionPolicySpec",
         )
         self._properties = {
-            "auditAnnotations": audit_annotations
-            if audit_annotations is not None
-            else [],
+            "auditAnnotations": (
+                audit_annotations if audit_annotations is not None else []
+            ),
             "failurePolicy": failure_policy if failure_policy is not None else "",
             "matchConditions": match_conditions if match_conditions is not None else [],
-            "matchConstraints": match_constraints
-            if match_constraints is not None
-            else MatchResources(),
+            "matchConstraints": (
+                match_constraints if match_constraints is not None else MatchResources()
+            ),
             "paramKind": param_kind if param_kind is not None else ParamKind(),
             "validations": validations if validations is not None else [],
         }
@@ -2335,12 +2337,12 @@ class ValidatingAdmissionPolicyStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "conditions": conditions if conditions is not None else [],
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
-            "typeChecking": type_checking
-            if type_checking is not None
-            else TypeChecking(),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
+            "typeChecking": (
+                type_checking if type_checking is not None else TypeChecking()
+            ),
         }
         self._types = {
             "conditions": (list, Condition),
@@ -2445,9 +2447,9 @@ class Validation(_kuber_definitions.Definition):
         self._properties = {
             "expression": expression if expression is not None else "",
             "message": message if message is not None else "",
-            "messageExpression": message_expression
-            if message_expression is not None
-            else "",
+            "messageExpression": (
+                message_expression if message_expression is not None else ""
+            ),
             "reason": reason if reason is not None else "",
         }
         self._types = {

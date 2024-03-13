@@ -366,16 +366,18 @@ class MatchResources(_kuber_definitions.Definition):
             api_version="admissionregistration/v1alpha1", kind="MatchResources"
         )
         self._properties = {
-            "excludeResourceRules": exclude_resource_rules
-            if exclude_resource_rules is not None
-            else [],
+            "excludeResourceRules": (
+                exclude_resource_rules if exclude_resource_rules is not None else []
+            ),
             "matchPolicy": match_policy if match_policy is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
         }
         self._types = {
@@ -939,13 +941,16 @@ class ParamKind(_kuber_definitions.Definition):
 
 class ParamRef(_kuber_definitions.Definition):
     """
-    ParamRef references a parameter resource
+    ParamRef describes how to locate the params to be used as
+    input to expressions of rules applied by a policy binding.
     """
 
     def __init__(
         self,
         name: typing.Optional[str] = None,
         namespace: typing.Optional[str] = None,
+        parameter_not_found_action: typing.Optional[str] = None,
+        selector: typing.Optional["LabelSelector"] = None,
     ):
         """Create ParamRef instance."""
         super(ParamRef, self).__init__(
@@ -954,16 +959,27 @@ class ParamRef(_kuber_definitions.Definition):
         self._properties = {
             "name": name if name is not None else "",
             "namespace": namespace if namespace is not None else "",
+            "parameterNotFoundAction": (
+                parameter_not_found_action
+                if parameter_not_found_action is not None
+                else ""
+            ),
+            "selector": selector if selector is not None else LabelSelector(),
         }
         self._types = {
             "name": (str, None),
             "namespace": (str, None),
+            "parameterNotFoundAction": (str, None),
+            "selector": (LabelSelector, None),
         }
 
     @property
     def name(self) -> str:
         """
-        Name of the resource being referenced.
+        `name` is the name of the resource being referenced.
+
+        `name` and `selector` are mutually exclusive properties. If
+        one is set, the other must be unset.
         """
         return typing.cast(
             str,
@@ -973,15 +989,32 @@ class ParamRef(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the resource being referenced.
+        `name` is the name of the resource being referenced.
+
+        `name` and `selector` are mutually exclusive properties. If
+        one is set, the other must be unset.
         """
         self._properties["name"] = value
 
     @property
     def namespace(self) -> str:
         """
-        Namespace of the referenced resource. Should be empty for
-        the cluster-scoped resources
+        namespace is the namespace of the referenced resource.
+        Allows limiting the search for params to a specific
+        namespace. Applies to both `name` and `selector` fields.
+
+        A per-namespace parameter may be used by specifying a
+        namespace-scoped `paramKind` in the policy and leaving this
+        field empty.
+
+        - If `paramKind` is cluster-scoped, this field MUST be
+        unset. Setting this field results in a configuration error.
+
+        - If `paramKind` is namespace-scoped, the namespace of the
+        object being evaluated for admission will be used when this
+        field is left unset. Take care that if this is left empty
+        the binding must not match any cluster-scoped resources,
+        which will result in an error.
         """
         return typing.cast(
             str,
@@ -991,10 +1024,97 @@ class ParamRef(_kuber_definitions.Definition):
     @namespace.setter
     def namespace(self, value: str):
         """
-        Namespace of the referenced resource. Should be empty for
-        the cluster-scoped resources
+        namespace is the namespace of the referenced resource.
+        Allows limiting the search for params to a specific
+        namespace. Applies to both `name` and `selector` fields.
+
+        A per-namespace parameter may be used by specifying a
+        namespace-scoped `paramKind` in the policy and leaving this
+        field empty.
+
+        - If `paramKind` is cluster-scoped, this field MUST be
+        unset. Setting this field results in a configuration error.
+
+        - If `paramKind` is namespace-scoped, the namespace of the
+        object being evaluated for admission will be used when this
+        field is left unset. Take care that if this is left empty
+        the binding must not match any cluster-scoped resources,
+        which will result in an error.
         """
         self._properties["namespace"] = value
+
+    @property
+    def parameter_not_found_action(self) -> str:
+        """
+        `parameterNotFoundAction` controls the behavior of the
+        binding when the resource exists, and name or selector is
+        valid, but there are no parameters matched by the binding.
+        If the value is set to `Allow`, then no matched parameters
+        will be treated as successful validation by the binding. If
+        set to `Deny`, then no matched parameters will be subject to
+        the `failurePolicy` of the policy.
+
+        Allowed values are `Allow` or `Deny` Default to `Deny`
+        """
+        return typing.cast(
+            str,
+            self._properties.get("parameterNotFoundAction"),
+        )
+
+    @parameter_not_found_action.setter
+    def parameter_not_found_action(self, value: str):
+        """
+        `parameterNotFoundAction` controls the behavior of the
+        binding when the resource exists, and name or selector is
+        valid, but there are no parameters matched by the binding.
+        If the value is set to `Allow`, then no matched parameters
+        will be treated as successful validation by the binding. If
+        set to `Deny`, then no matched parameters will be subject to
+        the `failurePolicy` of the policy.
+
+        Allowed values are `Allow` or `Deny` Default to `Deny`
+        """
+        self._properties["parameterNotFoundAction"] = value
+
+    @property
+    def selector(self) -> "LabelSelector":
+        """
+        selector can be used to match multiple param objects based
+        on their labels. Supply selector: {} to match all resources
+        of the ParamKind.
+
+        If multiple params are found, they are all evaluated with
+        the policy expressions and the results are ANDed together.
+
+        One of `name` or `selector` must be set, but `name` and
+        `selector` are mutually exclusive properties. If one is set,
+        the other must be unset.
+        """
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("selector"),
+        )
+
+    @selector.setter
+    def selector(self, value: typing.Union["LabelSelector", dict]):
+        """
+        selector can be used to match multiple param objects based
+        on their labels. Supply selector: {} to match all resources
+        of the ParamKind.
+
+        If multiple params are found, they are all evaluated with
+        the policy expressions and the results are ANDed together.
+
+        One of `name` or `selector` must be set, but `name` and
+        `selector` are mutually exclusive properties. If one is set,
+        the other must be unset.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["selector"] = value
 
     def __enter__(self) -> "ParamRef":
         return self
@@ -1018,9 +1138,9 @@ class TypeChecking(_kuber_definitions.Definition):
             api_version="admissionregistration/v1alpha1", kind="TypeChecking"
         )
         self._properties = {
-            "expressionWarnings": expression_warnings
-            if expression_warnings is not None
-            else [],
+            "expressionWarnings": (
+                expression_warnings if expression_warnings is not None else []
+            ),
         }
         self._types = {
             "expressionWarnings": (list, ExpressionWarning),
@@ -1081,9 +1201,9 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else ValidatingAdmissionPolicySpec(),
-            "status": status
-            if status is not None
-            else ValidatingAdmissionPolicyStatus(),
+            "status": (
+                status if status is not None else ValidatingAdmissionPolicyStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1348,6 +1468,18 @@ class ValidatingAdmissionPolicyBinding(_kuber_definitions.Resource):
     ValidatingAdmissionPolicyBinding and parameter CRDs together
     define how cluster administrators configure policies for
     clusters.
+
+    For a given admission request, each binding will cause its
+    policy to be evaluated N times, where N is 1 for
+    policies/bindings that don't use params, otherwise N is the
+    number of parameters selected by the binding.
+
+    The CEL expressions of a policy must have a computed CEL
+    cost below the maximum CEL budget. Each evaluation of the
+    policy is given an independent CEL cost budget.
+    Adding/removing policies, bindings, or params can not affect
+    whether a given (policy, binding, param) combination is
+    within its own CEL budget.
     """
 
     def __init__(
@@ -1362,9 +1494,9 @@ class ValidatingAdmissionPolicyBinding(_kuber_definitions.Resource):
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "spec": spec
-            if spec is not None
-            else ValidatingAdmissionPolicyBindingSpec(),
+            "spec": (
+                spec if spec is not None else ValidatingAdmissionPolicyBindingSpec()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1671,14 +1803,14 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
             kind="ValidatingAdmissionPolicyBindingSpec",
         )
         self._properties = {
-            "matchResources": match_resources
-            if match_resources is not None
-            else MatchResources(),
+            "matchResources": (
+                match_resources if match_resources is not None else MatchResources()
+            ),
             "paramRef": param_ref if param_ref is not None else ParamRef(),
             "policyName": policy_name if policy_name is not None else "",
-            "validationActions": validation_actions
-            if validation_actions is not None
-            else [],
+            "validationActions": (
+                validation_actions if validation_actions is not None else []
+            ),
         }
         self._types = {
             "matchResources": (MatchResources, None),
@@ -1730,13 +1862,15 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
     @property
     def param_ref(self) -> "ParamRef":
         """
-        ParamRef specifies the parameter resource used to configure
+        paramRef specifies the parameter resource used to configure
         the admission control policy. It should point to a resource
         of the type specified in ParamKind of the bound
         ValidatingAdmissionPolicy. If the policy specifies a
         ParamKind and the resource referred to by ParamRef does not
         exist, this binding is considered mis-configured and the
-        FailurePolicy of the ValidatingAdmissionPolicy applied.
+        FailurePolicy of the ValidatingAdmissionPolicy applied. If
+        the policy does not specify a ParamKind then this field is
+        ignored, and the rules are evaluated without a param.
         """
         return typing.cast(
             "ParamRef",
@@ -1746,13 +1880,15 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
     @param_ref.setter
     def param_ref(self, value: typing.Union["ParamRef", dict]):
         """
-        ParamRef specifies the parameter resource used to configure
+        paramRef specifies the parameter resource used to configure
         the admission control policy. It should point to a resource
         of the type specified in ParamKind of the bound
         ValidatingAdmissionPolicy. If the policy specifies a
         ParamKind and the resource referred to by ParamRef does not
         exist, this binding is considered mis-configured and the
-        FailurePolicy of the ValidatingAdmissionPolicy applied.
+        FailurePolicy of the ValidatingAdmissionPolicy applied. If
+        the policy does not specify a ParamKind then this field is
+        ignored, and the rules are evaluated without a param.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2028,6 +2164,7 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
         match_constraints: typing.Optional["MatchResources"] = None,
         param_kind: typing.Optional["ParamKind"] = None,
         validations: typing.Optional[typing.List["Validation"]] = None,
+        variables: typing.Optional[typing.List["Variable"]] = None,
     ):
         """Create ValidatingAdmissionPolicySpec instance."""
         super(ValidatingAdmissionPolicySpec, self).__init__(
@@ -2035,16 +2172,17 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
             kind="ValidatingAdmissionPolicySpec",
         )
         self._properties = {
-            "auditAnnotations": audit_annotations
-            if audit_annotations is not None
-            else [],
+            "auditAnnotations": (
+                audit_annotations if audit_annotations is not None else []
+            ),
             "failurePolicy": failure_policy if failure_policy is not None else "",
             "matchConditions": match_conditions if match_conditions is not None else [],
-            "matchConstraints": match_constraints
-            if match_constraints is not None
-            else MatchResources(),
+            "matchConstraints": (
+                match_constraints if match_constraints is not None else MatchResources()
+            ),
             "paramKind": param_kind if param_kind is not None else ParamKind(),
             "validations": validations if validations is not None else [],
+            "variables": variables if variables is not None else [],
         }
         self._types = {
             "auditAnnotations": (list, AuditAnnotation),
@@ -2053,6 +2191,7 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
             "matchConstraints": (MatchResources, None),
             "paramKind": (ParamKind, None),
             "validations": (list, Validation),
+            "variables": (list, Variable),
         }
 
     @property
@@ -2309,6 +2448,53 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
             cleaned.append(typing.cast(Validation, item))
         self._properties["validations"] = cleaned
 
+    @property
+    def variables(self) -> typing.List["Variable"]:
+        """
+        Variables contain definitions of variables that can be used
+        in composition of other expressions. Each variable is
+        defined as a named CEL expression. The variables defined
+        here will be available under `variables` in other
+        expressions of the policy except MatchConditions because
+        MatchConditions are evaluated before the rest of the policy.
+
+        The expression of a variable can refer to other variables
+        defined earlier in the list but not those after. Thus,
+        Variables must be sorted by the order of first appearance
+        and acyclic.
+        """
+        return typing.cast(
+            typing.List["Variable"],
+            self._properties.get("variables"),
+        )
+
+    @variables.setter
+    def variables(
+        self, value: typing.Union[typing.List["Variable"], typing.List[dict]]
+    ):
+        """
+        Variables contain definitions of variables that can be used
+        in composition of other expressions. Each variable is
+        defined as a named CEL expression. The variables defined
+        here will be available under `variables` in other
+        expressions of the policy except MatchConditions because
+        MatchConditions are evaluated before the rest of the policy.
+
+        The expression of a variable can refer to other variables
+        defined earlier in the list but not those after. Thus,
+        Variables must be sorted by the order of first appearance
+        and acyclic.
+        """
+        cleaned: typing.List[Variable] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    Variable,
+                    Variable().from_dict(item),
+                )
+            cleaned.append(typing.cast(Variable, item))
+        self._properties["variables"] = cleaned
+
     def __enter__(self) -> "ValidatingAdmissionPolicySpec":
         return self
 
@@ -2335,12 +2521,12 @@ class ValidatingAdmissionPolicyStatus(_kuber_definitions.Definition):
         )
         self._properties = {
             "conditions": conditions if conditions is not None else [],
-            "observedGeneration": observed_generation
-            if observed_generation is not None
-            else None,
-            "typeChecking": type_checking
-            if type_checking is not None
-            else TypeChecking(),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
+            "typeChecking": (
+                type_checking if type_checking is not None else TypeChecking()
+            ),
         }
         self._types = {
             "conditions": (list, Condition),
@@ -2445,9 +2631,9 @@ class Validation(_kuber_definitions.Definition):
         self._properties = {
             "expression": expression if expression is not None else "",
             "message": message if message is not None else "",
-            "messageExpression": message_expression
-            if message_expression is not None
-            else "",
+            "messageExpression": (
+                message_expression if message_expression is not None else ""
+            ),
             "reason": reason if reason is not None else "",
         }
         self._types = {
@@ -2472,9 +2658,16 @@ class Validation(_kuber_definitions.Definition):
         Attributes of the API request([ref](/pkg/apis/admission/type
         s.go#AdmissionRequest)). - 'params' - Parameter resource
         referred to by the policy binding being evaluated. Only
-        populated if the policy has a ParamKind. - 'authorizer' - A
-        CEL Authorizer. May be used to perform authorization checks
-        for the principal (user or service account) of the request.
+        populated if the policy has a ParamKind. - 'namespaceObject'
+        - The namespace object that the incoming object belongs to.
+        The value is null for cluster-scoped resources. -
+        'variables' - Map of composited variables, from its name to
+        its lazily evaluated value.
+          For example, a variable named 'foo' can be accessed as
+        'variables.foo'.
+        - 'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
           See
         https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
         - 'authorizer.requestResource' - A CEL ResourceCheck
@@ -2541,9 +2734,16 @@ class Validation(_kuber_definitions.Definition):
         Attributes of the API request([ref](/pkg/apis/admission/type
         s.go#AdmissionRequest)). - 'params' - Parameter resource
         referred to by the policy binding being evaluated. Only
-        populated if the policy has a ParamKind. - 'authorizer' - A
-        CEL Authorizer. May be used to perform authorization checks
-        for the principal (user or service account) of the request.
+        populated if the policy has a ParamKind. - 'namespaceObject'
+        - The namespace object that the incoming object belongs to.
+        The value is null for cluster-scoped resources. -
+        'variables' - Map of composited variables, from its name to
+        its lazily evaluated value.
+          For example, a variable named 'foo' can be accessed as
+        'variables.foo'.
+        - 'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
           See
         https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
         - 'authorizer.requestResource' - A CEL ResourceCheck
@@ -2706,6 +2906,83 @@ class Validation(_kuber_definitions.Definition):
         self._properties["reason"] = value
 
     def __enter__(self) -> "Validation":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class Variable(_kuber_definitions.Definition):
+    """
+    Variable is the definition of a variable that is used for
+    composition.
+    """
+
+    def __init__(
+        self,
+        expression: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+    ):
+        """Create Variable instance."""
+        super(Variable, self).__init__(
+            api_version="admissionregistration/v1alpha1", kind="Variable"
+        )
+        self._properties = {
+            "expression": expression if expression is not None else "",
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "expression": (str, None),
+            "name": (str, None),
+        }
+
+    @property
+    def expression(self) -> str:
+        """
+        Expression is the expression that will be evaluated as the
+        value of the variable. The CEL expression has access to the
+        same identifiers as the CEL expressions in Validation.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("expression"),
+        )
+
+    @expression.setter
+    def expression(self, value: str):
+        """
+        Expression is the expression that will be evaluated as the
+        value of the variable. The CEL expression has access to the
+        same identifiers as the CEL expressions in Validation.
+        """
+        self._properties["expression"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is the name of the variable. The name must be a valid
+        CEL identifier and unique among all variables. The variable
+        can be accessed in other expressions through `variables` For
+        example, if name is "foo", the variable will be available as
+        `variables.foo`
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is the name of the variable. The name must be a valid
+        CEL identifier and unique among all variables. The variable
+        can be accessed in other expressions through `variables` For
+        example, if name is "foo", the variable will be available as
+        `variables.foo`
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "Variable":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

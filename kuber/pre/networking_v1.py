@@ -5,7 +5,6 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
-from kuber.pre.meta_v1 import Condition  # noqa: F401
 from kuber.pre.meta_v1 import LabelSelector  # noqa: F401
 from kuber.pre.meta_v1 import ListMeta  # noqa: F401
 from kuber.pre.meta_v1 import ObjectMeta  # noqa: F401
@@ -575,9 +574,9 @@ class IngressBackend(_kuber_definitions.Definition):
             api_version="networking/v1", kind="IngressBackend"
         )
         self._properties = {
-            "resource": resource
-            if resource is not None
-            else TypedLocalObjectReference(),
+            "resource": (
+                resource if resource is not None else TypedLocalObjectReference()
+            ),
             "service": service if service is not None else IngressServiceBackend(),
         }
         self._types = {
@@ -1097,9 +1096,11 @@ class IngressClassSpec(_kuber_definitions.Definition):
         )
         self._properties = {
             "controller": controller if controller is not None else "",
-            "parameters": parameters
-            if parameters is not None
-            else IngressClassParametersReference(),
+            "parameters": (
+                parameters
+                if parameters is not None
+                else IngressClassParametersReference()
+            ),
         }
         self._types = {
             "controller": (str, None),
@@ -1741,12 +1742,12 @@ class IngressSpec(_kuber_definitions.Definition):
             api_version="networking/v1", kind="IngressSpec"
         )
         self._properties = {
-            "defaultBackend": default_backend
-            if default_backend is not None
-            else IngressBackend(),
-            "ingressClassName": ingress_class_name
-            if ingress_class_name is not None
-            else "",
+            "defaultBackend": (
+                default_backend if default_backend is not None else IngressBackend()
+            ),
+            "ingressClassName": (
+                ingress_class_name if ingress_class_name is not None else ""
+            ),
             "rules": rules if rules is not None else [],
             "tls": tls if tls is not None else [],
         }
@@ -1913,9 +1914,11 @@ class IngressStatus(_kuber_definitions.Definition):
             api_version="networking/v1", kind="IngressStatus"
         )
         self._properties = {
-            "loadBalancer": load_balancer
-            if load_balancer is not None
-            else IngressLoadBalancerStatus(),
+            "loadBalancer": (
+                load_balancer
+                if load_balancer is not None
+                else IngressLoadBalancerStatus()
+            ),
         }
         self._types = {
             "loadBalancer": (IngressLoadBalancerStatus, None),
@@ -2043,7 +2046,6 @@ class NetworkPolicy(_kuber_definitions.Resource):
         self,
         metadata: typing.Optional["ObjectMeta"] = None,
         spec: typing.Optional["NetworkPolicySpec"] = None,
-        status: typing.Optional["NetworkPolicyStatus"] = None,
     ):
         """Create NetworkPolicy instance."""
         super(NetworkPolicy, self).__init__(
@@ -2052,14 +2054,12 @@ class NetworkPolicy(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else NetworkPolicySpec(),
-            "status": status if status is not None else NetworkPolicyStatus(),
         }
         self._types = {
             "apiVersion": (str, None),
             "kind": (str, None),
             "metadata": (ObjectMeta, None),
             "spec": (NetworkPolicySpec, None),
-            "status": (NetworkPolicyStatus, None),
         }
 
     @property
@@ -2112,45 +2112,14 @@ class NetworkPolicy(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    @property
-    def status(self) -> "NetworkPolicyStatus":
-        """
-        status represents the current state of the NetworkPolicy.
-        More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
-        """
-        return typing.cast(
-            "NetworkPolicyStatus",
-            self._properties.get("status"),
-        )
-
-    @status.setter
-    def status(self, value: typing.Union["NetworkPolicyStatus", dict]):
-        """
-        status represents the current state of the NetworkPolicy.
-        More info:
-        https://git.k8s.io/community/contributors/devel/sig-
-        architecture/api-conventions.md#spec-and-status
-        """
-        if isinstance(value, dict):
-            value = typing.cast(
-                NetworkPolicyStatus,
-                NetworkPolicyStatus().from_dict(value),
-            )
-        self._properties["status"] = value
-
-    def create_resource(
-        self, namespace: typing.Optional["str"] = None
-    ) -> "NetworkPolicyStatus":
+    def create_resource(self, namespace: typing.Optional["str"] = None):
         """
         Creates the NetworkPolicy in the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API after the create is complete.
+        configured Kubernetes cluster.
         """
         names = ["create_namespaced_network_policy", "create_network_policy"]
 
-        response = _kube_api.execute(
+        _kube_api.execute(
             action="create",
             resource=self,
             names=names,
@@ -2159,22 +2128,14 @@ class NetworkPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-        output = NetworkPolicyStatus()
-        if response is not None:
-            output.from_dict(_kube_api.to_kuber_dict(response.status))
-        return output
-
-    def replace_resource(
-        self, namespace: typing.Optional["str"] = None
-    ) -> "NetworkPolicyStatus":
+    def replace_resource(self, namespace: typing.Optional["str"] = None):
         """
         Replaces the NetworkPolicy in the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API after the replace is complete.
+        configured Kubernetes cluster.
         """
         names = ["replace_namespaced_network_policy", "replace_network_policy"]
 
-        response = _kube_api.execute(
+        _kube_api.execute(
             action="replace",
             resource=self,
             names=names,
@@ -2183,22 +2144,14 @@ class NetworkPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-        output = NetworkPolicyStatus()
-        if response is not None:
-            output.from_dict(_kube_api.to_kuber_dict(response.status))
-        return output
-
-    def patch_resource(
-        self, namespace: typing.Optional["str"] = None
-    ) -> "NetworkPolicyStatus":
+    def patch_resource(self, namespace: typing.Optional["str"] = None):
         """
         Patches the NetworkPolicy in the currently
-        configured Kubernetes cluster and returns the status information
-        returned by the Kubernetes API after the replace is complete.
+        configured Kubernetes cluster.
         """
         names = ["patch_namespaced_network_policy", "patch_network_policy"]
 
-        response = _kube_api.execute(
+        _kube_api.execute(
             action="patch",
             resource=self,
             names=names,
@@ -2207,35 +2160,9 @@ class NetworkPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-        output = NetworkPolicyStatus()
-        if response is not None:
-            output.from_dict(_kube_api.to_kuber_dict(response.status))
-        return output
-
-    def get_resource_status(
-        self, namespace: typing.Optional["str"] = None
-    ) -> "NetworkPolicyStatus":
-        """
-        Returns status information about the given resource within the cluster.
-        """
-        names = [
-            "read_namespaced_network_policy",
-            "read_network_policy",
-        ]
-
-        response = _kube_api.execute(
-            action="read",
-            resource=self,
-            names=names,
-            namespace=namespace,
-            api_client=None,
-            api_args={"name": self.metadata.name},
-        )
-
-        output = NetworkPolicyStatus()
-        if response is not None:
-            output.from_dict(_kube_api.to_kuber_dict(response.status))
-        return output
+    def get_resource_status(self, namespace: typing.Optional["str"] = None):
+        """This resource does not have a status."""
+        pass
 
     def read_resource(self, namespace: typing.Optional[str] = None):
         """
@@ -2640,12 +2567,14 @@ class NetworkPolicyPeer(_kuber_definitions.Definition):
         )
         self._properties = {
             "ipBlock": ip_block if ip_block is not None else IPBlock(),
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "podSelector": pod_selector
-            if pod_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "podSelector": (
+                pod_selector if pod_selector is not None else LabelSelector()
+            ),
         }
         self._types = {
             "ipBlock": (IPBlock, None),
@@ -2884,9 +2813,9 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
         self._properties = {
             "egress": egress if egress is not None else [],
             "ingress": ingress if ingress is not None else [],
-            "podSelector": pod_selector
-            if pod_selector is not None
-            else LabelSelector(),
+            "podSelector": (
+                pod_selector if pod_selector is not None else LabelSelector()
+            ),
             "policyTypes": policy_types if policy_types is not None else [],
         }
         self._types = {
@@ -3064,63 +2993,6 @@ class NetworkPolicySpec(_kuber_definitions.Definition):
         self._properties["policyTypes"] = value
 
     def __enter__(self) -> "NetworkPolicySpec":
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
-class NetworkPolicyStatus(_kuber_definitions.Definition):
-    """
-    NetworkPolicyStatus describes the current state of the
-    NetworkPolicy.
-    """
-
-    def __init__(
-        self,
-        conditions: typing.Optional[typing.List["Condition"]] = None,
-    ):
-        """Create NetworkPolicyStatus instance."""
-        super(NetworkPolicyStatus, self).__init__(
-            api_version="networking/v1", kind="NetworkPolicyStatus"
-        )
-        self._properties = {
-            "conditions": conditions if conditions is not None else [],
-        }
-        self._types = {
-            "conditions": (list, Condition),
-        }
-
-    @property
-    def conditions(self) -> typing.List["Condition"]:
-        """
-        conditions holds an array of metav1.Condition that describe
-        the state of the NetworkPolicy. Current service state
-        """
-        return typing.cast(
-            typing.List["Condition"],
-            self._properties.get("conditions"),
-        )
-
-    @conditions.setter
-    def conditions(
-        self, value: typing.Union[typing.List["Condition"], typing.List[dict]]
-    ):
-        """
-        conditions holds an array of metav1.Condition that describe
-        the state of the NetworkPolicy. Current service state
-        """
-        cleaned: typing.List[Condition] = []
-        for item in value:
-            if isinstance(item, dict):
-                item = typing.cast(
-                    Condition,
-                    Condition().from_dict(item),
-                )
-            cleaned.append(typing.cast(Condition, item))
-        self._properties["conditions"] = cleaned
-
-    def __enter__(self) -> "NetworkPolicyStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

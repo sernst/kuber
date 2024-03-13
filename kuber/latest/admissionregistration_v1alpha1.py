@@ -5,9 +5,342 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
+from kuber.latest.meta_v1 import Condition  # noqa: F401
 from kuber.latest.meta_v1 import LabelSelector  # noqa: F401
 from kuber.latest.meta_v1 import ListMeta  # noqa: F401
 from kuber.latest.meta_v1 import ObjectMeta  # noqa: F401
+from kuber.latest.meta_v1 import Status  # noqa: F401
+from kuber.latest.meta_v1 import StatusDetails  # noqa: F401
+
+
+class AuditAnnotation(_kuber_definitions.Definition):
+    """
+    AuditAnnotation describes how to produce an audit annotation
+    for an API request.
+    """
+
+    def __init__(
+        self,
+        key: typing.Optional[str] = None,
+        value_expression: typing.Optional[str] = None,
+    ):
+        """Create AuditAnnotation instance."""
+        super(AuditAnnotation, self).__init__(
+            api_version="admissionregistration/v1alpha1", kind="AuditAnnotation"
+        )
+        self._properties = {
+            "key": key if key is not None else "",
+            "valueExpression": value_expression if value_expression is not None else "",
+        }
+        self._types = {
+            "key": (str, None),
+            "valueExpression": (str, None),
+        }
+
+    @property
+    def key(self) -> str:
+        """
+        key specifies the audit annotation key. The audit annotation
+        keys of a ValidatingAdmissionPolicy must be unique. The key
+        must be a qualified name ([A-Za-z0-9][-A-Za-z0-9_.]*) no
+        more than 63 bytes in length.
+
+        The key is combined with the resource name of the
+        ValidatingAdmissionPolicy to construct an audit annotation
+        key: "{ValidatingAdmissionPolicy name}/{key}".
+
+        If an admission webhook uses the same resource name as this
+        ValidatingAdmissionPolicy and the same audit annotation key,
+        the annotation key will be identical. In this case, the
+        first annotation written with the key will be included in
+        the audit event and all subsequent annotations with the same
+        key will be discarded.
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("key"),
+        )
+
+    @key.setter
+    def key(self, value: str):
+        """
+        key specifies the audit annotation key. The audit annotation
+        keys of a ValidatingAdmissionPolicy must be unique. The key
+        must be a qualified name ([A-Za-z0-9][-A-Za-z0-9_.]*) no
+        more than 63 bytes in length.
+
+        The key is combined with the resource name of the
+        ValidatingAdmissionPolicy to construct an audit annotation
+        key: "{ValidatingAdmissionPolicy name}/{key}".
+
+        If an admission webhook uses the same resource name as this
+        ValidatingAdmissionPolicy and the same audit annotation key,
+        the annotation key will be identical. In this case, the
+        first annotation written with the key will be included in
+        the audit event and all subsequent annotations with the same
+        key will be discarded.
+
+        Required.
+        """
+        self._properties["key"] = value
+
+    @property
+    def value_expression(self) -> str:
+        """
+        valueExpression represents the expression which is evaluated
+        by CEL to produce an audit annotation value. The expression
+        must evaluate to either a string or null value. If the
+        expression evaluates to a string, the audit annotation is
+        included with the string value. If the expression evaluates
+        to null or empty string the audit annotation will be
+        omitted. The valueExpression may be no longer than 5kb in
+        length. If the result of the valueExpression is more than
+        10kb in length, it will be truncated to 10kb.
+
+        If multiple ValidatingAdmissionPolicyBinding resources match
+        an API request, then the valueExpression will be evaluated
+        for each binding. All unique values produced by the
+        valueExpressions will be joined together in a comma-
+        separated list.
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("valueExpression"),
+        )
+
+    @value_expression.setter
+    def value_expression(self, value: str):
+        """
+        valueExpression represents the expression which is evaluated
+        by CEL to produce an audit annotation value. The expression
+        must evaluate to either a string or null value. If the
+        expression evaluates to a string, the audit annotation is
+        included with the string value. If the expression evaluates
+        to null or empty string the audit annotation will be
+        omitted. The valueExpression may be no longer than 5kb in
+        length. If the result of the valueExpression is more than
+        10kb in length, it will be truncated to 10kb.
+
+        If multiple ValidatingAdmissionPolicyBinding resources match
+        an API request, then the valueExpression will be evaluated
+        for each binding. All unique values produced by the
+        valueExpressions will be joined together in a comma-
+        separated list.
+
+        Required.
+        """
+        self._properties["valueExpression"] = value
+
+    def __enter__(self) -> "AuditAnnotation":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ExpressionWarning(_kuber_definitions.Definition):
+    """
+    ExpressionWarning is a warning information that targets a
+    specific expression.
+    """
+
+    def __init__(
+        self,
+        field_ref: typing.Optional[str] = None,
+        warning: typing.Optional[str] = None,
+    ):
+        """Create ExpressionWarning instance."""
+        super(ExpressionWarning, self).__init__(
+            api_version="admissionregistration/v1alpha1", kind="ExpressionWarning"
+        )
+        self._properties = {
+            "fieldRef": field_ref if field_ref is not None else "",
+            "warning": warning if warning is not None else "",
+        }
+        self._types = {
+            "fieldRef": (str, None),
+            "warning": (str, None),
+        }
+
+    @property
+    def field_ref(self) -> str:
+        """
+        The path to the field that refers the expression. For
+        example, the reference to the expression of the first item
+        of validations is "spec.validations[0].expression"
+        """
+        return typing.cast(
+            str,
+            self._properties.get("fieldRef"),
+        )
+
+    @field_ref.setter
+    def field_ref(self, value: str):
+        """
+        The path to the field that refers the expression. For
+        example, the reference to the expression of the first item
+        of validations is "spec.validations[0].expression"
+        """
+        self._properties["fieldRef"] = value
+
+    @property
+    def warning(self) -> str:
+        """
+        The content of type checking information in a human-readable
+        form. Each line of the warning contains the type that the
+        expression is checked against, followed by the type check
+        error from the compiler.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("warning"),
+        )
+
+    @warning.setter
+    def warning(self, value: str):
+        """
+        The content of type checking information in a human-readable
+        form. Each line of the warning contains the type that the
+        expression is checked against, followed by the type check
+        error from the compiler.
+        """
+        self._properties["warning"] = value
+
+    def __enter__(self) -> "ExpressionWarning":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class MatchCondition(_kuber_definitions.Definition):
+    """ """
+
+    def __init__(
+        self,
+        expression: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+    ):
+        """Create MatchCondition instance."""
+        super(MatchCondition, self).__init__(
+            api_version="admissionregistration/v1alpha1", kind="MatchCondition"
+        )
+        self._properties = {
+            "expression": expression if expression is not None else "",
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "expression": (str, None),
+            "name": (str, None),
+        }
+
+    @property
+    def expression(self) -> str:
+        """
+        Expression represents the expression which will be evaluated
+        by CEL. Must evaluate to bool. CEL expressions have access
+        to the contents of the AdmissionRequest and Authorizer,
+        organized into CEL variables:
+
+        'object' - The object from the incoming request. The value
+        is null for DELETE requests. 'oldObject' - The existing
+        object. The value is null for CREATE requests. 'request' -
+        Attributes of the admission
+        request(/pkg/apis/admission/types.go#AdmissionRequest).
+        'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
+        Documentation on CEL:
+        https://kubernetes.io/docs/reference/using-api/cel/
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("expression"),
+        )
+
+    @expression.setter
+    def expression(self, value: str):
+        """
+        Expression represents the expression which will be evaluated
+        by CEL. Must evaluate to bool. CEL expressions have access
+        to the contents of the AdmissionRequest and Authorizer,
+        organized into CEL variables:
+
+        'object' - The object from the incoming request. The value
+        is null for DELETE requests. 'oldObject' - The existing
+        object. The value is null for CREATE requests. 'request' -
+        Attributes of the admission
+        request(/pkg/apis/admission/types.go#AdmissionRequest).
+        'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
+        Documentation on CEL:
+        https://kubernetes.io/docs/reference/using-api/cel/
+
+        Required.
+        """
+        self._properties["expression"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is an identifier for this match condition, used for
+        strategic merging of MatchConditions, as well as providing
+        an identifier for logging purposes. A good name should be
+        descriptive of the associated expression. Name must be a
+        qualified name consisting of alphanumeric characters, '-',
+        '_' or '.', and must start and end with an alphanumeric
+        character (e.g. 'MyName',  or 'my.name',  or '123-abc',
+        regex used for validation is
+        '([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]') with an optional
+        DNS subdomain prefix and '/' (e.g. 'example.com/MyName')
+
+        Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is an identifier for this match condition, used for
+        strategic merging of MatchConditions, as well as providing
+        an identifier for logging purposes. A good name should be
+        descriptive of the associated expression. Name must be a
+        qualified name consisting of alphanumeric characters, '-',
+        '_' or '.', and must start and end with an alphanumeric
+        character (e.g. 'MyName',  or 'my.name',  or '123-abc',
+        regex used for validation is
+        '([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]') with an optional
+        DNS subdomain prefix and '/' (e.g. 'example.com/MyName')
+
+        Required.
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "MatchCondition":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
 
 
 class MatchResources(_kuber_definitions.Definition):
@@ -33,16 +366,18 @@ class MatchResources(_kuber_definitions.Definition):
             api_version="admissionregistration/v1alpha1", kind="MatchResources"
         )
         self._properties = {
-            "excludeResourceRules": exclude_resource_rules
-            if exclude_resource_rules is not None
-            else [],
+            "excludeResourceRules": (
+                exclude_resource_rules if exclude_resource_rules is not None else []
+            ),
             "matchPolicy": match_policy if match_policy is not None else "",
-            "namespaceSelector": namespace_selector
-            if namespace_selector is not None
-            else LabelSelector(),
-            "objectSelector": object_selector
-            if object_selector is not None
-            else LabelSelector(),
+            "namespaceSelector": (
+                namespace_selector
+                if namespace_selector is not None
+                else LabelSelector()
+            ),
+            "objectSelector": (
+                object_selector if object_selector is not None else LabelSelector()
+            ),
             "resourceRules": resource_rules if resource_rules is not None else [],
         }
         self._types = {
@@ -606,13 +941,16 @@ class ParamKind(_kuber_definitions.Definition):
 
 class ParamRef(_kuber_definitions.Definition):
     """
-    ParamRef references a parameter resource
+    ParamRef describes how to locate the params to be used as
+    input to expressions of rules applied by a policy binding.
     """
 
     def __init__(
         self,
         name: typing.Optional[str] = None,
         namespace: typing.Optional[str] = None,
+        parameter_not_found_action: typing.Optional[str] = None,
+        selector: typing.Optional["LabelSelector"] = None,
     ):
         """Create ParamRef instance."""
         super(ParamRef, self).__init__(
@@ -621,16 +959,27 @@ class ParamRef(_kuber_definitions.Definition):
         self._properties = {
             "name": name if name is not None else "",
             "namespace": namespace if namespace is not None else "",
+            "parameterNotFoundAction": (
+                parameter_not_found_action
+                if parameter_not_found_action is not None
+                else ""
+            ),
+            "selector": selector if selector is not None else LabelSelector(),
         }
         self._types = {
             "name": (str, None),
             "namespace": (str, None),
+            "parameterNotFoundAction": (str, None),
+            "selector": (LabelSelector, None),
         }
 
     @property
     def name(self) -> str:
         """
-        Name of the resource being referenced.
+        `name` is the name of the resource being referenced.
+
+        `name` and `selector` are mutually exclusive properties. If
+        one is set, the other must be unset.
         """
         return typing.cast(
             str,
@@ -640,15 +989,32 @@ class ParamRef(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the resource being referenced.
+        `name` is the name of the resource being referenced.
+
+        `name` and `selector` are mutually exclusive properties. If
+        one is set, the other must be unset.
         """
         self._properties["name"] = value
 
     @property
     def namespace(self) -> str:
         """
-        Namespace of the referenced resource. Should be empty for
-        the cluster-scoped resources
+        namespace is the namespace of the referenced resource.
+        Allows limiting the search for params to a specific
+        namespace. Applies to both `name` and `selector` fields.
+
+        A per-namespace parameter may be used by specifying a
+        namespace-scoped `paramKind` in the policy and leaving this
+        field empty.
+
+        - If `paramKind` is cluster-scoped, this field MUST be
+        unset. Setting this field results in a configuration error.
+
+        - If `paramKind` is namespace-scoped, the namespace of the
+        object being evaluated for admission will be used when this
+        field is left unset. Take care that if this is left empty
+        the binding must not match any cluster-scoped resources,
+        which will result in an error.
         """
         return typing.cast(
             str,
@@ -658,12 +1024,156 @@ class ParamRef(_kuber_definitions.Definition):
     @namespace.setter
     def namespace(self, value: str):
         """
-        Namespace of the referenced resource. Should be empty for
-        the cluster-scoped resources
+        namespace is the namespace of the referenced resource.
+        Allows limiting the search for params to a specific
+        namespace. Applies to both `name` and `selector` fields.
+
+        A per-namespace parameter may be used by specifying a
+        namespace-scoped `paramKind` in the policy and leaving this
+        field empty.
+
+        - If `paramKind` is cluster-scoped, this field MUST be
+        unset. Setting this field results in a configuration error.
+
+        - If `paramKind` is namespace-scoped, the namespace of the
+        object being evaluated for admission will be used when this
+        field is left unset. Take care that if this is left empty
+        the binding must not match any cluster-scoped resources,
+        which will result in an error.
         """
         self._properties["namespace"] = value
 
+    @property
+    def parameter_not_found_action(self) -> str:
+        """
+        `parameterNotFoundAction` controls the behavior of the
+        binding when the resource exists, and name or selector is
+        valid, but there are no parameters matched by the binding.
+        If the value is set to `Allow`, then no matched parameters
+        will be treated as successful validation by the binding. If
+        set to `Deny`, then no matched parameters will be subject to
+        the `failurePolicy` of the policy.
+
+        Allowed values are `Allow` or `Deny` Default to `Deny`
+        """
+        return typing.cast(
+            str,
+            self._properties.get("parameterNotFoundAction"),
+        )
+
+    @parameter_not_found_action.setter
+    def parameter_not_found_action(self, value: str):
+        """
+        `parameterNotFoundAction` controls the behavior of the
+        binding when the resource exists, and name or selector is
+        valid, but there are no parameters matched by the binding.
+        If the value is set to `Allow`, then no matched parameters
+        will be treated as successful validation by the binding. If
+        set to `Deny`, then no matched parameters will be subject to
+        the `failurePolicy` of the policy.
+
+        Allowed values are `Allow` or `Deny` Default to `Deny`
+        """
+        self._properties["parameterNotFoundAction"] = value
+
+    @property
+    def selector(self) -> "LabelSelector":
+        """
+        selector can be used to match multiple param objects based
+        on their labels. Supply selector: {} to match all resources
+        of the ParamKind.
+
+        If multiple params are found, they are all evaluated with
+        the policy expressions and the results are ANDed together.
+
+        One of `name` or `selector` must be set, but `name` and
+        `selector` are mutually exclusive properties. If one is set,
+        the other must be unset.
+        """
+        return typing.cast(
+            "LabelSelector",
+            self._properties.get("selector"),
+        )
+
+    @selector.setter
+    def selector(self, value: typing.Union["LabelSelector", dict]):
+        """
+        selector can be used to match multiple param objects based
+        on their labels. Supply selector: {} to match all resources
+        of the ParamKind.
+
+        If multiple params are found, they are all evaluated with
+        the policy expressions and the results are ANDed together.
+
+        One of `name` or `selector` must be set, but `name` and
+        `selector` are mutually exclusive properties. If one is set,
+        the other must be unset.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                LabelSelector,
+                LabelSelector().from_dict(value),
+            )
+        self._properties["selector"] = value
+
     def __enter__(self) -> "ParamRef":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class TypeChecking(_kuber_definitions.Definition):
+    """
+    TypeChecking contains results of type checking the
+    expressions in the ValidatingAdmissionPolicy
+    """
+
+    def __init__(
+        self,
+        expression_warnings: typing.Optional[typing.List["ExpressionWarning"]] = None,
+    ):
+        """Create TypeChecking instance."""
+        super(TypeChecking, self).__init__(
+            api_version="admissionregistration/v1alpha1", kind="TypeChecking"
+        )
+        self._properties = {
+            "expressionWarnings": (
+                expression_warnings if expression_warnings is not None else []
+            ),
+        }
+        self._types = {
+            "expressionWarnings": (list, ExpressionWarning),
+        }
+
+    @property
+    def expression_warnings(self) -> typing.List["ExpressionWarning"]:
+        """
+        The type checking warnings for each expression.
+        """
+        return typing.cast(
+            typing.List["ExpressionWarning"],
+            self._properties.get("expressionWarnings"),
+        )
+
+    @expression_warnings.setter
+    def expression_warnings(
+        self, value: typing.Union[typing.List["ExpressionWarning"], typing.List[dict]]
+    ):
+        """
+        The type checking warnings for each expression.
+        """
+        cleaned: typing.List[ExpressionWarning] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    ExpressionWarning,
+                    ExpressionWarning().from_dict(item),
+                )
+            cleaned.append(typing.cast(ExpressionWarning, item))
+        self._properties["expressionWarnings"] = cleaned
+
+    def __enter__(self) -> "TypeChecking":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -681,6 +1191,7 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
         self,
         metadata: typing.Optional["ObjectMeta"] = None,
         spec: typing.Optional["ValidatingAdmissionPolicySpec"] = None,
+        status: typing.Optional["ValidatingAdmissionPolicyStatus"] = None,
     ):
         """Create ValidatingAdmissionPolicy instance."""
         super(ValidatingAdmissionPolicy, self).__init__(
@@ -690,12 +1201,16 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
             "spec": spec if spec is not None else ValidatingAdmissionPolicySpec(),
+            "status": (
+                status if status is not None else ValidatingAdmissionPolicyStatus()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
             "kind": (str, None),
             "metadata": (ObjectMeta, None),
             "spec": (ValidatingAdmissionPolicySpec, None),
+            "status": (ValidatingAdmissionPolicyStatus, None),
         }
 
     @property
@@ -748,17 +1263,46 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
             )
         self._properties["spec"] = value
 
-    def create_resource(self, namespace: typing.Optional["str"] = None):
+    @property
+    def status(self) -> "ValidatingAdmissionPolicyStatus":
+        """
+        The status of the ValidatingAdmissionPolicy, including
+        warnings that are useful to determine if the policy behaves
+        in the expected way. Populated by the system. Read-only.
+        """
+        return typing.cast(
+            "ValidatingAdmissionPolicyStatus",
+            self._properties.get("status"),
+        )
+
+    @status.setter
+    def status(self, value: typing.Union["ValidatingAdmissionPolicyStatus", dict]):
+        """
+        The status of the ValidatingAdmissionPolicy, including
+        warnings that are useful to determine if the policy behaves
+        in the expected way. Populated by the system. Read-only.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ValidatingAdmissionPolicyStatus,
+                ValidatingAdmissionPolicyStatus().from_dict(value),
+            )
+        self._properties["status"] = value
+
+    def create_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ValidatingAdmissionPolicyStatus":
         """
         Creates the ValidatingAdmissionPolicy in the currently
-        configured Kubernetes cluster.
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the create is complete.
         """
         names = [
             "create_namespaced_validating_admission_policy",
             "create_validating_admission_policy",
         ]
 
-        _kube_api.execute(
+        response = _kube_api.execute(
             action="create",
             resource=self,
             names=names,
@@ -767,17 +1311,25 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict()},
         )
 
-    def replace_resource(self, namespace: typing.Optional["str"] = None):
+        output = ValidatingAdmissionPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def replace_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ValidatingAdmissionPolicyStatus":
         """
         Replaces the ValidatingAdmissionPolicy in the currently
-        configured Kubernetes cluster.
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
         """
         names = [
             "replace_namespaced_validating_admission_policy",
             "replace_validating_admission_policy",
         ]
 
-        _kube_api.execute(
+        response = _kube_api.execute(
             action="replace",
             resource=self,
             names=names,
@@ -786,17 +1338,25 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def patch_resource(self, namespace: typing.Optional["str"] = None):
+        output = ValidatingAdmissionPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def patch_resource(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ValidatingAdmissionPolicyStatus":
         """
         Patches the ValidatingAdmissionPolicy in the currently
-        configured Kubernetes cluster.
+        configured Kubernetes cluster and returns the status information
+        returned by the Kubernetes API after the replace is complete.
         """
         names = [
             "patch_namespaced_validating_admission_policy",
             "patch_validating_admission_policy",
         ]
 
-        _kube_api.execute(
+        response = _kube_api.execute(
             action="patch",
             resource=self,
             names=names,
@@ -805,9 +1365,35 @@ class ValidatingAdmissionPolicy(_kuber_definitions.Resource):
             api_args={"body": self.to_dict(), "name": self.metadata.name},
         )
 
-    def get_resource_status(self, namespace: typing.Optional["str"] = None):
-        """This resource does not have a status."""
-        pass
+        output = ValidatingAdmissionPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
+
+    def get_resource_status(
+        self, namespace: typing.Optional["str"] = None
+    ) -> "ValidatingAdmissionPolicyStatus":
+        """
+        Returns status information about the given resource within the cluster.
+        """
+        names = [
+            "read_namespaced_validating_admission_policy",
+            "read_validating_admission_policy",
+        ]
+
+        response = _kube_api.execute(
+            action="read",
+            resource=self,
+            names=names,
+            namespace=namespace,
+            api_client=None,
+            api_args={"name": self.metadata.name},
+        )
+
+        output = ValidatingAdmissionPolicyStatus()
+        if response is not None:
+            output.from_dict(_kube_api.to_kuber_dict(response.status))
+        return output
 
     def read_resource(self, namespace: typing.Optional[str] = None):
         """
@@ -882,6 +1468,18 @@ class ValidatingAdmissionPolicyBinding(_kuber_definitions.Resource):
     ValidatingAdmissionPolicyBinding and parameter CRDs together
     define how cluster administrators configure policies for
     clusters.
+
+    For a given admission request, each binding will cause its
+    policy to be evaluated N times, where N is 1 for
+    policies/bindings that don't use params, otherwise N is the
+    number of parameters selected by the binding.
+
+    The CEL expressions of a policy must have a computed CEL
+    cost below the maximum CEL budget. Each evaluation of the
+    policy is given an independent CEL cost budget.
+    Adding/removing policies, bindings, or params can not affect
+    whether a given (policy, binding, param) combination is
+    within its own CEL budget.
     """
 
     def __init__(
@@ -896,9 +1494,9 @@ class ValidatingAdmissionPolicyBinding(_kuber_definitions.Resource):
         )
         self._properties = {
             "metadata": metadata if metadata is not None else ObjectMeta(),
-            "spec": spec
-            if spec is not None
-            else ValidatingAdmissionPolicyBindingSpec(),
+            "spec": (
+                spec if spec is not None else ValidatingAdmissionPolicyBindingSpec()
+            ),
         }
         self._types = {
             "apiVersion": (str, None),
@@ -1197,6 +1795,7 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
         match_resources: typing.Optional["MatchResources"] = None,
         param_ref: typing.Optional["ParamRef"] = None,
         policy_name: typing.Optional[str] = None,
+        validation_actions: typing.Optional[typing.List[str]] = None,
     ):
         """Create ValidatingAdmissionPolicyBindingSpec instance."""
         super(ValidatingAdmissionPolicyBindingSpec, self).__init__(
@@ -1204,16 +1803,20 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
             kind="ValidatingAdmissionPolicyBindingSpec",
         )
         self._properties = {
-            "matchResources": match_resources
-            if match_resources is not None
-            else MatchResources(),
+            "matchResources": (
+                match_resources if match_resources is not None else MatchResources()
+            ),
             "paramRef": param_ref if param_ref is not None else ParamRef(),
             "policyName": policy_name if policy_name is not None else "",
+            "validationActions": (
+                validation_actions if validation_actions is not None else []
+            ),
         }
         self._types = {
             "matchResources": (MatchResources, None),
             "paramRef": (ParamRef, None),
             "policyName": (str, None),
+            "validationActions": (list, str),
         }
 
     @property
@@ -1259,13 +1862,15 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
     @property
     def param_ref(self) -> "ParamRef":
         """
-        ParamRef specifies the parameter resource used to configure
+        paramRef specifies the parameter resource used to configure
         the admission control policy. It should point to a resource
         of the type specified in ParamKind of the bound
         ValidatingAdmissionPolicy. If the policy specifies a
         ParamKind and the resource referred to by ParamRef does not
         exist, this binding is considered mis-configured and the
-        FailurePolicy of the ValidatingAdmissionPolicy applied.
+        FailurePolicy of the ValidatingAdmissionPolicy applied. If
+        the policy does not specify a ParamKind then this field is
+        ignored, and the rules are evaluated without a param.
         """
         return typing.cast(
             "ParamRef",
@@ -1275,13 +1880,15 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
     @param_ref.setter
     def param_ref(self, value: typing.Union["ParamRef", dict]):
         """
-        ParamRef specifies the parameter resource used to configure
+        paramRef specifies the parameter resource used to configure
         the admission control policy. It should point to a resource
         of the type specified in ParamKind of the bound
         ValidatingAdmissionPolicy. If the policy specifies a
         ParamKind and the resource referred to by ParamRef does not
         exist, this binding is considered mis-configured and the
-        FailurePolicy of the ValidatingAdmissionPolicy applied.
+        FailurePolicy of the ValidatingAdmissionPolicy applied. If
+        the policy does not specify a ParamKind then this field is
+        ignored, and the rules are evaluated without a param.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -1312,6 +1919,127 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
         considered invalid and will be ignored Required.
         """
         self._properties["policyName"] = value
+
+    @property
+    def validation_actions(self) -> typing.List[str]:
+        """
+        validationActions declares how Validations of the referenced
+        ValidatingAdmissionPolicy are enforced. If a validation
+        evaluates to false it is always enforced according to these
+        actions.
+
+        Failures defined by the ValidatingAdmissionPolicy's
+        FailurePolicy are enforced according to these actions only
+        if the FailurePolicy is set to Fail, otherwise the failures
+        are ignored. This includes compilation errors, runtime
+        errors and misconfigurations of the policy.
+
+        validationActions is declared as a set of action values.
+        Order does not matter. validationActions may not contain
+        duplicates of the same action.
+
+        The supported actions values are:
+
+        "Deny" specifies that a validation failure results in a
+        denied request.
+
+        "Warn" specifies that a validation failure is reported to
+        the request client in HTTP Warning headers, with a warning
+        code of 299. Warnings can be sent both for allowed or denied
+        admission responses.
+
+        "Audit" specifies that a validation failure is included in
+        the published audit event for the request. The audit event
+        will contain a
+        `validation.policy.admission.k8s.io/validation_failure`
+        audit annotation with a value containing the details of the
+        validation failures, formatted as a JSON list of objects,
+        each with the following fields: - message: The validation
+        failure message string - policy: The resource name of the
+        ValidatingAdmissionPolicy - binding: The resource name of
+        the ValidatingAdmissionPolicyBinding - expressionIndex: The
+        index of the failed validations in the
+        ValidatingAdmissionPolicy - validationActions: The
+        enforcement actions enacted for the validation failure
+        Example audit annotation:
+        `"validation.policy.admission.k8s.io/validation_failure":
+        "[{"message": "Invalid value", {"policy":
+        "policy.example.com", {"binding":
+        "policybinding.example.com", {"expressionIndex": "1",
+        {"validationActions": ["Audit"]}]"`
+
+        Clients should expect to handle additional values by
+        ignoring any values not recognized.
+
+        "Deny" and "Warn" may not be used together since this
+        combination needlessly duplicates the validation failure
+        both in the API response body and the HTTP warning headers.
+
+        Required.
+        """
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("validationActions"),
+        )
+
+    @validation_actions.setter
+    def validation_actions(self, value: typing.List[str]):
+        """
+        validationActions declares how Validations of the referenced
+        ValidatingAdmissionPolicy are enforced. If a validation
+        evaluates to false it is always enforced according to these
+        actions.
+
+        Failures defined by the ValidatingAdmissionPolicy's
+        FailurePolicy are enforced according to these actions only
+        if the FailurePolicy is set to Fail, otherwise the failures
+        are ignored. This includes compilation errors, runtime
+        errors and misconfigurations of the policy.
+
+        validationActions is declared as a set of action values.
+        Order does not matter. validationActions may not contain
+        duplicates of the same action.
+
+        The supported actions values are:
+
+        "Deny" specifies that a validation failure results in a
+        denied request.
+
+        "Warn" specifies that a validation failure is reported to
+        the request client in HTTP Warning headers, with a warning
+        code of 299. Warnings can be sent both for allowed or denied
+        admission responses.
+
+        "Audit" specifies that a validation failure is included in
+        the published audit event for the request. The audit event
+        will contain a
+        `validation.policy.admission.k8s.io/validation_failure`
+        audit annotation with a value containing the details of the
+        validation failures, formatted as a JSON list of objects,
+        each with the following fields: - message: The validation
+        failure message string - policy: The resource name of the
+        ValidatingAdmissionPolicy - binding: The resource name of
+        the ValidatingAdmissionPolicyBinding - expressionIndex: The
+        index of the failed validations in the
+        ValidatingAdmissionPolicy - validationActions: The
+        enforcement actions enacted for the validation failure
+        Example audit annotation:
+        `"validation.policy.admission.k8s.io/validation_failure":
+        "[{"message": "Invalid value", {"policy":
+        "policy.example.com", {"binding":
+        "policybinding.example.com", {"expressionIndex": "1",
+        {"validationActions": ["Audit"]}]"`
+
+        Clients should expect to handle additional values by
+        ignoring any values not recognized.
+
+        "Deny" and "Warn" may not be used together since this
+        combination needlessly duplicates the validation failure
+        both in the API response body and the HTTP warning headers.
+
+        Required.
+        """
+        self._properties["validationActions"] = value
 
     def __enter__(self) -> "ValidatingAdmissionPolicyBindingSpec":
         return self
@@ -1430,10 +2158,13 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        audit_annotations: typing.Optional[typing.List["AuditAnnotation"]] = None,
         failure_policy: typing.Optional[str] = None,
+        match_conditions: typing.Optional[typing.List["MatchCondition"]] = None,
         match_constraints: typing.Optional["MatchResources"] = None,
         param_kind: typing.Optional["ParamKind"] = None,
         validations: typing.Optional[typing.List["Validation"]] = None,
+        variables: typing.Optional[typing.List["Variable"]] = None,
     ):
         """Create ValidatingAdmissionPolicySpec instance."""
         super(ValidatingAdmissionPolicySpec, self).__init__(
@@ -1441,30 +2172,83 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
             kind="ValidatingAdmissionPolicySpec",
         )
         self._properties = {
+            "auditAnnotations": (
+                audit_annotations if audit_annotations is not None else []
+            ),
             "failurePolicy": failure_policy if failure_policy is not None else "",
-            "matchConstraints": match_constraints
-            if match_constraints is not None
-            else MatchResources(),
+            "matchConditions": match_conditions if match_conditions is not None else [],
+            "matchConstraints": (
+                match_constraints if match_constraints is not None else MatchResources()
+            ),
             "paramKind": param_kind if param_kind is not None else ParamKind(),
             "validations": validations if validations is not None else [],
+            "variables": variables if variables is not None else [],
         }
         self._types = {
+            "auditAnnotations": (list, AuditAnnotation),
             "failurePolicy": (str, None),
+            "matchConditions": (list, MatchCondition),
             "matchConstraints": (MatchResources, None),
             "paramKind": (ParamKind, None),
             "validations": (list, Validation),
+            "variables": (list, Variable),
         }
+
+    @property
+    def audit_annotations(self) -> typing.List["AuditAnnotation"]:
+        """
+        auditAnnotations contains CEL expressions which are used to
+        produce audit annotations for the audit event of the API
+        request. validations and auditAnnotations may not both be
+        empty; a least one of validations or auditAnnotations is
+        required.
+        """
+        return typing.cast(
+            typing.List["AuditAnnotation"],
+            self._properties.get("auditAnnotations"),
+        )
+
+    @audit_annotations.setter
+    def audit_annotations(
+        self, value: typing.Union[typing.List["AuditAnnotation"], typing.List[dict]]
+    ):
+        """
+        auditAnnotations contains CEL expressions which are used to
+        produce audit annotations for the audit event of the API
+        request. validations and auditAnnotations may not both be
+        empty; a least one of validations or auditAnnotations is
+        required.
+        """
+        cleaned: typing.List[AuditAnnotation] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    AuditAnnotation,
+                    AuditAnnotation().from_dict(item),
+                )
+            cleaned.append(typing.cast(AuditAnnotation, item))
+        self._properties["auditAnnotations"] = cleaned
 
     @property
     def failure_policy(self) -> str:
         """
-        FailurePolicy defines how to handle failures for the
-        admission policy. Failures can occur from invalid or mis-
-        configured policy definitions or bindings. A policy is
-        invalid if spec.paramKind refers to a non-existent Kind. A
-        binding is invalid if spec.paramRef.name refers to a non-
-        existent resource. Allowed values are Ignore or Fail.
-        Defaults to Fail.
+        failurePolicy defines how to handle failures for the
+        admission policy. Failures can occur from CEL expression
+        parse errors, type check errors, runtime errors and invalid
+        or mis-configured policy definitions or bindings.
+
+        A policy is invalid if spec.paramKind refers to a non-
+        existent Kind. A binding is invalid if spec.paramRef.name
+        refers to a non-existent resource.
+
+        failurePolicy does not define how validations that evaluate
+        to false are handled.
+
+        When failurePolicy is set to Fail,
+        ValidatingAdmissionPolicyBinding validationActions define
+        how failures are enforced.
+
+        Allowed values are Ignore or Fail. Defaults to Fail.
         """
         return typing.cast(
             str,
@@ -1474,15 +2258,90 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
     @failure_policy.setter
     def failure_policy(self, value: str):
         """
-        FailurePolicy defines how to handle failures for the
-        admission policy. Failures can occur from invalid or mis-
-        configured policy definitions or bindings. A policy is
-        invalid if spec.paramKind refers to a non-existent Kind. A
-        binding is invalid if spec.paramRef.name refers to a non-
-        existent resource. Allowed values are Ignore or Fail.
-        Defaults to Fail.
+        failurePolicy defines how to handle failures for the
+        admission policy. Failures can occur from CEL expression
+        parse errors, type check errors, runtime errors and invalid
+        or mis-configured policy definitions or bindings.
+
+        A policy is invalid if spec.paramKind refers to a non-
+        existent Kind. A binding is invalid if spec.paramRef.name
+        refers to a non-existent resource.
+
+        failurePolicy does not define how validations that evaluate
+        to false are handled.
+
+        When failurePolicy is set to Fail,
+        ValidatingAdmissionPolicyBinding validationActions define
+        how failures are enforced.
+
+        Allowed values are Ignore or Fail. Defaults to Fail.
         """
         self._properties["failurePolicy"] = value
+
+    @property
+    def match_conditions(self) -> typing.List["MatchCondition"]:
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be validated. Match conditions filter requests
+        that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        If a parameter object is provided, it can be accessed via
+        the `params` handle in the same manner as validation
+        expressions.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the policy is
+        skipped.
+          2. If ALL matchConditions evaluate to TRUE, the policy is
+        evaluated.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the policy is skipped
+        """
+        return typing.cast(
+            typing.List["MatchCondition"],
+            self._properties.get("matchConditions"),
+        )
+
+    @match_conditions.setter
+    def match_conditions(
+        self, value: typing.Union[typing.List["MatchCondition"], typing.List[dict]]
+    ):
+        """
+        MatchConditions is a list of conditions that must be met for
+        a request to be validated. Match conditions filter requests
+        that have already been matched by the rules,
+        namespaceSelector, and objectSelector. An empty list of
+        matchConditions matches all requests. There are a maximum of
+        64 match conditions allowed.
+
+        If a parameter object is provided, it can be accessed via
+        the `params` handle in the same manner as validation
+        expressions.
+
+        The exact matching logic is (in order):
+          1. If ANY matchCondition evaluates to FALSE, the policy is
+        skipped.
+          2. If ALL matchConditions evaluate to TRUE, the policy is
+        evaluated.
+          3. If any matchCondition evaluates to an error (but none
+        are FALSE):
+             - If failurePolicy=Fail, reject the request
+             - If failurePolicy=Ignore, the policy is skipped
+        """
+        cleaned: typing.List[MatchCondition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    MatchCondition,
+                    MatchCondition().from_dict(item),
+                )
+            cleaned.append(typing.cast(MatchCondition, item))
+        self._properties["matchConditions"] = cleaned
 
     @property
     def match_constraints(self) -> "MatchResources":
@@ -1560,8 +2419,9 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
     def validations(self) -> typing.List["Validation"]:
         """
         Validations contain CEL expressions which is used to apply
-        the validation. A minimum of one validation is required for
-        a policy definition. Required.
+        the validation. Validations and AuditAnnotations may not
+        both be empty; a minimum of one Validations or
+        AuditAnnotations is required.
         """
         return typing.cast(
             typing.List["Validation"],
@@ -1574,8 +2434,9 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
     ):
         """
         Validations contain CEL expressions which is used to apply
-        the validation. A minimum of one validation is required for
-        a policy definition. Required.
+        the validation. Validations and AuditAnnotations may not
+        both be empty; a minimum of one Validations or
+        AuditAnnotations is required.
         """
         cleaned: typing.List[Validation] = []
         for item in value:
@@ -1587,7 +2448,163 @@ class ValidatingAdmissionPolicySpec(_kuber_definitions.Definition):
             cleaned.append(typing.cast(Validation, item))
         self._properties["validations"] = cleaned
 
+    @property
+    def variables(self) -> typing.List["Variable"]:
+        """
+        Variables contain definitions of variables that can be used
+        in composition of other expressions. Each variable is
+        defined as a named CEL expression. The variables defined
+        here will be available under `variables` in other
+        expressions of the policy except MatchConditions because
+        MatchConditions are evaluated before the rest of the policy.
+
+        The expression of a variable can refer to other variables
+        defined earlier in the list but not those after. Thus,
+        Variables must be sorted by the order of first appearance
+        and acyclic.
+        """
+        return typing.cast(
+            typing.List["Variable"],
+            self._properties.get("variables"),
+        )
+
+    @variables.setter
+    def variables(
+        self, value: typing.Union[typing.List["Variable"], typing.List[dict]]
+    ):
+        """
+        Variables contain definitions of variables that can be used
+        in composition of other expressions. Each variable is
+        defined as a named CEL expression. The variables defined
+        here will be available under `variables` in other
+        expressions of the policy except MatchConditions because
+        MatchConditions are evaluated before the rest of the policy.
+
+        The expression of a variable can refer to other variables
+        defined earlier in the list but not those after. Thus,
+        Variables must be sorted by the order of first appearance
+        and acyclic.
+        """
+        cleaned: typing.List[Variable] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    Variable,
+                    Variable().from_dict(item),
+                )
+            cleaned.append(typing.cast(Variable, item))
+        self._properties["variables"] = cleaned
+
     def __enter__(self) -> "ValidatingAdmissionPolicySpec":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ValidatingAdmissionPolicyStatus(_kuber_definitions.Definition):
+    """
+    ValidatingAdmissionPolicyStatus represents the status of a
+    ValidatingAdmissionPolicy.
+    """
+
+    def __init__(
+        self,
+        conditions: typing.Optional[typing.List["Condition"]] = None,
+        observed_generation: typing.Optional[int] = None,
+        type_checking: typing.Optional["TypeChecking"] = None,
+    ):
+        """Create ValidatingAdmissionPolicyStatus instance."""
+        super(ValidatingAdmissionPolicyStatus, self).__init__(
+            api_version="admissionregistration/v1alpha1",
+            kind="ValidatingAdmissionPolicyStatus",
+        )
+        self._properties = {
+            "conditions": conditions if conditions is not None else [],
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
+            "typeChecking": (
+                type_checking if type_checking is not None else TypeChecking()
+            ),
+        }
+        self._types = {
+            "conditions": (list, Condition),
+            "observedGeneration": (int, None),
+            "typeChecking": (TypeChecking, None),
+        }
+
+    @property
+    def conditions(self) -> typing.List["Condition"]:
+        """
+        The conditions represent the latest available observations
+        of a policy's current state.
+        """
+        return typing.cast(
+            typing.List["Condition"],
+            self._properties.get("conditions"),
+        )
+
+    @conditions.setter
+    def conditions(
+        self, value: typing.Union[typing.List["Condition"], typing.List[dict]]
+    ):
+        """
+        The conditions represent the latest available observations
+        of a policy's current state.
+        """
+        cleaned: typing.List[Condition] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    Condition,
+                    Condition().from_dict(item),
+                )
+            cleaned.append(typing.cast(Condition, item))
+        self._properties["conditions"] = cleaned
+
+    @property
+    def observed_generation(self) -> int:
+        """
+        The generation observed by the controller.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
+
+    @observed_generation.setter
+    def observed_generation(self, value: int):
+        """
+        The generation observed by the controller.
+        """
+        self._properties["observedGeneration"] = value
+
+    @property
+    def type_checking(self) -> "TypeChecking":
+        """
+        The results of type checking for each expression. Presence
+        of this field indicates the completion of the type checking.
+        """
+        return typing.cast(
+            "TypeChecking",
+            self._properties.get("typeChecking"),
+        )
+
+    @type_checking.setter
+    def type_checking(self, value: typing.Union["TypeChecking", dict]):
+        """
+        The results of type checking for each expression. Presence
+        of this field indicates the completion of the type checking.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                TypeChecking,
+                TypeChecking().from_dict(value),
+            )
+        self._properties["typeChecking"] = value
+
+    def __enter__(self) -> "ValidatingAdmissionPolicyStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1604,6 +2621,7 @@ class Validation(_kuber_definitions.Definition):
         self,
         expression: typing.Optional[str] = None,
         message: typing.Optional[str] = None,
+        message_expression: typing.Optional[str] = None,
         reason: typing.Optional[str] = None,
     ):
         """Create Validation instance."""
@@ -1613,11 +2631,15 @@ class Validation(_kuber_definitions.Definition):
         self._properties = {
             "expression": expression if expression is not None else "",
             "message": message if message is not None else "",
+            "messageExpression": (
+                message_expression if message_expression is not None else ""
+            ),
             "reason": reason if reason is not None else "",
         }
         self._types = {
             "expression": (str, None),
             "message": (str, None),
+            "messageExpression": (str, None),
             "reason": (str, None),
         }
 
@@ -1626,17 +2648,31 @@ class Validation(_kuber_definitions.Definition):
         """
         Expression represents the expression which will be evaluated
         by CEL. ref: https://github.com/google/cel-spec CEL
-        expressions have access to the contents of the Admission
+        expressions have access to the contents of the API
         request/response, organized into CEL variables as well as
         some other useful variables:
 
-        'object' - The object from the incoming request. The value
-        is null for DELETE requests. 'oldObject' - The existing
-        object. The value is null for CREATE requests. 'request' -
-        Attributes of the admission request([ref](/pkg/apis/admissio
-        n/types.go#AdmissionRequest)). 'params' - Parameter resource
+        - 'object' - The object from the incoming request. The value
+        is null for DELETE requests. - 'oldObject' - The existing
+        object. The value is null for CREATE requests. - 'request' -
+        Attributes of the API request([ref](/pkg/apis/admission/type
+        s.go#AdmissionRequest)). - 'params' - Parameter resource
         referred to by the policy binding being evaluated. Only
-        populated if the policy has a ParamKind.
+        populated if the policy has a ParamKind. - 'namespaceObject'
+        - The namespace object that the incoming object belongs to.
+        The value is null for cluster-scoped resources. -
+        'variables' - Map of composited variables, from its name to
+        its lazily evaluated value.
+          For example, a variable named 'foo' can be accessed as
+        'variables.foo'.
+        - 'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        - 'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
 
         The `apiVersion`, `kind`, `metadata.name` and
         `metadata.generateName` are always accessible from the root
@@ -1688,17 +2724,31 @@ class Validation(_kuber_definitions.Definition):
         """
         Expression represents the expression which will be evaluated
         by CEL. ref: https://github.com/google/cel-spec CEL
-        expressions have access to the contents of the Admission
+        expressions have access to the contents of the API
         request/response, organized into CEL variables as well as
         some other useful variables:
 
-        'object' - The object from the incoming request. The value
-        is null for DELETE requests. 'oldObject' - The existing
-        object. The value is null for CREATE requests. 'request' -
-        Attributes of the admission request([ref](/pkg/apis/admissio
-        n/types.go#AdmissionRequest)). 'params' - Parameter resource
+        - 'object' - The object from the incoming request. The value
+        is null for DELETE requests. - 'oldObject' - The existing
+        object. The value is null for CREATE requests. - 'request' -
+        Attributes of the API request([ref](/pkg/apis/admission/type
+        s.go#AdmissionRequest)). - 'params' - Parameter resource
         referred to by the policy binding being evaluated. Only
-        populated if the policy has a ParamKind.
+        populated if the policy has a ParamKind. - 'namespaceObject'
+        - The namespace object that the incoming object belongs to.
+        The value is null for cluster-scoped resources. -
+        'variables' - Map of composited variables, from its name to
+        its lazily evaluated value.
+          For example, a variable named 'foo' can be accessed as
+        'variables.foo'.
+        - 'authorizer' - A CEL Authorizer. May be used to perform
+        authorization checks for the principal (user or service
+        account) of the request.
+          See
+        https://pkg.go.dev/k8s.io/apiserver/pkg/cel/library#Authz
+        - 'authorizer.requestResource' - A CEL ResourceCheck
+        constructed from the 'authorizer' and configured with the
+          request resource.
 
         The `apiVersion`, `kind`, `metadata.name` and
         `metadata.generateName` are always accessible from the root
@@ -1774,6 +2824,59 @@ class Validation(_kuber_definitions.Definition):
         self._properties["message"] = value
 
     @property
+    def message_expression(self) -> str:
+        """
+        messageExpression declares a CEL expression that evaluates
+        to the validation failure message that is returned when this
+        rule fails. Since messageExpression is used as a failure
+        message, it must evaluate to a string. If both message and
+        messageExpression are present on a validation, then
+        messageExpression will be used if validation fails. If
+        messageExpression results in a runtime error, the runtime
+        error is logged, and the validation failure message is
+        produced as if the messageExpression field were unset. If
+        messageExpression evaluates to an empty string, a string
+        with only spaces, or a string that contains line breaks,
+        then the validation failure message will also be produced as
+        if the messageExpression field were unset, and the fact that
+        messageExpression produced an empty string/string with only
+        spaces/string with line breaks will be logged.
+        messageExpression has access to all the same variables as
+        the `expression` except for 'authorizer' and
+        'authorizer.requestResource'. Example: "object.x must be
+        less than max ("+string(params.max)+")"
+        """
+        return typing.cast(
+            str,
+            self._properties.get("messageExpression"),
+        )
+
+    @message_expression.setter
+    def message_expression(self, value: str):
+        """
+        messageExpression declares a CEL expression that evaluates
+        to the validation failure message that is returned when this
+        rule fails. Since messageExpression is used as a failure
+        message, it must evaluate to a string. If both message and
+        messageExpression are present on a validation, then
+        messageExpression will be used if validation fails. If
+        messageExpression results in a runtime error, the runtime
+        error is logged, and the validation failure message is
+        produced as if the messageExpression field were unset. If
+        messageExpression evaluates to an empty string, a string
+        with only spaces, or a string that contains line breaks,
+        then the validation failure message will also be produced as
+        if the messageExpression field were unset, and the fact that
+        messageExpression produced an empty string/string with only
+        spaces/string with line breaks will be logged.
+        messageExpression has access to all the same variables as
+        the `expression` except for 'authorizer' and
+        'authorizer.requestResource'. Example: "object.x must be
+        less than max ("+string(params.max)+")"
+        """
+        self._properties["messageExpression"] = value
+
+    @property
     def reason(self) -> str:
         """
         Reason represents a machine-readable description of why this
@@ -1803,6 +2906,83 @@ class Validation(_kuber_definitions.Definition):
         self._properties["reason"] = value
 
     def __enter__(self) -> "Validation":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class Variable(_kuber_definitions.Definition):
+    """
+    Variable is the definition of a variable that is used for
+    composition.
+    """
+
+    def __init__(
+        self,
+        expression: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+    ):
+        """Create Variable instance."""
+        super(Variable, self).__init__(
+            api_version="admissionregistration/v1alpha1", kind="Variable"
+        )
+        self._properties = {
+            "expression": expression if expression is not None else "",
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "expression": (str, None),
+            "name": (str, None),
+        }
+
+    @property
+    def expression(self) -> str:
+        """
+        Expression is the expression that will be evaluated as the
+        value of the variable. The CEL expression has access to the
+        same identifiers as the CEL expressions in Validation.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("expression"),
+        )
+
+    @expression.setter
+    def expression(self, value: str):
+        """
+        Expression is the expression that will be evaluated as the
+        value of the variable. The CEL expression has access to the
+        same identifiers as the CEL expressions in Validation.
+        """
+        self._properties["expression"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name is the name of the variable. The name must be a valid
+        CEL identifier and unique among all variables. The variable
+        can be accessed in other expressions through `variables` For
+        example, if name is "foo", the variable will be available as
+        `variables.foo`
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name is the name of the variable. The name must be a valid
+        CEL identifier and unique among all variables. The variable
+        can be accessed in other expressions through `variables` For
+        example, if name is "foo", the variable will be available as
+        `variables.foo`
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "Variable":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
