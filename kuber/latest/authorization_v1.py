@@ -5,10 +5,234 @@ from kuber import kube_api as _kube_api  # noqa: F401
 
 from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import _types  # noqa: F401
+from kuber.latest.meta_v1 import FieldSelectorRequirement  # noqa: F401
+from kuber.latest.meta_v1 import LabelSelectorRequirement  # noqa: F401
 from kuber.latest.meta_v1 import ListMeta  # noqa: F401
 from kuber.latest.meta_v1 import ObjectMeta  # noqa: F401
 from kuber.latest.meta_v1 import Status  # noqa: F401
 from kuber.latest.meta_v1 import StatusDetails  # noqa: F401
+
+
+class FieldSelectorAttributes(_kuber_definitions.Definition):
+    """
+    FieldSelectorAttributes indicates a field limited access.
+    Webhook authors are encouraged to * ensure rawSelector and
+    requirements are not both set * consider the requirements
+    field if set * not try to parse or consider the rawSelector
+    field if set. This is to avoid another CVE-2022-2880 (i.e.
+    getting different systems to agree on how exactly to parse a
+    query is not something we want), see
+    https://www.oxeye.io/resources/golang-parameter-smuggling-
+    attack for more details. For the *SubjectAccessReview
+    endpoints of the kube-apiserver: * If rawSelector is empty
+    and requirements are empty, the request is not limited. * If
+    rawSelector is present and requirements are empty, the
+    rawSelector will be parsed and limited if the parsing
+    succeeds. * If rawSelector is empty and requirements are
+    present, the requirements should be honored * If rawSelector
+    is present and requirements are present, the request is
+    invalid.
+    """
+
+    def __init__(
+        self,
+        raw_selector: typing.Optional[str] = None,
+        requirements: typing.Optional[typing.List["FieldSelectorRequirement"]] = None,
+    ):
+        """Create FieldSelectorAttributes instance."""
+        super(FieldSelectorAttributes, self).__init__(
+            api_version="authorization/v1", kind="FieldSelectorAttributes"
+        )
+        self._properties = {
+            "rawSelector": raw_selector if raw_selector is not None else "",
+            "requirements": requirements if requirements is not None else [],
+        }
+        self._types = {
+            "rawSelector": (str, None),
+            "requirements": (list, FieldSelectorRequirement),
+        }
+
+    @property
+    def raw_selector(self) -> str:
+        """
+        rawSelector is the serialization of a field selector that
+        would be included in a query parameter. Webhook
+        implementations are encouraged to ignore rawSelector. The
+        kube-apiserver's *SubjectAccessReview will parse the
+        rawSelector as long as the requirements are not present.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("rawSelector"),
+        )
+
+    @raw_selector.setter
+    def raw_selector(self, value: str):
+        """
+        rawSelector is the serialization of a field selector that
+        would be included in a query parameter. Webhook
+        implementations are encouraged to ignore rawSelector. The
+        kube-apiserver's *SubjectAccessReview will parse the
+        rawSelector as long as the requirements are not present.
+        """
+        self._properties["rawSelector"] = value
+
+    @property
+    def requirements(self) -> typing.List["FieldSelectorRequirement"]:
+        """
+        requirements is the parsed interpretation of a field
+        selector. All requirements must be met for a resource
+        instance to match the selector. Webhook implementations
+        should handle requirements, but how to handle them is up to
+        the webhook. Since requirements can only limit the request,
+        it is safe to authorize as unlimited request if the
+        requirements are not understood.
+        """
+        return typing.cast(
+            typing.List["FieldSelectorRequirement"],
+            self._properties.get("requirements"),
+        )
+
+    @requirements.setter
+    def requirements(
+        self,
+        value: typing.Union[typing.List["FieldSelectorRequirement"], typing.List[dict]],
+    ):
+        """
+        requirements is the parsed interpretation of a field
+        selector. All requirements must be met for a resource
+        instance to match the selector. Webhook implementations
+        should handle requirements, but how to handle them is up to
+        the webhook. Since requirements can only limit the request,
+        it is safe to authorize as unlimited request if the
+        requirements are not understood.
+        """
+        cleaned: typing.List[FieldSelectorRequirement] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    FieldSelectorRequirement,
+                    FieldSelectorRequirement().from_dict(item),
+                )
+            cleaned.append(typing.cast(FieldSelectorRequirement, item))
+        self._properties["requirements"] = cleaned
+
+    def __enter__(self) -> "FieldSelectorAttributes":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class LabelSelectorAttributes(_kuber_definitions.Definition):
+    """
+    LabelSelectorAttributes indicates a label limited access.
+    Webhook authors are encouraged to * ensure rawSelector and
+    requirements are not both set * consider the requirements
+    field if set * not try to parse or consider the rawSelector
+    field if set. This is to avoid another CVE-2022-2880 (i.e.
+    getting different systems to agree on how exactly to parse a
+    query is not something we want), see
+    https://www.oxeye.io/resources/golang-parameter-smuggling-
+    attack for more details. For the *SubjectAccessReview
+    endpoints of the kube-apiserver: * If rawSelector is empty
+    and requirements are empty, the request is not limited. * If
+    rawSelector is present and requirements are empty, the
+    rawSelector will be parsed and limited if the parsing
+    succeeds. * If rawSelector is empty and requirements are
+    present, the requirements should be honored * If rawSelector
+    is present and requirements are present, the request is
+    invalid.
+    """
+
+    def __init__(
+        self,
+        raw_selector: typing.Optional[str] = None,
+        requirements: typing.Optional[typing.List["LabelSelectorRequirement"]] = None,
+    ):
+        """Create LabelSelectorAttributes instance."""
+        super(LabelSelectorAttributes, self).__init__(
+            api_version="authorization/v1", kind="LabelSelectorAttributes"
+        )
+        self._properties = {
+            "rawSelector": raw_selector if raw_selector is not None else "",
+            "requirements": requirements if requirements is not None else [],
+        }
+        self._types = {
+            "rawSelector": (str, None),
+            "requirements": (list, LabelSelectorRequirement),
+        }
+
+    @property
+    def raw_selector(self) -> str:
+        """
+        rawSelector is the serialization of a field selector that
+        would be included in a query parameter. Webhook
+        implementations are encouraged to ignore rawSelector. The
+        kube-apiserver's *SubjectAccessReview will parse the
+        rawSelector as long as the requirements are not present.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("rawSelector"),
+        )
+
+    @raw_selector.setter
+    def raw_selector(self, value: str):
+        """
+        rawSelector is the serialization of a field selector that
+        would be included in a query parameter. Webhook
+        implementations are encouraged to ignore rawSelector. The
+        kube-apiserver's *SubjectAccessReview will parse the
+        rawSelector as long as the requirements are not present.
+        """
+        self._properties["rawSelector"] = value
+
+    @property
+    def requirements(self) -> typing.List["LabelSelectorRequirement"]:
+        """
+        requirements is the parsed interpretation of a label
+        selector. All requirements must be met for a resource
+        instance to match the selector. Webhook implementations
+        should handle requirements, but how to handle them is up to
+        the webhook. Since requirements can only limit the request,
+        it is safe to authorize as unlimited request if the
+        requirements are not understood.
+        """
+        return typing.cast(
+            typing.List["LabelSelectorRequirement"],
+            self._properties.get("requirements"),
+        )
+
+    @requirements.setter
+    def requirements(
+        self,
+        value: typing.Union[typing.List["LabelSelectorRequirement"], typing.List[dict]],
+    ):
+        """
+        requirements is the parsed interpretation of a label
+        selector. All requirements must be met for a resource
+        instance to match the selector. Webhook implementations
+        should handle requirements, but how to handle them is up to
+        the webhook. Since requirements can only limit the request,
+        it is safe to authorize as unlimited request if the
+        requirements are not understood.
+        """
+        cleaned: typing.List[LabelSelectorRequirement] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    LabelSelectorRequirement,
+                    LabelSelectorRequirement().from_dict(item),
+                )
+            cleaned.append(typing.cast(LabelSelectorRequirement, item))
+        self._properties["requirements"] = cleaned
+
+    def __enter__(self) -> "LabelSelectorAttributes":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
 
 
 class LocalSubjectAccessReview(_kuber_definitions.Resource):
@@ -439,7 +663,9 @@ class ResourceAttributes(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        field_selector: typing.Optional["FieldSelectorAttributes"] = None,
         group: typing.Optional[str] = None,
+        label_selector: typing.Optional["LabelSelectorAttributes"] = None,
         name: typing.Optional[str] = None,
         namespace: typing.Optional[str] = None,
         resource: typing.Optional[str] = None,
@@ -452,7 +678,17 @@ class ResourceAttributes(_kuber_definitions.Definition):
             api_version="authorization/v1", kind="ResourceAttributes"
         )
         self._properties = {
+            "fieldSelector": (
+                field_selector
+                if field_selector is not None
+                else FieldSelectorAttributes()
+            ),
             "group": group if group is not None else "",
+            "labelSelector": (
+                label_selector
+                if label_selector is not None
+                else LabelSelectorAttributes()
+            ),
             "name": name if name is not None else "",
             "namespace": namespace if namespace is not None else "",
             "resource": resource if resource is not None else "",
@@ -461,7 +697,9 @@ class ResourceAttributes(_kuber_definitions.Definition):
             "version": version if version is not None else "",
         }
         self._types = {
+            "fieldSelector": (FieldSelectorAttributes, None),
             "group": (str, None),
+            "labelSelector": (LabelSelectorAttributes, None),
             "name": (str, None),
             "namespace": (str, None),
             "resource": (str, None),
@@ -469,6 +707,38 @@ class ResourceAttributes(_kuber_definitions.Definition):
             "verb": (str, None),
             "version": (str, None),
         }
+
+    @property
+    def field_selector(self) -> "FieldSelectorAttributes":
+        """
+        fieldSelector describes the limitation on access based on
+        field.  It can only limit access, not broaden it.
+
+        This field  is alpha-level. To use this field, you must
+        enable the `AuthorizeWithSelectors` feature gate (disabled
+        by default).
+        """
+        return typing.cast(
+            "FieldSelectorAttributes",
+            self._properties.get("fieldSelector"),
+        )
+
+    @field_selector.setter
+    def field_selector(self, value: typing.Union["FieldSelectorAttributes", dict]):
+        """
+        fieldSelector describes the limitation on access based on
+        field.  It can only limit access, not broaden it.
+
+        This field  is alpha-level. To use this field, you must
+        enable the `AuthorizeWithSelectors` feature gate (disabled
+        by default).
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                FieldSelectorAttributes,
+                FieldSelectorAttributes().from_dict(value),
+            )
+        self._properties["fieldSelector"] = value
 
     @property
     def group(self) -> str:
@@ -486,6 +756,38 @@ class ResourceAttributes(_kuber_definitions.Definition):
         Group is the API Group of the Resource.  "*" means all.
         """
         self._properties["group"] = value
+
+    @property
+    def label_selector(self) -> "LabelSelectorAttributes":
+        """
+        labelSelector describes the limitation on access based on
+        labels.  It can only limit access, not broaden it.
+
+        This field  is alpha-level. To use this field, you must
+        enable the `AuthorizeWithSelectors` feature gate (disabled
+        by default).
+        """
+        return typing.cast(
+            "LabelSelectorAttributes",
+            self._properties.get("labelSelector"),
+        )
+
+    @label_selector.setter
+    def label_selector(self, value: typing.Union["LabelSelectorAttributes", dict]):
+        """
+        labelSelector describes the limitation on access based on
+        labels.  It can only limit access, not broaden it.
+
+        This field  is alpha-level. To use this field, you must
+        enable the `AuthorizeWithSelectors` feature gate (disabled
+        by default).
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                LabelSelectorAttributes,
+                LabelSelectorAttributes().from_dict(value),
+            )
+        self._properties["labelSelector"] = value
 
     @property
     def name(self) -> str:

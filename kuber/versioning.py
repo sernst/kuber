@@ -44,7 +44,7 @@ class KubernetesVersion(typing.NamedTuple):
 
 
 def get_version_data(
-    version_label: typing.Union[str, KubernetesVersion, None] = None
+    version_label: typing.Union[str, KubernetesVersion, None] = None,
 ) -> KubernetesVersion:
     """
     Returns the KubernetesVersion object specified in the root subpackage

@@ -3150,7 +3150,10 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3162,7 +3165,10 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3238,7 +3244,10 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3250,7 +3259,10 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3597,7 +3609,10 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3609,7 +3624,10 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3751,7 +3769,10 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3763,7 +3784,10 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -11949,7 +11973,10 @@ class LocalObjectReference(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -11961,7 +11988,10 @@ class LocalObjectReference(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -13887,57 +13917,57 @@ class NodeList(_kuber_definitions.Collection):
         return False
 
 
-class NodeRuntimeClass(_kuber_definitions.Definition):
+class NodeRuntimeHandler(_kuber_definitions.Definition):
     """
-    NodeRuntimeClass is a set of runtime class information.
+    NodeRuntimeHandler is a set of runtime handler information.
     """
 
     def __init__(
         self,
-        features: typing.Optional["NodeRuntimeClassFeatures"] = None,
+        features: typing.Optional["NodeRuntimeHandlerFeatures"] = None,
         name: typing.Optional[str] = None,
     ):
-        """Create NodeRuntimeClass instance."""
-        super(NodeRuntimeClass, self).__init__(
-            api_version="core/v1", kind="NodeRuntimeClass"
+        """Create NodeRuntimeHandler instance."""
+        super(NodeRuntimeHandler, self).__init__(
+            api_version="core/v1", kind="NodeRuntimeHandler"
         )
         self._properties = {
             "features": (
-                features if features is not None else NodeRuntimeClassFeatures()
+                features if features is not None else NodeRuntimeHandlerFeatures()
             ),
             "name": name if name is not None else "",
         }
         self._types = {
-            "features": (NodeRuntimeClassFeatures, None),
+            "features": (NodeRuntimeHandlerFeatures, None),
             "name": (str, None),
         }
 
     @property
-    def features(self) -> "NodeRuntimeClassFeatures":
+    def features(self) -> "NodeRuntimeHandlerFeatures":
         """
         Supported features.
         """
         return typing.cast(
-            "NodeRuntimeClassFeatures",
+            "NodeRuntimeHandlerFeatures",
             self._properties.get("features"),
         )
 
     @features.setter
-    def features(self, value: typing.Union["NodeRuntimeClassFeatures", dict]):
+    def features(self, value: typing.Union["NodeRuntimeHandlerFeatures", dict]):
         """
         Supported features.
         """
         if isinstance(value, dict):
             value = typing.cast(
-                NodeRuntimeClassFeatures,
-                NodeRuntimeClassFeatures().from_dict(value),
+                NodeRuntimeHandlerFeatures,
+                NodeRuntimeHandlerFeatures().from_dict(value),
             )
         self._properties["features"] = value
 
     @property
     def name(self) -> str:
         """
-        Runtime class name. Empty for the default runtime class.
+        Runtime handler name. Empty for the default runtime handler.
         """
         return typing.cast(
             str,
@@ -13947,29 +13977,29 @@ class NodeRuntimeClass(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Runtime class name. Empty for the default runtime class.
+        Runtime handler name. Empty for the default runtime handler.
         """
         self._properties["name"] = value
 
-    def __enter__(self) -> "NodeRuntimeClass":
+    def __enter__(self) -> "NodeRuntimeHandler":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         return False
 
 
-class NodeRuntimeClassFeatures(_kuber_definitions.Definition):
+class NodeRuntimeHandlerFeatures(_kuber_definitions.Definition):
     """
-    NodeRuntimeClassFeatures is a set of runtime features.
+    NodeRuntimeHandlerFeatures is a set of runtime features.
     """
 
     def __init__(
         self,
         recursive_read_only_mounts: typing.Optional[bool] = None,
     ):
-        """Create NodeRuntimeClassFeatures instance."""
-        super(NodeRuntimeClassFeatures, self).__init__(
-            api_version="core/v1", kind="NodeRuntimeClassFeatures"
+        """Create NodeRuntimeHandlerFeatures instance."""
+        super(NodeRuntimeHandlerFeatures, self).__init__(
+            api_version="core/v1", kind="NodeRuntimeHandlerFeatures"
         )
         self._properties = {
             "recursiveReadOnlyMounts": (
@@ -13985,8 +14015,8 @@ class NodeRuntimeClassFeatures(_kuber_definitions.Definition):
     @property
     def recursive_read_only_mounts(self) -> bool:
         """
-        RecursiveReadOnlyMounts is set to true if the runtime class
-        supports RecursiveReadOnlyMounts.
+        RecursiveReadOnlyMounts is set to true if the runtime
+        handler supports RecursiveReadOnlyMounts.
         """
         return typing.cast(
             bool,
@@ -13996,12 +14026,12 @@ class NodeRuntimeClassFeatures(_kuber_definitions.Definition):
     @recursive_read_only_mounts.setter
     def recursive_read_only_mounts(self, value: bool):
         """
-        RecursiveReadOnlyMounts is set to true if the runtime class
-        supports RecursiveReadOnlyMounts.
+        RecursiveReadOnlyMounts is set to true if the runtime
+        handler supports RecursiveReadOnlyMounts.
         """
         self._properties["recursiveReadOnlyMounts"] = value
 
-    def __enter__(self) -> "NodeRuntimeClassFeatures":
+    def __enter__(self) -> "NodeRuntimeHandlerFeatures":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -14470,7 +14500,7 @@ class NodeStatus(_kuber_definitions.Definition):
         images: typing.Optional[typing.List["ContainerImage"]] = None,
         node_info: typing.Optional["NodeSystemInfo"] = None,
         phase: typing.Optional[str] = None,
-        runtime_classes: typing.Optional[typing.List["NodeRuntimeClass"]] = None,
+        runtime_handlers: typing.Optional[typing.List["NodeRuntimeHandler"]] = None,
         volumes_attached: typing.Optional[typing.List["AttachedVolume"]] = None,
         volumes_in_use: typing.Optional[typing.List[str]] = None,
     ):
@@ -14490,7 +14520,7 @@ class NodeStatus(_kuber_definitions.Definition):
             "images": images if images is not None else [],
             "nodeInfo": node_info if node_info is not None else NodeSystemInfo(),
             "phase": phase if phase is not None else "",
-            "runtimeClasses": runtime_classes if runtime_classes is not None else [],
+            "runtimeHandlers": runtime_handlers if runtime_handlers is not None else [],
             "volumesAttached": volumes_attached if volumes_attached is not None else [],
             "volumesInUse": volumes_in_use if volumes_in_use is not None else [],
         }
@@ -14504,7 +14534,7 @@ class NodeStatus(_kuber_definitions.Definition):
             "images": (list, ContainerImage),
             "nodeInfo": (NodeSystemInfo, None),
             "phase": (str, None),
-            "runtimeClasses": (list, NodeRuntimeClass),
+            "runtimeHandlers": (list, NodeRuntimeHandler),
             "volumesAttached": (list, AttachedVolume),
             "volumesInUse": (list, str),
         }
@@ -14752,31 +14782,31 @@ class NodeStatus(_kuber_definitions.Definition):
         self._properties["phase"] = value
 
     @property
-    def runtime_classes(self) -> typing.List["NodeRuntimeClass"]:
+    def runtime_handlers(self) -> typing.List["NodeRuntimeHandler"]:
         """
-        The available runtime classes.
+        The available runtime handlers.
         """
         return typing.cast(
-            typing.List["NodeRuntimeClass"],
-            self._properties.get("runtimeClasses"),
+            typing.List["NodeRuntimeHandler"],
+            self._properties.get("runtimeHandlers"),
         )
 
-    @runtime_classes.setter
-    def runtime_classes(
-        self, value: typing.Union[typing.List["NodeRuntimeClass"], typing.List[dict]]
+    @runtime_handlers.setter
+    def runtime_handlers(
+        self, value: typing.Union[typing.List["NodeRuntimeHandler"], typing.List[dict]]
     ):
         """
-        The available runtime classes.
+        The available runtime handlers.
         """
-        cleaned: typing.List[NodeRuntimeClass] = []
+        cleaned: typing.List[NodeRuntimeHandler] = []
         for item in value:
             if isinstance(item, dict):
                 item = typing.cast(
-                    NodeRuntimeClass,
-                    NodeRuntimeClass().from_dict(item),
+                    NodeRuntimeHandler,
+                    NodeRuntimeHandler().from_dict(item),
                 )
-            cleaned.append(typing.cast(NodeRuntimeClass, item))
-        self._properties["runtimeClasses"] = cleaned
+            cleaned.append(typing.cast(NodeRuntimeHandler, item))
+        self._properties["runtimeHandlers"] = cleaned
 
     @property
     def volumes_attached(self) -> typing.List["AttachedVolume"]:
@@ -27698,7 +27728,10 @@ class SecretEnvSource(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27710,7 +27743,10 @@ class SecretEnvSource(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27788,7 +27824,10 @@ class SecretKeySelector(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27800,7 +27839,10 @@ class SecretKeySelector(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -28001,7 +28043,10 @@ class SecretProjection(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -28013,7 +28058,10 @@ class SecretProjection(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -30575,7 +30623,8 @@ class ServiceSpec(_kuber_definitions.Definition):
         set, the implementation will apply its default routing
         strategy. If set to "PreferClose", implementations should
         prioritize endpoints that are topologically close (e.g.,
-        same zone).
+        same zone). This is an alpha field and requires enabling
+        ServiceTrafficDistribution feature.
         """
         return typing.cast(
             str,
@@ -30592,7 +30641,8 @@ class ServiceSpec(_kuber_definitions.Definition):
         set, the implementation will apply its default routing
         strategy. If set to "PreferClose", implementations should
         prioritize endpoints that are topologically close (e.g.,
-        same zone).
+        same zone). This is an alpha field and requires enabling
+        ServiceTrafficDistribution feature.
         """
         self._properties["trafficDistribution"] = value
 

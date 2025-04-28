@@ -3184,10 +3184,10 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
         enforcement actions enacted for the validation failure
         Example audit annotation:
         `"validation.policy.admission.k8s.io/validation_failure":
-        "[{"message": "Invalid value", {"policy":
-        "policy.example.com", {"binding":
-        "policybinding.example.com", {"expressionIndex": "1",
-        {"validationActions": ["Audit"]}]"`
+        "[{\"message\": \"Invalid value\", {\"policy\":
+        \"policy.example.com\", {\"binding\":
+        \"policybinding.example.com\", {\"expressionIndex\": \"1\",
+        {\"validationActions\": [\"Audit\"]}]"`
 
         Clients should expect to handle additional values by
         ignoring any values not recognized.
@@ -3246,10 +3246,10 @@ class ValidatingAdmissionPolicyBindingSpec(_kuber_definitions.Definition):
         enforcement actions enacted for the validation failure
         Example audit annotation:
         `"validation.policy.admission.k8s.io/validation_failure":
-        "[{"message": "Invalid value", {"policy":
-        "policy.example.com", {"binding":
-        "policybinding.example.com", {"expressionIndex": "1",
-        {"validationActions": ["Audit"]}]"`
+        "[{\"message\": \"Invalid value\", {\"policy\":
+        \"policy.example.com\", {\"binding\":
+        \"policybinding.example.com\", {\"expressionIndex\": \"1\",
+        {\"validationActions\": [\"Audit\"]}]"`
 
         Clients should expect to handle additional values by
         ignoring any values not recognized.

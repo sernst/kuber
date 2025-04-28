@@ -2783,6 +2783,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
         observed_generation: typing.Optional[int] = None,
         ready_replicas: typing.Optional[int] = None,
         replicas: typing.Optional[int] = None,
+        terminating_replicas: typing.Optional[int] = None,
         unavailable_replicas: typing.Optional[int] = None,
         updated_replicas: typing.Optional[int] = None,
     ):
@@ -2801,6 +2802,9 @@ class DeploymentStatus(_kuber_definitions.Definition):
             ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
+            "terminatingReplicas": (
+                terminating_replicas if terminating_replicas is not None else None
+            ),
             "unavailableReplicas": (
                 unavailable_replicas if unavailable_replicas is not None else None
             ),
@@ -2815,6 +2819,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
             "observedGeneration": (int, None),
             "readyReplicas": (int, None),
             "replicas": (int, None),
+            "terminatingReplicas": (int, None),
             "unavailableReplicas": (int, None),
             "updatedReplicas": (int, None),
         }
@@ -2822,8 +2827,8 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @property
     def available_replicas(self) -> int:
         """
-        Total number of available pods (ready for at least
-        minReadySeconds) targeted by this deployment.
+        Total number of available non-terminating pods (ready for at
+        least minReadySeconds) targeted by this deployment.
         """
         return typing.cast(
             int,
@@ -2833,8 +2838,8 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @available_replicas.setter
     def available_replicas(self, value: int):
         """
-        Total number of available pods (ready for at least
-        minReadySeconds) targeted by this deployment.
+        Total number of available non-terminating pods (ready for at
+        least minReadySeconds) targeted by this deployment.
         """
         self._properties["availableReplicas"] = value
 
@@ -2910,7 +2915,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @property
     def ready_replicas(self) -> int:
         """
-        readyReplicas is the number of pods targeted by this
+        Total number of non-terminating pods targeted by this
         Deployment with a Ready Condition.
         """
         return typing.cast(
@@ -2921,7 +2926,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @ready_replicas.setter
     def ready_replicas(self, value: int):
         """
-        readyReplicas is the number of pods targeted by this
+        Total number of non-terminating pods targeted by this
         Deployment with a Ready Condition.
         """
         self._properties["readyReplicas"] = value
@@ -2929,7 +2934,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @property
     def replicas(self) -> int:
         """
-        Total number of non-terminated pods targeted by this
+        Total number of non-terminating pods targeted by this
         deployment (their labels match the selector).
         """
         return typing.cast(
@@ -2940,10 +2945,41 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @replicas.setter
     def replicas(self, value: int):
         """
-        Total number of non-terminated pods targeted by this
+        Total number of non-terminating pods targeted by this
         deployment (their labels match the selector).
         """
         self._properties["replicas"] = value
+
+    @property
+    def terminating_replicas(self) -> int:
+        """
+        Total number of terminating pods targeted by this
+        deployment. Terminating pods have a non-null
+        .metadata.deletionTimestamp and have not yet reached the
+        Failed or Succeeded .status.phase.
+
+        This is an alpha field. Enable
+        DeploymentReplicaSetTerminatingReplicas to be able to use
+        this field.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("terminatingReplicas"),
+        )
+
+    @terminating_replicas.setter
+    def terminating_replicas(self, value: int):
+        """
+        Total number of terminating pods targeted by this
+        deployment. Terminating pods have a non-null
+        .metadata.deletionTimestamp and have not yet reached the
+        Failed or Succeeded .status.phase.
+
+        This is an alpha field. Enable
+        DeploymentReplicaSetTerminatingReplicas to be able to use
+        this field.
+        """
+        self._properties["terminatingReplicas"] = value
 
     @property
     def unavailable_replicas(self) -> int:
@@ -2973,7 +3009,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @property
     def updated_replicas(self) -> int:
         """
-        Total number of non-terminated pods targeted by this
+        Total number of non-terminating pods targeted by this
         deployment that have the desired template spec.
         """
         return typing.cast(
@@ -2984,7 +3020,7 @@ class DeploymentStatus(_kuber_definitions.Definition):
     @updated_replicas.setter
     def updated_replicas(self, value: int):
         """
-        Total number of non-terminated pods targeted by this
+        Total number of non-terminating pods targeted by this
         deployment that have the desired template spec.
         """
         self._properties["updatedReplicas"] = value
@@ -3672,7 +3708,7 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def items(self) -> typing.List["ReplicaSet"]:
         """
         List of ReplicaSets. More info: https://kubernetes.io/docs/c
-        oncepts/workloads/controllers/replicationcontroller
+        oncepts/workloads/controllers/replicaset
         """
         return typing.cast(
             typing.List["ReplicaSet"],
@@ -3683,7 +3719,7 @@ class ReplicaSetList(_kuber_definitions.Collection):
     def items(self, value: typing.Union[typing.List["ReplicaSet"], typing.List[dict]]):
         """
         List of ReplicaSets. More info: https://kubernetes.io/docs/c
-        oncepts/workloads/controllers/replicationcontroller
+        oncepts/workloads/controllers/replicaset
         """
         cleaned: typing.List[ReplicaSet] = []
         for item in value:
@@ -3797,11 +3833,10 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
     @property
     def replicas(self) -> int:
         """
-        Replicas is the number of desired replicas. This is a
-        pointer to distinguish between explicit zero and
-        unspecified. Defaults to 1. More info: https://kubernetes.io
-        /docs/concepts/workloads/controllers/replicationcontroller/#
-        what-is-a-replicationcontroller
+        Replicas is the number of desired pods. This is a pointer to
+        distinguish between explicit zero and unspecified. Defaults
+        to 1. More info: https://kubernetes.io/docs/concepts/workloa
+        ds/controllers/replicaset
         """
         return typing.cast(
             int,
@@ -3811,11 +3846,10 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
     @replicas.setter
     def replicas(self, value: int):
         """
-        Replicas is the number of desired replicas. This is a
-        pointer to distinguish between explicit zero and
-        unspecified. Defaults to 1. More info: https://kubernetes.io
-        /docs/concepts/workloads/controllers/replicationcontroller/#
-        what-is-a-replicationcontroller
+        Replicas is the number of desired pods. This is a pointer to
+        distinguish between explicit zero and unspecified. Defaults
+        to 1. More info: https://kubernetes.io/docs/concepts/workloa
+        ds/controllers/replicaset
         """
         self._properties["replicas"] = value
 
@@ -3857,7 +3891,7 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         Template is the object that describes the pod that will be
         created if insufficient replicas are detected. More info: ht
         tps://kubernetes.io/docs/concepts/workloads/controllers/repl
-        icationcontroller#pod-template
+        icaset/#pod-template
         """
         return typing.cast(
             "PodTemplateSpec",
@@ -3870,7 +3904,7 @@ class ReplicaSetSpec(_kuber_definitions.Definition):
         Template is the object that describes the pod that will be
         created if insufficient replicas are detected. More info: ht
         tps://kubernetes.io/docs/concepts/workloads/controllers/repl
-        icationcontroller#pod-template
+        icaset/#pod-template
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -4052,6 +4086,7 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
         observed_generation: typing.Optional[int] = None,
         ready_replicas: typing.Optional[int] = None,
         replicas: typing.Optional[int] = None,
+        terminating_replicas: typing.Optional[int] = None,
     ):
         """Create ReplicaSetStatus instance."""
         super(ReplicaSetStatus, self).__init__(
@@ -4070,6 +4105,9 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
             ),
             "readyReplicas": ready_replicas if ready_replicas is not None else None,
             "replicas": replicas if replicas is not None else None,
+            "terminatingReplicas": (
+                terminating_replicas if terminating_replicas is not None else None
+            ),
         }
         self._types = {
             "availableReplicas": (int, None),
@@ -4078,13 +4116,14 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
             "observedGeneration": (int, None),
             "readyReplicas": (int, None),
             "replicas": (int, None),
+            "terminatingReplicas": (int, None),
         }
 
     @property
     def available_replicas(self) -> int:
         """
-        The number of available replicas (ready for at least
-        minReadySeconds) for this replica set.
+        The number of available non-terminating pods (ready for at
+        least minReadySeconds) for this replica set.
         """
         return typing.cast(
             int,
@@ -4094,8 +4133,8 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     @available_replicas.setter
     def available_replicas(self, value: int):
         """
-        The number of available replicas (ready for at least
-        minReadySeconds) for this replica set.
+        The number of available non-terminating pods (ready for at
+        least minReadySeconds) for this replica set.
         """
         self._properties["availableReplicas"] = value
 
@@ -4131,8 +4170,8 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     @property
     def fully_labeled_replicas(self) -> int:
         """
-        The number of pods that have labels matching the labels of
-        the pod template of the replicaset.
+        The number of non-terminating pods that have labels matching
+        the labels of the pod template of the replicaset.
         """
         return typing.cast(
             int,
@@ -4142,8 +4181,8 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     @fully_labeled_replicas.setter
     def fully_labeled_replicas(self, value: int):
         """
-        The number of pods that have labels matching the labels of
-        the pod template of the replicaset.
+        The number of non-terminating pods that have labels matching
+        the labels of the pod template of the replicaset.
         """
         self._properties["fullyLabeledReplicas"] = value
 
@@ -4169,7 +4208,7 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     @property
     def ready_replicas(self) -> int:
         """
-        readyReplicas is the number of pods targeted by this
+        The number of non-terminating pods targeted by this
         ReplicaSet with a Ready Condition.
         """
         return typing.cast(
@@ -4180,7 +4219,7 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     @ready_replicas.setter
     def ready_replicas(self, value: int):
         """
-        readyReplicas is the number of pods targeted by this
+        The number of non-terminating pods targeted by this
         ReplicaSet with a Ready Condition.
         """
         self._properties["readyReplicas"] = value
@@ -4188,10 +4227,9 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     @property
     def replicas(self) -> int:
         """
-        Replicas is the most recently observed number of replicas.
-        More info: https://kubernetes.io/docs/concepts/workloads/con
-        trollers/replicationcontroller/#what-is-a-
-        replicationcontroller
+        Replicas is the most recently observed number of non-
+        terminating pods. More info: https://kubernetes.io/docs/conc
+        epts/workloads/controllers/replicaset
         """
         return typing.cast(
             int,
@@ -4201,12 +4239,42 @@ class ReplicaSetStatus(_kuber_definitions.Definition):
     @replicas.setter
     def replicas(self, value: int):
         """
-        Replicas is the most recently observed number of replicas.
-        More info: https://kubernetes.io/docs/concepts/workloads/con
-        trollers/replicationcontroller/#what-is-a-
-        replicationcontroller
+        Replicas is the most recently observed number of non-
+        terminating pods. More info: https://kubernetes.io/docs/conc
+        epts/workloads/controllers/replicaset
         """
         self._properties["replicas"] = value
+
+    @property
+    def terminating_replicas(self) -> int:
+        """
+        The number of terminating pods for this replica set.
+        Terminating pods have a non-null .metadata.deletionTimestamp
+        and have not yet reached the Failed or Succeeded
+        .status.phase.
+
+        This is an alpha field. Enable
+        DeploymentReplicaSetTerminatingReplicas to be able to use
+        this field.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("terminatingReplicas"),
+        )
+
+    @terminating_replicas.setter
+    def terminating_replicas(self, value: int):
+        """
+        The number of terminating pods for this replica set.
+        Terminating pods have a non-null .metadata.deletionTimestamp
+        and have not yet reached the Failed or Succeeded
+        .status.phase.
+
+        This is an alpha field. Enable
+        DeploymentReplicaSetTerminatingReplicas to be able to use
+        this field.
+        """
+        self._properties["terminatingReplicas"] = value
 
     def __enter__(self) -> "ReplicaSetStatus":
         return self
@@ -5452,9 +5520,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         ordinals controls the numbering of replica indices in a
         StatefulSet. The default ordinals behavior assigns a "0"
         index to the first replica and increments the index by one
-        for each additional replica requested. Using the ordinals
-        field requires the StatefulSetStartOrdinal feature gate to
-        be enabled, which is beta.
+        for each additional replica requested.
         """
         return typing.cast(
             "StatefulSetOrdinals",
@@ -5467,9 +5533,7 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         ordinals controls the numbering of replica indices in a
         StatefulSet. The default ordinals behavior assigns a "0"
         index to the first replica and increments the index by one
-        for each additional replica requested. Using the ordinals
-        field requires the StatefulSetStartOrdinal feature gate to
-        be enabled, which is beta.
+        for each additional replica requested.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -5490,8 +5554,6 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         deleted. This policy allows the lifecycle to be altered, for
         example by deleting persistent volume claims when their
         stateful set is deleted, or when their pod is scaled down.
-        This requires the StatefulSetAutoDeletePVC feature gate to
-        be enabled, which is alpha.  +optional
         """
         return typing.cast(
             "StatefulSetPersistentVolumeClaimRetentionPolicy",
@@ -5511,8 +5573,6 @@ class StatefulSetSpec(_kuber_definitions.Definition):
         deleted. This policy allows the lifecycle to be altered, for
         example by deleting persistent volume claims when their
         stateful set is deleted, or when their pod is scaled down.
-        This requires the StatefulSetAutoDeletePVC feature gate to
-        be enabled, which is alpha.  +optional
         """
         if isinstance(value, dict):
             value = typing.cast(

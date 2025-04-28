@@ -2452,17 +2452,17 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         card number defined by the regex ^(?:4[0-9]{12}(?:[0-
         9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-
         9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-
-        9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any non digit
+        9]{11}|(?:2131|1800|35\\d{3})\\d{11})$ with any non digit
         characters mixed in - ssn: a U.S. social security number
-        following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ - hexcolor:
-        an hexadecimal color code like "#FFFFFF: following the regex
-        ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an RGB color
-        code like rgb like "rgb(255,255,2559" - byte: base64 encoded
-        binary data - password: any kind of string - date: a date
-        string like "2006-01-02" as defined by full-date in RFC3339
-        - duration: a duration string like "22 ns" as parsed by
-        Golang time.ParseDuration or compatible with Scala duration
-        format - datetime: a date time string like
+        following the regex ^\\d{3}[- ]?\\d{2}[- ]?\\d{4}$ -
+        hexcolor: an hexadecimal color code like "#FFFFFF: following
+        the regex ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an
+        RGB color code like rgb like "rgb(255,255,2559" - byte:
+        base64 encoded binary data - password: any kind of string -
+        date: a date string like "2006-01-02" as defined by full-
+        date in RFC3339 - duration: a duration string like "22 ns"
+        as parsed by Golang time.ParseDuration or compatible with
+        Scala duration format - datetime: a date time string like
         "2014-12-15T19:30:20.000Z" as defined by date-time in
         RFC3339.
         """
@@ -2502,17 +2502,17 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         card number defined by the regex ^(?:4[0-9]{12}(?:[0-
         9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-
         9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-
-        9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any non digit
+        9]{11}|(?:2131|1800|35\\d{3})\\d{11})$ with any non digit
         characters mixed in - ssn: a U.S. social security number
-        following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ - hexcolor:
-        an hexadecimal color code like "#FFFFFF: following the regex
-        ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an RGB color
-        code like rgb like "rgb(255,255,2559" - byte: base64 encoded
-        binary data - password: any kind of string - date: a date
-        string like "2006-01-02" as defined by full-date in RFC3339
-        - duration: a duration string like "22 ns" as parsed by
-        Golang time.ParseDuration or compatible with Scala duration
-        format - datetime: a date time string like
+        following the regex ^\\d{3}[- ]?\\d{2}[- ]?\\d{4}$ -
+        hexcolor: an hexadecimal color code like "#FFFFFF: following
+        the regex ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an
+        RGB color code like rgb like "rgb(255,255,2559" - byte:
+        base64 encoded binary data - password: any kind of string -
+        date: a date string like "2006-01-02" as defined by full-
+        date in RFC3339 - duration: a duration string like "22 ns"
+        as parsed by Golang time.ParseDuration or compatible with
+        Scala duration format - datetime: a date time string like
         "2014-12-15T19:30:20.000Z" as defined by date-time in
         RFC3339.
         """
@@ -3057,9 +3057,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     def x_kubernetes_validations(self) -> typing.List["ValidationRule"]:
         """
         x-kubernetes-validations describes a list of validation
-        rules written in the CEL expression language. This field is
-        an alpha-level. Using this field requires the feature gate
-        `CustomResourceValidationExpressions` to be enabled.
+        rules written in the CEL expression language.
         """
         return typing.cast(
             typing.List["ValidationRule"],
@@ -3072,9 +3070,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     ):
         """
         x-kubernetes-validations describes a list of validation
-        rules written in the CEL expression language. This field is
-        an alpha-level. Using this field requires the feature gate
-        `CustomResourceValidationExpressions` to be enabled.
+        rules written in the CEL expression language.
         """
         cleaned: typing.List[ValidationRule] = []
         for item in value:

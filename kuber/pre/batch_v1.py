@@ -1881,10 +1881,7 @@ class JobSpec(_kuber_definitions.Definition):
         number of failures per index is kept in the pod's
         batch.kubernetes.io/job-index-failure-count annotation. It
         can only be set when Job's completionMode=Indexed, and the
-        Pod's restart policy is Never. The field is immutable. This
-        field is beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        Pod's restart policy is Never. The field is immutable.
         """
         return typing.cast(
             int,
@@ -1899,10 +1896,7 @@ class JobSpec(_kuber_definitions.Definition):
         number of failures per index is kept in the pod's
         batch.kubernetes.io/job-index-failure-count annotation. It
         can only be set when Job's completionMode=Indexed, and the
-        Pod's restart policy is Never. The field is immutable. This
-        field is beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        Pod's restart policy is Never. The field is immutable.
         """
         self._properties["backoffLimitPerIndex"] = value
 
@@ -2008,11 +2002,12 @@ class JobSpec(_kuber_definitions.Definition):
         characters before the first "/" must be a valid subdomain as
         defined by RFC 1123. All characters trailing the first "/"
         must be valid HTTP Path characters as defined by RFC 3986.
-        The value cannot exceed 64 characters.
+        The value cannot exceed 63 characters. This field is
+        immutable.
 
-        This field is alpha-level. The job controller accepts
-        setting the field when the feature gate JobManagedBy is
-        enabled (disabled by default).
+        This field is beta-level. The job controller accepts setting
+        the field when the feature gate JobManagedBy is enabled
+        (enabled by default).
         """
         return typing.cast(
             str,
@@ -2031,11 +2026,12 @@ class JobSpec(_kuber_definitions.Definition):
         characters before the first "/" must be a valid subdomain as
         defined by RFC 1123. All characters trailing the first "/"
         must be valid HTTP Path characters as defined by RFC 3986.
-        The value cannot exceed 64 characters.
+        The value cannot exceed 63 characters. This field is
+        immutable.
 
-        This field is alpha-level. The job controller accepts
-        setting the field when the feature gate JobManagedBy is
-        enabled (disabled by default).
+        This field is beta-level. The job controller accepts setting
+        the field when the feature gate JobManagedBy is enabled
+        (enabled by default).
         """
         self._properties["managedBy"] = value
 
@@ -2090,10 +2086,7 @@ class JobSpec(_kuber_definitions.Definition):
         condition. It can only be specified when
         backoffLimitPerIndex is set. It can be null or up to
         completions. It is required and must be less than or equal
-        to 10^4 when is completions greater than 10^5. This field is
-        beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        to 10^4 when is completions greater than 10^5.
         """
         return typing.cast(
             int,
@@ -2112,10 +2105,7 @@ class JobSpec(_kuber_definitions.Definition):
         condition. It can only be specified when
         backoffLimitPerIndex is set. It can be null or up to
         completions. It is required and must be less than or equal
-        to 10^4 when is completions greater than 10^5. This field is
-        beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        to 10^4 when is completions greater than 10^5.
         """
         self._properties["maxFailedIndexes"] = value
 
@@ -2159,10 +2149,6 @@ class JobSpec(_kuber_definitions.Definition):
         incremented and it is checked against the backoffLimit. This
         field cannot be used in combination with
         restartPolicy=OnFailure.
-
-        This field is beta-level. It can be used when the
-        `JobPodFailurePolicy` feature gate is enabled (enabled by
-        default).
         """
         return typing.cast(
             "PodFailurePolicy",
@@ -2180,10 +2166,6 @@ class JobSpec(_kuber_definitions.Definition):
         incremented and it is checked against the backoffLimit. This
         field cannot be used in combination with
         restartPolicy=OnFailure.
-
-        This field is beta-level. It can be used when the
-        `JobPodFailurePolicy` feature gate is enabled (enabled by
-        default).
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2273,10 +2255,6 @@ class JobSpec(_kuber_definitions.Definition):
         field is specified, it must be immutable and works only for
         the Indexed Jobs. Once the Job meets the SuccessPolicy, the
         lingering pods are terminated.
-
-        This field  is alpha-level. To use this field, you must
-        enable the `JobSuccessPolicy` feature gate (disabled by
-        default).
         """
         return typing.cast(
             "SuccessPolicy",
@@ -2293,10 +2271,6 @@ class JobSpec(_kuber_definitions.Definition):
         field is specified, it must be immutable and works only for
         the Indexed Jobs. Once the Job meets the SuccessPolicy, the
         lingering pods are terminated.
-
-        This field  is alpha-level. To use this field, you must
-        enable the `JobSuccessPolicy` feature gate (disabled by
-        default).
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2791,10 +2765,6 @@ class JobStatus(_kuber_definitions.Definition):
         failed indexes are 1, 3, 4, 5 and 7, they are represented as
         "1,3-5,7". The set of failed indexes cannot overlap with the
         set of completed indexes.
-
-        This field is beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
         """
         return typing.cast(
             str,
@@ -2815,17 +2785,14 @@ class JobStatus(_kuber_definitions.Definition):
         failed indexes are 1, 3, 4, 5 and 7, they are represented as
         "1,3-5,7". The set of failed indexes cannot overlap with the
         set of completed indexes.
-
-        This field is beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
         """
         self._properties["failedIndexes"] = value
 
     @property
     def ready(self) -> int:
         """
-        The number of pods which have a Ready condition.
+        The number of active pods which have a Ready condition and
+        are not terminating (without a deletionTimestamp).
         """
         return typing.cast(
             int,
@@ -2835,7 +2802,8 @@ class JobStatus(_kuber_definitions.Definition):
     @ready.setter
     def ready(self, value: int):
         """
-        The number of pods which have a Ready condition.
+        The number of active pods which have a Ready condition and
+        are not terminating (without a deletionTimestamp).
         """
         self._properties["ready"] = value
 
@@ -3559,9 +3527,6 @@ class PodFailurePolicyRule(_kuber_definitions.Definition):
         - FailIndex: indicates that the pod's index is marked as
         Failed and will
           not be restarted.
-          This value is beta-level. It can be used when the
-          `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
         - Ignore: indicates that the counter towards the
         .backoffLimit is not
           incremented and a replacement pod is created.
@@ -3589,9 +3554,6 @@ class PodFailurePolicyRule(_kuber_definitions.Definition):
         - FailIndex: indicates that the pod's index is marked as
         Failed and will
           not be restarted.
-          This value is beta-level. It can be used when the
-          `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
         - Ignore: indicates that the counter towards the
         .backoffLimit is not
           incremented and a replacement pod is created.

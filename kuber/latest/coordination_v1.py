@@ -307,7 +307,9 @@ class LeaseSpec(_kuber_definitions.Definition):
         holder_identity: typing.Optional[str] = None,
         lease_duration_seconds: typing.Optional[int] = None,
         lease_transitions: typing.Optional[int] = None,
+        preferred_holder: typing.Optional[str] = None,
         renew_time: typing.Optional["MicroTime"] = None,
+        strategy: typing.Optional[str] = None,
     ):
         """Create LeaseSpec instance."""
         super(LeaseSpec, self).__init__(api_version="coordination/v1", kind="LeaseSpec")
@@ -320,14 +322,18 @@ class LeaseSpec(_kuber_definitions.Definition):
             "leaseTransitions": (
                 lease_transitions if lease_transitions is not None else None
             ),
+            "preferredHolder": preferred_holder if preferred_holder is not None else "",
             "renewTime": renew_time if renew_time is not None else MicroTime(),
+            "strategy": strategy if strategy is not None else "",
         }
         self._types = {
             "acquireTime": (MicroTime, None),
             "holderIdentity": (str, None),
             "leaseDurationSeconds": (int, None),
             "leaseTransitions": (int, None),
+            "preferredHolder": (str, None),
             "renewTime": (MicroTime, None),
+            "strategy": (str, None),
         }
 
     @property
@@ -356,7 +362,9 @@ class LeaseSpec(_kuber_definitions.Definition):
     def holder_identity(self) -> str:
         """
         holderIdentity contains the identity of the holder of a
-        current lease.
+        current lease. If Coordinated Leader Election is used, the
+        holder identity must be equal to the elected
+        LeaseCandidate.metadata.name field.
         """
         return typing.cast(
             str,
@@ -367,7 +375,9 @@ class LeaseSpec(_kuber_definitions.Definition):
     def holder_identity(self, value: str):
         """
         holderIdentity contains the identity of the holder of a
-        current lease.
+        current lease. If Coordinated Leader Election is used, the
+        holder identity must be equal to the elected
+        LeaseCandidate.metadata.name field.
         """
         self._properties["holderIdentity"] = value
 
@@ -375,8 +385,8 @@ class LeaseSpec(_kuber_definitions.Definition):
     def lease_duration_seconds(self) -> int:
         """
         leaseDurationSeconds is a duration that candidates for a
-        lease need to wait to force acquire it. This is measure
-        against time of last observed renewTime.
+        lease need to wait to force acquire it. This is measured
+        against the time of last observed renewTime.
         """
         return typing.cast(
             int,
@@ -387,8 +397,8 @@ class LeaseSpec(_kuber_definitions.Definition):
     def lease_duration_seconds(self, value: int):
         """
         leaseDurationSeconds is a duration that candidates for a
-        lease need to wait to force acquire it. This is measure
-        against time of last observed renewTime.
+        lease need to wait to force acquire it. This is measured
+        against the time of last observed renewTime.
         """
         self._properties["leaseDurationSeconds"] = value
 
@@ -410,6 +420,27 @@ class LeaseSpec(_kuber_definitions.Definition):
         between holders.
         """
         self._properties["leaseTransitions"] = value
+
+    @property
+    def preferred_holder(self) -> str:
+        """
+        PreferredHolder signals to a lease holder that the lease has
+        a more optimal holder and should be given up. This field can
+        only be set if Strategy is also set.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("preferredHolder"),
+        )
+
+    @preferred_holder.setter
+    def preferred_holder(self, value: str):
+        """
+        PreferredHolder signals to a lease holder that the lease has
+        a more optimal holder and should be given up. This field can
+        only be set if Strategy is also set.
+        """
+        self._properties["preferredHolder"] = value
 
     @property
     def renew_time(self) -> "MicroTime":
@@ -434,6 +465,31 @@ class LeaseSpec(_kuber_definitions.Definition):
                 MicroTime().from_dict(value),
             )
         self._properties["renewTime"] = value
+
+    @property
+    def strategy(self) -> str:
+        """
+        Strategy indicates the strategy for picking the leader for
+        coordinated leader election. If the field is not specified,
+        there is no active coordination for this lease. (Alpha)
+        Using this field requires the CoordinatedLeaderElection
+        feature gate to be enabled.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("strategy"),
+        )
+
+    @strategy.setter
+    def strategy(self, value: str):
+        """
+        Strategy indicates the strategy for picking the leader for
+        coordinated leader election. If the field is not specified,
+        there is no active coordination for this lease. (Alpha)
+        Using this field requires the CoordinatedLeaderElection
+        feature gate to be enabled.
+        """
+        self._properties["strategy"] = value
 
     def __enter__(self) -> "LeaseSpec":
         return self

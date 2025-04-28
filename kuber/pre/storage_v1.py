@@ -325,6 +325,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self,
         attach_required: typing.Optional[bool] = None,
         fs_group_policy: typing.Optional[str] = None,
+        node_allocatable_update_period_seconds: typing.Optional[int] = None,
         pod_info_on_mount: typing.Optional[bool] = None,
         requires_republish: typing.Optional[bool] = None,
         se_linux_mount: typing.Optional[bool] = None,
@@ -339,6 +340,11 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._properties = {
             "attachRequired": attach_required if attach_required is not None else None,
             "fsGroupPolicy": fs_group_policy if fs_group_policy is not None else "",
+            "nodeAllocatableUpdatePeriodSeconds": (
+                node_allocatable_update_period_seconds
+                if node_allocatable_update_period_seconds is not None
+                else None
+            ),
             "podInfoOnMount": (
                 pod_info_on_mount if pod_info_on_mount is not None else None
             ),
@@ -357,6 +363,7 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         self._types = {
             "attachRequired": (bool, None),
             "fsGroupPolicy": (str, None),
+            "nodeAllocatableUpdatePeriodSeconds": (int, None),
             "podInfoOnMount": (bool, None),
             "requiresRepublish": (bool, None),
             "seLinuxMount": (bool, None),
@@ -448,6 +455,47 @@ class CSIDriverSpec(_kuber_definitions.Definition):
         and the volume's access mode contains ReadWriteOnce.
         """
         self._properties["fsGroupPolicy"] = value
+
+    @property
+    def node_allocatable_update_period_seconds(self) -> int:
+        """
+        nodeAllocatableUpdatePeriodSeconds specifies the interval
+        between periodic updates of the CSINode allocatable capacity
+        for this driver. When set, both periodic updates and updates
+        triggered by capacity-related failures are enabled. If not
+        set, no updates occur (neither periodic nor upon detecting
+        capacity-related failures), and the allocatable.count
+        remains static. The minimum allowed value for this field is
+        10 seconds.
+
+        This is an alpha feature and requires the
+        MutableCSINodeAllocatableCount feature gate to be enabled.
+
+        This field is mutable.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("nodeAllocatableUpdatePeriodSeconds"),
+        )
+
+    @node_allocatable_update_period_seconds.setter
+    def node_allocatable_update_period_seconds(self, value: int):
+        """
+        nodeAllocatableUpdatePeriodSeconds specifies the interval
+        between periodic updates of the CSINode allocatable capacity
+        for this driver. When set, both periodic updates and updates
+        triggered by capacity-related failures are enabled. If not
+        set, no updates occur (neither periodic nor upon detecting
+        capacity-related failures), and the allocatable.count
+        remains static. The minimum allowed value for this field is
+        10 seconds.
+
+        This is an alpha feature and requires the
+        MutableCSINodeAllocatableCount feature gate to be enabled.
+
+        This field is mutable.
+        """
+        self._properties["nodeAllocatableUpdatePeriodSeconds"] = value
 
     @property
     def pod_info_on_mount(self) -> bool:
@@ -2641,9 +2689,9 @@ class VolumeAttachmentList(_kuber_definitions.Collection):
 class VolumeAttachmentSource(_kuber_definitions.Definition):
     """
     VolumeAttachmentSource represents a volume that should be
-    attached. Right now only PersistenVolumes can be attached
-    via external attacher, in future we may allow also inline
-    volumes in pods. Exactly one member can be set.
+    attached. Right now only PersistentVolumes can be attached
+    via external attacher, in the future we may allow also
+    inline volumes in pods. Exactly one member can be set.
     """
 
     def __init__(
@@ -2975,19 +3023,49 @@ class VolumeError(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        error_code: typing.Optional[int] = None,
         message: typing.Optional[str] = None,
         time: typing.Optional[str] = None,
     ):
         """Create VolumeError instance."""
         super(VolumeError, self).__init__(api_version="storage/v1", kind="VolumeError")
         self._properties = {
+            "errorCode": error_code if error_code is not None else None,
             "message": message if message is not None else "",
             "time": time if time is not None else None,
         }
         self._types = {
+            "errorCode": (int, None),
             "message": (str, None),
             "time": (str, None),
         }
+
+    @property
+    def error_code(self) -> int:
+        """
+        errorCode is a numeric gRPC code representing the error
+        encountered during Attach or Detach operations.
+
+        This is an optional, alpha field that requires the
+        MutableCSINodeAllocatableCount feature gate being enabled to
+        be set.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("errorCode"),
+        )
+
+    @error_code.setter
+    def error_code(self, value: int):
+        """
+        errorCode is a numeric gRPC code representing the error
+        encountered during Attach or Detach operations.
+
+        This is an optional, alpha field that requires the
+        MutableCSINodeAllocatableCount feature gate being enabled to
+        be set.
+        """
+        self._properties["errorCode"] = value
 
     @property
     def message(self) -> str:

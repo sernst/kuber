@@ -854,7 +854,7 @@ class NamedResourcesRequest(_kuber_definitions.Definition):
 
 class NamedResourcesResources(_kuber_definitions.Definition):
     """
-    NamedResourcesResources is used in NodeResourceModel.
+    NamedResourcesResources is used in ResourceModel.
     """
 
     def __init__(

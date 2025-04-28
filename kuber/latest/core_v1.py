@@ -260,6 +260,87 @@ class Affinity(_kuber_definitions.Definition):
         return False
 
 
+class AppArmorProfile(_kuber_definitions.Definition):
+    """
+    AppArmorProfile defines a pod or container's AppArmor
+    settings.
+    """
+
+    def __init__(
+        self,
+        localhost_profile: typing.Optional[str] = None,
+        type_: typing.Optional[str] = None,
+    ):
+        """Create AppArmorProfile instance."""
+        super(AppArmorProfile, self).__init__(
+            api_version="core/v1", kind="AppArmorProfile"
+        )
+        self._properties = {
+            "localhostProfile": (
+                localhost_profile if localhost_profile is not None else ""
+            ),
+            "type": type_ if type_ is not None else "",
+        }
+        self._types = {
+            "localhostProfile": (str, None),
+            "type": (str, None),
+        }
+
+    @property
+    def localhost_profile(self) -> str:
+        """
+        localhostProfile indicates a profile loaded on the node that
+        should be used. The profile must be preconfigured on the
+        node to work. Must match the loaded name of the profile.
+        Must be set if and only if type is "Localhost".
+        """
+        return typing.cast(
+            str,
+            self._properties.get("localhostProfile"),
+        )
+
+    @localhost_profile.setter
+    def localhost_profile(self, value: str):
+        """
+        localhostProfile indicates a profile loaded on the node that
+        should be used. The profile must be preconfigured on the
+        node to work. Must match the loaded name of the profile.
+        Must be set if and only if type is "Localhost".
+        """
+        self._properties["localhostProfile"] = value
+
+    @property
+    def type_(self) -> str:
+        """
+        type indicates which kind of AppArmor profile will be
+        applied. Valid options are:
+          Localhost - a profile pre-loaded on the node.
+          RuntimeDefault - the container runtime's default profile.
+          Unconfined - no AppArmor enforcement.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("type"),
+        )
+
+    @type_.setter
+    def type_(self, value: str):
+        """
+        type indicates which kind of AppArmor profile will be
+        applied. Valid options are:
+          Localhost - a profile pre-loaded on the node.
+          RuntimeDefault - the container runtime's default profile.
+          Unconfined - no AppArmor enforcement.
+        """
+        self._properties["type"] = value
+
+    def __enter__(self) -> "AppArmorProfile":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class AttachedVolume(_kuber_definitions.Definition):
     """
     AttachedVolume describes a volume attached to a node
@@ -692,8 +773,7 @@ class AzureFileVolumeSource(_kuber_definitions.Definition):
 class Binding(_kuber_definitions.Resource):
     """
     Binding ties one object to another; for example, a pod is
-    bound to a node by a scheduler. Deprecated in 1.7, please
-    use the bindings subresource of pods instead.
+    bound to a node by a scheduler.
     """
 
     def __init__(
@@ -885,7 +965,7 @@ class Binding(_kuber_definitions.Resource):
 class CSIPersistentVolumeSource(_kuber_definitions.Definition):
     """
     Represents storage that is managed by an external CSI volume
-    driver (Beta feature)
+    driver
     """
 
     def __init__(
@@ -2076,106 +2156,6 @@ class CinderVolumeSource(_kuber_definitions.Definition):
         return False
 
 
-class ClaimSource(_kuber_definitions.Definition):
-    """
-    ClaimSource describes a reference to a ResourceClaim.
-
-    Exactly one of these fields should be set.  Consumers of
-    this type must treat an empty object as if it has an unknown
-    value.
-    """
-
-    def __init__(
-        self,
-        resource_claim_name: typing.Optional[str] = None,
-        resource_claim_template_name: typing.Optional[str] = None,
-    ):
-        """Create ClaimSource instance."""
-        super(ClaimSource, self).__init__(api_version="core/v1", kind="ClaimSource")
-        self._properties = {
-            "resourceClaimName": (
-                resource_claim_name if resource_claim_name is not None else ""
-            ),
-            "resourceClaimTemplateName": (
-                resource_claim_template_name
-                if resource_claim_template_name is not None
-                else ""
-            ),
-        }
-        self._types = {
-            "resourceClaimName": (str, None),
-            "resourceClaimTemplateName": (str, None),
-        }
-
-    @property
-    def resource_claim_name(self) -> str:
-        """
-        ResourceClaimName is the name of a ResourceClaim object in
-        the same namespace as this pod.
-        """
-        return typing.cast(
-            str,
-            self._properties.get("resourceClaimName"),
-        )
-
-    @resource_claim_name.setter
-    def resource_claim_name(self, value: str):
-        """
-        ResourceClaimName is the name of a ResourceClaim object in
-        the same namespace as this pod.
-        """
-        self._properties["resourceClaimName"] = value
-
-    @property
-    def resource_claim_template_name(self) -> str:
-        """
-        ResourceClaimTemplateName is the name of a
-        ResourceClaimTemplate object in the same namespace as this
-        pod.
-
-        The template will be used to create a new ResourceClaim,
-        which will be bound to this pod. When this pod is deleted,
-        the ResourceClaim will also be deleted. The pod name and
-        resource name, along with a generated component, will be
-        used to form a unique name for the ResourceClaim, which will
-        be recorded in pod.status.resourceClaimStatuses.
-
-        This field is immutable and no changes will be made to the
-        corresponding ResourceClaim by the control plane after
-        creating the ResourceClaim.
-        """
-        return typing.cast(
-            str,
-            self._properties.get("resourceClaimTemplateName"),
-        )
-
-    @resource_claim_template_name.setter
-    def resource_claim_template_name(self, value: str):
-        """
-        ResourceClaimTemplateName is the name of a
-        ResourceClaimTemplate object in the same namespace as this
-        pod.
-
-        The template will be used to create a new ResourceClaim,
-        which will be bound to this pod. When this pod is deleted,
-        the ResourceClaim will also be deleted. The pod name and
-        resource name, along with a generated component, will be
-        used to form a unique name for the ResourceClaim, which will
-        be recorded in pod.status.resourceClaimStatuses.
-
-        This field is immutable and no changes will be made to the
-        corresponding ResourceClaim by the control plane after
-        creating the ResourceClaim.
-        """
-        self._properties["resourceClaimTemplateName"] = value
-
-    def __enter__(self) -> "ClaimSource":
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return False
-
-
 class ClientIPConfig(_kuber_definitions.Definition):
     """
     ClientIPConfig represents the configurations of Client IP
@@ -3069,7 +3049,10 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3081,7 +3064,10 @@ class ConfigMapEnvSource(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3157,7 +3143,10 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3169,7 +3158,10 @@ class ConfigMapKeySelector(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3516,7 +3508,10 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3528,7 +3523,10 @@ class ConfigMapProjection(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3670,7 +3668,10 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -3682,7 +3683,10 @@ class ConfigMapVolumeSource(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -5225,6 +5229,9 @@ class ContainerStatus(_kuber_definitions.Definition):
     def __init__(
         self,
         allocated_resources: typing.Optional[dict] = None,
+        allocated_resources_status: typing.Optional[
+            typing.List["ResourceStatus"]
+        ] = None,
         container_id: typing.Optional[str] = None,
         image: typing.Optional[str] = None,
         image_id: typing.Optional[str] = None,
@@ -5235,6 +5242,9 @@ class ContainerStatus(_kuber_definitions.Definition):
         restart_count: typing.Optional[int] = None,
         started: typing.Optional[bool] = None,
         state: typing.Optional["ContainerState"] = None,
+        stop_signal: typing.Optional[str] = None,
+        user: typing.Optional["ContainerUser"] = None,
+        volume_mounts: typing.Optional[typing.List["VolumeMountStatus"]] = None,
     ):
         """Create ContainerStatus instance."""
         super(ContainerStatus, self).__init__(
@@ -5243,6 +5253,11 @@ class ContainerStatus(_kuber_definitions.Definition):
         self._properties = {
             "allocatedResources": (
                 allocated_resources if allocated_resources is not None else {}
+            ),
+            "allocatedResourcesStatus": (
+                allocated_resources_status
+                if allocated_resources_status is not None
+                else []
             ),
             "containerID": container_id if container_id is not None else "",
             "image": image if image is not None else "",
@@ -5254,9 +5269,13 @@ class ContainerStatus(_kuber_definitions.Definition):
             "restartCount": restart_count if restart_count is not None else None,
             "started": started if started is not None else None,
             "state": state if state is not None else ContainerState(),
+            "stopSignal": stop_signal if stop_signal is not None else "",
+            "user": user if user is not None else ContainerUser(),
+            "volumeMounts": volume_mounts if volume_mounts is not None else [],
         }
         self._types = {
             "allocatedResources": (dict, None),
+            "allocatedResourcesStatus": (list, ResourceStatus),
             "containerID": (str, None),
             "image": (str, None),
             "imageID": (str, None),
@@ -5267,6 +5286,9 @@ class ContainerStatus(_kuber_definitions.Definition):
             "restartCount": (int, None),
             "started": (bool, None),
             "state": (ContainerState, None),
+            "stopSignal": (str, None),
+            "user": (ContainerUser, None),
+            "volumeMounts": (list, VolumeMountStatus),
         }
 
     @property
@@ -5293,6 +5315,35 @@ class ContainerStatus(_kuber_definitions.Definition):
         resize.
         """
         self._properties["allocatedResources"] = value
+
+    @property
+    def allocated_resources_status(self) -> typing.List["ResourceStatus"]:
+        """
+        AllocatedResourcesStatus represents the status of various
+        resources allocated for this Pod.
+        """
+        return typing.cast(
+            typing.List["ResourceStatus"],
+            self._properties.get("allocatedResourcesStatus"),
+        )
+
+    @allocated_resources_status.setter
+    def allocated_resources_status(
+        self, value: typing.Union[typing.List["ResourceStatus"], typing.List[dict]]
+    ):
+        """
+        AllocatedResourcesStatus represents the status of various
+        resources allocated for this Pod.
+        """
+        cleaned: typing.List[ResourceStatus] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    ResourceStatus,
+                    ResourceStatus().from_dict(item),
+                )
+            cleaned.append(typing.cast(ResourceStatus, item))
+        self._properties["allocatedResourcesStatus"] = cleaned
 
     @property
     def container_id(self) -> str:
@@ -5551,7 +5602,130 @@ class ContainerStatus(_kuber_definitions.Definition):
             )
         self._properties["state"] = value
 
+    @property
+    def stop_signal(self) -> str:
+        """
+        StopSignal reports the effective stop signal for this
+        container
+        """
+        return typing.cast(
+            str,
+            self._properties.get("stopSignal"),
+        )
+
+    @stop_signal.setter
+    def stop_signal(self, value: str):
+        """
+        StopSignal reports the effective stop signal for this
+        container
+        """
+        self._properties["stopSignal"] = value
+
+    @property
+    def user(self) -> "ContainerUser":
+        """
+        User represents user identity information initially attached
+        to the first process of the container
+        """
+        return typing.cast(
+            "ContainerUser",
+            self._properties.get("user"),
+        )
+
+    @user.setter
+    def user(self, value: typing.Union["ContainerUser", dict]):
+        """
+        User represents user identity information initially attached
+        to the first process of the container
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ContainerUser,
+                ContainerUser().from_dict(value),
+            )
+        self._properties["user"] = value
+
+    @property
+    def volume_mounts(self) -> typing.List["VolumeMountStatus"]:
+        """
+        Status of volume mounts.
+        """
+        return typing.cast(
+            typing.List["VolumeMountStatus"],
+            self._properties.get("volumeMounts"),
+        )
+
+    @volume_mounts.setter
+    def volume_mounts(
+        self, value: typing.Union[typing.List["VolumeMountStatus"], typing.List[dict]]
+    ):
+        """
+        Status of volume mounts.
+        """
+        cleaned: typing.List[VolumeMountStatus] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    VolumeMountStatus,
+                    VolumeMountStatus().from_dict(item),
+                )
+            cleaned.append(typing.cast(VolumeMountStatus, item))
+        self._properties["volumeMounts"] = cleaned
+
     def __enter__(self) -> "ContainerStatus":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ContainerUser(_kuber_definitions.Definition):
+    """
+    ContainerUser represents user identity information
+    """
+
+    def __init__(
+        self,
+        linux: typing.Optional["LinuxContainerUser"] = None,
+    ):
+        """Create ContainerUser instance."""
+        super(ContainerUser, self).__init__(api_version="core/v1", kind="ContainerUser")
+        self._properties = {
+            "linux": linux if linux is not None else LinuxContainerUser(),
+        }
+        self._types = {
+            "linux": (LinuxContainerUser, None),
+        }
+
+    @property
+    def linux(self) -> "LinuxContainerUser":
+        """
+        Linux holds user identity information initially attached to
+        the first process of the containers in Linux. Note that the
+        actual running identity can be changed if the process has
+        enough privilege to do so.
+        """
+        return typing.cast(
+            "LinuxContainerUser",
+            self._properties.get("linux"),
+        )
+
+    @linux.setter
+    def linux(self, value: typing.Union["LinuxContainerUser", dict]):
+        """
+        Linux holds user identity information initially attached to
+        the first process of the containers in Linux. Note that the
+        actual running identity can be changed if the process has
+        enough privilege to do so.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                LinuxContainerUser,
+                LinuxContainerUser().from_dict(value),
+            )
+        self._properties["linux"] = value
+
+    def __enter__(self) -> "ContainerUser":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -5698,7 +5872,7 @@ class DownwardAPIVolumeFile(_kuber_definitions.Definition):
     def field_ref(self) -> "ObjectFieldSelector":
         """
         Required: Selects a field of the pod: only annotations,
-        labels, name and namespace are supported.
+        labels, name, namespace and uid are supported.
         """
         return typing.cast(
             "ObjectFieldSelector",
@@ -5709,7 +5883,7 @@ class DownwardAPIVolumeFile(_kuber_definitions.Definition):
     def field_ref(self, value: typing.Union["ObjectFieldSelector", dict]):
         """
         Required: Selects a field of the pod: only annotations,
-        labels, name and namespace are supported.
+        labels, name, namespace and uid are supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -5984,6 +6158,7 @@ class EmptyDirVolumeSource(_kuber_definitions.Definition):
 class EndpointAddress(_kuber_definitions.Definition):
     """
     EndpointAddress is a tuple that describes single IP address.
+    Deprecated: This API is deprecated in v1.33+.
     """
 
     def __init__(
@@ -6099,6 +6274,7 @@ class EndpointAddress(_kuber_definitions.Definition):
 class EndpointPort(_kuber_definitions.Definition):
     """
     EndpointPort is a tuple that describes a single port.
+    Deprecated: This API is deprecated in v1.33+.
     """
 
     def __init__(
@@ -6258,6 +6434,8 @@ class EndpointSubset(_kuber_definitions.Definition):
 
         a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
         b: [ 10.10.1.1:309, 10.10.2.2:309 ]
+
+    Deprecated: This API is deprecated in v1.33+.
     """
 
     def __init__(
@@ -6399,6 +6577,13 @@ class Endpoints(_kuber_definitions.Resource):
     "port": 76}]
            },
         ]
+
+    Endpoints is a legacy API and does not contain information
+    about all Service features. Use discoveryv1.EndpointSlice
+    for complete information about Service endpoints.
+
+    Deprecated: This API is deprecated in v1.33+. Use
+    discoveryv1.EndpointSlice.
     """
 
     def __init__(
@@ -6608,7 +6793,8 @@ class Endpoints(_kuber_definitions.Resource):
 
 class EndpointsList(_kuber_definitions.Collection):
     """
-    EndpointsList is a list of endpoints.
+    EndpointsList is a list of endpoints. Deprecated: This API
+    is deprecated in v1.33+.
     """
 
     def __init__(
@@ -6702,6 +6888,7 @@ class EndpointsList(_kuber_definitions.Collection):
 class EnvFromSource(_kuber_definitions.Definition):
     """
     EnvFromSource represents the source of a set of ConfigMaps
+    or Secrets
     """
 
     def __init__(
@@ -6750,8 +6937,8 @@ class EnvFromSource(_kuber_definitions.Definition):
     @property
     def prefix(self) -> str:
         """
-        An optional identifier to prepend to each key in the
-        ConfigMap. Must be a C_IDENTIFIER.
+        Optional text to prepend to the name of each environment
+        variable. Must be a C_IDENTIFIER.
         """
         return typing.cast(
             str,
@@ -6761,8 +6948,8 @@ class EnvFromSource(_kuber_definitions.Definition):
     @prefix.setter
     def prefix(self, value: str):
         """
-        An optional identifier to prepend to each key in the
-        ConfigMap. Must be a C_IDENTIFIER.
+        Optional text to prepend to the name of each environment
+        variable. Must be a C_IDENTIFIER.
         """
         self._properties["prefix"] = value
 
@@ -9400,7 +9587,9 @@ class GCEPersistentDiskVolumeSource(_kuber_definitions.Definition):
 
 
 class GRPCAction(_kuber_definitions.Definition):
-    """ """
+    """
+    GRPCAction specifies an action involving a GRPC service.
+    """
 
     def __init__(
         self,
@@ -10766,6 +10955,104 @@ class ISCSIVolumeSource(_kuber_definitions.Definition):
         return False
 
 
+class ImageVolumeSource(_kuber_definitions.Definition):
+    """
+    ImageVolumeSource represents a image volume resource.
+    """
+
+    def __init__(
+        self,
+        pull_policy: typing.Optional[str] = None,
+        reference: typing.Optional[str] = None,
+    ):
+        """Create ImageVolumeSource instance."""
+        super(ImageVolumeSource, self).__init__(
+            api_version="core/v1", kind="ImageVolumeSource"
+        )
+        self._properties = {
+            "pullPolicy": pull_policy if pull_policy is not None else "",
+            "reference": reference if reference is not None else "",
+        }
+        self._types = {
+            "pullPolicy": (str, None),
+            "reference": (str, None),
+        }
+
+    @property
+    def pull_policy(self) -> str:
+        """
+        Policy for pulling OCI objects. Possible values are: Always:
+        the kubelet always attempts to pull the reference. Container
+        creation will fail If the pull fails. Never: the kubelet
+        never pulls the reference and only uses a local image or
+        artifact. Container creation will fail if the reference
+        isn't present. IfNotPresent: the kubelet pulls if the
+        reference isn't already present on disk. Container creation
+        will fail if the reference isn't present and the pull fails.
+        Defaults to Always if :latest tag is specified, or
+        IfNotPresent otherwise.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("pullPolicy"),
+        )
+
+    @pull_policy.setter
+    def pull_policy(self, value: str):
+        """
+        Policy for pulling OCI objects. Possible values are: Always:
+        the kubelet always attempts to pull the reference. Container
+        creation will fail If the pull fails. Never: the kubelet
+        never pulls the reference and only uses a local image or
+        artifact. Container creation will fail if the reference
+        isn't present. IfNotPresent: the kubelet pulls if the
+        reference isn't already present on disk. Container creation
+        will fail if the reference isn't present and the pull fails.
+        Defaults to Always if :latest tag is specified, or
+        IfNotPresent otherwise.
+        """
+        self._properties["pullPolicy"] = value
+
+    @property
+    def reference(self) -> str:
+        """
+        Required: Image or artifact reference to be used. Behaves in
+        the same way as pod.spec.containers[*].image. Pull secrets
+        will be assembled in the same way as for the container image
+        by looking up node credentials, SA image pull secrets, and
+        pod spec image pull secrets. More info:
+        https://kubernetes.io/docs/concepts/containers/images This
+        field is optional to allow higher level config management to
+        default or override container images in workload controllers
+        like Deployments and StatefulSets.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("reference"),
+        )
+
+    @reference.setter
+    def reference(self, value: str):
+        """
+        Required: Image or artifact reference to be used. Behaves in
+        the same way as pod.spec.containers[*].image. Pull secrets
+        will be assembled in the same way as for the container image
+        by looking up node credentials, SA image pull secrets, and
+        pod spec image pull secrets. More info:
+        https://kubernetes.io/docs/concepts/containers/images This
+        field is optional to allow higher level config management to
+        default or override container images in workload controllers
+        like Deployments and StatefulSets.
+        """
+        self._properties["reference"] = value
+
+    def __enter__(self) -> "ImageVolumeSource":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class KeyToPath(_kuber_definitions.Definition):
     """
     Maps a string key to a path within a volume.
@@ -10880,16 +11167,19 @@ class Lifecycle(_kuber_definitions.Definition):
         self,
         post_start: typing.Optional["LifecycleHandler"] = None,
         pre_stop: typing.Optional["LifecycleHandler"] = None,
+        stop_signal: typing.Optional[str] = None,
     ):
         """Create Lifecycle instance."""
         super(Lifecycle, self).__init__(api_version="core/v1", kind="Lifecycle")
         self._properties = {
             "postStart": post_start if post_start is not None else LifecycleHandler(),
             "preStop": pre_stop if pre_stop is not None else LifecycleHandler(),
+            "stopSignal": stop_signal if stop_signal is not None else "",
         }
         self._types = {
             "postStart": (LifecycleHandler, None),
             "preStop": (LifecycleHandler, None),
+            "stopSignal": (str, None),
         }
 
     @property
@@ -10972,6 +11262,29 @@ class Lifecycle(_kuber_definitions.Definition):
             )
         self._properties["preStop"] = value
 
+    @property
+    def stop_signal(self) -> str:
+        """
+        StopSignal defines which signal will be sent to a container
+        when it is being stopped. If not specified, the default is
+        defined by the container runtime in use. StopSignal can only
+        be set for Pods with a non-empty .spec.os.name
+        """
+        return typing.cast(
+            str,
+            self._properties.get("stopSignal"),
+        )
+
+    @stop_signal.setter
+    def stop_signal(self, value: str):
+        """
+        StopSignal defines which signal will be sent to a container
+        when it is being stopped. If not specified, the default is
+        defined by the container runtime in use. StopSignal can only
+        be set for Pods with a non-empty .spec.os.name
+        """
+        self._properties["stopSignal"] = value
+
     def __enter__(self) -> "Lifecycle":
         return self
 
@@ -11013,7 +11326,7 @@ class LifecycleHandler(_kuber_definitions.Definition):
     @property
     def exec_(self) -> "ExecAction":
         """
-        Exec specifies the action to take.
+        Exec specifies a command to execute in the container.
         """
         return typing.cast(
             "ExecAction",
@@ -11023,7 +11336,7 @@ class LifecycleHandler(_kuber_definitions.Definition):
     @exec_.setter
     def exec_(self, value: typing.Union["ExecAction", dict]):
         """
-        Exec specifies the action to take.
+        Exec specifies a command to execute in the container.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -11035,7 +11348,7 @@ class LifecycleHandler(_kuber_definitions.Definition):
     @property
     def http_get(self) -> "HTTPGetAction":
         """
-        HTTPGet specifies the http request to perform.
+        HTTPGet specifies an HTTP GET request to perform.
         """
         return typing.cast(
             "HTTPGetAction",
@@ -11045,7 +11358,7 @@ class LifecycleHandler(_kuber_definitions.Definition):
     @http_get.setter
     def http_get(self, value: typing.Union["HTTPGetAction", dict]):
         """
-        HTTPGet specifies the http request to perform.
+        HTTPGet specifies an HTTP GET request to perform.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -11057,8 +11370,7 @@ class LifecycleHandler(_kuber_definitions.Definition):
     @property
     def sleep(self) -> "SleepAction":
         """
-        Sleep represents the duration that the container should
-        sleep before being terminated.
+        Sleep represents a duration that the container should sleep.
         """
         return typing.cast(
             "SleepAction",
@@ -11068,8 +11380,7 @@ class LifecycleHandler(_kuber_definitions.Definition):
     @sleep.setter
     def sleep(self, value: typing.Union["SleepAction", dict]):
         """
-        Sleep represents the duration that the container should
-        sleep before being terminated.
+        Sleep represents a duration that the container should sleep.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -11082,9 +11393,9 @@ class LifecycleHandler(_kuber_definitions.Definition):
     def tcp_socket(self) -> "TCPSocketAction":
         """
         Deprecated. TCPSocket is NOT supported as a LifecycleHandler
-        and kept for the backward compatibility. There are no
-        validation of this field and lifecycle hooks will fail in
-        runtime when tcp handler is specified.
+        and kept for backward compatibility. There is no validation
+        of this field and lifecycle hooks will fail at runtime when
+        it is specified.
         """
         return typing.cast(
             "TCPSocketAction",
@@ -11095,9 +11406,9 @@ class LifecycleHandler(_kuber_definitions.Definition):
     def tcp_socket(self, value: typing.Union["TCPSocketAction", dict]):
         """
         Deprecated. TCPSocket is NOT supported as a LifecycleHandler
-        and kept for the backward compatibility. There are no
-        validation of this field and lifecycle hooks will fail in
-        runtime when tcp handler is specified.
+        and kept for backward compatibility. There is no validation
+        of this field and lifecycle hooks will fail at runtime when
+        it is specified.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -11620,6 +11931,99 @@ class LimitRangeSpec(_kuber_definitions.Definition):
         return False
 
 
+class LinuxContainerUser(_kuber_definitions.Definition):
+    """
+    LinuxContainerUser represents user identity information in
+    Linux containers
+    """
+
+    def __init__(
+        self,
+        gid: typing.Optional[int] = None,
+        supplemental_groups: typing.Optional[typing.List[int]] = None,
+        uid: typing.Optional[int] = None,
+    ):
+        """Create LinuxContainerUser instance."""
+        super(LinuxContainerUser, self).__init__(
+            api_version="core/v1", kind="LinuxContainerUser"
+        )
+        self._properties = {
+            "gid": gid if gid is not None else None,
+            "supplementalGroups": (
+                supplemental_groups if supplemental_groups is not None else []
+            ),
+            "uid": uid if uid is not None else None,
+        }
+        self._types = {
+            "gid": (int, None),
+            "supplementalGroups": (list, int),
+            "uid": (int, None),
+        }
+
+    @property
+    def gid(self) -> int:
+        """
+        GID is the primary gid initially attached to the first
+        process in the container
+        """
+        return typing.cast(
+            int,
+            self._properties.get("gid"),
+        )
+
+    @gid.setter
+    def gid(self, value: int):
+        """
+        GID is the primary gid initially attached to the first
+        process in the container
+        """
+        self._properties["gid"] = value
+
+    @property
+    def supplemental_groups(self) -> typing.List[int]:
+        """
+        SupplementalGroups are the supplemental groups initially
+        attached to the first process in the container
+        """
+        return typing.cast(
+            typing.List[int],
+            self._properties.get("supplementalGroups"),
+        )
+
+    @supplemental_groups.setter
+    def supplemental_groups(self, value: typing.List[int]):
+        """
+        SupplementalGroups are the supplemental groups initially
+        attached to the first process in the container
+        """
+        self._properties["supplementalGroups"] = value
+
+    @property
+    def uid(self) -> int:
+        """
+        UID is the primary uid initially attached to the first
+        process in the container
+        """
+        return typing.cast(
+            int,
+            self._properties.get("uid"),
+        )
+
+    @uid.setter
+    def uid(self, value: int):
+        """
+        UID is the primary uid initially attached to the first
+        process in the container
+        """
+        self._properties["uid"] = value
+
+    def __enter__(self) -> "LinuxContainerUser":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class LoadBalancerIngress(_kuber_definitions.Definition):
     """
     LoadBalancerIngress represents the status of a load-balancer
@@ -11838,7 +12242,10 @@ class LocalObjectReference(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -11850,7 +12257,10 @@ class LocalObjectReference(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -11866,7 +12276,7 @@ class LocalObjectReference(_kuber_definitions.Definition):
 class LocalVolumeSource(_kuber_definitions.Definition):
     """
     Local represents directly-attached storage with node
-    affinity (Beta feature)
+    affinity
     """
 
     def __init__(
@@ -12438,7 +12848,10 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @property
     def last_transition_time(self) -> str:
-        """ """
+        """
+        Last time the condition transitioned from one status to
+        another.
+        """
         return typing.cast(
             str,
             self._properties.get("lastTransitionTime"),
@@ -12448,7 +12861,10 @@ class NamespaceCondition(_kuber_definitions.Definition):
     def last_transition_time(
         self, value: typing.Union[str, _datetime.datetime, _datetime.date]
     ):
-        """ """
+        """
+        Last time the condition transitioned from one status to
+        another.
+        """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
         elif isinstance(value, _datetime.date):
@@ -12457,7 +12873,10 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @property
     def message(self) -> str:
-        """ """
+        """
+        Human-readable message indicating details about last
+        transition.
+        """
         return typing.cast(
             str,
             self._properties.get("message"),
@@ -12465,12 +12884,18 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @message.setter
     def message(self, value: str):
-        """ """
+        """
+        Human-readable message indicating details about last
+        transition.
+        """
         self._properties["message"] = value
 
     @property
     def reason(self) -> str:
-        """ """
+        """
+        Unique, one-word, CamelCase reason for the condition's last
+        transition.
+        """
         return typing.cast(
             str,
             self._properties.get("reason"),
@@ -12478,7 +12903,10 @@ class NamespaceCondition(_kuber_definitions.Definition):
 
     @reason.setter
     def reason(self, value: str):
-        """ """
+        """
+        Unique, one-word, CamelCase reason for the condition's last
+        transition.
+        """
         self._properties["reason"] = value
 
     @property
@@ -13682,6 +14110,57 @@ class NodeDaemonEndpoints(_kuber_definitions.Definition):
         return False
 
 
+class NodeFeatures(_kuber_definitions.Definition):
+    """
+    NodeFeatures describes the set of features implemented by
+    the CRI implementation. The features contained in the
+    NodeFeatures should depend only on the cri implementation
+    independent of runtime handlers.
+    """
+
+    def __init__(
+        self,
+        supplemental_groups_policy: typing.Optional[bool] = None,
+    ):
+        """Create NodeFeatures instance."""
+        super(NodeFeatures, self).__init__(api_version="core/v1", kind="NodeFeatures")
+        self._properties = {
+            "supplementalGroupsPolicy": (
+                supplemental_groups_policy
+                if supplemental_groups_policy is not None
+                else None
+            ),
+        }
+        self._types = {
+            "supplementalGroupsPolicy": (bool, None),
+        }
+
+    @property
+    def supplemental_groups_policy(self) -> bool:
+        """
+        SupplementalGroupsPolicy is set to true if the runtime
+        supports SupplementalGroupsPolicy and ContainerUser.
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("supplementalGroupsPolicy"),
+        )
+
+    @supplemental_groups_policy.setter
+    def supplemental_groups_policy(self, value: bool):
+        """
+        SupplementalGroupsPolicy is set to true if the runtime
+        supports SupplementalGroupsPolicy and ContainerUser.
+        """
+        self._properties["supplementalGroupsPolicy"] = value
+
+    def __enter__(self) -> "NodeFeatures":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class NodeList(_kuber_definitions.Collection):
     """
     NodeList is the whole list of all Nodes which have been
@@ -13770,6 +14249,150 @@ class NodeList(_kuber_definitions.Collection):
         return client.CoreV1Api(**kwargs)
 
     def __enter__(self) -> "NodeList":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class NodeRuntimeHandler(_kuber_definitions.Definition):
+    """
+    NodeRuntimeHandler is a set of runtime handler information.
+    """
+
+    def __init__(
+        self,
+        features: typing.Optional["NodeRuntimeHandlerFeatures"] = None,
+        name: typing.Optional[str] = None,
+    ):
+        """Create NodeRuntimeHandler instance."""
+        super(NodeRuntimeHandler, self).__init__(
+            api_version="core/v1", kind="NodeRuntimeHandler"
+        )
+        self._properties = {
+            "features": (
+                features if features is not None else NodeRuntimeHandlerFeatures()
+            ),
+            "name": name if name is not None else "",
+        }
+        self._types = {
+            "features": (NodeRuntimeHandlerFeatures, None),
+            "name": (str, None),
+        }
+
+    @property
+    def features(self) -> "NodeRuntimeHandlerFeatures":
+        """
+        Supported features.
+        """
+        return typing.cast(
+            "NodeRuntimeHandlerFeatures",
+            self._properties.get("features"),
+        )
+
+    @features.setter
+    def features(self, value: typing.Union["NodeRuntimeHandlerFeatures", dict]):
+        """
+        Supported features.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                NodeRuntimeHandlerFeatures,
+                NodeRuntimeHandlerFeatures().from_dict(value),
+            )
+        self._properties["features"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Runtime handler name. Empty for the default runtime handler.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Runtime handler name. Empty for the default runtime handler.
+        """
+        self._properties["name"] = value
+
+    def __enter__(self) -> "NodeRuntimeHandler":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class NodeRuntimeHandlerFeatures(_kuber_definitions.Definition):
+    """
+    NodeRuntimeHandlerFeatures is a set of features implemented
+    by the runtime handler.
+    """
+
+    def __init__(
+        self,
+        recursive_read_only_mounts: typing.Optional[bool] = None,
+        user_namespaces: typing.Optional[bool] = None,
+    ):
+        """Create NodeRuntimeHandlerFeatures instance."""
+        super(NodeRuntimeHandlerFeatures, self).__init__(
+            api_version="core/v1", kind="NodeRuntimeHandlerFeatures"
+        )
+        self._properties = {
+            "recursiveReadOnlyMounts": (
+                recursive_read_only_mounts
+                if recursive_read_only_mounts is not None
+                else None
+            ),
+            "userNamespaces": user_namespaces if user_namespaces is not None else None,
+        }
+        self._types = {
+            "recursiveReadOnlyMounts": (bool, None),
+            "userNamespaces": (bool, None),
+        }
+
+    @property
+    def recursive_read_only_mounts(self) -> bool:
+        """
+        RecursiveReadOnlyMounts is set to true if the runtime
+        handler supports RecursiveReadOnlyMounts.
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("recursiveReadOnlyMounts"),
+        )
+
+    @recursive_read_only_mounts.setter
+    def recursive_read_only_mounts(self, value: bool):
+        """
+        RecursiveReadOnlyMounts is set to true if the runtime
+        handler supports RecursiveReadOnlyMounts.
+        """
+        self._properties["recursiveReadOnlyMounts"] = value
+
+    @property
+    def user_namespaces(self) -> bool:
+        """
+        UserNamespaces is set to true if the runtime handler
+        supports UserNamespaces, including for volumes.
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("userNamespaces"),
+        )
+
+    @user_namespaces.setter
+    def user_namespaces(self, value: bool):
+        """
+        UserNamespaces is set to true if the runtime handler
+        supports UserNamespaces, including for volumes.
+        """
+        self._properties["userNamespaces"] = value
+
+    def __enter__(self) -> "NodeRuntimeHandlerFeatures":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -14235,9 +14858,11 @@ class NodeStatus(_kuber_definitions.Definition):
         conditions: typing.Optional[typing.List["NodeCondition"]] = None,
         config: typing.Optional["NodeConfigStatus"] = None,
         daemon_endpoints: typing.Optional["NodeDaemonEndpoints"] = None,
+        features: typing.Optional["NodeFeatures"] = None,
         images: typing.Optional[typing.List["ContainerImage"]] = None,
         node_info: typing.Optional["NodeSystemInfo"] = None,
         phase: typing.Optional[str] = None,
+        runtime_handlers: typing.Optional[typing.List["NodeRuntimeHandler"]] = None,
         volumes_attached: typing.Optional[typing.List["AttachedVolume"]] = None,
         volumes_in_use: typing.Optional[typing.List[str]] = None,
     ):
@@ -14254,9 +14879,11 @@ class NodeStatus(_kuber_definitions.Definition):
                 if daemon_endpoints is not None
                 else NodeDaemonEndpoints()
             ),
+            "features": features if features is not None else NodeFeatures(),
             "images": images if images is not None else [],
             "nodeInfo": node_info if node_info is not None else NodeSystemInfo(),
             "phase": phase if phase is not None else "",
+            "runtimeHandlers": runtime_handlers if runtime_handlers is not None else [],
             "volumesAttached": volumes_attached if volumes_attached is not None else [],
             "volumesInUse": volumes_in_use if volumes_in_use is not None else [],
         }
@@ -14267,9 +14894,11 @@ class NodeStatus(_kuber_definitions.Definition):
             "conditions": (list, NodeCondition),
             "config": (NodeConfigStatus, None),
             "daemonEndpoints": (NodeDaemonEndpoints, None),
+            "features": (NodeFeatures, None),
             "images": (list, ContainerImage),
             "nodeInfo": (NodeSystemInfo, None),
             "phase": (str, None),
+            "runtimeHandlers": (list, NodeRuntimeHandler),
             "volumesAttached": (list, AttachedVolume),
             "volumesInUse": (list, str),
         }
@@ -14279,16 +14908,17 @@ class NodeStatus(_kuber_definitions.Definition):
         """
         List of addresses reachable to the node. Queried from cloud
         provider, if available. More info:
-        https://kubernetes.io/docs/concepts/nodes/node/#addresses
-        Note: This field is declared as mergeable, but the merge key
-        is not sufficiently unique, which can cause data corruption
-        when it is merged. Callers should instead use a full-
-        replacement patch. See https://pr.k8s.io/79391 for an
-        example. Consumers should assume that addresses can change
-        during the lifetime of a Node. However, there are some
-        exceptions where this may not be possible, such as Pods that
-        inherit a Node's address in its own status or consumers of
-        the downward API (status.hostIP).
+        https://kubernetes.io/docs/reference/node/node-
+        status/#addresses Note: This field is declared as mergeable,
+        but the merge key is not sufficiently unique, which can
+        cause data corruption when it is merged. Callers should
+        instead use a full-replacement patch. See
+        https://pr.k8s.io/79391 for an example. Consumers should
+        assume that addresses can change during the lifetime of a
+        Node. However, there are some exceptions where this may not
+        be possible, such as Pods that inherit a Node's address in
+        its own status or consumers of the downward API
+        (status.hostIP).
         """
         return typing.cast(
             typing.List["NodeAddress"],
@@ -14302,16 +14932,17 @@ class NodeStatus(_kuber_definitions.Definition):
         """
         List of addresses reachable to the node. Queried from cloud
         provider, if available. More info:
-        https://kubernetes.io/docs/concepts/nodes/node/#addresses
-        Note: This field is declared as mergeable, but the merge key
-        is not sufficiently unique, which can cause data corruption
-        when it is merged. Callers should instead use a full-
-        replacement patch. See https://pr.k8s.io/79391 for an
-        example. Consumers should assume that addresses can change
-        during the lifetime of a Node. However, there are some
-        exceptions where this may not be possible, such as Pods that
-        inherit a Node's address in its own status or consumers of
-        the downward API (status.hostIP).
+        https://kubernetes.io/docs/reference/node/node-
+        status/#addresses Note: This field is declared as mergeable,
+        but the merge key is not sufficiently unique, which can
+        cause data corruption when it is merged. Callers should
+        instead use a full-replacement patch. See
+        https://pr.k8s.io/79391 for an example. Consumers should
+        assume that addresses can change during the lifetime of a
+        Node. However, there are some exceptions where this may not
+        be possible, such as Pods that inherit a Node's address in
+        its own status or consumers of the downward API
+        (status.hostIP).
         """
         cleaned: typing.List[NodeAddress] = []
         for item in value:
@@ -14346,9 +14977,8 @@ class NodeStatus(_kuber_definitions.Definition):
     def capacity(self) -> dict:
         """
         Capacity represents the total resources of a node. More
-        info:
-        https://kubernetes.io/docs/concepts/storage/persistent-
-        volumes#capacity
+        info: https://kubernetes.io/docs/reference/node/node-
+        status/#capacity
         """
         return typing.cast(
             dict,
@@ -14359,9 +14989,8 @@ class NodeStatus(_kuber_definitions.Definition):
     def capacity(self, value: dict):
         """
         Capacity represents the total resources of a node. More
-        info:
-        https://kubernetes.io/docs/concepts/storage/persistent-
-        volumes#capacity
+        info: https://kubernetes.io/docs/reference/node/node-
+        status/#capacity
         """
         self._properties["capacity"] = value
 
@@ -14369,8 +14998,8 @@ class NodeStatus(_kuber_definitions.Definition):
     def conditions(self) -> typing.List["NodeCondition"]:
         """
         Conditions is an array of current observed node conditions.
-        More info:
-        https://kubernetes.io/docs/concepts/nodes/node/#condition
+        More info: https://kubernetes.io/docs/reference/node/node-
+        status/#condition
         """
         return typing.cast(
             typing.List["NodeCondition"],
@@ -14383,8 +15012,8 @@ class NodeStatus(_kuber_definitions.Definition):
     ):
         """
         Conditions is an array of current observed node conditions.
-        More info:
-        https://kubernetes.io/docs/concepts/nodes/node/#condition
+        More info: https://kubernetes.io/docs/reference/node/node-
+        status/#condition
         """
         cleaned: typing.List[NodeCondition] = []
         for item in value:
@@ -14443,6 +15072,30 @@ class NodeStatus(_kuber_definitions.Definition):
         self._properties["daemonEndpoints"] = value
 
     @property
+    def features(self) -> "NodeFeatures":
+        """
+        Features describes the set of features implemented by the
+        CRI implementation.
+        """
+        return typing.cast(
+            "NodeFeatures",
+            self._properties.get("features"),
+        )
+
+    @features.setter
+    def features(self, value: typing.Union["NodeFeatures", dict]):
+        """
+        Features describes the set of features implemented by the
+        CRI implementation.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                NodeFeatures,
+                NodeFeatures().from_dict(value),
+            )
+        self._properties["features"] = value
+
+    @property
     def images(self) -> typing.List["ContainerImage"]:
         """
         List of container images on this node
@@ -14473,7 +15126,7 @@ class NodeStatus(_kuber_definitions.Definition):
     def node_info(self) -> "NodeSystemInfo":
         """
         Set of ids/uuids to uniquely identify the node. More info:
-        https://kubernetes.io/docs/concepts/nodes/node/#info
+        https://kubernetes.io/docs/reference/node/node-status/#info
         """
         return typing.cast(
             "NodeSystemInfo",
@@ -14484,7 +15137,7 @@ class NodeStatus(_kuber_definitions.Definition):
     def node_info(self, value: typing.Union["NodeSystemInfo", dict]):
         """
         Set of ids/uuids to uniquely identify the node. More info:
-        https://kubernetes.io/docs/concepts/nodes/node/#info
+        https://kubernetes.io/docs/reference/node/node-status/#info
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -14515,6 +15168,33 @@ class NodeStatus(_kuber_definitions.Definition):
         field is never populated, and now is deprecated.
         """
         self._properties["phase"] = value
+
+    @property
+    def runtime_handlers(self) -> typing.List["NodeRuntimeHandler"]:
+        """
+        The available runtime handlers.
+        """
+        return typing.cast(
+            typing.List["NodeRuntimeHandler"],
+            self._properties.get("runtimeHandlers"),
+        )
+
+    @runtime_handlers.setter
+    def runtime_handlers(
+        self, value: typing.Union[typing.List["NodeRuntimeHandler"], typing.List[dict]]
+    ):
+        """
+        The available runtime handlers.
+        """
+        cleaned: typing.List[NodeRuntimeHandler] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    NodeRuntimeHandler,
+                    NodeRuntimeHandler().from_dict(item),
+                )
+            cleaned.append(typing.cast(NodeRuntimeHandler, item))
+        self._properties["runtimeHandlers"] = cleaned
 
     @property
     def volumes_attached(self) -> typing.List["AttachedVolume"]:
@@ -14567,6 +15247,50 @@ class NodeStatus(_kuber_definitions.Definition):
         return False
 
 
+class NodeSwapStatus(_kuber_definitions.Definition):
+    """
+    NodeSwapStatus represents swap memory information.
+    """
+
+    def __init__(
+        self,
+        capacity: typing.Optional[int] = None,
+    ):
+        """Create NodeSwapStatus instance."""
+        super(NodeSwapStatus, self).__init__(
+            api_version="core/v1", kind="NodeSwapStatus"
+        )
+        self._properties = {
+            "capacity": capacity if capacity is not None else None,
+        }
+        self._types = {
+            "capacity": (int, None),
+        }
+
+    @property
+    def capacity(self) -> int:
+        """
+        Total amount of swap memory in bytes.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("capacity"),
+        )
+
+    @capacity.setter
+    def capacity(self, value: int):
+        """
+        Total amount of swap memory in bytes.
+        """
+        self._properties["capacity"] = value
+
+    def __enter__(self) -> "NodeSwapStatus":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
 class NodeSystemInfo(_kuber_definitions.Definition):
     """
     NodeSystemInfo is a set of ids/uuids to uniquely identify
@@ -14584,6 +15308,7 @@ class NodeSystemInfo(_kuber_definitions.Definition):
         machine_id: typing.Optional[str] = None,
         operating_system: typing.Optional[str] = None,
         os_image: typing.Optional[str] = None,
+        swap: typing.Optional["NodeSwapStatus"] = None,
         system_uuid: typing.Optional[str] = None,
     ):
         """Create NodeSystemInfo instance."""
@@ -14606,6 +15331,7 @@ class NodeSystemInfo(_kuber_definitions.Definition):
             "machineID": machine_id if machine_id is not None else "",
             "operatingSystem": operating_system if operating_system is not None else "",
             "osImage": os_image if os_image is not None else "",
+            "swap": swap if swap is not None else NodeSwapStatus(),
             "systemUUID": system_uuid if system_uuid is not None else "",
         }
         self._types = {
@@ -14618,6 +15344,7 @@ class NodeSystemInfo(_kuber_definitions.Definition):
             "machineID": (str, None),
             "operatingSystem": (str, None),
             "osImage": (str, None),
+            "swap": (NodeSwapStatus, None),
             "systemUUID": (str, None),
         }
 
@@ -14696,7 +15423,7 @@ class NodeSystemInfo(_kuber_definitions.Definition):
     @property
     def kube_proxy_version(self) -> str:
         """
-        KubeProxy Version reported by the node.
+        Deprecated: KubeProxy Version reported by the node.
         """
         return typing.cast(
             str,
@@ -14706,7 +15433,7 @@ class NodeSystemInfo(_kuber_definitions.Definition):
     @kube_proxy_version.setter
     def kube_proxy_version(self, value: str):
         """
-        KubeProxy Version reported by the node.
+        Deprecated: KubeProxy Version reported by the node.
         """
         self._properties["kubeProxyVersion"] = value
 
@@ -14785,6 +15512,28 @@ class NodeSystemInfo(_kuber_definitions.Definition):
         Debian GNU/Linux 7 (wheezy)).
         """
         self._properties["osImage"] = value
+
+    @property
+    def swap(self) -> "NodeSwapStatus":
+        """
+        Swap Info reported by the node.
+        """
+        return typing.cast(
+            "NodeSwapStatus",
+            self._properties.get("swap"),
+        )
+
+    @swap.setter
+    def swap(self, value: typing.Union["NodeSwapStatus", dict]):
+        """
+        Swap Info reported by the node.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                NodeSwapStatus,
+                NodeSwapStatus().from_dict(value),
+            )
+        self._properties["swap"] = value
 
     @property
     def system_uuid(self) -> str:
@@ -15765,8 +16514,8 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
         """
         reason is a unique, this should be a short, machine
         understandable string that gives the reason for condition's
-        last transition. If it reports "ResizeStarted" that means
-        the underlying persistent volume is being resized.
+        last transition. If it reports "Resizing" that means the
+        underlying persistent volume is being resized.
         """
         return typing.cast(
             str,
@@ -15778,14 +16527,21 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
         """
         reason is a unique, this should be a short, machine
         understandable string that gives the reason for condition's
-        last transition. If it reports "ResizeStarted" that means
-        the underlying persistent volume is being resized.
+        last transition. If it reports "Resizing" that means the
+        underlying persistent volume is being resized.
         """
         self._properties["reason"] = value
 
     @property
     def status(self) -> str:
-        """ """
+        """
+        Status is the status of the condition. Can be True, False,
+        Unknown. More info:
+        https://kubernetes.io/docs/reference/kubernetes-api/config-
+        and-storage-resources/persistent-volume-claim-
+        v1/#:~:text=state%20of%20pvc-,conditions.status,-
+        (string)%2C%20required
+        """
         return typing.cast(
             str,
             self._properties.get("status"),
@@ -15793,12 +16549,25 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @status.setter
     def status(self, value: str):
-        """ """
+        """
+        Status is the status of the condition. Can be True, False,
+        Unknown. More info:
+        https://kubernetes.io/docs/reference/kubernetes-api/config-
+        and-storage-resources/persistent-volume-claim-
+        v1/#:~:text=state%20of%20pvc-,conditions.status,-
+        (string)%2C%20required
+        """
         self._properties["status"] = value
 
     @property
     def type_(self) -> str:
-        """ """
+        """
+        Type is the type of the condition. More info:
+        https://kubernetes.io/docs/reference/kubernetes-api/config-
+        and-storage-resources/persistent-volume-claim-
+        v1/#:~:text=set%20to%20%27ResizeStarted%27.-
+        ,PersistentVolumeClaimCondition,-contains%20details%20about
+        """
         return typing.cast(
             str,
             self._properties.get("type"),
@@ -15806,7 +16575,13 @@ class PersistentVolumeClaimCondition(_kuber_definitions.Definition):
 
     @type_.setter
     def type_(self, value: str):
-        """ """
+        """
+        Type is the type of the condition. More info:
+        https://kubernetes.io/docs/reference/kubernetes-api/config-
+        and-storage-resources/persistent-volume-claim-
+        v1/#:~:text=set%20to%20%27ResizeStarted%27.-
+        ,PersistentVolumeClaimCondition,-contains%20details%20about
+        """
         self._properties["type"] = value
 
     def __enter__(self) -> "PersistentVolumeClaimCondition":
@@ -16232,10 +17007,10 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         exist, this PersistentVolumeClaim will be set to a Pending
         state, as reflected by the modifyVolumeStatus field, until
         such as a resource exists. More info:
-        https://kubernetes.io/docs/concepts/storage/persistent-
-        volumes#volumeattributesclass (Alpha) Using this field
-        requires the VolumeAttributesClass feature gate to be
-        enabled.
+        https://kubernetes.io/docs/concepts/storage/volume-
+        attributes-classes/ (Beta) Using this field requires the
+        VolumeAttributesClass feature gate to be enabled (off by
+        default).
         """
         return typing.cast(
             str,
@@ -16261,10 +17036,10 @@ class PersistentVolumeClaimSpec(_kuber_definitions.Definition):
         exist, this PersistentVolumeClaim will be set to a Pending
         state, as reflected by the modifyVolumeStatus field, until
         such as a resource exists. More info:
-        https://kubernetes.io/docs/concepts/storage/persistent-
-        volumes#volumeattributesclass (Alpha) Using this field
-        requires the VolumeAttributesClass feature gate to be
-        enabled.
+        https://kubernetes.io/docs/concepts/storage/volume-
+        attributes-classes/ (Beta) Using this field requires the
+        VolumeAttributesClass feature gate to be enabled (off by
+        default).
         """
         self._properties["volumeAttributesClassName"] = value
 
@@ -16614,7 +17389,7 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         """
         conditions is the current Condition of persistent volume
         claim. If underlying persistent volume is being resized then
-        the Condition will be set to 'ResizeStarted'.
+        the Condition will be set to 'Resizing'.
         """
         return typing.cast(
             typing.List["PersistentVolumeClaimCondition"],
@@ -16631,7 +17406,7 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         """
         conditions is the current Condition of persistent volume
         claim. If underlying persistent volume is being resized then
-        the Condition will be set to 'ResizeStarted'.
+        the Condition will be set to 'Resizing'.
         """
         cleaned: typing.List[PersistentVolumeClaimCondition] = []
         for item in value:
@@ -16649,8 +17424,8 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         currentVolumeAttributesClassName is the current name of the
         VolumeAttributesClass the PVC is using. When unset, there is
         no VolumeAttributeClass applied to this
-        PersistentVolumeClaim This is an alpha field and requires
-        enabling VolumeAttributesClass feature.
+        PersistentVolumeClaim This is a beta field and requires
+        enabling VolumeAttributesClass feature (off by default).
         """
         return typing.cast(
             str,
@@ -16663,8 +17438,8 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         currentVolumeAttributesClassName is the current name of the
         VolumeAttributesClass the PVC is using. When unset, there is
         no VolumeAttributeClass applied to this
-        PersistentVolumeClaim This is an alpha field and requires
-        enabling VolumeAttributesClass feature.
+        PersistentVolumeClaim This is a beta field and requires
+        enabling VolumeAttributesClass feature (off by default).
         """
         self._properties["currentVolumeAttributesClassName"] = value
 
@@ -16673,9 +17448,9 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         """
         ModifyVolumeStatus represents the status object of
         ControllerModifyVolume operation. When this is unset, there
-        is no ModifyVolume operation being attempted. This is an
-        alpha field and requires enabling VolumeAttributesClass
-        feature.
+        is no ModifyVolume operation being attempted. This is a beta
+        field and requires enabling VolumeAttributesClass feature
+        (off by default).
         """
         return typing.cast(
             "ModifyVolumeStatus",
@@ -16687,9 +17462,9 @@ class PersistentVolumeClaimStatus(_kuber_definitions.Definition):
         """
         ModifyVolumeStatus represents the status object of
         ControllerModifyVolume operation. When this is unset, there
-        is no ModifyVolume operation being attempted. This is an
-        alpha field and requires enabling VolumeAttributesClass
-        feature.
+        is no ModifyVolume operation being attempted. This is a beta
+        field and requires enabling VolumeAttributesClass feature
+        (off by default).
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17179,8 +17954,11 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         awsElasticBlockStore represents an AWS Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. More info: https://kubernetes.io/docs/concepts/storage/
-        volumes#awselasticblockstore
+        pod. Deprecated: AWSElasticBlockStore is deprecated. All
+        operations for the in-tree awsElasticBlockStore type are
+        redirected to the ebs.csi.aws.com CSI driver. More info: htt
+        ps://kubernetes.io/docs/concepts/storage/volumes#awselasticb
+        lockstore
         """
         return typing.cast(
             "AWSElasticBlockStoreVolumeSource",
@@ -17194,8 +17972,11 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         awsElasticBlockStore represents an AWS Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. More info: https://kubernetes.io/docs/concepts/storage/
-        volumes#awselasticblockstore
+        pod. Deprecated: AWSElasticBlockStore is deprecated. All
+        operations for the in-tree awsElasticBlockStore type are
+        redirected to the ebs.csi.aws.com CSI driver. More info: htt
+        ps://kubernetes.io/docs/concepts/storage/volumes#awselasticb
+        lockstore
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17208,7 +17989,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def azure_disk(self) -> "AzureDiskVolumeSource":
         """
         azureDisk represents an Azure Data Disk mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureDisk is
+        deprecated. All operations for the in-tree azureDisk type
+        are redirected to the disk.csi.azure.com CSI driver.
         """
         return typing.cast(
             "AzureDiskVolumeSource",
@@ -17219,7 +18002,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def azure_disk(self, value: typing.Union["AzureDiskVolumeSource", dict]):
         """
         azureDisk represents an Azure Data Disk mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureDisk is
+        deprecated. All operations for the in-tree azureDisk type
+        are redirected to the disk.csi.azure.com CSI driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17232,7 +18017,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def azure_file(self) -> "AzureFilePersistentVolumeSource":
         """
         azureFile represents an Azure File Service mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureFile is
+        deprecated. All operations for the in-tree azureFile type
+        are redirected to the file.csi.azure.com CSI driver.
         """
         return typing.cast(
             "AzureFilePersistentVolumeSource",
@@ -17243,7 +18030,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def azure_file(self, value: typing.Union["AzureFilePersistentVolumeSource", dict]):
         """
         azureFile represents an Azure File Service mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureFile is
+        deprecated. All operations for the in-tree azureFile type
+        are redirected to the file.csi.azure.com CSI driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17279,7 +18068,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cephfs(self) -> "CephFSPersistentVolumeSource":
         """
         cephFS represents a Ceph FS mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: CephFS is deprecated and the in-
+        tree cephfs type is no longer supported.
         """
         return typing.cast(
             "CephFSPersistentVolumeSource",
@@ -17290,7 +18080,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cephfs(self, value: typing.Union["CephFSPersistentVolumeSource", dict]):
         """
         cephFS represents a Ceph FS mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: CephFS is deprecated and the in-
+        tree cephfs type is no longer supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17303,7 +18094,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cinder(self) -> "CinderPersistentVolumeSource":
         """
         cinder represents a cinder volume attached and mounted on
-        kubelets host machine. More info:
+        kubelets host machine. Deprecated: Cinder is deprecated. All
+        operations for the in-tree cinder type are redirected to the
+        cinder.csi.openstack.org CSI driver. More info:
         https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return typing.cast(
@@ -17315,7 +18108,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def cinder(self, value: typing.Union["CinderPersistentVolumeSource", dict]):
         """
         cinder represents a cinder volume attached and mounted on
-        kubelets host machine. More info:
+        kubelets host machine. Deprecated: Cinder is deprecated. All
+        operations for the in-tree cinder type are redirected to the
+        cinder.csi.openstack.org CSI driver. More info:
         https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         if isinstance(value, dict):
@@ -17361,7 +18156,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def csi(self) -> "CSIPersistentVolumeSource":
         """
         csi represents storage that is handled by an external CSI
-        driver (Beta feature).
+        driver.
         """
         return typing.cast(
             "CSIPersistentVolumeSource",
@@ -17372,7 +18167,7 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def csi(self, value: typing.Union["CSIPersistentVolumeSource", dict]):
         """
         csi represents storage that is handled by an external CSI
-        driver (Beta feature).
+        driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17409,7 +18204,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def flex_volume(self) -> "FlexPersistentVolumeSource":
         """
         flexVolume represents a generic volume resource that is
-        provisioned/attached using an exec based plugin.
+        provisioned/attached using an exec based plugin. Deprecated:
+        FlexVolume is deprecated. Consider using a CSIDriver
+        instead.
         """
         return typing.cast(
             "FlexPersistentVolumeSource",
@@ -17420,7 +18217,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def flex_volume(self, value: typing.Union["FlexPersistentVolumeSource", dict]):
         """
         flexVolume represents a generic volume resource that is
-        provisioned/attached using an exec based plugin.
+        provisioned/attached using an exec based plugin. Deprecated:
+        FlexVolume is deprecated. Consider using a CSIDriver
+        instead.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17434,7 +18233,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         flocker represents a Flocker volume attached to a kubelet's
         host machine and exposed to the pod for its usage. This
-        depends on the Flocker control service being running
+        depends on the Flocker control service being running.
+        Deprecated: Flocker is deprecated and the in-tree flocker
+        type is no longer supported.
         """
         return typing.cast(
             "FlockerVolumeSource",
@@ -17446,7 +18247,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         flocker represents a Flocker volume attached to a kubelet's
         host machine and exposed to the pod for its usage. This
-        depends on the Flocker control service being running
+        depends on the Flocker control service being running.
+        Deprecated: Flocker is deprecated and the in-tree flocker
+        type is no longer supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17460,8 +18263,11 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         gcePersistentDisk represents a GCE Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. Provisioned by an admin. More info: https://kubernetes.
-        io/docs/concepts/storage/volumes#gcepersistentdisk
+        pod. Provisioned by an admin. Deprecated: GCEPersistentDisk
+        is deprecated. All operations for the in-tree
+        gcePersistentDisk type are redirected to the
+        pd.csi.storage.gke.io CSI driver. More info: https://kuberne
+        tes.io/docs/concepts/storage/volumes#gcepersistentdisk
         """
         return typing.cast(
             "GCEPersistentDiskVolumeSource",
@@ -17475,8 +18281,11 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         gcePersistentDisk represents a GCE Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. Provisioned by an admin. More info: https://kubernetes.
-        io/docs/concepts/storage/volumes#gcepersistentdisk
+        pod. Provisioned by an admin. Deprecated: GCEPersistentDisk
+        is deprecated. All operations for the in-tree
+        gcePersistentDisk type are redirected to the
+        pd.csi.storage.gke.io CSI driver. More info: https://kuberne
+        tes.io/docs/concepts/storage/volumes#gcepersistentdisk
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17489,8 +18298,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def glusterfs(self) -> "GlusterfsPersistentVolumeSource":
         """
         glusterfs represents a Glusterfs volume that is attached to
-        a host and exposed to the pod. Provisioned by an admin. More
-        info: https://examples.k8s.io/volumes/glusterfs/README.md
+        a host and exposed to the pod. Provisioned by an admin.
+        Deprecated: Glusterfs is deprecated and the in-tree
+        glusterfs type is no longer supported. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md
         """
         return typing.cast(
             "GlusterfsPersistentVolumeSource",
@@ -17501,8 +18312,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def glusterfs(self, value: typing.Union["GlusterfsPersistentVolumeSource", dict]):
         """
         glusterfs represents a Glusterfs volume that is attached to
-        a host and exposed to the pod. Provisioned by an admin. More
-        info: https://examples.k8s.io/volumes/glusterfs/README.md
+        a host and exposed to the pod. Provisioned by an admin.
+        Deprecated: Glusterfs is deprecated and the in-tree
+        glusterfs type is no longer supported. More info:
+        https://examples.k8s.io/volumes/glusterfs/README.md
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17708,7 +18521,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         photonPersistentDisk represents a PhotonController
         persistent disk attached and mounted on kubelets host
-        machine
+        machine. Deprecated: PhotonPersistentDisk is deprecated and
+        the in-tree photonPersistentDisk type is no longer
+        supported.
         """
         return typing.cast(
             "PhotonPersistentDiskVolumeSource",
@@ -17722,7 +18537,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         """
         photonPersistentDisk represents a PhotonController
         persistent disk attached and mounted on kubelets host
-        machine
+        machine. Deprecated: PhotonPersistentDisk is deprecated and
+        the in-tree photonPersistentDisk type is no longer
+        supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17735,7 +18552,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def portworx_volume(self) -> "PortworxVolumeSource":
         """
         portworxVolume represents a portworx volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: PortworxVolume
+        is deprecated. All operations for the in-tree portworxVolume
+        type are redirected to the pxd.portworx.com CSI driver when
+        the CSIMigrationPortworx feature-gate is on.
         """
         return typing.cast(
             "PortworxVolumeSource",
@@ -17746,7 +18566,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def portworx_volume(self, value: typing.Union["PortworxVolumeSource", dict]):
         """
         portworxVolume represents a portworx volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: PortworxVolume
+        is deprecated. All operations for the in-tree portworxVolume
+        type are redirected to the pxd.portworx.com CSI driver when
+        the CSIMigrationPortworx feature-gate is on.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17759,7 +18582,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def quobyte(self) -> "QuobyteVolumeSource":
         """
         quobyte represents a Quobyte mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: Quobyte is deprecated and the
+        in-tree quobyte type is no longer supported.
         """
         return typing.cast(
             "QuobyteVolumeSource",
@@ -17770,7 +18594,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def quobyte(self, value: typing.Union["QuobyteVolumeSource", dict]):
         """
         quobyte represents a Quobyte mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: Quobyte is deprecated and the
+        in-tree quobyte type is no longer supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17783,7 +18608,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def rbd(self) -> "RBDPersistentVolumeSource":
         """
         rbd represents a Rados Block Device mount on the host that
-        shares a pod's lifetime. More info:
+        shares a pod's lifetime. Deprecated: RBD is deprecated and
+        the in-tree rbd type is no longer supported. More info:
         https://examples.k8s.io/volumes/rbd/README.md
         """
         return typing.cast(
@@ -17795,7 +18621,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def rbd(self, value: typing.Union["RBDPersistentVolumeSource", dict]):
         """
         rbd represents a Rados Block Device mount on the host that
-        shares a pod's lifetime. More info:
+        shares a pod's lifetime. Deprecated: RBD is deprecated and
+        the in-tree rbd type is no longer supported. More info:
         https://examples.k8s.io/volumes/rbd/README.md
         """
         if isinstance(value, dict):
@@ -17809,7 +18636,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def scale_io(self) -> "ScaleIOPersistentVolumeSource":
         """
         scaleIO represents a ScaleIO persistent volume attached and
-        mounted on Kubernetes nodes.
+        mounted on Kubernetes nodes. Deprecated: ScaleIO is
+        deprecated and the in-tree scaleIO type is no longer
+        supported.
         """
         return typing.cast(
             "ScaleIOPersistentVolumeSource",
@@ -17820,7 +18649,9 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def scale_io(self, value: typing.Union["ScaleIOPersistentVolumeSource", dict]):
         """
         scaleIO represents a ScaleIO persistent volume attached and
-        mounted on Kubernetes nodes.
+        mounted on Kubernetes nodes. Deprecated: ScaleIO is
+        deprecated and the in-tree scaleIO type is no longer
+        supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17854,8 +18685,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def storageos(self) -> "StorageOSPersistentVolumeSource":
         """
         storageOS represents a StorageOS volume that is attached to
-        the kubelet's host machine and mounted into the pod More
-        info: https://examples.k8s.io/volumes/storageos/README.md
+        the kubelet's host machine and mounted into the pod.
+        Deprecated: StorageOS is deprecated and the in-tree
+        storageos type is no longer supported. More info:
+        https://examples.k8s.io/volumes/storageos/README.md
         """
         return typing.cast(
             "StorageOSPersistentVolumeSource",
@@ -17866,8 +18699,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def storageos(self, value: typing.Union["StorageOSPersistentVolumeSource", dict]):
         """
         storageOS represents a StorageOS volume that is attached to
-        the kubelet's host machine and mounted into the pod More
-        info: https://examples.k8s.io/volumes/storageos/README.md
+        the kubelet's host machine and mounted into the pod.
+        Deprecated: StorageOS is deprecated and the in-tree
+        storageos type is no longer supported. More info:
+        https://examples.k8s.io/volumes/storageos/README.md
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -17887,8 +18722,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         successfully to a new class. For an unbound
         PersistentVolume, the volumeAttributesClassName will be
         matched with unbound PersistentVolumeClaims during the
-        binding process. This is an alpha field and requires
-        enabling VolumeAttributesClass feature.
+        binding process. This is a beta field and requires enabling
+        VolumeAttributesClass feature (off by default).
         """
         return typing.cast(
             str,
@@ -17906,8 +18741,8 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
         successfully to a new class. For an unbound
         PersistentVolume, the volumeAttributesClassName will be
         matched with unbound PersistentVolumeClaims during the
-        binding process. This is an alpha field and requires
-        enabling VolumeAttributesClass feature.
+        binding process. This is a beta field and requires enabling
+        VolumeAttributesClass feature (off by default).
         """
         self._properties["volumeAttributesClassName"] = value
 
@@ -17936,7 +18771,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     def vsphere_volume(self) -> "VsphereVirtualDiskVolumeSource":
         """
         vsphereVolume represents a vSphere volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: VsphereVolume
+        is deprecated. All operations for the in-tree vsphereVolume
+        type are redirected to the csi.vsphere.vmware.com CSI
+        driver.
         """
         return typing.cast(
             "VsphereVirtualDiskVolumeSource",
@@ -17949,7 +18787,10 @@ class PersistentVolumeSpec(_kuber_definitions.Definition):
     ):
         """
         vsphereVolume represents a vSphere volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: VsphereVolume
+        is deprecated. All operations for the in-tree vsphereVolume
+        type are redirected to the csi.vsphere.vmware.com CSI
+        driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -18004,9 +18845,7 @@ class PersistentVolumeStatus(_kuber_definitions.Definition):
         """
         lastPhaseTransitionTime is the time the phase transitioned
         from one to another and automatically resets to current time
-        everytime a volume phase transitions. This is a beta field
-        and requires the PersistentVolumeLastPhaseTransitionTime
-        feature to be enabled (enabled by default).
+        everytime a volume phase transitions.
         """
         return typing.cast(
             str,
@@ -18020,9 +18859,7 @@ class PersistentVolumeStatus(_kuber_definitions.Definition):
         """
         lastPhaseTransitionTime is the time the phase transitioned
         from one to another and automatically resets to current time
-        everytime a volume phase transitions. This is a beta field
-        and requires the PersistentVolumeLastPhaseTransitionTime
-        feature to be enabled (enabled by default).
+        everytime a volume phase transitions.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -18807,15 +19644,14 @@ class PodAffinityTerm(_kuber_definitions.Definition):
         MatchLabelKeys is a set of pod label keys to select which
         pods will be taken into consideration. The keys are used to
         lookup values from the incoming pod labels, those key-value
-        labels are merged with `LabelSelector` as `key in (value)`
+        labels are merged with `labelSelector` as `key in (value)`
         to select the group of existing pods which pods will be
         taken into consideration for the incoming pod's pod (anti)
         affinity. Keys that don't exist in the incoming pod labels
         will be ignored. The default value is empty. The same key is
-        forbidden to exist in both MatchLabelKeys and LabelSelector.
-        Also, MatchLabelKeys cannot be set when LabelSelector isn't
-        set. This is an alpha field and requires enabling
-        MatchLabelKeysInPodAffinity feature gate.
+        forbidden to exist in both matchLabelKeys and labelSelector.
+        Also, matchLabelKeys cannot be set when labelSelector isn't
+        set.
         """
         return typing.cast(
             typing.List[str],
@@ -18828,15 +19664,14 @@ class PodAffinityTerm(_kuber_definitions.Definition):
         MatchLabelKeys is a set of pod label keys to select which
         pods will be taken into consideration. The keys are used to
         lookup values from the incoming pod labels, those key-value
-        labels are merged with `LabelSelector` as `key in (value)`
+        labels are merged with `labelSelector` as `key in (value)`
         to select the group of existing pods which pods will be
         taken into consideration for the incoming pod's pod (anti)
         affinity. Keys that don't exist in the incoming pod labels
         will be ignored. The default value is empty. The same key is
-        forbidden to exist in both MatchLabelKeys and LabelSelector.
-        Also, MatchLabelKeys cannot be set when LabelSelector isn't
-        set. This is an alpha field and requires enabling
-        MatchLabelKeysInPodAffinity feature gate.
+        forbidden to exist in both matchLabelKeys and labelSelector.
+        Also, matchLabelKeys cannot be set when labelSelector isn't
+        set.
         """
         self._properties["matchLabelKeys"] = value
 
@@ -18846,15 +19681,14 @@ class PodAffinityTerm(_kuber_definitions.Definition):
         MismatchLabelKeys is a set of pod label keys to select which
         pods will be taken into consideration. The keys are used to
         lookup values from the incoming pod labels, those key-value
-        labels are merged with `LabelSelector` as `key notin
+        labels are merged with `labelSelector` as `key notin
         (value)` to select the group of existing pods which pods
         will be taken into consideration for the incoming pod's pod
         (anti) affinity. Keys that don't exist in the incoming pod
         labels will be ignored. The default value is empty. The same
-        key is forbidden to exist in both MismatchLabelKeys and
-        LabelSelector. Also, MismatchLabelKeys cannot be set when
-        LabelSelector isn't set. This is an alpha field and requires
-        enabling MatchLabelKeysInPodAffinity feature gate.
+        key is forbidden to exist in both mismatchLabelKeys and
+        labelSelector. Also, mismatchLabelKeys cannot be set when
+        labelSelector isn't set.
         """
         return typing.cast(
             typing.List[str],
@@ -18867,15 +19701,14 @@ class PodAffinityTerm(_kuber_definitions.Definition):
         MismatchLabelKeys is a set of pod label keys to select which
         pods will be taken into consideration. The keys are used to
         lookup values from the incoming pod labels, those key-value
-        labels are merged with `LabelSelector` as `key notin
+        labels are merged with `labelSelector` as `key notin
         (value)` to select the group of existing pods which pods
         will be taken into consideration for the incoming pod's pod
         (anti) affinity. Keys that don't exist in the incoming pod
         labels will be ignored. The default value is empty. The same
-        key is forbidden to exist in both MismatchLabelKeys and
-        LabelSelector. Also, MismatchLabelKeys cannot be set when
-        LabelSelector isn't set. This is an alpha field and requires
-        enabling MatchLabelKeysInPodAffinity feature gate.
+        key is forbidden to exist in both mismatchLabelKeys and
+        labelSelector. Also, mismatchLabelKeys cannot be set when
+        labelSelector isn't set.
         """
         self._properties["mismatchLabelKeys"] = value
 
@@ -19122,6 +19955,7 @@ class PodCondition(_kuber_definitions.Definition):
         last_probe_time: typing.Optional[str] = None,
         last_transition_time: typing.Optional[str] = None,
         message: typing.Optional[str] = None,
+        observed_generation: typing.Optional[int] = None,
         reason: typing.Optional[str] = None,
         status: typing.Optional[str] = None,
         type_: typing.Optional[str] = None,
@@ -19134,6 +19968,9 @@ class PodCondition(_kuber_definitions.Definition):
                 last_transition_time if last_transition_time is not None else None
             ),
             "message": message if message is not None else "",
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "reason": reason if reason is not None else "",
             "status": status if status is not None else "",
             "type": type_ if type_ is not None else "",
@@ -19142,6 +19979,7 @@ class PodCondition(_kuber_definitions.Definition):
             "lastProbeTime": (str, None),
             "lastTransitionTime": (str, None),
             "message": (str, None),
+            "observedGeneration": (int, None),
             "reason": (str, None),
             "status": (str, None),
             "type": (str, None),
@@ -19213,6 +20051,29 @@ class PodCondition(_kuber_definitions.Definition):
         transition.
         """
         self._properties["message"] = value
+
+    @property
+    def observed_generation(self) -> int:
+        """
+        If set, this represents the .metadata.generation that the
+        pod condition was set based upon. This is an alpha field.
+        Enable PodObservedGenerationTracking to be able to use this
+        field.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
+
+    @observed_generation.setter
+    def observed_generation(self, value: int):
+        """
+        If set, this represents the .metadata.generation that the
+        pod condition was set based upon. This is an alpha field.
+        Enable PodObservedGenerationTracking to be able to use this
+        field.
+        """
+        self._properties["observedGeneration"] = value
 
     @property
     def reason(self) -> str:
@@ -19417,7 +20278,7 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Required.
+        Name is this DNS resolver option's name. Required.
         """
         return typing.cast(
             str,
@@ -19427,13 +20288,15 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Required.
+        Name is this DNS resolver option's name. Required.
         """
         self._properties["name"] = value
 
     @property
     def value(self) -> str:
-        """ """
+        """
+        Value is this DNS resolver option's value.
+        """
         return typing.cast(
             str,
             self._properties.get("value"),
@@ -19441,7 +20304,9 @@ class PodDNSConfigOption(_kuber_definitions.Definition):
 
     @value.setter
     def value(self, value: str):
-        """ """
+        """
+        Value is this DNS resolver option's value.
+        """
         self._properties["value"] = value
 
     def __enter__(self) -> "PodDNSConfigOption":
@@ -19692,17 +20557,20 @@ class PodReadinessGate(_kuber_definitions.Definition):
 
 class PodResourceClaim(_kuber_definitions.Definition):
     """
-    PodResourceClaim references exactly one ResourceClaim
-    through a ClaimSource. It adds a name to it that uniquely
-    identifies the ResourceClaim inside the Pod. Containers that
-    need access to the ResourceClaim reference it with this
-    name.
+    PodResourceClaim references exactly one ResourceClaim,
+    either directly or by naming a ResourceClaimTemplate which
+    is then turned into a ResourceClaim for the pod.
+
+    It adds a name to it that uniquely identifies the
+    ResourceClaim inside the Pod. Containers that need access to
+    the ResourceClaim reference it with this name.
     """
 
     def __init__(
         self,
         name: typing.Optional[str] = None,
-        source: typing.Optional["ClaimSource"] = None,
+        resource_claim_name: typing.Optional[str] = None,
+        resource_claim_template_name: typing.Optional[str] = None,
     ):
         """Create PodResourceClaim instance."""
         super(PodResourceClaim, self).__init__(
@@ -19710,11 +20578,19 @@ class PodResourceClaim(_kuber_definitions.Definition):
         )
         self._properties = {
             "name": name if name is not None else "",
-            "source": source if source is not None else ClaimSource(),
+            "resourceClaimName": (
+                resource_claim_name if resource_claim_name is not None else ""
+            ),
+            "resourceClaimTemplateName": (
+                resource_claim_template_name
+                if resource_claim_template_name is not None
+                else ""
+            ),
         }
         self._types = {
             "name": (str, None),
-            "source": (ClaimSource, None),
+            "resourceClaimName": (str, None),
+            "resourceClaimTemplateName": (str, None),
         }
 
     @property
@@ -19737,26 +20613,78 @@ class PodResourceClaim(_kuber_definitions.Definition):
         self._properties["name"] = value
 
     @property
-    def source(self) -> "ClaimSource":
+    def resource_claim_name(self) -> str:
         """
-        Source describes where to find the ResourceClaim.
+        ResourceClaimName is the name of a ResourceClaim object in
+        the same namespace as this pod.
+
+        Exactly one of ResourceClaimName and
+        ResourceClaimTemplateName must be set.
         """
         return typing.cast(
-            "ClaimSource",
-            self._properties.get("source"),
+            str,
+            self._properties.get("resourceClaimName"),
         )
 
-    @source.setter
-    def source(self, value: typing.Union["ClaimSource", dict]):
+    @resource_claim_name.setter
+    def resource_claim_name(self, value: str):
         """
-        Source describes where to find the ResourceClaim.
+        ResourceClaimName is the name of a ResourceClaim object in
+        the same namespace as this pod.
+
+        Exactly one of ResourceClaimName and
+        ResourceClaimTemplateName must be set.
         """
-        if isinstance(value, dict):
-            value = typing.cast(
-                ClaimSource,
-                ClaimSource().from_dict(value),
-            )
-        self._properties["source"] = value
+        self._properties["resourceClaimName"] = value
+
+    @property
+    def resource_claim_template_name(self) -> str:
+        """
+        ResourceClaimTemplateName is the name of a
+        ResourceClaimTemplate object in the same namespace as this
+        pod.
+
+        The template will be used to create a new ResourceClaim,
+        which will be bound to this pod. When this pod is deleted,
+        the ResourceClaim will also be deleted. The pod name and
+        resource name, along with a generated component, will be
+        used to form a unique name for the ResourceClaim, which will
+        be recorded in pod.status.resourceClaimStatuses.
+
+        This field is immutable and no changes will be made to the
+        corresponding ResourceClaim by the control plane after
+        creating the ResourceClaim.
+
+        Exactly one of ResourceClaimName and
+        ResourceClaimTemplateName must be set.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("resourceClaimTemplateName"),
+        )
+
+    @resource_claim_template_name.setter
+    def resource_claim_template_name(self, value: str):
+        """
+        ResourceClaimTemplateName is the name of a
+        ResourceClaimTemplate object in the same namespace as this
+        pod.
+
+        The template will be used to create a new ResourceClaim,
+        which will be bound to this pod. When this pod is deleted,
+        the ResourceClaim will also be deleted. The pod name and
+        resource name, along with a generated component, will be
+        used to form a unique name for the ResourceClaim, which will
+        be recorded in pod.status.resourceClaimStatuses.
+
+        This field is immutable and no changes will be made to the
+        corresponding ResourceClaim by the control plane after
+        creating the ResourceClaim.
+
+        Exactly one of ResourceClaimName and
+        ResourceClaimTemplateName must be set.
+        """
+        self._properties["resourceClaimTemplateName"] = value
 
     def __enter__(self) -> "PodResourceClaim":
         return self
@@ -19820,7 +20748,7 @@ class PodResourceClaimStatus(_kuber_definitions.Definition):
     def resource_claim_name(self) -> str:
         """
         ResourceClaimName is the name of the ResourceClaim that was
-        generated for the Pod in the namespace of the Pod. It this
+        generated for the Pod in the namespace of the Pod. If this
         is unset, then generating a ResourceClaim was not necessary.
         The pod.spec.resourceClaims entry can be ignored in this
         case.
@@ -19834,7 +20762,7 @@ class PodResourceClaimStatus(_kuber_definitions.Definition):
     def resource_claim_name(self, value: str):
         """
         ResourceClaimName is the name of the ResourceClaim that was
-        generated for the Pod in the namespace of the Pod. It this
+        generated for the Pod in the namespace of the Pod. If this
         is unset, then generating a ResourceClaim was not necessary.
         The pod.spec.resourceClaims entry can be ignored in this
         case.
@@ -19906,14 +20834,17 @@ class PodSecurityContext(_kuber_definitions.Definition):
 
     def __init__(
         self,
+        app_armor_profile: typing.Optional["AppArmorProfile"] = None,
         fs_group: typing.Optional[int] = None,
         fs_group_change_policy: typing.Optional[str] = None,
         run_as_group: typing.Optional[int] = None,
         run_as_non_root: typing.Optional[bool] = None,
         run_as_user: typing.Optional[int] = None,
+        se_linux_change_policy: typing.Optional[str] = None,
         se_linux_options: typing.Optional["SELinuxOptions"] = None,
         seccomp_profile: typing.Optional["SeccompProfile"] = None,
         supplemental_groups: typing.Optional[typing.List[int]] = None,
+        supplemental_groups_policy: typing.Optional[str] = None,
         sysctls: typing.Optional[typing.List["Sysctl"]] = None,
         windows_options: typing.Optional["WindowsSecurityContextOptions"] = None,
     ):
@@ -19922,6 +20853,11 @@ class PodSecurityContext(_kuber_definitions.Definition):
             api_version="core/v1", kind="PodSecurityContext"
         )
         self._properties = {
+            "appArmorProfile": (
+                app_armor_profile
+                if app_armor_profile is not None
+                else AppArmorProfile()
+            ),
             "fsGroup": fs_group if fs_group is not None else None,
             "fsGroupChangePolicy": (
                 fs_group_change_policy if fs_group_change_policy is not None else ""
@@ -19929,6 +20865,9 @@ class PodSecurityContext(_kuber_definitions.Definition):
             "runAsGroup": run_as_group if run_as_group is not None else None,
             "runAsNonRoot": run_as_non_root if run_as_non_root is not None else None,
             "runAsUser": run_as_user if run_as_user is not None else None,
+            "seLinuxChangePolicy": (
+                se_linux_change_policy if se_linux_change_policy is not None else ""
+            ),
             "seLinuxOptions": (
                 se_linux_options if se_linux_options is not None else SELinuxOptions()
             ),
@@ -19938,6 +20877,11 @@ class PodSecurityContext(_kuber_definitions.Definition):
             "supplementalGroups": (
                 supplemental_groups if supplemental_groups is not None else []
             ),
+            "supplementalGroupsPolicy": (
+                supplemental_groups_policy
+                if supplemental_groups_policy is not None
+                else ""
+            ),
             "sysctls": sysctls if sysctls is not None else [],
             "windowsOptions": (
                 windows_options
@@ -19946,17 +20890,46 @@ class PodSecurityContext(_kuber_definitions.Definition):
             ),
         }
         self._types = {
+            "appArmorProfile": (AppArmorProfile, None),
             "fsGroup": (int, None),
             "fsGroupChangePolicy": (str, None),
             "runAsGroup": (int, None),
             "runAsNonRoot": (bool, None),
             "runAsUser": (int, None),
+            "seLinuxChangePolicy": (str, None),
             "seLinuxOptions": (SELinuxOptions, None),
             "seccompProfile": (SeccompProfile, None),
             "supplementalGroups": (list, int),
+            "supplementalGroupsPolicy": (str, None),
             "sysctls": (list, Sysctl),
             "windowsOptions": (WindowsSecurityContextOptions, None),
         }
+
+    @property
+    def app_armor_profile(self) -> "AppArmorProfile":
+        """
+        appArmorProfile is the AppArmor options to use by the
+        containers in this pod. Note that this field cannot be set
+        when spec.os.name is windows.
+        """
+        return typing.cast(
+            "AppArmorProfile",
+            self._properties.get("appArmorProfile"),
+        )
+
+    @app_armor_profile.setter
+    def app_armor_profile(self, value: typing.Union["AppArmorProfile", dict]):
+        """
+        appArmorProfile is the AppArmor options to use by the
+        containers in this pod. Note that this field cannot be set
+        when spec.os.name is windows.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                AppArmorProfile,
+                AppArmorProfile().from_dict(value),
+            )
+        self._properties["appArmorProfile"] = value
 
     @property
     def fs_group(self) -> int:
@@ -20112,6 +21085,93 @@ class PodSecurityContext(_kuber_definitions.Definition):
         self._properties["runAsUser"] = value
 
     @property
+    def se_linux_change_policy(self) -> str:
+        """
+        seLinuxChangePolicy defines how the container's SELinux
+        label is applied to all volumes used by the Pod. It has no
+        effect on nodes that do not support SELinux or to volumes
+        does not support SELinux. Valid values are "MountOption" and
+        "Recursive".
+
+        "Recursive" means relabeling of all files on all Pod volumes
+        by the container runtime. This may be slow for large
+        volumes, but allows mixing privileged and unprivileged Pods
+        sharing the same volume on the same node.
+
+        "MountOption" mounts all eligible Pod volumes with `-o
+        context` mount option. This requires all Pods that share the
+        same volume to use the same SELinux label. It is not
+        possible to share the same volume among privileged and
+        unprivileged Pods. Eligible volumes are in-tree FibreChannel
+        and iSCSI volumes, and all CSI volumes whose CSI driver
+        announces SELinux support by setting spec.seLinuxMount: true
+        in their CSIDriver instance. Other volumes are always re-
+        labelled recursively. "MountOption" value is allowed only
+        when SELinuxMount feature gate is enabled.
+
+        If not specified and SELinuxMount feature gate is enabled,
+        "MountOption" is used. If not specified and SELinuxMount
+        feature gate is disabled, "MountOption" is used for
+        ReadWriteOncePod volumes and "Recursive" for all other
+        volumes.
+
+        This field affects only Pods that have SELinux label set,
+        either in PodSecurityContext or in SecurityContext of all
+        containers.
+
+        All Pods that use the same volume should use the same
+        seLinuxChangePolicy, otherwise some pods can get stuck in
+        ContainerCreating state. Note that this field cannot be set
+        when spec.os.name is windows.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("seLinuxChangePolicy"),
+        )
+
+    @se_linux_change_policy.setter
+    def se_linux_change_policy(self, value: str):
+        """
+        seLinuxChangePolicy defines how the container's SELinux
+        label is applied to all volumes used by the Pod. It has no
+        effect on nodes that do not support SELinux or to volumes
+        does not support SELinux. Valid values are "MountOption" and
+        "Recursive".
+
+        "Recursive" means relabeling of all files on all Pod volumes
+        by the container runtime. This may be slow for large
+        volumes, but allows mixing privileged and unprivileged Pods
+        sharing the same volume on the same node.
+
+        "MountOption" mounts all eligible Pod volumes with `-o
+        context` mount option. This requires all Pods that share the
+        same volume to use the same SELinux label. It is not
+        possible to share the same volume among privileged and
+        unprivileged Pods. Eligible volumes are in-tree FibreChannel
+        and iSCSI volumes, and all CSI volumes whose CSI driver
+        announces SELinux support by setting spec.seLinuxMount: true
+        in their CSIDriver instance. Other volumes are always re-
+        labelled recursively. "MountOption" value is allowed only
+        when SELinuxMount feature gate is enabled.
+
+        If not specified and SELinuxMount feature gate is enabled,
+        "MountOption" is used. If not specified and SELinuxMount
+        feature gate is disabled, "MountOption" is used for
+        ReadWriteOncePod volumes and "Recursive" for all other
+        volumes.
+
+        This field affects only Pods that have SELinux label set,
+        either in PodSecurityContext or in SecurityContext of all
+        containers.
+
+        All Pods that use the same volume should use the same
+        seLinuxChangePolicy, otherwise some pods can get stuck in
+        ContainerCreating state. Note that this field cannot be set
+        when spec.os.name is windows.
+        """
+        self._properties["seLinuxChangePolicy"] = value
+
+    @property
     def se_linux_options(self) -> "SELinuxOptions":
         """
         The SELinux context to be applied to all containers. If
@@ -20175,15 +21235,15 @@ class PodSecurityContext(_kuber_definitions.Definition):
     def supplemental_groups(self) -> typing.List[int]:
         """
         A list of groups applied to the first process run in each
-        container, in addition to the container's primary GID, the
-        fsGroup (if specified), and group memberships defined in the
-        container image for the uid of the container process. If
-        unspecified, no additional groups are added to any
-        container. Note that group memberships defined in the
-        container image for the uid of the container process are
-        still effective, even if they are not included in this list.
-        Note that this field cannot be set when spec.os.name is
-        windows.
+        container, in addition to the container's primary GID and
+        fsGroup (if specified).  If the SupplementalGroupsPolicy
+        feature is enabled, the supplementalGroupsPolicy field
+        determines whether these are in addition to or instead of
+        any group memberships defined in the container image. If
+        unspecified, no additional groups are added, though group
+        memberships defined in the container image may still be
+        used, depending on the supplementalGroupsPolicy field. Note
+        that this field cannot be set when spec.os.name is windows.
         """
         return typing.cast(
             typing.List[int],
@@ -20194,17 +21254,46 @@ class PodSecurityContext(_kuber_definitions.Definition):
     def supplemental_groups(self, value: typing.List[int]):
         """
         A list of groups applied to the first process run in each
-        container, in addition to the container's primary GID, the
-        fsGroup (if specified), and group memberships defined in the
-        container image for the uid of the container process. If
-        unspecified, no additional groups are added to any
-        container. Note that group memberships defined in the
-        container image for the uid of the container process are
-        still effective, even if they are not included in this list.
-        Note that this field cannot be set when spec.os.name is
-        windows.
+        container, in addition to the container's primary GID and
+        fsGroup (if specified).  If the SupplementalGroupsPolicy
+        feature is enabled, the supplementalGroupsPolicy field
+        determines whether these are in addition to or instead of
+        any group memberships defined in the container image. If
+        unspecified, no additional groups are added, though group
+        memberships defined in the container image may still be
+        used, depending on the supplementalGroupsPolicy field. Note
+        that this field cannot be set when spec.os.name is windows.
         """
         self._properties["supplementalGroups"] = value
+
+    @property
+    def supplemental_groups_policy(self) -> str:
+        """
+        Defines how supplemental groups of the first container
+        processes are calculated. Valid values are "Merge" and
+        "Strict". If not specified, "Merge" is used. (Alpha) Using
+        the field requires the SupplementalGroupsPolicy feature gate
+        to be enabled and the container runtime must implement
+        support for this feature. Note that this field cannot be set
+        when spec.os.name is windows.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("supplementalGroupsPolicy"),
+        )
+
+    @supplemental_groups_policy.setter
+    def supplemental_groups_policy(self, value: str):
+        """
+        Defines how supplemental groups of the first container
+        processes are calculated. Valid values are "Merge" and
+        "Strict". If not specified, "Merge" is used. (Alpha) Using
+        the field requires the SupplementalGroupsPolicy feature gate
+        to be enabled and the container runtime must implement
+        support for this feature. Note that this field cannot be set
+        when spec.os.name is windows.
+        """
+        self._properties["supplementalGroupsPolicy"] = value
 
     @property
     def sysctls(self) -> typing.List["Sysctl"]:
@@ -20310,6 +21399,7 @@ class PodSpec(_kuber_definitions.Definition):
         priority_class_name: typing.Optional[str] = None,
         readiness_gates: typing.Optional[typing.List["PodReadinessGate"]] = None,
         resource_claims: typing.Optional[typing.List["PodResourceClaim"]] = None,
+        resources: typing.Optional["ResourceRequirements"] = None,
         restart_policy: typing.Optional[str] = None,
         runtime_class_name: typing.Optional[str] = None,
         scheduler_name: typing.Optional[str] = None,
@@ -20371,6 +21461,7 @@ class PodSpec(_kuber_definitions.Definition):
             ),
             "readinessGates": readiness_gates if readiness_gates is not None else [],
             "resourceClaims": resource_claims if resource_claims is not None else [],
+            "resources": resources if resources is not None else ResourceRequirements(),
             "restartPolicy": restart_policy if restart_policy is not None else "",
             "runtimeClassName": (
                 runtime_class_name if runtime_class_name is not None else ""
@@ -20432,6 +21523,7 @@ class PodSpec(_kuber_definitions.Definition):
             "priorityClassName": (str, None),
             "readinessGates": (list, PodReadinessGate),
             "resourceClaims": (list, PodResourceClaim),
+            "resources": (ResourceRequirements, None),
             "restartPolicy": (str, None),
             "runtimeClassName": (str, None),
             "schedulerName": (str, None),
@@ -20662,8 +21754,7 @@ class PodSpec(_kuber_definitions.Definition):
     def host_aliases(self) -> typing.List["HostAlias"]:
         """
         HostAliases is an optional list of hosts and IPs that will
-        be injected into the pod's hosts file if specified. This is
-        only valid for non-hostNetwork pods.
+        be injected into the pod's hosts file if specified.
         """
         return typing.cast(
             typing.List["HostAlias"],
@@ -20676,8 +21767,7 @@ class PodSpec(_kuber_definitions.Definition):
     ):
         """
         HostAliases is an optional list of hosts and IPs that will
-        be injected into the pod's hosts file if specified. This is
-        only valid for non-hostNetwork pods.
+        be injected into the pod's hosts file if specified.
         """
         cleaned: typing.List[HostAlias] = []
         for item in value:
@@ -20851,8 +21941,8 @@ class PodSpec(_kuber_definitions.Definition):
         Liveness probes, or Startup probes. The resourceRequirements
         of an init container are taken into account during
         scheduling by finding the highest request/limit for each
-        resource type, and then using the max of of that value or
-        the sum of the normal containers. Limits are applied to init
+        resource type, and then using the max of that value or the
+        sum of the normal containers. Limits are applied to init
         containers in a similar fashion. Init containers cannot
         currently be added or removed. Cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/init-
@@ -20878,8 +21968,8 @@ class PodSpec(_kuber_definitions.Definition):
         Liveness probes, or Startup probes. The resourceRequirements
         of an init container are taken into account during
         scheduling by finding the highest request/limit for each
-        resource type, and then using the max of of that value or
-        the sum of the normal containers. Limits are applied to init
+        resource type, and then using the max of that value or the
+        sum of the normal containers. Limits are applied to init
         containers in a similar fashion. Init containers cannot
         currently be added or removed. Cannot be updated. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/init-
@@ -20898,10 +21988,14 @@ class PodSpec(_kuber_definitions.Definition):
     @property
     def node_name(self) -> str:
         """
-        NodeName is a request to schedule this pod onto a specific
-        node. If it is non-empty, the scheduler simply schedules
-        this pod onto that node, assuming that it fits resource
-        requirements.
+        NodeName indicates in which node this pod is scheduled. If
+        empty, this pod is a candidate for scheduling by the
+        scheduler defined in schedulerName. Once this field is set,
+        the kubelet for this node becomes responsible for the
+        lifecycle of this pod. This field should not be used to
+        express a desire for the pod to be scheduled on a specific
+        node. https://kubernetes.io/docs/concepts/scheduling-
+        eviction/assign-pod-node/#nodename
         """
         return typing.cast(
             str,
@@ -20911,10 +22005,14 @@ class PodSpec(_kuber_definitions.Definition):
     @node_name.setter
     def node_name(self, value: str):
         """
-        NodeName is a request to schedule this pod onto a specific
-        node. If it is non-empty, the scheduler simply schedules
-        this pod onto that node, assuming that it fits resource
-        requirements.
+        NodeName indicates in which node this pod is scheduled. If
+        empty, this pod is a candidate for scheduling by the
+        scheduler defined in schedulerName. Once this field is set,
+        the kubelet for this node becomes responsible for the
+        lifecycle of this pod. This field should not be used to
+        express a desire for the pod to be scheduled on a specific
+        node. https://kubernetes.io/docs/concepts/scheduling-
+        eviction/assign-pod-node/#nodename
         """
         self._properties["nodeName"] = value
 
@@ -20954,6 +22052,7 @@ class PodSpec(_kuber_definitions.Definition):
 
         If the OS field is set to windows, following fields must be
         unset: - spec.hostPID - spec.hostIPC - spec.hostUsers -
+        spec.securityContext.appArmorProfile -
         spec.securityContext.seLinuxOptions -
         spec.securityContext.seccompProfile -
         spec.securityContext.fsGroup -
@@ -20962,6 +22061,8 @@ class PodSpec(_kuber_definitions.Definition):
         spec.securityContext.runAsUser -
         spec.securityContext.runAsGroup -
         spec.securityContext.supplementalGroups -
+        spec.securityContext.supplementalGroupsPolicy -
+        spec.containers[*].securityContext.appArmorProfile -
         spec.containers[*].securityContext.seLinuxOptions -
         spec.containers[*].securityContext.seccompProfile -
         spec.containers[*].securityContext.capabilities -
@@ -20988,6 +22089,7 @@ class PodSpec(_kuber_definitions.Definition):
 
         If the OS field is set to windows, following fields must be
         unset: - spec.hostPID - spec.hostIPC - spec.hostUsers -
+        spec.securityContext.appArmorProfile -
         spec.securityContext.seLinuxOptions -
         spec.securityContext.seccompProfile -
         spec.securityContext.fsGroup -
@@ -20996,6 +22098,8 @@ class PodSpec(_kuber_definitions.Definition):
         spec.securityContext.runAsUser -
         spec.securityContext.runAsGroup -
         spec.securityContext.supplementalGroups -
+        spec.securityContext.supplementalGroupsPolicy -
+        spec.containers[*].securityContext.appArmorProfile -
         spec.containers[*].securityContext.seLinuxOptions -
         spec.containers[*].securityContext.seccompProfile -
         spec.containers[*].securityContext.capabilities -
@@ -21212,6 +22316,48 @@ class PodSpec(_kuber_definitions.Definition):
         self._properties["resourceClaims"] = cleaned
 
     @property
+    def resources(self) -> "ResourceRequirements":
+        """
+        Resources is the total amount of CPU and Memory resources
+        required by all containers in the pod. It supports
+        specifying Requests and Limits for "cpu" and "memory"
+        resource names only. ResourceClaims are not supported.
+
+        This field enables fine-grained control over resource
+        allocation for the entire pod, allowing resource sharing
+        among containers in a pod.
+
+        This is an alpha field and requires enabling the
+        PodLevelResources feature gate.
+        """
+        return typing.cast(
+            "ResourceRequirements",
+            self._properties.get("resources"),
+        )
+
+    @resources.setter
+    def resources(self, value: typing.Union["ResourceRequirements", dict]):
+        """
+        Resources is the total amount of CPU and Memory resources
+        required by all containers in the pod. It supports
+        specifying Requests and Limits for "cpu" and "memory"
+        resource names only. ResourceClaims are not supported.
+
+        This field enables fine-grained control over resource
+        allocation for the entire pod, allowing resource sharing
+        among containers in a pod.
+
+        This is an alpha field and requires enabling the
+        PodLevelResources feature gate.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ResourceRequirements,
+                ResourceRequirements().from_dict(value),
+            )
+        self._properties["resources"] = value
+
+    @property
     def restart_policy(self) -> str:
         """
         Restart policy for all containers within the pod. One of
@@ -21298,9 +22444,6 @@ class PodSpec(_kuber_definitions.Definition):
 
         SchedulingGates can only be set at pod creation time, and be
         removed only afterwards.
-
-        This is a beta feature enabled by the PodSchedulingReadiness
-        feature gate.
         """
         return typing.cast(
             typing.List["PodSchedulingGate"],
@@ -21319,9 +22462,6 @@ class PodSpec(_kuber_definitions.Definition):
 
         SchedulingGates can only be set at pod creation time, and be
         removed only afterwards.
-
-        This is a beta feature enabled by the PodSchedulingReadiness
-        feature gate.
         """
         cleaned: typing.List[PodSchedulingGate] = []
         for item in value:
@@ -21362,7 +22502,7 @@ class PodSpec(_kuber_definitions.Definition):
     @property
     def service_account(self) -> str:
         """
-        DeprecatedServiceAccount is a depreciated alias for
+        DeprecatedServiceAccount is a deprecated alias for
         ServiceAccountName. Deprecated: Use serviceAccountName
         instead.
         """
@@ -21374,7 +22514,7 @@ class PodSpec(_kuber_definitions.Definition):
     @service_account.setter
     def service_account(self, value: str):
         """
-        DeprecatedServiceAccount is a depreciated alias for
+        DeprecatedServiceAccount is a deprecated alias for
         ServiceAccountName. Deprecated: Use serviceAccountName
         instead.
         """
@@ -21411,9 +22551,10 @@ class PodSpec(_kuber_definitions.Definition):
         containers, this means setting the FQDN in the hostname
         field of the kernel (the nodename field of struct utsname).
         In Windows containers, this means setting the registry value
-        of hostname for the registry key HKEY_LOCAL_MACHINE\SYSTEM\C
-        urrentControlSet\Services\Tcpip\Parameters to FQDN. If a pod
-        does not have FQDN, this has no effect. Default to false.
+        of hostname for the registry key HKEY_LOCAL_MACHINE\\SYSTEM\
+        \CurrentControlSet\\Services\\Tcpip\\Parameters to FQDN. If
+        a pod does not have FQDN, this has no effect. Default to
+        false.
         """
         return typing.cast(
             bool,
@@ -21428,9 +22569,10 @@ class PodSpec(_kuber_definitions.Definition):
         containers, this means setting the FQDN in the hostname
         field of the kernel (the nodename field of struct utsname).
         In Windows containers, this means setting the registry value
-        of hostname for the registry key HKEY_LOCAL_MACHINE\SYSTEM\C
-        urrentControlSet\Services\Tcpip\Parameters to FQDN. If a pod
-        does not have FQDN, this has no effect. Default to false.
+        of hostname for the registry key HKEY_LOCAL_MACHINE\\SYSTEM\
+        \CurrentControlSet\\Services\\Tcpip\\Parameters to FQDN. If
+        a pod does not have FQDN, this has no effect. Default to
+        false.
         """
         self._properties["setHostnameAsFQDN"] = value
 
@@ -21790,6 +22932,7 @@ class PodStatus(_kuber_definitions.Definition):
         init_container_statuses: typing.Optional[typing.List["ContainerStatus"]] = None,
         message: typing.Optional[str] = None,
         nominated_node_name: typing.Optional[str] = None,
+        observed_generation: typing.Optional[int] = None,
         phase: typing.Optional[str] = None,
         pod_ip: typing.Optional[str] = None,
         pod_ips: typing.Optional[typing.List["PodIP"]] = None,
@@ -21822,6 +22965,9 @@ class PodStatus(_kuber_definitions.Definition):
             "nominatedNodeName": (
                 nominated_node_name if nominated_node_name is not None else ""
             ),
+            "observedGeneration": (
+                observed_generation if observed_generation is not None else None
+            ),
             "phase": phase if phase is not None else "",
             "podIP": pod_ip if pod_ip is not None else "",
             "podIPs": pod_ips if pod_ips is not None else [],
@@ -21842,6 +22988,7 @@ class PodStatus(_kuber_definitions.Definition):
             "initContainerStatuses": (list, ContainerStatus),
             "message": (str, None),
             "nominatedNodeName": (str, None),
+            "observedGeneration": (int, None),
             "phase": (str, None),
             "podIP": (str, None),
             "podIPs": (list, PodIP),
@@ -21886,8 +23033,13 @@ class PodStatus(_kuber_definitions.Definition):
     @property
     def container_statuses(self) -> typing.List["ContainerStatus"]:
         """
-        The list has one entry per container in the manifest. More
-        info:
+        Statuses of containers in this pod. Each container in the
+        pod should have at most one status in this list, and all
+        statuses should be for containers in the pod. However this
+        is not enforced. If a status for a non-existent container is
+        present in the list, or the list has duplicate names, the
+        behavior of various Kubernetes components is not defined and
+        those statuses might be ignored. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#pod-and-container-status
         """
@@ -21901,8 +23053,13 @@ class PodStatus(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["ContainerStatus"], typing.List[dict]]
     ):
         """
-        The list has one entry per container in the manifest. More
-        info:
+        Statuses of containers in this pod. Each container in the
+        pod should have at most one status in this list, and all
+        statuses should be for containers in the pod. However this
+        is not enforced. If a status for a non-existent container is
+        present in the list, or the list has duplicate names, the
+        behavior of various Kubernetes components is not defined and
+        those statuses might be ignored. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
         lifecycle#pod-and-container-status
         """
@@ -21919,8 +23076,16 @@ class PodStatus(_kuber_definitions.Definition):
     @property
     def ephemeral_container_statuses(self) -> typing.List["ContainerStatus"]:
         """
-        Status for any ephemeral containers that have run in this
-        pod.
+        Statuses for any ephemeral containers that have run in this
+        pod. Each ephemeral container in the pod should have at most
+        one status in this list, and all statuses should be for
+        containers in the pod. However this is not enforced. If a
+        status for a non-existent container is present in the list,
+        or the list has duplicate names, the behavior of various
+        Kubernetes components is not defined and those statuses
+        might be ignored. More info:
+        https://kubernetes.io/docs/concepts/workloads/pods/pod-
+        lifecycle#pod-and-container-status
         """
         return typing.cast(
             typing.List["ContainerStatus"],
@@ -21932,8 +23097,16 @@ class PodStatus(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["ContainerStatus"], typing.List[dict]]
     ):
         """
-        Status for any ephemeral containers that have run in this
-        pod.
+        Statuses for any ephemeral containers that have run in this
+        pod. Each ephemeral container in the pod should have at most
+        one status in this list, and all statuses should be for
+        containers in the pod. However this is not enforced. If a
+        status for a non-existent container is present in the list,
+        or the list has duplicate names, the behavior of various
+        Kubernetes components is not defined and those statuses
+        might be ignored. More info:
+        https://kubernetes.io/docs/concepts/workloads/pods/pod-
+        lifecycle#pod-and-container-status
         """
         cleaned: typing.List[ContainerStatus] = []
         for item in value:
@@ -22008,12 +23181,18 @@ class PodStatus(_kuber_definitions.Definition):
     @property
     def init_container_statuses(self) -> typing.List["ContainerStatus"]:
         """
-        The list has one entry per init container in the manifest.
-        The most recent successful init container will have ready =
+        Statuses of init containers in this pod. The most recent
+        successful non-restartable init container will have ready =
         true, the most recently started container will have
-        startTime set. More info:
+        startTime set. Each init container in the pod should have at
+        most one status in this list, and all statuses should be for
+        containers in the pod. However this is not enforced. If a
+        status for a non-existent container is present in the list,
+        or the list has duplicate names, the behavior of various
+        Kubernetes components is not defined and those statuses
+        might be ignored. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
-        lifecycle#pod-and-container-status
+        lifecycle/#pod-and-container-status
         """
         return typing.cast(
             typing.List["ContainerStatus"],
@@ -22025,12 +23204,18 @@ class PodStatus(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["ContainerStatus"], typing.List[dict]]
     ):
         """
-        The list has one entry per init container in the manifest.
-        The most recent successful init container will have ready =
+        Statuses of init containers in this pod. The most recent
+        successful non-restartable init container will have ready =
         true, the most recently started container will have
-        startTime set. More info:
+        startTime set. Each init container in the pod should have at
+        most one status in this list, and all statuses should be for
+        containers in the pod. However this is not enforced. If a
+        status for a non-existent container is present in the list,
+        or the list has duplicate names, the behavior of various
+        Kubernetes components is not defined and those statuses
+        might be ignored. More info:
         https://kubernetes.io/docs/concepts/workloads/pods/pod-
-        lifecycle#pod-and-container-status
+        lifecycle/#pod-and-container-status
         """
         cleaned: typing.List[ContainerStatus] = []
         for item in value:
@@ -22095,6 +23280,29 @@ class PodStatus(_kuber_definitions.Definition):
         PodSpec.nodeName when the pod is scheduled.
         """
         self._properties["nominatedNodeName"] = value
+
+    @property
+    def observed_generation(self) -> int:
+        """
+        If set, this represents the .metadata.generation that the
+        pod status was set based upon. This is an alpha field.
+        Enable PodObservedGenerationTracking to be able to use this
+        field.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("observedGeneration"),
+        )
+
+    @observed_generation.setter
+    def observed_generation(self, value: int):
+        """
+        If set, this represents the .metadata.generation that the
+        pod status was set based upon. This is an alpha field.
+        Enable PodObservedGenerationTracking to be able to use this
+        field.
+        """
+        self._properties["observedGeneration"] = value
 
     @property
     def phase(self) -> str:
@@ -22263,7 +23471,13 @@ class PodStatus(_kuber_definitions.Definition):
         Status of resources resize desired for pod's containers. It
         is empty if no resources resize is pending. Any changes to
         container resources will automatically set this to
-        "Proposed"
+        "Proposed" Deprecated: Resize status is moved to two pod
+        conditions PodResizePending and PodResizeInProgress.
+        PodResizePending will track states where the spec has been
+        resized, but the Kubelet has not yet allocated the
+        resources. PodResizeInProgress will track in-progress
+        resizes, and should be present whenever allocated resources
+        != acknowledged resources.
         """
         return typing.cast(
             str,
@@ -22276,7 +23490,13 @@ class PodStatus(_kuber_definitions.Definition):
         Status of resources resize desired for pod's containers. It
         is empty if no resources resize is pending. Any changes to
         container resources will automatically set this to
-        "Proposed"
+        "Proposed" Deprecated: Resize status is moved to two pod
+        conditions PodResizePending and PodResizeInProgress.
+        PodResizePending will track states where the spec has been
+        resized, but the Kubelet has not yet allocated the
+        resources. PodResizeInProgress will track in-progress
+        resizes, and should be present whenever allocated resources
+        != acknowledged resources.
         """
         self._properties["resize"] = value
 
@@ -23019,7 +24239,9 @@ class PodTemplateSpec(_kuber_definitions.Definition):
 
 
 class PortStatus(_kuber_definitions.Definition):
-    """ """
+    """
+    PortStatus represents the error condition of a service port
+    """
 
     def __init__(
         self,
@@ -23345,7 +24567,7 @@ class Probe(_kuber_definitions.Definition):
     @property
     def exec_(self) -> "ExecAction":
         """
-        Exec specifies the action to take.
+        Exec specifies a command to execute in the container.
         """
         return typing.cast(
             "ExecAction",
@@ -23355,7 +24577,7 @@ class Probe(_kuber_definitions.Definition):
     @exec_.setter
     def exec_(self, value: typing.Union["ExecAction", dict]):
         """
-        Exec specifies the action to take.
+        Exec specifies a command to execute in the container.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -23388,7 +24610,7 @@ class Probe(_kuber_definitions.Definition):
     @property
     def grpc(self) -> "GRPCAction":
         """
-        GRPC specifies an action involving a GRPC port.
+        GRPC specifies a GRPC HealthCheckRequest.
         """
         return typing.cast(
             "GRPCAction",
@@ -23398,7 +24620,7 @@ class Probe(_kuber_definitions.Definition):
     @grpc.setter
     def grpc(self, value: typing.Union["GRPCAction", dict]):
         """
-        GRPC specifies an action involving a GRPC port.
+        GRPC specifies a GRPC HealthCheckRequest.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -23410,7 +24632,7 @@ class Probe(_kuber_definitions.Definition):
     @property
     def http_get(self) -> "HTTPGetAction":
         """
-        HTTPGet specifies the http request to perform.
+        HTTPGet specifies an HTTP GET request to perform.
         """
         return typing.cast(
             "HTTPGetAction",
@@ -23420,7 +24642,7 @@ class Probe(_kuber_definitions.Definition):
     @http_get.setter
     def http_get(self, value: typing.Union["HTTPGetAction", dict]):
         """
-        HTTPGet specifies the http request to perform.
+        HTTPGet specifies an HTTP GET request to perform.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -23495,7 +24717,7 @@ class Probe(_kuber_definitions.Definition):
     @property
     def tcp_socket(self) -> "TCPSocketAction":
         """
-        TCPSocket specifies an action involving a TCP port.
+        TCPSocket specifies a connection to a TCP port.
         """
         return typing.cast(
             "TCPSocketAction",
@@ -23505,7 +24727,7 @@ class Probe(_kuber_definitions.Definition):
     @tcp_socket.setter
     def tcp_socket(self, value: typing.Union["TCPSocketAction", dict]):
         """
-        TCPSocket specifies an action involving a TCP port.
+        TCPSocket specifies a connection to a TCP port.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -23644,7 +24866,8 @@ class ProjectedVolumeSource(_kuber_definitions.Definition):
     @property
     def sources(self) -> typing.List["VolumeProjection"]:
         """
-        sources is the list of volume projections
+        sources is the list of volume projections. Each entry in
+        this list handles one source.
         """
         return typing.cast(
             typing.List["VolumeProjection"],
@@ -23656,7 +24879,8 @@ class ProjectedVolumeSource(_kuber_definitions.Definition):
         self, value: typing.Union[typing.List["VolumeProjection"], typing.List[dict]]
     ):
         """
-        sources is the list of volume projections
+        sources is the list of volume projections. Each entry in
+        this list handles one source.
         """
         cleaned: typing.List[VolumeProjection] = []
         for item in value:
@@ -25451,14 +26675,17 @@ class ResourceClaim(_kuber_definitions.Definition):
     def __init__(
         self,
         name: typing.Optional[str] = None,
+        request: typing.Optional[str] = None,
     ):
         """Create ResourceClaim instance."""
         super(ResourceClaim, self).__init__(api_version="core/v1", kind="ResourceClaim")
         self._properties = {
             "name": name if name is not None else "",
+            "request": request if request is not None else "",
         }
         self._types = {
             "name": (str, None),
+            "request": (str, None),
         }
 
     @property
@@ -25481,6 +26708,27 @@ class ResourceClaim(_kuber_definitions.Definition):
         It makes that resource available inside a container.
         """
         self._properties["name"] = value
+
+    @property
+    def request(self) -> str:
+        """
+        Request is the name chosen for a request in the referenced
+        claim. If empty, everything from the claim is made
+        available, otherwise only the result of this request.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("request"),
+        )
+
+    @request.setter
+    def request(self, value: str):
+        """
+        Request is the name chosen for a request in the referenced
+        claim. If empty, everything from the claim is made
+        available, otherwise only the result of this request.
+        """
+        self._properties["request"] = value
 
     def __enter__(self) -> "ResourceClaim":
         return self
@@ -25568,6 +26816,98 @@ class ResourceFieldSelector(_kuber_definitions.Definition):
         self._properties["resource"] = value
 
     def __enter__(self) -> "ResourceFieldSelector":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ResourceHealth(_kuber_definitions.Definition):
+    """
+    ResourceHealth represents the health of a resource. It has
+    the latest device health information. This is a part of KEP
+    https://kep.k8s.io/4680.
+    """
+
+    def __init__(
+        self,
+        health: typing.Optional[str] = None,
+        resource_id: typing.Optional[str] = None,
+    ):
+        """Create ResourceHealth instance."""
+        super(ResourceHealth, self).__init__(
+            api_version="core/v1", kind="ResourceHealth"
+        )
+        self._properties = {
+            "health": health if health is not None else "",
+            "resourceID": resource_id if resource_id is not None else "",
+        }
+        self._types = {
+            "health": (str, None),
+            "resourceID": (str, None),
+        }
+
+    @property
+    def health(self) -> str:
+        """
+        Health of the resource. can be one of:
+         - Healthy: operates as normal
+         - Unhealthy: reported unhealthy. We consider this a
+        temporary health issue
+                      since we do not have a mechanism today to
+        distinguish
+                      temporary and permanent issues.
+         - Unknown: The status cannot be determined.
+                    For example, Device Plugin got unregistered and
+        hasn't been re-registered since.
+
+        In future we may want to introduce the PermanentlyUnhealthy
+        Status.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("health"),
+        )
+
+    @health.setter
+    def health(self, value: str):
+        """
+        Health of the resource. can be one of:
+         - Healthy: operates as normal
+         - Unhealthy: reported unhealthy. We consider this a
+        temporary health issue
+                      since we do not have a mechanism today to
+        distinguish
+                      temporary and permanent issues.
+         - Unknown: The status cannot be determined.
+                    For example, Device Plugin got unregistered and
+        hasn't been re-registered since.
+
+        In future we may want to introduce the PermanentlyUnhealthy
+        Status.
+        """
+        self._properties["health"] = value
+
+    @property
+    def resource_id(self) -> str:
+        """
+        ResourceID is the unique identifier of the resource. See the
+        ResourceID type for more information.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("resourceID"),
+        )
+
+    @resource_id.setter
+    def resource_id(self, value: str):
+        """
+        ResourceID is the unique identifier of the resource. See the
+        ResourceID type for more information.
+        """
+        self._properties["resourceID"] = value
+
+    def __enter__(self) -> "ResourceHealth":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -26237,6 +27577,105 @@ class ResourceRequirements(_kuber_definitions.Definition):
         self._properties["requests"] = value
 
     def __enter__(self) -> "ResourceRequirements":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class ResourceStatus(_kuber_definitions.Definition):
+    """
+    ResourceStatus represents the status of a single resource
+    allocated to a Pod.
+    """
+
+    def __init__(
+        self,
+        name: typing.Optional[str] = None,
+        resources: typing.Optional[typing.List["ResourceHealth"]] = None,
+    ):
+        """Create ResourceStatus instance."""
+        super(ResourceStatus, self).__init__(
+            api_version="core/v1", kind="ResourceStatus"
+        )
+        self._properties = {
+            "name": name if name is not None else "",
+            "resources": resources if resources is not None else [],
+        }
+        self._types = {
+            "name": (str, None),
+            "resources": (list, ResourceHealth),
+        }
+
+    @property
+    def name(self) -> str:
+        """
+        Name of the resource. Must be unique within the pod and in
+        case of non-DRA resource, match one of the resources from
+        the pod spec. For DRA resources, the value must be
+        "claim:<claim_name>/<request>". When this status is reported
+        about a container, the "claim_name" and "request" must match
+        one of the claims of this container.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name of the resource. Must be unique within the pod and in
+        case of non-DRA resource, match one of the resources from
+        the pod spec. For DRA resources, the value must be
+        "claim:<claim_name>/<request>". When this status is reported
+        about a container, the "claim_name" and "request" must match
+        one of the claims of this container.
+        """
+        self._properties["name"] = value
+
+    @property
+    def resources(self) -> typing.List["ResourceHealth"]:
+        """
+        List of unique resources health. Each element in the list
+        contains an unique resource ID and its health. At a minimum,
+        for the lifetime of a Pod, resource ID must uniquely
+        identify the resource allocated to the Pod on the Node. If
+        other Pod on the same Node reports the status with the same
+        resource ID, it must be the same resource they share. See
+        ResourceID type definition for a specific format it has in
+        various use cases.
+        """
+        return typing.cast(
+            typing.List["ResourceHealth"],
+            self._properties.get("resources"),
+        )
+
+    @resources.setter
+    def resources(
+        self, value: typing.Union[typing.List["ResourceHealth"], typing.List[dict]]
+    ):
+        """
+        List of unique resources health. Each element in the list
+        contains an unique resource ID and its health. At a minimum,
+        for the lifetime of a Pod, resource ID must uniquely
+        identify the resource allocated to the Pod on the Node. If
+        other Pod on the same Node reports the status with the same
+        resource ID, it must be the same resource they share. See
+        ResourceID type definition for a specific format it has in
+        various use cases.
+        """
+        cleaned: typing.List[ResourceHealth] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    ResourceHealth,
+                    ResourceHealth().from_dict(item),
+                )
+            cleaned.append(typing.cast(ResourceHealth, item))
+        self._properties["resources"] = cleaned
+
+    def __enter__(self) -> "ResourceStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -27409,7 +28848,10 @@ class SecretEnvSource(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27421,7 +28863,10 @@ class SecretEnvSource(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27499,7 +28944,10 @@ class SecretKeySelector(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27511,7 +28959,10 @@ class SecretKeySelector(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27712,7 +29163,10 @@ class SecretProjection(_kuber_definitions.Definition):
     @property
     def name(self) -> str:
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27724,7 +29178,10 @@ class SecretProjection(_kuber_definitions.Definition):
     @name.setter
     def name(self, value: str):
         """
-        Name of the referent. More info:
+        Name of the referent. This field is effectively required,
+        but due to backwards compatibility is allowed to be empty.
+        Instances of this type with an empty value here are almost
+        certainly wrong. More info:
         https://kubernetes.io/docs/concepts/overview/working-with-
         objects/names/#names
         """
@@ -27989,6 +29446,7 @@ class SecurityContext(_kuber_definitions.Definition):
     def __init__(
         self,
         allow_privilege_escalation: typing.Optional[bool] = None,
+        app_armor_profile: typing.Optional["AppArmorProfile"] = None,
         capabilities: typing.Optional["Capabilities"] = None,
         privileged: typing.Optional[bool] = None,
         proc_mount: typing.Optional[str] = None,
@@ -28009,6 +29467,11 @@ class SecurityContext(_kuber_definitions.Definition):
                 allow_privilege_escalation
                 if allow_privilege_escalation is not None
                 else None
+            ),
+            "appArmorProfile": (
+                app_armor_profile
+                if app_armor_profile is not None
+                else AppArmorProfile()
             ),
             "capabilities": (
                 capabilities if capabilities is not None else Capabilities()
@@ -28037,6 +29500,7 @@ class SecurityContext(_kuber_definitions.Definition):
         }
         self._types = {
             "allowPrivilegeEscalation": (bool, None),
+            "appArmorProfile": (AppArmorProfile, None),
             "capabilities": (Capabilities, None),
             "privileged": (bool, None),
             "procMount": (str, None),
@@ -28077,6 +29541,34 @@ class SecurityContext(_kuber_definitions.Definition):
         spec.os.name is windows.
         """
         self._properties["allowPrivilegeEscalation"] = value
+
+    @property
+    def app_armor_profile(self) -> "AppArmorProfile":
+        """
+        appArmorProfile is the AppArmor options to use by this
+        container. If set, this profile overrides the pod's
+        appArmorProfile. Note that this field cannot be set when
+        spec.os.name is windows.
+        """
+        return typing.cast(
+            "AppArmorProfile",
+            self._properties.get("appArmorProfile"),
+        )
+
+    @app_armor_profile.setter
+    def app_armor_profile(self, value: typing.Union["AppArmorProfile", dict]):
+        """
+        appArmorProfile is the AppArmor options to use by this
+        container. If set, this profile overrides the pod's
+        appArmorProfile. Note that this field cannot be set when
+        spec.os.name is windows.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                AppArmorProfile,
+                AppArmorProfile().from_dict(value),
+            )
+        self._properties["appArmorProfile"] = value
 
     @property
     def capabilities(self) -> "Capabilities":
@@ -28133,7 +29625,7 @@ class SecurityContext(_kuber_definitions.Definition):
     def proc_mount(self) -> str:
         """
         procMount denotes the type of proc mount to use for the
-        containers. The default is DefaultProcMount which uses the
+        containers. The default value is Default which uses the
         container runtime defaults for readonly paths and masked
         paths. This requires the ProcMountType feature flag to be
         enabled. Note that this field cannot be set when
@@ -28148,7 +29640,7 @@ class SecurityContext(_kuber_definitions.Definition):
     def proc_mount(self, value: str):
         """
         procMount denotes the type of proc mount to use for the
-        containers. The default is DefaultProcMount which uses the
+        containers. The default value is Default which uses the
         container runtime defaults for readonly paths and masked
         paths. This requires the ProcMountType feature flag to be
         enabled. Note that this field cannot be set when
@@ -28771,11 +30263,13 @@ class ServiceAccount(_kuber_definitions.Resource):
         pods running using this ServiceAccount are allowed to use.
         Pods are only limited to this list if this service account
         has a "kubernetes.io/enforce-mountable-secrets" annotation
-        set to "true". This field should not be used to find auto-
-        generated service account token secrets for use outside of
-        pods. Instead, tokens can be requested directly using the
-        TokenRequest API, or service account token secrets can be
-        manually created. More info:
+        set to "true". The "kubernetes.io/enforce-mountable-secrets"
+        annotation is deprecated since v1.32. Prefer separate
+        namespaces to isolate access to mounted secrets. This field
+        should not be used to find auto-generated service account
+        token secrets for use outside of pods. Instead, tokens can
+        be requested directly using the TokenRequest API, or service
+        account token secrets can be manually created. More info:
         https://kubernetes.io/docs/concepts/configuration/secret
         """
         return typing.cast(
@@ -28792,11 +30286,13 @@ class ServiceAccount(_kuber_definitions.Resource):
         pods running using this ServiceAccount are allowed to use.
         Pods are only limited to this list if this service account
         has a "kubernetes.io/enforce-mountable-secrets" annotation
-        set to "true". This field should not be used to find auto-
-        generated service account token secrets for use outside of
-        pods. Instead, tokens can be requested directly using the
-        TokenRequest API, or service account token secrets can be
-        manually created. More info:
+        set to "true". The "kubernetes.io/enforce-mountable-secrets"
+        annotation is deprecated since v1.32. Prefer separate
+        namespaces to isolate access to mounted secrets. This field
+        should not be used to find auto-generated service account
+        token secrets for use outside of pods. Instead, tokens can
+        be requested directly using the TokenRequest API, or service
+        account token secrets can be manually created. More info:
         https://kubernetes.io/docs/concepts/configuration/secret
         """
         cleaned: typing.List[ObjectReference] = []
@@ -29486,6 +30982,7 @@ class ServiceSpec(_kuber_definitions.Definition):
         selector: typing.Optional[dict] = None,
         session_affinity: typing.Optional[str] = None,
         session_affinity_config: typing.Optional["SessionAffinityConfig"] = None,
+        traffic_distribution: typing.Optional[str] = None,
         type_: typing.Optional[str] = None,
     ):
         """Create ServiceSpec instance."""
@@ -29533,6 +31030,9 @@ class ServiceSpec(_kuber_definitions.Definition):
                 if session_affinity_config is not None
                 else SessionAffinityConfig()
             ),
+            "trafficDistribution": (
+                traffic_distribution if traffic_distribution is not None else ""
+            ),
             "type": type_ if type_ is not None else "",
         }
         self._types = {
@@ -29554,6 +31054,7 @@ class ServiceSpec(_kuber_definitions.Definition):
             "selector": (dict, None),
             "sessionAffinity": (str, None),
             "sessionAffinityConfig": (SessionAffinityConfig, None),
+            "trafficDistribution": (str, None),
             "type": (str, None),
         }
 
@@ -30235,6 +31736,35 @@ class ServiceSpec(_kuber_definitions.Definition):
                 SessionAffinityConfig().from_dict(value),
             )
         self._properties["sessionAffinityConfig"] = value
+
+    @property
+    def traffic_distribution(self) -> str:
+        """
+        TrafficDistribution offers a way to express preferences for
+        how traffic is distributed to Service endpoints.
+        Implementations can use this field as a hint, but are not
+        required to guarantee strict adherence. If the field is not
+        set, the implementation will apply its default routing
+        strategy. If set to "PreferClose", implementations should
+        prioritize endpoints that are in the same zone.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("trafficDistribution"),
+        )
+
+    @traffic_distribution.setter
+    def traffic_distribution(self, value: str):
+        """
+        TrafficDistribution offers a way to express preferences for
+        how traffic is distributed to Service endpoints.
+        Implementations can use this field as a hint, but are not
+        required to guarantee strict adherence. If the field is not
+        set, the implementation will apply its default routing
+        strategy. If set to "PreferClose", implementations should
+        prioritize endpoints that are in the same zone.
+        """
+        self._properties["trafficDistribution"] = value
 
     @property
     def type_(self) -> str:
@@ -31515,10 +33045,6 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         with the same labelSelector cannot be scheduled, because
         computed skew will be 3(3 - 0) if new Pod is scheduled to
         any of the three zones, it will violate MaxSkew.
-
-        This is a beta field and requires the
-        MinDomainsInPodTopologySpread feature gate to be enabled
-        (enabled by default).
         """
         return typing.cast(
             int,
@@ -31550,10 +33076,6 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         with the same labelSelector cannot be scheduled, because
         computed skew will be 3(3 - 0) if new Pod is scheduled to
         any of the three zones, it will violate MaxSkew.
-
-        This is a beta field and requires the
-        MinDomainsInPodTopologySpread feature gate to be enabled
-        (enabled by default).
         """
         self._properties["minDomains"] = value
 
@@ -31568,8 +33090,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         are included in the calculations.
 
         If this value is nil, the behavior is equivalent to the
-        Honor policy. This is a beta-level feature default enabled
-        by the NodeInclusionPolicyInPodTopologySpread feature flag.
+        Honor policy.
         """
         return typing.cast(
             str,
@@ -31587,8 +33108,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         are included in the calculations.
 
         If this value is nil, the behavior is equivalent to the
-        Honor policy. This is a beta-level feature default enabled
-        by the NodeInclusionPolicyInPodTopologySpread feature flag.
+        Honor policy.
         """
         self._properties["nodeAffinityPolicy"] = value
 
@@ -31602,8 +33122,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         Ignore: node taints are ignored. All nodes are included.
 
         If this value is nil, the behavior is equivalent to the
-        Ignore policy. This is a beta-level feature default enabled
-        by the NodeInclusionPolicyInPodTopologySpread feature flag.
+        Ignore policy.
         """
         return typing.cast(
             str,
@@ -31620,8 +33139,7 @@ class TopologySpreadConstraint(_kuber_definitions.Definition):
         Ignore: node taints are ignored. All nodes are included.
 
         If this value is nil, the behavior is equivalent to the
-        Ignore policy. This is a beta-level feature default enabled
-        by the NodeInclusionPolicyInPodTopologySpread feature flag.
+        Ignore policy.
         """
         self._properties["nodeTaintsPolicy"] = value
 
@@ -31817,7 +33335,10 @@ class TypedLocalObjectReference(_kuber_definitions.Definition):
 
 
 class TypedObjectReference(_kuber_definitions.Definition):
-    """ """
+    """
+    TypedObjectReference contains enough information to let you
+    locate the typed referenced object
+    """
 
     def __init__(
         self,
@@ -31963,6 +33484,7 @@ class Volume(_kuber_definitions.Definition):
         git_repo: typing.Optional["GitRepoVolumeSource"] = None,
         glusterfs: typing.Optional["GlusterfsVolumeSource"] = None,
         host_path: typing.Optional["HostPathVolumeSource"] = None,
+        image: typing.Optional["ImageVolumeSource"] = None,
         iscsi: typing.Optional["ISCSIVolumeSource"] = None,
         name: typing.Optional[str] = None,
         nfs: typing.Optional["NFSVolumeSource"] = None,
@@ -32023,6 +33545,7 @@ class Volume(_kuber_definitions.Definition):
                 glusterfs if glusterfs is not None else GlusterfsVolumeSource()
             ),
             "hostPath": host_path if host_path is not None else HostPathVolumeSource(),
+            "image": image if image is not None else ImageVolumeSource(),
             "iscsi": iscsi if iscsi is not None else ISCSIVolumeSource(),
             "name": name if name is not None else "",
             "nfs": nfs if nfs is not None else NFSVolumeSource(),
@@ -32075,6 +33598,7 @@ class Volume(_kuber_definitions.Definition):
             "gitRepo": (GitRepoVolumeSource, None),
             "glusterfs": (GlusterfsVolumeSource, None),
             "hostPath": (HostPathVolumeSource, None),
+            "image": (ImageVolumeSource, None),
             "iscsi": (ISCSIVolumeSource, None),
             "name": (str, None),
             "nfs": (NFSVolumeSource, None),
@@ -32095,8 +33619,11 @@ class Volume(_kuber_definitions.Definition):
         """
         awsElasticBlockStore represents an AWS Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. More info: https://kubernetes.io/docs/concepts/storage/
-        volumes#awselasticblockstore
+        pod. Deprecated: AWSElasticBlockStore is deprecated. All
+        operations for the in-tree awsElasticBlockStore type are
+        redirected to the ebs.csi.aws.com CSI driver. More info: htt
+        ps://kubernetes.io/docs/concepts/storage/volumes#awselasticb
+        lockstore
         """
         return typing.cast(
             "AWSElasticBlockStoreVolumeSource",
@@ -32110,8 +33637,11 @@ class Volume(_kuber_definitions.Definition):
         """
         awsElasticBlockStore represents an AWS Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. More info: https://kubernetes.io/docs/concepts/storage/
-        volumes#awselasticblockstore
+        pod. Deprecated: AWSElasticBlockStore is deprecated. All
+        operations for the in-tree awsElasticBlockStore type are
+        redirected to the ebs.csi.aws.com CSI driver. More info: htt
+        ps://kubernetes.io/docs/concepts/storage/volumes#awselasticb
+        lockstore
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32124,7 +33654,9 @@ class Volume(_kuber_definitions.Definition):
     def azure_disk(self) -> "AzureDiskVolumeSource":
         """
         azureDisk represents an Azure Data Disk mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureDisk is
+        deprecated. All operations for the in-tree azureDisk type
+        are redirected to the disk.csi.azure.com CSI driver.
         """
         return typing.cast(
             "AzureDiskVolumeSource",
@@ -32135,7 +33667,9 @@ class Volume(_kuber_definitions.Definition):
     def azure_disk(self, value: typing.Union["AzureDiskVolumeSource", dict]):
         """
         azureDisk represents an Azure Data Disk mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureDisk is
+        deprecated. All operations for the in-tree azureDisk type
+        are redirected to the disk.csi.azure.com CSI driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32148,7 +33682,9 @@ class Volume(_kuber_definitions.Definition):
     def azure_file(self) -> "AzureFileVolumeSource":
         """
         azureFile represents an Azure File Service mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureFile is
+        deprecated. All operations for the in-tree azureFile type
+        are redirected to the file.csi.azure.com CSI driver.
         """
         return typing.cast(
             "AzureFileVolumeSource",
@@ -32159,7 +33695,9 @@ class Volume(_kuber_definitions.Definition):
     def azure_file(self, value: typing.Union["AzureFileVolumeSource", dict]):
         """
         azureFile represents an Azure File Service mount on the host
-        and bind mount to the pod.
+        and bind mount to the pod. Deprecated: AzureFile is
+        deprecated. All operations for the in-tree azureFile type
+        are redirected to the file.csi.azure.com CSI driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32172,7 +33710,8 @@ class Volume(_kuber_definitions.Definition):
     def cephfs(self) -> "CephFSVolumeSource":
         """
         cephFS represents a Ceph FS mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: CephFS is deprecated and the in-
+        tree cephfs type is no longer supported.
         """
         return typing.cast(
             "CephFSVolumeSource",
@@ -32183,7 +33722,8 @@ class Volume(_kuber_definitions.Definition):
     def cephfs(self, value: typing.Union["CephFSVolumeSource", dict]):
         """
         cephFS represents a Ceph FS mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: CephFS is deprecated and the in-
+        tree cephfs type is no longer supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32196,7 +33736,9 @@ class Volume(_kuber_definitions.Definition):
     def cinder(self) -> "CinderVolumeSource":
         """
         cinder represents a cinder volume attached and mounted on
-        kubelets host machine. More info:
+        kubelets host machine. Deprecated: Cinder is deprecated. All
+        operations for the in-tree cinder type are redirected to the
+        cinder.csi.openstack.org CSI driver. More info:
         https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         return typing.cast(
@@ -32208,7 +33750,9 @@ class Volume(_kuber_definitions.Definition):
     def cinder(self, value: typing.Union["CinderVolumeSource", dict]):
         """
         cinder represents a cinder volume attached and mounted on
-        kubelets host machine. More info:
+        kubelets host machine. Deprecated: Cinder is deprecated. All
+        operations for the in-tree cinder type are redirected to the
+        cinder.csi.openstack.org CSI driver. More info:
         https://examples.k8s.io/mysql-cinder-pd/README.md
         """
         if isinstance(value, dict):
@@ -32246,8 +33790,7 @@ class Volume(_kuber_definitions.Definition):
     def csi(self) -> "CSIVolumeSource":
         """
         csi (Container Storage Interface) represents ephemeral
-        storage that is handled by certain external CSI drivers
-        (Beta feature).
+        storage that is handled by certain external CSI drivers.
         """
         return typing.cast(
             "CSIVolumeSource",
@@ -32258,8 +33801,7 @@ class Volume(_kuber_definitions.Definition):
     def csi(self, value: typing.Union["CSIVolumeSource", dict]):
         """
         csi (Container Storage Interface) represents ephemeral
-        storage that is handled by certain external CSI drivers
-        (Beta feature).
+        storage that is handled by certain external CSI drivers.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32420,7 +33962,9 @@ class Volume(_kuber_definitions.Definition):
     def flex_volume(self) -> "FlexVolumeSource":
         """
         flexVolume represents a generic volume resource that is
-        provisioned/attached using an exec based plugin.
+        provisioned/attached using an exec based plugin. Deprecated:
+        FlexVolume is deprecated. Consider using a CSIDriver
+        instead.
         """
         return typing.cast(
             "FlexVolumeSource",
@@ -32431,7 +33975,9 @@ class Volume(_kuber_definitions.Definition):
     def flex_volume(self, value: typing.Union["FlexVolumeSource", dict]):
         """
         flexVolume represents a generic volume resource that is
-        provisioned/attached using an exec based plugin.
+        provisioned/attached using an exec based plugin. Deprecated:
+        FlexVolume is deprecated. Consider using a CSIDriver
+        instead.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32445,7 +33991,8 @@ class Volume(_kuber_definitions.Definition):
         """
         flocker represents a Flocker volume attached to a kubelet's
         host machine. This depends on the Flocker control service
-        being running
+        being running. Deprecated: Flocker is deprecated and the in-
+        tree flocker type is no longer supported.
         """
         return typing.cast(
             "FlockerVolumeSource",
@@ -32457,7 +34004,8 @@ class Volume(_kuber_definitions.Definition):
         """
         flocker represents a Flocker volume attached to a kubelet's
         host machine. This depends on the Flocker control service
-        being running
+        being running. Deprecated: Flocker is deprecated and the in-
+        tree flocker type is no longer supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32471,8 +34019,11 @@ class Volume(_kuber_definitions.Definition):
         """
         gcePersistentDisk represents a GCE Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. More info: https://kubernetes.io/docs/concepts/storage/
-        volumes#gcepersistentdisk
+        pod. Deprecated: GCEPersistentDisk is deprecated. All
+        operations for the in-tree gcePersistentDisk type are
+        redirected to the pd.csi.storage.gke.io CSI driver. More
+        info: https://kubernetes.io/docs/concepts/storage/volumes#gc
+        epersistentdisk
         """
         return typing.cast(
             "GCEPersistentDiskVolumeSource",
@@ -32486,8 +34037,11 @@ class Volume(_kuber_definitions.Definition):
         """
         gcePersistentDisk represents a GCE Disk resource that is
         attached to a kubelet's host machine and then exposed to the
-        pod. More info: https://kubernetes.io/docs/concepts/storage/
-        volumes#gcepersistentdisk
+        pod. Deprecated: GCEPersistentDisk is deprecated. All
+        operations for the in-tree gcePersistentDisk type are
+        redirected to the pd.csi.storage.gke.io CSI driver. More
+        info: https://kubernetes.io/docs/concepts/storage/volumes#gc
+        epersistentdisk
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32500,7 +34054,7 @@ class Volume(_kuber_definitions.Definition):
     def git_repo(self) -> "GitRepoVolumeSource":
         """
         gitRepo represents a git repository at a particular
-        revision. DEPRECATED: GitRepo is deprecated. To provision a
+        revision. Deprecated: GitRepo is deprecated. To provision a
         container with a git repo, mount an EmptyDir into an
         InitContainer that clones the repo using git, then mount the
         EmptyDir into the Pod's container.
@@ -32514,7 +34068,7 @@ class Volume(_kuber_definitions.Definition):
     def git_repo(self, value: typing.Union["GitRepoVolumeSource", dict]):
         """
         gitRepo represents a git repository at a particular
-        revision. DEPRECATED: GitRepo is deprecated. To provision a
+        revision. Deprecated: GitRepo is deprecated. To provision a
         container with a git repo, mount an EmptyDir into an
         InitContainer that clones the repo using git, then mount the
         EmptyDir into the Pod's container.
@@ -32530,8 +34084,9 @@ class Volume(_kuber_definitions.Definition):
     def glusterfs(self) -> "GlusterfsVolumeSource":
         """
         glusterfs represents a Glusterfs mount on the host that
-        shares a pod's lifetime. More info:
-        https://examples.k8s.io/volumes/glusterfs/README.md
+        shares a pod's lifetime. Deprecated: Glusterfs is deprecated
+        and the in-tree glusterfs type is no longer supported. More
+        info: https://examples.k8s.io/volumes/glusterfs/README.md
         """
         return typing.cast(
             "GlusterfsVolumeSource",
@@ -32542,8 +34097,9 @@ class Volume(_kuber_definitions.Definition):
     def glusterfs(self, value: typing.Union["GlusterfsVolumeSource", dict]):
         """
         glusterfs represents a Glusterfs mount on the host that
-        shares a pod's lifetime. More info:
-        https://examples.k8s.io/volumes/glusterfs/README.md
+        shares a pod's lifetime. Deprecated: Glusterfs is deprecated
+        and the in-tree glusterfs type is no longer supported. More
+        info: https://examples.k8s.io/volumes/glusterfs/README.md
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32583,6 +34139,90 @@ class Volume(_kuber_definitions.Definition):
                 HostPathVolumeSource().from_dict(value),
             )
         self._properties["hostPath"] = value
+
+    @property
+    def image(self) -> "ImageVolumeSource":
+        """
+        image represents an OCI object (a container image or
+        artifact) pulled and mounted on the kubelet's host machine.
+        The volume is resolved at pod startup depending on which
+        PullPolicy value is provided:
+
+        - Always: the kubelet always attempts to pull the reference.
+        Container creation will fail If the pull fails. - Never: the
+        kubelet never pulls the reference and only uses a local
+        image or artifact. Container creation will fail if the
+        reference isn't present. - IfNotPresent: the kubelet pulls
+        if the reference isn't already present on disk. Container
+        creation will fail if the reference isn't present and the
+        pull fails.
+
+        The volume gets re-resolved if the pod gets deleted and
+        recreated, which means that new remote content will become
+        available on pod recreation. A failure to resolve or pull
+        the image during pod startup will block containers from
+        starting and may add significant latency. Failures will be
+        retried using normal volume backoff and will be reported on
+        the pod reason and message. The types of objects that may be
+        mounted by this volume are defined by the container runtime
+        implementation on a host machine and at minimum must include
+        all valid types supported by the container image field. The
+        OCI object gets mounted in a single directory
+        (spec.containers[*].volumeMounts.mountPath) by merging the
+        manifest layers in the same way as for container images. The
+        volume will be mounted read-only (ro) and non-executable
+        files (noexec). Sub path mounts for containers are not
+        supported (spec.containers[*].volumeMounts.subpath) before
+        1.33. The field spec.securityContext.fsGroupChangePolicy has
+        no effect on this volume type.
+        """
+        return typing.cast(
+            "ImageVolumeSource",
+            self._properties.get("image"),
+        )
+
+    @image.setter
+    def image(self, value: typing.Union["ImageVolumeSource", dict]):
+        """
+        image represents an OCI object (a container image or
+        artifact) pulled and mounted on the kubelet's host machine.
+        The volume is resolved at pod startup depending on which
+        PullPolicy value is provided:
+
+        - Always: the kubelet always attempts to pull the reference.
+        Container creation will fail If the pull fails. - Never: the
+        kubelet never pulls the reference and only uses a local
+        image or artifact. Container creation will fail if the
+        reference isn't present. - IfNotPresent: the kubelet pulls
+        if the reference isn't already present on disk. Container
+        creation will fail if the reference isn't present and the
+        pull fails.
+
+        The volume gets re-resolved if the pod gets deleted and
+        recreated, which means that new remote content will become
+        available on pod recreation. A failure to resolve or pull
+        the image during pod startup will block containers from
+        starting and may add significant latency. Failures will be
+        retried using normal volume backoff and will be reported on
+        the pod reason and message. The types of objects that may be
+        mounted by this volume are defined by the container runtime
+        implementation on a host machine and at minimum must include
+        all valid types supported by the container image field. The
+        OCI object gets mounted in a single directory
+        (spec.containers[*].volumeMounts.mountPath) by merging the
+        manifest layers in the same way as for container images. The
+        volume will be mounted read-only (ro) and non-executable
+        files (noexec). Sub path mounts for containers are not
+        supported (spec.containers[*].volumeMounts.subpath) before
+        1.33. The field spec.securityContext.fsGroupChangePolicy has
+        no effect on this volume type.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                ImageVolumeSource,
+                ImageVolumeSource().from_dict(value),
+            )
+        self._properties["image"] = value
 
     @property
     def iscsi(self) -> "ISCSIVolumeSource":
@@ -32694,7 +34334,9 @@ class Volume(_kuber_definitions.Definition):
         """
         photonPersistentDisk represents a PhotonController
         persistent disk attached and mounted on kubelets host
-        machine
+        machine. Deprecated: PhotonPersistentDisk is deprecated and
+        the in-tree photonPersistentDisk type is no longer
+        supported.
         """
         return typing.cast(
             "PhotonPersistentDiskVolumeSource",
@@ -32708,7 +34350,9 @@ class Volume(_kuber_definitions.Definition):
         """
         photonPersistentDisk represents a PhotonController
         persistent disk attached and mounted on kubelets host
-        machine
+        machine. Deprecated: PhotonPersistentDisk is deprecated and
+        the in-tree photonPersistentDisk type is no longer
+        supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32721,7 +34365,10 @@ class Volume(_kuber_definitions.Definition):
     def portworx_volume(self) -> "PortworxVolumeSource":
         """
         portworxVolume represents a portworx volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: PortworxVolume
+        is deprecated. All operations for the in-tree portworxVolume
+        type are redirected to the pxd.portworx.com CSI driver when
+        the CSIMigrationPortworx feature-gate is on.
         """
         return typing.cast(
             "PortworxVolumeSource",
@@ -32732,7 +34379,10 @@ class Volume(_kuber_definitions.Definition):
     def portworx_volume(self, value: typing.Union["PortworxVolumeSource", dict]):
         """
         portworxVolume represents a portworx volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: PortworxVolume
+        is deprecated. All operations for the in-tree portworxVolume
+        type are redirected to the pxd.portworx.com CSI driver when
+        the CSIMigrationPortworx feature-gate is on.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32769,7 +34419,8 @@ class Volume(_kuber_definitions.Definition):
     def quobyte(self) -> "QuobyteVolumeSource":
         """
         quobyte represents a Quobyte mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: Quobyte is deprecated and the
+        in-tree quobyte type is no longer supported.
         """
         return typing.cast(
             "QuobyteVolumeSource",
@@ -32780,7 +34431,8 @@ class Volume(_kuber_definitions.Definition):
     def quobyte(self, value: typing.Union["QuobyteVolumeSource", dict]):
         """
         quobyte represents a Quobyte mount on the host that shares a
-        pod's lifetime
+        pod's lifetime. Deprecated: Quobyte is deprecated and the
+        in-tree quobyte type is no longer supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32793,7 +34445,8 @@ class Volume(_kuber_definitions.Definition):
     def rbd(self) -> "RBDVolumeSource":
         """
         rbd represents a Rados Block Device mount on the host that
-        shares a pod's lifetime. More info:
+        shares a pod's lifetime. Deprecated: RBD is deprecated and
+        the in-tree rbd type is no longer supported. More info:
         https://examples.k8s.io/volumes/rbd/README.md
         """
         return typing.cast(
@@ -32805,7 +34458,8 @@ class Volume(_kuber_definitions.Definition):
     def rbd(self, value: typing.Union["RBDVolumeSource", dict]):
         """
         rbd represents a Rados Block Device mount on the host that
-        shares a pod's lifetime. More info:
+        shares a pod's lifetime. Deprecated: RBD is deprecated and
+        the in-tree rbd type is no longer supported. More info:
         https://examples.k8s.io/volumes/rbd/README.md
         """
         if isinstance(value, dict):
@@ -32819,7 +34473,9 @@ class Volume(_kuber_definitions.Definition):
     def scale_io(self) -> "ScaleIOVolumeSource":
         """
         scaleIO represents a ScaleIO persistent volume attached and
-        mounted on Kubernetes nodes.
+        mounted on Kubernetes nodes. Deprecated: ScaleIO is
+        deprecated and the in-tree scaleIO type is no longer
+        supported.
         """
         return typing.cast(
             "ScaleIOVolumeSource",
@@ -32830,7 +34486,9 @@ class Volume(_kuber_definitions.Definition):
     def scale_io(self, value: typing.Union["ScaleIOVolumeSource", dict]):
         """
         scaleIO represents a ScaleIO persistent volume attached and
-        mounted on Kubernetes nodes.
+        mounted on Kubernetes nodes. Deprecated: ScaleIO is
+        deprecated and the in-tree scaleIO type is no longer
+        supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32869,7 +34527,8 @@ class Volume(_kuber_definitions.Definition):
     def storageos(self) -> "StorageOSVolumeSource":
         """
         storageOS represents a StorageOS volume attached and mounted
-        on Kubernetes nodes.
+        on Kubernetes nodes. Deprecated: StorageOS is deprecated and
+        the in-tree storageos type is no longer supported.
         """
         return typing.cast(
             "StorageOSVolumeSource",
@@ -32880,7 +34539,8 @@ class Volume(_kuber_definitions.Definition):
     def storageos(self, value: typing.Union["StorageOSVolumeSource", dict]):
         """
         storageOS represents a StorageOS volume attached and mounted
-        on Kubernetes nodes.
+        on Kubernetes nodes. Deprecated: StorageOS is deprecated and
+        the in-tree storageos type is no longer supported.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -32893,7 +34553,10 @@ class Volume(_kuber_definitions.Definition):
     def vsphere_volume(self) -> "VsphereVirtualDiskVolumeSource":
         """
         vsphereVolume represents a vSphere volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: VsphereVolume
+        is deprecated. All operations for the in-tree vsphereVolume
+        type are redirected to the csi.vsphere.vmware.com CSI
+        driver.
         """
         return typing.cast(
             "VsphereVirtualDiskVolumeSource",
@@ -32906,7 +34569,10 @@ class Volume(_kuber_definitions.Definition):
     ):
         """
         vsphereVolume represents a vSphere volume attached and
-        mounted on kubelets host machine
+        mounted on kubelets host machine. Deprecated: VsphereVolume
+        is deprecated. All operations for the in-tree vsphereVolume
+        type are redirected to the csi.vsphere.vmware.com CSI
+        driver.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -33001,6 +34667,7 @@ class VolumeMount(_kuber_definitions.Definition):
         mount_propagation: typing.Optional[str] = None,
         name: typing.Optional[str] = None,
         read_only: typing.Optional[bool] = None,
+        recursive_read_only: typing.Optional[str] = None,
         sub_path: typing.Optional[str] = None,
         sub_path_expr: typing.Optional[str] = None,
     ):
@@ -33013,6 +34680,9 @@ class VolumeMount(_kuber_definitions.Definition):
             ),
             "name": name if name is not None else "",
             "readOnly": read_only if read_only is not None else None,
+            "recursiveReadOnly": (
+                recursive_read_only if recursive_read_only is not None else ""
+            ),
             "subPath": sub_path if sub_path is not None else "",
             "subPathExpr": sub_path_expr if sub_path_expr is not None else "",
         }
@@ -33021,6 +34691,7 @@ class VolumeMount(_kuber_definitions.Definition):
             "mountPropagation": (str, None),
             "name": (str, None),
             "readOnly": (bool, None),
+            "recursiveReadOnly": (str, None),
             "subPath": (str, None),
             "subPathExpr": (str, None),
         }
@@ -33050,7 +34721,9 @@ class VolumeMount(_kuber_definitions.Definition):
         mountPropagation determines how mounts are propagated from
         the host to container and the other way around. When not
         set, MountPropagationNone is used. This field is beta in
-        1.10.
+        1.10. When RecursiveReadOnly is set to IfPossible or to
+        Enabled, MountPropagation must be None or unspecified (which
+        defaults to None).
         """
         return typing.cast(
             str,
@@ -33063,7 +34736,9 @@ class VolumeMount(_kuber_definitions.Definition):
         mountPropagation determines how mounts are propagated from
         the host to container and the other way around. When not
         set, MountPropagationNone is used. This field is beta in
-        1.10.
+        1.10. When RecursiveReadOnly is set to IfPossible or to
+        Enabled, MountPropagation must be None or unspecified (which
+        defaults to None).
         """
         self._properties["mountPropagation"] = value
 
@@ -33102,6 +34777,63 @@ class VolumeMount(_kuber_definitions.Definition):
         unspecified). Defaults to false.
         """
         self._properties["readOnly"] = value
+
+    @property
+    def recursive_read_only(self) -> str:
+        """
+        RecursiveReadOnly specifies whether read-only mounts should
+        be handled recursively.
+
+        If ReadOnly is false, this field has no meaning and must be
+        unspecified.
+
+        If ReadOnly is true, and this field is set to Disabled, the
+        mount is not made recursively read-only.  If this field is
+        set to IfPossible, the mount is made recursively read-only,
+        if it is supported by the container runtime.  If this field
+        is set to Enabled, the mount is made recursively read-only
+        if it is supported by the container runtime, otherwise the
+        pod will not be started and an error will be generated to
+        indicate the reason.
+
+        If this field is set to IfPossible or Enabled,
+        MountPropagation must be set to None (or be unspecified,
+        which defaults to None).
+
+        If this field is not specified, it is treated as an
+        equivalent of Disabled.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("recursiveReadOnly"),
+        )
+
+    @recursive_read_only.setter
+    def recursive_read_only(self, value: str):
+        """
+        RecursiveReadOnly specifies whether read-only mounts should
+        be handled recursively.
+
+        If ReadOnly is false, this field has no meaning and must be
+        unspecified.
+
+        If ReadOnly is true, and this field is set to Disabled, the
+        mount is not made recursively read-only.  If this field is
+        set to IfPossible, the mount is made recursively read-only,
+        if it is supported by the container runtime.  If this field
+        is set to Enabled, the mount is made recursively read-only
+        if it is supported by the container runtime, otherwise the
+        pod will not be started and an error will be generated to
+        indicate the reason.
+
+        If this field is set to IfPossible or Enabled,
+        MountPropagation must be set to None (or be unspecified,
+        which defaults to None).
+
+        If this field is not specified, it is treated as an
+        equivalent of Disabled.
+        """
+        self._properties["recursiveReadOnly"] = value
 
     @property
     def sub_path(self) -> str:
@@ -33148,6 +34880,118 @@ class VolumeMount(_kuber_definitions.Definition):
         self._properties["subPathExpr"] = value
 
     def __enter__(self) -> "VolumeMount":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class VolumeMountStatus(_kuber_definitions.Definition):
+    """
+    VolumeMountStatus shows status of volume mounts.
+    """
+
+    def __init__(
+        self,
+        mount_path: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        read_only: typing.Optional[bool] = None,
+        recursive_read_only: typing.Optional[str] = None,
+    ):
+        """Create VolumeMountStatus instance."""
+        super(VolumeMountStatus, self).__init__(
+            api_version="core/v1", kind="VolumeMountStatus"
+        )
+        self._properties = {
+            "mountPath": mount_path if mount_path is not None else "",
+            "name": name if name is not None else "",
+            "readOnly": read_only if read_only is not None else None,
+            "recursiveReadOnly": (
+                recursive_read_only if recursive_read_only is not None else ""
+            ),
+        }
+        self._types = {
+            "mountPath": (str, None),
+            "name": (str, None),
+            "readOnly": (bool, None),
+            "recursiveReadOnly": (str, None),
+        }
+
+    @property
+    def mount_path(self) -> str:
+        """
+        MountPath corresponds to the original VolumeMount.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("mountPath"),
+        )
+
+    @mount_path.setter
+    def mount_path(self, value: str):
+        """
+        MountPath corresponds to the original VolumeMount.
+        """
+        self._properties["mountPath"] = value
+
+    @property
+    def name(self) -> str:
+        """
+        Name corresponds to the name of the original VolumeMount.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("name"),
+        )
+
+    @name.setter
+    def name(self, value: str):
+        """
+        Name corresponds to the name of the original VolumeMount.
+        """
+        self._properties["name"] = value
+
+    @property
+    def read_only(self) -> bool:
+        """
+        ReadOnly corresponds to the original VolumeMount.
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("readOnly"),
+        )
+
+    @read_only.setter
+    def read_only(self, value: bool):
+        """
+        ReadOnly corresponds to the original VolumeMount.
+        """
+        self._properties["readOnly"] = value
+
+    @property
+    def recursive_read_only(self) -> str:
+        """
+        RecursiveReadOnly must be set to Disabled, Enabled, or
+        unspecified (for non-readonly mounts). An IfPossible value
+        in the original VolumeMount must be translated to Disabled
+        or Enabled, depending on the mount result.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("recursiveReadOnly"),
+        )
+
+    @recursive_read_only.setter
+    def recursive_read_only(self, value: str):
+        """
+        RecursiveReadOnly must be set to Disabled, Enabled, or
+        unspecified (for non-readonly mounts). An IfPossible value
+        in the original VolumeMount must be translated to Disabled
+        or Enabled, depending on the mount result.
+        """
+        self._properties["recursiveReadOnly"] = value
+
+    def __enter__(self) -> "VolumeMountStatus":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -33207,7 +35051,7 @@ class VolumeNodeAffinity(_kuber_definitions.Definition):
 class VolumeProjection(_kuber_definitions.Definition):
     """
     Projection that may be projected along with other supported
-    volume types
+    volume types. Exactly one of these fields must be set.
     """
 
     def __init__(

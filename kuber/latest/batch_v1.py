@@ -1758,12 +1758,14 @@ class JobSpec(_kuber_definitions.Definition):
         backoff_limit_per_index: typing.Optional[int] = None,
         completion_mode: typing.Optional[str] = None,
         completions: typing.Optional[int] = None,
+        managed_by: typing.Optional[str] = None,
         manual_selector: typing.Optional[bool] = None,
         max_failed_indexes: typing.Optional[int] = None,
         parallelism: typing.Optional[int] = None,
         pod_failure_policy: typing.Optional["PodFailurePolicy"] = None,
         pod_replacement_policy: typing.Optional[str] = None,
         selector: typing.Optional["LabelSelector"] = None,
+        success_policy: typing.Optional["SuccessPolicy"] = None,
         suspend: typing.Optional[bool] = None,
         template: typing.Optional["PodTemplateSpec"] = None,
         ttl_seconds_after_finished: typing.Optional[int] = None,
@@ -1780,6 +1782,7 @@ class JobSpec(_kuber_definitions.Definition):
             ),
             "completionMode": completion_mode if completion_mode is not None else "",
             "completions": completions if completions is not None else None,
+            "managedBy": managed_by if managed_by is not None else "",
             "manualSelector": manual_selector if manual_selector is not None else None,
             "maxFailedIndexes": (
                 max_failed_indexes if max_failed_indexes is not None else None
@@ -1794,6 +1797,9 @@ class JobSpec(_kuber_definitions.Definition):
                 pod_replacement_policy if pod_replacement_policy is not None else ""
             ),
             "selector": selector if selector is not None else LabelSelector(),
+            "successPolicy": (
+                success_policy if success_policy is not None else SuccessPolicy()
+            ),
             "suspend": suspend if suspend is not None else None,
             "template": template if template is not None else PodTemplateSpec(),
             "ttlSecondsAfterFinished": (
@@ -1808,12 +1814,14 @@ class JobSpec(_kuber_definitions.Definition):
             "backoffLimitPerIndex": (int, None),
             "completionMode": (str, None),
             "completions": (int, None),
+            "managedBy": (str, None),
             "manualSelector": (bool, None),
             "maxFailedIndexes": (int, None),
             "parallelism": (int, None),
             "podFailurePolicy": (PodFailurePolicy, None),
             "podReplacementPolicy": (str, None),
             "selector": (LabelSelector, None),
+            "successPolicy": (SuccessPolicy, None),
             "suspend": (bool, None),
             "template": (PodTemplateSpec, None),
             "ttlSecondsAfterFinished": (int, None),
@@ -1873,10 +1881,7 @@ class JobSpec(_kuber_definitions.Definition):
         number of failures per index is kept in the pod's
         batch.kubernetes.io/job-index-failure-count annotation. It
         can only be set when Job's completionMode=Indexed, and the
-        Pod's restart policy is Never. The field is immutable. This
-        field is beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        Pod's restart policy is Never. The field is immutable.
         """
         return typing.cast(
             int,
@@ -1891,10 +1896,7 @@ class JobSpec(_kuber_definitions.Definition):
         number of failures per index is kept in the pod's
         batch.kubernetes.io/job-index-failure-count annotation. It
         can only be set when Job's completionMode=Indexed, and the
-        Pod's restart policy is Never. The field is immutable. This
-        field is beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        Pod's restart policy is Never. The field is immutable.
         """
         self._properties["backoffLimitPerIndex"] = value
 
@@ -1989,6 +1991,51 @@ class JobSpec(_kuber_definitions.Definition):
         self._properties["completions"] = value
 
     @property
+    def managed_by(self) -> str:
+        """
+        ManagedBy field indicates the controller that manages a Job.
+        The k8s Job controller reconciles jobs which don't have this
+        field at all or the field value is the reserved string
+        `kubernetes.io/job-controller`, but skips reconciling Jobs
+        with a custom value for this field. The value must be a
+        valid domain-prefixed path (e.g. acme.io/foo) - all
+        characters before the first "/" must be a valid subdomain as
+        defined by RFC 1123. All characters trailing the first "/"
+        must be valid HTTP Path characters as defined by RFC 3986.
+        The value cannot exceed 63 characters. This field is
+        immutable.
+
+        This field is beta-level. The job controller accepts setting
+        the field when the feature gate JobManagedBy is enabled
+        (enabled by default).
+        """
+        return typing.cast(
+            str,
+            self._properties.get("managedBy"),
+        )
+
+    @managed_by.setter
+    def managed_by(self, value: str):
+        """
+        ManagedBy field indicates the controller that manages a Job.
+        The k8s Job controller reconciles jobs which don't have this
+        field at all or the field value is the reserved string
+        `kubernetes.io/job-controller`, but skips reconciling Jobs
+        with a custom value for this field. The value must be a
+        valid domain-prefixed path (e.g. acme.io/foo) - all
+        characters before the first "/" must be a valid subdomain as
+        defined by RFC 1123. All characters trailing the first "/"
+        must be valid HTTP Path characters as defined by RFC 3986.
+        The value cannot exceed 63 characters. This field is
+        immutable.
+
+        This field is beta-level. The job controller accepts setting
+        the field when the feature gate JobManagedBy is enabled
+        (enabled by default).
+        """
+        self._properties["managedBy"] = value
+
+    @property
     def manual_selector(self) -> bool:
         """
         manualSelector controls generation of pod labels and pod
@@ -2039,10 +2086,7 @@ class JobSpec(_kuber_definitions.Definition):
         condition. It can only be specified when
         backoffLimitPerIndex is set. It can be null or up to
         completions. It is required and must be less than or equal
-        to 10^4 when is completions greater than 10^5. This field is
-        beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        to 10^4 when is completions greater than 10^5.
         """
         return typing.cast(
             int,
@@ -2061,10 +2105,7 @@ class JobSpec(_kuber_definitions.Definition):
         condition. It can only be specified when
         backoffLimitPerIndex is set. It can be null or up to
         completions. It is required and must be less than or equal
-        to 10^4 when is completions greater than 10^5. This field is
-        beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        to 10^4 when is completions greater than 10^5.
         """
         self._properties["maxFailedIndexes"] = value
 
@@ -2108,10 +2149,6 @@ class JobSpec(_kuber_definitions.Definition):
         incremented and it is checked against the backoffLimit. This
         field cannot be used in combination with
         restartPolicy=OnFailure.
-
-        This field is beta-level. It can be used when the
-        `JobPodFailurePolicy` feature gate is enabled (enabled by
-        default).
         """
         return typing.cast(
             "PodFailurePolicy",
@@ -2129,10 +2166,6 @@ class JobSpec(_kuber_definitions.Definition):
         incremented and it is checked against the backoffLimit. This
         field cannot be used in combination with
         restartPolicy=OnFailure.
-
-        This field is beta-level. It can be used when the
-        `JobPodFailurePolicy` feature gate is enabled (enabled by
-        default).
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -2211,6 +2244,40 @@ class JobSpec(_kuber_definitions.Definition):
                 LabelSelector().from_dict(value),
             )
         self._properties["selector"] = value
+
+    @property
+    def success_policy(self) -> "SuccessPolicy":
+        """
+        successPolicy specifies the policy when the Job can be
+        declared as succeeded. If empty, the default behavior
+        applies - the Job is declared as succeeded only when the
+        number of succeeded pods equals to the completions. When the
+        field is specified, it must be immutable and works only for
+        the Indexed Jobs. Once the Job meets the SuccessPolicy, the
+        lingering pods are terminated.
+        """
+        return typing.cast(
+            "SuccessPolicy",
+            self._properties.get("successPolicy"),
+        )
+
+    @success_policy.setter
+    def success_policy(self, value: typing.Union["SuccessPolicy", dict]):
+        """
+        successPolicy specifies the policy when the Job can be
+        declared as succeeded. If empty, the default behavior
+        applies - the Job is declared as succeeded only when the
+        number of succeeded pods equals to the completions. When the
+        field is specified, it must be immutable and works only for
+        the Indexed Jobs. Once the Job meets the SuccessPolicy, the
+        lingering pods are terminated.
+        """
+        if isinstance(value, dict):
+            value = typing.cast(
+                SuccessPolicy,
+                SuccessPolicy().from_dict(value),
+            )
+        self._properties["successPolicy"] = value
 
     @property
     def suspend(self) -> bool:
@@ -2522,7 +2589,9 @@ class JobStatus(_kuber_definitions.Definition):
     @property
     def active(self) -> int:
         """
-        The number of pending and running pods.
+        The number of pending and running pods which are not
+        terminating (without a deletionTimestamp). The value is zero
+        for finished jobs.
         """
         return typing.cast(
             int,
@@ -2532,7 +2601,9 @@ class JobStatus(_kuber_definitions.Definition):
     @active.setter
     def active(self, value: int):
         """
-        The number of pending and running pods.
+        The number of pending and running pods which are not
+        terminating (without a deletionTimestamp). The value is zero
+        for finished jobs.
         """
         self._properties["active"] = value
 
@@ -2573,8 +2644,10 @@ class JobStatus(_kuber_definitions.Definition):
         Represents time when the job was completed. It is not
         guaranteed to be set in happens-before order across separate
         operations. It is represented in RFC3339 form and is in UTC.
-        The completion time is only set when the job finishes
-        successfully.
+        The completion time is set when the job finishes
+        successfully, and only then. The value cannot be updated or
+        removed. The value indicates the same or later point in time
+        as the startTime field.
         """
         return typing.cast(
             str,
@@ -2589,8 +2662,10 @@ class JobStatus(_kuber_definitions.Definition):
         Represents time when the job was completed. It is not
         guaranteed to be set in happens-before order across separate
         operations. It is represented in RFC3339 form and is in UTC.
-        The completion time is only set when the job finishes
-        successfully.
+        The completion time is set when the job finishes
+        successfully, and only then. The value cannot be updated or
+        removed. The value indicates the same or later point in time
+        as the startTime field.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -2607,9 +2682,17 @@ class JobStatus(_kuber_definitions.Definition):
         of the conditions will have type "Suspended" and status
         true; when the Job is resumed, the status of this condition
         will become false. When a Job is completed, one of the
-        conditions will have type "Complete" and status true. More
-        info: https://kubernetes.io/docs/concepts/workloads/controll
-        ers/jobs-run-to-completion/
+        conditions will have type "Complete" and status true.
+
+        A job is considered finished when it is in a terminal
+        condition, either "Complete" or "Failed". A Job cannot have
+        both the "Complete" and "Failed" conditions. Additionally,
+        it cannot be in the "Complete" and "FailureTarget"
+        conditions. The "Complete", "Failed" and "FailureTarget"
+        conditions cannot be disabled.
+
+        More info: https://kubernetes.io/docs/concepts/workloads/con
+        trollers/jobs-run-to-completion/
         """
         return typing.cast(
             typing.List["JobCondition"],
@@ -2627,9 +2710,17 @@ class JobStatus(_kuber_definitions.Definition):
         of the conditions will have type "Suspended" and status
         true; when the Job is resumed, the status of this condition
         will become false. When a Job is completed, one of the
-        conditions will have type "Complete" and status true. More
-        info: https://kubernetes.io/docs/concepts/workloads/controll
-        ers/jobs-run-to-completion/
+        conditions will have type "Complete" and status true.
+
+        A job is considered finished when it is in a terminal
+        condition, either "Complete" or "Failed". A Job cannot have
+        both the "Complete" and "Failed" conditions. Additionally,
+        it cannot be in the "Complete" and "FailureTarget"
+        conditions. The "Complete", "Failed" and "FailureTarget"
+        conditions cannot be disabled.
+
+        More info: https://kubernetes.io/docs/concepts/workloads/con
+        trollers/jobs-run-to-completion/
         """
         cleaned: typing.List[JobCondition] = []
         for item in value:
@@ -2644,7 +2735,8 @@ class JobStatus(_kuber_definitions.Definition):
     @property
     def failed(self) -> int:
         """
-        The number of pods which reached phase Failed.
+        The number of pods which reached phase Failed. The value
+        increases monotonically.
         """
         return typing.cast(
             int,
@@ -2654,7 +2746,8 @@ class JobStatus(_kuber_definitions.Definition):
     @failed.setter
     def failed(self, value: int):
         """
-        The number of pods which reached phase Failed.
+        The number of pods which reached phase Failed. The value
+        increases monotonically.
         """
         self._properties["failed"] = value
 
@@ -2662,17 +2755,16 @@ class JobStatus(_kuber_definitions.Definition):
     def failed_indexes(self) -> str:
         """
         FailedIndexes holds the failed indexes when
-        backoffLimitPerIndex=true. The indexes are represented in
-        the text format analogous as for the `completedIndexes`
-        field, ie. they are kept as decimal integers separated by
-        commas. The numbers are listed in increasing order. Three or
-        more consecutive numbers are compressed and represented by
-        the first and last element of the series, separated by a
-        hyphen. For example, if the failed indexes are 1, 3, 4, 5
-        and 7, they are represented as "1,3-5,7". This field is
-        beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        spec.backoffLimitPerIndex is set. The indexes are
+        represented in the text format analogous as for the
+        `completedIndexes` field, ie. they are kept as decimal
+        integers separated by commas. The numbers are listed in
+        increasing order. Three or more consecutive numbers are
+        compressed and represented by the first and last element of
+        the series, separated by a hyphen. For example, if the
+        failed indexes are 1, 3, 4, 5 and 7, they are represented as
+        "1,3-5,7". The set of failed indexes cannot overlap with the
+        set of completed indexes.
         """
         return typing.cast(
             str,
@@ -2683,24 +2775,24 @@ class JobStatus(_kuber_definitions.Definition):
     def failed_indexes(self, value: str):
         """
         FailedIndexes holds the failed indexes when
-        backoffLimitPerIndex=true. The indexes are represented in
-        the text format analogous as for the `completedIndexes`
-        field, ie. they are kept as decimal integers separated by
-        commas. The numbers are listed in increasing order. Three or
-        more consecutive numbers are compressed and represented by
-        the first and last element of the series, separated by a
-        hyphen. For example, if the failed indexes are 1, 3, 4, 5
-        and 7, they are represented as "1,3-5,7". This field is
-        beta-level. It can be used when the
-        `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
+        spec.backoffLimitPerIndex is set. The indexes are
+        represented in the text format analogous as for the
+        `completedIndexes` field, ie. they are kept as decimal
+        integers separated by commas. The numbers are listed in
+        increasing order. Three or more consecutive numbers are
+        compressed and represented by the first and last element of
+        the series, separated by a hyphen. For example, if the
+        failed indexes are 1, 3, 4, 5 and 7, they are represented as
+        "1,3-5,7". The set of failed indexes cannot overlap with the
+        set of completed indexes.
         """
         self._properties["failedIndexes"] = value
 
     @property
     def ready(self) -> int:
         """
-        The number of pods which have a Ready condition.
+        The number of active pods which have a Ready condition and
+        are not terminating (without a deletionTimestamp).
         """
         return typing.cast(
             int,
@@ -2710,7 +2802,8 @@ class JobStatus(_kuber_definitions.Definition):
     @ready.setter
     def ready(self, value: int):
         """
-        The number of pods which have a Ready condition.
+        The number of active pods which have a Ready condition and
+        are not terminating (without a deletionTimestamp).
         """
         self._properties["ready"] = value
 
@@ -2722,6 +2815,10 @@ class JobStatus(_kuber_definitions.Definition):
         field is not set until the first time it is resumed. This
         field is reset every time a Job is resumed from suspension.
         It is represented in RFC3339 form and is in UTC.
+
+        Once set, the field can only be removed when the job is
+        suspended. The field cannot be modified while the job is
+        unsuspended or finished.
         """
         return typing.cast(
             str,
@@ -2736,6 +2833,10 @@ class JobStatus(_kuber_definitions.Definition):
         field is not set until the first time it is resumed. This
         field is reset every time a Job is resumed from suspension.
         It is represented in RFC3339 form and is in UTC.
+
+        Once set, the field can only be removed when the job is
+        suspended. The field cannot be modified while the job is
+        unsuspended or finished.
         """
         if isinstance(value, _datetime.datetime):
             value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -2746,7 +2847,9 @@ class JobStatus(_kuber_definitions.Definition):
     @property
     def succeeded(self) -> int:
         """
-        The number of pods which reached phase Succeeded.
+        The number of pods which reached phase Succeeded. The value
+        increases monotonically for a given spec. However, it may
+        decrease in reaction to scale down of elastic indexed jobs.
         """
         return typing.cast(
             int,
@@ -2756,7 +2859,9 @@ class JobStatus(_kuber_definitions.Definition):
     @succeeded.setter
     def succeeded(self, value: int):
         """
-        The number of pods which reached phase Succeeded.
+        The number of pods which reached phase Succeeded. The value
+        increases monotonically for a given spec. However, it may
+        decrease in reaction to scale down of elastic indexed jobs.
         """
         self._properties["succeeded"] = value
 
@@ -2804,7 +2909,8 @@ class JobStatus(_kuber_definitions.Definition):
             counter.
 
         Old jobs might not be tracked using this field, in which
-        case the field remains null.
+        case the field remains null. The structure is empty for
+        finished jobs.
         """
         return typing.cast(
             "UncountedTerminatedPods",
@@ -2830,7 +2936,8 @@ class JobStatus(_kuber_definitions.Definition):
             counter.
 
         Old jobs might not be tracked using this field, in which
-        case the field remains null.
+        case the field remains null. The structure is empty for
+        finished jobs.
         """
         if isinstance(value, dict):
             value = typing.cast(
@@ -3420,9 +3527,6 @@ class PodFailurePolicyRule(_kuber_definitions.Definition):
         - FailIndex: indicates that the pod's index is marked as
         Failed and will
           not be restarted.
-          This value is beta-level. It can be used when the
-          `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
         - Ignore: indicates that the counter towards the
         .backoffLimit is not
           incremented and a replacement pod is created.
@@ -3450,9 +3554,6 @@ class PodFailurePolicyRule(_kuber_definitions.Definition):
         - FailIndex: indicates that the pod's index is marked as
         Failed and will
           not be restarted.
-          This value is beta-level. It can be used when the
-          `JobBackoffLimitPerIndex` feature gate is enabled (enabled
-        by default).
         - Ignore: indicates that the counter towards the
         .backoffLimit is not
           incremented and a replacement pod is created.
@@ -3530,6 +3631,187 @@ class PodFailurePolicyRule(_kuber_definitions.Definition):
         self._properties["onPodConditions"] = cleaned
 
     def __enter__(self) -> "PodFailurePolicyRule":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class SuccessPolicy(_kuber_definitions.Definition):
+    """
+    SuccessPolicy describes when a Job can be declared as
+    succeeded based on the success of some indexes.
+    """
+
+    def __init__(
+        self,
+        rules: typing.Optional[typing.List["SuccessPolicyRule"]] = None,
+    ):
+        """Create SuccessPolicy instance."""
+        super(SuccessPolicy, self).__init__(
+            api_version="batch/v1", kind="SuccessPolicy"
+        )
+        self._properties = {
+            "rules": rules if rules is not None else [],
+        }
+        self._types = {
+            "rules": (list, SuccessPolicyRule),
+        }
+
+    @property
+    def rules(self) -> typing.List["SuccessPolicyRule"]:
+        """
+        rules represents the list of alternative rules for the
+        declaring the Jobs as successful before `.status.succeeded
+        >= .spec.completions`. Once any of the rules are met, the
+        "SucceededCriteriaMet" condition is added, and the lingering
+        pods are removed. The terminal state for such a Job has the
+        "Complete" condition. Additionally, these rules are
+        evaluated in order; Once the Job meets one of the rules,
+        other rules are ignored. At most 20 elements are allowed.
+        """
+        return typing.cast(
+            typing.List["SuccessPolicyRule"],
+            self._properties.get("rules"),
+        )
+
+    @rules.setter
+    def rules(
+        self, value: typing.Union[typing.List["SuccessPolicyRule"], typing.List[dict]]
+    ):
+        """
+        rules represents the list of alternative rules for the
+        declaring the Jobs as successful before `.status.succeeded
+        >= .spec.completions`. Once any of the rules are met, the
+        "SucceededCriteriaMet" condition is added, and the lingering
+        pods are removed. The terminal state for such a Job has the
+        "Complete" condition. Additionally, these rules are
+        evaluated in order; Once the Job meets one of the rules,
+        other rules are ignored. At most 20 elements are allowed.
+        """
+        cleaned: typing.List[SuccessPolicyRule] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    SuccessPolicyRule,
+                    SuccessPolicyRule().from_dict(item),
+                )
+            cleaned.append(typing.cast(SuccessPolicyRule, item))
+        self._properties["rules"] = cleaned
+
+    def __enter__(self) -> "SuccessPolicy":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class SuccessPolicyRule(_kuber_definitions.Definition):
+    """
+    SuccessPolicyRule describes rule for declaring a Job as
+    succeeded. Each rule must have at least one of the
+    "succeededIndexes" or "succeededCount" specified.
+    """
+
+    def __init__(
+        self,
+        succeeded_count: typing.Optional[int] = None,
+        succeeded_indexes: typing.Optional[str] = None,
+    ):
+        """Create SuccessPolicyRule instance."""
+        super(SuccessPolicyRule, self).__init__(
+            api_version="batch/v1", kind="SuccessPolicyRule"
+        )
+        self._properties = {
+            "succeededCount": succeeded_count if succeeded_count is not None else None,
+            "succeededIndexes": (
+                succeeded_indexes if succeeded_indexes is not None else ""
+            ),
+        }
+        self._types = {
+            "succeededCount": (int, None),
+            "succeededIndexes": (str, None),
+        }
+
+    @property
+    def succeeded_count(self) -> int:
+        """
+        succeededCount specifies the minimal required size of the
+        actual set of the succeeded indexes for the Job. When
+        succeededCount is used along with succeededIndexes, the
+        check is constrained only to the set of indexes specified by
+        succeededIndexes. For example, given that succeededIndexes
+        is "1-4", succeededCount is "3", and completed indexes are
+        "1", "3", and "5", the Job isn't declared as succeeded
+        because only "1" and "3" indexes are considered in that
+        rules. When this field is null, this doesn't default to any
+        value and is never evaluated at any time. When specified it
+        needs to be a positive integer.
+        """
+        return typing.cast(
+            int,
+            self._properties.get("succeededCount"),
+        )
+
+    @succeeded_count.setter
+    def succeeded_count(self, value: int):
+        """
+        succeededCount specifies the minimal required size of the
+        actual set of the succeeded indexes for the Job. When
+        succeededCount is used along with succeededIndexes, the
+        check is constrained only to the set of indexes specified by
+        succeededIndexes. For example, given that succeededIndexes
+        is "1-4", succeededCount is "3", and completed indexes are
+        "1", "3", and "5", the Job isn't declared as succeeded
+        because only "1" and "3" indexes are considered in that
+        rules. When this field is null, this doesn't default to any
+        value and is never evaluated at any time. When specified it
+        needs to be a positive integer.
+        """
+        self._properties["succeededCount"] = value
+
+    @property
+    def succeeded_indexes(self) -> str:
+        """
+        succeededIndexes specifies the set of indexes which need to
+        be contained in the actual set of the succeeded indexes for
+        the Job. The list of indexes must be within 0 to
+        ".spec.completions-1" and must not contain duplicates. At
+        least one element is required. The indexes are represented
+        as intervals separated by commas. The intervals can be a
+        decimal integer or a pair of decimal integers separated by a
+        hyphen. The number are listed in represented by the first
+        and last element of the series, separated by a hyphen. For
+        example, if the completed indexes are 1, 3, 4, 5 and 7, they
+        are represented as "1,3-5,7". When this field is null, this
+        field doesn't default to any value and is never evaluated at
+        any time.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("succeededIndexes"),
+        )
+
+    @succeeded_indexes.setter
+    def succeeded_indexes(self, value: str):
+        """
+        succeededIndexes specifies the set of indexes which need to
+        be contained in the actual set of the succeeded indexes for
+        the Job. The list of indexes must be within 0 to
+        ".spec.completions-1" and must not contain duplicates. At
+        least one element is required. The indexes are represented
+        as intervals separated by commas. The intervals can be a
+        decimal integer or a pair of decimal integers separated by a
+        hyphen. The number are listed in represented by the first
+        and last element of the series, separated by a hyphen. For
+        example, if the completed indexes are 1, 3, 4, 5 and 7, they
+        are represented as "1,3-5,7". When this field is null, this
+        field doesn't default to any value and is never evaluated at
+        any time.
+        """
+        self._properties["succeededIndexes"] = value
+
+    def __enter__(self) -> "SuccessPolicyRule":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

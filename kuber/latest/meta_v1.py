@@ -1114,6 +1114,9 @@ class DeleteOptions(_kuber_definitions.Definition):
         api_version: typing.Optional[str] = None,
         dry_run: typing.Optional[typing.List[str]] = None,
         grace_period_seconds: typing.Optional[int] = None,
+        ignore_store_read_error_with_cluster_breaking_potential: typing.Optional[
+            bool
+        ] = None,
         kind: typing.Optional[str] = None,
         orphan_dependents: typing.Optional[bool] = None,
         preconditions: typing.Optional["Preconditions"] = None,
@@ -1126,6 +1129,11 @@ class DeleteOptions(_kuber_definitions.Definition):
             "dryRun": dry_run if dry_run is not None else [],
             "gracePeriodSeconds": (
                 grace_period_seconds if grace_period_seconds is not None else None
+            ),
+            "ignoreStoreReadErrorWithClusterBreakingPotential": (
+                ignore_store_read_error_with_cluster_breaking_potential
+                if ignore_store_read_error_with_cluster_breaking_potential is not None
+                else None
             ),
             "kind": kind if kind is not None else "",
             "orphanDependents": (
@@ -1142,6 +1150,7 @@ class DeleteOptions(_kuber_definitions.Definition):
             "apiVersion": (str, None),
             "dryRun": (list, str),
             "gracePeriodSeconds": (int, None),
+            "ignoreStoreReadErrorWithClusterBreakingPotential": (bool, None),
             "kind": (str, None),
             "orphanDependents": (bool, None),
             "preconditions": (Preconditions, None),
@@ -1226,6 +1235,47 @@ class DeleteOptions(_kuber_definitions.Definition):
         immediately.
         """
         self._properties["gracePeriodSeconds"] = value
+
+    @property
+    def ignore_store_read_error_with_cluster_breaking_potential(self) -> bool:
+        """
+        if set to true, it will trigger an unsafe deletion of the
+        resource in case the normal deletion flow fails with a
+        corrupt object error. A resource is considered corrupt if it
+        can not be retrieved from the underlying storage
+        successfully because of a) its data can not be transformed
+        e.g. decryption failure, or b) it fails to decode into an
+        object. NOTE: unsafe deletion ignores finalizer constraints,
+        skips precondition checks, and removes the object from the
+        storage. WARNING: This may potentially break the cluster if
+        the workload associated with the resource being unsafe-
+        deleted relies on normal deletion flow. Use only if you
+        REALLY know what you are doing. The default value is false,
+        and the user must opt in to enable it
+        """
+        return typing.cast(
+            bool,
+            self._properties.get("ignoreStoreReadErrorWithClusterBreakingPotential"),
+        )
+
+    @ignore_store_read_error_with_cluster_breaking_potential.setter
+    def ignore_store_read_error_with_cluster_breaking_potential(self, value: bool):
+        """
+        if set to true, it will trigger an unsafe deletion of the
+        resource in case the normal deletion flow fails with a
+        corrupt object error. A resource is considered corrupt if it
+        can not be retrieved from the underlying storage
+        successfully because of a) its data can not be transformed
+        e.g. decryption failure, or b) it fails to decode into an
+        object. NOTE: unsafe deletion ignores finalizer constraints,
+        skips precondition checks, and removes the object from the
+        storage. WARNING: This may potentially break the cluster if
+        the workload associated with the resource being unsafe-
+        deleted relies on normal deletion flow. Use only if you
+        REALLY know what you are doing. The default value is false,
+        and the user must opt in to enable it
+        """
+        self._properties["ignoreStoreReadErrorWithClusterBreakingPotential"] = value
 
     @property
     def kind(self) -> str:
@@ -1337,6 +1387,103 @@ class DeleteOptions(_kuber_definitions.Definition):
         self._properties["propagationPolicy"] = value
 
     def __enter__(self) -> "DeleteOptions":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class FieldSelectorRequirement(_kuber_definitions.Definition):
+    """
+    FieldSelectorRequirement is a selector that contains values,
+    a key, and an operator that relates the key and values.
+    """
+
+    def __init__(
+        self,
+        key: typing.Optional[str] = None,
+        operator: typing.Optional[str] = None,
+        values: typing.Optional[typing.List[str]] = None,
+    ):
+        """Create FieldSelectorRequirement instance."""
+        super(FieldSelectorRequirement, self).__init__(
+            api_version="meta/v1", kind="FieldSelectorRequirement"
+        )
+        self._properties = {
+            "key": key if key is not None else "",
+            "operator": operator if operator is not None else "",
+            "values": values if values is not None else [],
+        }
+        self._types = {
+            "key": (str, None),
+            "operator": (str, None),
+            "values": (list, str),
+        }
+
+    @property
+    def key(self) -> str:
+        """
+        key is the field selector key that the requirement applies
+        to.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("key"),
+        )
+
+    @key.setter
+    def key(self, value: str):
+        """
+        key is the field selector key that the requirement applies
+        to.
+        """
+        self._properties["key"] = value
+
+    @property
+    def operator(self) -> str:
+        """
+        operator represents a key's relationship to a set of values.
+        Valid operators are In, NotIn, Exists, DoesNotExist. The
+        list of operators may grow in the future.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("operator"),
+        )
+
+    @operator.setter
+    def operator(self, value: str):
+        """
+        operator represents a key's relationship to a set of values.
+        Valid operators are In, NotIn, Exists, DoesNotExist. The
+        list of operators may grow in the future.
+        """
+        self._properties["operator"] = value
+
+    @property
+    def values(self) -> typing.List[str]:
+        """
+        values is an array of string values. If the operator is In
+        or NotIn, the values array must be non-empty. If the
+        operator is Exists or DoesNotExist, the values array must be
+        empty.
+        """
+        return typing.cast(
+            typing.List[str],
+            self._properties.get("values"),
+        )
+
+    @values.setter
+    def values(self, value: typing.List[str]):
+        """
+        values is an array of string values. If the operator is In
+        or NotIn, the values array must be non-empty. If the
+        operator is Exists or DoesNotExist, the values array must be
+        empty.
+        """
+        self._properties["values"] = value
+
+    def __enter__(self) -> "FieldSelectorRequirement":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

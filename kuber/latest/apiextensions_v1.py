@@ -1,11 +1,11 @@
-import datetime as _datetime  # noqa: F401
 import typing  # noqa: F401
+import datetime as _datetime  # noqa: F401
 
 from kubernetes import client  # noqa: F401
-
-from kuber import _types  # noqa: F401
-from kuber import definitions as _kuber_definitions  # noqa: F401
 from kuber import kube_api as _kube_api  # noqa: F401
+
+from kuber import definitions as _kuber_definitions  # noqa: F401
+from kuber import _types  # noqa: F401
 from kuber.latest.meta_v1 import ListMeta  # noqa: F401
 from kuber.latest.meta_v1 import ObjectMeta  # noqa: F401
 from kuber.latest.meta_v1 import Status  # noqa: F401
@@ -1333,6 +1333,7 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
         deprecation_warning: typing.Optional[str] = None,
         name: typing.Optional[str] = None,
         schema: typing.Optional["CustomResourceValidation"] = None,
+        selectable_fields: typing.Optional[typing.List["SelectableField"]] = None,
         served: typing.Optional[bool] = None,
         storage: typing.Optional[bool] = None,
         subresources: typing.Optional["CustomResourceSubresources"] = None,
@@ -1353,6 +1354,9 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
             ),
             "name": name if name is not None else "",
             "schema": schema if schema is not None else CustomResourceValidation(),
+            "selectableFields": (
+                selectable_fields if selectable_fields is not None else []
+            ),
             "served": served if served is not None else None,
             "storage": storage if storage is not None else None,
             "subresources": (
@@ -1367,6 +1371,7 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
             "deprecationWarning": (str, None),
             "name": (str, None),
             "schema": (CustomResourceValidation, None),
+            "selectableFields": (list, SelectableField),
             "served": (bool, None),
             "storage": (bool, None),
             "subresources": (CustomResourceSubresources, None),
@@ -1506,6 +1511,41 @@ class CustomResourceDefinitionVersion(_kuber_definitions.Definition):
                 CustomResourceValidation().from_dict(value),
             )
         self._properties["schema"] = value
+
+    @property
+    def selectable_fields(self) -> typing.List["SelectableField"]:
+        """
+        selectableFields specifies paths to fields that may be used
+        as field selectors. A maximum of 8 selectable fields are
+        allowed. See
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/field-selectors
+        """
+        return typing.cast(
+            typing.List["SelectableField"],
+            self._properties.get("selectableFields"),
+        )
+
+    @selectable_fields.setter
+    def selectable_fields(
+        self, value: typing.Union[typing.List["SelectableField"], typing.List[dict]]
+    ):
+        """
+        selectableFields specifies paths to fields that may be used
+        as field selectors. A maximum of 8 selectable fields are
+        allowed. See
+        https://kubernetes.io/docs/concepts/overview/working-with-
+        objects/field-selectors
+        """
+        cleaned: typing.List[SelectableField] = []
+        for item in value:
+            if isinstance(item, dict):
+                item = typing.cast(
+                    SelectableField,
+                    SelectableField().from_dict(item),
+                )
+            cleaned.append(typing.cast(SelectableField, item))
+        self._properties["selectableFields"] = cleaned
 
     @property
     def served(self) -> bool:
@@ -2412,17 +2452,17 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         card number defined by the regex ^(?:4[0-9]{12}(?:[0-
         9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-
         9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-
-        9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any non digit
+        9]{11}|(?:2131|1800|35\\d{3})\\d{11})$ with any non digit
         characters mixed in - ssn: a U.S. social security number
-        following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ - hexcolor:
-        an hexadecimal color code like "#FFFFFF: following the regex
-        ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an RGB color
-        code like rgb like "rgb(255,255,2559" - byte: base64 encoded
-        binary data - password: any kind of string - date: a date
-        string like "2006-01-02" as defined by full-date in RFC3339
-        - duration: a duration string like "22 ns" as parsed by
-        Golang time.ParseDuration or compatible with Scala duration
-        format - datetime: a date time string like
+        following the regex ^\\d{3}[- ]?\\d{2}[- ]?\\d{4}$ -
+        hexcolor: an hexadecimal color code like "#FFFFFF: following
+        the regex ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an
+        RGB color code like rgb like "rgb(255,255,2559" - byte:
+        base64 encoded binary data - password: any kind of string -
+        date: a date string like "2006-01-02" as defined by full-
+        date in RFC3339 - duration: a duration string like "22 ns"
+        as parsed by Golang time.ParseDuration or compatible with
+        Scala duration format - datetime: a date time string like
         "2014-12-15T19:30:20.000Z" as defined by date-time in
         RFC3339.
         """
@@ -2462,17 +2502,17 @@ class JSONSchemaProps(_kuber_definitions.Definition):
         card number defined by the regex ^(?:4[0-9]{12}(?:[0-
         9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-
         9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-
-        9]{11}|(?:2131|1800|35\d{3})\d{11})$ with any non digit
+        9]{11}|(?:2131|1800|35\\d{3})\\d{11})$ with any non digit
         characters mixed in - ssn: a U.S. social security number
-        following the regex ^\d{3}[- ]?\d{2}[- ]?\d{4}$ - hexcolor:
-        an hexadecimal color code like "#FFFFFF: following the regex
-        ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an RGB color
-        code like rgb like "rgb(255,255,2559" - byte: base64 encoded
-        binary data - password: any kind of string - date: a date
-        string like "2006-01-02" as defined by full-date in RFC3339
-        - duration: a duration string like "22 ns" as parsed by
-        Golang time.ParseDuration or compatible with Scala duration
-        format - datetime: a date time string like
+        following the regex ^\\d{3}[- ]?\\d{2}[- ]?\\d{4}$ -
+        hexcolor: an hexadecimal color code like "#FFFFFF: following
+        the regex ^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$ - rgbcolor: an
+        RGB color code like rgb like "rgb(255,255,2559" - byte:
+        base64 encoded binary data - password: any kind of string -
+        date: a date string like "2006-01-02" as defined by full-
+        date in RFC3339 - duration: a duration string like "22 ns"
+        as parsed by Golang time.ParseDuration or compatible with
+        Scala duration format - datetime: a date time string like
         "2014-12-15T19:30:20.000Z" as defined by date-time in
         RFC3339.
         """
@@ -3017,9 +3057,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     def x_kubernetes_validations(self) -> typing.List["ValidationRule"]:
         """
         x-kubernetes-validations describes a list of validation
-        rules written in the CEL expression language. This field is
-        an alpha-level. Using this field requires the feature gate
-        `CustomResourceValidationExpressions` to be enabled.
+        rules written in the CEL expression language.
         """
         return typing.cast(
             typing.List["ValidationRule"],
@@ -3032,9 +3070,7 @@ class JSONSchemaProps(_kuber_definitions.Definition):
     ):
         """
         x-kubernetes-validations describes a list of validation
-        rules written in the CEL expression language. This field is
-        an alpha-level. Using this field requires the feature gate
-        `CustomResourceValidationExpressions` to be enabled.
+        rules written in the CEL expression language.
         """
         cleaned: typing.List[ValidationRule] = []
         for item in value:
@@ -3117,6 +3153,65 @@ class JSONSchemaPropsOrStringArray(_kuber_definitions.Definition):
         self._types = {}
 
     def __enter__(self) -> "JSONSchemaPropsOrStringArray":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+
+class SelectableField(_kuber_definitions.Definition):
+    """
+    SelectableField specifies the JSON path of a field that may
+    be used with field selectors.
+    """
+
+    def __init__(
+        self,
+        json_path: typing.Optional[str] = None,
+    ):
+        """Create SelectableField instance."""
+        super(SelectableField, self).__init__(
+            api_version="apiextensions/v1", kind="SelectableField"
+        )
+        self._properties = {
+            "jsonPath": json_path if json_path is not None else "",
+        }
+        self._types = {
+            "jsonPath": (str, None),
+        }
+
+    @property
+    def json_path(self) -> str:
+        """
+        jsonPath is a simple JSON path which is evaluated against
+        each custom resource to produce a field selector value. Only
+        JSON paths without the array notation are allowed. Must
+        point to a field of type string, boolean or integer. Types
+        with enum values and strings with formats are allowed. If
+        jsonPath refers to absent field in a resource, the jsonPath
+        evaluates to an empty string. Must not point to metdata
+        fields. Required.
+        """
+        return typing.cast(
+            str,
+            self._properties.get("jsonPath"),
+        )
+
+    @json_path.setter
+    def json_path(self, value: str):
+        """
+        jsonPath is a simple JSON path which is evaluated against
+        each custom resource to produce a field selector value. Only
+        JSON paths without the array notation are allowed. Must
+        point to a field of type string, boolean or integer. Types
+        with enum values and strings with formats are allowed. If
+        jsonPath refers to absent field in a resource, the jsonPath
+        evaluates to an empty string. Must not point to metdata
+        fields. Required.
+        """
+        self._properties["jsonPath"] = value
+
+    def __enter__(self) -> "SelectableField":
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

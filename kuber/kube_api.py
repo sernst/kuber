@@ -28,7 +28,7 @@ def load_access_config(in_cluster: bool = False, **kwargs):
 
 
 def get_version_from_cluster(
-    fallback: typing.Union["versioning.KubernetesVersion", str, None] = None
+    fallback: typing.Union["versioning.KubernetesVersion", str, None] = None,
 ) -> versioning.KubernetesVersion:
     """
     Returns the KubernetesVersion object associated with the configured
